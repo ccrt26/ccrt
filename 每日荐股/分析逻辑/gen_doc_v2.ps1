@@ -67,10 +67,10 @@ function New-OoxmlDoc {
     AddEmptyLine($bodySb)
     [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="48"/><w:b/><w:color w:val="1A1A2E"/></w:rPr><w:t>每日荐股分析逻辑白皮书</w:t></w:r></w:p>')
     AddEmptyLine($bodySb)
-    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="36"/><w:b/><w:color w:val="16213E"/></w:rPr><w:t>v2.0</w:t></w:r></w:p>')
+    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="36"/><w:b/><w:color w:val="16213E"/></w:rPr><w:t>v2.1</w:t></w:r></w:p>')
     AddEmptyLine($bodySb)
     [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="22"/><w:color w:val="666666"/></w:rPr><w:t>铁律量化 · 核心分析引擎</w:t></w:r></w:p>')
-    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="20"/><w:color w:val="666666"/></w:rPr><w:t>版本：v2.0 | 2026-05-21</w:t></w:r></w:p>')
+    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="20"/><w:color w:val="666666"/></w:rPr><w:t>版本：v2.1 | 2026-05-22</w:t></w:r></w:p>')
 
     # ---- Prerequisite ----
     AddEmptyLine($bodySb)
@@ -82,8 +82,9 @@ function New-OoxmlDoc {
     AddEmptyLine($bodySb)
     AddHeading($bodySb, "版本历史", 1)
     AddTable($bodySb, @("版本", "日期", "作者", "变更内容"), @(
-        ,@("v2.0","2026-05-21","Claude","全面重构。新增股票池体系、板块分析、组合层规则、情绪自适应。修复6项缺陷"),
-        ,@("v1.0","2026-05-21","Claude","初始版本。六维度评分、ATR止损、行业相对PE否决")
+        ,@("v2.1","2026-05-22","Claude","板块动量改用东方财富真实市场数据。新增SectorData采集+相位分类+动量加分"),
+        ,@("v2.0","2026-05-22","Claude","全面重构。动态池替代固定42只池；否决制替代评分优先；推荐上限25只"),
+        ,@("v1.0","2026-05-21","Claude","初始版本。六维度评分体系、固定42只池")
     ))
 
     AddEmptyLine($bodySb)
@@ -593,7 +594,7 @@ function New-OoxmlDoc {
     AddEmptyLine($bodySb)
     AddEmptyLine($bodySb)
     [void]$bodySb.Append('<w:p><w:pPr><w:pBdr><w:top w:val="single" w:sz="6" w:space="4" w:color="CCCCCC"/></w:pBdr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="18"/><w:color w:val="999999"/></w:rPr><w:t>本文档为铁律量化系统的核心分析逻辑规范，所有AI在执行分析任务时必须遵守。</w:t></w:r></w:p>')
-    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="18"/><w:color w:val="999999"/></w:rPr><w:t>版本：v2.0 | 2026-05-21 | 铁律量化</w:t></w:r></w:p>')
+    [void]$bodySb.Append('<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:eastAsia="Microsoft YaHei"/><w:sz w:val="18"/><w:color w:val="999999"/></w:rPr><w:t>版本：v2.1 | 2026-05-22 | 铁律量化</w:t></w:r></w:p>')
 
     return $bodySb.ToString()
 }
