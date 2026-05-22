@@ -1,0 +1,112 @@
+﻿[
+    {
+        "Name":  "通信",
+        "StockCount":  3,
+        "AvgChange":  -4.6733333333333329,
+        "AvgTurnover":  3.7433333333333336,
+        "AvgAmplitude":  7.4833333333333334,
+        "AvgPE":  82.456666666666663,
+        "Phase":  "🔴 衰退期",
+        "Action":  "减仓回避"
+    },
+    {
+        "Name":  "银行",
+        "StockCount":  1,
+        "AvgChange":  -0.05,
+        "AvgTurnover":  0.35,
+        "AvgAmplitude":  0.62,
+        "AvgPE":  6.22,
+        "Phase":  "🟢 潜伏期",
+        "Action":  "提前埋伏"
+    },
+    {
+        "Name":  "传媒",
+        "StockCount":  1,
+        "AvgChange":  -2.93,
+        "AvgTurnover":  3.9,
+        "AvgAmplitude":  6.32,
+        "AvgPE":  null,
+        "Phase":  "🟡 主升→调整",
+        "Action":  "持有不加仓"
+    },
+    {
+        "Name":  "食品饮料",
+        "StockCount":  2,
+        "AvgChange":  -0.22,
+        "AvgTurnover":  0.575,
+        "AvgAmplitude":  1.63,
+        "AvgPE":  23.07,
+        "Phase":  "🟢 潜伏期",
+        "Action":  "提前埋伏"
+    },
+    {
+        "Name":  "计算机",
+        "StockCount":  12,
+        "AvgChange":  -3.3241666666666667,
+        "AvgTurnover":  4.2116666666666669,
+        "AvgAmplitude":  7.5933333333333328,
+        "AvgPE":  58.945555555555558,
+        "Phase":  "🔴 衰退期",
+        "Action":  "减仓回避"
+    },
+    {
+        "Name":  "电力设备",
+        "StockCount":  2,
+        "AvgChange":  -0.92,
+        "AvgTurnover":  3.965,
+        "AvgAmplitude":  4.54,
+        "AvgPE":  26.43,
+        "Phase":  "🟢 潜伏期",
+        "Action":  "提前埋伏"
+    },
+    {
+        "Name":  "医药生物",
+        "StockCount":  1,
+        "AvgChange":  -2.55,
+        "AvgTurnover":  2.48,
+        "AvgAmplitude":  4.62,
+        "AvgPE":  null,
+        "Phase":  "🟡 主升→调整",
+        "Action":  "持有不加仓"
+    },
+    {
+        "Name":  "电子",
+        "StockCount":  14,
+        "AvgChange":  -2.84,
+        "AvgTurnover":  5.1435714285714287,
+        "AvgAmplitude":  8.6457142857142877,
+        "AvgPE":  115.62076923076924,
+        "Phase":  "🟡 主升→调整",
+        "Action":  "持有不加仓"
+    },
+    {
+        "Name":  "环保",
+        "StockCount":  1,
+        "AvgChange":  -7.87,
+        "AvgTurnover":  5.49,
+        "AvgAmplitude":  10.54,
+        "AvgPE":  67.89,
+        "Phase":  "🔴 衰退期",
+        "Action":  "减仓回避"
+    },
+    {
+        "Name":  "机械设备",
+        "StockCount":  2,
+        "AvgChange":  3.325,
+        "AvgTurnover":  6.125,
+        "AvgAmplitude":  6.86,
+        "AvgPE":  42.28,
+        "Phase":  "🔴 高潮期",
+        "Action":  "减仓回避"
+    },
+    {
+        "Name":  "汽车",
+        "StockCount":  3,
+        "AvgChange":  4.53,
+        "AvgTurnover":  3.6966666666666668,
+        "AvgAmplitude":  6.2100000000000009,
+        "AvgPE":  34.576666666666661,
+        "Phase":  "🔴 高潮期",
+        "Action":  "减仓回避"
+    }
+]

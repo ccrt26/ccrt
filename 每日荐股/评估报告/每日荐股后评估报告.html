@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>每日荐股后评估报告</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "微软雅黑", sans-serif; color: #333; background: #f0f2f5; padding: 20px; }
+.report-page { max-width: 210mm; margin: 0 auto; background: #fff; padding: 15mm 18mm; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.header { background: #1a1a2e; color: #fff; padding: 28px 30px; border-radius: 10px; margin-bottom: 20px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { font-size: 15px; opacity: 0.8; }
+.section { margin: 18px 0; }
+.section h2 { font-size: 18px; color: #16213e; border-bottom: 2px solid #1a1a2e; padding-bottom: 6px; margin-bottom: 12px; }
+.section h3 { font-size: 15px; color: #333; margin: 10px 0 6px; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 13px; }
+th { background: #1a1a2e; color: #fff; padding: 8px 10px; text-align: center; font-weight: normal; }
+td { padding: 6px 10px; border: 1px solid #e0e0e0; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+.win { color: #e74c3c; } .loss { color: #27ae60; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0; }
+.summary-item { text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db; }
+.summary-item .val { font-size: 28px; font-weight: bold; margin: 4px 0; }
+.summary-item .lbl { font-size: 13px; color: #888; }
+.best-worst { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.bw-item { padding: 14px; border-radius: 8px; }
+.bw-best { background: #fde8e8; border: 1px solid #f5c6c6; }
+.bw-worst { background: #e8f5e9; border: 1px solid #c6e6c8; }
+.bw-item .bw-label { font-size: 11px; color: #888; }
+.bw-item .bw-name { font-size: 18px; font-weight: bold; }
+.bw-item .bw-ret { font-size: 14px; }
+.verdict-box { padding: 16px; border-radius: 8px; margin: 12px 0; text-align: center; }
+.verdict-good { background: #e8f5e9; border: 2px solid #27ae60; }
+.verdict-warn { background: #fff8e1; border: 2px solid #f39c12; }
+.verdict-bad { background: #fde8e8; border: 2px solid #e74c3c; }
+.verdict-box .v-title { font-size: 16px; font-weight: bold; }
+.verdict-box .v-detail { font-size: 13px; margin-top: 4px; }
+.disclaimer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 11px; color: #999; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="report-page">
+    <div class="header">
+        <h1>每日荐股后评估报告</h1>
+        <div class="subtitle">评估 T日荐股表现 | 生成时间: 2026-05-22 00:28:23 | 评估股票: 8 只</div>
+    </div>
+
+    <div class="section">
+        <h2>整体表现</h2>
+        <div class="summary-grid">
+            <div class="summary-item" style="border-left-color:#27ae60;"><div class="lbl">次日胜率</div><div class="val" style="color:#e74c3c">0%</div><div class="lbl"> / </div></div>
+            <div class="summary-item" style="border-left-color:#2980b9;"><div class="lbl">盈亏比</div><div class="val" style="color:#2980b9;">0 : 1</div><div class="lbl">平均盈利 0% / 亏损 0%</div></div>
+            <div class="summary-item" style="border-left-color:#f39c12;"><div class="lbl">组合日收益</div><div class="val" style="color:#27ae60">0%</div><div class="lbl">推荐组合等权平均</div></div>
+            <div class="summary-item" style="border-left-color:#8e44ad;"><div class="lbl">评估数量</div><div class="val" style="color:#8e44ad;">8</div><div class="lbl">入选推荐标的</div></div>
+        </div>
+
+        <div class="best-worst">
+            <div class='bw-item bw-best'><div class='bw-label'>最佳表现</div><div class='bw-name' style='color:#e74c3c;'>大华股份</div><div class='bw-ret'>002236 | 评分 58 | 涨幅 <strong>0%</strong></div></div>
+            <div class='bw-item bw-worst'><div class='bw-label'>最差表现</div><div class='bw-name' style='color:#27ae60;'>大华股份</div><div class='bw-ret'>002236 | 评分 58 | 涨幅 <strong>0%</strong></div></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>逐股评估明细</h2>
+        <table>
+            <tr><th>代码</th><th>名称</th><th>T日收盘</th><th>T+1日现价</th><th>涨跌幅</th><th>总分</th><th>结果</th><th>归因</th></tr>
+            <tr class="loss">
+    <td>600519</td><td>贵州茅台</td>
+    <td>1311</td><td>1311</td>
+    <td class="loss">0%</td>
+    <td>73</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>600036</td><td>招商银行</td>
+    <td>37.15</td><td>37.15</td>
+    <td class="loss">0%</td>
+    <td>73</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>000858</td><td>五 粮 液</td>
+    <td>85.35</td><td>85.35</td>
+    <td class="loss">0%</td>
+    <td>71</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>300750</td><td>宁德时代</td>
+    <td>411.63</td><td>411.63</td>
+    <td class="loss">0%</td>
+    <td>64</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>002594</td><td>比亚迪</td>
+    <td>93.51</td><td>93.51</td>
+    <td class="loss">0%</td>
+    <td>63</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>002236</td><td>大华股份</td>
+    <td>17.57</td><td>17.57</td>
+    <td class="loss">0%</td>
+    <td>58</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>603501</td><td>豪威集团</td>
+    <td>102.66</td><td>102.66</td>
+    <td class="loss">0%</td>
+    <td>56</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr><tr class="loss">
+    <td>300274</td><td>阳光电源</td>
+    <td>165.38</td><td>165.38</td>
+    <td class="loss">0%</td>
+    <td>55</td>
+    <td style="font-size:12px;">[--]</td>
+    <td style="font-size:12px;color:#999;">-</td>
+</tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>维度回检</h2>
+        <table>
+            <tr><th>维度</th><th>正确/总次数</th><th>正确率</th></tr>
+            <tr><td>技术</td><td>8/8</td><td style='color:#27ae60'>100%</td></tr><tr><td>基本面</td><td>8/8</td><td style='color:#27ae60'>100%</td></tr><tr><td>资金</td><td>5/5</td><td style='color:#27ae60'>100%</td></tr><tr><td>消息</td><td>8/8</td><td style='color:#27ae60'>100%</td></tr><tr><td>风控</td><td>5/5</td><td style='color:#27ae60'>100%</td></tr>
+        </table>
+        <p style="font-size:12px;color:#888;margin-top:6px;">计分规则：某维度评分>=7且次日涨幅>=-2%计为预期正确；>=7但跌幅>2%计为误判</p>
+    </div>
+
+    <div class="section">
+        <h2>评分有效性</h2>
+        <p>高分组（>=55分）胜率：<strong>0%</strong> | 低分组（<55分）胜率：<strong>0%</strong> | 区分度：<strong>0%</strong> (不足)</p>
+    </div>
+
+    <div class="section">
+        <h2>评估结论</h2>
+        <div class='verdict-box verdict-bad'><div class='v-title' style='color:#e74c3c;'>表现不佳</div><div class='v-detail'>胜率 0% 显著低于目标，建议全面排查评分体系</div></div>
+        <p style='margin-top:8px;'>盈亏比  低于目标1.5:1，盈利覆盖亏损能力不足</p>
+    </div>
+
+    <div class="disclaimer">
+        <p><strong>免责声明</strong></p>
+        <p>本报告由铁律量化系统自动生成，数据来源包括腾讯行情等公开API。</p>
+        <p>评估结果基于T日收盘价与T+1日行情对比，仅反映历史表现，不构成投资建议。</p>
+        <p>股票投资有风险，过往表现不代表未来收益。生成时间：2026-05-22 00:28:23</p>
+    </div>
+</div>
+</body>
+</html>

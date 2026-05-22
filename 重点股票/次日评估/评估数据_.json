@@ -1,0 +1,58 @@
+﻿{
+    "Date":  null,
+    "Stocks":  [
+                   {
+                       "Rating":  "谨慎",
+                       "Industry":  "银行",
+                       "Price":  37.15,
+                       "Date":  null,
+                       "KeyLevels":  {
+                                         "Support":  38.34,
+                                         "StopLoss":  35.66,
+                                         "Resistance":  39.03
+                                     },
+                       "Name":  "招商银行",
+                       "Signals":  {
+                                       "MA_Trend":  "空头排列",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "死叉",
+                                       "LongBull_Score":  1,
+                                       "RSI_Value":  1.2,
+                                       "Volume_Relation":  "量能正常",
+                                       "Bollinger_Position":  "中轨下方",
+                                       "ShortBull_Score":  0,
+                                       "Research_Coverage":  "有(3篇)",
+                                       "MidBull_Score":  0,
+                                       "RSI_Zone":  "超卖",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "合理(40-60%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "看空",
+                                          "MidBull":  0,
+                                          "Long":  "长期中性",
+                                          "Mid":  "趋势看空",
+                                          "Confidence":  "低(\u003c50%)",
+                                          "ShortBull":  0,
+                                          "LongBull":  1
+                                      },
+                       "Code":  "600036",
+                       "Scores":  {
+                                      "Sector":  48,
+                                      "Macro":  50,
+                                      "Capital":  68,
+                                      "Composite":  48,
+                                      "Technical":  29,
+                                      "Sentiment":  57,
+                                      "Fundamental":  47
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "危险",
+                                           "Score":  35
+                                       },
+                       "RatingFull":  "★ 谨慎"
+                   }
+               ],
+    "GeneratedAt":  "2026-05-21 23:59:42"
+}

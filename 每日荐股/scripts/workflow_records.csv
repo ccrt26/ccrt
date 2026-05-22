@@ -1,0 +1,4 @@
+﻿Date,Mode,Status,ReportName,VersionBefore,VersionAfter,Notes
+2026-05-21,daily,SUCCESS,,,,Analysis done, output: C:\Users\34269\Documents\Claude\股票分析\每日荐股\股票报告
+2026-05-22,eval,SUCCESS,evaluation_report_20260521,,,Evaluation done, manual version update confirmation needed
+2026-05-22,daily_latest,SUCCESS,,,,Analysis done, output: C:\Users\34269\Documents\Claude\股票分析\每日荐股\股票报告

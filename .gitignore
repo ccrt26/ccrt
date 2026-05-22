@@ -1,0 +1,17 @@
+# 系统文件
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Claude Code 个人配置（不共享）
+.claude/sessions/
+.claude/projects/
+.claude/scheduled_tasks.json
+.claude/telemetry/
+.claude/agents/
+.claude/settings.local.json
+
+# 临时文件
+*.tmp
+*.temp
+~$*

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "PowerShell(*)",
+      "Skill(update-config)",
+      "Skill(fewer-permission-prompts)",
+      "WebSearch",
+      "WebFetch",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep"
+    ]
+  }
+}
