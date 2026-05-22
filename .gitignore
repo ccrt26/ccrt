@@ -15,3 +15,7 @@ Desktop.ini
 *.tmp
 *.temp
 ~$*
+
+# 数据缓存（运行时生成）
+data_cache/
+_data_audit.md
