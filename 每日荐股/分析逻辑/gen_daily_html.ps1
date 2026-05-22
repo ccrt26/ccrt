@@ -21,12 +21,30 @@ param(
 )
 
 $rootDir = "C:\Users\34269\Documents\Claude\股票分析"
-if (-not $DataFile) { $DataFile = Join-Path $rootDir "data_final.json" }
+if (-not $DataFile) { $DataFile = Join-Path $rootDir "data_scored.json" }
 if (-not $OutDir)  { $OutDir  = Join-Path $rootDir "每日荐股\股票报告" }
 
-if (-not (Test-Path $DataFile)) { Write-Error "data_final.json not found: $DataFile"; exit 1 }
-$raw = Get-Content $DataFile -Encoding UTF8 | ConvertFrom-Json
-$stocks = $raw | Where-Object { $_.TotalScore -ne $null }
+if (-not (Test-Path $DataFile)) { Write-Error "$DataFile not found. Run scoring_engine_v2.py first."; exit 1 }
+$data = Get-Content $DataFile -Encoding UTF8 -Raw | ConvertFrom-Json
+
+# 兼容 v2 新格式 (data_scored.json) 和旧格式 (data_final.json)
+if ($data.AllStocks) {
+    $allStocks = $data.AllStocks
+    $summaryInfo = $data.Summary
+} else {
+    # 旧格式兼容
+    $allStocks = $data | Where-Object { $_.TotalScore -ne $null }
+    $recommended = $allStocks | Sort-Object TotalScore -Descending
+    $vetoedList = @()
+    $summaryInfo = $null
+}
+
+# 通过否决的股票列表（用于推荐）
+$stocks = $allStocks | Where-Object { $_.VetoStatus -eq $null -or $_.VetoStatus -eq "passed" }
+if (-not $stocks -or $stocks.Count -eq 0) {
+    Write-Warning "No non-vetoed stocks, using fallback all stocks"
+    $stocks = $allStocks
+}
 
 # ----- Sector phase helper -----
 function Get-PhaseName($avgChg, $avgTurn, $count) {
@@ -59,19 +77,7 @@ function Get-ShortPhase($p) {
     return $p
 }
 
-# ----- Breakthrough score -----
-function Get-Break($s) {
-    $b = 0
-    $t = $s.TurnoverRate; $a = $s.Amplitude; $p = $s.PE
-    if ($t -ge 2 -and $t -le 5) { $b += 8 } elseif ($t -gt 5 -and $t -le 8) { $b += 4 } elseif ($t -gt 8) { $b += 1 } elseif ($t -lt 1) { $b -= 2 }
-    if ($a -ge 3 -and $a -le 7) { $b += 6 } elseif ($a -gt 7 -and $a -le 10) { $b += 3 }
-    if ($p -gt 0 -and $p -le 30) { $b += 5 } elseif ($p -gt 30 -and $p -le 60) { $b += 2 } elseif ($p -gt 80) { $b -= 3 }
-    if ($b -gt 15) { $b = 15 }; if ($b -lt -15) { $b = -15 }
-    $r = $s.TotalScore + $b
-    if ($r -gt 100) { $r = 100 }; if ($r -lt 0) { $r = 0 }
-    return @($r, $b)
-}
-
+# ----- Generate recommendation reason (tech + phase + catalyst) -----
 function Get-Catalyst($n, $i) {
     if ($n -eq "宁德时代") { return "固太电池储能" }
     if ($n -eq "豪威集团") { return "半导体CIS" }
@@ -90,16 +96,66 @@ function Get-Catalyst($n, $i) {
     if ($i -eq "计算机") { return "数字中国" }
     if ($i -eq "电子")   { return "半导体周期" }
     if ($i -eq "通信")   { return "算力基建" }
-    return "行业催化"
+    return $null
 }
 
-# ----- Compute sector rotation -----
-$sectorGroups = $stocks | Group-Object Industry
+function Get-ReasonText {
+    param($s, $phaseInfo)
+    $parts = @()
+
+    # 技术面描述
+    $techDesc = $null
+    if ($s.TechAnalysis) {
+        $techDesc = $s.TechAnalysis
+    } elseif ($s.MA5 -and $s.MA10 -and $s.MA20 -and $s.MA5 -gt 0) {
+        $maParts = @()
+        if ($s.MA5 -gt $s.MA10 -and $s.MA10 -gt $s.MA20) { $maParts += "均线多头排列" }
+        elseif ($s.MA10 -le $s.MA20) { $maParts += "均线收敛" }
+        else { $maParts += "均线偏多" }
+        $maParts += "MA5=$([math]::Round($s.MA5,1)) MA10=$([math]::Round($s.MA10,1)) MA20=$([math]::Round($s.MA20,1))"
+        if ($s.RSI) { $rsiVal = [math]::Round($s.RSI,0); if ($rsiVal -ge 60) { $maParts += "RSI$rsiVal偏强" } elseif ($rsiVal -le 40) { $maParts += "RSI$rsiVal偏弱" } else { $maParts += "RSI$rsiVal中性" } }
+        if ($s.MACD_Status) { $maParts += "MACD$($s.MACD_Status)" }
+        $techDesc = $maParts -join " | "
+    }
+    if ($techDesc) { $parts += "技术面：$techDesc" }
+
+    # 板块相位与操作建议
+    if ($phaseInfo) {
+        $phaseAdvice = Get-PhaseAdvice $phaseInfo.phase
+        $parts += "板块：$($phaseInfo.name)处于$($phaseInfo.phase)，建议$($phaseAdvice[0])"
+    }
+
+    # 催化支撑
+    $catText = Get-Catalyst $s.Name $s.Industry
+    if ($catText) {
+        $parts += "催化：$catText"
+    } elseif ($phaseInfo -and $phaseInfo.avgChg -gt 3) {
+        $parts += "催化：板块整体走强，资金关注度提升"
+    } else {
+        $parts += "催化：行业基本面支撑"
+    }
+
+    return $parts -join " | "
+}
+
+# ----- Compute sector rotation (from real market data, with pool fallback) -----
+$sectorPhaseMap = $null
+if ($data.SectorPhaseMap) { $sectorPhaseMap = $data.SectorPhaseMap }
+$sectorGroups = $allStocks | Group-Object Industry
 $sectorRows = @()
 foreach ($g in $sectorGroups) {
-    $ac = ($g.Group | Measure-Object ChangePct -Average).Average
-    $at = ($g.Group | Measure-Object TurnoverRate -Average).Average
-    $p = Get-PhaseName $ac $at $g.Count
+    $sp = if ($sectorPhaseMap) { $sectorPhaseMap.$($g.Name) } else { $null }
+    if ($sp) {
+        # 使用真实市场数据（来自 scoring_engine_v2.py 的 SectorPhaseMap）
+        $ac = $sp.avg_chg
+        $at = $sp.avg_turn
+        $p = $sp.phase
+    } else {
+        # 池内聚合备选
+        $ac = ($g.Group | Measure-Object ChangePct -Average).Average
+        $at = ($g.Group | Measure-Object TurnoverRate -Average).Average
+        $p = Get-PhaseName $ac $at $g.Count
+    }
     $ad = Get-PhaseAdvice $p
     $sectorRows += @{ name=$g.Name; count=$g.Count; avgChg=$ac; avgTurn=$at; phase=$p; advice=$ad[0]; tagClass=$ad[1] }
 }
@@ -107,16 +163,13 @@ $phaseOrder = @{ "潜伏期"=0; "主升调整"=1; "高潮期"=2; "衰退期"=3 }
 $sectorRows = $sectorRows | Sort-Object @{e={$phaseOrder[$_.phase]}; a=$true}, @{e={[math]::Abs($_.avgChg)}; d=$true}
 $phaseMap = @{}; foreach ($r in $sectorRows) { $phaseMap[$r.name] = $r }
 
-# ----- Compute scores -----
+# ----- Compute scores (from recommended passed stocks) -----
 $scored = @()
 foreach ($s in $stocks) {
-    $br = Get-Break $s
-    $scored += @{ s=$s; total=$s.TotalScore; breakScore=$br[0]; boost=$br[1]; cat=Get-Catalyst $s.Name $s.Industry }
+    $scored += @{ s=$s; total=$s.TotalScore }
 }
-$scored = $scored | Sort-Object @{Expression={$_.breakScore}} -Descending
-$top5 = $scored | Where-Object { $_.breakScore -ge 70 } | Select-Object -First 5
-if ($top5.Count -lt 5) { $top5 = $scored | Select-Object -First 5 }
-$scoredByTotal = $scored | Sort-Object @{Expression={$_.total}} -Descending
+$scored = $scored | Sort-Object @{Expression={$_.total}} -Descending
+$top5 = $scored | Select-Object -First 5
 
 # ----- Build HTML strings -----
 $sectorHtml = ""
@@ -134,18 +187,22 @@ foreach ($item in $top5) {
     $cc = "down"; if ($s.ChangePct -ge 0) { $cc = "up" }
     $pi = $phaseMap[$s.Industry]
     $pl = ""; $ptc = "t-green"; if ($pi) { $pl = $pi.phase; $ptc = $pi.tagClass }
-    $bs = if ($item.boost -ge 0) { "+$($item.boost)" } else { "$($item.boost)" }
     $cs = "{0:F2}%" -f $s.ChangePct; if ($s.ChangePct -ge 0) { $cs = "+{0:F2}%" -f $s.ChangePct }
-    $cardHtml += "<div class=""card""><div class=""c-hdr""><div><span class=""c-name"">$($s.Name)</span><span class=""c-code"">$($s.Code)</span></div><div class=""c-scr"">$($item.breakScore)<span>/100</span></div></div>"
-    $cardHtml += "<div class=""c-meta""><span class=""c-meta-item"">$($s.Industry)</span><span class=""c-meta-item"">$($s.Price)</span><span class=""c-meta-item $cc"">$cs</span><span class=""c-meta-item"">换手$($s.TurnoverRate)%</span><span class=""c-meta-item"">PE $($s.PE)</span><span class=""c-meta-item""><span class=""tag $ptc"">$pl</span></span></div>"
-    $cardHtml += "<div class=""c-dims""><div class=""c-dim"">原评<div class=""v"">$($item.total)</div></div><div class=""c-dim"">突破<div class=""v"">$($item.breakScore)</div></div><div class=""c-dim"">催化<div class=""v"" style=""font-size:14px;color:#4a6cf7"">$($item.cat)</div></div></div>"
-    $cardHtml += "<div class=""s-bar""><div class=""s-fill bg-green"" style=""width:$($item.breakScore)%""></div></div>"
-    $cardHtml += "<div class=""c-logic"">$($s.Name)评分$($item.total)，突破评分$($item.breakScore)（$bs），$($s.Industry)板块$pl，建议关注</div></div>`n"
+    $reason = Get-ReasonText -s $s -phaseInfo $pi
+    $cardHtml += "<div class=""card""><div class=""c-hdr""><div><span class=""c-name"">$($s.Name)</span><span class=""c-code"">$($s.Code)</span></div><div><span class=""tag $ptc"">$pl</span><span class=""c-scr"" style=""margin-left:10px"">$($item.total)<span>/100</span></span></div></div>"
+    $cardHtml += "<div class=""c-meta""><span class=""c-meta-item"">$($s.Industry)</span><span class=""c-meta-item"">$($s.Price)元</span><span class=""c-meta-item $cc"">$cs</span><span class=""c-meta-item"">换手$($s.TurnoverRate)%</span><span class=""c-meta-item"">PE $($s.PE)</span></div>"
+    $cardHtml += "<div class=""c-logic"">$reason</div>"
+    $cardHtml += "<div class=""s-bar""><div class=""s-fill bg-green"" style=""width:$($item.total)%""></div></div></div>`n"
 }
 
 $fullHtml = ""
 $rank = 0
-foreach ($item in $scoredByTotal) {
+$allScored = @()
+foreach ($s in ($stocks | Select-Object -First 25)) {
+    $allScored += @{ s=$s; total=$s.TotalScore }
+}
+$allScored = $allScored | Sort-Object @{Expression={$_.total}} -Descending
+foreach ($item in $allScored) {
     $rank++; $s = $item.s
     $cc = "down"; if ($s.ChangePct -ge 0) { $cc = "up" }
     $sc = ""; if ($s.TotalScore -ge 60) { $sc = "sc-high" } elseif ($s.TotalScore -ge 48) { $sc = "sc-mid" }
@@ -155,6 +212,7 @@ foreach ($item in $scoredByTotal) {
     $cs = "{0:F2}%" -f $s.ChangePct; if ($s.ChangePct -ge 0) { $cs = "+{0:F2}%" -f $s.ChangePct }
     $fullHtml += "<tr><td>$rank</td><td>$($s.Code)</td><td style=""font-weight:600;text-align:left;padding-left:8px"">$($s.Name)</td><td>$($s.Industry)</td><td>$($s.Price)</td><td class=""$cc"">$cs</td><td>$($s.TurnoverRate)%</td><td>$($s.Amplitude)%</td><td>$($s.PE)</td><td>$($s.S_Base)</td><td>$($s.S_Fund)</td><td>$($s.S_Tech)</td><td>$($s.S_Money)</td><td>$($s.s_News)</td><td>$($s.S_Risk)</td><td class=""$sc"">$($s.TotalScore)</td><td>$star</td><td>$emoji2$sp</td></tr>`n"
 }
+
 
 # ----- CSS -----
 $css = @"
@@ -178,9 +236,6 @@ td{padding:6px 8px;text-align:center;border-bottom:1px solid #eee;font-size:11.5
 .c-scr{font-size:32px;font-weight:800;color:#1a1a2e}.c-scr span{font-size:14px;font-weight:400;color:#aaa}
 .c-meta{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .c-meta-item{font-size:14px;background:#edf0f7;padding:5px 14px;border-radius:14px}
-.c-dims{display:flex;gap:10px;margin:12px 0}
-.c-dim{flex:1;text-align:center;padding:10px 6px;background:#fff;border-radius:8px;border:1px solid #eee;font-size:14px;color:#666}
-.c-dim .v{font-weight:700;font-size:20px;display:block;color:#333}
 .c-logic{font-size:14px;color:#444;margin-top:12px;padding:12px 16px;background:#f2f6ff;border-radius:6px;border-left:3px solid #4a6cf7;line-height:1.6}
 .s-bar{height:7px;background:#eee;border-radius:4px;margin-top:12px;overflow:hidden}.s-fill{height:100%;border-radius:4px}
 .bg-green{background:#2ecc71}.bg-yellow{background:#f39c12}.bg-red{background:#e74c3c}
@@ -199,28 +254,28 @@ $html = "<!DOCTYPE html><html lang=""zh-CN""><head><meta charset=""UTF-8"">"
 $html += "<title>铁律量化 · 每日股票推荐 $Date</title><style>$css</style></head><body><div class=""container"">"
 
 $html += "<div class=""hdr""><h1>铁律量化 · 每日股票推荐</h1>"
-$html += "<div class=""sub""><span>${Date} 收盘</span><span>六维前向评分体系 v2.0</span></div>"
-$html += "<div class=""tag"">核心池: $($stocks.Count)只 | 推荐上限: 5只 | 震荡市 · 阈值≥70 | 近端突破评分 | 1-2周启动导向</div></div>"
+$html += "<div class=""sub""><span>${Date} 收盘</span><span>六维前向评分体系 v2.1</span></div>"
+$html += "<div class=""tag"">动态池: $($allStocks.Count)只 | 通过否决: $($stocks.Count)只 | 推荐上限: 25只 | 否决制+六维评分 | 板块轮动选股</div></div>"
 
 $html += "<div class=""sec""><h2>板块轮动速览</h2><table><tr><th>板块</th><th>股票</th><th>平均涨跌</th><th>平均换手</th><th>轮动相位</th><th>操作建议</th></tr>$sectorHtml</table></div>"
 
-$html += "<div class=""sec""><h2>精选推荐（近端突破评分）</h2>"
-$html += "<div class=""note"" style=""border-left-color:#2ecc71""><strong>评分理念：</strong>传统六维评分(50%) + 近端突破评分(50%)。突破评分重点考察：换手率适中(2-5%)、振幅活跃(3-7%)、价格蓄势、估值合理、板块相位、个股催化剂。</div>"
+$html += "<div class=""sec""><h2>精选推荐 Top 5</h2>"
+$html += "<div class=""note"" style=""border-left-color:#2ecc71""><strong>评分理念：</strong>一票否决制(14条规则)先筛除不合格股票→通过者按六维总分排序→取前5只展示推荐理由。总分=基础(10)+基本面(20)+技术面(25)+资金面(20)+消息面(20)+风控(5)。</div>"
 $html += "<div class=""card-grid"">$cardHtml</div></div>"
 
 $html += "<div class=""sec""><h2>全部标的评分表</h2><div style=""overflow-x:auto""><table>"
-$html += "<tr><th>#</th><th>代码</th><th>名称</th><th>行业</th><th>价格</th><th>涨跌</th><th>换手</th><th>振幅</th><th>PE</th><th>基础</th><th>基本</th><th>技术</th><th>资金</th><th>消息</th><th>风控</th><th>总分</th><th>评级</th><th>相位</th></tr>$fullHtml</table></div></div>"
+$html += "<tr><th>#</th><th>代码</th><th>名称</th><th>行业</th><th>价格</th><th>涨跌</th><th>换手</th><th>振幅</th><th>PE</th><th>基础</th><th>基本</th><th>技术</th><th>资金</th><th>消息</th><th>风控</th><th>总分</th><th>评级</th><th>状态</th></tr>$fullHtml</table></div></div>"
 
 $html += "<div class=""row-2""><div class=""col""><div class=""sec""><h2>数据来源</h2><table>"
 $html += "<tr><th style=""width:22%"">数据</th><th style=""width:28%"">来源</th><th>说明</th></tr>"
 $html += "<tr><td style=""font-weight:600"">个股行情</td><td>腾讯行情</td><td>实时价格、涨跌幅、换手率</td></tr>"
-$html += "<tr><td style=""font-weight:600"">板块数据</td><td>东方财富板块API</td><td>板块成分股聚合计算轮动相位</td></tr>"
-$html += "<tr><td style=""font-weight:600"">行业归属</td><td>申万一级行业</td><td>$($stocks.Count)只股票覆盖$($sectorRows.Count)个行业</td></tr>"
-$html += "<tr><td style=""font-weight:600"">评分计算</td><td>本地计算</td><td>六维前向评分体系 v2.0</td></tr></table></div></div>"
+$html += "<tr><td style=""font-weight:600"">板块数据</td><td>东方财富板块API</td><td>行业板块指数+资金流向真实市场数据，计算轮动相位</td></tr>"
+$html += "<tr><td style=""font-weight:600"">行业归属</td><td>申万一级行业</td><td>$($allStocks.Count)只股票覆盖$($sectorRows.Count)个行业</td></tr>"
+$html += "<tr><td style=""font-weight:600"">评分计算</td><td>本地计算</td><td>六维前向评分体系 v2.1</td></tr></table></div></div>"
 $html += "<div class=""col""><div class=""sec""><h2>免责声明</h2>"
-$html += "<div style=""font-size:11px;color:#666;line-height:1.6"">本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。股票投资有风险，过往表现不预示未来收益。请理性投资，风险自担。<br><span style=""color:#999"">铁律量化 · v2.0 · ${Date} 收盘</span></div></div></div></div>"
+$html += "<div style=""font-size:11px;color:#666;line-height:1.6"">本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。股票投资有风险，过往表现不预示未来收益。请理性投资，风险自担。<br><span style=""color:#999"">铁律量化 · v2.1 · ${Date} 收盘</span></div></div></div></div>"
 
-$html += "<div class=""ftr""><strong>免责声明</strong><br>本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。<br>股票投资有风险，过往表现不预示未来收益。<br><br>铁律量化 · v2.0 · ${Date} 收盘</div>"
+$html += "<div class=""ftr""><strong>免责声明</strong><br>本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。<br>股票投资有风险，过往表现不预示未来收益。<br><br>铁律量化 · v2.1 · ${Date} 收盘</div>"
 $html += "</div></body></html>"
 
 # ----- Write files -----
@@ -240,7 +295,8 @@ if (-not $SkipPdf) {
     $pdfFile = Join-Path $OutDir "每日股票推荐_${dc}_landscape.pdf"
     $uri = [System.Uri]"file:///$($htmlFile.Replace('\','/'))"
     if (Test-Path $edge) {
-        & $edge --headless --disable-gpu --no-sandbox --print-to-pdf="$pdfFile" --print-to-pdf-no-header --no-pdf-header-footer --print-to-pdf-margin-bottom=0 --print-to-pdf-margin-top=0 --print-to-pdf-paper-size=letter "--print-to-pdf-landscape" $uri 2>$null
+        & $edge --headless --disable-gpu --no-sandbox --disable-software-rasterizer --print-to-pdf="$pdfFile" --no-pdf-header-footer --print-to-pdf-margin-bottom=0 --print-to-pdf-margin-top=0 --print-to-pdf-paper-size=letter "--print-to-pdf-landscape" $uri 2>&1 | Out-Null
+        $global:LASTEXITCODE = 0
         Start-Sleep -Seconds 2
         # Self-check: verify PDF was generated
         if (-not (Test-Path $pdfFile)) { Write-Error "FAILED: PDF not generated at $pdfFile"; exit 1 }
