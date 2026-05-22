@@ -544,8 +544,8 @@ function Get-OperationPlan {
 
     $scenarios = @()
     if ($isBullish) {
-        $scenarios += @{ Title="情景1：高开>1.5%"; Action="已有持仓则持有，不追仓。未持仓则等待回调至S1附近再介入"; Adjust="持有/观望" }
-        $scenarios += @{ Title="情景2：平开或小幅低开（-1%~+1%）"; Action=if($P -le $s1*1.02){"股价已在S1附近，可建仓第一笔（约${entry1Pct}%仓位）"}else{"等待回踩S1（${s1}元）附近企稳后建仓第一笔"}; Adjust="建仓${entry1Pct}%" }
+        $scenarios += @{ Title="情景1：高开>1.5%"; Action="已有持仓则持有，不追仓。未持仓则等待回调至S1（${s1}元）附近再介入"; Adjust="持有/观望" }
+        $scenarios += @{ Title="情景2：平开或小幅低开（-1%~+1%）"; Action=if($P -le $s1*1.02){"股价已在S1（${s1}元）附近，可建仓第一笔（约${entry1Pct}%仓位）"}else{"等待回踩S1（${s1}元）附近企稳后建仓第一笔"}; Adjust="建仓${entry1Pct}%" }
         $scenarios += @{ Title="情景3：盘中回踩S1（${s1}元）"; Action="观察是否企稳（下影线/缩量十字星），企稳则建仓，跌破则等S2"; Adjust="企稳建仓" }
         $scenarios += @{ Title="情景4：盘中回踩S2（${s2}元）"; Action="深度回调如不放量跌破则加仓第二笔"; Adjust="加仓至${entry2Pct}%" }
         $scenarios += @{ Title="情景5：盘中触及R1（${r1}元）"; Action="放量突破则持有/加仓；缩量触及则减仓做T"; Adjust="突破持有/遇阻减仓" }
@@ -555,7 +555,7 @@ function Get-OperationPlan {
         $scenarios += @{ Title="情景2：平开/低开"; Action="保持观望，方向不明时减少交易"; Adjust="观望" }
         $scenarios += @{ Title="情景3：盘中大幅波动>3%"; Action="等待方向明确后再操作，不抄底不追高"; Adjust="观望" }
     } else {
-        $scenarios += @{ Title="情景1：任何开盘"; Action="不建议买入。如有持仓利用反弹至R1附近减仓"; Adjust="减仓/清仓" }
+        $scenarios += @{ Title="情景1：任何开盘"; Action="不建议买入。如有持仓利用反弹至R1（${r1}元）附近减仓"; Adjust="减仓/清仓" }
         $scenarios += @{ Title="情景2：盘中反弹至R1（${r1}元）"; Action="减仓或清仓的最后机会"; Adjust="减仓" }
         $scenarios += @{ Title="情景3：跌破S1（${s1}元）"; Action="及时止损，避免更大亏损"; Adjust="止损" }
     }
@@ -1059,7 +1059,7 @@ function New-PositionSizingSection {
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
         <div class="op-section"><div class="op-title">中期配置（1-4周）</div><div class="op-detail">方向：<strong style="$midColor">$($Pred.Mid)</strong><br>建仓区间：¥$($Ops.S2) - ¥$($Ops.S1)<br>中期目标：¥$($Ops.Target2)<br>波段止损：¥$($Ops.S3)</div></div>
-        <div class="op-section"><div class="op-title">长期配置（1-6月）</div><div class="op-detail">方向：<strong style="$longColor">$($Pred.Long)</strong><br>战略仓位：$($Ops.MaxPosition)%以内<br>分批建仓参考：第一笔 $($Ops.Entry1Pct)% 在S1附近，第二笔 $($Ops.Entry2Pct)% 在S2附近</div></div>
+        <div class="op-section"><div class="op-title">长期配置（1-6月）</div><div class="op-detail">方向：<strong style="$longColor">$($Pred.Long)</strong><br>战略仓位：$($Ops.MaxPosition)%以内<br>分批建仓参考：第一笔 $($Ops.Entry1Pct)% 在S1（¥$($Ops.S1)）附近，第二笔 $($Ops.Entry2Pct)% 在S2（¥$($Ops.S2)）附近</div></div>
     </div>
 </div>
 "@

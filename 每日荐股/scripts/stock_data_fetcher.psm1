@@ -1,87 +1,261 @@
 ﻿# 铁律量化 - 股票数据获取模块
 # 数据源：腾讯行情[1], 新浪K线[2], 东方财富财务[3][6][7][9][10]
-# 最后更新：2026-05-21
+# 最后更新：2026-05-22
 # 合规状态：详见 §1.5 数据源实测状态
 
 # ============================================================
-# [1] 腾讯实时行情
+# 数据源优先级配置（主 → 备）
+# ============================================================
+$script:SourcePriority = @{
+    Quote      = @("腾讯", "新浪")         # 实时行情
+    KLine      = @("新浪", "腾讯")         # K线数据
+    Financial  = @("东方财富", "新浪")      # 财务数据
+    Sector     = @("东方财富")             # 板块行情（仅东方财富）
+    FundFlow   = @("东方财富")             # 资金流向（独有）
+    Northbound = @("东方财富")             # 北向资金（独有）
+    Research   = @("东方财富")             # 研报（独有）
+    Margin     = @("东方财富")             # 融资融券（独有）
+}
+$script:SourceUsed = @{}    # 记录每次调用实际使用的源
+
+# ============================================================
+# 本地数据缓存层（所有数据通用兜底）
+# ============================================================
+$script:CacheDir = Join-Path (Split-Path $PSScriptRoot -Parent) "data_cache"
+if (-not (Test-Path $script:CacheDir)) { New-Item -ItemType Directory -Path $script:CacheDir -Force | Out-Null }
+
+# 缓存有效时长（小时）
+$script:CacheTTL = @{
+    Quote      = 1    # 行情变化快，1小时
+    KLine      = 24   # K线收盘后不变，24小时
+    Financial  = 168  # 财务数据季度更新，7天
+    Sector     = 6    # 板块数据半日更新
+    FundFlow   = 6    # 资金流向半日有效
+    Northbound = 168  # 北向数据滞后，7天
+    Research   = 24   # 研报每日更新
+    Margin     = 24   # 融资融券每日更新
+    PEPercentile = 168 # PE百分位变化慢，7天
+}
+
+function Save-DataCache {
+    param([string]$Key, $Data)
+    if (-not $Data) { return }
+    $path = Join-Path $script:CacheDir "$Key.json"
+    try {
+        $toSave = @{ Timestamp = (Get-Date).ToString("o"); Data = $Data }
+        $toSave | ConvertTo-Json -Depth 5 -Compress | Set-Content $path -Encoding UTF8
+    } catch { Write-Debug "Cache save failed for $Key : $_" }
+}
+
+function Load-DataCache {
+    param([string]$Key, [int]$TTLHours = 24)
+    $path = Join-Path $script:CacheDir "$Key.json"
+    if (-not (Test-Path $path)) { return $null }
+    try {
+        $cached = Get-Content $path -Encoding UTF8 -Raw | ConvertFrom-Json
+        $age = [datetime]::Now - [datetime]::Parse($cached.Timestamp)
+        if ($age.TotalHours -gt $TTLHours) {
+            Write-Debug "Cache expired for $Key (age: $($age.TotalHours.ToString('0.0'))h)"
+            return $null
+        }
+        return $cached.Data
+    } catch { return $null }
+}
+
+# 通用：获取数据（API优先 → 缓存兜底）
+function Invoke-DataWithCache {
+    param(
+        [Parameter(Mandatory=$true)][string]$DataName,
+        [Parameter(Mandatory=$true)][scriptblock]$ApiCall
+    )
+    # 先尝试API
+    try {
+        $result = & $ApiCall
+        if ($null -ne $result) {
+            Save-DataCache -Key $DataName -Data $result
+            return $result
+        }
+    } catch {
+        Write-Warning "[$DataName] API失败: $_"
+    }
+    # API失败 → 尝试缓存
+    $ttl = if ($script:CacheTTL.ContainsKey($DataName)) { $script:CacheTTL[$DataName] } else { 24 }
+    $cached = Load-DataCache -Key $DataName -TTLHours $ttl
+    if ($null -ne $cached) {
+        Write-Warning "[$DataName] API失败，使用缓存（有效期${ttl}h内）"
+        return $cached
+    }
+    Write-Warning "[$DataName] API失败，缓存不可用"
+    return $null
+}
+
+# 通用：查询某类数据上次使用的源
+function Get-LastUsedSource {
+    param([string]$DataName)
+    if ($DataName) { return $script:SourceUsed[$DataName] }
+    return $script:SourceUsed
+}
+
+# ============================================================
+# [1] 腾讯实时行情（主） + 新浪实时行情（备）
 # API: qt.gtimg.cn
 # 返回：实时报价（当前价/涨跌幅/量比/换手率/PE/市值等）
 # ============================================================
 function Get-StockQuote {
     param(
-        [Parameter(Mandatory=$true)][string]$Code  # e.g. "600036" or "000858"
+        [Parameter(Mandatory=$true)][string]$Code
     )
-    # Determine prefix: 6xxxxx → sh, 0xxxxx/3xxxxx → sz
-    $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
-    $url = "http://qt.gtimg.cn/q=${prefix}${Code}"
-
+    # --- 腾讯（主） ---
     try {
+        $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
+        $url = "http://qt.gtimg.cn/q=${prefix}${Code}"
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
         $raw = $r.Content.Trim()
-        # Parse pipe-delimited response
         if ($raw -match '"(.*)"') {
             $fields = $matches[1] -split '~'
-            return [PSCustomObject]@{
+            $result = [PSCustomObject]@{
                 Code       = $fields[2]
                 Name       = $fields[1]
                 Price      = [double]$fields[3]
                 PrevClose  = [double]$fields[4]
                 Open       = [double]$fields[5]
-                Volume     = [long]$fields[6]  # 手
-                Turnover   = [double]$fields[37]  # 成交额(万)
+                Volume     = [long]$fields[6]
+                Turnover   = [double]$fields[37]
                 High       = [double]$fields[33]
                 Low        = [double]$fields[34]
                 Change     = [double]$fields[31]
                 ChangePct  = [double]$fields[32]
                 PE         = [double]$fields[39]
-                TurnoverRate = [double]$fields[38]  # 换手率(%)
-                MktCap     = [double]$fields[44]  # 流通市值(亿)
-                Amplitude  = [double]$fields[43]  # 振幅(%)
+                TurnoverRate = [double]$fields[38]
+                MktCap     = [double]$fields[44]
+                Amplitude  = [double]$fields[43]
                 Time       = $fields[30]
+            }
+            $script:SourceUsed["Quote"] = "腾讯"
+            Save-DataCache -Key "Quote_$Code" -Data $result
+            return $result
+        }
+    } catch {
+        Write-Warning "[行情] 腾讯失败: $_"
+    }
+
+    # --- 新浪（备） ---
+    try {
+        $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
+        $url = "http://hq.sinajs.cn/list=${prefix}${Code}"
+        $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5 -Headers @{"Referer"="http://finance.sina.com.cn"}
+        $raw = $r.Content.Trim()
+        if ($raw -match '"([^"]*)"') {
+            $fields = $matches[1] -split ','
+            if ($fields.Count -ge 32) {
+                $result = [PSCustomObject]@{
+                    Code       = $Code
+                    Name       = $fields[0]
+                    Price      = [double]$fields[3]
+                    PrevClose  = [double]$fields[2]
+                    Open       = [double]$fields[1]
+                    Volume     = [long]($fields[8] -replace '\D','')  # 手
+                    Turnover   = [double]($fields[9] -replace '\D','') / 10000  # 成交额转万
+                    High       = [double]$fields[4]
+                    Low        = [double]$fields[5]
+                    Change     = [double]$fields[3] - [double]$fields[2]
+                    ChangePct  = [math]::Round(([double]$fields[3] - [double]$fields[2]) / [double]$fields[2] * 100, 2)
+                    PE         = $null  # 新浪行情不直接提供PE
+                    TurnoverRate = $null
+                    MktCap     = $null
+                    Amplitude  = $null
+                    Time       = $fields[31]
+                }
+                $script:SourceUsed["Quote"] = "新浪"
+            Save-DataCache -Key "Quote_$Code" -Data $result
+            return $result
             }
         }
     } catch {
-        Write-Warning "Get-StockQuote failed for $Code : $_"
-        return $null
+        Write-Warning "[行情] 新浪失败: $_"
     }
+
+    $script:SourceUsed["Quote"] = "失败"
+    # 最后兜底：从缓存加载
+    $cached = Load-DataCache -Key "Quote_$Code" -TTLHours 1
+    if ($cached) { Write-Warning "[行情] 使用缓存数据"; return $cached }
+    return $null
 }
 
 # ============================================================
-# [2] 新浪K线数据
+# [2] 新浪K线数据（主） + 腾讯K线数据（备）
 # API: money.finance.sina.com.cn
 # 参数: scale=240(日), 60(60min), 30(30min), 15(15min), 5(5min)
 # ============================================================
 function Get-StockKLine {
     param(
         [Parameter(Mandatory=$true)][string]$Code,
-        [string]$Scale = "240",  # 240=daily
+        [string]$Scale = "240",
         [int]$Count = 120
     )
-    $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
-    $url = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=${prefix}${Code}&scale=${Scale}&ma=5&datalen=${Count}"
-
+    # --- 新浪（主） ---
     try {
+        $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
+        $url = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=${prefix}${Code}&scale=${Scale}&ma=5&datalen=${Count}"
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
-        return $json | ForEach-Object {
-            [PSCustomObject]@{
-                Date   = $_.day
-                Open   = [double]$_.open
-                High   = [double]$_.high
-                Low    = [double]$_.low
-                Close  = [double]$_.close
-                Volume = [long]$_.volume
+        if ($json -and $json.Count -gt 0) {
+            $result = $json | ForEach-Object {
+                [PSCustomObject]@{
+                    Date   = $_.day
+                    Open   = [double]$_.open
+                    High   = [double]$_.high
+                    Low    = [double]$_.low
+                    Close  = [double]$_.close
+                    Volume = [long]$_.volume
+                }
             }
+            $script:SourceUsed["KLine"] = "新浪"
+            Save-DataCache -Key "KLine_${Code}_${Scale}" -Data $result
+            return $result
         }
     } catch {
-        Write-Warning "Get-StockKLine failed for $Code : $_"
-        return $null
+        Write-Warning "[K线] 新浪失败: $_"
     }
+
+    # --- 腾讯（备） ---
+    try {
+        $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }
+        $url = "http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${prefix}${Code},day,,,${Count},qfq"
+        $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
+        $json = $r.Content | ConvertFrom-Json
+        # 腾讯返回嵌套结构: data.{code}.day 或 data.{code}.qfqday
+        $data = $null
+        if ($json.data.$Code.qfqday) { $data = $json.data.$Code.qfqday }
+        elseif ($json.data.$Code.day) { $data = $json.data.$Code.day }
+        if ($data -and $data.Count -gt 0) {
+            $result = $data | ForEach-Object {
+                [PSCustomObject]@{
+                    Date   = $_[0]
+                    Open   = [double]$_[1]
+                    Close  = [double]$_[2]
+                    High   = [double]$_[3]
+                    Low    = [double]$_[4]
+                    Volume = [long]$_[5]
+                }
+            }
+            $script:SourceUsed["KLine"] = "腾讯"
+            Save-DataCache -Key "KLine_${Code}_${Scale}" -Data $result
+            return $result
+        }
+    } catch {
+        Write-Warning "[K线] 腾讯失败: $_"
+    }
+
+    $script:SourceUsed["KLine"] = "失败"
+    # 最后兜底：从缓存加载
+    $cached = Load-DataCache -Key "KLine_${Code}_${Scale}" -TTLHours 24
+    if ($cached) { Write-Warning "[K线] 使用缓存数据"; return $cached }
+    return $null
 }
 
 # ============================================================
-# [3] 东方财富财务数据
+# [3] 东方财富财务数据（主）
 # API: datacenter.eastmoney.com
 # 返回：EPS/ROE/营收/净利润/毛利率等74个字段
 # ============================================================
@@ -97,11 +271,18 @@ function Get-StockFinancial {
     try {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
-        return $json.result.data
+        if ($json.result -and $json.result.data) {
+            $script:SourceUsed["Financial"] = "东方财富"
+            Save-DataCache -Key "Financial_$Code" -Data $json.result.data
+            return $json.result.data
+        }
     } catch {
         Write-Warning "Get-StockFinancial failed for $Code : $_"
-        return $null
     }
+    $script:SourceUsed["Financial"] = "失败"
+    $cached = Load-DataCache -Key "Financial_$Code" -TTLHours 168
+    if ($cached) { Write-Warning "[财务] 使用缓存数据"; return $cached }
+    return $null
 }
 
 # ============================================================
@@ -183,19 +364,27 @@ function Get-SectorData {
     try {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
-        return $json.data.diff | ForEach-Object {
-            [PSCustomObject]@{
-                SectorCode  = $_.f12
-                SectorName  = $_.f14
-                Index       = [double]$_.f2
-                ChangePct   = [double]$_.f3
-                Turnover    = [double]$_.f4  # 成交额(亿)
+        if ($json.data -and $json.data.diff) {
+            $result = $json.data.diff | ForEach-Object {
+                [PSCustomObject]@{
+                    SectorCode  = $_.f12
+                    SectorName  = $_.f14
+                    Index       = [double]$_.f2
+                    ChangePct   = [double]$_.f3
+                    Turnover    = [double]$_.f4
+                }
             }
+            $script:SourceUsed["Sector"] = "东方财富"
+            Save-DataCache -Key "Sector_$Top" -Data $result
+            return $result
         }
     } catch {
         Write-Warning "Get-SectorData failed: $_"
-        return $null
     }
+    $script:SourceUsed["Sector"] = "失败"
+    $cached = Load-DataCache -Key "Sector_$Top" -TTLHours 6
+    if ($cached) { Write-Warning "[板块] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
@@ -209,21 +398,28 @@ function Get-StockFundFlow {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
         $result = @()
-        foreach ($kline in $json.data.klines) {
-            $parts = $kline -split ','
-            $result += [PSCustomObject]@{
-                Date        = $parts[0]
-                MainNetInflow  = [double]$parts[1]  # 主力净流入
-                SuperLargeIn   = [double]$parts[2]  # 超大单净流入
-                LargeIn        = [double]$parts[3]  # 大单净流入
-                SmallIn        = [double]$parts[4]  # 小单净流入
+        if ($json.data -and $json.data.klines) {
+            foreach ($kline in $json.data.klines) {
+                $parts = $kline -split ','
+                $result += [PSCustomObject]@{
+                    Date        = $parts[0]
+                    MainNetInflow  = [double]$parts[1]
+                    SuperLargeIn   = [double]$parts[2]
+                    LargeIn        = [double]$parts[3]
+                    SmallIn        = [double]$parts[4]
+                }
             }
+            $script:SourceUsed["FundFlow"] = "东方财富"
+            Save-DataCache -Key "FundFlow_${Code}_${Days}" -Data $result
+            return $result
         }
-        return $result
     } catch {
         Write-Warning "Get-StockFundFlow failed for $Code : $_"
-        return $null
     }
+    $script:SourceUsed["FundFlow"] = "失败"
+    $cached = Load-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 6
+    if ($cached) { Write-Warning "[资金流向] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
@@ -235,20 +431,28 @@ function Get-SectorFundFlow {
     try {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
-        return $json.data.diff | ForEach-Object {
-            [PSCustomObject]@{
-                SectorCode  = $_.f12
-                SectorName  = $_.f14
-                NetInflow   = [double]$_.f62
-                MainInflow  = [double]$_.f66
-                ChangePct   = [double]$_.f184
-                TurnRate    = [double]$_.f69
+        if ($json.data -and $json.data.diff) {
+            $result = $json.data.diff | ForEach-Object {
+                [PSCustomObject]@{
+                    SectorCode  = $_.f12
+                    SectorName  = $_.f14
+                    NetInflow   = [double]$_.f62
+                    MainInflow  = [double]$_.f66
+                    ChangePct   = [double]$_.f184
+                    TurnRate    = [double]$_.f69
+                }
             }
+            $script:SourceUsed["SectorFundFlow"] = "东方财富"
+            Save-DataCache -Key "SectorFundFlow_$Top" -Data $result
+            return $result
         }
     } catch {
         Write-Warning "Get-SectorFundFlow failed: $_"
-        return $null
     }
+    $script:SourceUsed["SectorFundFlow"] = "失败"
+    $cached = Load-DataCache -Key "SectorFundFlow_$Top" -TTLHours 6
+    if ($cached) { Write-Warning "[行业资金] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
@@ -259,6 +463,8 @@ function Get-PEPercentile {
         [Parameter(Mandatory=$true)][string]$Code,
         [int]$LookbackYears = 5
     )
+    $cached = Load-DataCache -Key "PEPercentile_$Code" -TTLHours 168
+    if ($cached) { Write-Warning "[PE百分位] 使用缓存数据"; return $cached }
     # 获取历史K线
     $tradingDays = $LookbackYears * 252  # 约252交易日/年
     $klines = Get-StockKLine -Code $Code -Scale "240" -Count $tradingDays
@@ -291,7 +497,7 @@ function Get-PEPercentile {
     $percentile = [math]::Round($rank / $sorted.Count * 100, 1)
     $minPE = $sorted[0]; $maxPE = $sorted[-1]; $avgPE = [math]::Round(($sorted | Measure-Object -Average).Average, 2)
 
-    return [PSCustomObject]@{
+    $result = [PSCustomObject]@{
         CurrentPE  = $currentPE
         MinPE      = $minPE
         MaxPE      = $maxPE
@@ -300,6 +506,8 @@ function Get-PEPercentile {
         SampleCount = $peHistory.Count
         Valuation  = if ($percentile -lt 30) { "低估" } elseif ($percentile -gt 70) { "高估" } else { "合理" }
     }
+    Save-DataCache -Key "PEPercentile_$Code" -Data $result
+    return $result
 }
 
 # ============================================================
@@ -320,27 +528,31 @@ function Get-NorthboundHold {
         $json = $r.Content | ConvertFrom-Json
         if ($json.result -and $json.result.data -and $json.result.data.Count -gt 0) {
             $d = $json.result.data[0]
-            return [PSCustomObject]@{
+            $result = [PSCustomObject]@{
                 Code          = $Code
                 Name          = $d.SECURITY_NAME
                 TradeDate     = $d.TRADE_DATE
                 HoldShares    = [long]$d.HOLD_SHARES
                 HoldMarketCap = [double]$d.HOLD_MARKET_CAP
-                SharesRatio   = [double]$d.HOLD_SHARES_RATIO  # 占总股本%
-                FreeRatio     = [double]$d.FREE_SHARES_RATIO  # 占流通股本%
+                SharesRatio   = [double]$d.HOLD_SHARES_RATIO
+                FreeRatio     = [double]$d.FREE_SHARES_RATIO
             }
+            $script:SourceUsed["Northbound"] = "东方财富"
+            Save-DataCache -Key "Northbound_$Code" -Data $result
+            return $result
         }
-        return $null
     } catch {
         Write-Warning "Get-NorthboundHold failed for $Code : $_"
-        return $null
     }
+    $script:SourceUsed["Northbound"] = "失败"
+    $cached = Load-DataCache -Key "Northbound_$Code" -TTLHours 168
+    if ($cached) { Write-Warning "[北向资金] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
 # [11] 个股研报/分析师评级
 # API: reportapi.eastmoney.com
-# 返回：研报标题/机构/评级/盈利预测/日期
 # ============================================================
 function Get-StockResearch {
     param(
@@ -356,12 +568,12 @@ function Get-StockResearch {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"; "Referer"="https://data.eastmoney.com/report/"}
         $json = $r.Content | ConvertFrom-Json
         if ($json.data -and $json.data.Count -gt 0) {
-            return $json.data | ForEach-Object {
+            $result = $json.data | ForEach-Object {
                 [PSCustomObject]@{
                     Title         = $_.title
                     OrgName       = $_.orgSName
                     PublishDate   = $_.publishDate
-                    EmRating      = $_.emRatingName  # 买入/增持/中性/减持
+                    EmRating      = $_.emRatingName
                     LastRating    = $_.lastEmRatingName
                     ThisYearEPS   = [double]$_.predictThisYearEps
                     NextYearEPS   = [double]$_.predictNextYearEps
@@ -370,18 +582,22 @@ function Get-StockResearch {
                     Author        = $_.author
                 }
             }
+            $script:SourceUsed["Research"] = "东方财富"
+            Save-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -Data $result
+            return $result
         }
-        return $null
     } catch {
         Write-Warning "Get-StockResearch failed for $Code : $_"
-        return $null
     }
+    $script:SourceUsed["Research"] = "失败"
+    $cached = Load-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 24
+    if ($cached) { Write-Warning "[研报] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
 # [12] 融资融券（个股）
 # API: datacenter.eastmoney.com RPTA_WEB_RZRQ_GGMX
-# 返回：融资余额/融券余额/融资买入额/融券余量
 # ============================================================
 function Get-MarginData {
     param(
@@ -394,25 +610,30 @@ function Get-MarginData {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"; "Referer"="http://data.eastmoney.com/"}
         $json = $r.Content | ConvertFrom-Json
         if ($json.result -and $json.result.data -and $json.result.data.Count -gt 0) {
-            return $json.result.data | ForEach-Object {
+            $result = $json.result.data | ForEach-Object {
                 [PSCustomObject]@{
                     Date          = $_.DATE
-                    RZYE          = [double]$_.RZYE       # 融资余额(元)
-                    RQYE          = [double]$_.RQYE       # 融券余额(元)
-                    RZRQYE        = [double]$_.RZRQYE     # 融资融券余额(元)
-                    RZMRE         = [double]$_.RZMRE      # 融资买入额(元)
-                    RZCHE         = [double]$_.RZCHE      # 融资偿还额(元)
-                    RZJME         = [double]$_.RZJME      # 融资净买额(元)
-                    RQYL          = [double]$_.RQYL       # 融券余量(股)
-                    RQMCL         = [double]$_.RQMCL      # 融券卖出量(股)
+                    RZYE          = [double]$_.RZYE
+                    RQYE          = [double]$_.RQYE
+                    RZRQYE        = [double]$_.RZRQYE
+                    RZMRE         = [double]$_.RZMRE
+                    RZCHE         = [double]$_.RZCHE
+                    RZJME         = [double]$_.RZJME
+                    RQYL          = [double]$_.RQYL
+                    RQMCL         = [double]$_.RQMCL
                 }
             }
+            $script:SourceUsed["Margin"] = "东方财富"
+            Save-DataCache -Key "Margin_${Code}_${Days}" -Data $result
+            return $result
         }
-        return $null
     } catch {
         Write-Warning "Get-MarginData failed for $Code : $_"
-        return $null
     }
+    $script:SourceUsed["Margin"] = "失败"
+    $cached = Load-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 24
+    if ($cached) { Write-Warning "[融资融券] API失败，使用缓存"; return $cached }
+    return $null
 }
 
 # ============================================================
@@ -496,7 +717,15 @@ function Test-AllDataSources {
     if ($margin) { $margin | ForEach-Object { Write-Output "  ✅ $($_.Date.Substring(0,10)) 融资余额:$([math]::Round($_.RZYE/100000000,2))亿 融券余额:$([math]::Round($_.RQYE/100000000,2))亿" } }
     else { Write-Output "  ❌ 失败" }
 
+    # 数据源跟踪
+    Write-Output "`n--- 数据源跟踪 ---"
+    $src = Get-LastUsedSource
+    foreach ($key in $src.Keys) {
+        $status = if ($src[$key] -eq "失败") { "❌" } else { "✅" }
+        Write-Output "  $status $key → $($src[$key])"
+    }
+
     Write-Output "`n====== 测试完成 ======"
 }
 
-Export-ModuleMember -Function Get-StockQuote, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Test-AllDataSources
+Export-ModuleMember -Function Get-StockQuote, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Test-AllDataSources
