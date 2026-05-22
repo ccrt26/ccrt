@@ -584,7 +584,7 @@ function New-OoxmlDoc {
     AddHeading($bodySb, "第十章 文件信息", 1)
 
     AddTable($bodySb, @("项目","内容"), @(
-        ,@("文件名","每日荐股分析逻辑白皮书_v2.0.docx"),
+        ,@("文件名","每日荐股分析逻辑白皮书_v2.1.docx"),
         @("存储路径","Documents\\Claude\\股票分析\\每日荐股\\分析逻辑\\"),
         @("格式","Office Open XML (.docx)"),
         @("依赖的上层文档","分析的规则红线--Claude v1.0"),
@@ -600,7 +600,7 @@ function New-OoxmlDoc {
 }
 
 # Main generation
-$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\每日荐股\分析逻辑\每日荐股分析逻辑白皮书_v2.0.docx")
+$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\每日荐股\分析逻辑\每日荐股分析逻辑白皮书_v2.1.docx")
 $tmpZip = [System.IO.Path]::GetTempFileName() + ".zip"
 
 $bodyContent = New-OoxmlDoc
