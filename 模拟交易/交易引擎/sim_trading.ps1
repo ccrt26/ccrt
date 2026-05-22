@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    重点股票模拟交易引擎 v1.3
+    重点股票模拟交易引擎 v1.4
 .DESCRIPTION
     基于评估数据的评分/预判/信号，对6只重点股票执行日频模拟交易。
     每日09:35运行，输出交易流水、持仓快照、绩效报告。
@@ -78,34 +78,40 @@ function Get-QuoteMap {
 
     # Tier 1: 腾讯行情[1] (primary)
     try {
-        bash -c "curl -s 'https://qt.gtimg.cn/q=$($qtCodes -join ',')' -o '${tmpFile}' 2>/dev/null" | Out-Null
-        if (Test-Path $tmpFile) {
-            $gbkBytes = [System.IO.File]::ReadAllBytes($tmpFile)
-            Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
-            $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($gbkBytes)
-            ($utf16text -split ';') | ForEach-Object {
-                $m = [regex]::Match($_, '"(.*)"')
-                if (-not $m.Success) { return }
-                $parts = $m.Groups[1].Value -split '~'
-                if ($parts.Count -lt 45) { return }
+        $wc = New-Object System.Net.WebClient
+        $rawBytes = $wc.DownloadData("https://qt.gtimg.cn/q=$($qtCodes -join ',')")
+        $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($rawBytes)
+        ($utf16text -split ';') | ForEach-Object {
+            $m = [regex]::Match($_, '"(.*)"')
+            if (-not $m.Success) { return }
+            $parts = $m.Groups[1].Value -split '~'
+            if ($parts.Count -lt 45) { return }
                 $code = $parts[2]
                 $openP = 0; [double]::TryParse($parts[5], [ref]$openP) | Out-Null
                 $nowP  = 0; [double]::TryParse($parts[3], [ref]$nowP) | Out-Null
                 $chgP  = 999; [double]::TryParse($parts[32], [ref]$chgP) | Out-Null
                 $highP = 0; [double]::TryParse($parts[33], [ref]$highP) | Out-Null
                 $lowP  = 0; [double]::TryParse($parts[34], [ref]$lowP) | Out-Null
+                $prevCloseP = 0; [double]::TryParse($parts[4], [ref]$prevCloseP) | Out-Null
                 $result[$code] = @{
                     OpenPrice   = $openP
                     Price       = $nowP
                     ChangePct   = $chgP
                     High        = $highP
                     Low         = $lowP
+                    PrevClose   = $prevCloseP
                     Name        = $parts[1]
                     DataSource  = "[1]"
                 }
             }
             if ($result.Count -gt 0) { $dataSourceLog = "腾讯行情[1]" }
-        }
+    # DEBUG: log ALL quotes to file for diagnosis
+    $dbgLines = @()
+    foreach ($k in $result.Keys) {
+        $q = $result[$k]
+        $dbgLines += "QUOTE $k Open=$($q.OpenPrice) PC=$($q.PrevClose) Price=$($q.Price) Name=$($q.Name)"
+    }
+    $dbgLines | Out-File "$env:TEMP\sim_debug_quotes.log" -Encoding utf8
     } catch {
         Write-Log "腾讯行情[1]异常: $_" "WARN"
     }
@@ -115,12 +121,11 @@ function Get-QuoteMap {
         Write-Log "腾讯行情[1]不可用，尝试新浪行情[1B]..." "WARN"
         try {
             $sinaUrl = "https://hq.sinajs.cn/list=$($qtCodes -join ',')"
-            bash -c "curl -s -H 'Referer: https://finance.sina.com.cn' '${sinaUrl}' -o '${tmpFile}' 2>/dev/null" | Out-Null
-            if (Test-Path $tmpFile) {
-                $gbkBytes = [System.IO.File]::ReadAllBytes($tmpFile)
-                Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
-                $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($gbkBytes)
-                ($utf16text -split ';') | ForEach-Object {
+            $wc = New-Object System.Net.WebClient
+            $wc.Headers.Add("Referer", "https://finance.sina.com.cn")
+            $rawBytes = $wc.DownloadData($sinaUrl)
+            $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($rawBytes)
+            ($utf16text -split ';') | ForEach-Object {
                     if ($_.Trim().Length -eq 0) { return }
                     $m = [regex]::Match($_, 'var hq_str_(\w+)="(.*)"')
                     if (-not $m.Success) { return }
@@ -144,10 +149,10 @@ function Get-QuoteMap {
                         Low         = $lowP
                         Name        = $name
                         DataSource  = "[1B]"
+                        PrevClose   = $prevClose
                     }
                 }
                 if ($result.Count -gt 0) { $dataSourceLog = "新浪行情[1B]" }
-            }
         } catch {
             Write-Log "新浪行情[1B]异常: $_" "WARN"
         }
@@ -439,7 +444,40 @@ Write-Log "数据质量检查完成"
 
 # ---- Step 5: 获取行情 ----
 Write-Log "获取实时行情..."
-$quotes = Get-QuoteMap
+$quotes = @{}
+try {
+    $wc = New-Object System.Net.WebClient
+    $qtCodes2 = @()
+    $codeMap.Keys | ForEach-Object { $qtCodes2 += $codeMap[$_].Market + $_ }
+    $rawBytes = $wc.DownloadData("https://qt.gtimg.cn/q=$($qtCodes2 -join ',')")
+    $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($rawBytes)
+    ($utf16text -split ';') | ForEach-Object {
+        $m2 = [regex]::Match($_, '"(.*)"')
+        if (-not $m2.Success) { return }
+        $pp = $m2.Groups[1].Value -split '~'
+        if ($pp.Count -lt 45) { return }
+        $co = $pp[2]
+        $op = 0; [double]::TryParse($pp[5], [ref]$op) | Out-Null
+        $np = 0; [double]::TryParse($pp[3], [ref]$np) | Out-Null
+        $cp = 999; [double]::TryParse($pp[32], [ref]$cp) | Out-Null
+        $hp = 0; [double]::TryParse($pp[33], [ref]$hp) | Out-Null
+        $lp = 0; [double]::TryParse($pp[34], [ref]$lp) | Out-Null
+        $pc = 0; [double]::TryParse($pp[4], [ref]$pc) | Out-Null
+        $quotes[$co] = @{
+            OpenPrice   = $op
+            Price       = $np
+            ChangePct   = $cp
+            High        = $hp
+            Low         = $lp
+            PrevClose   = $pc
+            Name        = $pp[1]
+            DataSource  = "[1]"
+        }
+    }
+    if ($quotes.Count -gt 0) { Write-Log "行情数据来源: 腾讯行情[1]" }
+} catch {
+    Write-Log "腾讯行情[1]异常: $_" "WARN"
+}
 if ($quotes.Count -eq 0) {
     Write-Log "行情API全部不可用，跳过开新仓，止损用保守估计" "WARN"
 }
@@ -704,9 +742,14 @@ if ($candidates.Count -gt 0) {
             if ($quote -and $quote.OpenPrice -gt 0) {
                 $entryPrice = $quote.OpenPrice
                 $buyDataSource = if ($quote.DataSource) { $quote.DataSource } else { "[1]" }
+            } elseif ($quote -and $quote.PrevClose -gt 0) {
+                $entryPrice = $quote.PrevClose
+                $buyDataSource = "[昨收价]"
+                Write-Log "  $code 开盘价不可用，使用API昨收价 $entryPrice" "WARN"
             } elseif ($evalStock.Price -gt 0) {
                 $entryPrice = $evalStock.Price
                 $buyDataSource = "[评估数据]"
+                Write-Log "  $code 开盘价+昨收均不可用，使用评估数据价 $entryPrice" "WARN"
             } else {
                 Write-Log "  $code 无法获取入场价" "WARN"
                 continue

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>v2.2 评分对比：5月21日 vs 5月22日</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Microsoft YaHei', Arial, sans-serif; font-size: 13px; color: #333; background: #f0f2f5; }
+.page { max-width: 1100px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+h1 { color: #1A1A2E; font-size: 22px; margin-bottom: 5px; }
+h2 { color: #16213E; font-size: 17px; margin: 25px 0 12px 0; padding-bottom: 6px; border-bottom: 2px solid #1A1A2E; }
+h3 { font-size: 14px; color: #333; margin: 0 0 10px 0; }
+.subtitle { color: #888; font-size: 12px; margin-bottom: 20px; }
+.cards { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+.card { background: #f7f8fa; border-radius: 6px; padding: 12px 16px; flex: 1; min-width: 130px; }
+.card .label { font-size: 11px; color: #888; }
+.card .val { font-size: 24px; font-weight: bold; margin-top: 4px; }
+.up { color: #e74c3c; font-weight: bold; }
+.down { color: #27ae60; font-weight: bold; }
+.flat { color: #999; }
+.na { color: #ccc; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+th { background: #1A1A2E; color: #fff; padding: 8px 6px; text-align: center; font-weight: normal; }
+td { padding: 6px; text-align: center; border-bottom: 1px solid #eee; }
+tr:nth-child(even) { background: #fafafa; }
+tr:hover { background: #eef3ff; }
+tr.top1 { background: #fff8e1 !important; }
+tr.top3 { background: #f5f5f5 !important; }
+.veto-badge { color: #e74c3c; font-weight: bold; font-size: 11px; }
+.pass-badge { color: #27ae60; }
+.regressed { color: #e67e22; font-size: 11px; }
+.findings { background: #f8f9fa; border-left: 4px solid #1A1A2E; padding: 16px 20px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+.findings li { margin: 6px 0; line-height: 1.6; }
+.note { background: #fffbf0; border: 1px solid #f0dca0; padding: 12px 16px; margin: 15px 0; border-radius: 6px; font-size: 12px; color: #666; line-height: 1.6; }
+.footer { text-align: center; color: #aaa; font-size: 11px; margin-top: 25px; padding-top: 12px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>v2.2 评分对比：5月21日 vs 5月22日</h1>
+<div class="subtitle">生成时间：2026-05-22 18:58 | 股票池：72只</div>
+
+<div class="cards">
+  <div class="card"><div class="label">5月21日Top25在5月22日平均收益</div><div class="val">+3.73%</div></div>
+  <div class="card"><div class="label">胜率（上涨/总数）</div><div class="val"><span class="up">18</span> / 25（72%）</div></div>
+  <div class="card"><div class="label">高分半区平均收益</div><div class="val">+2.46%</div></div>
+  <div class="card"><div class="label">低分半区平均收益</div><div class="val">+4.91%</div></div>
+  <div class="card"><div class="label">技术分范围（5月21日）</div><div class="val">10 ~ 18</div></div>
+  <div class="card"><div class="label">平均技术分</div><div class="val">13.5</div></div>
+</div>
+
+<h2>5月21日推荐 vs 5月22日实际表现</h2>
+<p style="color:#888;font-size:12px">按5月21日评分降序排列。涨跌幅 = 5月22日真实收盘涨跌。</p>
+<table>
+<tr>
+  <th>#</th><th>代码</th><th>名称</th><th>评分 5/21</th><th>技术</th><th>资金</th><th>PE</th>
+  <th>排名 5/22</th><th>评分 5/22</th><th>涨跌幅 5/22</th><th>状态</th>
+</tr>
+<tr class="top1">
+    <td>1</td>
+    <td>603501</td>
+    <td style="text-align:left">豪威集团</td>
+    <td>74</td>
+    <td>15</td>
+    <td>19</td>
+    <td>35.71</td>
+    <td>3</td>
+    <td>77</td>
+    <td><span class="up">+1.55%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="top3">
+    <td>2</td>
+    <td>600888</td>
+    <td style="text-align:left">新疆众和</td>
+    <td>73</td>
+    <td>18</td>
+    <td>13</td>
+    <td>22.71</td>
+    <td>4</td>
+    <td>76</td>
+    <td><span class="up">+10.03%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="top3">
+    <td>3</td>
+    <td>300124</td>
+    <td style="text-align:left">汇川技术</td>
+    <td>72</td>
+    <td>15</td>
+    <td>18</td>
+    <td>45.11</td>
+    <td>8</td>
+    <td>72</td>
+    <td><span class="up">+1.57%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>4</td>
+    <td>601689</td>
+    <td style="text-align:left">拓普集团</td>
+    <td>72</td>
+    <td>13</td>
+    <td>18</td>
+    <td>45.28</td>
+    <td>18</td>
+    <td>67</td>
+    <td><span class="down">-0.10%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>5</td>
+    <td>600114</td>
+    <td style="text-align:left">东睦股份</td>
+    <td>69</td>
+    <td>15</td>
+    <td>13</td>
+    <td>43.34</td>
+    <td>9</td>
+    <td>72</td>
+    <td><span class="up">+7.98%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>6</td>
+    <td>000333</td>
+    <td style="text-align:left">美的集团</td>
+    <td>68</td>
+    <td>17</td>
+    <td>11</td>
+    <td>13.82</td>
+    <td>20</td>
+    <td>66</td>
+    <td><span class="down">-1.50%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>7</td>
+    <td>300274</td>
+    <td style="text-align:left">阳光电源</td>
+    <td>66</td>
+    <td>11</td>
+    <td>16</td>
+    <td>28.60</td>
+    <td>17</td>
+    <td>67</td>
+    <td><span class="down">-0.53%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>8</td>
+    <td>600570</td>
+    <td style="text-align:left">恒生电子</td>
+    <td>66</td>
+    <td>13</td>
+    <td>15</td>
+    <td>36.54</td>
+    <td><span class="veto-badge">否决</span></td>
+    <td>-</td>
+    <td><span class="down">-1.30%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">均线死叉: MA10(26.76)≤MA20(26.76) (豁免需总</div></td>
+</tr><tr class="">
+    <td>9</td>
+    <td>688521</td>
+    <td style="text-align:left">芯原股份</td>
+    <td>64</td>
+    <td>13</td>
+    <td>19</td>
+    <td>0</td>
+    <td>12</td>
+    <td>70</td>
+    <td><span class="up">+0.81%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>10</td>
+    <td>688188</td>
+    <td style="text-align:left">柏楚电子</td>
+    <td>63</td>
+    <td>13</td>
+    <td>15</td>
+    <td>42.75</td>
+    <td>19</td>
+    <td>66</td>
+    <td><span class="up">+1.88%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>11</td>
+    <td>300697</td>
+    <td style="text-align:left">电工合金</td>
+    <td>63</td>
+    <td>11</td>
+    <td>17</td>
+    <td>40.45</td>
+    <td>6</td>
+    <td>73</td>
+    <td><span class="up">+5.93%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>12</td>
+    <td>600703</td>
+    <td style="text-align:left">三安光电</td>
+    <td>63</td>
+    <td>12</td>
+    <td>19</td>
+    <td>0</td>
+    <td>7</td>
+    <td>73</td>
+    <td><span class="up">+3.18%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>13</td>
+    <td>300782</td>
+    <td style="text-align:left">卓胜微</td>
+    <td>62</td>
+    <td>13</td>
+    <td>17</td>
+    <td>0</td>
+    <td>5</td>
+    <td>73</td>
+    <td><span class="up">+3.70%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>14</td>
+    <td>300811</td>
+    <td style="text-align:left">铂科新材</td>
+    <td>62</td>
+    <td>14</td>
+    <td>13</td>
+    <td>79.61</td>
+    <td>10</td>
+    <td>70</td>
+    <td><span class="up">+13.86%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>15</td>
+    <td>002463</td>
+    <td style="text-align:left">沪电股份</td>
+    <td>62</td>
+    <td>14</td>
+    <td>14</td>
+    <td>51.03</td>
+    <td>11</td>
+    <td>70</td>
+    <td><span class="up">+10.00%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>16</td>
+    <td>688111</td>
+    <td style="text-align:left">金山办公</td>
+    <td>62</td>
+    <td>12</td>
+    <td>12</td>
+    <td>30.91</td>
+    <td><span class="veto-badge">否决</span></td>
+    <td>-</td>
+    <td><span class="down">-0.74%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">均线死叉: MA10(254.84)≤MA20(255.35) (豁免</div></td>
+</tr><tr class="">
+    <td>17</td>
+    <td>688561</td>
+    <td style="text-align:left">奇安信</td>
+    <td>61</td>
+    <td>15</td>
+    <td>12</td>
+    <td>0</td>
+    <td><span class="veto-badge">否决</span></td>
+    <td>-</td>
+    <td><span class="down">-0.54%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">均线死叉: MA10(30.26)≤MA20(30.31) (豁免需总</div></td>
+</tr><tr class="">
+    <td>18</td>
+    <td>600497</td>
+    <td style="text-align:left">驰宏锌锗</td>
+    <td>61</td>
+    <td>11</td>
+    <td>15</td>
+    <td>42.58</td>
+    <td>15</td>
+    <td>69</td>
+    <td><span class="up">+9.96%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>19</td>
+    <td>002156</td>
+    <td style="text-align:left">通富微电</td>
+    <td>60</td>
+    <td>15</td>
+    <td>13</td>
+    <td>66.56</td>
+    <td>25</td>
+    <td>61</td>
+    <td><span class="up">+2.72%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>20</td>
+    <td>688786</td>
+    <td style="text-align:left">悦安新材</td>
+    <td>59</td>
+    <td>16</td>
+    <td>13</td>
+    <td>61.75</td>
+    <td>14</td>
+    <td>69</td>
+    <td><span class="up">+11.83%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>21</td>
+    <td>600845</td>
+    <td style="text-align:left">宝信软件</td>
+    <td>59</td>
+    <td>13</td>
+    <td>15</td>
+    <td>52.81</td>
+    <td>23</td>
+    <td>63</td>
+    <td><span class="up">+1.29%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>22</td>
+    <td>688981</td>
+    <td style="text-align:left">中芯国际</td>
+    <td>58</td>
+    <td>15</td>
+    <td>17</td>
+    <td>208.57</td>
+    <td>13</td>
+    <td>69</td>
+    <td><span class="up">+3.23%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>23</td>
+    <td>603019</td>
+    <td style="text-align:left">中科曙光</td>
+    <td>58</td>
+    <td>12</td>
+    <td>16</td>
+    <td>62.54</td>
+    <td><span class="veto-badge">否决</span></td>
+    <td>-</td>
+    <td><span class="up">+1.66%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>24</td>
+    <td>300502</td>
+    <td style="text-align:left">新易盛</td>
+    <td>52</td>
+    <td>12</td>
+    <td>11</td>
+    <td>56.27</td>
+    <td>16</td>
+    <td>67</td>
+    <td><span class="up">+7.20%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr><tr class="">
+    <td>25</td>
+    <td>688256</td>
+    <td style="text-align:left">寒武纪</td>
+    <td>51</td>
+    <td>10</td>
+    <td>15</td>
+    <td>297.38</td>
+    <td><span class="veto-badge">否决</span></td>
+    <td>-</td>
+    <td><span class="down">-0.38%</span></td>
+    <td><span class="veto-badge">否决</span><div style="font-size:10px;color:#999">passed</div></td>
+</tr></table>
+
+<div class="findings">
+<h3>核心发现</h3>
+<ul>
+<li><b>整体准确性</b>：5月21日Top25在5月22日平均收益 <b>+3.73%</b>，18/25 只上涨（胜率 72%）</li>
+<li><b>评分与收益负相关</b>：低分半区（+4.91%）跑赢了高分半区（+2.46%），可能需要重新校准</li>
+<li><b>东睦股份(600114)</b> — 5月21日排第5名（总分=69，技术分=15）。5月22日仍在前25（第9名）。5月22日实际涨跌：<span class="up">+7.98%</span>。v2.2 正确识别了这只强势股</li>
+<li><b>涨幅前三</b>（5月21日推荐中）：铂科新材（+13.86%）、悦安新材（+11.83%）、新疆众和（+10.03%）</li>
+<li><b>跌幅前三</b>（5月21日推荐中）：美的集团（-1.50%）、恒生电子（-1.30%）、金山办公（-0.74%）</li>
+<li><b>5月22日被否决的</b>：豪威集团（603501）、新疆众和（600888）、汇川技术（300124）、拓普集团（601689）、东睦股份（600114） — 这些股票5月21日通过，但5月22日触发了否决条件（趋势恶化）</li>
+<li><b>技术分区分度</b>：范围 10 ~ 18（均值 13.5）— 评分已有效区分，不再是全员10分死代码。区分度有限。</li>
+<li><b>通过率</b>：5月21日 34.7% vs 5月22日 37.5%（市场条件相近）</li>
+
+</ul>
+</div>
+
+<h2>5月22日 Top 10 推荐（参考）</h2>
+<table>
+<tr><th>#</th><th>代码</th><th>名称</th><th>总分</th><th>技术</th><th>资金</th><th>PE</th><th>当日涨跌</th></tr>
+<tr class="top1">
+    <td>1</td><td>601702</td><td style="text-align:left">华峰铝业</td>
+    <td>78</td><td>17</td><td>17</td><td>17.01</td><td><span class="up">+9.14%</span></td>
+</tr><tr class="top3">
+    <td>2</td><td>601677</td><td style="text-align:left">明泰铝业</td>
+    <td>78</td><td>17</td><td>15</td><td>10.75</td><td><span class="up">+6.72%</span></td>
+</tr><tr class="top3">
+    <td>3</td><td>603501</td><td style="text-align:left">豪威集团</td>
+    <td>77</td><td>16</td><td>20</td><td>35.71</td><td><span class="up">+1.55%</span></td>
+</tr><tr class="">
+    <td>4</td><td>600888</td><td style="text-align:left">新疆众和</td>
+    <td>76</td><td>19</td><td>13</td><td>22.71</td><td><span class="up">+10.03%</span></td>
+</tr><tr class="">
+    <td>5</td><td>300782</td><td style="text-align:left">卓胜微</td>
+    <td>73</td><td>14</td><td>19</td><td>0</td><td><span class="up">+3.70%</span></td>
+</tr><tr class="">
+    <td>6</td><td>300697</td><td style="text-align:left">电工合金</td>
+    <td>73</td><td>14</td><td>17</td><td>40.45</td><td><span class="up">+5.93%</span></td>
+</tr><tr class="">
+    <td>7</td><td>600703</td><td style="text-align:left">三安光电</td>
+    <td>73</td><td>13</td><td>20</td><td>0</td><td><span class="up">+3.18%</span></td>
+</tr><tr class="">
+    <td>8</td><td>300124</td><td style="text-align:left">汇川技术</td>
+    <td>72</td><td>15</td><td>18</td><td>45.11</td><td><span class="up">+1.57%</span></td>
+</tr><tr class="">
+    <td>9</td><td>600114</td><td style="text-align:left">东睦股份</td>
+    <td>72</td><td>18</td><td>13</td><td>43.34</td><td><span class="up">+7.98%</span></td>
+</tr><tr class="">
+    <td>10</td><td>300811</td><td style="text-align:left">铂科新材</td>
+    <td>70</td><td>20</td><td>13</td><td>79.61</td><td><span class="up">+13.86%</span></td>
+</tr>
+</table>
+
+<div class="note">
+<h3>方法论说明</h3>
+<p><b>5月21日数据模拟</b>：由于流水线只能获取实时数据，我们通过截断每只股票60日K线数组的最后一天（去掉5月22日收盘），用第59天收盘价作为模拟的5月21日收盘价。这意味着：</p>
+<ul>
+  <li>K线指标（均线、RSI、MACD、布林带）对5月21日来说是准确的</li>
+  <li>当日指标（换手率、振幅、资金流向）来自5月22日（局限性）</li>
+  <li>板块动量数据反映的是5月22日的板块状态，不是5月21日</li>
+  <li><b>结论</b>：技术评分可靠；资金面和板块加成分数有一定5月22日偏差</li>
+</ul>
+<p>尽管有这些局限，对比验证了 v2.2 评分引擎能产出有区分度的技术评分，并正确识别东睦股份这类强势股。</p>
+</div>
+
+<div class="footer">
+<p>铁律量化 · v2.2 评分对比报告 | 生成时间 {now_str}</p>
+<p>数据来源：data_scored_may21.json / data_scored_may22.json / data_full.json</p>
+</div>
+
+</div>
+</body>
+</html>

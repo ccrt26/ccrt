@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background:#f5f6fa; margin:0; padding:20px; color:#333; }
+        .container { max-width: 1100px; margin:0 auto; }
+        h1 { color:#1A1A2E; border-bottom:3px solid #1A1A2E; padding-bottom:10px; }
+        h2 { color:#16213E; margin-top:30px; }
+        h3 { color:#333; margin-top:20px; }
+        .summary-box { background:#fff; border-radius:8px; padding:20px; margin:15px 0; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+        table { width:100%; border-collapse:collapse; margin:10px 0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+        th { background:#1A1A2E; color:#fff; padding:10px 12px; text-align:center; font-size:13px; }
+        td { padding:8px 12px; text-align:center; border-bottom:1px solid #eee; font-size:13px; }
+        tr:hover { background:#f0f4ff; }
+        .win { color:#00a854; font-weight:bold; }
+        .lose { color:#d93025; font-weight:bold; }
+        .neutral { color:#faad14; }
+        .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:12px; margin:2px; }
+        .tag-high { background:#00a85410; color:#00a854; border:1px solid #00a854; }
+        .tag-mid { background:#faad1410; color:#b8860b; border:1px solid #faad14; }
+        .tag-low { background:#d9302510; color:#d93025; border:1px solid #d93025; }
+        .bar-bg { background:#eee; height:16px; border-radius:8px; overflow:hidden; }
+        .bar { height:100%; border-radius:8px; }
+        .bar-green { background:#00a854; }
+        .bar-red { background:#d93025; }
+        .bar-yellow { background:#faad14; }
+        .footer { text-align:center; color:#999; margin-top:40px; padding:20px; font-size:12px; }
+        .insight { background:#e6f7ff; border-left:4px solid #1890ff; padding:12px 16px; margin:10px 0; border-radius:4px; }
+        .warn { background:#fff7e6; border-left:4px solid #faad14; padding:12px 16px; margin:10px 0; border-radius:4px; }
+        .danger { background:#fff1f0; border-left:4px solid #f5222d; padding:12px 16px; margin:10px 0; border-radius:4px; }
+    </style>
+    </head><body>
+<div class="container">
+<h1>📋 每日荐股技术信号回溯报告</h1>
+<p>回溯日期: 2026-05-22 | 样本: 588 个 (42只股票 × ~15个交易日) | 数据周期: 240分钟K线</p>
+
+<div class="summary-box">
+<h2>📊 整体统计</h2>
+<table>
+<tr><th>指标</th><th>T+1</th><th>T+3</th></tr>
+<tr><td>平均收益率</td><td class="win">+0.51%</td><td class="win">+1.96%</td></tr>
+<tr><td>胜率(次日上涨比例)</td><td>49.1%</td><td>56.2%</td></tr>
+<tr><td>盈利交易均值</td><td class="win">+3.36%</td><td></td></tr>
+<tr><td>亏损交易均值</td><td class="lose">-2.27%</td><td></td></tr>
+</table>
+<div class="insight">A股240分钟K线 T+1胜率基准约50-52%，当前49.1%为市场随机水平。</div>
+</div>
+
+<div class="summary-box">
+<h2>📈 当日评分分析 (2026-05-21 data_final.json)</h2>
+<table>
+<tr><th>指标</th><th>数值</th><th>说明</th></tr>
+<tr><td>平均总分</td><td><b>46.8</b></td><td>满分100，42只股票均值</td></tr>
+<tr><td>分数范围</td><td><b>32 - 73</b></td><td>跨度41分</td></tr>
+<tr><td>否决比例 (<55)</td><td class="lose"><b>81.0%</b></td><td>42只中34只被否决</td></tr>
+<tr><td>达标及以上 (>=65)</td><td class="win"><b>19.0%</b></td><td>仅3只达标, 优质/极品0只</td></tr>
+</table>
+
+<h3>维度相关性</h3>
+<table>
+<tr><th>相关对</th><th>相关系数</th><th>解读</th></tr>
+<tr><td>总分 vs 技术面</td><td><b>0.897</b></td><td>强相关(技术主导评分)</td></tr>
+<tr><td>总分 vs 基本面</td><td><b>0.746</b></td><td>强相关</td></tr>
+<tr><td>总分 vs 资金面</td><td><b>-0.0</b></td><td>弱相关</td></tr>
+<tr><td>总分 vs 消息面</td><td><b>0.644</b></td><td>强相关</td></tr>
+</table>
+
+<h3>技术面评分分布</h3>
+<table>
+<tr><th>指标</th><th>数值</th></tr>
+<tr><td>技术分范围</td><td>1 - 23 (均值6.2)</td></tr>
+<tr><td>低分段比例 (<6分/25分)</td><td class="lose">42.9%</td></tr>
+<tr><td>高分段比例 (>=15分/25分)</td><td class="win">9.5%</td></tr>
+</table>
+<div class="warn">⚠️ 否决比例高达81.0%，42只精选池中34只被否决。这可能意味着：①评分标准过严 ②精选池质量不足 ③市场环境不佳导致多数股票技术面走弱 ④否决阈值需要校准</div>
+<div class="summary-box">
+<h2>🎯 信号有效性排名 (T+1胜率)</h2>
+<p>按T+1胜率降序排列，胜率越高说明信号对次日上涨的预测越准确。</p>
+<table>
+<tr><th>排名</th><th>信号</th><th>样本数</th><th>T+1胜率</th><th>T+1均值</th><th>基准胜率</th><th>超额胜率</th><th>T+3胜率</th></tr>
+<tr>
+<td>1</td>
+<td style="text-align:left">缩量下跌 (量比<0.7,跌)</td>
+<td>45</td>
+<td class="win"><b>60.0%</b></td>
+<td>+1.11%</td>
+<td>48.3%</td>
+<td class="win">+11.7%</td>
+<td>60.0%</td>
+</tr><tr>
+<td>2</td>
+<td style="text-align:left">底部抬高 (近5日低点上移)</td>
+<td>38</td>
+<td class="win"><b>55.3%</b></td>
+<td>+1.13%</td>
+<td>48.7%</td>
+<td class="win">+6.5%</td>
+<td>50.0%</td>
+</tr><tr>
+<td>3</td>
+<td style="text-align:left">放量上涨 (量比>1.5,涨)</td>
+<td>51</td>
+<td class="neutral"><b>52.9%</b></td>
+<td>+1.22%</td>
+<td>48.8%</td>
+<td class="win">+4.2%</td>
+<td>66.0%</td>
+</tr><tr>
+<td>4</td>
+<td style="text-align:left">RSI超买(>70)</td>
+<td>588</td>
+<td class="neutral"><b>49.1%</b></td>
+<td>+0.51%</td>
+<td>0%</td>
+<td class="win">+49.1%</td>
+<td>56.2%</td>
+</tr><tr>
+<td>5</td>
+<td style="text-align:left">温和放量小阳 (量比0.8-1.2,涨0-2%)</td>
+<td>62</td>
+<td class="neutral"><b>46.8%</b></td>
+<td>+0.19%</td>
+<td>49.4%</td>
+<td class="neutral">-2.7%</td>
+<td>55.8%</td>
+</tr></table><div class="insight">✅ <b>最有效信号</b>: 缩量下跌 (量比<0.7,跌) (T+1胜率60.0%, 超额+11.7%)</div><div class="danger">❌ <b>最差信号</b>: 温和放量小阳 (量比0.8-1.2,涨0-2%) (T+1胜率46.8%, 超额-2.7%)</div></div>
+<div class="summary-box">
+<h2>🔗 信号组合效果 (看多信号叠加)</h2>
+<p>同时满足的看多信号越多，T+1上涨概率和期望收益的变化趋势。</p>
+<table>
+<tr><th>同时满足信号数</th><th>样本数</th><th>T+1胜率</th><th>T+1均值收益</th></tr>
+<tr><td><b>≥1个</b></td><td>93</td><td class='neutral'>49.5%</td><td>+0.40%</td></tr>
+<tr><td><b>≥2个</b></td><td>7</td><td class='win'>57.1%</td><td>+2.49%</td></tr>
+</table><div class="insight">✅ 信号叠加有效：≥2个信号时胜率57.1%，显著高于≥1个时的49.5%（提升+7.6%）</div></div>
+<div class="summary-box">
+<h2>⚡ 与重点股票回溯结论对比</h2>
+<table>
+<tr><th>信号</th><th>重点股票回溯</th><th>每日荐股回溯</th><th>结论</th></tr>
+<tr><td>布林触及上轨</td><td>T+5胜率61.1% → +15分</td><td>T+1胜率N/A%</td><td></td></tr>
+<tr><td>缩量下跌</td><td>反转胜率60.5% → +12分</td><td>T+1胜率60.0%</td><td></td></tr>
+<tr><td>RSI超卖(<30)</td><td>反弹胜率36.8% → 0分(反向)</td><td>T+1胜率N/A%</td><td></td></tr>
+<tr><td>RSI中性(40-55)</td><td>未单独验证</td><td>T+1胜率N/A%</td><td></td></tr>
+</table><div class="insight">注：重点股票回溯使用日K线(5日验证)，每日荐股使用240分钟K线(1-3日验证)。时间尺度不同，但信号方向应一致。</div></div>
+<div class="summary-box">
+<h2>🚫 否决条件有效性检查 (基于数据逻辑推断)</h2>
+<table>
+<tr><th>否决条件</th><th>当前数据检查</th><th>建议</th></tr>
+<tr>
+<td>中期趋势空头 (MA10<=MA20)</td>
+<td id="veto-ma">计算中...</td>
+<td>需确认死叉是否确实预示后续下跌</td>
+</tr>
+<tr>
+<td>PE估值泡沫</td>
+<td>各行业PE阈值是否合理</td>
+<td>消费PE>50, 科技PE>80, 金融PE>15 — 需验证</td>
+</tr>
+<tr>
+<td>短期暴涨(30日涨幅>50%)</td>
+<td>本次样本中未检测到极端涨幅</td>
+<td>回测期间市场环境偏弱，难以验证</td>
+</tr>
+</table>
+</div>
+
+<div class="summary-box">
+<h2>💡 基于回溯的改进建议</h2>
+<ul>
+<li><b>保留并强化</b>: 缩量下跌 (量比<0.7,跌) (T+1胜率60.0%, 超额+11.7%) — 预测能力稳定，可维持或提高权重</li>
+<li><b>保留并强化</b>: 底部抬高 (近5日低点上移) (T+1胜率55.3%, 超额+6.5%) — 预测能力稳定，可维持或提高权重</li>
+<li><b>审查或降权</b>: 温和放量小阳 (量比0.8-1.2,涨0-2%) (T+1胜率46.8%, 超额-2.7%) — 预测能力低于基准，考虑降低评分权重或重新定义信号条件</li>
+<li><b>重新校准否决阈值</b>: 当前否决比例81.0%，42只精选池中仅3只达标。建议：①对精选池股票降低否决门槛 ②或扩大达标区间 ③或引入市场环境自适应阈值（震荡市/熊市自动降低标准）</li>
+</ul></div>
+<div class="summary-box">
+<h2>📋 总结</h2>
+<ul>
+<li>在5个技术信号中，2个具有正向预测能力(T+1胜率>53%)</li>
+<li><b>最强信号</b>: 缩量下跌 (量比<0.7,跌) (胜率60.0%)</li>
+<li><b>最弱信号</b>: 温和放量小阳 (量比0.8-1.2,涨0-2%) (胜率46.8%)</li>
+<li>评分系统否决比例81.0%（34/42只），精选池过半否决说明评分标准可能偏严</li>
+
+<li>建议：①对预测能力强的信号提高权重 ②对弱于基准的信号重新审查 ③考虑市场环境自适应阈值</li>
+</ul>
+</div>
+
+<div class="footer">
+<p>铁律量化 · 每日荐股临时回溯报告 | 生成时间: 2026-05-22 | 数据: backtest_signals.json + data_final.json</p>
+<p>本报告为临时分析结果，不构成投资建议</p>
+</div>
+</div></body></html>

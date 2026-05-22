@@ -1,4 +1,12 @@
 {
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(*.ps1) || Bash(*.py) || Bash(python *)",
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\监督机制\\PreToolUse_hook.ps1\""
+      }
+    ]
+  },
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [

@@ -1,0 +1,1 @@
+eval_date,report_date,stock_code,stock_name,total_score,rating,market_stage,buy_price,sell_price,return_pct,profit,misjudge_dim,misjudge_subtype,tech_expected,money_expected,sector_expected,news_expected,veto_type,exemption_flag,volume_ratio,bellwether_code,bellwether_return,notes

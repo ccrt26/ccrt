@@ -1,0 +1,239 @@
+﻿[2026-05-22 19:05:55][INFO] Market check skipped (-SkipMarketCheck)
+[2026-05-22 19:05:55][INFO] ===== Starting Post-Evaluation =====
+[2026-05-22 19:05:55][INFO] Running evaluation: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\run_daily_eval.ps1
+[2026-05-22 19:06:02][ERROR] Evaluation script failed (exit: )
+[2026-05-22 19:06:02][INFO] Archiving evaluation data...
+[2026-05-22 19:06:02][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\scored\20260522_data_scored.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final_optimized.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final_optimized.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\sector_data.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_sector_data.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\industry_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_industry_map.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\eastmoney_sector_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_eastmoney_sector_map.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260521.html
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.html
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.pdf
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522_v2.pdf
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260521.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260522.json
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档评估报告: 20260522_后评估报告.pdf
+[2026-05-22 19:06:02][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
+[2026-05-22 19:06:02][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-22 19:06:02][INFO] Evaluation completed, whitepaper optimization requires manual review
+[2026-05-22 19:06:02][INFO] ===== Post-Evaluation Complete =====
+[2026-05-22 19:06:02][INFO] Execution Summary:
+[2026-05-22 19:06:02][INFO]   Mode:   eval
+[2026-05-22 19:06:02][INFO]   Date:   2026-05-22
+[2026-05-22 19:06:02][INFO]   Log:    C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\workflow_202605.log
+[2026-05-22 19:06:02][INFO]   Record: C:\Users\34269\Documents\Claude\股票分析\每日荐股\运营记录\workflow_records.csv
+[2026-05-22 19:06:40][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\scored\20260522_data_scored.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final_optimized.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final_optimized.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\sector_data.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_sector_data.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\industry_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_industry_map.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\eastmoney_sector_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_eastmoney_sector_map.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260521.html
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.html
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.pdf
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522_v2.pdf
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260521.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260522.json
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档评估报告: 20260522_后评估报告.pdf
+[2026-05-22 19:06:40][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
+[2026-05-22 19:06:40][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-22 19:11:23][INFO] Market check skipped (-SkipMarketCheck)
+[2026-05-22 19:11:23][INFO] ===== Starting Post-Evaluation =====
+[2026-05-22 19:11:23][INFO] Running evaluation: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\run_daily_eval.ps1
+[2026-05-22 19:11:33][ERROR] Evaluation script failed (exit: )
+[2026-05-22 19:11:33][INFO] Archiving evaluation data...
+[2026-05-22 19:11:33][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\scored\20260522_data_scored.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final_optimized.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final_optimized.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\sector_data.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_sector_data.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\industry_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_industry_map.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\eastmoney_sector_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_eastmoney_sector_map.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260521.html
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.html
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.pdf
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522_v2.pdf
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260521.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260522.json
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档评估报告: 20260522_后评估报告.pdf
+[2026-05-22 19:11:33][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
+[2026-05-22 19:11:33][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-22 19:11:33][INFO] Running keystock evaluation...
+[2026-05-22 19:11:45][ERROR] Keystock evaluation failed (exit: )
+[2026-05-22 19:11:45][INFO] Evaluation completed, whitepaper optimization requires manual review
+[2026-05-22 19:11:45][INFO] ===== Post-Evaluation Complete =====
+[2026-05-22 19:11:45][INFO] Execution Summary:
+[2026-05-22 19:11:45][INFO]   Mode:   eval
+[2026-05-22 19:11:45][INFO]   Date:   2026-05-22
+[2026-05-22 19:11:45][INFO]   Log:    C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\workflow_202605.log
+[2026-05-22 19:11:45][INFO]   Record: C:\Users\34269\Documents\Claude\股票分析\每日荐股\运营记录\workflow_records.csv
+[2026-05-22 20:05:43][INFO] Market check skipped (-SkipMarketCheck)
+[2026-05-22 20:05:43][INFO] ===== Starting Daily Stock Analysis (latest version) =====
+[2026-05-22 20:05:43][INFO] [1/4] Building dynamic pool...
+[2026-05-22 20:05:44][ERROR] Dynamic pool build failed (exit: )
+[2026-05-22 20:05:44][INFO] [2/4] Collecting batch data...
+[2026-05-22 20:24:52][INFO] Checking market open for 2026-05-22...
+[2026-05-22 20:24:52][INFO] 2026-05-22 is a trading day, proceeding
+[2026-05-22 20:24:52][INFO] ===== Starting Daily Stock Analysis (latest version) =====
+[2026-05-22 20:24:52][INFO] [1/4] Building dynamic pool...
+[2026-05-22 20:24:53][INFO] Dynamic pool built successfully
+[2026-05-22 20:24:53][INFO] [2/4] Collecting batch data...
+[2026-05-22 20:40:21][INFO] Checking market open for 2026-05-22...
+[2026-05-22 20:40:21][INFO] 2026-05-22 is a trading day, proceeding
+[2026-05-22 20:40:21][INFO] ===== Starting Daily Stock Analysis (latest version) =====
+[2026-05-22 20:40:21][INFO] [1/6] Building dynamic pool...
+[2026-05-22 20:40:22][INFO] Dynamic pool built successfully
+[2026-05-22 20:40:22][INFO] [2/6] Collecting batch data...
+[2026-05-22 20:42:26][INFO] Data collection completed
+[2026-05-22 20:42:26][INFO] [3/6] Running scoring engine...
+[2026-05-22 20:42:26][INFO] 加载 72 只股票数据
+[2026-05-22 20:42:26][INFO] 
+[2026-05-22 20:42:26][INFO]   板块 玻纤制造     | 高潮期   | 涨幅+8.41% 换手11.73% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 印制电路板    | 高潮期   | 涨幅+8.21% 换手8.36% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 元件       | 高潮期   | 涨幅+8.04% 换手7.93% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 被动元件     | 高潮期   | 涨幅+7.64% 换手5.87% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 铜        | 高潮期   | 涨幅+5.66% 换手5.48% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 钨        | 高潮期   | 涨幅+5.58% 换手13.64% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 玻璃玻纤     | 高潮期   | 涨幅+5.47% 换手10.46% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 工业金属     | 高潮期   | 涨幅+4.34% 换手5.16% | 资金面+4分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 电子       | 高潮期   | 涨幅+3.24% 换手5.20% | 资金面+4分 (21只)
+[2026-05-22 20:42:26][INFO]   板块 磨具磨料     | 主升调整  | 涨幅+7.12% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 膜材料      | 主升调整  | 涨幅+5.81% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 磁性材料     | 主升调整  | 涨幅+5.61% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 氟化工      | 主升调整  | 涨幅+5.34% 换手4.63% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 金属新材料    | 主升调整  | 涨幅+5.15% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 光学元件     | 主升调整  | 涨幅+5.14% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 激光设备     | 主升调整  | 涨幅+4.85% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 其他金属新材料  | 主升调整  | 涨幅+4.82% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 电子化学品Ⅲ   | 主升调整  | 涨幅+4.75% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 电子化学品Ⅱ   | 主升调整  | 涨幅+4.75% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 其他化学纤维   | 主升调整  | 涨幅+4.40% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 镍        | 主升调整  | 涨幅+4.29% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 锂电专用设备   | 主升调整  | 涨幅+4.25% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 有色金属     | 主升调整  | 涨幅+4.00% 换手3.34% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 燃料电池     | 主升调整  | 涨幅+3.95% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 铅锌       | 主升调整  | 涨幅+3.94% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 非金属材料Ⅲ   | 主升调整  | 涨幅+3.83% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 非金属材料Ⅱ   | 主升调整  | 涨幅+3.83% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 塑料       | 主升调整  | 涨幅+3.81% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 改性塑料     | 主升调整  | 涨幅+3.79% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 钴        | 主升调整  | 涨幅+3.76% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 铝        | 主升调整  | 涨幅+3.76% 换手5.00% | 资金面+3分 (市场数据)
+[2026-05-22 20:42:26][INFO]   板块 通信       | 主升调整  | 涨幅+7.39% 换手4.61% | 资金面+3分 (3只)
+[2026-05-22 20:42:26][INFO]   板块 计算机      | 潜伏期   | 涨幅+0.46% 换手2.34% | 资金面+1分 (11只)
+[2026-05-22 20:42:26][INFO]   板块 非银金融     | 潜伏期   | 涨幅-0.15% 换手0.63% | 资金面+1分 (1只)
+[2026-05-22 20:42:26][INFO]   板块 电力设备     | 潜伏期   | 涨幅-0.32% 换手3.12% | 资金面+1分 (2只)
+[2026-05-22 20:42:26][INFO]   板块 机械设备     | 主升调整  | 涨幅+4.78% 换手4.92% | 资金面+1分 (2只)
+[2026-05-22 20:42:26][INFO]   板块 医药生物     | 潜伏期   | 涨幅-1.90% 换手1.06% | 资金面+1分 (1只)
+[2026-05-22 20:42:26][INFO]   板块 食品饮料     | 潜伏期   | 涨幅-1.57% 换手0.53% | 资金面+1分 (2只)
+[2026-05-22 20:42:26][INFO]   板块 汽车       | 潜伏期   | 涨幅+0.08% 换手1.89% | 资金面+1分 (2只)
+[2026-05-22 20:42:26][INFO]   板块 家用电器     | 潜伏期   | 涨幅-1.50% 换手0.45% | 资金面+1分 (1只)
+[2026-05-22 20:42:26][INFO]   板块 传媒       | 潜伏期   | 涨幅-0.35% 换手2.99% | 资金面+1分 (1只)
+[2026-05-22 20:42:26][INFO]   板块 银行       | 潜伏期   | 涨幅-0.35% 换手0.39% | 资金面+1分 (1只)
+[2026-05-22 20:42:26][INFO] 
+[2026-05-22 20:42:26][INFO] 板块趋势持续性 (基于当日动量近似, 无板块K线数据):
+[2026-05-22 20:42:26][INFO]     轮动 玻纤制造     | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 印制电路板    | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 元件       | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 被动元件     | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 磨具磨料     | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 膜材料      | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 铜        | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 磁性材料     | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 钨        | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO]     轮动 玻璃玻纤     | 持续性1分 | K线数据:False
+[2026-05-22 20:42:26][INFO] ==================================================
+[2026-05-22 20:42:26][INFO] 否决结果:
+[2026-05-22 20:42:26][INFO]   通过: 41 只 (56.9%)
+[2026-05-22 20:42:26][INFO]   否决: 31 只
+[2026-05-22 20:42:26][INFO] 
+[2026-05-22 20:42:26][INFO] 否决明细:
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_2] 300394 天孚通信 — PE过高: 134 > 80 (豁免需总分≥85) (总分:68)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_2] 300454 深信服 — PE过高: 86 > 80 (豁免需总分≥85) (总分:67)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 000977 浪潮信息 — 均线死叉: MA10(71.70)≤MA20(72.44) (豁免需总分≥75) (总分:66)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 300418 昆仑万维 — 均线死叉: MA10(49.76)≤MA20(50.75) (豁免需总分≥75) (总分:63)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 688561 奇安信 — 均线死叉: MA10(30.26)≤MA20(30.31) (豁免需总分≥75) (总分:60)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 300033 同花顺 — 均线死叉: MA10(237.25)≤MA20(237.52) (豁免需总分≥75) (总分:59)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 600570 恒生电子 — 均线死叉: MA10(26.76)≤MA20(26.76) (豁免需总分≥75) (总分:58)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 600036 招商银行 — 均线死叉: MA10(37.54)≤MA20(38.20) (豁免需总分≥75) (总分:58)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 688111 金山办公 — 均线死叉: MA10(254.84)≤MA20(255.35) (豁免需总分≥75) (总分:57)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 601318 中国平安 — 均线死叉: MA10(56.09)≤MA20(57.40) (豁免需总分≥75) (总分:56)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 300750 宁德时代 — 均线死叉: MA10(423.47)≤MA20(432.35) (豁免需总分≥75) (总分:56)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 688008 澜起科技 — 短期暴涨: 30日涨幅95% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 600276 恒瑞医药 — 均线死叉: MA10(53.07)≤MA20(53.89) (豁免需总分≥75) (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 688072 拓荆科技 — 短期暴涨: 30日涨幅63% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 600584 长电科技 — 短期暴涨: 30日涨幅74% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 600519 贵州茅台 — 均线死叉: MA10(1329.86)≤MA20(1364.94) (豁免需总分≥75) (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 603986 兆易创新 — 短期暴涨: 30日涨幅83% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 300604 长川科技 — 短期暴涨: 30日涨幅81% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 002916 深南电路 — 短期暴涨: 30日涨幅59% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 002415 海康威视 — 均线死叉: MA10(33.34)≤MA20(34.07) (豁免需总分≥75) (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 688120 华海清科 — 短期暴涨: 30日涨幅55% > 50% (总分:55)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_2] 000962 东方钽业 — PE估值泡沫: 128 > 80(有色金属) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_4] 002114 罗平锌电 — 财务数据异常: EPS≤0且PE无法计算 (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_2] 603527 众源新材 — PE估值泡沫: 145 > 80(有色金属) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_3] 300308 中际旭创 — 短期暴涨: 30日涨幅51% > 50% (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_2] 605376 博迁新材 — PE估值泡沫: 165 > 80(有色金属) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 002594 比亚迪 — 均线死叉: MA10(96.44)≤MA20(98.95) (豁免需总分≥75) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_2] 300835 龙磁科技 — PE估值泡沫: 101 > 80(有色金属) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_abs_2] 688231 隆达股份 — PE估值泡沫: 143 > 80(有色金属) (总分:54)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_1] 002230 科大讯飞 — 科技PE过高: 132 > 120 (豁免需总分≥85) (总分:53)
+[2026-05-22 20:42:26][INFO]   [vetoed_cond_5] 000858 五粮液 — 均线死叉: MA10(87.36)≤MA20(92.47) (豁免需总分≥75) (总分:52)
+[2026-05-22 20:42:26][INFO] 
+[2026-05-22 20:42:26][INFO] 推荐排序 (前10):
+[2026-05-22 20:42:26][INFO]    1.  300811 铂科新材   | 总分:80 | 技术:30 资金:13 | PE:80 涨跌:+13.86%
+[2026-05-22 20:42:26][INFO]    2.  601677 明泰铝业   | 总分:79 | 技术:22 资金:15 | PE:11 涨跌:+6.72%
+[2026-05-22 20:42:26][INFO]    3.  600888 新疆众和   | 总分:79 | 技术:26 资金:13 | PE:23 涨跌:+10.03%
+[2026-05-22 20:42:26][INFO]    4.  601702 华峰铝业   | 总分:78 | 技术:21 资金:17 | PE:17 涨跌:+9.14%
+[2026-05-22 20:42:26][INFO]    5. ★300782 卓胜微    | 总分:78 | 技术:20 资金:19 | PE:0 涨跌:+3.70%
+[2026-05-22 20:42:26][INFO]    6.  688786 悦安新材   | 总分:78 | 技术:28 资金:13 | PE:62 涨跌:+11.83%
+[2026-05-22 20:42:26][INFO]    7. ★600703 三安光电   | 总分:78 | 技术:19 资金:20 | PE:0 涨跌:+3.18%
+[2026-05-22 20:42:26][INFO]    8. ★603501 豪威集团   | 总分:78 | 技术:21 资金:20 | PE:36 涨跌:+1.55%
+[2026-05-22 20:42:26][INFO]    9. ★688981 中芯国际   | 总分:77 | 技术:23 资金:19 | PE:209 涨跌:+3.23%
+[2026-05-22 20:42:26][INFO]   10. ★688521 芯原股份   | 总分:76 | 技术:20 资金:20 | PE:0 涨跌:+0.81%
+[2026-05-22 20:42:26][INFO] 
+[2026-05-22 20:42:26][INFO] 输出: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json
+[2026-05-22 20:42:26][INFO] Done
+[2026-05-22 20:42:26][INFO] Scoring completed
+[2026-05-22 20:42:26][INFO] [4/6] Generating report...
+[2026-05-22 20:42:26][INFO] Generating report via: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\..\分析逻辑\gen_daily_html.ps1
+[2026-05-22 20:42:26][INFO] Report generated successfully
+[2026-05-22 20:42:26][INFO] [5/6] Running keystock analysis...
+[2026-05-22 20:44:11][INFO] Keystock analysis completed
+[2026-05-22 20:44:11][INFO] [6/6] Archiving daily data...
+[2026-05-22 20:44:11][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\scored\20260522_data_scored.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final_optimized.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\final\20260522_data_final_optimized.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\sector_data.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_sector_data.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\industry_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_industry_map.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\eastmoney_sector_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\sector\20260522_eastmoney_sector_map.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260521.html
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.html
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522.pdf
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档报告: 20260522_daily_report_20260522_v2.pdf
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260521.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260522.json
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档评估报告: 20260522_后评估报告.pdf
+[2026-05-22 20:44:11][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
+[2026-05-22 20:44:11][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-22 20:44:11][INFO] Data archived successfully
+[2026-05-22 20:44:11][INFO] ===== Daily Stock Analysis Complete =====
+[2026-05-22 20:44:11][INFO] Execution Summary:
+[2026-05-22 20:44:11][INFO]   Mode:   daily_latest
+[2026-05-22 20:44:11][INFO]   Date:   2026-05-22
+[2026-05-22 20:44:11][INFO]   Log:    C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\workflow_202605.log
+[2026-05-22 20:44:11][INFO]   Record: C:\Users\34269\Documents\Claude\股票分析\每日荐股\运营记录\workflow_records.csv

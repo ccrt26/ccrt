@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>盈峰环境(000967)分析报告 2026-05-23</title><style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","微软雅黑",sans-serif;color:#333;background:#f0f2f5;padding:20px}
+.report-page{max-width:210mm;margin:0 auto;background:#fff;padding:15mm 18mm;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.page-break{page-break-before:always}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:28px 30px;border-radius:10px;margin-bottom:20px;position:relative}
+.header h1{font-size:24px;margin-bottom:8px}
+.header .subtitle{font-size:17px;line-height:1.7}
+.header .badge{position:absolute;top:20px;right:25px;padding:8px 18px;border-radius:20px;font-size:16px;font-weight:bold;text-align:center}
+.badge-red{background:#e74c3c;color:#fff}
+.badge-orange{background:#e67e22;color:#fff}
+.badge-yellow{background:#f39c12;color:#fff}
+.badge-green{background:#27ae60;color:#fff}
+.badge-blue{background:#2980b9;color:#fff}
+.score-card{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.score-item{background:#f8f9fa;border-radius:8px;padding:12px 14px;border-left:4px solid #3498db}
+.score-item .dim-name{font-size:13px;color:#666}
+.score-item .dim-score{font-size:22px;font-weight:bold;margin:4px 0}
+.score-item .dim-bar{height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.score-item .dim-bar-fill{height:100%;border-radius:3px;transition:width 0.3s}
+.section{margin:18px 0}
+.section h2{font-size:18px;color:#16213e;border-bottom:2px solid #1a1a2e;padding-bottom:6px;margin-bottom:12px}
+.section h3{font-size:15px;color:#333;margin:10px 0 6px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:13px}
+th{background:#1a1a2e;color:#fff;padding:8px 10px;text-align:center;font-weight:normal}
+td{padding:6px 10px;border:1px solid #e0e0e0;text-align:center}
+tr:nth-child(even){background:#f8f9fa}
+.prediction-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 16px}
+.pred-item{text-align:center;padding:12px;border-radius:8px;background:#f8f9fa}
+.pred-item .period{font-size:12px;color:#888}
+.pred-item .direction{font-size:20px;font-weight:bold;margin:4px 0}
+.pred-up{color:#e74c3c}.pred-down{color:#27ae60}.pred-neutral{color:#f39c12}
+.ladder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.ladder-item{padding:10px;border-radius:6px;text-align:center}
+.ladder-resist{background:#fff5f5;border:1px solid #fdd}
+.ladder-supp{background:#f0fff4;border:1px solid #dfd}
+.ladder-stop{background:#fff8f0;border:1px solid #fed}
+.ladder-item .level{font-size:11px;color:#999}
+.ladder-item .price{font-size:18px;font-weight:bold}
+.ladder-item .note{font-size:11px;color:#888}
+.op-section{background:#f8f9fa;border-radius:8px;padding:14px;margin:10px 0;border-left:4px solid #2980b9}
+.op-section.buy{border-left-color:#27ae60}
+.op-section.sell{border-left-color:#e74c3c}
+.op-section.stop{border-left-color:#e67e22}
+.op-section .op-title{font-size:14px;font-weight:bold;margin-bottom:6px}
+.op-section .op-detail{font-size:13px;color:#555;line-height:1.6}
+.scenario-table td:first-child{font-weight:bold;text-align:left;width:22%}
+.scenario-table td:nth-child(2){text-align:left;font-size:12px}
+.scenario-table td:nth-child(3){width:15%;font-weight:bold;text-align:center}
+.pos-meter{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#eef2f7;border-radius:8px;margin:8px 0}
+.pos-meter .pos-max{font-size:28px;font-weight:bold;color:#2980b9}
+.pos-meter .pos-label{font-size:14px;color:#555}
+.pos-bar{flex:1;height:12px;background:#ddd;border-radius:6px;overflow:hidden}
+.pos-bar-fill{height:100%;background:#2980b9;border-radius:6px}
+.health-meter{display:flex;align-items:center;gap:16px;padding:14px;background:#f8f9fa;border-radius:8px;margin:10px 0}
+.health-score{font-size:36px;font-weight:bold;min-width:70px;text-align:center}
+.health-label{font-size:16px;padding:4px 12px;border-radius:4px}
+.disclaimer{margin-top:24px;padding-top:12px;border-top:1px solid #ddd;font-size:11px;color:#999;line-height:1.8}
+.key-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.level-item{padding:12px;text-align:center;border-radius:8px}
+.level-item .lbl{font-size:12px;color:#888}
+.level-item .val{font-size:20px;font-weight:bold}
+.level-resist{background:#fde8e8;border:1px solid #f5c6c6}.level-resist .val{color:#e74c3c}
+.level-supp{background:#e8f5e9;border:1px solid #c6e6c8}.level-supp .val{color:#27ae60}
+.level-stop{background:#fff3e0;border:1px solid #ffe0b2}.level-stop .val{color:#e67e22}
+.fund-flow-table td:first-child{text-align:left}
+.research-list{margin:8px 0}
+.research-item{padding:6px 0;border-bottom:1px dashed #e0e0e0;font-size:13px}
+.research-item .org{color:#2980b9;font-weight:bold}
+.research-item .rating-buy{color:#e74c3c}.research-item .rating-hold{color:#e67e22}</style></head><body><div class='report-page'><div class="header">
+    <h1>盈峰环境 (000967)</h1>
+    <div class="subtitle">2026-05-23 | 现价 ¥12.98 | 涨跌幅 7.72% | 换手 6.58% | PE 73.13 | 流通市值 426亿</div>
+    <div class="badge badge-yellow">52 分<br><span style="font-size:12px;">观察</span></div>
+</div><div class="section">
+    <h2>执行摘要</h2>
+    <div class="score-card"><div class='score-item' style='border-left-color:#f39c12'>
+            <div class='dim-name'>技术面 <span style='float:right;color:#999;font-size:11px;'>25%</span></div>
+            <div class='dim-score' style='color:#f39c12'>44</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:44%;background:#f39c12'></div></div>
+        </div><div class='score-item' style='border-left-color:#f39c12'>
+            <div class='dim-name'>基本面 <span style='float:right;color:#999;font-size:11px;'>20%</span></div>
+            <div class='dim-score' style='color:#f39c12'>59</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:59%;background:#f39c12'></div></div>
+        </div><div class='score-item' style='border-left-color:#e74c3c'>
+            <div class='dim-name'>消息面 <span style='float:right;color:#999;font-size:11px;'>15%</span></div>
+            <div class='dim-score' style='color:#e74c3c'>25</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:25%;background:#e74c3c'></div></div>
+        </div><div class='score-item' style='border-left-color:#f39c12'>
+            <div class='dim-name'>板块行业 <span style='float:right;color:#999;font-size:11px;'>20%</span></div>
+            <div class='dim-score' style='color:#f39c12'>55</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:55%;background:#f39c12'></div></div>
+        </div><div class='score-item' style='border-left-color:#2980b9'>
+            <div class='dim-name'>资金面 <span style='float:right;color:#999;font-size:11px;'>15%</span></div>
+            <div class='dim-score' style='color:#2980b9'>60</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:60%;background:#2980b9'></div></div>
+        </div><div class='score-item' style='border-left-color:#27ae60'>
+            <div class='dim-name'>宏观大盘 <span style='float:right;color:#999;font-size:11px;'>5%</span></div>
+            <div class='dim-score' style='color:#27ae60'>100</div>
+            <div class='dim-bar'><div class='dim-bar-fill' style='width:100%;background:#27ae60'></div></div>
+        </div></div>
+    <div class="prediction-grid">
+        <div class="pred-item"><div class="period">短期 (1-5日)</div><div class="direction pred-neutral">中性</div><div style="font-size:11px;color:#999;">置信度 低(<50%)</div></div>
+        <div class="pred-item"><div class="period">中期 (1-4周)</div><div class="direction pred-up">趋势看多</div></div>
+        <div class="pred-item"><div class="period">长期 (1-6月)</div><div class="direction pred-up">长期看好</div></div>
+    </div>
+</div><div class="section">
+    <h2>价格分层体系（六层价位）</h2>
+    <p style="font-size:12px;color:#888;margin-bottom:8px;">现价 ¥12.98 | ATR(14) ¥1.28 | 距S1 2.5% | 距R1 7.2%</p>
+    <div class="ladder-grid">
+        <div class="ladder-item ladder-resist"><div class="level">R3 强阻力</div><div class="price" style="color:#e74c3c">¥14.43</div><div class="note">突破则趋势加速</div></div>
+        <div class="ladder-item ladder-resist"><div class="level">R2 中阻力</div><div class="price" style="color:#e74c3c">¥14.34</div><div class="note">中期目标位</div></div>
+        <div class="ladder-item ladder-resist"><div class="level">R1 弱阻力</div><div class="price" style="color:#e74c3c">¥13.92</div><div class="note">短期止盈位</div></div>
+        <div class="ladder-item ladder-supp"><div class="level">S1 弱支撑</div><div class="price" style="color:#27ae60">¥12.66</div><div class="note">第一买入参考</div></div>
+        <div class="ladder-item ladder-supp"><div class="level">S2 中支撑</div><div class="price" style="color:#27ae60">¥9.3</div><div class="note">第二买入参考</div></div>
+        <div class="ladder-item ladder-stop"><div class="level">S3 强支撑/止损</div><div class="price" style="color:#27ae60">¥7.76</div><div class="note">趋势防守底线</div></div>
+    </div>
+</div><div class="section">
+    <h2>短期操作建议（明日/1-5日）</h2>
+    <p style="font-size:13px;color:#666;margin-bottom:8px;">趋势判断：<strong style="color:#f39c12">中性</strong> | 置信度：低(<50%)</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div class="op-section buy"><div class="op-title">买入计划</div><div class="op-detail">第一买入点：¥12.66（买入4%）<br>第二买入点：¥9.3（买入3%）</div></div>
+        <div class="op-section sell"><div class="op-title">卖出计划</div><div class="op-detail">第一目标：¥13.92（短线止盈）<br>第二目标：¥14.34（中线止盈）</div></div>
+        <div class="op-section stop"><div class="op-title">止损计划</div><div class="op-detail">止损价位：¥7.76<br>最大亏损约：40.2%</div></div>
+    </div>
+    <h3>明日操作情景计划</h3>
+    <table class="scenario-table"><tr><th>情景</th><th>操作指引</th><th>仓位调整</th></tr><tr><td>情景1：高开>1.5%</td><td>观察成交量，放量可轻仓试探，缩量则不动</td><td style='color:#f39c12'>观望/轻仓</td></tr><tr><td>情景2：平开/低开</td><td>保持观望，方向不明时减少交易</td><td style='color:#f39c12'>观望</td></tr><tr><td>情景3：盘中大幅波动>3%</td><td>等待方向明确后再操作，不抄底不追高</td><td style='color:#f39c12'>观望</td></tr></table>
+</div><div class="section">
+    <h2>仓位与周期策略</h2>
+    <div class="pos-meter">
+        <div class="pos-max" style="color:#f39c12">10%</div>
+        <div class="pos-label">单只上限 · 轻仓试探</div>
+        <div class="pos-bar"><div class="pos-bar-fill" style="width:33.3%;background:#f39c12"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+        <div class="op-section"><div class="op-title">中期配置（1-4周）</div><div class="op-detail">方向：<strong style="color:#e74c3c">趋势看多</strong><br>建仓区间：¥9.3 - ¥12.66<br>中期目标：¥14.34<br>波段止损：¥7.76</div></div>
+        <div class="op-section"><div class="op-title">长期配置（1-6月）</div><div class="op-detail">方向：<strong style="color:#e74c3c">长期看好</strong><br>战略仓位：10%以内<br>分批建仓参考：第一笔 4% 在S1（¥12.66）附近，第二笔 3% 在S2（¥9.3）附近</div></div>
+    </div>
+</div><div class="section">
+    <h2>六维评分详情</h2>
+    <table><thead><tr><th>维度</th><th>得分</th><th>权重</th><th>加权得分</th><th>评分依据</th></tr></thead><tbody><tr><td>技术面</td><td style='color:#f39c12;font-weight:bold;'>44</td><td>25%</td><td>11</td><td style='text-align:left;font-size:12px;color:#666;'>均线排列 + MACD + RSI + 布林带 + 量价关系</td></tr><tr><td>基本面</td><td style='color:#f39c12;font-weight:bold;'>59</td><td>20%</td><td>11.8</td><td style='text-align:left;font-size:12px;color:#666;'>ROE + 毛利率 + 营收增速 + PE百分位 + 负债率</td></tr><tr><td>消息面</td><td style='color:#e74c3c;font-weight:bold;'>25</td><td>15%</td><td>3.8</td><td style='text-align:left;font-size:12px;color:#666;'>研报覆盖数 + 分析师评级 + 市场关注度</td></tr><tr><td>板块行业</td><td style='color:#f39c12;font-weight:bold;'>55</td><td>20%</td><td>11</td><td style='text-align:left;font-size:12px;color:#666;'>板块相位 + 资金流向 + 个股相对强度</td></tr><tr><td>资金面</td><td style='color:#2980b9;font-weight:bold;'>60</td><td>15%</td><td>9</td><td style='text-align:left;font-size:12px;color:#666;'>主力资金 + 北向持股 + 融资融券</td></tr><tr><td>宏观大盘</td><td style='color:#27ae60;font-weight:bold;'>100</td><td>5%</td><td>5</td><td style='text-align:left;font-size:12px;color:#666;'>市场广度 + 板块涨跌比</td></tr></tbody></table>
+    <p style="text-align:right;font-size:14px;font-weight:bold;margin-top:6px;">综合评分：<span style="color:#f39c12;font-size:20px;">52 分</span> — ★★ 观察</p>
+</div><div class='page-break'></div><div class="section">
+    <h2>技术面分析 [2]→[5] ✅已实测</h2>
+    <table>
+<tr><th>指标</th><th>数值</th><th>判断</th></tr>
+<tr><td>MA5/MA10/MA20</td><td>12.91 / 13.58 / 13.92</td><td>空头排列（下行趋势）</td></tr>
+<tr><td>MACD</td><td>DIF 0.364 DEA 0.783</td><td>死叉状态，空头主导</td></tr>
+<tr><td>RSI(14)</td><td>45.1</td><td>中性偏弱(45.1)</td></tr>
+<tr><td>布林带</td><td>上16.12 中13.92 下11.72</td><td>中轨(13.92)和下轨(11.72)之间，偏弱</td></tr>
+<tr><td>量能</td><td>216303070 手 / 5日均量 167890374 手</td><td>量能正常</td></tr>
+</table>
+</div><div class="section">
+    <h2>基本面分析 [3]→[5] ✅已实测</h2>
+    <table>
+    <tr><th>指标</th><th>最新值</th><th>评估</th></tr>
+    <tr><td>ROE</td><td>3.16%</td><td>较差</td></tr>
+    <tr><td>毛利率</td><td>100%</td><td>优秀</td></tr>
+    <tr><td>营收增速</td><td>253%</td><td>同比</td></tr>
+    <tr><td>净利润</td><td>5.5亿</td><td>归母净利润</td></tr>
+    <tr><td>EPS</td><td>0.17 元</td><td>基本每股收益</td></tr>
+    <tr><td>资产负债率</td><td>0%</td><td>低杠杆</td></tr>
+    <tr><td>PE估值</td><td>101.8 / 29.49-128.78 / 百分位98.3% (高估)</td><td>高估</td></tr>
+    </table>
+</div><div class='page-break'></div><div class="section">
+    <h2>消息面与情绪分析 [11] ✅已实测</h2><p style='color:#999;'>近30天无研报覆盖</p><h3>融资融券 [12] ✅已实测</h3><table><tr><th>日期</th><th>融资余额(亿)</th><th>融券余额(亿)</th><th>融资净买入(万)</th></tr><tr><td>2026-05-21</td><td>18.46</td><td>0.1</td><td>-10838</td></tr><tr><td>2026-05-20</td><td>19.55</td><td>0.1</td><td>-8705</td></tr><tr><td>2026-05-19</td><td>20.42</td><td>0.1</td><td>13943</td></tr><tr><td>2026-05-18</td><td>19.02</td><td>0.1</td><td>-14275</td></tr><tr><td>2026-05-15</td><td>20.45</td><td>0.1</td><td>-14053</td></tr></table></div><div class='section'><h2>板块行业分析 [7] ✅已实测</h2><p>行业信息：暂无</p><h3>市场板块TOP5表现</h3><table><tr><th>板块</th><th>涨幅%</th><th>成交额(亿)</th></tr><tr><td>元件</td><td>+7.85%</td><td>2436.86</td></tr><tr><td>电子化学品</td><td>+5.22%</td><td>1326.49</td></tr><tr><td>金属新材料</td><td>+4.85%</td><td>454.57</td></tr><tr><td>非金属材料</td><td>+4.57%</td><td>170.74</td></tr><tr><td>工业金属</td><td>+4.51%</td><td>3651.99</td></tr></table></div><div class='section'><h2>资金面分析 [8][9][10] ✅已实测</h2><h3>北向资金持股 [8]</h3><p>持股数量：3889万股 | 持股市值：3.31亿 | 占总股本：1.22% | 占流通股本：1.2285%</p></div><div class="section">
+    <h2>趋势健康度评估 <span style="font-size:13px;color:#999;font-weight:normal;">（衡量趋势可持续性，非综合评分，详见白皮书§3.2）</span></h2>
+    <div class="health-meter">
+        <div class="health-score" style="color:#e74c3c">21</div>
+        <div><span class="health-label" style="background:#e74c3c;color:#fff;">危险</span></div>
+        <div style="font-size:13px;color:#666;flex:1;">当前从20日高点回调 24%</div>
+    </div>
+    <div style="font-size:13px;color:#555;background:#fff8f0;padding:10px 14px;border-radius:6px;border-left:4px solid #e74c3c;">
+        <strong>具体执行建议：</strong>
+        <ul style="margin:6px 0 0 0;padding-left:18px;line-height:1.8;">
+            <li><strong>深度回调24%</strong>，S2(¥12.33)为关键支撑 — 若跌破S2则触发清仓信号；可在S2附近等待放量企稳后分批建仓</li><li><strong>RSI(45.1)跌破强弱分界线50</strong> — 趋势转弱，若明日无法站回50则确认短线转弱，减仓1/3</li><li><strong>MACD死叉</strong>(DIF=0.364 &lt; DEA=0.783) — 短线动能转负，预计调整持续2-4个交易日，待DIF拐头向上或出现底背离再参与</li><li><strong>跌破¥11.47(S3)→清仓</strong> — 当前距止损11.6%，严格执行止损纪律，不因中长线看好而扛单</li>
+        </ul>
+    </div>
+    <div style="margin-top:10px;padding:10px 14px;background:#fff3e0;border-radius:6px;border-left:4px solid #e67e22;font-size:13px;color:#555;line-height:1.7;">
+    <strong style="color:#e67e22;">⚠ 短线与中长线背离：</strong>趋势健康度（21分）反映的是<strong>短期技术面</strong>（20日回撤、均线、MACD、RSI），当前确实偏弱。
+    但中/长期基本面与板块逻辑未变（趋势看多/长期看好），两者并不矛盾。<br>
+    <strong>应对策略：</strong>中长线持仓者可等待企稳信号（MACD金叉+RSI回升至50以上）再考虑加仓，不建议在当前技术面恶化时盲目清仓。
+    短线交易者应严格执行止损纪律。
+</div>
+</div><div class="section">
+    <h2>关键价位</h2>
+    <div class="key-levels">
+        <div class="level-item level-resist"><div class="lbl">上方阻力</div><div class="val">¥13.92</div></div>
+        <div class="level-item level-supp"><div class="lbl">下方支撑</div><div class="val">¥12.33</div></div>
+        <div class="level-item level-stop"><div class="lbl">止损价位</div><div class="val">¥11.47</div></div>
+    </div>
+</div><div class="disclaimer">
+    <p><strong>免责声明</strong></p>
+    <p>本报告由铁律量化系统自动生成，数据来源包括腾讯行情[1]、新浪K线[2]、东方财富[3][7][8][9][10][11][12]等公开API。报告中的所有分析、评分和预判仅基于历史数据和量化模型，不构成任何投资建议。</p>
+    <p>股票投资有风险，过往表现不代表未来收益。本报告中的评分和预判仅供参考，投资者应独立判断并自行承担投资风险。</p>
+    <p>数据延迟：实时行情数据可能存在分钟级延迟，财务数据为季度更新。生成时间：2026-05-23 01:38:52</p>
+</div></div></body></html>

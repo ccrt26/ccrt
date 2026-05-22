@@ -1,0 +1,46 @@
+﻿{
+  "InitialCapital": 1000000,
+  "MaxPositions": 3,
+  "SingleStockLimitPct": 30,
+  "SlippagePct": 0.1,
+  "CooloffPeriodDays": 5,
+  "FullTakeProfitCooldownDays": 3,
+  "Commission": {
+    "Rate": 0.00025,
+    "MinPerOrder": 5.0
+  },
+  "StampTax": {
+    "Rate": 0.001,
+    "OnSellOnly": true
+  },
+  "TakeProfit": {
+    "Mode": "fixed",
+    "FixedPct1": 5.0,
+    "FixedPct2": 10.0,
+    "AtrMultiplier1": 2.0,
+    "AtrMultiplier2": 3.0,
+    "AtrPeriod": 14
+  },
+  "PositionSizing": {
+    "Tiers": [
+      { "MinScore": 80, "Ratio": 25 },
+      { "MinScore": 65, "Ratio": 20 },
+      { "MinScore": 45, "Ratio": 10 },
+      { "MinScore": 30, "Ratio": 5 },
+      { "MinScore": 0, "Ratio": 0 }
+    ]
+  },
+  "Benchmark": {
+    "Code": "000300.SH",
+    "Name": "沪深300",
+    "Enabled": true
+  },
+  "ExDividendAdjustment": {
+    "Enabled": true,
+    "ConfigFile": "ex_dividend_dates.json"
+  },
+  "DataRetention": {
+    "SnapshotsKeepDays": 365,
+    "ArchiveAfterDays": 365
+  }
+}

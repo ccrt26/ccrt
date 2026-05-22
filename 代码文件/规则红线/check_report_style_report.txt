@@ -1,0 +1,67 @@
+﻿================================================
+     Tielv Quant - Report Style Check
+     2026-05-23 01:53
+================================================
+
+[S0 - Baseline Doc]
+  [OK] baseline doc exists
+
+[S1 - gen_daily_html.ps1]
+  [!!] gen_daily_html.ps1 missing heading defs
+  [OK] gen_daily_html.ps1 style defs ok
+
+[S2 - HTML Report Check]
+  [OK] Report: daily_report_20260523.html brand color #1a1a2e
+  [OK] Report: daily_report_20260523.html .up color ok
+  [OK] Report: daily_report_20260523.html .down color ok
+  [OK] Report: daily_report_20260523.html font ok
+  [OK] Report: daily_report_20260523.html .hdr found
+  [OK] Report: daily_report_20260523.html .sec found
+  [OK] Report: daily_report_20260523.html .card found
+  [OK] Report: daily_report_20260523.html .card-grid found
+  [OK] Report: daily_report_20260523.html .up found
+  [OK] Report: daily_report_20260523.html .down found
+  [OK] Report: daily_report_20260523.html .tag found
+  [OK] Report: daily_report_20260523.html .ftr found
+  [OK] Report: daily_report_20260523.html .t-green found
+  [OK] Report: daily_report_20260523.html .t-yellow found
+  [OK] Report: daily_report_20260523.html .t-red found
+  [OK] Report: daily_report_20260523.html .sc-high found
+  [OK] Report: daily_report_20260523.html .bg-green found
+  [OK] Report: daily_report_20260523.html .c-name found
+  [OK] Report: daily_report_20260523.html .c-scr found
+  [OK] Report: daily_report_20260523.html .c-logic found
+  [OK] Report: daily_report_20260523.html .note found
+  [OK] Report: daily_report_20260523.html .s-bar found
+  [OK] Report: daily_report_20260523.html landscape ok
+
+[S3 - report_style.css]
+  [OK] css brand color ok
+  [OK] css font ok
+  [OK] css .page found
+  [OK] css .metrics found
+  [OK] css .badge found
+  [OK] css .findings-list found
+  [OK] css .suggestion found
+  [OK] css .footer found
+  [OK] css .up found
+  [OK] css .down found
+
+[S4 - DOCX Gen Scripts]
+  [OK] gen_doc_v2.ps1 style defs ok
+  [OK] gen_eval_doc.ps1 style defs ok
+  [OK] gen_eval_doc_v1.5.ps1 style defs ok
+  [OK] gen_doc.ps1 style defs ok
+  [OK] gen_redlines_doc.ps1 style defs ok
+  [OK] gen_eval_doc.ps1 style defs ok
+
+[S5 - md_to_docx.py]
+  [OK] md_to_docx.py: C_PRIMARY
+  [OK] md_to_docx.py: C_SECONDARY
+  [OK] md_to_docx.py: FONT_FAMILY
+  [OK] md_to_docx.py: SIZE_H1 18pt
+  [OK] md_to_docx.py: SIZE_H2 14pt
+  [OK] md_to_docx.py: SIZE_H3 12pt
+
+[WARN] 1 warnings
+Pass=47 Warn=1 Fail=0 Total=48

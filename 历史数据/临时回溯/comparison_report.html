@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html><html lang='zh-CN'><head><meta charset='UTF-8'><title>铁律量化 — 原版 vs 优化版 对比报告</title><style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei","微软雅黑",sans-serif; color: #333; background: #f0f2f5; padding: 20px; }
+.report { max-width: 1200px; margin: 0 auto; background: #fff; padding: 30px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+h1 { font-size: 24px; color: #1a1a2e; border-bottom: 3px solid #1a1a2e; padding-bottom: 8px; margin-bottom: 16px; }
+h2 { font-size: 18px; color: #16213e; border-bottom: 2px solid #e74c3c; padding-bottom: 6px; margin: 24px 0 12px; }
+h3 { font-size: 15px; color: #333; margin: 16px 0 8px; }
+.subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: #fff; }
+.badge-green { background: #27ae60; } .badge-blue { background: #2980b9; }
+.badge-yellow { background: #f39c12; } .badge-red { background: #e74c3c; }
+.badge-orange { background: #e67e22; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 13px; }
+th { background: #1a1a2e; color: #fff; padding: 8px 10px; text-align: center; font-weight: normal; }
+td { padding: 6px 10px; border: 1px solid #e0e0e0; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+.score-cell { font-weight: bold; }
+.stock-header { background: #eef2f7; padding: 10px 14px; border-radius: 6px; margin: 16px 0 8px; font-size: 15px; font-weight: bold; border-left: 4px solid #2980b9; }
+.stock-header.up { border-left-color: #27ae60; }
+.improve { color: #27ae60; } .degrade { color: #e74c3c; } .same { color: #666; }
+.insight { background: #eef2f7; border-radius: 8px; padding: 14px 16px; margin: 12px 0; border-left: 4px solid #2980b9; }
+.insight.good { border-left-color: #27ae60; } .insight.warn { border-left-color: #f39c12; }
+.insight .title { font-weight: bold; font-size: 14px; }
+.insight .detail { font-size: 13px; color: #555; margin-top: 4px; line-height: 1.6; }
+.changes-list { font-size: 13px; line-height: 1.8; margin: 8px 0 8px 20px; }
+.footnote { margin-top: 24px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 11px; color: #999; line-height: 1.8; }
+</style></head><body><div class="report">
+
+<h1>原版 vs 优化版 — 分析逻辑对比报告</h1>
+<div class="subtitle">铁律量化 · 生成日期: 2026-05-22 13:34 | 优化版 v1.0 基于30日回测(180样本)结果调整</div>
+
+<div class="insight warn">
+<div class="title">⚡ 优化变更概要</div>
+<div class="detail">
+<ol class="changes-list">
+<li><strong>权重调整：</strong>技术面 25%→30%↑ 基本面 20%→25%↑ 消息面 15%→5%↓（消息面 r=-0.14 负相关）</li>
+<li><strong>技术面调分：</strong>布林触及上轨(61.1%) 8→15分↑ 缩量下跌(60.5%) 5→12分↑ RSI超卖(36.8%反向) 5→0分↓ 布林触及下轨(0%反向) 3→0分↓ 放量下跌 2→0分↓</li>
+<li><strong>预判收紧：</strong>看多需基础信号≥3 + 确认信号≥2（原仅需≥3基础）；避免看空→改为中性（看空20%反向）</li>
+<li><strong>置信度重算：</strong>基于确认信号+多周期配合（原仅基于shortBull数量，高置信度实际胜率仅49.1%）</li>
+<li><strong>评级阈值：</strong>80/65/45/30（原85/70/55/40），扩大评分分布</li>
+<li><strong>方向策略：</strong>偏多(60.6%有效)作为主要看多信号</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== 中科曙光 ==================== -->
+<div class="stock-header">中科曙光 (603019) · 现价 94.54</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#f39c12;">51</td><td class="score-cell" style="color:#f39c12;">45</td><td class="degrade">-6</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#e74c3c;">25</td><td class="score-cell" style="color:#e74c3c;">20</td><td class="degrade">-5</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">48</td><td class="score-cell" style="color:#f39c12;">55</td><td class="improve">+7</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#e74c3c;">31</td><td class="score-cell" style="color:#f39c12;">53</td><td class="improve">+22</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#f39c12;">50</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+50</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#e74c3c;">41 (谨慎)</td><td style="color:#f39c12;">48 (观察)</td><td class="improve">+7 ↑</td></tr>
+<tr><td>短期方向</td><td>中性</td><td>中性</td><td class="same">→</td></tr>
+<tr><td>中期方向</td><td>趋势看空</td><td>趋势看空</td><td class="same">→</td></tr>
+<tr><td>长期方向</td><td>长期中性</td><td>长期中性</td><td class="same">→</td></tr>
+<tr><td>置信度</td><td>低(<50%)</td><td>低(<50%)</td><td class="same">→</td></tr>
+</tbody></table>
+
+<!-- ==================== 拓普集团 ==================== -->
+<div class="stock-header">拓普集团 (601689) · 现价 70.54</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#27ae60;">83</td><td class="score-cell" style="color:#2980b9;">73</td><td class="degrade">-10</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#e74c3c;">35</td><td class="score-cell" style="color:#e74c3c;">23</td><td class="degrade">-12</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">48</td><td class="score-cell" style="color:#f39c12;">55</td><td class="improve">+7</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#e74c3c;">33</td><td class="score-cell" style="color:#e74c3c;">33</td><td class="same">0</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#f39c12;">50</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+50</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#e74c3c;">51 (谨慎)</td><td style="color:#f39c12;">54 (观察)</td><td class="improve">+3 ↑</td></tr>
+<tr><td>短期方向</td><td style="color:#e74c3c;">看多</td><td style="color:#f39c12;">偏多</td><td class="improve">偏多(60.6%有效)</td></tr>
+<tr><td>中期方向</td><td>趋势看空</td><td>区间震荡</td><td class="improve">↑</td></tr>
+<tr><td>长期方向</td><td>长期中性</td><td>长期中性</td><td class="same">→</td></tr>
+<tr><td>置信度</td><td>高(>70%)</td><td>中(50-70%)</td><td class="warn">校准优化</td></tr>
+</tbody></table>
+
+<!-- ==================== 东睦股份 ==================== -->
+<div class="stock-header">东睦股份 (600114) · 现价 35.43</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#f39c12;">56</td><td class="score-cell" style="color:#2980b9;">65</td><td class="improve">+9</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="score-cell" style="color:#e74c3c;">39</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#e74c3c;">13</td><td class="score-cell" style="color:#e74c3c;">23</td><td class="improve">+10</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">55</td><td class="score-cell" style="color:#f39c12;">55</td><td class="same">0</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#f39c12;">58</td><td class="score-cell" style="color:#f39c12;">58</td><td class="same">0</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#2980b9;">60</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+40</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#e74c3c;">46 (谨慎)</td><td style="color:#f39c12;">55 (观察)</td><td class="improve">+9 ↑</td></tr>
+<tr><td>短期方向</td><td>偏多</td><td>偏多</td><td class="same">→</td></tr>
+<tr><td>中期方向</td><td>区间震荡</td><td>区间震荡</td><td class="same">→</td></tr>
+<tr><td>长期方向</td><td>长期中性</td><td>长期中性</td><td class="same">→</td></tr>
+<tr><td>置信度</td><td>中(50-70%)</td><td>高(>70%)</td><td class="improve">↑ 提升</td></tr>
+</tbody></table>
+
+<!-- ==================== 多瑞医药 ==================== -->
+<div class="stock-header">多瑞医药 (301075) · 现价 83.82</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#27ae60;">85</td><td class="score-cell" style="color:#27ae60;">83</td><td class="degrade">-2</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#2980b9;">67</td><td class="score-cell" style="color:#2980b9;">67</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#e74c3c;">25</td><td class="score-cell" style="color:#e74c3c;">20</td><td class="degrade">-5</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">48</td><td class="score-cell" style="color:#f39c12;">55</td><td class="improve">+7</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#e74c3c;">38</td><td class="score-cell" style="color:#e74c3c;">33</td><td class="degrade">-5</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#f39c12;">50</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+50</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#f39c12;">56 (观察)</td><td style="color:#f39c12;">64 (观察)</td><td class="improve">+8 ↑</td></tr>
+<tr><td>短期方向</td><td>看多</td><td>看多</td><td class="same">→ (确认信号达要求)</td></tr>
+<tr><td>中期方向</td><td>区间震荡</td><td style="color:#e74c3c;">趋势看多</td><td class="improve">↑ 板块55达标触发</td></tr>
+<tr><td>长期方向</td><td>长期看好</td><td>长期看好</td><td class="same">→</td></tr>
+<tr><td>置信度</td><td>高(>70%)</td><td>高(>70%)</td><td class="same">→</td></tr>
+</tbody></table>
+
+<!-- ==================== 盈峰环境 ==================== -->
+<div class="stock-header">盈峰环境 (000967) · 现价 12.29</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#e74c3c;">36</td><td class="score-cell" style="color:#e74c3c;">31</td><td class="degrade">-5</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#f39c12;">59</td><td class="score-cell" style="color:#f39c12;">59</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#e74c3c;">25</td><td class="score-cell" style="color:#e74c3c;">20</td><td class="degrade">-5</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">48</td><td class="score-cell" style="color:#f39c12;">55</td><td class="improve">+7</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#2980b9;">60</td><td class="score-cell" style="color:#2980b9;">60</td><td class="same">0</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#f39c12;">50</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+50</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#e74c3c;">46 (谨慎)</td><td style="color:#f39c12;">50 (观察)</td><td class="improve">+4 ↑</td></tr>
+<tr><td>短期方向</td><td style="color:#27ae60;">看空</td><td style="color:#f39c12;">中性</td><td class="improve">避免看空(20%反向)</td></tr>
+<tr><td>中期方向</td><td>区间震荡</td><td>趋势看空</td><td class="same">→</td></tr>
+<tr><td>长期方向</td><td>长期看好</td><td>长期中性</td><td class="warn">数据差异</td></tr>
+<tr><td>置信度</td><td>低(<50%)</td><td>低(<50%)</td><td class="same">→</td></tr>
+</tbody></table>
+
+<!-- ==================== 招商银行 ==================== -->
+<div class="stock-header">招商银行 (600036) · 现价 37.04</div>
+<table><thead><tr><th>维度</th><th>原版</th><th>优化版</th><th>变化</th></tr></thead><tbody>
+<tr><td>技术面</td><td class="score-cell" style="color:#e74c3c;">29</td><td class="score-cell" style="color:#e74c3c;">23</td><td class="degrade">-6</td></tr>
+<tr><td>基本面</td><td class="score-cell" style="color:#f39c12;">47</td><td class="score-cell" style="color:#f39c12;">47</td><td class="same">0</td></tr>
+<tr><td>消息面</td><td class="score-cell" style="color:#f39c12;">57</td><td class="score-cell" style="color:#f39c12;">55</td><td class="degrade">-2</td></tr>
+<tr><td>板块行业</td><td class="score-cell" style="color:#f39c12;">55</td><td class="score-cell" style="color:#f39c12;">55</td><td class="same">0</td></tr>
+<tr><td>资金面</td><td class="score-cell" style="color:#f39c12;">58</td><td class="score-cell" style="color:#f39c12;">58</td><td class="same">0</td></tr>
+<tr><td>宏观大盘</td><td class="score-cell" style="color:#f39c12;">50</td><td class="score-cell" style="color:#27ae60;">100</td><td class="improve">+50</td></tr>
+<tr style="font-weight:bold;background:#f0f2f5;"><td>综合评分</td><td style="color:#e74c3c;">50 (谨慎)</td><td style="color:#f39c12;">46 (观察)</td><td class="degrade">-4</td></tr>
+<tr><td>短期方向</td><td style="color:#27ae60;">看空</td><td style="color:#f39c12;">中性</td><td class="improve">避免看空(20%反向)</td></tr>
+<tr><td>中期方向</td><td>趋势看空</td><td>趋势看空</td><td class="same">→</td></tr>
+<tr><td>长期方向</td><td>长期中性</td><td>长期中性</td><td class="same">→</td></tr>
+<tr><td>置信度</td><td>低(<50%)</td><td>低(<50%)</td><td class="same">→</td></tr>
+</tbody></table>
+
+<h2>综合对比总结</h2>
+<table><thead><tr><th>股票</th><th>原版评级</th><th>优化版评级</th><th>原版综合</th><th>优化版综合</th><th>原版短期</th><th>优化版短期</th></tr></thead><tbody>
+<tr><td>中科曙光</td><td><span class="badge badge-orange">谨慎</span></td><td><span class="badge badge-yellow">观察</span></td><td>41</td><td>48</td><td>中性</td><td>中性</td></tr>
+<tr><td>拓普集团</td><td><span class="badge badge-orange">谨慎</span></td><td><span class="badge badge-yellow">观察</span></td><td>51</td><td>54</td><td style="color:#e74c3c;">看多</td><td style="color:#f39c12;">偏多</td></tr>
+<tr><td>东睦股份</td><td><span class="badge badge-orange">谨慎</span></td><td><span class="badge badge-yellow">观察</span></td><td>46</td><td>55</td><td>偏多</td><td>偏多</td></tr>
+<tr><td>多瑞医药</td><td><span class="badge badge-yellow">观察</span></td><td><span class="badge badge-yellow">观察</span></td><td>56</td><td>64</td><td style="color:#e74c3c;">看多</td><td style="color:#e74c3c;">看多</td></tr>
+<tr><td>盈峰环境</td><td><span class="badge badge-orange">谨慎</span></td><td><span class="badge badge-yellow">观察</span></td><td>46</td><td>50</td><td style="color:#27ae60;">看空</td><td>中性</td></tr>
+<tr><td>招商银行</td><td><span class="badge badge-orange">谨慎</span></td><td><span class="badge badge-yellow">观察</span></td><td>50</td><td>46</td><td style="color:#27ae60;">看空</td><td>中性</td></tr>
+</tbody></table>
+
+<div class="insight good">
+<div class="title">✅ 优化版主要变化</div>
+<div class="detail">
+<ul style="margin-left:20px;line-height:1.8;">
+<li><strong>评分分布改善：</strong>原版6只股票全部在41-56之间（紧缩），优化版46-64（更宽），区分度明显提升</li>
+<li><strong>评级提升：</strong>5/6只从"谨慎"升级为"观察"（降低阈值后分布更合理）</li>
+<li><strong>看空消除：</strong>原版盈峰环境、招商银行被错误"看空"（回测胜率仅20%），优化版改为"中性"</li>
+<li><strong>看多收紧：</strong>拓普集团原版"看多"（胜率49.1%随机），优化版改为"偏多"（胜率60.6%有效）</li>
+<li><strong>置信度校准：</strong>东睦股份从中→高（确认信号充足），拓普从高→中（确认信号不足）</li>
+<li><strong>多瑞医药保持看多：</strong>确认信号达标→维持看多，中期升级为趋势看多</li>
+</ul>
+</div>
+</div>
+
+<div class="insight warn">
+<div class="title">⚠️ 待观察事项</div>
+<div class="detail">
+<ul style="margin-left:20px;line-height:1.8;">
+<li>优化版尚未经过实盘验证，需要至少5个交易日积累对比数据</li>
+<li>宏观大盘评分因数据源差异从50→100，此维度权仅5%影响有限，但需确认数据一致性</li>
+<li>消息面降权后部分股票综合分可能偏低（如拓普消息面35→23），但该维度r=-0.14，降权合理</li>
+<li>评级阈值降低后（80/65/45/30），"强烈关注"(≥80)仍无股票达到，说明评分仍有上探空间</li>
+</ul>
+</div>
+</div>
+
+<div class="footnote">
+<p><strong>免责声明：</strong>优化版基于30日回测(2026-04-02~2026-05-19)结果调整，尚未经过实盘验证。仅供审阅对比，不构成投资建议。</p>
+<p>数据来源：腾讯行情、新浪K线、东方财富。生成时间：2026-05-22 13:34</p>
+</div>
+
+</div></body></html>

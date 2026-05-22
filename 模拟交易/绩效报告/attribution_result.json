@@ -1,0 +1,43 @@
+﻿{
+    "PerPrediction":  {
+
+                      },
+    "PerScoreSegment":  {
+
+                        },
+    "GeneratedAt":  "2026-05-23 01:05:41",
+    "PerStock":  {
+                     "600114":  {
+                                    "RealPnL":  0,
+                                    "WinRate":  null,
+                                    "Trades":  0,
+                                    "AvgPnL":  null,
+                                    "Losses":  0,
+                                    "UnrealPnL":  7168,
+                                    "TotalPnL":  7168,
+                                    "Name":  "东睦股份",
+                                    "Wins":  0
+                                },
+                     "601689":  {
+                                    "RealPnL":  0,
+                                    "WinRate":  null,
+                                    "Trades":  0,
+                                    "AvgPnL":  null,
+                                    "Losses":  0,
+                                    "UnrealPnL":  -26,
+                                    "TotalPnL":  -26,
+                                    "Name":  "拓普集团",
+                                    "Wins":  0
+                                }
+                 },
+    "Summary":  {
+                    "Trades":  0,
+                    "Realized":  0,
+                    "Stocks":  2,
+                    "Total":  7142,
+                    "Unrealized":  7142
+                },
+    "PerExitReason":  {
+
+                      }
+}

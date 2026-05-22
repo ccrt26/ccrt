@@ -1,0 +1,9 @@
+{
+  "rootDir": "C:\\Users\\34269\\Documents\\Claude\\股票分析",
+  "paths": {
+    "coreStocks": "代码文件\\数据\\core_stocks.json",
+    "dynamicPool": "代码文件\\数据\\dynamic_pool.json",
+    "module": "代码文件\\每日荐股\\scripts\\stock_data_fetcher.ps1",
+    "sectorMap": "代码文件\\数据\\eastmoney_sector_map.json"
+  }
+}

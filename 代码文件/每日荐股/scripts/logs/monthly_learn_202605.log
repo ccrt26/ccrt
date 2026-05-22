@@ -1,0 +1,92 @@
+﻿[2026-05-22 20:38:29][LEARN][INFO] ================================================================
+[2026-05-22 20:38:29][LEARN][INFO]   铁律量化 · 月度学习任务启动
+[2026-05-22 20:38:29][LEARN][INFO]   月份: 2026-04
+[2026-05-22 20:38:29][LEARN][INFO]   启动时间: 2026-05-22 20:38:29
+[2026-05-22 20:38:29][LEARN][INFO] ================================================================
+[2026-05-22 20:38:29][LEARN][INFO] PowerShell 版本: 5.1.26100.8457
+[2026-05-22 20:38:29][LEARN][INFO]   [OK] monthly_summary.ps1 就绪
+[2026-05-22 20:38:29][LEARN][INFO]   [OK] run_meta_evaluation.ps1 就绪
+[2026-05-22 20:38:29][LEARN][INFO]   [OK] gen_monthly_report.ps1 就绪
+[2026-05-22 20:38:29][LEARN][SEP] 
+[2026-05-22 20:38:29][LEARN][STEP] >>> Step a: 收集月度数据 -- monthly_summary.ps1 <<<
+[2026-05-22 20:38:29][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\monthly_summary.ps1 -Month '2026-04' -SourceDir 'C:\Users\34269\Documents\Claude\股票分析'
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] ===== Monthly summary started (2026-04) =====
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] [1/4] Collecting eval data...
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO]   Eval reports: 0, Final data: 0
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] [2/4] Reading workflow records...
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO]   Runs: 0 analysis, 0 eval
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] [3/4] Key stock data...
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO]   Key stock files: 0
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO]   JSON output: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_monthly_data.json
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] ===== Monthly summary complete =====
+[2026-05-22 20:38:29][LEARN][INFO]   [OUT] [2026-05-22 20:38:29][MONTHLY][INFO] Next: inform AI to run monthly learning
+[2026-05-22 20:38:29][LEARN][INFO] Step a 完成，耗时 0.2s
+[2026-05-22 20:38:29][LEARN][SEP] 
+[2026-05-22 20:38:29][LEARN][STEP] >>> Step b: 系统自检 -- run_meta_evaluation.ps1 <<<
+[2026-05-22 20:38:29][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\重点股票\次日评估\run_meta_evaluation.ps1 -GenerateReport:$true
+[2026-05-22 20:38:29][LEARN][INFO] Step b 完成，耗时 0.1s
+[2026-05-22 20:38:29][LEARN][SEP] 
+[2026-05-22 20:38:29][LEARN][STEP] >>> Step c: 生成月度学习报告 -- gen_monthly_report.ps1 <<<
+[2026-05-22 20:38:29][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\gen_monthly_report.ps1 -Month '2026-04' -SourceDir 'C:\Users\34269\Documents\Claude\股票分析'
+[2026-05-22 20:38:39][LEARN][INFO]   [OUT] HTML generated: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_月度学习报告.html
+[2026-05-22 20:38:39][LEARN][INFO]   [OUT] PDF generated: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_月度学习报告.pdf (308 KB)
+[2026-05-22 20:38:39][LEARN][INFO] Step c 完成，耗时 9.5s
+[2026-05-22 20:38:39][LEARN][SEP] 
+[2026-05-22 20:38:39][LEARN][STEP] >>> 执行完成摘要 <<<
+[2026-05-22 20:38:39][LEARN][INFO]   月份: 2026-04
+[2026-05-22 20:38:39][LEARN][INFO]   开始: 2026-05-22 20:38:29
+[2026-05-22 20:38:39][LEARN][INFO]   结束: 2026-05-22 20:38:39
+[2026-05-22 20:38:39][LEARN][INFO]   总耗时: 10.4s
+[2026-05-22 20:38:39][LEARN][INFO]   Step a [月度数据收集]: 完成 (0.2s)
+[2026-05-22 20:38:39][LEARN][INFO]   Step b [系统自检]: 完成 (0.1s)
+[2026-05-22 20:38:39][LEARN][INFO]   Step c [月度学习报告]: 完成 (9.5s)
+[2026-05-22 20:38:39][LEARN][INFO] 整体状态: 全部成功完成
+[2026-05-22 20:38:39][LEARN][INFO] ================================================================
+[2026-05-22 20:38:39][LEARN][INFO]   月度学习任务结束
+[2026-05-22 20:38:39][LEARN][INFO] ================================================================
+[2026-05-22 20:40:01][LEARN][INFO] ================================================================
+[2026-05-22 20:40:01][LEARN][INFO]   铁律量化 · 月度学习任务启动
+[2026-05-22 20:40:01][LEARN][INFO]   月份: 2026-04
+[2026-05-22 20:40:01][LEARN][INFO]   启动时间: 2026-05-22 20:40:01
+[2026-05-22 20:40:01][LEARN][INFO] ================================================================
+[2026-05-22 20:40:01][LEARN][INFO] PowerShell 版本: 5.1.26100.8457
+[2026-05-22 20:40:01][LEARN][INFO]   [OK] monthly_summary.ps1 就绪
+[2026-05-22 20:40:01][LEARN][INFO]   [OK] run_meta_evaluation.ps1 就绪
+[2026-05-22 20:40:01][LEARN][INFO]   [OK] gen_monthly_report.ps1 就绪
+[2026-05-22 20:40:01][LEARN][SEP] 
+[2026-05-22 20:40:01][LEARN][STEP] >>> Step a: 收集月度数据 -- monthly_summary.ps1 <<<
+[2026-05-22 20:40:01][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\monthly_summary.ps1 -Month '2026-04' -SourceDir 'C:\Users\34269\Documents\Claude\股票分析'
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO] ===== Monthly summary started (2026-04) =====
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO] [1/4] Collecting eval data...
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO]   Eval reports: 0, Final data: 0
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO] [2/4] Reading workflow records...
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO]   Runs: 0 analysis, 0 eval
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO] [3/4] Key stock data...
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO]   Key stock files: 0
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:01][MONTHLY][INFO]   JSON output: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_monthly_data.json
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:02][MONTHLY][INFO] ===== Monthly summary complete =====
+[2026-05-22 20:40:02][LEARN][INFO]   [OUT] [2026-05-22 20:40:02][MONTHLY][INFO] Next: inform AI to run monthly learning
+[2026-05-22 20:40:02][LEARN][INFO] Step a 完成，耗时 0.1s
+[2026-05-22 20:40:02][LEARN][SEP] 
+[2026-05-22 20:40:02][LEARN][STEP] >>> Step b: 系统自检 -- run_meta_evaluation.ps1 <<<
+[2026-05-22 20:40:02][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\重点股票\次日评估\run_meta_evaluation.ps1 -GenerateReport:$true
+[2026-05-22 20:40:02][LEARN][INFO] Step b 完成，耗时 0.1s
+[2026-05-22 20:40:02][LEARN][SEP] 
+[2026-05-22 20:40:02][LEARN][STEP] >>> Step c: 生成月度学习报告 -- gen_monthly_report.ps1 <<<
+[2026-05-22 20:40:02][LEARN][INFO] 执行: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\gen_monthly_report.ps1 -Month '2026-04' -SourceDir 'C:\Users\34269\Documents\Claude\股票分析'
+[2026-05-22 20:40:10][LEARN][INFO]   [OUT] HTML generated: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_月度学习报告.html
+[2026-05-22 20:40:10][LEARN][INFO]   [OUT] PDF generated: C:\Users\34269\Documents\Claude\股票分析\历史数据\monthly\202604_月度学习报告.pdf (308 KB)
+[2026-05-22 20:40:10][LEARN][INFO] Step c 完成，耗时 8.4s
+[2026-05-22 20:40:10][LEARN][SEP] 
+[2026-05-22 20:40:10][LEARN][STEP] >>> 执行完成摘要 <<<
+[2026-05-22 20:40:10][LEARN][INFO]   月份: 2026-04
+[2026-05-22 20:40:10][LEARN][INFO]   开始: 2026-05-22 20:40:01
+[2026-05-22 20:40:10][LEARN][INFO]   结束: 2026-05-22 20:40:10
+[2026-05-22 20:40:10][LEARN][INFO]   总耗时: 8.7s
+[2026-05-22 20:40:10][LEARN][INFO]   Step a [月度数据收集]: 完成 (0.1s)
+[2026-05-22 20:40:10][LEARN][INFO]   Step b [系统自检]: 完成 (0.1s)
+[2026-05-22 20:40:10][LEARN][INFO]   Step c [月度学习报告]: 完成 (8.4s)
+[2026-05-22 20:40:10][LEARN][INFO] 整体状态: 全部成功完成
+[2026-05-22 20:40:10][LEARN][INFO] ================================================================
+[2026-05-22 20:40:10][LEARN][INFO]   月度学习任务结束
+[2026-05-22 20:40:10][LEARN][INFO] ================================================================

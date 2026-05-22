@@ -1,0 +1,66 @@
+﻿{
+    "StartDate":  "20260522",
+    "InitialCapital":  1000000,
+    "CurrentValue":  1008174.49,
+    "TotalReturnPct":  0.82,
+    "MaxDrawdown":  -0.71,
+    "MaxDrawdownDate":  "20260522",
+    "PeakValue":  1008174.49,
+    "LastUpdated":  "20260522",
+    "TotalTrades":  0,
+    "WinningTrades":  0,
+    "LosingTrades":  0,
+    "WinRate":  null,
+    "ConsecutiveLosses":  0,
+    "IsDrawdownAlert":  false,
+    "Benchmark":  {
+                      "Name":  "沪深300",
+                      "Code":  "000300.SH",
+                      "InitialValue":  4845.10,
+                      "BenchmarkReturnPct":  0,
+                      "CurrentValue":  4845.1,
+                      "ExcessReturnPct":  0.82
+                  },
+    "RiskMetrics":  {
+                        "MaxDrawdown":  -0.71,
+                        "MaxDrawdownDate":  "20260522",
+                        "AvgStopLossDistance":  12.42,
+                        "ConsecutiveLosses":  0,
+                        "SharpeRatio":  null,
+                        "InformationRatio":  null,
+                        "IsDrawdownAlert":  false,
+                        "CurrentDrawdown":  0,
+                        "AvgWinPct":  null,
+                        "AvgLossPct":  null,
+                        "ProfitFactor":  null
+                    },
+    "PerStock":  {
+                     "601689":  {
+                                    "Name":  "鎷撴櫘闆嗗洟",
+                                    "Trades":  0,
+                                    "WinRate":  null,
+                                    "TotalPnL":  -26.00,
+                                    "UnrealizedPnL":  -48.00,
+                                    "UnrealizedPnLPct":  -0.06,
+                                    "CurrentShares":  1200
+                                },
+                     "600114":  {
+                                    "Name":  "涓滅潶鑲′唤",
+                                    "Trades":  0,
+                                    "WinRate":  null,
+                                    "TotalPnL":  7168.00,
+                                    "UnrealizedPnL":  5865.00,
+                                    "UnrealizedPnLPct":  7.24,
+                                    "CurrentShares":  2300
+                                },
+                     "301075":  {
+                                    "WinRate":  null,
+                                    "Name":  "多瑞医药",
+                                    "Trades":  0,
+                                    "UnrealizedPnLPct":  2.49,
+                                    "UnrealizedPnL":  2354.00,
+                                    "TotalPnL":  -18.00,
+                                    "CurrentShares":  1100
+                                }
+                 }
+}

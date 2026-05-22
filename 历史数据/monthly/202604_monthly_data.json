@@ -1,0 +1,15 @@
+{
+    "LatestEvalPdf":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\每日荐股\\评估报告\\每日荐股后评估报告.pdf",
+    "EvalReportsCount":  0,
+    "TotalDailyRuns":  0,
+    "DataPaths":  {
+                      "FinalDir":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\历史数据\\final",
+                      "MonthlyDir":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\历史数据\\monthly",
+                      "EvalDir":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\历史数据\\eval"
+                  },
+    "TotalEvalRuns":  0,
+    "Month":  "2026-04",
+    "GeneratedAt":  "2026-05-22 20:40:01",
+    "KeystockFilesCount":  0,
+    "FinalDataCount":  0
+}
