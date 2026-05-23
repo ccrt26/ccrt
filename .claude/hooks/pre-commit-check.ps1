@@ -9,14 +9,14 @@ param()
 $ErrorActionPreference = "Stop"
 
 $HookDir = Split-Path -Parent $PSCommandPath
-$ProjectRoot = Resolve-Path (Join-Path $HookDir "..\..")
+$ProjectRoot = (Resolve-Path (Join-Path $HookDir "..\..")).Path
 $LogFile = Join-Path $HookDir "pre-commit.log"
 $script:HasError = $false
 
 function Write-Log {
     param(
         [Parameter(Mandatory = $true)]
-        [ValidateSet("PASS", "WARN", "ERROR")]
+        [ValidateSet("PASS", "WARN", "ERROR", "BLOCK")]
         [string]$Level,
         [Parameter(Mandatory = $true)]
         [string]$Message
@@ -33,7 +33,7 @@ $StartTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 Push-Location $ProjectRoot
 
 try {
-    $StagedOutput = git diff --cached --name-only 2>$null
+    $StagedOutput = git -c core.quotepath=false diff --cached --name-only 2>$null
     $StagedFiles = @()
     if ($StagedOutput) {
         $StagedFiles = $StagedOutput -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" }
@@ -142,6 +142,114 @@ try {
         }
     }
     else { Write-Log "PASS" "Commit message unavailable (pre-commit stage, skipped)" }
+
+    # ========================================================================
+    # Check E: Token Budget Gate (Token预算门禁) — 红线 v1.13 §2.3
+    # E1. Agent定义文件行数 <= 250(警告) / <= 300(阻断)
+    # E2. Agent定义文件大小 <= 12KB(警告) / <= 15KB(阻断)
+    # E3. Python核心脚本 print() 数量 <= 8(警告) / <= 12(阻断)
+    # E4. 新增大文件(>500KB)保护声明检查
+    # E5. 新增文件AI禁止读取清单检查
+    # ========================================================================
+    Write-Log "PASS" "===== Check E: Token Budget Gate ====="
+
+    function Get-EffectivePrintCount {
+        param([string]$FilePath)
+        $lines = Get-Content -Path $FilePath -ErrorAction SilentlyContinue
+        if (-not $lines) { return 0 }
+        $count = 0; $inDocstring = $false
+        foreach ($rawLine in $lines) {
+            $trimmed = $rawLine.TrimStart()
+            if ($trimmed -eq '') { continue }
+            $tripleCount = ([regex]::Matches($rawLine, [regex]::Escape('"""') + '|' + [regex]::Escape("'''"))).Count
+            if ($tripleCount % 2 -eq 1) { $inDocstring = -not $inDocstring; continue }
+            if ($tripleCount -ge 2) { continue }
+            if ($inDocstring) { continue }
+            if ($trimmed -match '^#') { continue }
+            $count += ([regex]::Matches($rawLine, '\bprint\s*\(')).Count
+        }
+        return $count
+    }
+
+    function Test-ProtectionDeclaration {
+        param([string]$FilePath)
+        $head = Get-Content -Path $FilePath -TotalCount 30 -ErrorAction SilentlyContinue
+        if (-not $head) { return $false }
+        return ($head -join "`n") -match '(?i)LARGE_FILE_PROTECTED|FILE_PROTECTED|#\s*Protected large file|@ProtectionDeclared'
+    }
+
+    # E1/E2: Agent file line count and size
+    $AgentDir = Join-Path $ProjectRoot ".claude\agents"
+    if (Test-Path $AgentDir) {
+        $AllAgentFiles = Get-ChildItem -Path $AgentDir -Filter "*.md" -File -ErrorAction SilentlyContinue |
+            Where-Object { (Split-Path $_.FullName -Parent) -eq $AgentDir }
+        foreach ($af in $AllAgentFiles) {
+            $lineCount = (Get-Content $af.FullName | Measure-Object -Line).Lines
+            $fileSize = (Get-Item $af.FullName).Length
+            if ($lineCount -gt 300) {
+                Write-Log "BLOCK" "E1 BLOCK: $($af.Name) — $lineCount lines (>300)"; $script:HasError = $true
+            } elseif ($lineCount -gt 250) {
+                Write-Log "WARN" "E1 WARN: $($af.Name) — $lineCount lines (>250)"
+            } else { Write-Log "PASS" "E1 PASS: $($af.Name) ($lineCount lines)" }
+            if ($fileSize -gt 15KB) {
+                Write-Log "BLOCK" "E2 BLOCK: $($af.Name) — $([math]::Round($fileSize/1KB,1))KB (>15KB)"; $script:HasError = $true
+            } elseif ($fileSize -gt 12KB) {
+                Write-Log "WARN" "E2 WARN: $($af.Name) — $([math]::Round($fileSize/1KB,1))KB (>12KB)"
+            } else { Write-Log "PASS" "E2 PASS: $($af.Name) ($([math]::Round($fileSize/1KB,1))KB)" }
+        }
+    } else { Write-Log "WARN" "E1/E2: Agent directory not found" }
+
+    # E3: Python core script print() count
+    $CoreScriptDirs = @((Join-Path $ProjectRoot "代码文件\每日荐股\分析逻辑"), (Join-Path $ProjectRoot "代码文件\每日荐股\scripts"))
+    $StagedPy = $StagedFiles | Where-Object { $_ -match '\.py$' }
+    $PyCorePaths = @()
+    foreach ($pyFile in $StagedPy) {
+        $absPy = Join-Path $ProjectRoot $pyFile
+        foreach ($dir in $CoreScriptDirs) {
+            $resolvedDir = (Resolve-Path $dir -ErrorAction SilentlyContinue).Path
+            if ($resolvedDir -and (Resolve-Path $absPy -ErrorAction SilentlyContinue).Path.StartsWith($resolvedDir, [StringComparison]::OrdinalIgnoreCase)) {
+                $PyCorePaths += $absPy; break
+            }
+        }
+    }
+    $PyCorePaths = $PyCorePaths | Select-Object -Unique
+    foreach ($pyPath in $PyCorePaths) {
+        if (-not (Test-Path $pyPath)) { continue }
+        $printCount = Get-EffectivePrintCount -FilePath $pyPath
+        $relPath = Resolve-Path $pyPath -Relative
+        if ($printCount -gt 12) {
+            Write-Log "BLOCK" "E3 BLOCK: $relPath — $printCount print() calls (>12)"; $script:HasError = $true
+        } elseif ($printCount -gt 8) {
+            Write-Log "WARN" "E3 WARN: $relPath — $printCount print() calls (>8)"
+        } else { Write-Log "PASS" "E3 PASS: $relPath ($printCount print() calls)" }
+    }
+
+    # E4: New large file protection declaration
+    $NewFiles = @()
+    $newFileOutput = git -c core.quotepath=false diff --cached --diff-filter=A --name-only 2>$null
+    if ($newFileOutput) { $NewFiles = $newFileOutput -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" } }
+    foreach ($nf in $NewFiles) {
+        $absNf = Join-Path $ProjectRoot $nf
+        if (-not (Test-Path $absNf)) { continue }
+        $nfSize = (Get-Item $absNf).Length
+        if ($nfSize -gt 500KB) {
+            if (-not (Test-ProtectionDeclaration -FilePath $absNf)) {
+                Write-Log "WARN" "E4 WARN: New large file lacks protection declaration: $nf ($([math]::Round($nfSize/1KB,1))KB)"
+            } else { Write-Log "PASS" "E4 PASS: $nf — protected" }
+        }
+    }
+
+    # E5: 新增AI禁止读取文件
+    $ForbiddenPatterns = @('\.env$','\.env\.','credentials','secret','password','token','\.pem$','\.key$','\.pfx$','\.p12$','private_key','privatekey','id_rsa','id_ed25519','id_ecdsa','\.htpasswd$','oauth','service_account\.json$','settings\.local\.json$')
+    foreach ($nf in $NewFiles) {
+        foreach ($pat in $ForbiddenPatterns) {
+            if (($nf -replace '\\','/') -match $pat) {
+                Write-Log "BLOCK" "E5 BLOCK: New file matches forbidden pattern '$pat': $nf"; $script:HasError = $true
+                break
+            }
+        }
+    }
+    Write-Log "PASS" "Check E complete"
 }
 catch {
     Write-Log "ERROR" "Script exception: $_"
