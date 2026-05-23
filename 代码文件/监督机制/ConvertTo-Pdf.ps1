@@ -62,11 +62,14 @@ function ConvertTo-Pdf {
 
     # 4. 调用 Edge headless
     $argsList = @(
-        "--headless", "--disable-gpu", "--no-sandbox",
+        "--headless=new", "--disable-gpu", "--no-sandbox",
         "--print-to-pdf=$PdfFile",
         "--no-pdf-header-footer",
-        "--print-to-pdf-paper-size=A4"
+        $uri
     )
+
+    # 移除旧的 --print-to-pdf-paper-size=A4（Edge headless=new 默认A4）
+    # 注意：$uri（file:///...）必须作为最后一个参数传入，否则Edge打印空白页
     if ($Landscape) {
         $argsList += "--print-to-pdf-landscape"
         $argsList += "--print-to-pdf-margin-bottom=0"

@@ -1,5 +1,5 @@
 ﻿# 重点股票分析逻辑后评估引擎
-# 基于：重点股票次日后评估白皮书 v1.1
+# 基于：重点股票次日后评估白皮书 v1.7
 # 核心：复盘分析逻辑有效性，而非个股涨跌对错
 # 输入：前日分析报告评估数据JSON + 当日行情
 # 输出：逻辑诊断报告PDF + 知识积累文件更新
@@ -25,6 +25,17 @@ $resultDir = Join-Path $evalRoot "评估结果"
 
 # 确保目录存在
 foreach ($d in @($reportDir, $logicDir, $resultDir)) {
+    if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+}
+
+# v1.7 新增目录
+$linkageLogDir = Join-Path $evalRoot "逻辑积累\联动日志"
+$attributionDir = Join-Path $evalRoot "逻辑积累\失效归因"
+$metabolismDir = Join-Path $evalRoot "逻辑积累\知识代谢"
+$distillationDir = Join-Path $evalRoot "逻辑积累\知识蒸馏"
+$combRulesDir = Join-Path $evalRoot "逻辑积累\条件规则"
+$experimentDir = Join-Path $evalRoot "逻辑积累\实验提案"
+foreach ($d in @($linkageLogDir, $attributionDir, $metabolismDir, $distillationDir, $combRulesDir, $experimentDir)) {
     if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
 }
 
@@ -62,25 +73,53 @@ Write-Host "✅ 数据模块已导入 ($(Get-Date -Format 'HH:mm:ss'))"
 # 辅助函数
 # ============================================================
 
-# 计算 Pearson 相关系数
-function Get-PearsonR {
+# 计算 Spearman 秩相关系数
+function Get-SpearmanR {
     param([double[]]$X, [double[]]$Y)
     $n = $X.Length
-    if ($n -lt 3) { return 0, 0 }  # 样本太少
-    $meanX = ($X | Measure-Object -Average).Average
-    $meanY = ($Y | Measure-Object -Average).Average
+    if ($n -lt 3) { return 0, 0 }
+    # Rank function
+    function Get-Ranks([double[]]$arr) {
+        $n = $arr.Count
+        $indexed = @(for ($i=0; $i -lt $n; $i++) { [PSCustomObject]@{Idx=$i; Val=$arr[$i]} })
+        $sorted = $indexed | Sort-Object Val
+        $ranks = New-Object double[] $n
+        $j = 0
+        while ($j -lt $n) {
+            $k = $j
+            while ($k+1 -lt $n -and [Math]::Abs($sorted[$k+1].Val - $sorted[$j].Val) -lt 1e-10) { $k++ }
+            $avgRank = ($j + $k) / 2.0 + 1
+            for ($t = $j; $t -le $k; $t++) { $ranks[$sorted[$t].Idx] = $avgRank }
+            $j = $k + 1
+        }
+        return $ranks
+    }
+    $rankX = Get-Ranks $X
+    $rankY = Get-Ranks $Y
+    $meanRx = ($rankX | Measure-Object -Average).Average
+    $meanRy = ($rankY | Measure-Object -Average).Average
     $cov = 0.0; $varX = 0.0; $varY = 0.0
     for ($i = 0; $i -lt $n; $i++) {
-        $dx = $X[$i] - $meanX
-        $dy = $Y[$i] - $meanY
+        $dx = $rankX[$i] - $meanRx
+        $dy = $rankY[$i] - $meanRy
         $cov += $dx * $dy
         $varX += $dx * $dx
         $varY += $dy * $dy
     }
     $denom = [Math]::Sqrt($varX * $varY)
     if ($denom -eq 0) { return 0, $n }
-    $r = $cov / $denom
-    return [Math]::Round($r, 4), $n
+    $rho = $cov / $denom
+    return [Math]::Round($rho, 4), $n
+}
+
+# 计算 ICIR (Information Coefficient Information Ratio)
+function Get-ICIR {
+    param([double[]]$ICValues)
+    if ($ICValues.Count -lt 2) { return 0 }
+    $meanIC = ($ICValues | Measure-Object -Average).Average
+    $stdIC = [Math]::Sqrt((($ICValues | ForEach-Object { [Math]::Pow($_ - $meanIC, 2) }) | Measure-Object -Average).Average)
+    if ($stdIC -eq 0) { return 0 }
+    return [Math]::Round($meanIC / $stdIC, 3)
 }
 
 # 信号胜率分析
@@ -104,10 +143,10 @@ function Get-SignalRating {
 
 # 维度有效性评级
 function Get-DimensionRating {
-    param($R)
-    if ($R -ge 0.3) { return "有效" }
-    elseif ($R -ge 0.15) { return "参考" }
-    elseif ($R -ge 0) { return "微弱" }
+    param($Rho)
+    if ($Rho -ge 0.3) { return "有效" }
+    elseif ($Rho -ge 0.15) { return "参考" }
+    elseif ($Rho -ge 0) { return "微弱" }
     else { return "反向" }
 }
 
@@ -269,8 +308,8 @@ $dimSummaryLines = @()
 foreach ($dim in $dimensions) {
     $scores = $allMatched | ForEach-Object { [double]$_.$($dim.Field) }
     $returns = $allMatched | ForEach-Object { [double]$_.ReturnPct }
-    $r, $n = Get-PearsonR -X $scores -Y $returns
-    $rating = Get-DimensionRating -R $r
+    $Rho, $n = Get-SpearmanR -X $scores -Y $returns
+    $rating = Get-DimensionRating -Rho $Rho
 
     # 区分度分析
     $highGroup = $allMatched | Where-Object { [double]$_.$($dim.Field) -ge 60 }
@@ -281,25 +320,25 @@ foreach ($dim in $dimensions) {
 
     $dimResults += [PSCustomObject]@{
         Name=$dim.Name; Field=$dim.Field
-        R=$r; SampleCount=$n; Rating=$rating
+        Rho=$Rho; SampleCount=$n; Rating=$rating
         HighCount=$highGroup.Count; LowCount=$lowGroup.Count
         HighReturn=[Math]::Round($highRet, 2)
         LowReturn=[Math]::Round($lowRet, 2)
         Discrimination=[Math]::Round($discrimination, 2)
     }
 
-    $rStr = if ($r -gt 0) { "+$r" } else { "$r" }
-    Write-Host "  $($dim.Name): r=$rStr n=$n → $rating (区分度 $([Math]::Round($discrimination,2))%)"
+    $rhoStr = if ($Rho -gt 0) { "+$Rho" } else { "$Rho" }
+    Write-Host "  $($dim.Name): ρ=$rhoStr n=$n → $rating (区分度 $([Math]::Round($discrimination,2))%)"
 }
 
 # 维度有效性评分
 $dimScore = 0
 $validDims = $dimResults | Where-Object { $_.SampleCount -ge 3 }
 foreach ($dr in $validDims) {
-    if ($dr.R -ge 0.3) { $dimScore += 15 }
-    elseif ($dr.R -ge 0.15) { $dimScore += 8 }
-    elseif ($dr.R -ge 0) { $dimScore += 3 }
-    # r<0 得0分
+    if ($dr.Rho -ge 0.3) { $dimScore += 15 }
+    elseif ($dr.Rho -ge 0.15) { $dimScore += 8 }
+    elseif ($dr.Rho -ge 0) { $dimScore += 3 }
+    # Rho<0 得0分
 }
 $dimScore = [Math]::Min(30, $dimScore)
 
@@ -497,15 +536,15 @@ foreach ($sr in $signalResults) {
     }
 }
 
-# 条件2: 某维度相关系数r<0.1且样本≥10
+# 条件2: 某维度Spearman ρ<0.1且样本≥10
 foreach ($dr in $dimResults) {
-    if ($dr.SampleCount -ge 10 -and [Math]::Abs($dr.R) -lt 0.1) {
+    if ($dr.SampleCount -ge 10 -and [Math]::Abs($dr.Rho) -lt 0.1) {
         $suggestions += [PSCustomObject]@{
             Target="重点股票跟踪分析逻辑白皮书"
             Section="§3 $($dr.Name)"
-            Issue="$($dr.Name)维度与次日收益几乎不相关(r=$($dr.R))"
+            Issue="$($dr.Name)维度与次日收益几乎不相关(ρ=$($dr.Rho))"
             Suggestion="建议审视该维度的评分逻辑，或考虑降低权重"
-            Evidence="样本$($dr.SampleCount)次，r=$($dr.R)"
+            Evidence="样本$($dr.SampleCount)次，ρ=$($dr.Rho)"
             Priority="P1"
         }
     }
@@ -708,9 +747,91 @@ if ($newCandidatesFound -eq 0 -and $retireCandidatesFound -eq 0) { Write-Host " 
 if (Test-Path $metaTrackFile) {
     $metaData = Get-Content $metaTrackFile -Encoding UTF8 | ConvertFrom-Csv
     $evalCount = $metaData.Count
-    if ($evalCount % 5 -eq 0 -and $evalCount -gt 0) {
-        Write-Host "  🔔 已累积 $evalCount 次评估，达中循环触发条件！运行: .\run_meta_evaluation.ps1"
+    if ($evalCount % 20 -eq 0 -and $evalCount -gt 0) {
+        Write-Host "  🔔 已累积 $evalCount 次评估，达中循环触发条件(每20次)！运行: .\run_meta_evaluation.ps1"
     }
+}
+
+# ============================================================
+# v1.7: §6.8 桥接检测 — 后评估→分析逻辑白皮书联动
+# ============================================================
+Write-Host "`n===== §6.8 桥接检测 ====="
+$bridgeLinkFile = Join-Path $linkageLogDir "分析逻辑联动建议.json"
+$bridgeSuggestions = @()
+
+# 读取现有联动建议
+$existingBridges = @()
+if (Test-Path $bridgeLinkFile) {
+    try { $existingBridges = @(Get-Content $bridgeLinkFile -Raw -Encoding UTF8 | ConvertFrom-Json) } catch {}
+}
+
+# B1: 维度有效性连续2次 ρ<0.1 → 建议降权
+foreach ($dr in $dimResults) {
+    if ($dr.SampleCount -ge 10 -and [Math]::Abs($dr.Rho) -lt 0.1 -and $dr.Rho -ne 0) {
+        # 检查历史趋势（简化：仅当有≥2期数据时检查）
+        if ($histResultFiles.Count -ge 2) {
+            $bridgeSuggestions += [PSCustomObject]@{
+                linkage_id = "LNK-$(Get-Date -Format 'yyyyMMdd')-B1-$($dr.Field)"
+                bridge = "B1"
+                trigger_condition = "$($dr.Name) Spearman ρ=$($dr.Rho) < 0.1"
+                trigger_date = $todayLabel
+                target_doc = "重点股票跟踪分析逻辑白皮书"
+                target_section = "§3.1"
+                proposed_change = "审查$($dr.Name)权重"
+                priority = "P1"
+                status = "待腰子确认"
+            }
+        }
+    }
+}
+
+# B2: 信号ICIR连续下降>30% → 审查参数
+foreach ($sr in $signalResults) {
+    if ($sr.Count -ge 5 -and $sr.WinRate -lt 45) {
+        $bridgeSuggestions += [PSCustomObject]@{
+            linkage_id = "LNK-$(Get-Date -Format 'yyyyMMdd')-B2-$($sr.ID)"
+            bridge = "B2"
+            trigger_condition = "$($sr.Name) 胜率=$($sr.WinRate)% < 45%"
+            trigger_date = $todayLabel
+            target_doc = "重点股票跟踪分析逻辑白皮书"
+            target_section = "§1.1-1.5"
+            proposed_change = "审查$($sr.Name)信号参数/阈值"
+            priority = "P2"
+            status = "待Alpha审查"
+        }
+    }
+}
+
+# B6: 相邻评级区间T+5收益差异不显著 → 审查阈值
+if ($allMatchedCount -ge 20) {
+    $excellentGroup = $allMatched | Where-Object { [double]$_.CompScore -ge 80 }
+    $goodGroup = $allMatched | Where-Object { [double]$_.CompScore -ge 65 -and [double]$_.CompScore -lt 80 }
+    if (@($excellentGroup).Count -ge 5 -and @($goodGroup).Count -ge 5) {
+        $excRet = ($excellentGroup | Measure-Object ReturnPct -Average).Average
+        $goodRet = ($goodGroup | Measure-Object ReturnPct -Average).Average
+        if ([Math]::Abs($excRet - $goodRet) -lt 0.5) {
+            $bridgeSuggestions += [PSCustomObject]@{
+                linkage_id = "LNK-$(Get-Date -Format 'yyyyMMdd')-B6-001"
+                bridge = "B6"
+                trigger_condition = "优秀段vs良好段T+1收益差异=$([Math]::Round([Math]::Abs($excRet-$goodRet),2))% < 0.5%"
+                trigger_date = $todayLabel
+                target_doc = "重点股票跟踪分析逻辑白皮书"
+                target_section = "§3.1.1"
+                proposed_change = "审查评分阈值，优秀/良好区间区分度不足"
+                priority = "P1"
+                status = "待Alpha审查"
+            }
+        }
+    }
+}
+
+# 保存联动建议
+$allBridges = @($existingBridges) + @($bridgeSuggestions)
+if ($bridgeSuggestions.Count -gt 0) {
+    $allBridges | ConvertTo-Json -Depth 3 | Set-Content $bridgeLinkFile -Encoding UTF8
+    Write-Host "  ✅ §6.8 桥接检测: $($bridgeSuggestions.Count) 条新联动建议 → $bridgeLinkFile"
+} else {
+    Write-Host "  ℹ️ §6.8 桥接检测: 无新触发条件（数据积累中，当前 $allMatchedCount 条）"
 }
 
 # ============================================================
@@ -774,15 +895,15 @@ $html += @"
 
 # 逻辑诊断摘要
 $html += "<div class='section'><h2>逻辑诊断摘要</h2>"
-$bestDim = ($dimResults | Sort-Object R -Descending | Select-Object -First 1)
-$worstDim = ($dimResults | Sort-Object R | Select-Object -First 1)
+$bestDim = ($dimResults | Sort-Object Rho -Descending | Select-Object -First 1)
+$worstDim = ($dimResults | Sort-Object Rho | Select-Object -First 1)
 $bestSig = ($signalResults | Where-Object { $_.Count -ge 3 } | Sort-Object WinRate -Descending | Select-Object -First 1)
 $worstSig = ($signalResults | Where-Object { $_.Count -ge 3 } | Sort-Object WinRate | Select-Object -First 1)
 
 $html += "<div class='insight-box'><strong>核心发现：</strong>"
 $html += "当前框架<br>"
-$html += "• 最佳维度: <strong>$($bestDim.Name)</strong> (r=$([Math]::Round($bestDim.R,3))，$($bestDim.Rating))<br>"
-$html += "• 最弱维度: <strong>$($worstDim.Name)</strong> (r=$([Math]::Round($worstDim.R,3))，$($worstDim.Rating))<br>"
+$html += "• 最佳维度: <strong>$($bestDim.Name)</strong> (ρ=$([Math]::Round($bestDim.Rho,3))，$($bestDim.Rating))<br>"
+$html += "• 最弱维度: <strong>$($worstDim.Name)</strong> (ρ=$([Math]::Round($worstDim.Rho,3))，$($worstDim.Rating))<br>"
 if ($bestSig.Count -ge 3) { $html += "• 最佳信号: <strong>$($bestSig.Name)</strong> ($($bestSig.WinRate)%，$($bestSig.Rating))<br>" }
 if ($worstSig.Count -ge 3) { $html += "• 最差信号: <strong>$($worstSig.Name)</strong> ($($worstSig.WinRate)%，$($worstSig.Rating))<br>" }
 $html += "• 阈值区分度: 优秀段($($excellent.AvgReturn)%) vs 差段($($poor.AvgReturn)%)<br>"
@@ -800,14 +921,14 @@ $html += "</div></div>"
 
 # --- 维度有效性详情 ---
 $html += "<div class='section'><h2>一、维度有效性 (${dimScore}/30)</h2>"
-$html += "<table><tr><th>维度</th><th>相关系数r</th><th>样本数</th><th>有效性</th><th>高分组收益%</th><th>低分组收益%</th><th>区分度%</th></tr>"
+$html += "<table><tr><th>维度</th><th>Spearman ρ</th><th>样本数</th><th>有效性</th><th>高分组收益%</th><th>低分组收益%</th><th>区分度%</th></tr>"
 foreach ($dr in $dimResults) {
     $rClass = if ($dr.Rating -eq "有效") { "effective" } elseif ($dr.Rating -eq "参考") { "reference" } elseif ($dr.Rating -eq "反向") { "reverse" } else { "weak" }
-    $rStr = if ($dr.R -gt 0) { "+$($dr.R)" } else { "$($dr.R)" }
-    $html += "<tr><td>$($dr.Name)</td><td class='$rClass'>$rStr</td><td>$($dr.SampleCount)</td><td>$($dr.Rating)</td><td>$($dr.HighReturn)%</td><td>$($dr.LowReturn)%</td><td>$($dr.Discrimination)%</td></tr>"
+    $rhoStr = if ($dr.Rho -gt 0) { "+$($dr.Rho)" } else { "$($dr.Rho)" }
+    $html += "<tr><td>$($dr.Name)</td><td class='$rClass'>$rhoStr</td><td>$($dr.SampleCount)</td><td>$($dr.Rating)</td><td>$($dr.HighReturn)%</td><td>$($dr.LowReturn)%</td><td>$($dr.Discrimination)%</td></tr>"
 }
 $html += "</table>"
-$html += "<div class='info-box'><strong>说明：</strong>相关系数r>0表示评分越高收益越好，r<0表示反向；高分组(评分≥60) vs 低分组(评分<40)。样本<3时相关性不可靠。</div>"
+$html += "<div class='info-box'><strong>说明：</strong>Spearman ρ>0表示评分越高收益越好，ρ<0表示反向；高分组(评分≥60) vs 低分组(评分<40)。样本<3时相关性不可靠。</div>"
 $html += "</div>"
 
 # --- 指标有效性详情 ---
@@ -890,7 +1011,7 @@ $html += @"
 <div class="disclaimer">
 <p><strong>免责声明</strong></p>
 <p>本逻辑诊断报告由铁律量化系统自动生成，仅用于评估分析模型的有效性，不构成任何投资建议。</p>
-<p>生成时间: $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss')) | 评估方法: 重点股票次日后评估白皮书 v1.1</p>
+<p>生成时间: $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss')) | 评估方法: 重点股票次日后评估白皮书 v1.7</p>
 <p>核心原则：复盘的是"分析逻辑本身"，不是"股票涨跌对错"</p>
 </div>
 </div></body></html>
@@ -936,6 +1057,7 @@ if (-not $KeepHtml -and (Test-Path $htmlFile)) { Remove-Item $htmlFile -Force }
 # Summary
 # ============================================================
 Write-Host "`n`n========== 逻辑诊断完成 =========="
+Write-Host "评估方法: 重点股票次日后评估白皮书 v1.7"
 Write-Host "评估日期: $todayLabel | 报告日期: $prevLabel"
 Write-Host "累积样本: $allMatchedCount | API调用: $script:apiCallCount"
 Write-Host ""
@@ -949,6 +1071,18 @@ Write-Host ""
 if ($suggestions.Count -gt 0) {
     Write-Host "  ⚠️  $($suggestions.Count) 条优化建议 (最高优先级: $($suggestions[0].Priority))"
 }
+Write-Host ""
+if ($bridgeSuggestions.Count -gt 0) {
+    Write-Host "  §6.8 桥接联动: $($bridgeSuggestions.Count) 条新建议 → $bridgeLinkFile"
+}
+Write-Host ""
+Write-Host "v1.7 新增目录:"
+Write-Host "  联动日志: $linkageLogDir"
+Write-Host "  失效归因: $attributionDir"
+Write-Host "  知识代谢: $metabolismDir"
+Write-Host "  知识蒸馏: $distillationDir"
+Write-Host "  条件规则: $combRulesDir"
+Write-Host "  实验提案: $experimentDir"
 Write-Host ""
 Write-Host "知识积累文件:"
 Write-Host "  指标跟踪: $trackFile"

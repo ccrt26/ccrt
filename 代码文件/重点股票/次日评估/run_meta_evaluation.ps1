@@ -1,7 +1,7 @@
 ﻿# 重点股票评估系统自检脚本 — 中循环
-# 功能：评估系统自身的权重优化、信号管理、阈值校验
-# 触发条件：每5次后评估后手动运行
-# 基于：重点股票次日后评估白皮书 v1.2 §7.3
+# 功能：评估系统自身的权重优化、信号管理、阈值校验、§6.8桥接扫描、失效归因、条件规则
+# 触发条件：每20次后评估后触发（白皮书 v1.7 §7.1）
+# 基于：重点股票次日后评估白皮书 v1.7 §7.2-§7.9
 
 param(
     [switch]$GenerateReport = $true  # 是否生成PDF自检报告
@@ -43,9 +43,9 @@ $metaData = Get-Content $metaTrackFile -Encoding UTF8 | ConvertFrom-Csv
 $evalCount = $metaData.Count
 Write-Host "`n累积评估次数: $evalCount"
 
-if ($evalCount -lt 5) {
-    Write-Host "评估次数不足5次，中循环需要至少5次数据才有效"
-    Write-Host "当前$evalCount次，还需$(5 - $evalCount)次才能触发有意义的自检"
+if ($evalCount -lt 20) {
+    Write-Host "评估次数不足20次，中循环需要至少20次数据才有效"
+    Write-Host "当前$evalCount次，还需$(20 - $evalCount)次才能触发有意义的自检"
     exit 0
 }
 

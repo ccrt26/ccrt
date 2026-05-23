@@ -1109,7 +1109,7 @@ function New-SixDimDetail {
         $c = New-ScoreColor $d.S; $weighted = [Math]::Round($d.S * [int]($d.W -replace '%','') / 100, 1)
         $rows += "<tr><td>$($d.N)</td><td style='color:$c;font-weight:bold;'>$($d.S)</td><td>$($d.W)</td><td>$weighted</td><td style='text-align:left;font-size:12px;color:#666;'>$($d.D)</td></tr>"
     }
-    $compositeW = $Scores.Technical*0.25 + $Scores.Fundamental*0.20 + $Scores.Sentiment*0.15 + $Scores.Sector*0.20 + $Scores.Capital*0.15 + $Scores.Macro*0.05
+    $compositeW = $Scores.Technical*0.20 + $Scores.Fundamental*0.20 + $Scores.Sentiment*0.15 + $Scores.Sector*0.18 + $Scores.Capital*0.15 + $Scores.Macro*0.12
     return @"
 <div class="section">
     <h2>六维评分详情</h2>
@@ -1237,19 +1237,62 @@ function New-FundamentalSection {
         $rg = ([double]$fin[0].TOTAL_OPERATE_INCOME - [double]$fin[1].TOTAL_OPERATE_INCOME) / [Math]::Abs([double]$fin[1].TOTAL_OPERATE_INCOME) * 100
         $revGrowthStr = "$([Math]::Round($rg,1))%"
     }
+    # 扣非净利润 (v3.0)
+    $deductedStr = "N/A"; $deductedEval = "N/A"
+    if ($fin[0].PSObject.Properties.Name -contains 'DEDUCTED_PROFIT' -and $fin.Count -ge 2) {
+        $dp0 = [double]$fin[0].DEDUCTED_PROFIT
+        if ($fin[1].PSObject.Properties.Name -contains 'DEDUCTED_PROFIT') {
+            $dp1 = [double]$fin[1].DEDUCTED_PROFIT
+            if ($dp1 -ne 0) {
+                $dg = ($dp0 - $dp1) / [Math]::Abs($dp1) * 100
+                $deductedStr = "$([Math]::Round($dg,1))%"
+                $deductedEval = if($dg -ge 15){"优秀(≥15%)"}elseif($dg -ge 0){"正增长"}else{"负增长⚠️"}
+            }
+        }
+    }
+    # 商誉/净资产 (v3.0)
+    $goodwillStr = "N/A"; $goodwillEval = "N/A"
+    if ($fin[0].PSObject.Properties.Name -contains 'GOODWILL') {
+        $gw = [double]$fin[0].GOODWILL
+        $eq = 0
+        if ($fin[0].PSObject.Properties.Name -contains 'TOTAL_EQUITY') { $eq = [double]$fin[0].TOTAL_EQUITY }
+        elseif ($fin[0].PSObject.Properties.Name -contains 'PARENT_EQUITY') { $eq = [double]$fin[0].PARENT_EQUITY }
+        if ($eq -gt 0) {
+            $gwRatio = $gw / $eq * 100
+            $goodwillStr = "$([Math]::Round($gwRatio,1))%"
+            $goodwillEval = if($gwRatio -gt 50){"🔴 红牌(>50%)"}elseif($gwRatio -gt 30){"🟡 黄牌(>30%)"}else{"安全(<30%)"}
+        }
+    }
+    # PEG (v3.0)
+    $pegStr = "N/A"; $pegEval = "N/A"
+    if ($D.PEPercentile -and $D.PEPercentile.CurrentPE -gt 0) {
+        $consGrowth = $null
+        if ($D.Research -and $D.Research.Count -gt 0) {
+            $epsVals = @($D.Research | Where-Object { $_.ThisYearEPS -gt 0 } | ForEach-Object { $_.ThisYearEPS })
+            if ($epsVals.Count -gt 0) { $consGrowth = ($epsVals | Measure-Object -Average).Average }
+        }
+        if ($consGrowth -and $consGrowth -gt 0) {
+            $peg = $D.PEPercentile.CurrentPE / $consGrowth
+            $pegStr = [Math]::Round($peg, 2)
+            $pegEval = if($peg -lt 0.8){"低估(<0.8)"}elseif($peg -lt 1.2){"合理"}elseif($peg -lt 1.8){"偏高"}else{"高估"}
+        }
+    }
     $peStr = if ($D.PEPercentile) { "$($D.PEPercentile.CurrentPE) / $($D.PEPercentile.MinPE)-$($D.PEPercentile.MaxPE) / 百分位$($D.PEPercentile.Percentile)% ($($D.PEPercentile.Valuation))" } else { "N/A" }
     return @"
 <div class="section">
-    <h2>基本面分析 [3]→[5] ✅已实测</h2>
+    <h2>基本面分析 [3]→[5] ✅已实测 | v3.0增强(扣非+商誉+杜邦+PEG)</h2>
     <table>
     <tr><th>指标</th><th>最新值</th><th>评估</th></tr>
     <tr><td>ROE</td><td>$([Math]::Round($roe,2))%</td><td>$(if($roe-ge15){'优秀'}elseif($roe-ge10){'良好'}elseif($roe-ge5){'一般'}else{'较差'})</td></tr>
+    <tr><td>扣非净利润增速</td><td>$deductedStr</td><td>$deductedEval</td></tr>
     <tr><td>毛利率</td><td>$([Math]::Round($gm,1))%</td><td>$(if($gm-ge50){'优秀'}elseif($gm-ge30){'良好'}elseif($gm-ge15){'一般'}else{'较低'})</td></tr>
     <tr><td>营收增速</td><td>$revGrowthStr</td><td>同比</td></tr>
     <tr><td>净利润</td><td>$([Math]::Round($np/100000000,2))亿</td><td>归母净利润</td></tr>
     <tr><td>EPS</td><td>$eps 元</td><td>基本每股收益</td></tr>
     <tr><td>资产负债率</td><td>$([Math]::Round($debt,1))%</td><td>$(if($debt-lt30){'低杠杆'}elseif($debt-lt50){'合理'}elseif($debt-lt65){'偏高'}else{'高杠杆'})</td></tr>
+    <tr><td>商誉/净资产</td><td>$goodwillStr</td><td>$goodwillEval</td></tr>
     <tr><td>PE估值</td><td>$peStr</td><td>$(if($D.PEPercentile){$D.PEPercentile.Valuation}else{'N/A'})</td></tr>
+    <tr><td>PEG</td><td>$pegStr</td><td>$pegEval</td></tr>
     </table>
 </div>
 "@
@@ -1464,7 +1507,7 @@ function New-DataSourceAppendix {
     <tr><td>[2]</td><td>新浪K线</td><td>日K线(OHLCV) / 分钟K线</td><td>✅ 已实测</td></tr>
     <tr><td>[3]</td><td>东方财富财务</td><td>ROE/毛利率/营收/净利/EPS/负债率</td><td>✅ 已实测</td></tr>
     <tr><td>[4]</td><td>Baostock</td><td>K线验证/交叉验证</td><td>✅ 已实测</td></tr>
-    <tr><td>[5]</td><td>本地计算</td><td>MA/MACD/RSI/布林/PE百分位</td><td>✅ 已实测</td></tr>
+    <tr><td>[5]</td><td>本地计算</td><td>MA/MACD/RSI/布林/PE百分位/ADX/OBV/ATR</td><td>✅ 已实测</td></tr>
     <tr><td>[6]</td><td>深度财务</td><td>EV/EBITDA</td><td>⚠️ 待验证</td></tr>
     <tr><td>[7]</td><td>东方财富板块</td><td>板块指数/行业排名</td><td>✅ 已实测</td></tr>
     <tr><td>[8]</td><td>东方财富北向资金</td><td>个股北向持股明细</td><td>✅ 已实测</td></tr>
@@ -1564,17 +1607,97 @@ function New-PositionSizingSection {
 "@
 }
 
+# ============================================================
+# v3.0 新增 HTML 模板：极端事件/冲突裁决/不做清单
+# ============================================================
+
+function New-ExtremeEventSection {
+    param($ExtremeEvents)
+    if (-not $ExtremeEvents -or $ExtremeEvents.Events.Count -eq 0) { return "" }
+    $rows = ""
+    foreach ($e in $ExtremeEvents.Events) {
+        $sevColor = if ($e.Severity -eq "CRITICAL") { "#e74c3c" } else { "#e67e22" }
+        $rows += "<tr><td style='color:$sevColor;font-weight:bold;'>$($e.Severity)</td><td>$($e.Type)</td><td>$($e.Action)</td><td style='font-size:11px;color:#888;'>$($e.Rule)</td></tr>"
+    }
+    $titleColor = if ($ExtremeEvents.HasCritical) { "#e74c3c" } else { "#e67e22" }
+    return @"
+<div class="section">
+    <h2 style="color:$titleColor;">⛔ 极端事件预警 | v3.0 §4.5</h2>
+    <p style="font-size:12px;color:#e74c3c;margin-bottom:8px;">极端事件触发时，所有正常分析规则失效，以下表规则为准。</p>
+    <table>
+    <tr><th>严重级别</th><th>事件类型</th><th>操作指令</th><th>规则引用</th></tr>
+    $rows
+    </table>
+</div>
+"@
+}
+
+function New-ConflictSection {
+    param($ConflictResult)
+    if (-not $ConflictResult -or -not $ConflictResult.HasConflict) { return "" }
+    $conflictRows = ""
+    foreach ($c in $ConflictResult.Conflicts) {
+        $conflictRows += "<li style='margin-bottom:4px;'>$c</li>"
+    }
+    return @"
+<div class="section">
+    <h2>信号冲突裁决 | v3.0 §6.4</h2>
+    <div style="padding:10px 14px;background:#fff8f0;border-radius:6px;border-left:4px solid #e67e22;font-size:13px;">
+        <strong style="color:#e67e22;">⚠ 存在信号冲突：</strong>
+        <ul style="margin:8px 0 0 18px;line-height:1.8;">$conflictRows</ul>
+        <p style="margin-top:8px;font-weight:bold;">裁决结果：$($ConflictResult.Verdict)</p>
+    </div>
+</div>
+"@
+}
+
+function New-DontDoSection {
+    param($DontDoResult)
+    if (-not $DontDoResult -or -not $DontDoResult.HasIssues) { return "" }
+    $html = "<div class='section'><h2>⛔ 不做清单检查 | v3.0 §6.5</h2>"
+    if ($DontDoResult.Violations.Count -gt 0) {
+        $html += "<div style='padding:10px 14px;background:#fde8e8;border-radius:6px;border-left:4px solid #e74c3c;font-size:13px;margin-bottom:8px;'>"
+        $html += "<strong style='color:#e74c3c;'>绝对禁止项：</strong><ul style='margin:6px 0 0 18px;line-height:1.8;'>"
+        foreach ($v in $DontDoResult.Violations) { $html += "<li>$v</li>" }
+        $html += "</ul></div>"
+    }
+    if ($DontDoResult.Warnings.Count -gt 0) {
+        $html += "<div style='padding:10px 14px;background:#fff3e0;border-radius:6px;border-left:4px solid #e67e22;font-size:13px;'>"
+        $html += "<strong style='color:#e67e22;'>条件性警告：</strong><ul style='margin:6px 0 0 18px;line-height:1.8;'>"
+        foreach ($w in $DontDoResult.Warnings) { $html += "<li>$w</li>" }
+        $html += "</ul></div>"
+    }
+    $html += "</div>"
+    return $html
+}
+
 function New-StockReportHtml {
-    param($D, $Scores, $Pred, $Health, $Ops, $GlobalSectors, $GlobalSectorFund, $dateLabel)
+    param($D, $Scores, $Pred, $Health, $Ops, $GlobalSectors, $GlobalSectorFund, $dateLabel, $ExtremeEvents, $ConflictResult, $DontDoResult)
     $sb = New-Object System.Text.StringBuilder
     [void]$sb.Append('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">')
     [void]$sb.Append("<title>$($D.Name)($($D.Code))分析报告 $dateLabel</title>")
     [void]$sb.Append("<style>$CSS</style></head><body><div class='report-page'>")
     [void]$sb.Append((New-RptHeader -D $D -Scores $Scores -dateLabel $dateLabel))
+
+    # v3.0: Extreme events first (overrides all normal analysis)
+    if ($ExtremeEvents -and $ExtremeEvents.Events.Count -gt 0) {
+        [void]$sb.Append((New-ExtremeEventSection -ExtremeEvents $ExtremeEvents))
+    }
+    # v3.0: Don't-do checklist
+    if ($DontDoResult -and $DontDoResult.HasIssues) {
+        [void]$sb.Append((New-DontDoSection -DontDoResult $DontDoResult))
+    }
+
     [void]$sb.Append((New-ExecutiveSummary -Scores $Scores -Pred $Pred))
     [void]$sb.Append((New-PriceLadder -Ops $Ops -P $D.Price))
     [void]$sb.Append((New-ShortTermAction -Ops $Ops -Pred $Pred -P $D.Price))
     [void]$sb.Append((New-PositionSizingSection -Ops $Ops -Pred $Pred -CompScore $Scores.Composite))
+
+    # v3.0: Conflict arbitration
+    if ($ConflictResult -and $ConflictResult.HasConflict) {
+        [void]$sb.Append((New-ConflictSection -ConflictResult $ConflictResult))
+    }
+
     [void]$sb.Append((New-SixDimDetail -Scores $Scores))
     [void]$sb.Append("<div class='page-break'></div>")
     [void]$sb.Append((New-TechSection -D $D))
@@ -1647,12 +1770,35 @@ foreach ($s in $stocks) {
     Write-Host "  [评分] 技术$techS 基本面$fundS 消息$sentS 板块$sectS 资金$capS 宏观$macS → 综合$($comp.Score)分 [$($comp.RatingShort)]"
     Write-Host "  [预判] 短期:$($pred.Short) 中期:$($pred.Mid) 长期:$($pred.Long) 支撑:$($pred.Support) 阻力:$($pred.Resistance)"
 
-    # 操作建议计算 (v2.0)
+    # 极端事件检查 (v3.0)
+    $extremeEvents = Test-ExtremeEvent -D $stockData
+    if ($extremeEvents.Events.Count -gt 0) {
+        if ($extremeEvents.HasCritical) {
+            Write-Host "  [⛔ 极端事件] CRITICAL: $(($extremeEvents.Events | Where-Object {$_.Severity -eq 'CRITICAL'}).Type -join ', ')" -ForegroundColor Red
+        } else {
+            Write-Host "  [⚠ 极端事件] $(($extremeEvents.Events).Type -join ', ')"
+        }
+    }
+
+    # 操作建议计算 (v3.0 S3硬优先级)
     $ops = Get-OperationPlan -D $stockData -Pred $pred -TechS $techS -FundS $fundS -CompScore $comp.Score
-    Write-Host "  [操作] S1:$($ops.S1) R1:$($ops.R1) 止损:$($ops.StopLoss) 仓位上限:$($ops.MaxPosition)%"
+    Write-Host "  [操作] S1:$($ops.S1) R1:$($ops.R1) 止损:S3=$($ops.StopLoss) 仓位上限:$($ops.MaxPosition)%"
+
+    # 信号冲突裁决 (v3.0)
+    $confidence = $pred.Confidence
+    $conflict = Get-ConflictArbitration -TechS $techS -FundS $fundS -SectS $sectS -CapS $capS -Pred $pred -Confidence $confidence
+    if ($conflict.HasConflict) {
+        Write-Host "  [冲突裁决] $($conflict.Verdict)"
+    }
+
+    # 不做清单检查 (v3.0)
+    $dontDo = Get-DontDoCheck -D $stockData -Pred $pred -TechS $techS -CompScore $comp.Score
+    if ($dontDo.HasIssues) {
+        Write-Host "  [不做清单] 违规$(($dontDo.Violations).Count)项 / 警告$(($dontDo.Warnings).Count)项"
+    }
 
     # 生成HTML
-    $html = New-StockReportHtml -D $stockData -Scores $scores -Pred $pred -Health $health -Ops $ops -GlobalSectors $globalSectors -GlobalSectorFund $globalSectorFund -dateLabel $dateLabel
+    $html = New-StockReportHtml -D $stockData -Scores $scores -Pred $pred -Health $health -Ops $ops -GlobalSectors $globalSectors -GlobalSectorFund $globalSectorFund -dateLabel $dateLabel -ExtremeEvents $extremeEvents -ConflictResult $conflict -DontDoResult $dontDo
     [System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.Encoding]::UTF8)
     Write-Host "  [HTML] $htmlFile"
 
@@ -1667,7 +1813,8 @@ foreach ($s in $stocks) {
         $results += [PSCustomObject]@{ Name=$name; Code=$code; Score=$comp.Score; Rating=$comp.RatingShort; Status="❌"; PdfKB=0 }
     }
 
-    if (-not $KeepHtml) {
+    # 只在PDF转换成功时才清理HTML；转换失败时保留HTML供人工查看
+    if ($ok -and -not $KeepHtml) {
         if (Test-Path $htmlFile) { Remove-Item $htmlFile -Force }
     }
 
@@ -1676,8 +1823,16 @@ foreach ($s in $stocks) {
     $_ma5 = $stockData.MA5[-1]; $_ma10 = $stockData.MA10[-1]; $_ma20 = $stockData.MA20[-1]; $_p = $stockData.Price
     $_maTrend = if ($_ma5 -gt $_ma10 -and $_ma10 -gt $_ma20 -and $_p -gt $_ma20) { "多头排列" } elseif ($_ma5 -lt $_ma10 -and $_ma10 -lt $_ma20) { "空头排列" } else { "纠缠/不明" }
     $_macdPos = if ($stockData.MACD) { $d=$stockData.MACD.DIF[-1]; $e=$stockData.MACD.DEA[-1]; if($d -gt $e -and $d -gt 0){"零轴上金叉"}elseif($d -gt $e){"零轴下金叉"}else{"死叉"} } else { "N/A" }
-    $_rsiVal = if ($stockData.RSI14.Count -gt 0) { [double]$stockData.RSI14[-1] } else { 50 }
+    $_rsiVal = if ($stockData.RSI9.Count -gt 0 -and $stockData.RSI9[-1] -ne $null) { [double]$stockData.RSI9[-1] } elseif ($stockData.RSI14.Count -gt 0) { [double]$stockData.RSI14[-1] } else { 50 }
     $_rsiZone = if ($_rsiVal -ge 70) { "超买" } elseif ($_rsiVal -ge 50) { "中性偏强" } elseif ($_rsiVal -ge 30) { "中性偏弱" } else { "超卖" }
+    $_adxVal = if ($stockData.ADX -and $stockData.ADX.ADX.Count -gt 0 -and $stockData.ADX.ADX[-1] -ne $null) { [Math]::Round([double]$stockData.ADX.ADX[-1],1) } else { 0 }
+    $_adxTrend = if ($_adxVal -gt 25) { "趋势行情" } elseif ($_adxVal -gt 20) { "趋势形成中" } else { "震荡市(ADX<20)" }
+    $_obvTrend = "N/A"
+    if ($stockData.OBV -and $stockData.OBV.Count -ge 6) {
+        $obvChg = if ($stockData.OBV[-6] -ne 0) { [Math]::Round(($stockData.OBV[-1] - $stockData.OBV[-6]) / [Math]::Abs($stockData.OBV[-6]) * 100, 1) } else { 0 }
+        $pChg = if ($stockData.KLines[-6].Close -ne 0) { [Math]::Round(($stockData.KLines[-1].Close - $stockData.KLines[-6].Close) / $stockData.KLines[-6].Close * 100, 1) } else { 0 }
+        $_obvTrend = if ($obvChg -gt 2 -and $pChg -gt 0) { "量价同升" } elseif ($obvChg -gt 2 -and $pChg -lt 0) { "底背离" } elseif ($obvChg -lt -2 -and $pChg -gt 0) { "顶背离" } elseif ($obvChg -lt -2) { "量价同跌" } else { "中性" }
+    }
     $_bollPos = if ($stockData.Bollinger -and $stockData.KLines.Count -gt 0) { $c=$stockData.KLines[-1].Close; $u=$stockData.Bollinger.Upper[-1]; $m=$stockData.Bollinger.MA[-1]; $l=$stockData.Bollinger.Lower[-1]; if($c -ge $u){"触及上轨"}elseif($c -ge $m){"中轨上方"}elseif($c -ge $l){"中轨下方"}else{"触及下轨"} } else { "N/A" }
     $_volRel = if ($stockData.VolMA5.Count -gt 1 -and $stockData.VolMA5[-2] -gt 0) { $vr=$stockData.KLines[-1].Volume/$stockData.VolMA5[-2]; $cg=$stockData.Quote.ChangePct; if($cg -ge 2 -and $vr -ge 1.5){"放量上涨"}elseif($cg -ge 0 -and $vr -le 1.1){"缩量上涨"}elseif($cg -lt -2 -and $vr -ge 1.5){"放量下跌"}elseif($cg -lt 0 -and $vr -le 0.8){"缩量下跌"}else{"量能正常"} } else { "N/A" }
     $_fin = $stockData.Financial
@@ -1686,6 +1841,7 @@ foreach ($s in $stocks) {
     $_debtLevel = if ($_fin -and $_fin.Count -gt 0) { $d=[double]$_fin[0].DEBT_ASSET_RATIO; if($d -lt 30){"低杠杆"}elseif($d -lt 50){"合理"}elseif($d -lt 65){"偏高"}else{"高杠杆"} } else { "N/A" }
     $_rCover = if ($stockData.Research -and $stockData.Research.Count -gt 0) { "有($($stockData.Research.Count)篇)" } else { "无研报" }
     $_ffTrend = if ($stockData.FundFlow -and $stockData.FundFlow.Count -gt 0) { $pos=($stockData.FundFlow | Where-Object {$_.MainNetInflow -gt 0}).Count; if($pos -ge 3){"主力持续流入"}elseif($pos -ge 1){"主力流入>流出"}else{"主力流出"} } else { "N/A" }
+    $_wyckoffPhase = Get-WyckoffPhase -D $stockData
 
     $script:evalStocks += @{
         Code = $code; Name = $name; Industry = $s.Industry; Date = $dateStr; Price = [Math]::Round($stockData.Price, 2)
@@ -1697,9 +1853,12 @@ foreach ($s in $stocks) {
         Signals = @{
             MA_Trend = $_maTrend; MACD_Position = $_macdPos
             RSI_Value = [Math]::Round($_rsiVal,1); RSI_Zone = $_rsiZone
+            ADX_Value = $_adxVal; ADX_Trend = $_adxTrend
+            OBV_Trend = $_obvTrend
             Bollinger_Position = $_bollPos; Volume_Relation = $_volRel
             ROE_Level = $_roeLevel; PE_Percentile_Zone = $_peZone; Debt_Level = $_debtLevel
             Research_Coverage = $_rCover; FundFlow_Trend = $_ffTrend
+            Wyckoff_Phase = $_wyckoffPhase
             ShortBull_Score = $pred.ShortBull; MidBull_Score = $pred.MidBull; LongBull_Score = $pred.LongBull
         }
     }

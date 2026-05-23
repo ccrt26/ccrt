@@ -13,19 +13,23 @@
                                      },
                        "Name":  "中科曙光",
                        "Signals":  {
-                                       "MA_Trend":  "纠缠/不明",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "死叉",
-                                       "LongBull_Score":  1,
-                                       "RSI_Value":  55.4,
-                                       "Volume_Relation":  "缩量上涨",
-                                       "Bollinger_Position":  "中轨下方",
                                        "ShortBull_Score":  1,
-                                       "Research_Coverage":  "无研报",
-                                       "MidBull_Score":  2,
-                                       "RSI_Zone":  "中性偏强",
+                                       "Bollinger_Position":  "中轨下方",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "无研报",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "纠缠/不明",
+                                       "MACD_Position":  "死叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  38.9,
+                                       "Volume_Relation":  "缩量上涨",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  32.2,
+                                       "RSI_Zone":  "中性偏弱",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "拉升区 (Markup)",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同升",
                                        "PE_Percentile_Zone":  "偏高(60-80%)"
                                    },
                        "Prediction":  {
@@ -42,14 +46,14 @@
                                       "Sector":  55,
                                       "Macro":  100,
                                       "Capital":  53,
-                                      "Composite":  48,
-                                      "Technical":  49,
+                                      "Composite":  55,
+                                      "Technical":  73,
                                       "Sentiment":  25,
-                                      "Fundamental":  42
+                                      "Fundamental":  35
                                   },
                        "TrendHealth":  {
-                                           "Label":  "警戒",
-                                           "Score":  48
+                                           "Label":  "预警关注",
+                                           "Score":  63
                                        },
                        "RatingFull":  "★★ 观察"
                    },
@@ -65,19 +69,23 @@
                                      },
                        "Name":  "拓普集团",
                        "Signals":  {
-                                       "MA_Trend":  "多头排列",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "零轴上金叉",
-                                       "LongBull_Score":  1,
-                                       "RSI_Value":  82.8,
-                                       "Volume_Relation":  "缩量下跌",
-                                       "Bollinger_Position":  "中轨上方",
                                        "ShortBull_Score":  3,
-                                       "Research_Coverage":  "有(2篇)",
-                                       "MidBull_Score":  2,
-                                       "RSI_Zone":  "超买",
+                                       "Bollinger_Position":  "中轨上方",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "有(2篇)",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "多头排列",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  70.1,
+                                       "Volume_Relation":  "缩量下跌",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  35.5,
+                                       "RSI_Zone":  "超买",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "拉升区 (Markup)",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同升",
                                        "PE_Percentile_Zone":  "高估(\u003e80%)"
                                    },
                        "Prediction":  {
@@ -94,14 +102,14 @@
                                       "Sector":  55,
                                       "Macro":  100,
                                       "Capital":  33,
-                                      "Composite":  53,
-                                      "Technical":  82,
+                                      "Composite":  55,
+                                      "Technical":  90,
                                       "Sentiment":  25,
-                                      "Fundamental":  39
+                                      "Fundamental":  30
                                   },
                        "TrendHealth":  {
-                                           "Label":  "健康",
-                                           "Score":  80
+                                           "Label":  "预警关注",
+                                           "Score":  76
                                        },
                        "RatingFull":  "★★ 观察"
                    },
@@ -117,19 +125,23 @@
                                      },
                        "Name":  "东睦股份",
                        "Signals":  {
-                                       "MA_Trend":  "纠缠/不明",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "零轴上金叉",
-                                       "LongBull_Score":  1,
-                                       "RSI_Value":  69.5,
-                                       "Volume_Relation":  "放量上涨",
-                                       "Bollinger_Position":  "触及上轨",
                                        "ShortBull_Score":  3,
-                                       "Research_Coverage":  "无研报",
-                                       "MidBull_Score":  2,
-                                       "RSI_Zone":  "中性偏强",
+                                       "Bollinger_Position":  "触及上轨",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "无研报",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "纠缠/不明",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  64.4,
+                                       "Volume_Relation":  "放量上涨",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  29,
+                                       "RSI_Zone":  "中性偏强",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "拉升区 (Markup)",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同升",
                                        "PE_Percentile_Zone":  "高估(\u003e80%)"
                                    },
                        "Prediction":  {
@@ -145,15 +157,15 @@
                        "Scores":  {
                                       "Sector":  55,
                                       "Macro":  100,
-                                      "Capital":  58,
-                                      "Composite":  53,
-                                      "Technical":  70,
+                                      "Capital":  53,
+                                      "Composite":  55,
+                                      "Technical":  75,
                                       "Sentiment":  23,
-                                      "Fundamental":  39
+                                      "Fundamental":  32
                                   },
                        "TrendHealth":  {
                                            "Label":  "健康",
-                                           "Score":  94
+                                           "Score":  81
                                        },
                        "RatingFull":  "★★ 观察"
                    },
@@ -169,43 +181,47 @@
                                      },
                        "Name":  "多瑞医药",
                        "Signals":  {
-                                       "MA_Trend":  "多头排列",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "零轴上金叉",
-                                       "LongBull_Score":  2,
-                                       "RSI_Value":  59.8,
-                                       "Volume_Relation":  "缩量上涨",
-                                       "Bollinger_Position":  "中轨上方",
                                        "ShortBull_Score":  4,
-                                       "Research_Coverage":  "无研报",
-                                       "MidBull_Score":  3,
-                                       "RSI_Zone":  "中性偏强",
+                                       "Bollinger_Position":  "中轨上方",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "无研报",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "多头排列",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  57.8,
+                                       "Volume_Relation":  "缩量上涨",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  29.3,
+                                       "RSI_Zone":  "中性偏强",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "拉升区 (Markup)",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同升",
                                        "PE_Percentile_Zone":  "N/A"
                                    },
                        "Prediction":  {
                                           "Short":  "看多",
-                                          "MidBull":  3,
-                                          "Long":  "长期看好",
-                                          "Mid":  "趋势看多",
+                                          "MidBull":  2,
+                                          "Long":  "长期中性",
+                                          "Mid":  "区间震荡",
                                           "Confidence":  "高(\u003e70%)",
                                           "ShortBull":  4,
-                                          "LongBull":  2
+                                          "LongBull":  1
                                       },
                        "Code":  "301075",
                        "Scores":  {
                                       "Sector":  55,
                                       "Macro":  100,
                                       "Capital":  33,
-                                      "Composite":  61,
+                                      "Composite":  59,
                                       "Technical":  93,
                                       "Sentiment":  25,
-                                      "Fundamental":  67
+                                      "Fundamental":  48
                                   },
                        "TrendHealth":  {
                                            "Label":  "预警关注",
-                                           "Score":  79
+                                           "Score":  74
                                        },
                        "RatingFull":  "★★ 观察"
                    },
@@ -221,43 +237,47 @@
                                      },
                        "Name":  "盈峰环境",
                        "Signals":  {
-                                       "MA_Trend":  "空头排列",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "死叉",
-                                       "LongBull_Score":  2,
-                                       "RSI_Value":  45.1,
-                                       "Volume_Relation":  "量能正常",
-                                       "Bollinger_Position":  "中轨下方",
                                        "ShortBull_Score":  1,
-                                       "Research_Coverage":  "无研报",
-                                       "MidBull_Score":  3,
-                                       "RSI_Zone":  "中性偏弱",
+                                       "Bollinger_Position":  "中轨下方",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "无研报",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "空头排列",
+                                       "MACD_Position":  "死叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  36,
+                                       "Volume_Relation":  "量能正常",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  30.3,
+                                       "RSI_Zone":  "中性偏弱",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "疑似拉升区",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同跌",
                                        "PE_Percentile_Zone":  "高估(\u003e80%)"
                                    },
                        "Prediction":  {
                                           "Short":  "中性",
-                                          "MidBull":  3,
-                                          "Long":  "长期看好",
-                                          "Mid":  "趋势看多",
+                                          "MidBull":  2,
+                                          "Long":  "长期中性",
+                                          "Mid":  "区间震荡",
                                           "Confidence":  "低(\u003c50%)",
                                           "ShortBull":  1,
-                                          "LongBull":  2
+                                          "LongBull":  1
                                       },
                        "Code":  "000967",
                        "Scores":  {
                                       "Sector":  55,
                                       "Macro":  100,
                                       "Capital":  60,
-                                      "Composite":  52,
-                                      "Technical":  44,
+                                      "Composite":  49,
+                                      "Technical":  30,
                                       "Sentiment":  25,
-                                      "Fundamental":  59
+                                      "Fundamental":  41
                                   },
                        "TrendHealth":  {
                                            "Label":  "危险",
-                                           "Score":  21
+                                           "Score":  33
                                        },
                        "RatingFull":  "★★ 观察"
                    },
@@ -273,46 +293,50 @@
                                      },
                        "Name":  "招商银行",
                        "Signals":  {
-                                       "MA_Trend":  "空头排列",
-                                       "Debt_Level":  "低杠杆",
-                                       "ROE_Level":  "较差(\u003c5%)",
-                                       "MACD_Position":  "死叉",
-                                       "LongBull_Score":  2,
-                                       "RSI_Value":  2,
-                                       "Volume_Relation":  "量能正常",
-                                       "Bollinger_Position":  "中轨下方",
                                        "ShortBull_Score":  0,
-                                       "Research_Coverage":  "有(3篇)",
-                                       "MidBull_Score":  2,
-                                       "RSI_Zone":  "超卖",
+                                       "Bollinger_Position":  "中轨下方",
                                        "FundFlow_Trend":  "N/A",
+                                       "Research_Coverage":  "有(3篇)",
+                                       "ADX_Trend":  "趋势行情",
+                                       "MA_Trend":  "空头排列",
+                                       "MACD_Position":  "死叉",
+                                       "MidBull_Score":  1,
+                                       "RSI_Value":  0,
+                                       "Volume_Relation":  "量能正常",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  31.5,
+                                       "RSI_Zone":  "超卖",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "下跌区 (Decline)",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同跌",
                                        "PE_Percentile_Zone":  "低估(\u003c20%)"
                                    },
                        "Prediction":  {
                                           "Short":  "中性",
-                                          "MidBull":  2,
-                                          "Long":  "长期看好",
-                                          "Mid":  "区间震荡",
+                                          "MidBull":  1,
+                                          "Long":  "长期中性",
+                                          "Mid":  "趋势看空",
                                           "Confidence":  "低(\u003c50%)",
                                           "ShortBull":  0,
-                                          "LongBull":  2
+                                          "LongBull":  1
                                       },
                        "Code":  "600036",
                        "Scores":  {
                                       "Sector":  55,
                                       "Macro":  100,
                                       "Capital":  58,
-                                      "Composite":  51,
-                                      "Technical":  24,
+                                      "Composite":  54,
+                                      "Technical":  27,
                                       "Sentiment":  57,
-                                      "Fundamental":  57
+                                      "Fundamental":  47
                                   },
                        "TrendHealth":  {
-                                           "Label":  "危险",
-                                           "Score":  35
+                                           "Label":  "警戒",
+                                           "Score":  47
                                        },
                        "RatingFull":  "★★ 观察"
                    }
                ],
-    "GeneratedAt":  "2026-05-23 01:15:41"
+    "GeneratedAt":  "2026-05-23 19:28:10"
 }

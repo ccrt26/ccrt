@@ -86,7 +86,7 @@ if (-not $SkipMarketCheck) {
 
 # -- mode: eval (白皮书 v1.5) --
 if ($Mode -eq "eval") {
-    Write-Log -Msg "===== Starting Post-Evaluation (白皮书 v1.5) ====="
+    Write-Log -Msg "===== Starting Post-Evaluation (白皮书 v1.7, 分析逻辑 v3.1) ====="
     # 白皮书 §1.3: N+1日19:00评估T日荐股
     $evalDate = (Get-Date $Date).AddDays(-1).ToString("yyyy-MM-dd")
     $reportDateStr = $evalDate -replace '-',''
@@ -120,22 +120,11 @@ if ($Mode -eq "eval") {
             Write-Log -Msg "Keystock evaluation completed"
         }
 
-        # ---- §5.2 自动优化触发（白皮书§7.1） ----
-        Write-Log -Msg "[§5.2] Checking auto-optimization triggers..."
-        # TODO: 读取评估产出（records.csv）判断是否需要自动优化
-        # 触发条件：
-        # - 胜率<60% → 审查评分逻辑
-        # - 盈亏比<1.5 → 调整止损参数
-        # - 评分区分度<15% → 维度审查
-        # - 某维度误判率>20%连续3日 → 维度重构
-        # 当前为占位，待records.csv积累≥5日数据后启用
-        Write-Log -Msg "[§5.2] Auto-optimization check complete (placeholder - needs ≥5 days data)"
-
-        # ---- §5.2 版本升级检测 ----
-        Write-Log -Msg "[§5.2] Checking version update requirements..."
-        # TODO: 根据评估结果判断是否需要版本升级
-        # 当前为占位
-        Write-Log -Msg "[§5.2] Version check complete (placeholder)"
+        # ---- §6.8 桥接联动检测（后评估→分析逻辑白皮书） ----
+        Write-Log -Msg "[§6.8] Bridge detection integrated in run_keystock_evaluation.ps1 (v1.7)"
+        # 桥接检测在 run_keystock_evaluation.ps1 内部自动执行
+        # B1-B8 触发条件由白皮书 §6.8.2 定义，输出到 逻辑积累\联动日志\分析逻辑联动建议.json
+        # 待数据积累 ≥ 20 条后，桥接建议可进入自动采纳流程（需腰子确认）
 
         # ---- 更新CHANGELOG ----
         $changelogFile = Join-Path $rootDir "每日荐股\事后评估\次日后评估白皮书_CHANGELOG.md"
