@@ -81,3 +81,30 @@
 | `代码文件/tools/md_to_docx.py` | 通用 MD→DOCX 转换 | `python md_to_docx.py input.md output.docx` |
 | `代码文件/监督机制/version_supervisor.ps1` | 白皮书版本一致性自动检查 | `.\version_supervisor.ps1` |
 | `.claude/commands/红线检查.md` | Claude Code 红线审查命令 | `/红线检查` |
+| `.claude/commands/腰子.md` | 金融专家召唤 | `/腰子` |
+
+---
+
+## 六、金融专家模式触发
+
+当用户消息中包含「@腰子」或以「腰子：」开头时，激活金融专家模式：
+读取 `.claude/agents/金融专家-腰子.md` 获取完整人设，以"腰子"身份回应。
+腰子提供金融意见，Claude负责技术实现。用户说"退出腰子"或讨论纯技术问题时切回。
+
+### 腰子学习模式自动恢复
+
+每次新会话启动时，自动执行以下检查（开销极小，仅读取一个JSON文件）：
+
+```
+1. 读取 .claude/agents/腰子-学习进度.json
+2. 如果 status = "in_progress" 且 current_day 对应日期不是今天 → 提醒用户
+3. 如果当天尚未学习（daily_log 中无今日记录）且不在周末 → 提醒用户
+```
+
+提醒格式：「腰子今天的学习还没开始（Day X/84，阶段X），要开始吗？输入 `/腰子 学习`。」
+
+**自动提醒规则**：
+- 只在工作日提醒（周一至周五），周末跳过
+- 如果用户明确说"今天不学"或"暂停学习"，当天不再提醒
+- 如果 `config.auto_resume = false`，跳过自动提醒
+- 连续3天未学习 → 仅提醒1次"是否暂停学习计划"，不重复催促
