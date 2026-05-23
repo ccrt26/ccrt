@@ -72,20 +72,25 @@ ws1.cell(row=1, column=1, value="铁律量化 — 团队名册").font = TITLE_FO
 ws1.cell(row=1, column=1).alignment = CENTER
 
 ws1.merge_cells("A2:G2")
-ws1.cell(row=2, column=1, value=f"版本 v1.3 | {today} | 项目总监 阿黑").font = Font(name="Microsoft YaHei", color="666666", size=10)
+ws1.cell(row=2, column=1, value=f"版本 v1.4 | {today} | 项目总监 阿黑").font = Font(name="Microsoft YaHei", color="666666", size=10)
 ws1.cell(row=2, column=1).alignment = CENTER
 
 # Architecture diagram
 ws1.merge_cells("A4:G4")
 ws1.cell(row=4, column=1, value="团队架构").font = SUBTITLE_FONT
 ws1.merge_cells("A5:G5")
-ws1.cell(row=5, column=1, value="用户(创始人) → 阿黑(项目总监) → 腰子(金融专家) | Vega(风控官) | Pulse(数据监理) | Alpha(策略研究员) | Sentinel(宏观巡检)").font = Font(name="Microsoft YaHei", color="1A1A2E", size=10)
+ws1.cell(row=5, column=1, value="金融团队: 用户(创始人) → 阿黑(项目总监) → 腰子 | Vega | Pulse | Alpha | Sentinel").font = Font(name="Microsoft YaHei", color="1A1A2E", size=10)
 ws1.cell(row=5, column=1).alignment = CENTER
 ws1.cell(row=5, column=1).fill = LIGHT_BG
 
+ws1.merge_cells("A6:G6")
+ws1.cell(row=6, column=1, value="工程团队: 用户(创始人) → 阿黑(项目总监) → Arch | Forge | Dock | Proof").font = Font(name="Microsoft YaHei", color="16213E", size=10)
+ws1.cell(row=6, column=1).alignment = CENTER
+ws1.cell(row=6, column=1).fill = LIGHT_BG
+
 # Member overview table
 headers = ["角色", "名称", "召唤", "核心职责", "一句话", "完整定义", "召唤命令"]
-row = 7
+row = 9
 for c, h in enumerate(headers, 1):
     ws1.cell(row=row, column=c, value=h)
 style_header_row(ws1, row, len(headers))
@@ -103,6 +108,14 @@ members = [
      ".claude/agents/策略研究员-Alpha.md", ".claude/commands/Alpha.md"],
     ["宏观巡检", "Sentinel", "/Sentinel", "政策信号、经济日历、市场情绪", "告诉你外部环境怎么变",
      ".claude/agents/宏观巡检-Sentinel.md", ".claude/commands/Sentinel.md"],
+    ["系统架构师", "Arch", "/Arch", "模块设计、技术选型、API契约、重构决策", "告诉你系统该怎么搭",
+     ".claude/agents/系统架构师-Arch.md", ".claude/commands/Arch.md"],
+    ["构建工程师(CI)", "Forge", "/Forge", "自动化流水线、定时调度、代码生成", "让脚本自己跑起来",
+     ".claude/agents/构建工程师-Forge.md", ".claude/commands/Forge.md"],
+    ["部署工程师(环境)", "Dock", "/Dock", "环境配置、依赖管理、版本发布、运行监控", "让系统跑得稳",
+     ".claude/agents/部署工程师-Dock.md", ".claude/commands/Dock.md"],
+    ["质量工程师(测试)", "Proof", "/Proof", "测试策略、回归验证、变更影响分析", "证明改了不会坏",
+     ".claude/agents/质量工程师-Proof.md", ".claude/commands/Proof.md"],
 ]
 
 for i, m in enumerate(members):
@@ -131,6 +144,10 @@ detail_data = [
     ("Pulse — 数据监理", "三大API（腾讯/新浪/东方财富）连通性巡检；缓存新鲜度审计、数据完整性验证；1+2架构合规检查（主→备→缓存）；不修代码，只给诊断报告和修复指令"),
     ("Alpha — 策略研究员", "因子IC/ICIR/分层收益/衰退趋势分析；策略优化提案（权重/阈值/周期）；新因子探索、后评估规律挖掘；不跑代码，设计方案给Claude执行回测"),
     ("Sentinel — 宏观巡检", "每日盘前宏观简报（政策+数据+事件+情绪）；经济日历前瞻（未来一周重要日程预警）；政策信号解读（央行/产业/监管/财政）；事件风险预警（解禁/重大财报/重组审批）；不写代码，只做宏观判断和预警"),
+    ("Arch — 系统架构师", "系统模块设计与边界划分、模块间接口契约定义；技术选型评估（Python/PowerShell/调度框架）；数据流设计（API→缓存→评分→报告→交易）；重构决策（识别技术债、判断重构时机）；不写代码，出设计文档和架构图"),
+    ("Forge — 构建工程师(CI)", "CI/CD流水线设计（提交→检查→构建→验证）；自动化调度编排（盘前巡检→数据拉取→评分→报告→交易）；定时任务管理（cron/调度器配置、依赖关系、失败重试策略）；代码生成方案（识别重复模式，设计模板自动生成）；不写代码，出流水线设计和调度方案"),
+    ("Dock — 部署工程师(环境)", "环境配置管理（Python/PowerShell依赖版本锁定、环境隔离）；部署策略设计（灰度发布、回滚方案、发布检查清单）；运行监控方案（健康检查、API可用性监控、异常告警规则）；备份与恢复（数据备份策略、灾备方案、缓存恢复流程）；不写代码，出部署方案和环境诊断"),
+    ("Proof — 质量工程师(测试)", "测试策略设计（单元/集成/回归测试的分层策略）；回归测试用例（评分引擎、数据获取、报告生成的回归验证）；变更影响分析（代码变更前评估影响范围，变更后验证无回归）；代码规范审查（命名/注释/错误处理/日志/API限流合规检查）；不写代码，出测试方案和审查报告"),
 ]
 
 h2 = ["角色", "详细职能", "硬边界"]
@@ -146,6 +163,10 @@ boundaries = [
     "不修代码，只给诊断报告和修复指令",
     "不跑代码，设计方案给Claude执行回测",
     "不写代码、不编造政策信息、不提供个股买卖建议",
+    "不写代码、不执行部署或运维、不提供金融分析",
+    "不写代码、不管理服务器环境、不做架构设计",
+    "不写代码、不设计架构、不构建流水线",
+    "不写代码、不修bug、不设计架构或流水线",
 ]
 
 for i, (name, detail) in enumerate(detail_data):
@@ -196,6 +217,10 @@ chain_data = [
     ("分析决策", "腰子 — 四维评分 / 选股推荐 / 逻辑质疑"),
     ("风险审计", "Vega — 集中度 / 过拟合 / 纪律审查"),
     ("策略进化", "Alpha — 因子IC / 参数优化 / 规律挖掘"),
+    ("系统设计", "Arch — 模块划分 / 接口契约 / 技术选型"),
+    ("构建流水线", "Forge — CI/CD / 自动化调度 / 定时任务"),
+    ("部署环境", "Dock — 环境配置 / 依赖管理 / 版本发布"),
+    ("质量验证", "Proof — 测试策略 / 回归验证 / 变更分析"),
 ]
 
 for i, (label, detail) in enumerate(chain_data):
@@ -214,11 +239,13 @@ ws3.merge_cells(f"A{rules_start}:B{rules_start}")
 ws3.cell(row=rules_start, column=1, value="协作纪律").font = SUBTITLE_FONT
 
 rules = [
-    ("分工明确，互不越界", "腰子不做风控，Vega不挖因子，Alpha不看单票，Sentinel不做个股"),
+    ("分工明确，互不越界", "金融：腰子不做风控，Vega不挖因子，Alpha不看单票；工程：Arch不写代码，Forge不管部署，Dock不设计架构，Proof不修bug"),
+    ("金融信息流", "Sentinel盘前简报 → Pulse数据巡检 → 腰子选股分析 → Vega风险评估 → Alpha持续优化"),
+    ("工程信息流", "Arch系统设计 → Forge构建流水线 → Dock部署上线 → Proof质量验证"),
+    ("跨团队协作", "金融团队提需求 → 工程团队设计方案并实施 → 金融团队验证结果"),
     ("争议解决", "角色间有分歧时，阿黑做最终判断，用户做最终决策"),
     ("版本追踪", "每个角色定义文件独立版本管理"),
     ("红线共守", "所有角色共同遵守规则红线最新版本"),
-    ("信息流顺序", "盘前简报→数据巡检→选股分析→风险评估→策略优化"),
 ]
 
 for i, (rule, desc) in enumerate(rules):
@@ -257,8 +284,13 @@ files = [
     ("Pulse角色定义", ".claude/agents/数据监理-Pulse.md", "数据监理完整人设"),
     ("Alpha角色定义", ".claude/agents/策略研究员-Alpha.md", "策略研究员完整人设"),
     ("Sentinel角色定义", ".claude/agents/宏观巡检-Sentinel.md", "宏观巡检完整人设"),
-    ("召唤命令 ×5", ".claude/commands/腰子.md 等", "角色召唤触发器"),
-    ("规则红线", "规则红线/分析的规则红线--Claude_v1.7.md", "项目最高优先级规则"),
+    ("Arch角色定义", ".claude/agents/系统架构师-Arch.md", "系统架构师完整人设"),
+    ("Forge角色定义", ".claude/agents/构建工程师-Forge.md", "构建工程师(CI)完整人设"),
+    ("Dock角色定义", ".claude/agents/部署工程师-Dock.md", "部署工程师(环境)完整人设"),
+    ("Proof角色定义", ".claude/agents/质量工程师-Proof.md", "质量工程师(测试)完整人设"),
+    ("召唤命令 ×9", ".claude/commands/腰子.md 等", "角色召唤触发器"),
+    ("名册生成工具", "代码文件/tools/generate_roster_xlsx.py", "自动生成团队名册.xlsx"),
+    ("规则红线", "规则红线/分析的规则红线--Claude_v1.8.md", "项目最高优先级规则"),
 ]
 
 for i, (ftype, fpath, fdesc) in enumerate(files):
