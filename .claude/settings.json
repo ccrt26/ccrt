@@ -21,5 +21,11 @@
       "Glob",
       "Grep"
     ]
+  },
+  "mcpServers": {
+    "tielv-financial": {
+      "command": "python",
+      "args": ["c:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\tools\\financial_mcp_server.py"]
+    }
   }
 }
