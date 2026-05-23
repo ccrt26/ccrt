@@ -97,11 +97,17 @@ function FmtY {
 Write-Output "[INFO] Loading data..."
 if (-not (Test-Path $txnFile)) { Write-Error "No txns: $txnFile"; exit 1 }
 $allTxns = Import-Csv $txnFile | ForEach-Object {
+    $p = 0; [double]::TryParse($_.price, [ref]$p) | Out-Null
+    $sh = 0; [int]::TryParse($_.shares, [ref]$sh) | Out-Null
+    $am = 0; [double]::TryParse($_.amount, [ref]$am) | Out-Null
+    $cm = 0; [double]::TryParse($_.commission, [ref]$cm) | Out-Null
+    $st = 0; [double]::TryParse($_.stamp_tax, [ref]$st) | Out-Null
+    $tc = 0; [double]::TryParse($_.total_cost, [ref]$tc) | Out-Null
     [PSCustomObject]@{
         Date = $_.date; Code = $_.code; Name = $_.name
-        Action = $_.action; Price = [double]$_.price; Shares = [int]$_.shares
-        Amount = [double]$_.amount; Commission = [double]$_.commission
-        StampTax = [double]$_.stamp_tax; TotalCost = [double]$_.total_cost
+        Action = $_.action; Price = $p; Shares = $sh
+        Amount = $am; Commission = $cm
+        StampTax = $st; TotalCost = $tc
         Reason = $_.reason; EntryPrediction = $_.entry_prediction
     }
 }
@@ -143,9 +149,8 @@ function Get-Eval {
             $evalCache[$D] = $m; return $m
         } catch { }
     }
-    # Fallback: search for JSON files matching date pattern
-    $searchRoot = Split-Path $RootDir -Parent
-    $candidates = @(Get-ChildItem $searchRoot -Filter "*_${D}.json" -Recurse -ErrorAction SilentlyContinue)
+    # Fallback: search for JSON files matching date pattern (limit scope to RootDir)
+    $candidates = @(Get-ChildItem $RootDir -Filter "*_${D}.json" -Recurse -Depth 3 -ErrorAction SilentlyContinue)
     foreach ($ef in $candidates) {
         try {
             $testData = Get-Content $ef.FullName -Raw -Encoding UTF8 | ConvertFrom-Json

@@ -16,7 +16,7 @@ from pathlib import Path
 
 # 路径配置
 ROOT_DIR = Path(r"C:\Users\34269\Documents\Claude\股票分析")
-TRANSACTIONS_CSV = ROOT_DIR / "模拟交易" / "交易记录" / "transactions.csv"
+TRANSACTIONS_CSV = ROOT_DIR / "模拟交易" / "持仓记录" / "transactions.csv"
 EVAL_DIR = ROOT_DIR / "重点股票" / "次日评估"
 OUTPUT_FILE = ROOT_DIR / "模拟交易" / "分析" / "评分调整建议.json"
 
@@ -35,7 +35,7 @@ def load_transactions():
         reader = csv.DictReader(f)
         for row in reader:
             # P1退出 = 止损
-            if row.get('exit_reason', '').startswith('P1'):
+            if row.get('reason', '').startswith('P1'):
                 trades.append(row)
 
     return trades
@@ -53,7 +53,7 @@ def load_eval_data(date_str):
 def analyze_stop_loss(trade):
     """分析单个止损交易的误判维度"""
     code = trade.get('code', '')
-    date = trade.get('exit_date', '')
+    date = trade.get('date', '')
 
     # 加载对应日期的评估数据
     eval_data = load_eval_data(date)
@@ -62,7 +62,7 @@ def analyze_stop_loss(trade):
 
     # 找到该股的评分明细
     stock_eval = None
-    for item in eval_data:
+    for item in eval_data.get('Stocks', []):
         if item.get('code') == code or item.get('stock_code') == code:
             stock_eval = item
             break
@@ -71,12 +71,13 @@ def analyze_stop_loss(trade):
         return None
 
     # 分析评分明细，找出最高分但实际走势相反的维度（误判）
+    trade_price = float(trade.get('price', 0))
     analysis = {
         'code': code,
         'date': date,
-        'exit_price': float(trade.get('exit_price', 0)),
-        'entry_price': float(trade.get('entry_price', 0)),
-        'loss_pct': round((float(trade.get('exit_price', 0)) - float(trade.get('entry_price', 0))) / float(trade.get('entry_price', 1)) * 100, 2),
+        'exit_price': trade_price,
+        'entry_price': trade_price,
+        'loss_pct': 0,
         'dimension_scores': {},
         'likely_misjudged_dimensions': []
     }

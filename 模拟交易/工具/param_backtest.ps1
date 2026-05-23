@@ -29,7 +29,7 @@ param(
 $rootDir = "C:\Users\34269\Documents\Claude\股票分析"
 
 # ---- 默认路径 ----
-if (-not $HistoryDir) { $HistoryDir = Join-Path $rootDir "模拟交易/绩效" }
+if (-not $HistoryDir) { $HistoryDir = Join-Path $rootDir "模拟交易/持仓记录" }
 if (-not $OriginalConfig) { $OriginalConfig = Join-Path $rootDir "模拟交易/sim_config.json" }
 if (-not $OutputDir) { $OutputDir = Join-Path $rootDir "模拟交易/工具/回测结果" }
 
@@ -251,7 +251,7 @@ if ($allTxns.Count -eq 0) {
 
 Write-Host "`n读取交易记录: $($allTxns.Count) 条" -ForegroundColor Gray
 
-# ---- Step 5: 读取当前持仓（用于获取止损价等数据） ----
+# ---- Step 5: 从交易历史推导止损价（positions.json仅存当前持仓） ----
 $positionsFile = Join-Path $rootDir "模拟交易/持仓记录/positions.json"
 $posMap = @{}
 if (Test-Path $positionsFile) {
@@ -263,6 +263,10 @@ if (Test-Path $positionsFile) {
         Write-Host "警告: 无法解析持仓文件，止损价将缺失" -ForegroundColor Yellow
     }
 }
+# 对于已清仓股票，从 transactions.csv 中推导入场时的止损价
+# 回测时使用原始配置参数反推: StopLoss = EntryPrice * (1 - StopLossPct/100)
+$stopLossPct = [double]$config.TakeProfit.StopLossPct
+if (-not $stopLossPct -or $stopLossPct -le 0) { $stopLossPct = 5.0 }
 
 # ---- Step 6: 按股票代码配对交易 ----
 # 分组，组内按日期排序，BUY 与后续 SELL/SELL_HALF 逐笔配对（FIFO）
@@ -339,15 +343,19 @@ foreach ($group in $grouped) {
 
             $avgBuyPrice = if ($shares -gt 0) { $totalBuyCost / $shares } else { $price }
 
-            # 获取止损价
+            # 获取止损价：优先从 positions.json 取，否则用入场价反推
             $stopLoss = $null
             $support = $null
             $resistance = $null
             if ($posMap.ContainsKey($code)) {
                 $pos = $posMap[$code]
-                $stopLoss = [double]$pos.StopLoss
-                $support = [double]$pos.Support
-                $resistance = [double]$pos.Resistance
+                $stopLoss = if ($pos.StopLoss) { [double]$pos.StopLoss } else { $null }
+                $support = if ($pos.Support) { [double]$pos.Support } else { $null }
+                $resistance = if ($pos.Resistance) { [double]$pos.Resistance } else { $null }
+            }
+            # 已清仓股票：用入场价反推止损价
+            if ((-not $stopLoss -or $stopLoss -le 0) -and $avgBuyPrice -gt 0) {
+                $stopLoss = [Math]::Round($avgBuyPrice * (1 - $stopLossPct / 100), 2)
             }
 
             # 净卖出收入（不含手续费）

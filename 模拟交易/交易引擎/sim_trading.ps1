@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-    重点股票模拟交易引擎 v1.4
+    重点股票模拟交易引擎 v1.5
 .DESCRIPTION
     基于评估数据的评分/预判/信号，对6只重点股票执行日频模拟交易。
     每日09:35运行，输出交易流水、持仓快照、绩效报告。
@@ -72,7 +72,6 @@ function Write-Log {
 function Get-QuoteMap {
     $qtCodes = @()
     $codeMap.Keys | ForEach-Object { $qtCodes += $codeMap[$_].Market + $_ }
-    $tmpFile = Join-Path $env:TEMP "qt_${Date}.txt"
     $result = @{}
     $dataSourceLog = ""
 
@@ -197,17 +196,14 @@ function Get-QuoteMap {
 # FUNCTION: 获取沪深300基准
 # ============================================================
 function Get-BenchmarkValue {
-    $tmpFile = Join-Path $env:TEMP "hs300_${Date}.txt"
     try {
-        bash -c "curl -s 'https://qt.gtimg.cn/q=sh000300' -o '${tmpFile}' 2>/dev/null" | Out-Null
-        if (-not (Test-Path $tmpFile)) { return $null }
-        $gbkBytes = [System.IO.File]::ReadAllBytes($tmpFile)
-        Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
-        $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($gbkBytes)
+        $wc = New-Object System.Net.WebClient
+        $rawBytes = $wc.DownloadData("https://qt.gtimg.cn/q=sh000300")
+        $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($rawBytes)
         $m = [regex]::Match($utf16text, '"(.*)"')
         if (-not $m.Success) { return $null }
         $parts = $m.Groups[1].Value -split '~'
-        if ($parts.Count -lt 4) { return $null }
+        if ($parts.Count -lt 6) { return $null }
         return @{ Price = [double]$parts[3]; Open = [double]$parts[5] }
     } catch { return $null }
 }
@@ -385,10 +381,21 @@ if (Test-Path $positionsFile) {
         TotalValue = $config.InitialCapital
         LastUpdated = $Date
         Positions = @{}
+        Cooldowns = @{}
     }
 }
 $stockMap = @{}
 $positions.Positions.PSObject.Properties | ForEach-Object { $stockMap[$_.Name] = $_.Value }
+# 加载冷却期数据（独立于持仓持久化，防止清仓后冷却标记丢失）
+$cooldowns = @{}
+if ($positions.PSObject.Properties.Name -contains 'Cooldowns') {
+    $positions.Cooldowns.PSObject.Properties | ForEach-Object { $cooldowns[$_.Name] = $_.Value }
+}
+# 加载警戒关注名单（独立于持仓持久化）
+$watchlist = @{}
+if ($positions.PSObject.Properties.Name -contains 'Watchlist') {
+    $positions.Watchlist.PSObject.Properties | ForEach-Object { $watchlist[$_.Name] = $_.Value }
+}
 
 # ---- Step 3: 读取评估数据 ----
 if (-not $DataFile) {
@@ -444,43 +451,11 @@ Write-Log "数据质量检查完成"
 
 # ---- Step 5: 获取行情 ----
 Write-Log "获取实时行情..."
-$quotes = @{}
-try {
-    $wc = New-Object System.Net.WebClient
-    $qtCodes2 = @()
-    $codeMap.Keys | ForEach-Object { $qtCodes2 += $codeMap[$_].Market + $_ }
-    $rawBytes = $wc.DownloadData("https://qt.gtimg.cn/q=$($qtCodes2 -join ',')")
-    $utf16text = [System.Text.Encoding]::GetEncoding("GBK").GetString($rawBytes)
-    ($utf16text -split ';') | ForEach-Object {
-        $m2 = [regex]::Match($_, '"(.*)"')
-        if (-not $m2.Success) { return }
-        $pp = $m2.Groups[1].Value -split '~'
-        if ($pp.Count -lt 45) { return }
-        $co = $pp[2]
-        $op = 0; [double]::TryParse($pp[5], [ref]$op) | Out-Null
-        $np = 0; [double]::TryParse($pp[3], [ref]$np) | Out-Null
-        $cp = 999; [double]::TryParse($pp[32], [ref]$cp) | Out-Null
-        $hp = 0; [double]::TryParse($pp[33], [ref]$hp) | Out-Null
-        $lp = 0; [double]::TryParse($pp[34], [ref]$lp) | Out-Null
-        $pc = 0; [double]::TryParse($pp[4], [ref]$pc) | Out-Null
-        $quotes[$co] = @{
-            OpenPrice   = $op
-            Price       = $np
-            ChangePct   = $cp
-            High        = $hp
-            Low         = $lp
-            PrevClose   = $pc
-            Name        = $pp[1]
-            DataSource  = "[1]"
-        }
-    }
-    if ($quotes.Count -gt 0) { Write-Log "行情数据来源: 腾讯行情[1]" }
-} catch {
-    Write-Log "腾讯行情[1]异常: $_" "WARN"
-}
+$quotes = Get-QuoteMap
 if ($quotes.Count -eq 0) {
     Write-Log "行情API全部不可用，跳过开新仓，止损用保守估计" "WARN"
 }
+Start-Sleep -Milliseconds 300  # API间隔≥0.3s (红线§3.2)
 $benchData = Get-BenchmarkValue
 if ($benchData) { Write-Log "沪深300: $($benchData.Price)" }
 
@@ -507,12 +482,36 @@ foreach ($code in $stockMap.Keys) {
 
     $currentPrice = 0
     if ($quote -and $quote.Price -gt 0) {
-        $currentPrice = $quote.Price
+        $currentPrice = $quote.Price        # L1: 实时行情
     } elseif ($evalStock -and $evalStock.Price -gt 0) {
-        $currentPrice = $evalStock.Price
+        $currentPrice = $evalStock.Price    # L2: 评估数据昨收
     } else {
-        Write-Log "  $code 无法获取当前价，跳过出场检查" "WARN"
-        continue
+        # L3: 保守估计 — min(昨收, 缓存价), 兜底=止损价
+        $conservativePrice = 0
+        if ($quote -and $quote.PrevClose -gt 0) {
+            $conservativePrice = $quote.PrevClose
+        }
+        $cacheFile = Join-Path $simDir "quotes_cache.json"
+        if (Test-Path $cacheFile) {
+            try {
+                $cache = Get-Content $cacheFile -Raw | ConvertFrom-Json
+                if ($cache.$code -and $cache.$code.Price -gt 0) {
+                    $cachedPrice = [double]$cache.$code.Price
+                    if ($conservativePrice -gt 0) {
+                        $conservativePrice = [Math]::Min($conservativePrice, $cachedPrice)
+                    } else {
+                        $conservativePrice = $cachedPrice
+                    }
+                }
+            } catch {}
+        }
+        if ($conservativePrice -gt 0) {
+            $currentPrice = $conservativePrice
+            Write-Log "  $code 使用保守估计价(L3): $currentPrice" "WARN"
+        } else {
+            $currentPrice = $pos.StopLoss
+            Write-Log "  $code 无价格数据，使用止损价兜底(L3c): $currentPrice" "WARN"
+        }
     }
 
     $adjStopLoss = $pos.StopLoss
@@ -549,8 +548,36 @@ foreach ($code in $stockMap.Keys) {
         continue
     }
 
+    # --- P2前置: 警戒状态关注名单 ---
+    if ($evalStock -and $evalStock.TrendHealth.Label -eq "警戒") {
+        if ($watchlist.ContainsKey($code)) {
+            $watchlist[$code].LastWarnDate = $Date
+            $watchlist[$code].ConsecutiveDays += 1
+            Write-Log "  $code 黄旗: TrendHealth警戒第$($watchlist[$code].ConsecutiveDays)天" "WARN"
+        } else {
+            $watchlist[$code] = @{
+                Code = $code
+                Name = $pos.Name
+                WarnLevel = "警戒"
+                FirstWarnDate = $Date
+                LastWarnDate = $Date
+                ConsecutiveDays = 1
+            }
+            Write-Log "  $code 黄旗: 新增关注, TrendHealth警戒" "WARN"
+        }
+        continue
+    }
+    if ($evalStock -and $evalStock.TrendHealth.Label -eq "健康" -and $watchlist.ContainsKey($code)) {
+        Write-Log "  $code 趋势恢复健康，移出关注名单" "INFO"
+        $watchlist.Remove($code)
+    }
+
     # --- P2: 趋势恶化 ---
     if ($evalStock -and $evalStock.TrendHealth.Label -eq "危险") {
+        if ($watchlist.ContainsKey($code)) {
+            $watchlist.Remove($code)
+            Write-Log "  $code 警戒→危险升级，移出关注名单" "WARN"
+        }
         $shares = [int]$pos.Shares
         $sp = Get-SellProceeds -Price $currentPrice -Shares $shares
         $txns += [PSCustomObject]@{
@@ -639,8 +666,12 @@ foreach ($txn in $txns) {
         $pos.UnrealizedPnLPct = 0
         if ($txn.Reason -match "止损|趋势恶化|预判转空") {
             $pos.LastStopLossDate = $Date
+            if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
+            $cooldowns[$code].LastStopLossDate = $Date
         } elseif ($txn.Reason -match "全部止盈") {
             $pos.LastFullTakeProfitDate = $Date
+            if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
+            $cooldowns[$code].LastFullTakeProfitDate = $Date
         }
         Write-Log "  $code 清仓完成，卖出价 $($txn.Price)"
     }
@@ -649,6 +680,7 @@ foreach ($txn in $txns) {
 # ---- Step 9: 开仓检查 ----
 Write-Log "执行开仓检查..."
 if ($skipOpenNewPositions) { Write-Log "09:45 超时标志触发，跳过开新仓" "WARN" }
+else {
 $candidates = @()
 
 foreach ($code in $codeMap.Keys) {
@@ -672,16 +704,18 @@ foreach ($code in $codeMap.Keys) {
     }
 
     $existingPos = $stockMap[$code]
-    if ($existingPos -and $existingPos.LastStopLossDate) {
-        $coolDays = Get-CoolingDays -DateStr $existingPos.LastStopLossDate
+    # 冷却检查：先看当前持仓对象，再看持久化的 Cooldowns 字典（清仓后冷却标记不会丢失）
+    $coolSource = if ($existingPos) { $existingPos } elseif ($cooldowns[$code]) { $cooldowns[$code] } else { $null }
+    if ($coolSource -and $coolSource.LastStopLossDate) {
+        $coolDays = Get-CoolingDays -DateStr $coolSource.LastStopLossDate
         if ($coolDays -lt $config.CooloffPeriodDays) {
             Write-Log "  $code 止损冷却期($coolDays/$($config.CooloffPeriodDays)日)，跳过"
             continue
         }
     }
 
-    if ($existingPos -and $existingPos.LastFullTakeProfitDate) {
-        $coolDays = Get-CoolingDays -DateStr $existingPos.LastFullTakeProfitDate
+    if ($coolSource -and $coolSource.LastFullTakeProfitDate) {
+        $coolDays = Get-CoolingDays -DateStr $coolSource.LastFullTakeProfitDate
         if ($coolDays -lt $config.FullTakeProfitCooldownDays) {
             Write-Log "  $code 止盈冷却期($coolDays/$($config.FullTakeProfitCooldownDays)日)，跳过"
             continue
@@ -813,6 +847,7 @@ if ($candidates.Count -gt 0) {
 } else {
     Write-Log "无符合开仓条件的股票"
 }
+}  # 关闭 if (-not $skipOpenNewPositions) else 块
 
 # ---- Step 10: 写入交易流水 ----
 if ($txns.Count -gt 0 -and -not $DryRun) {
@@ -864,7 +899,7 @@ foreach ($kv in $posObj.GetEnumerator()) {
 $positions.TotalValue = [Math]::Round($positions.Cash + $stockValue, 2)
 
 if (-not $DryRun) {
-    $posOutput = @{ Cash = $positions.Cash; TotalValue = $positions.TotalValue; LastUpdated = $Date; Positions = $posObj }
+    $posOutput = @{ Cash = $positions.Cash; TotalValue = $positions.TotalValue; LastUpdated = $Date; Positions = $posObj; Cooldowns = $cooldowns; Watchlist = $watchlist }
     $posOutput | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $positionsFile
     Assert-WriteSuccess -Path $positionsFile
     Write-Log "持仓已更新"
@@ -991,14 +1026,14 @@ foreach ($group in $groupedTxns) {
 
     foreach ($t in $txns) {
         if ($t.Action -eq "BUY") {
-            $positionCost += $t.Amount  # Amount为负（资金流出）
+            $positionCost += $t.TotalCost  # TotalCost为负（含佣金，资金流出）
         } elseif ($t.Action -eq "SELL_HALF") {
             # BUG-02: SELL_HALF 仅减少持仓成本，不计入完整交易结算
-            $positionCost += $t.Amount  # Amount为正（资金流入）
+            $positionCost += $t.TotalCost  # TotalCost为正（含佣金+印花税，资金流入）
             if ($positionCost -gt 0) { $positionCost = 0 }  # 防溢出封顶
         } elseif ($t.Action -eq "SELL") {
             # 完整卖出 = 平仓结算一笔完整交易
-            $netPnL = $t.Amount + $positionCost  # 卖出所得 + 剩余持仓成本（负值）
+            $netPnL = $t.TotalCost + $positionCost  # 净所得 + 剩余持仓成本（负值）
             if ($netPnL -gt 0) { $winCount++; $consecLosses = 0 } else { $loseCount++; $consecLosses++ }
             $positionCost = 0  # 仓位已清
         }

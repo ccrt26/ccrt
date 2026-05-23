@@ -15,7 +15,7 @@ $rootDir = "C:\Users\34269\Documents\Claude\股票分析"
 
 # 默认路径
 if (-not $PerfFile) {
-    $PerfFile = Join-Path $rootDir "模拟交易/绩效/perf_summary.json"
+    $PerfFile = Join-Path $rootDir "模拟交易/绩效报告/perf_summary.json"
 }
 if (-not $LogDir) {
     $LogDir = Join-Path $rootDir "模拟交易/日志"
@@ -66,10 +66,19 @@ $tier2Reasons = @()
 if ($perf.ConsecutiveLosses -ge 5) {
     $tier2Reasons += "连续亏损$($perf.ConsecutiveLosses)笔>=5笔"
 }
-if ($perf.MaxSingleStockLoss -le -3) {
-    $tier2Reasons += "单股累计亏损$($perf.MaxSingleStockLoss)%>=3%总资产"
+# MaxSingleStockLoss 从 perf_summary.json PerStock 聚合计算
+$maxStockLoss = 0
+if ($perf.PerStock) {
+    foreach ($stockP in $perf.PerStock.PSObject.Properties) {
+        if ($stockP.Value.TotalPnL -and [double]$stockP.Value.TotalPnL -lt $maxStockLoss) {
+            $maxStockLoss = [double]$stockP.Value.TotalPnL
+        }
+    }
 }
-if ($perf.WinRate -lt 40 -and $perf.TotalTrades -ge 10) {
+if ($maxStockLoss -le -3) {
+    $tier2Reasons += "单股累计亏损${maxStockLoss}元>=3%总资产"
+}
+if ($null -ne $perf.WinRate -and [double]$perf.WinRate -lt 40 -and $null -ne $perf.TotalTrades -and [int]$perf.TotalTrades -ge 10) {
     $tier2Reasons += "胜率$($perf.WinRate)%<40%且交易$($perf.TotalTrades)笔>=10笔"
 }
 
@@ -83,10 +92,10 @@ if ($tier2Reasons.Count -gt 0) {
 
 # ---- Tier 3: 方法论重构 ----
 $tier3Reasons = @()
-if ($perf.TotalReturn -le -10) {
-    $tier3Reasons += "累计亏损$($perf.TotalReturn)%>=10%"
+if ($null -ne $perf.TotalReturnPct -and [double]$perf.TotalReturnPct -le -10) {
+    $tier3Reasons += "累计亏损$($perf.TotalReturnPct)%>=10%"
 }
-if ($perf.WinRate -lt 30) {
+if ($null -ne $perf.WinRate -and [double]$perf.WinRate -lt 30) {
     $tier3Reasons += "胜率$($perf.WinRate)%<30%"
 }
 # 最大回撤超预警3次需要历史数据，暂略

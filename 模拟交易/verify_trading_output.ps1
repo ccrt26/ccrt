@@ -31,7 +31,7 @@ foreach ($dir in $requiredDirs) {
 $csvFile = Join-Path $tradingDir "持仓记录/transactions.csv"
 if (Test-Path $csvFile) {
     try {
-        $rows = Import-Csv $csvFile -Encoding UTF8
+        $rows = @(Import-Csv $csvFile -Encoding UTF8 -ErrorAction Stop)
         $rowCount = ($rows | Measure-Object).Count
         if ($rowCount -ge $MinTransactions) {
             Write-Host "  [PASS] transactions.csv: $rowCount 条记录" -ForegroundColor Green

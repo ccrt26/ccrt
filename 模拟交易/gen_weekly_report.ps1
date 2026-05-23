@@ -258,10 +258,17 @@ $weeklyReturn       = if ($startNAV -ne 0) { ($endNAV / $startNAV - 1) * 100 } e
 $cumulativeReturn   = [double]$lastSnap.TotalReturnPct
 
 # Benchmark
-$benchStart = [double]$firstSnap.Benchmark.CurrentValue
-$benchEnd   = [double]$lastSnap.Benchmark.CurrentValue
-$benchWeeklyReturn = if ($benchStart -ne 0) { ($benchEnd / $benchStart - 1) * 100 } else { 0 }
-$benchCumulativeReturn = [double]$lastSnap.Benchmark.BenchmarkReturnPct
+# Benchmark — guard against missing sub-object
+$benchStart = 0
+$benchEnd = 0
+$benchWeeklyReturn = 0
+$benchCumulativeReturn = 0
+if ($firstSnap.Benchmark -and $firstSnap.Benchmark.CurrentValue -gt 0 -and $lastSnap.Benchmark -and $lastSnap.Benchmark.CurrentValue -gt 0) {
+    $benchStart = [double]$firstSnap.Benchmark.CurrentValue
+    $benchEnd   = [double]$lastSnap.Benchmark.CurrentValue
+    $benchWeeklyReturn = if ($benchStart -ne 0) { ($benchEnd / $benchStart - 1) * 100 } else { 0 }
+    $benchCumulativeReturn = if ($lastSnap.Benchmark.BenchmarkReturnPct) { [double]$lastSnap.Benchmark.BenchmarkReturnPct } else { 0 }
+}
 
 $excessReturn     = $weeklyReturn - $benchWeeklyReturn
 $excessCumulative = $cumulativeReturn - $benchCumulativeReturn
@@ -323,7 +330,10 @@ foreach ($snap in $allSnapshots) {
     $chartLabels += "'$label'"
 
     $portRet = [Math]::Round([double]$snap.TotalReturnPct, 2)
-    $benchRet = [Math]::Round([double]$snap.Benchmark.BenchmarkReturnPct, 2)
+    $benchRet = 0
+    if ($snap.Benchmark -and $null -ne $snap.Benchmark.BenchmarkReturnPct) {
+        $benchRet = [Math]::Round([double]$snap.Benchmark.BenchmarkReturnPct, 2)
+    }
     $chartPortRet += $portRet
     $chartBenchRet += $benchRet
 
@@ -439,7 +449,8 @@ if ($currentPositions.Count -gt 0) {
         $posHtml += "<td class='num $totalPnlClass'>$totalPnlStr</td>"
         $posHtml += "<td class='num $totalPnlClass'>$(Format-Pct $(if($totalPosCost -gt 0){$totalPnl/$totalPosCost*100}else{0}))</td>"
         $posHtml += '</tr>'
-        $posHtml += '<tr class="summary-row cash-row"><td colspan="9">可用现金：' + $cashStr + ' ｜ 组合总值：' + (Format-Num $endNAV 2) + ' ｜ 总仓位：' + (Format-Num ($totalMktVal / $endNAV * 100) 1) + '%</td></tr>'
+        $posPct = if ($endNAV -gt 0) { Format-Num ($totalMktVal / $endNAV * 100) 1 } else { "0" }
+        $posHtml += '<tr class="summary-row cash-row"><td colspan="9">可用现金：' + $cashStr + ' ｜ 组合总值：' + (Format-Num $endNAV 2) + ' ｜ 总仓位：' + $posPct + '%</td></tr>'
     }
     $posHtml += '</tbody></table>'
 } else {

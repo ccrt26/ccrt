@@ -50,16 +50,24 @@ $WHITEPAPERS = @(
     @{
         Name     = '分析的规则红线--Claude'
         Dir      = '规则红线'
-        Current  = 'v1.5'
+        Current  = 'v1.10'
         Date     = '2026-05-23'
     }
     @{
         Name     = '模拟交易白皮书'
         Dir      = '模拟交易'
-        Current  = 'v1.3'
+        Current  = 'v1.5'
         Date     = '2026-05-23'
     }
 )
+
+# ═════ 配置：团队名册 ═══════════════════════════════════════
+$ROSTER = @{
+    Name    = '团队名册'
+    Dir     = '项目成员'
+    Current = 'v1.4'
+    Date    = '2026-05-23'
+}
 
 $ROOT = "C:\Users\34269\Documents\Claude\股票分析"
 $ERRORS = @()
@@ -282,9 +290,69 @@ function Check-VersionIndex {
     }
 }
 
-# ═════ 8. CHANGELOG 交叉验证（-CrossCheck）═════════════════
+# ═════ 8. 团队名册版本号检查（§5.4.8.2 第6条）═════════════
+function Check-RosterVersion {
+    Write-Host "`n[8/9] 团队名册版本号检查" -ForegroundColor Cyan
+
+    # 8.1 检查当前版本文件是否存在
+    $rosterMd = "$ROOT\$($ROSTER.Dir)\$($ROSTER.Name)_$($ROSTER.Current).md"
+    if (Test-Path $rosterMd) {
+        # 检查文件头版本号
+        $header = Get-Content $rosterMd -TotalCount 5 -Encoding UTF8
+        $foundVersion = $header | Select-String $ROSTER.Current
+        if ($foundVersion) {
+            Write-Result $true "$($ROSTER.Name) $($ROSTER.Current) — 文件存在且版本号一致"
+        } else {
+            Write-Result $false "$($ROSTER.Name) $($ROSTER.Current) — 文件头未找到版本号 '$($ROSTER.Current)'"
+        }
+    } else {
+        Write-Result $false "$($ROSTER.Name) — 当前版本文件不存在: $rosterMd"
+    }
+
+    # 8.2 检查双格式同步：.xlsx 是否存在
+    $rosterXlsx = "$ROOT\$($ROSTER.Dir)\$($ROSTER.Name)_$($ROSTER.Current).xlsx"
+    if (Test-Path $rosterXlsx) {
+        Write-Result $true "$($ROSTER.Name) $($ROSTER.Current).xlsx — 双格式同步正常"
+    } else {
+        Write-Result $false "$($ROSTER.Name) $($ROSTER.Current).xlsx 缺失！须从.md同步生成（§5.4.8.4）"
+    }
+
+    # 8.3 检查是否存在无版本号文件（违规）
+    $unversionedMd = "$ROOT\$($ROSTER.Dir)\$($ROSTER.Name).md"
+    $unversionedXlsx = "$ROOT\$($ROSTER.Dir)\$($ROSTER.Name).xlsx"
+    if (Test-Path $unversionedMd) {
+        Write-Result $false "$($ROSTER.Name).md — 存在无版本号文件！应删除，当前版本为 $($ROSTER.Name)_$($ROSTER.Current).md"
+    }
+    if (Test-Path $unversionedXlsx) {
+        Write-Result $false "$($ROSTER.Name).xlsx — 存在无版本号文件！应删除，当前版本为 $($ROSTER.Name)_$($ROSTER.Current).xlsx"
+    }
+
+    # 8.4 检查文档版本索引中的名册版本是否一致
+    $idxPath = "$ROOT\规则红线\文档版本索引.md"
+    if (Test-Path $idxPath) {
+        $idxContent = Get-Content $idxPath -Encoding UTF8
+        $rosterInIndex = $false
+        foreach ($line in $idxContent) {
+            if ($line -match [regex]::Escape($ROSTER.Name) -and $line -match '\|\s*v?(\d+\.\d+)') {
+                $rosterInIndex = $true
+                $indexVersion = "v$($matches[1])"
+                if ($indexVersion -eq $ROSTER.Current) {
+                    Write-Result $true "文档版本索引中 $($ROSTER.Name) 版本一致 ($($ROSTER.Current))"
+                } else {
+                    Write-Result $false "文档版本索引中 $($ROSTER.Name) 版本为 $indexVersion，应为 $($ROSTER.Current)"
+                }
+                break
+            }
+        }
+        if (-not $rosterInIndex) {
+            Write-Result $false "文档版本索引中未找到 $($ROSTER.Name) 条目"
+        }
+    }
+}
+
+# ═════ 9. CHANGELOG 交叉验证（-CrossCheck）═════════════════
 function Invoke-CrossCheck {
-    Write-Host "`n[8/8] CHANGELOG 交叉验证 — 条目声明 vs 代码事实" -ForegroundColor Cyan
+    Write-Host "`n[9/9] CHANGELOG 交叉验证 — 条目声明 vs 代码事实" -ForegroundColor Cyan
     Write-Host "  (检测最新CHANGELOG条目中的变更声明是否与代码一致)" -ForegroundColor DarkGray
     Write-Host ""
 
@@ -411,6 +479,7 @@ Check-DocxExists
 Check-ChangelogPath
 Check-CrossReferences
 Check-VersionIndex
+Check-RosterVersion
 
 # ═════ 汇总 ═══════════════════════════════════════════════
 Write-Host "`n" ("=" * 50) -ForegroundColor Cyan

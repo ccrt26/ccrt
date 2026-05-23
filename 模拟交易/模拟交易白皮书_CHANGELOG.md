@@ -3,6 +3,21 @@
 > 独立于白皮书的变更记录，遵循 CLAUDE.md §2.4 真实性规则。
 > 每条记录附带证据链（文件路径+行号+改动摘要）。
 
+## v1.5 (2026-05-23)
+
+> Alpha策略审查发现3个P0硬伤，阿黑修复。引擎行为修正，白皮书规格未变。
+
+### 修复
+
+- **P0-1 绩效归因含费用**: FIFO配对盈亏计算改用 `TotalCost`（含佣金+印花税），此前用 `Amount`（裸成交额）系统性高估收益约0.15%/笔（sim_trading.ps1 L996/L999/L1004, `$t.Amount`→`$t.TotalCost`）
+- **P0-2 09:45超时阻断生效**: `$skipOpenNewPositions` 标志原仅写日志未实际阻断，Step 9 整体包裹进 `if (-not $skipOpenNewPositions) { ... }` else块（sim_trading.ps1 L651-818）
+- **P0-3 冷却期持久化**: 止损/止盈冷却标记原存于持仓对象，清仓后随 `positions.json` 丢弃次日失效。新增独立 `Cooldowns` 字典持久化，出场时同步写入，开仓时从 Cooldowns 回退读取（sim_trading.ps1 L383-396 加载, L640-648 写入, L680-697 检查, L873 保存）
+
+### 文件信息
+- 引擎: `模拟交易/交易引擎/sim_trading.ps1`
+- 白皮书: `模拟交易/模拟交易白皮书_v1.5.md`
+- 持仓结构: `positions.json` 新增 `Cooldowns` 字段
+
 ## v1.4 (2026-05-23)
 
 > 版本号同步：白皮书v1.4、引擎v1.4、文件名统一。

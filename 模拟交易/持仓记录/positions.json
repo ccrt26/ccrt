@@ -2,6 +2,7 @@
     "TotalValue":  1008174.49,
     "LastUpdated":  "20260522",
     "Cash":  737869.49,
+    "Cooldowns":  {},
     "Positions":  {
                       "601689":  {
                                      "Code":  "601689",
