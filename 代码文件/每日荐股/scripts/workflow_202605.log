@@ -237,3 +237,5 @@
 [2026-05-22 20:44:11][INFO]   Date:   2026-05-22
 [2026-05-22 20:44:11][INFO]   Log:    C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\workflow_202605.log
 [2026-05-22 20:44:11][INFO]   Record: C:\Users\34269\Documents\Claude\股票分析\每日荐股\运营记录\workflow_records.csv
+[2026-05-23 19:00:02][INFO] Checking market open for 2026-05-23...
+[2026-05-23 19:00:02][SKIP] 2026-05-23 is not a trading day, skip

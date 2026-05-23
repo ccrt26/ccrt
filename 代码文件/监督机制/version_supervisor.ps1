@@ -38,7 +38,7 @@ $WHITEPAPERS = @(
     @{
         Name     = '重点股票跟踪分析逻辑白皮书'
         Dir      = '重点股票\分析逻辑'
-        Current  = 'v2.0'
+        Current  = 'v3.0'
         Date     = '2026-05-21'
     }
     @{

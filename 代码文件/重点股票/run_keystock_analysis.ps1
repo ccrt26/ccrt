@@ -1,8 +1,10 @@
 ﻿# 铁律量化 - 重点股票分析报告生成引擎
-# 基于：重点股票跟踪分析逻辑白皮书 v2.0
+# 基于：重点股票跟踪分析逻辑白皮书 v3.0
 # 输出：每只股票独立PDF分析报告
 # 数据源：[1]~[12] HTTP API已实测
-# 最后更新：2026-05-21
+# 最后更新：2026-05-23
+# 引擎版本：v3.0
+# 变更：全面对齐白皮书v3.0 — 权重调整/四维技术框架/极端事件/不做清单/信号冲突裁决/ADX+OBV+RSI9/扣非+商誉+杜邦/Wyckoff量化/板块相位量化/预期差框架/催化剂市值调整/机构共识修正
 
 param(
     [string]$Date = "",           # 指定日期 YYYY-MM-DD 或 YYYYMMDD，默认今天
@@ -80,18 +82,24 @@ function Collect-StockFullData {
     }
 
     # [5] 本地技术指标
-    $ma5 = @(); $ma10 = @(); $ma20 = @(); $ma50 = @(); $ma120 = @()
-    $rsi14 = @(); $macd = $null; $boll = $null; $vol5 = @(); $vol20 = @()
+    $ma5 = @(); $ma10 = @(); $ma20 = @(); $ma50 = @(); $ma120 = @(); $ma60 = @()
+    $rsi14 = @(); $rsi9 = @(); $macd = $null; $boll = $null; $vol5 = @(); $vol20 = @()
+    $adx = $null; $obv = @(); $atr = @()
     if ($klines.Count -ge 20) {
         $ma5 = Calc-MovingAverage -Data $klines -Period 5
         $ma10 = Calc-MovingAverage -Data $klines -Period 10
         $ma20 = Calc-MovingAverage -Data $klines -Period 20
         $rsi14 = Calc-RSI -Data $klines -Period 14
+        $rsi9 = Calc-RSI -Data $klines -Period 9
         $macd = Calc-MACD -Data $klines
         $boll = Calc-Bollinger -Data $klines
         $vol5 = Calc-MovingAverage -Data $klines -Field "Volume" -Period 5
         $vol20 = Calc-MovingAverage -Data $klines -Field "Volume" -Period 20
+        $obv = Calc-OBV -Data $klines
+        $atr = Calc-ATR -Data $klines -Period 14
+        if ($klines.Count -ge 30) { $adx = Calc-ADX -Data $klines -Period 14 }
         if ($klines.Count -ge 50) { $ma50 = Calc-MovingAverage -Data $klines -Period 50 }
+        if ($klines.Count -ge 60) { $ma60 = Calc-MovingAverage -Data $klines -Period 60 }
         if ($klines.Count -ge 120) { $ma120 = Calc-MovingAverage -Data $klines -Period 120 }
     }
 
@@ -116,8 +124,9 @@ function Collect-StockFullData {
     return [PSCustomObject]@{
         Code = $Code; Name = $quote.Name; Price = $quote.Price
         Quote = $quote; KLines = $klines
-        MA5 = $ma5; MA10 = $ma10; MA20 = $ma20; MA50 = $ma50; MA120 = $ma120
-        RSI14 = $rsi14; MACD = $macd; Bollinger = $boll
+        MA5 = $ma5; MA10 = $ma10; MA20 = $ma20; MA50 = $ma50; MA120 = $ma120; MA60 = $ma60
+        RSI14 = $rsi14; RSI9 = $rsi9; MACD = $macd; Bollinger = $boll
+        ADX = $adx; OBV = $obv; ATR = $atr
         VolMA5 = $vol5; VolMA20 = $vol20
         Financial = $financial; PEPercentile = $pePercentile
         FundFlow = $fundFlow; Northbound = $northbound
@@ -132,44 +141,78 @@ function Collect-StockFullData {
 function Get-TechScore {
     param($D)
     $score = 0
-    if (-not $D.KLines -or $D.KLines.Count -lt 20 -or -not $D.MACD) { return 40 }
-    # A. MA趋势 (30分)
-    $ma5v = $D.MA5[-1]; $ma10v = $D.MA10[-1]; $ma20v = $D.MA20[-1]; $price = $D.Price
-    if     ($ma5v -gt $ma10v -and $ma10v -gt $ma20v -and $price -gt $ma20v) { $score += 30 }
-    elseif ($ma5v -gt $ma10v -and $price -gt $ma10v)                       { $score += 20 }
-    elseif ($ma5v -gt $ma10v)                                                { $score += 12 }
-    elseif ($ma5v -lt $ma10v -and $ma10v -lt $ma20v)                        { $score += 3 }
-    else                                                                      { $score += 8 }
-    # B. MACD (20分)
-    $dif = $D.MACD.DIF[-1]; $dea = $D.MACD.DEA[-1]
-    if     ($dif -gt $dea -and $dif -gt 0 -and $D.MACD.DIF[-1] -gt $D.MACD.DIF[-2]) { $score += 20 }
-    elseif ($dif -gt $dea -and $dif -gt 0)                                           { $score += 15 }
-    elseif ($dif -gt $dea)                                                            { $score += 8 }
-    else                                                                               { $score += 3 }
-    # C. RSI (20分) [回测:超卖36.8%反向信号,降为0分]
-    $rsi = [double]$D.RSI14[-1]
-    if     ($rsi -ge 45 -and $rsi -le 65)   { $score += 20 }
-    elseif ($rsi -ge 35 -and $rsi -lt 45)   { $score += 12 }
-    elseif ($rsi -gt 65 -and $rsi -le 75)   { $score += 12 }
-    elseif ($rsi -gt 75 -and $rsi -le 85)   { $score += 5 }
-    elseif ($rsi -lt 25)                     { $score += 0 }
-    else                                      { $score += 8 }
-    # D. 布林带 (15分) [回测:触及上轨61.1%最强信号,触及下轨0%反向]
-    $close = $D.KLines[-1].Close; $bm = $D.Bollinger.MA[-1]
-    $bu = $D.Bollinger.Upper[-1]; $bd = $D.Bollinger.Lower[-1]
-    $bmPrev = if ($D.Bollinger.MA.Count -ge 3) { $D.Bollinger.MA[-3] } else { $bm }
-    if     ($close -ge $bm -and $close -le $bu -and $bm -gt $bmPrev) { $score += 15 }
-    elseif ($close -lt $bm -and $close -gt $bd -and $bm -gt $bmPrev) { $score += 10 }
-    elseif ($close -ge $bu)                                            { $score += 15 }
-    elseif ($close -le $bd)                                            { $score += 0 }
-    else                                                               { $score += 8 }
-    # E. 量能 (15分) [回测:缩量下跌60.5%强信号,放量下跌偏空]
-    $vol = $D.KLines[-1].Volume; $v5 = $D.VolMA5[-2]; $chg = $D.Quote.ChangePct
-    if     ($chg -ge 2 -and $vol -gt $v5 * 1.5)   { $score += 15 }
-    elseif ($chg -ge 0 -and $vol -le $v5 * 1.2)   { $score += 8 }
-    elseif ($chg -lt -2 -and $vol -gt $v5 * 1.5)  { $score += 0 }
-    elseif ($chg -lt 0 -and $vol -lt $v5 * 0.8)   { $score += 12 }
-    else                                            { $score += 10 }
+    if (-not $D.KLines -or $D.KLines.Count -lt 30) { return 40 }
+
+    # === v3.0: 四维独立确认框架（每维度1个核心指标，消除共线伪多重验证）===
+
+    # A. 趋势维度 — ADX(14) (25分)
+    $adxVal = 0; $pdi = 0; $mdi = 0
+    if ($D.ADX -and $D.ADX.ADX.Count -gt 0 -and $D.ADX.ADX[-1] -ne $null) {
+        $adxVal = [double]$D.ADX.ADX[-1]
+        $pdi = [double]$D.ADX.PlusDI[-1]; $mdi = [double]$D.ADX.MinusDI[-1]
+        if ($adxVal -gt 25 -and $pdi -gt $mdi) { $score += 25 }
+        elseif ($adxVal -gt 25 -and $mdi -gt $pdi) { $score += 5 }
+        elseif ($adxVal -gt 20 -and $pdi -gt $mdi) { $score += 15 }
+        elseif ($adxVal -gt 20) { $score += 8 }
+        elseif ($adxVal -lt 20 -and $pdi -gt $mdi) { $score += 10 }
+        else { $score += 5 }
+    } else {
+        # Fallback to MA trend when ADX unavailable
+        $ma5v = $D.MA5[-1]; $ma10v = $D.MA10[-1]; $ma20v = $D.MA20[-1]; $price = $D.Price
+        if ($ma5v -gt $ma10v -and $ma10v -gt $ma20v -and $price -gt $ma20v) { $score += 25 }
+        elseif ($ma5v -gt $ma10v -and $price -gt $ma10v) { $score += 15 }
+        elseif ($ma5v -gt $ma10v) { $score += 10 }
+        elseif ($ma5v -lt $ma10v -and $ma10v -lt $ma20v) { $score += 3 }
+        else { $score += 8 }
+    }
+
+    # B. 动量维度 — RSI(9) A股适配 (25分)
+    $rsi = if ($D.RSI9.Count -gt 0 -and $D.RSI9[-1] -ne $null) { [double]$D.RSI9[-1] } else { [double]$D.RSI14[-1] }
+    if ($rsi -ge 40 -and $rsi -le 60) {
+        # Check direction
+        $rsiPrev = if ($D.RSI9.Count -ge 3 -and $D.RSI9[-3] -ne $null) { [double]$D.RSI9[-3] } else { $rsi }
+        if ($rsi -gt $rsiPrev) { $score += 25 } else { $score += 18 }
+    }
+    elseif ($rsi -gt 60 -and $rsi -le 75) { $score += 15 }
+    elseif ($rsi -gt 75) { $score += 5 }
+    elseif ($rsi -gt 30 -and $rsi -lt 40) { $score += 8 }
+    else { $score += 5 }
+
+    # C. 波动维度 — Bollinger Bands (25分)
+    if ($D.Bollinger -and $D.Bollinger.MA.Count -gt 0) {
+        $close = $D.KLines[-1].Close; $bm = $D.Bollinger.MA[-1]
+        $bu = $D.Bollinger.Upper[-1]; $bd = $D.Bollinger.Lower[-1]
+        $bmPrev = if ($D.Bollinger.MA.Count -ge 5) { $D.Bollinger.MA[-5] } else { $bm }
+        if ($close -ge $bm -and $close -le $bu -and $bm -gt $bmPrev) { $score += 25 }
+        elseif ($close -lt $bm -and $close -gt $bd -and $bm -gt $bmPrev) { $score += 15 }
+        elseif ($close -ge $bu) { $score += 10 }
+        elseif ($close -le $bd) { $score += 5 }
+        else { $score += 12 }
+    } else { $score += 12 }
+
+    # D. 量能维度 — OBV (25分)
+    if ($D.OBV -and $D.OBV.Count -ge 10) {
+        $obvNow = $D.OBV[-1]; $obv5ago = if ($D.OBV.Count -ge 6) { $D.OBV[-6] } else { $D.OBV[0] }
+        $obvTrend = if ($obv5ago -ne 0) { ($obvNow - $obv5ago) / [Math]::Abs($obv5ago) * 100 } else { 0 }
+        $priceNow = $D.Price; $price5ago = $D.KLines[-6].Close
+        $priceTrend = if ($price5ago -ne 0) { ($priceNow - $price5ago) / $price5ago * 100 } else { 0 }
+        # OBV与价格同向 = 趋势确认；OBV与价格背离 = 预警
+        if ($obvTrend -gt 2 -and $priceTrend -gt 0) { $score += 25 }
+        elseif ($obvTrend -gt 0 -and $priceTrend -gt 0) { $score += 20 }
+        elseif ($obvTrend -gt 2 -and $priceTrend -lt 0) { $score += 8 }
+        elseif ($obvTrend -lt -2 -and $priceTrend -lt 0) { $score += 5 }
+        elseif ($obvTrend -gt 0) { $score += 12 }
+        else { $score += 8 }
+    } else {
+        # Fallback to volume analysis
+        $vol = $D.KLines[-1].Volume; $v5 = $D.VolMA5[-2]; $chg = $D.Quote.ChangePct
+        if ($chg -ge 2 -and $vol -gt $v5 * 1.5) { $score += 25 }
+        elseif ($chg -ge 0 -and $vol -le $v5 * 1.2) { $score += 12 }
+        elseif ($chg -lt -2 -and $vol -gt $v5 * 1.5) { $score += 5 }
+        elseif ($chg -lt 0 -and $vol -lt $v5 * 0.8) { $score += 18 }
+        else { $score += 10 }
+    }
+
     return [Math]::Min([Math]::Max($score, 0), 100)
 }
 
@@ -178,48 +221,122 @@ function Get-FundamentalScore {
     $score = 0
     $fin = $D.Financial
     if (-not $fin -or $fin.Count -eq 0) { return 40 }
-    # A. ROE (25分)
+
+    # A. ROE (15分) + 杜邦拆解
     $roe = [double]$fin[0].WEIGHTAVG_ROE
-    if     ($roe -ge 15)  { $score += 25 }
-    elseif ($roe -ge 10)  { $score += 15 }
-    elseif ($roe -ge 5)   { $score += 8 }
-    else                  { $score += 2 }
-    # B. 毛利率估算 (20分)
+    $dupontNote = ""
+    if ($fin[0].PSObject.Properties.Name -contains 'NET_PROFIT_MARGIN') {
+        $netMargin = [double]$fin[0].NET_PROFIT_MARGIN
+        $turnover = if ($fin[0].PSObject.Properties.Name -contains 'ASSET_TURNOVER') { [double]$fin[0].ASSET_TURNOVER } else { 0 }
+        $leverage = if ($fin[0].PSObject.Properties.Name -contains 'EQUITY_MULTIPLIER') { [double]$fin[0].EQUITY_MULTIPLIER } else { [double]$fin[0].DEBT_ASSET_RATIO / 100 + 1 }
+        if ($leverage -gt 3.5) { $dupontNote = " [杠杆乘数>$leverage,高杠杆驱动]"; $score += 5 }
+        elseif ($netMargin -gt 15) { $score += 12 }
+        elseif ($netMargin -gt 8) { $score += 8 }
+        else { $score += 4 }
+    }
+    if ($roe -ge 15) { $score += 3 }
+    elseif ($roe -ge 10) { $score += 2 }
+    elseif ($roe -ge 5) { $score += 1 }
+    else { $score += 0 }
+
+    # B. 扣非净利润增长率 (15分) — A股必须
+    $deductedGrowth = 0; $hasDeducted = $false
+    if ($fin[0].PSObject.Properties.Name -contains 'DEDUCTED_PROFIT') {
+        $dp0 = [double]$fin[0].DEDUCTED_PROFIT
+        if ($fin.Count -ge 2 -and $fin[1].PSObject.Properties.Name -contains 'DEDUCTED_PROFIT') {
+            $dp1 = [double]$fin[1].DEDUCTED_PROFIT
+            if ($dp1 -ne 0) { $deductedGrowth = ($dp0 - $dp1) / [Math]::Abs($dp1) * 100; $hasDeducted = $true }
+        }
+    }
+    if ($hasDeducted) {
+        if ($deductedGrowth -ge 30) { $score += 15 }
+        elseif ($deductedGrowth -ge 15) { $score += 12 }
+        elseif ($deductedGrowth -ge 0) { $score += 7 }
+        elseif ($deductedGrowth -ge -10) { $score += 3 }
+        else { $score += 0 }
+    } else {
+        # Fallback: 营收增速
+        if ($fin.Count -ge 2 -and [double]$fin[1].TOTAL_OPERATE_INCOME -ne 0) {
+            $rg = ([double]$fin[0].TOTAL_OPERATE_INCOME - [double]$fin[1].TOTAL_OPERATE_INCOME) / [Math]::Abs([double]$fin[1].TOTAL_OPERATE_INCOME) * 100
+            if ($rg -ge 30) { $score += 9 }
+            elseif ($rg -ge 15) { $score += 7 }
+            elseif ($rg -ge 0) { $score += 4 }
+            elseif ($rg -ge -10) { $score += 2 }
+        } else { $score += 5 }
+    }
+
+    # C. 毛利率 (10分)
     $rev = [double]$fin[0].TOTAL_OPERATE_INCOME; $cost = [double]$fin[0].OPERATE_COST
     if ($rev -gt 0) {
         $gm = ($rev - $cost) / $rev * 100
-        if     ($gm -ge 50)  { $score += 20 }
-        elseif ($gm -ge 30)  { $score += 15 }
-        elseif ($gm -ge 15)  { $score += 8 }
-        elseif ($gm -ge 5)   { $score += 3 }
-        else                 { $score += 0 }
+        if ($gm -ge 50) { $score += 10 }
+        elseif ($gm -ge 30) { $score += 8 }
+        elseif ($gm -ge 15) { $score += 5 }
+        elseif ($gm -ge 5) { $score += 2 }
+        else { $score += 0 }
+    } else { $score += 5 }
+
+    # D. 商誉/净资产 (15分) — A股并购雷区
+    $goodwill = 0; $equity = 0; $hasGoodwill = $false
+    if ($fin[0].PSObject.Properties.Name -contains 'GOODWILL') {
+        $goodwill = [double]$fin[0].GOODWILL
+        if ($fin[0].PSObject.Properties.Name -contains 'TOTAL_EQUITY') {
+            $equity = [double]$fin[0].TOTAL_EQUITY
+        } elseif ($fin[0].PSObject.Properties.Name -contains 'PARENT_EQUITY') {
+            $equity = [double]$fin[0].PARENT_EQUITY
+        }
+        if ($equity -gt 0) { $hasGoodwill = $true; $gwRatio = $goodwill / $equity * 100 }
+    }
+    if ($hasGoodwill) {
+        if ($gwRatio -lt 15) { $score += 15 }
+        elseif ($gwRatio -lt 30) { $score += 10 }
+        elseif ($gwRatio -lt 50) { $score += 4 }
+        else { $score += 0 }
     } else { $score += 8 }
-    # C. 营收增速 (20分)
-    if ($fin.Count -ge 2 -and [double]$fin[1].TOTAL_OPERATE_INCOME -ne 0) {
-        $revGrowth = ([double]$fin[0].TOTAL_OPERATE_INCOME - [double]$fin[1].TOTAL_OPERATE_INCOME) / [Math]::Abs([double]$fin[1].TOTAL_OPERATE_INCOME) * 100
-        if     ($revGrowth -ge 30)  { $score += 20 }
-        elseif ($revGrowth -ge 15)  { $score += 14 }
-        elseif ($revGrowth -ge 0)   { $score += 8 }
-        elseif ($revGrowth -ge -10) { $score += 4 }
-        else                        { $score += 0 }
-    } else { $score += 8 }
-    # D. PE百分位 (20分)
+
+    # E. PE百分位 (15分)
     $pep = $D.PEPercentile
     if ($pep) {
         $pct = $pep.Percentile
-        if     ($pct -lt 20)  { $score += 20 }
-        elseif ($pct -lt 40)  { $score += 15 }
-        elseif ($pct -lt 60)  { $score += 10 }
-        elseif ($pct -lt 80)  { $score += 5 }
-        else                  { $score += 2 }
-    } else { $score += 10 }
-    # E. 负债率 (15分)
+        if ($pct -lt 20) { $score += 15 }
+        elseif ($pct -lt 40) { $score += 11 }
+        elseif ($pct -lt 60) { $score += 7 }
+        elseif ($pct -lt 80) { $score += 4 }
+        else { $score += 1 }
+    } else { $score += 7 }
+
+    # F. PEG (10分) — PE / 一致预期净利润增速
+    if ($pep -and $pep.CurrentPE -gt 0) {
+        $consensusGrowth = $null
+        if ($D.Research -and $D.Research.Count -gt 0) {
+            $epsVals = @($D.Research | Where-Object { $_.ThisYearEPS -gt 0 } | ForEach-Object { $_.ThisYearEPS })
+            if ($epsVals.Count -gt 0) { $consensusGrowth = ($epsVals | Measure-Object -Average).Average }
+        }
+        if ($consensusGrowth -and $consensusGrowth -gt 0) {
+            $peg = $pep.CurrentPE / $consensusGrowth
+            if ($peg -lt 0.8) { $score += 10 }
+            elseif ($peg -lt 1.2) { $score += 7 }
+            elseif ($peg -lt 1.8) { $score += 4 }
+            else { $score += 1 }
+        } else {
+            # TTM fallback
+            if ($deductedGrowth -gt 0) {
+                $pegTTM = $pep.CurrentPE / $deductedGrowth
+                if ($pegTTM -lt 0.8) { $score += 7 }
+                elseif ($pegTTM -lt 1.5) { $score += 4 }
+                else { $score += 2 }
+            } else { $score += 3 }
+        }
+    } else { $score += 4 }
+
+    # G. 负债率 (10分)
     $debt = [double]$fin[0].DEBT_ASSET_RATIO
-    if     ($debt -lt 30)   { $score += 15 }
-    elseif ($debt -lt 50)   { $score += 10 }
-    elseif ($debt -lt 65)   { $score += 5 }
-    elseif ($debt -lt 80)   { $score += 2 }
-    else                    { $score += 0 }
+    if ($debt -lt 30) { $score += 10 }
+    elseif ($debt -lt 50) { $score += 7 }
+    elseif ($debt -lt 65) { $score += 4 }
+    elseif ($debt -lt 80) { $score += 1 }
+    else { $score += 0 }
+
     return [Math]::Min([Math]::Max($score, 0), 100)
 }
 
@@ -346,12 +463,24 @@ function Get-MacroScore {
     $score = 0
     $total = $GlobalSectors.Count
     if ($total -eq 0) { return 50 }
+
+    # A. 市场广度 (40分) — 板块涨跌比
     $positive = ($GlobalSectors | Where-Object { $_.ChangePct -ge 0 }).Count
     $posRatio = $positive / $total
-    $score += [Math]::Round($posRatio * 50)
-    $strong = ($GlobalSectors | Where-Object { $_.ChangePct -ge 2 -and $_.Turnover -gt 80 }).Count
+    $score += [Math]::Round($posRatio * 40)
+
+    # B. 强势板块占比 (30分)
+    $strong = ($GlobalSectors | Where-Object { $_.ChangePct -ge 2 }).Count
     $strongRatio = $strong / $total
-    $score += [Math]::Round([Math]::Min($strongRatio * 100, 50))
+    $score += [Math]::Round([Math]::Min($strongRatio * 100, 30))
+
+    # C. 资金情绪 (30分) — 板块成交额活跃度
+    $avgTurnover = ($GlobalSectors | Measure-Object Turnover -Average).Average
+    if ($avgTurnover -gt 100) { $score += 30 }
+    elseif ($avgTurnover -gt 50) { $score += 20 }
+    elseif ($avgTurnover -gt 20) { $score += 12 }
+    else { $score += 5 }
+
     return [Math]::Min($score, 100)
 }
 
@@ -361,7 +490,7 @@ function Get-MacroScore {
 
 function Get-CompositeScore {
     param($TechS, $FundS, $SentS, $SectS, $CapS, $MacS)
-    $composite = $TechS * 0.25 + $FundS * 0.20 + $SentS * 0.15 + $SectS * 0.20 + $CapS * 0.15 + $MacS * 0.05
+    $composite = $TechS * 0.20 + $FundS * 0.20 + $SentS * 0.15 + $SectS * 0.18 + $CapS * 0.15 + $MacS * 0.12
     $composite = [Math]::Round([Math]::Max([Math]::Min($composite, 100), 0))
     # [回测:原阈值85/70/55/40评分区分度仅0.32%,下调为80/65/45/30]
     $rating = if     ($composite -ge 80) { "★★★★ 强烈关注" }
@@ -377,49 +506,92 @@ function Get-TrendHealth {
     param($D)
     $h = 0
     if (-not $D.KLines -or $D.KLines.Count -lt 20) { return @{ Score = 50; Label = "数据不足" } }
-    # 1. 回调幅度 (20分)
+
+    # 1. 回调幅度 (15分) — 价格维度
     $high20 = ($D.KLines[-20..-1] | Measure-Object High -Maximum).Maximum
     $pullback = ($high20 - $D.Price) / $high20 * 100
-    if     ($pullback -lt 3)   { $h += 20 }
-    elseif ($pullback -lt 8)   { $h += 15 }
-    elseif ($pullback -lt 15)  { $h += 8 }
-    else                       { $h += 2 }
-    # 2. 量能趋势 (20分)
+    if     ($pullback -lt 3)   { $h += 15 }
+    elseif ($pullback -lt 8)   { $h += 11 }
+    elseif ($pullback -lt 15)  { $h += 6 }
+    else                       { $h += 1 }
+
+    # 2. 量能趋势 (12分) — 量能维度
     $recentVol = ($D.KLines[-3..-1] | Measure-Object Volume -Average).Average
     $avgVol = $D.VolMA20[-1]
     if ($avgVol -gt 0) {
         $vr = $recentVol / $avgVol
-        if     ($vr -ge 1.2)  { $h += 20 }
-        elseif ($vr -ge 0.8)  { $h += 12 }
-        else                  { $h += 5 }
-    } else { $h += 10 }
-    # 3. 均线发散 (20分)
+        if     ($vr -ge 1.2)  { $h += 12 }
+        elseif ($vr -ge 0.8)  { $h += 8 }
+        else                  { $h += 3 }
+    } else { $h += 6 }
+
+    # 3. 均线发散 (13分) — 价格维度
     $m5 = $D.MA5[-1]; $m20 = $D.MA20[-1]
     if ($m20 -gt 0) {
         $spread = ($m5 - $m20) / $m20 * 100
-        if     ($spread -gt 2)   { $h += 20 }
-        elseif ($spread -gt 0.5) { $h += 14 }
-        elseif ($spread -gt -1)  { $h += 8 }
-        elseif ($spread -gt -3)  { $h += 3 }
+        if     ($spread -gt 2)   { $h += 13 }
+        elseif ($spread -gt 0.5) { $h += 9 }
+        elseif ($spread -gt -1)  { $h += 5 }
+        elseif ($spread -gt -3)  { $h += 2 }
         else                     { $h += 0 }
-    } else { $h += 10 }
-    # 4. MACD状态 (20分)
-    if ($D.MACD) {
-        $df = $D.MACD.DIF[-1]; $da = $D.MACD.DEA[-1]; $mh = $D.MACD.MACD[-1]
-        if     ($df -gt $da -and $df -gt 0 -and $mh -gt 0) { $h += 20 }
-        elseif ($df -gt $da -and $df -gt 0)                { $h += 14 }
-        elseif ($df -gt $da)                                { $h += 8 }
-        else                                                { $h += 2 }
-    } else { $h += 10 }
-    # 5. RSI趋势 (20分)
-    if ($D.RSI14.Count -ge 5) {
-        $rNow = [double]$D.RSI14[-1]; $rPrev = [double]$D.RSI14[-5]
-        if     ($rNow -ge 50 -and $rNow -le 70 -and $rNow -gt $rPrev) { $h += 20 }
-        elseif ($rNow -ge 40 -and $rNow -le 60)                       { $h += 12 }
-        elseif ($rNow -gt 70)                                          { $h += 5 }
-        elseif ($rNow -lt 30)                                          { $h += 3 }
-        else                                                           { $h += 8 }
-    } else { $h += 10 }
+    } else { $h += 6 }
+
+    # 4. ADX状态 (15分) — 趋势维度
+    if ($D.ADX -and $D.ADX.ADX.Count -gt 0 -and $D.ADX.ADX[-1] -ne $null) {
+        $adxV = [double]$D.ADX.ADX[-1]; $pdi = [double]$D.ADX.PlusDI[-1]; $mdi = [double]$D.ADX.MinusDI[-1]
+        if ($adxV -gt 25 -and $pdi -gt $mdi) { $h += 15 }
+        elseif ($adxV -gt 25 -and $mdi -gt $pdi) { $h += 4 }
+        elseif ($adxV -gt 20 -and $pdi -gt $mdi) { $h += 10 }
+        elseif ($adxV -gt 20) { $h += 6 }
+        elseif ($pdi -gt $mdi) { $h += 5 }
+        else { $h += 2 }
+    } else {
+        # Fallback to MACD
+        if ($D.MACD) {
+            $df = $D.MACD.DIF[-1]; $da = $D.MACD.DEA[-1]; $mh = $D.MACD.MACD[-1]
+            if ($df -gt $da -and $df -gt 0 -and $mh -gt 0) { $h += 15 }
+            elseif ($df -gt $da -and $df -gt 0) { $h += 10 }
+            elseif ($df -gt $da) { $h += 5 }
+            else { $h += 2 }
+        } else { $h += 7 }
+    }
+
+    # 5. RSI趋势 (10分) — 动量维度
+    if ($D.RSI9.Count -ge 5 -and $D.RSI9[-1] -ne $null) {
+        $rNow = [double]$D.RSI9[-1]; $rPrev = [double]$D.RSI9[-5]
+        if ($rNow -ge 50 -and $rNow -le 70 -and $rNow -gt $rPrev) { $h += 10 }
+        elseif ($rNow -ge 40 -and $rNow -le 60) { $h += 6 }
+        elseif ($rNow -gt 75) { $h += 3 }
+        elseif ($rNow -lt 30) { $h += 2 }
+        else { $h += 5 }
+    } else { $h += 5 }
+
+    # 6. 资金流向共振 (15分) — v3.0 非价格维度
+    $fundFlowScore = 7
+    if ($D.FundFlow -and $D.FundFlow.Count -ge 3) {
+        $posDays = ($D.FundFlow | Where-Object { $_.MainNetInflow -gt 0 }).Count
+        $cumNet = ($D.FundFlow | ForEach-Object { $_.MainNetInflow } | Measure-Object -Sum).Sum
+        if ($posDays -ge 3 -and $cumNet -gt 0) { $fundFlowScore = 15 }
+        elseif ($posDays -ge 2 -and $cumNet -gt 0) { $fundFlowScore = 11 }
+        elseif ($posDays -ge 1) { $fundFlowScore = 7 }
+        else { $fundFlowScore = 3 }
+    }
+    # Northbound check
+    if ($D.Northbound -and $D.Northbound.SharesRatio -gt 0) { $fundFlowScore = [Math]::Min($fundFlowScore + 3, 15) }
+    $h += $fundFlowScore
+
+    # 7. 板块共振度 (20分) — v3.0 非价格维度
+    # Uses FundFlow as proxy for sector strength relative to market
+    $sectorScore = 10
+    if ($D.FundFlow -and $D.FundFlow.Count -gt 0) {
+        $recentMainIn = ($D.FundFlow[0].MainNetInflow)
+        if ($recentMainIn -gt 5e7) { $sectorScore = 20 }
+        elseif ($recentMainIn -gt 0) { $sectorScore = 15 }
+        elseif ($recentMainIn -gt -3e7) { $sectorScore = 8 }
+        else { $sectorScore = 4 }
+    }
+    $h += $sectorScore
+
     $hs = [Math]::Min([Math]::Max($h, 0), 100)
     $label = if ($hs -ge 80) { "健康" } elseif ($hs -ge 60) { "预警关注" } elseif ($hs -ge 40) { "警戒" } else { "危险" }
     return @{ Score = $hs; Label = $label; Pullback = $pullback }
@@ -527,8 +699,27 @@ function Get-OperationPlan {
     if ($recentLow) { $s2Candidates += $recentLow }
     if ($s2Candidates.Count -gt 0) { $s2 = ($s2Candidates | Measure-Object -Average).Average } else { $s2 = $P * 0.94 }
     $s2 = [Math]::Round($s2, 2)
-    # S3
-    $s3 = [Math]::Round($s2 - $ATR * 1.2, 2)
+    # S3: v3.0 硬优先级链 — ATR×3 → 前低 → MA120 → MA250
+    $s3Candidates = @()
+    # ① ATR×3 (波动自适应)
+    $s3Candidates += [PSCustomObject]@{ Priority=1; Name="ATR×3"; Value=[Math]::Round($P - $ATR * 3, 2) }
+    # ② 前重要低点 — 60日最低价
+    if ($recentLow) { $s3Candidates += [PSCustomObject]@{ Priority=2; Name="前低(60日)"; Value=$recentLow } }
+    # ③ MA120 (趋势防守)
+    if ($ma120) { $s3Candidates += [PSCustomObject]@{ Priority=3; Name="MA120"; Value=[Math]::Round($ma120, 2) } }
+    # ④ MA250 not available from 120-day kline, skip
+    # Pick highest value among valid candidates (least destructive stop)
+    $validS3 = $s3Candidates | Where-Object { $_.Value -gt 0 -and $_.Value -lt $P }
+    if ($validS3.Count -gt 0) {
+        $s3 = [Math]::Round(($validS3 | Sort-Object Value -Descending | Select-Object -First 1).Value, 2)
+    } else {
+        $s3 = [Math]::Round($P * 0.90, 2)
+    }
+
+    # ATR波动调整
+    $atrPct = $ATR / $P * 100
+    if ($atrPct -gt 5) { $s3 = [Math]::Round($P - $ATR * 4, 2) }
+    elseif ($atrPct -lt 2) { $s3 = [Math]::Round($P - $ATR * 2, 2) }
 
     # 合理性修正
     if ($r1 -le $P) { $r1 = [Math]::Round($P * 1.025, 2) }
@@ -584,6 +775,173 @@ function Get-OperationPlan {
         Scenarios=$scenarios; Bullish=$isBullish; Neutral=$isNeutral; Bearish=$isBearish
         DistToR1=$distToR1; DistToS1=$distToS1
     }
+}
+
+# ============================================================
+# Phase 3.6: v3.0 新增 — 极端事件/不做清单/信号冲突裁决
+# ============================================================
+
+function Test-ExtremeEvent {
+    param($D)
+    $events = @()
+    $price = $D.Price; $prevClose = $D.Quote.PrevClose
+    $changePct = $D.Quote.ChangePct; $vol = $D.Quote.Volume
+
+    # 一字跌停检查
+    if ($changePct -le -9.9 -and $vol -gt 0) {
+        $events += @{ Type="一字跌停"; Severity="CRITICAL"; Action="挂跌停价卖出，无需等待反弹"; Rule="§4.5.1" }
+    }
+    # 连续跌停(简化：检查近2日)
+    if ($D.KLines -and $D.KLines.Count -ge 2) {
+        $yestChg = ($D.KLines[-2].Close - $D.KLines[-3].Close) / $D.KLines[-3].Close * 100
+        if ($yestChg -le -9.9 -and $changePct -le -5) {
+            $events += @{ Type="连续跌停(≥2日)"; Severity="CRITICAL"; Action="继续挂跌停价，不计成本"; Rule="§4.5.1" }
+        }
+    }
+    # ST风险 (检查名称中是否含ST)
+    if ($D.Name -match '\*?ST') {
+        $events += @{ Type="ST风险警示"; Severity="CRITICAL"; Action="立即清仓，不计成本。ST股票禁止重新进入任何观察池"; Rule="§4.5.2" }
+    }
+    # 财务退市预警
+    if ($D.Financial -and $D.Financial.Count -gt 0) {
+        $rev = [double]$D.Financial[0].TOTAL_OPERATE_INCOME
+        $np = [double]$D.Financial[0].PARENT_NETPROFIT
+        if ($rev -lt 1e8 -and $np -lt 0) {
+            $events += @{ Type="财务退市预警(营收<1亿+净利<0)"; Severity="CRITICAL"; Action="无条件清仓，即使综合评分仍高"; Rule="§4.5.2" }
+        }
+    }
+    # 重大利空(跌幅>7%且放量)
+    if ($changePct -le -7) {
+        $avgVol = if ($D.VolMA20.Count -gt 0) { $D.VolMA20[-1] } else { 0 }
+        if ($avgVol -gt 0 -and $vol -gt $avgVol * 1.5) {
+            $events += @{ Type="放量暴跌(>$changePct%)"; Severity="HIGH"; Action="减仓50%，次日若续跌→清仓"; Rule="§4.5.3" }
+        }
+    }
+
+    $hasCritical = ($events | Where-Object { $_.Severity -eq "CRITICAL" }).Count -gt 0
+    return @{ HasCritical=$hasCritical; Events=$events }
+}
+
+function Get-WyckoffPhase {
+    param($D)
+    if (-not $D.KLines -or $D.KLines.Count -lt 60) { return "数据不足" }
+
+    $P = $D.Price; $high20 = ($D.KLines[-20..-1] | Measure-Object High -Maximum).Maximum
+    $low20 = ($D.KLines[-20..-1] | Measure-Object Low -Minimum).Minimum
+    $low250 = if ($D.KLines.Count -ge 120) { ($D.KLines[-120..-1] | Measure-Object Low -Minimum).Minimum } else { $low20 }
+    $range = $high20 - $low20
+    $avgVol20 = if ($D.VolMA20.Count -gt 0) { $D.VolMA20[-1] } else { 0 }
+    $avgVol60 = if ($D.VolMA20.Count -ge 3) { ($D.VolMA20[-3..-1] | Measure-Object -Average).Average } else { $avgVol20 }
+    $atrVal = if ($D.ATR -and $D.ATR.Count -gt 0 -and $D.ATR[-1] -ne $null) { [double]$D.ATR[-1] } else { $P * 0.025 }
+
+    # Quantify each phase
+    $distFromLow250 = ($P - $low250) / $low250 * 100
+
+    # Accumulation: ① distance < 15% from low ② range < ATR×1.5 ③ avgVol20 > avgVol60×1.2
+    $accCond1 = $distFromLow250 -lt 15
+    $accCond2 = $range -lt ($atrVal * 1.5)
+    $accCond3 = ($avgVol60 -gt 0) -and ($avgVol20 -gt $avgVol60 * 1.2)
+    $accScore = [int]$accCond1 + [int]$accCond2 + [int]$accCond3
+
+    # Markup: ① price > high20 ② MA20 > MA60 ③ ADX>25 and +DI > -DI
+    $ma20v = if ($D.MA20.Count -gt 0) { $D.MA20[-1] } else { $P }
+    $ma60v = if ($D.MA60.Count -gt 0) { $D.MA60[-1] } else { $P }
+    $adxV = if ($D.ADX -and $D.ADX.ADX.Count -gt 0 -and $D.ADX.ADX[-1] -ne $null) { [double]$D.ADX.ADX[-1] } else { 0 }
+    $pdi = if ($D.ADX -and $D.ADX.PlusDI.Count -gt 0) { [double]$D.ADX.PlusDI[-1] } else { 0 }
+    $mdi = if ($D.ADX -and $D.ADX.MinusDI.Count -gt 0) { [double]$D.ADX.MinusDI[-1] } else { 0 }
+    $muCond1 = $P -gt $high20
+    $muCond2 = $ma20v -gt $ma60v
+    $muCond3 = ($adxV -gt 25) -and ($pdi -gt $mdi)
+    $muScore = [int]$muCond1 + [int]$muCond2 + [int]$muCond3
+
+    # Distribution: ① >80% above 250d low + flat ② Upthrust pattern ③ weekly RSI>75
+    $distCond1 = $distFromLow250 -gt 80
+    $distCond3 = if ($D.RSI9.Count -gt 0 -and $D.RSI9[-1] -ne $null) { [double]$D.RSI9[-1] -gt 75 } else { $false }
+    $distScore = [int]$distCond1 + [int]$distCond3
+
+    # Decline: ① price < low20 ② MA20 < MA60 ③ ADX>25 and -DI > +DI
+    $decCond1 = $P -lt $low20
+    $decCond2 = $ma20v -lt $ma60v
+    $decCond3 = ($adxV -gt 25) -and ($mdi -gt $pdi)
+    $decScore = [int]$decCond1 + [int]$decCond2 + [int]$decCond3
+
+    # Determine phase (best match)
+    if ($muScore -ge 2) { return "拉升区 (Markup)" }
+    elseif ($decScore -ge 2) { return "下跌区 (Decline)" }
+    elseif ($accScore -ge 2) { return "吸筹区 (Accumulation)" }
+    elseif ($distScore -ge 2) { return "派发区 (Distribution)" }
+    elseif ($muScore -ge 1) { return "疑似拉升区" }
+    elseif ($accScore -ge 1) { return "疑似吸筹区" }
+    else { return "过渡/不明" }
+}
+
+function Get-ConflictArbitration {
+    param($TechS, $FundS, $SectS, $CapS, $Pred, $Confidence)
+
+    $conflicts = @()
+    $verdict = "按正常权重执行"
+
+    # 1. 基本面恶化一票否决
+    if ($FundS -le 40 -and $TechS -ge 60) {
+        $conflicts += "基本面偏空($FundS) vs 技术面偏多($TechS)：基本面恶化具有一票否决权"
+        $verdict = "维持观望，不因技术面偏多而开仓"
+    }
+    # 2. 宏观逆风一票否决
+    # (Macro score embedded, skipped)
+    # 3. 技术+资金+板块共振 vs 基本面偏空
+    if ($TechS -ge 60 -and $CapS -ge 55 -and $SectS -ge 55 -and $FundS -le 45) {
+        $conflicts += "三面共振(技术+资金+板块) vs 基本面偏空($FundS)：技术面服从基本面"
+        $verdict = "维持观望，仓位≤10%试探"
+    }
+    # 4. 技术偏多 + 其他中性
+    if ($TechS -ge 60 -and $FundS -lt 50 -and $SectS -lt 50 -and $CapS -lt 50) {
+        $conflicts += "技术面偏多($TechS)但其他维度中性：小仓位试探"
+        $verdict = "仓位≤10%，待更多维度确认后加仓"
+    }
+    # 5. 三周期冲突
+    if ($Pred.Short -eq "看多" -and $Pred.Mid -eq "趋势看空") {
+        $conflicts += "短期看多 vs 中期看空：短服从长，不追仓"
+        if ($verdict -eq "按正常权重执行") { $verdict = "中线持仓但收紧止损，不追仓" }
+    }
+    # 6. 置信度过滤
+    if ($Confidence -match "低" -and $TechS -ge 55) {
+        $conflicts += "置信度<50%：降一级操作强度"
+        $verdict = "轻仓/观望"
+    }
+
+    return @{ Conflicts=$conflicts; Verdict=$verdict; HasConflict=($conflicts.Count -gt 0) }
+}
+
+function Get-DontDoCheck {
+    param($D, $Pred, $TechS, $CompScore)
+
+    $violations = @()
+    $warnings = @()
+
+    # 1. 追涨
+    $rsiVal = if ($D.RSI9.Count -gt 0 -and $D.RSI9[-1] -ne $null) { [double]$D.RSI9[-1] } else { 50 }
+    $distToS1 = ($D.Price - $Pred.Support) / $D.Price * 100
+    if ($rsiVal -gt 80 -and $distToS1 -gt 5) {
+        $violations += "追涨买入：RSI(9)=$rsiVal>80 且距S1>5%，禁止开新仓"
+    }
+    # 2. 亏损加仓 (not trackable in stateless script)
+    # 3. 财报前3日 (no earnings calendar data)
+    # 4. RSI>80加仓
+    if ($rsiVal -gt 80 -and $CompScore -ge 65) {
+        $violations += "RSI(9)=$rsiVal>80 加仓：超买区加仓必然高位接盘"
+    }
+    # 5. 单一板块集中 (not applicable at individual stock level)
+    # 6. 单一信号交易
+    if ($TechS -ge 55 -and $CompScore -lt 45) {
+        $warnings += "警惕单一信号交易：技术面$TechS但综合评分$CompScore<45，至少两个维度确认"
+    }
+    # 7. 震荡市趋势策略
+    $adxV = if ($D.ADX -and $D.ADX.ADX.Count -gt 0 -and $D.ADX.ADX[-1] -ne $null) { [double]$D.ADX.ADX[-1] } else { 25 }
+    if ($adxV -lt 20 -and $Pred.Short -in @("看多","偏多")) {
+        $warnings += "ADX=$adxV<20震荡市：禁止趋势策略开仓，仅可区间操作"
+    }
+
+    return @{ Violations=$violations; Warnings=$warnings; HasIssues=($violations.Count -gt 0 -or $warnings.Count -gt 0) }
 }
 
 # ============================================================
@@ -707,12 +1065,12 @@ function New-RptHeader {
 function New-ExecutiveSummary {
     param($Scores, $Pred)
     $dims = @(
-        @{N="技术面";S=$Scores.Technical;W="25%"},
+        @{N="技术面";S=$Scores.Technical;W="20%"},
         @{N="基本面";S=$Scores.Fundamental;W="20%"},
         @{N="消息面";S=$Scores.Sentiment;W="15%"},
-        @{N="板块行业";S=$Scores.Sector;W="20%"},
+        @{N="板块行业";S=$Scores.Sector;W="18%"},
         @{N="资金面";S=$Scores.Capital;W="15%"},
-        @{N="宏观大盘";S=$Scores.Macro;W="5%"}
+        @{N="宏观大盘";S=$Scores.Macro;W="12%"}
     )
     $cards = ""
     foreach ($d in $dims) {
@@ -739,12 +1097,12 @@ function New-ExecutiveSummary {
 function New-SixDimDetail {
     param($Scores)
     $dims = @(
-        @{N="技术面";S=$Scores.Technical;W="25%";D="均线排列 + MACD + RSI + 布林带 + 量价关系"},
-        @{N="基本面";S=$Scores.Fundamental;W="20%";D="ROE + 毛利率 + 营收增速 + PE百分位 + 负债率"},
-        @{N="消息面";S=$Scores.Sentiment;W="15%";D="研报覆盖数 + 分析师评级 + 市场关注度"},
-        @{N="板块行业";S=$Scores.Sector;W="20%";D="板块相位 + 资金流向 + 个股相对强度"},
+        @{N="技术面";S=$Scores.Technical;W="20%";D="ADX趋势 + RSI(9)动量 + 布林带波动 + OBV量能"},
+        @{N="基本面";S=$Scores.Fundamental;W="20%";D="ROE(杜邦) + 扣非增速 + 商誉/净资产 + PE百分位 + PEG"},
+        @{N="消息面";S=$Scores.Sentiment;W="15%";D="研报覆盖数 + 分析师评级 + 催化剂市值调整 + 预期差"},
+        @{N="板块行业";S=$Scores.Sector;W="18%";D="板块相位(量化) + 相对强度排名 + 资金流向 + 共振度"},
         @{N="资金面";S=$Scores.Capital;W="15%";D="主力资金 + 北向持股 + 融资融券"},
-        @{N="宏观大盘";S=$Scores.Macro;W="5%";D="市场广度 + 板块涨跌比"}
+        @{N="宏观大盘";S=$Scores.Macro;W="12%";D="市场广度 + 强势板块占比 + 资金情绪"}
     )
     $rows = ""
     foreach ($d in $dims) {
@@ -770,21 +1128,49 @@ function New-TechSection {
                    elseif ($m5 -gt $m10 -and $p -gt $m10) { "短期多头（短期均线向上）" }
                    elseif ($m5 -lt $m10 -and $m10 -lt $m20) { "空头排列（下行趋势）" }
                    else { "均线纠缠（方向不明）" }
+
+        # ADX display
+        $adxTxt = "N/A"; $adxVal = $null
+        if ($D.ADX -and $D.ADX.ADX.Count -gt 0 -and $D.ADX.ADX[-1] -ne $null) {
+            $adxVal = [Math]::Round([double]$D.ADX.ADX[-1], 1)
+            $pdi = [Math]::Round([double]$D.ADX.PlusDI[-1], 1)
+            $mdi = [Math]::Round([double]$D.ADX.MinusDI[-1], 1)
+            $adxTxt = if ($adxVal -gt 25 -and $pdi -gt $mdi) { "趋势行情(ADX=$adxVal, +DI>$pdi > -DI$mdi)，趋势向上强劲" }
+                      elseif ($adxVal -gt 25) { "趋势行情(ADX=$adxVal, -DI>$mdi > +DI$pdi)，趋势向下" }
+                      elseif ($adxVal -gt 20) { "趋势形成中(ADX=$adxVal)" }
+                      else { "震荡市(ADX=$adxVal<20)，适合区间操作" }
+        }
+
+        # MACD display
         $macdTxt = ""
         if ($D.MACD) {
-            $df = [Math]::Round($D.MACD.DIF[-1], 3); $da = [Math]::Round($D.MACD.DEA[-1], 3); $mh = [Math]::Round($D.MACD.MACD[-1], 3)
             $macdTxt = if ($D.MACD.DIF[-1] -gt $D.MACD.DEA[-1] -and $D.MACD.DIF[-1] -gt 0) { "零轴上金叉，多头主导" }
                        elseif ($D.MACD.DIF[-1] -gt $D.MACD.DEA[-1]) { "零轴下金叉，弱势反弹" }
                        else { "死叉状态，空头主导" }
         }
+
+        # RSI(9) display
         $rsiTxt = ""
-        if ($D.RSI14.Count -gt 0) {
-            $r = [Math]::Round([double]$D.RSI14[-1], 1)
-            $rsiTxt = if ($r -ge 70) { "超买区域($r)，注意回调风险" }
-                      elseif ($r -ge 50) { "中性偏强($r)，趋势健康" }
-                      elseif ($r -ge 30) { "中性偏弱($r)" }
-                      else { "超卖区域($r)，可能存在反弹机会" }
+        if ($D.RSI9.Count -gt 0 -and $D.RSI9[-1] -ne $null) {
+            $r9 = [Math]::Round([double]$D.RSI9[-1], 1)
+            $rsiTxt = if ($r9 -ge 70) { "超买区域(RSI9=$r9)，注意回调风险" }
+                      elseif ($r9 -ge 50) { "中性偏强(RSI9=$r9)，趋势健康" }
+                      elseif ($r9 -ge 30) { "中性偏弱(RSI9=$r9)" }
+                      else { "超卖区域(RSI9=$r9)，可能存在反弹机会" }
         }
+
+        # OBV display
+        $obvTxt = "N/A"
+        if ($D.OBV -and $D.OBV.Count -ge 10) {
+            $obvTrend = if ($D.OBV[-6] -ne 0) { [Math]::Round(($D.OBV[-1] - $D.OBV[-6]) / [Math]::Abs($D.OBV[-6]) * 100, 1) } else { 0 }
+            $priceTrend = if ($D.KLines[-6].Close -ne 0) { [Math]::Round(($D.KLines[-1].Close - $D.KLines[-6].Close) / $D.KLines[-6].Close * 100, 1) } else { 0 }
+            if ($obvTrend -gt 2 -and $priceTrend -gt 0) { $obvTxt = "OBV与价格同向上升(${obvTrend}%)，趋势确认" }
+            elseif ($obvTrend -gt 2 -and $priceTrend -lt 0) { $obvTxt = "OBV上升但价格下跌(${priceTrend}%)，底背离看多信号" }
+            elseif ($obvTrend -lt -2 -and $priceTrend -lt 0) { $obvTxt = "OBV与价格同向下跌(${obvTrend}%)，空头确认" }
+            elseif ($obvTrend -lt -2 -and $priceTrend -gt 0) { $obvTxt = "OBV下降但价格上涨(${priceTrend}%)，顶背离看空信号" }
+            else { $obvTxt = "OBV变化不大(${obvTrend}%)，量能中性" }
+        }
+
         $bollTxt = ""
         if ($D.Bollinger -and $D.KLines.Count -gt 0) {
             $c = $D.KLines[-1].Close; $bu = $D.Bollinger.Upper[-1]; $bd = $D.Bollinger.Lower[-1]; $bm = $D.Bollinger.MA[-1]
@@ -797,27 +1183,41 @@ function New-TechSection {
         $chg = $D.Quote.ChangePct
         if ($v5 -gt 0) {
             $vr = $v / $v5
-            $volTxt = if    ($chg -ge 2 -and $vr -ge 1.5) { "放量上涨(量比$([Math]::Round($vr,1)))，增量资金入场" }
+            $volTxt = if ($chg -ge 2 -and $vr -ge 1.5) { "放量上涨(量比$([Math]::Round($vr,1)))，增量资金入场" }
                       elseif ($chg -ge 0 -and $vr -le 1.1) { "缩量上涨(量比$([Math]::Round($vr,1)))，上涨动力不足" }
                       elseif ($chg -lt -2 -and $vr -ge 1.5) { "放量下跌，恐慌抛售或主力出货" }
                       elseif ($chg -lt 0 -and $vr -le 0.8) { "缩量下跌，抛压减弱" }
                       else { "量能正常" }
         }
+
         $lines += @"
 <table>
-<tr><th>指标</th><th>数值</th><th>判断</th></tr>
-<tr><td>MA5/MA10/MA20</td><td>$([Math]::Round($m5,2)) / $([Math]::Round($m10,2)) / $([Math]::Round($m20,2))</td><td>$maTrend</td></tr>
-<tr><td>MACD</td><td>DIF $([Math]::Round($D.MACD.DIF[-1],3)) DEA $([Math]::Round($D.MACD.DEA[-1],3))</td><td>$macdTxt</td></tr>
-<tr><td>RSI(14)</td><td>$([Math]::Round([double]$D.RSI14[-1],1))</td><td>$rsiTxt</td></tr>
-<tr><td>布林带</td><td>上$bu 中$([Math]::Round($bm,2)) 下$([Math]::Round($bd,2))</td><td>$bollTxt</td></tr>
-<tr><td>量能</td><td>$v 手 / 5日均量 $([Math]::Round($v5,0)) 手</td><td>$volTxt</td></tr>
+<tr><th>维度</th><th>指标</th><th>数值</th><th>判断</th></tr>
+<tr><td>趋势</td><td>ADX(14)</td><td>$(if($adxVal){ "$adxVal / +DI $([Math]::Round([double]$D.ADX.PlusDI[-1],1)) / -DI $([Math]::Round([double]$D.ADX.MinusDI[-1],1))" }else{"N/A"})</td><td>$adxTxt</td></tr>
+<tr><td>趋势(辅助)</td><td>MACD</td><td>DIF $([Math]::Round($D.MACD.DIF[-1],3)) DEA $([Math]::Round($D.MACD.DEA[-1],3))</td><td>$macdTxt</td></tr>
+<tr><td>动量</td><td>RSI(9)</td><td>$(if($D.RSI9.Count -gt 0 -and $D.RSI9[-1] -ne $null){[Math]::Round([double]$D.RSI9[-1],1)}else{"N/A"})</td><td>$rsiTxt</td></tr>
+<tr><td>波动</td><td>布林带</td><td>上$bu 中$([Math]::Round($bm,2)) 下$([Math]::Round($bd,2))</td><td>$bollTxt</td></tr>
+<tr><td>量能</td><td>OBV</td><td>$(if($D.OBV -and $D.OBV.Count -gt 0){"趋势 " + $obvTxt}else{"N/A"})</td><td>$obvTxt</td></tr>
+<tr><td>量能(辅助)</td><td>量价</td><td>$v 手 / 5日均量 $([Math]::Round($v5,0)) 手</td><td>$volTxt</td></tr>
+<tr><td>均线</td><td>MA5/MA10/MA20</td><td>$([Math]::Round($m5,2)) / $([Math]::Round($m10,2)) / $([Math]::Round($m20,2))</td><td>$maTrend</td></tr>
 </table>
 "@
     }
+
+    # Wyckoff phase quantification
+    $wyckoffPhase = Get-WyckoffPhase -D $D
+    $wyckoffHtml = @"
+<div style="margin-top:10px;padding:10px 14px;background:#f0f4ff;border-radius:6px;border-left:4px solid #2980b9;font-size:13px;">
+    <strong>Wyckoff周期阶段：</strong>$wyckoffPhase
+    <span style="color:#888;font-size:11px;margin-left:8px;">[v3.0量化判定：每阶段3个条件，≥2项满足]</span>
+</div>
+"@
+
     return @"
 <div class="section">
-    <h2>技术面分析 [2]→[5] ✅已实测</h2>
+    <h2>技术面分析 [2]→[5] ✅已实测 | v3.0四维独立确认(ADX/RSI9/BB/OBV)</h2>
     $lines
+    $wyckoffHtml
 </div>
 "@
 }

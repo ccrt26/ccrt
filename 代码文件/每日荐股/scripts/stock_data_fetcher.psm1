@@ -486,6 +486,101 @@ function Calc-Bollinger {
 }
 
 # ============================================================
+# [5b] ADX (14) — 趋势强度指标
+# ============================================================
+function Calc-ADX {
+    param([array]$Data, [int]$Period = 14)
+    $highs = $Data | ForEach-Object { [double]$_.High }
+    $lows  = $Data | ForEach-Object { [double]$_.Low }
+    $closes = $Data | ForEach-Object { [double]$_.Close }
+    $n = $highs.Count
+
+    $tr = @(); $plusDM = @(); $minusDM = @()
+    for ($i = 0; $i -lt $n; $i++) {
+        if ($i -eq 0) { $tr += $null; $plusDM += $null; $minusDM += $null; continue }
+        $h = $highs[$i]; $l = $lows[$i]; $pc = $closes[$i-1]
+        $tr += [Math]::Max([Math]::Max($h - $l, [Math]::Abs($h - $pc)), [Math]::Abs($l - $pc))
+        $upMove = $h - $highs[$i-1]; $downMove = $lows[$i-1] - $l
+        $plusDM  += if ($upMove -gt $downMove -and $upMove -gt 0) { $upMove } else { 0 }
+        $minusDM += if ($downMove -gt $upMove -and $downMove -gt 0) { $downMove } else { 0 }
+    }
+
+    # Wilder's smoothing
+    $atr = @(); $smoothedPlusDM = @(); $smoothedMinusDM = @()
+    for ($i = 0; $i -lt $n; $i++) {
+        if ($i -lt $Period) { $atr += $null; $smoothedPlusDM += $null; $smoothedMinusDM += $null; continue }
+        if ($i -eq $Period) {
+            $atr += ($tr[1..$Period] | Measure-Object -Average).Average
+            $smoothedPlusDM  += ($plusDM[1..$Period] | Measure-Object -Average).Average
+            $smoothedMinusDM += ($minusDM[1..$Period] | Measure-Object -Average).Average
+        } else {
+            $atr += ($atr[-1] * ($Period - 1) + $tr[$i]) / $Period
+            $smoothedPlusDM  += ($smoothedPlusDM[-1] * ($Period - 1) + $plusDM[$i]) / $Period
+            $smoothedMinusDM += ($smoothedMinusDM[-1] * ($Period - 1) + $minusDM[$i]) / $Period
+        }
+    }
+
+    $plusDI = @(); $minusDI = @(); $adx = @()
+    for ($i = 0; $i -lt $n; $i++) {
+        if ($i -lt $Period * 2 - 1) { $plusDI += $null; $minusDI += $null; $adx += $null; continue }
+        $a = $atr[$i]
+        $pdi = if ($a -gt 0) { [math]::Round($smoothedPlusDM[$i] / $a * 100, 2) } else { 0 }
+        $mdi = if ($a -gt 0) { [math]::Round($smoothedMinusDM[$i] / $a * 100, 2) } else { 0 }
+        $plusDI += $pdi; $minusDI += $mdi
+
+        if ($i -eq $Period * 2 - 1) {
+            # First ADX value: average of first Period DX values
+            $dxSum = 0; $dxCount = 0
+            for ($j = $Period; $j -le $i; $j++) {
+                $denom = $plusDI[$j] + $minusDI[$j]
+                if ($denom -gt 0) { $dxSum += [Math]::Abs($plusDI[$j] - $minusDI[$j]) / $denom * 100; $dxCount++ }
+            }
+            $adx += if ($dxCount -gt 0) { [math]::Round($dxSum / $dxCount, 2) } else { $null }
+        } else {
+            $denom = $pdi + $mdi
+            $dx = if ($denom -gt 0) { [Math]::Abs($pdi - $mdi) / $denom * 100 } else { 0 }
+            $adx += if ($adx[-1] -ne $null) { [math]::Round(($adx[-1] * ($Period - 1) + $dx) / $Period, 2) } else { $null }
+        }
+    }
+    return [PSCustomObject]@{ ADX = $adx; PlusDI = $plusDI; MinusDI = $minusDI }
+}
+
+# ============================================================
+# [5c] OBV — 能量潮（累积量价指标）
+# ============================================================
+function Calc-OBV {
+    param([array]$Data)
+    $obv = @(); $cum = 0
+    for ($i = 0; $i -lt $Data.Count; $i++) {
+        if ($i -eq 0) { $obv += $cum; continue }
+        $c = [double]$Data[$i].Close; $pc = [double]$Data[$i-1].Close; $v = [long]$Data[$i].Volume
+        if ($c -gt $pc) { $cum += $v }
+        elseif ($c -lt $pc) { $cum -= $v }
+        $obv += $cum
+    }
+    return $obv
+}
+
+# ============================================================
+# [5d] ATR (14) — 平均真实波幅
+# ============================================================
+function Calc-ATR {
+    param([array]$Data, [int]$Period = 14)
+    $trs = @()
+    for ($i = 1; $i -lt $Data.Count; $i++) {
+        $h = [double]$Data[$i].High; $l = [double]$Data[$i].Low; $pc = [double]$Data[$i-1].Close
+        $trs += [Math]::Max([Math]::Max($h - $l, [Math]::Abs($h - $pc)), [Math]::Abs($l - $pc))
+    }
+    $atr = @()
+    for ($i = 0; $i -lt $trs.Count; $i++) {
+        if ($i -lt $Period - 1) { $atr += $null; continue }
+        if ($i -eq $Period - 1) { $atr += ($trs[0..$i] | Measure-Object -Average).Average }
+        else { $atr += ($atr[-1] * ($Period - 1) + $trs[$i]) / $Period }
+    }
+    return $atr
+}
+
+# ============================================================
 # [7] 东方财富板块行业数据（TOP N）
 # ============================================================
 function Get-SectorData {
@@ -916,7 +1011,7 @@ function Test-AllDataSources {
     Write-Output "`n====== 测试完成 ======"
 }
 
-Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Test-AllDataSources
+Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Calc-ADX, Calc-OBV, Calc-ATR, Test-AllDataSources
 
 # ============================================================
 # 加载 PDF 转换验证工具（被各报告脚本共享使用）
