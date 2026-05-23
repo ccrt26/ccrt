@@ -16,6 +16,10 @@ Desktop.ini
 *.temp
 ~$*
 
+# Python编译缓存
+__pycache__/
+*.pyc
+
 # 数据缓存（运行时生成）
 data_cache/
 _data_audit.md
