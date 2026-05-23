@@ -1,12 +1,35 @@
 # 分析的规则红线--Claude CHANGELOG
 
-> 文档路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.7.md
-> 发布文档：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.7.docx
+> 文档路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.8.md
+> 发布文档：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.8.docx
 > 变更原则：未经人工确认，AI不得擅自修改本文档内容
 
 ---
 
 ## [Unreleased]
+
+---
+
+## v1.8 — 2026-05-23
+
+**新增团队名册双格式同步规则。** 用户要求团队名册同时维护 .xlsx 版本，与 .md 保持同步。
+
+### Added
+- §5.4.8.1 适用范围表 — 新增 `团队名册(.xlsx)` 条目
+- §5.4.8.4 团队名册双格式同步规则 — 5项要求：
+  - 同步触发：.md 内容变更须同步重新生成 .xlsx
+  - 生成工具：`代码文件/tools/generate_roster_xlsx.py`
+  - 版本一致性：.md 和 .xlsx 版本号必须一致
+  - version_supervisor 检查覆盖双格式一致性
+  - 提交规则：.md 和 .xlsx 须在同一 commit 中提交
+
+### 负责人
+- 修改：Claude Code（AI）
+- 依据：用户明确要求 "团队名册我同样需要一份EXCEL，写入规则红线，做好版本管理"
+
+### 文件信息
+- 文件名：分析的规则红线--Claude_v1.8.md
+- 存储路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.8.md
 
 ---
 
