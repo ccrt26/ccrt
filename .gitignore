@@ -8,7 +8,7 @@ Desktop.ini
 .claude/projects/
 .claude/scheduled_tasks.json
 .claude/telemetry/
-.claude/agents/
+.claude/agents/*.json
 .claude/settings.local.json
 
 # 临时文件
