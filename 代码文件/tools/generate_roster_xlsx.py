@@ -276,8 +276,9 @@ for c, h in enumerate(idx_headers, 1):
 style_header_row(ws4, r, len(idx_headers))
 
 files = [
-    ("本名册(.md)", "项目成员/团队名册.md", "Markdown 源文件"),
-    ("本名册(.xlsx)", "项目成员/团队名册.xlsx", "Excel 版本（本文件）"),
+    ("本名册(v1.4 .md)", "项目成员/团队名册_v1.4.md", "Markdown 源文件（当前版本）"),
+    ("本名册(v1.4 .xlsx)", "项目成员/团队名册_v1.4.xlsx", "Excel 版本（当前版本）"),
+    ("本名册(v1.3 归档)", "项目成员/团队名册_v1.3.md/.xlsx", "历史版本归档"),
     ("阿黑角色定义", ".claude/agents/项目总监-阿黑.md", "项目总监完整人设"),
     ("腰子角色定义", ".claude/agents/金融专家-腰子.md", "金融专家完整人设"),
     ("Vega角色定义", ".claude/agents/风控官-Vega.md", "风控官完整人设"),
@@ -313,6 +314,6 @@ ws2.freeze_panes = "A4"
 ws3.freeze_panes = "A3"
 ws4.freeze_panes = "A4"
 
-output_path = r"c:\Users\34269\Documents\Claude\股票分析\项目成员\团队名册.xlsx"
+output_path = r"c:\Users\34269\Documents\Claude\股票分析\项目成员\团队名册_v1.4.xlsx"
 wb.save(output_path)
 print(f"[OK] 团队名册.xlsx generated at {output_path}")
