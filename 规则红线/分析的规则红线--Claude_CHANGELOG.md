@@ -1,13 +1,33 @@
 # 分析的规则红线--Claude CHANGELOG
 
-> 文档路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.6.md
-> 发布文档：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.6.docx
+> 文档路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.7.md
+> 发布文档：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.7.docx
 > 变更原则：未经人工确认，AI不得擅自修改本文档内容
 
 ---
 
 ## [Unreleased]
 
+---
+
+## v1.7 — 2026-05-23
+
+**新增项目成员文件版本管理规则。** 用户要求团队名册等成员文件纳入规则红线管理体系。
+
+### Added
+- §5.4.1 适用范围表 — 新增 `项目成员/团队名册` 条目，纳入版本管理
+- §5.4.8 项目成员文件版本管理（v1.7新增）— 3个子条款：
+  - §5.4.8.1 版本管理要求 — 版本声明/MINOR变更/PATCH修正/CHANGELOG同步/version_supervisor审计
+  - §5.4.8.2 协调机制 — 成员文件变更须同步通知关联白皮书
+  - §5.4.8.3 例外说明 — Agent/Command文件走Git追踪，不受白皮书归档规则约束
+
+### 负责人
+- 修改：Claude Code（AI）
+- 依据：用户明确要求 "职员名单也是文件，也要遵循规则红线的管理"
+
+### 文件信息
+- 文件名：分析的规则红线--Claude_v1.7.md
+- 存储路径：C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.7.md
 
 ---
 

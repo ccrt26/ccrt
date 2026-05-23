@@ -36,3 +36,23 @@
 [PASS] [2026-05-23 17:38:48] ===== Check D: Commit Message Format =====
 [PASS] [2026-05-23 17:38:48] Commit message format OK: feat: 鏂板A鑲￠噾铻嶆暟鎹甅CP Server 鈥?鑵捐琛屾儏+鏂版氮K绾?涓滄柟璐㈠瘜璐㈠姟
 === Pre-commit check completed at 2026-05-23 17:38:48 ===
+=== Pre-commit check started at 2026-05-23 17:47:22 ===
+[PASS] [2026-05-23 17:47:23] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 17:47:23] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 17:47:23] No garbage files
+[PASS] [2026-05-23 17:47:23] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 17:47:23] No .docx counterpart, skip: .claude/commands/Alpha.md
+[PASS] [2026-05-23 17:47:23] No .docx counterpart, skip: .claude/commands/Pulse.md
+[PASS] [2026-05-23 17:47:23] No .docx counterpart, skip: .claude/commands/Vega.md
+[PASS] [2026-05-23 17:47:23] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-23 17:47:23] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 17:47:23] Commit message format OK: feat: 鏂板涓夊ぇ瑙掕壊 鈥?閾佸(椋庢帶)+楣扮溂(鏁版嵁鐩戠悊)+绠楃洏(绛栫暐鐮旂┒鍛?
+=== Pre-commit check completed at 2026-05-23 17:47:23 ===
+=== Pre-commit check started at 2026-05-23 17:47:37 ===
+[PASS] [2026-05-23 17:47:37] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 17:47:37] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 17:47:37] No garbage files
+[PASS] [2026-05-23 17:47:37] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 17:47:37] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 17:47:37] Commit message format OK: feat: 鍥㈤槦鍗囩骇 鈥?閾佸/楣扮溂/绠楃洏 鏇村悕涓?Vega/Pulse/Alpha + 鏂板椤圭洰鎬荤洃闃块粦
+=== Pre-commit check completed at 2026-05-23 17:47:37 ===
