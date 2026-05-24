@@ -3,6 +3,46 @@
 > 独立于白皮书的变更记录，遵循 CLAUDE.md §2.4 真实性规则。
 > 每条记录附带证据链（文件路径+行号+改动摘要）。
 
+## v1.7 (2026-05-24)
+
+> v1.5-v1.6 版本合并 + 8项新功能 + 8个引擎Bug修复
+> 白皮书: 模拟交易白皮书_v1.5.md + 模拟交易白皮书_v1.6.md → 合并为 模拟交易白皮书_v1.7.md
+
+### Added
+- **§十 v1.7 新增功能**: 大盘熔断/共享冷却期/数据质量降级/板块相位持仓/行业集中度/周度反馈/月度校准/Task Scheduler(§10.1-10.9)（模拟交易白皮书_v1.7.md §十）
+- **§2.5.2 P1止损**: 新增每日荐股赛道 ATR 动态止损说明（模拟交易白皮书_v1.7.md L167-185）
+- **附录A**: 更新目录结构，新增 v1.5-v1.7 版本文件、共享模块、每日荐股赛道（模拟交易白皮书_v1.7.md 附录A）
+
+### Fixed (引擎层面，8个Bug)
+- **P0-1**: sim_trading.ps1 未加载 risk_framework.ps1 → 补充 dot-source（sim_trading.ps1）
+- **P0-2**: sim_trading_daily.ps1 `$blackSwanTriggered` 未初始化 → 初始化变量（sim_trading_daily.ps1）
+- **P1-3**: sim_trading_daily.ps1 "退潮期"→"衰退期" 术语对齐（sim_trading_daily.ps1）
+- **P1-4**: sim_trading_daily.ps1 "主升"→"高潮期" 相位排序修正（sim_trading_daily.ps1）
+- **P1-5**: risk_framework.ps1 EntrySector→EntryIndustry fallback（risk_framework.ps1 Get-SectorPhaseAlerts）
+- **P1-6**: risk_framework.ps1 置信度比较逻辑修复（risk_framework.ps1 Get-SectorPhaseAlerts）
+- **P2-7**: sim_trading_daily.ps1 sectorConf硬编码50→SectorTrendMap管道（sim_trading_daily.ps1）
+- **P2-8**: quote_engine.ps1 + sim_trading.ps1 Get-BenchmarkValue 缺失ChangePct/Turnover（quote_engine.ps1, sim_trading.ps1）
+
+### 文件信息
+- 白皮书: `模拟交易/模拟交易白皮书_v1.7.md`
+- 引擎: `模拟交易/交易引擎/sim_trading.ps1`, `模拟交易/每日荐股赛道/交易引擎/sim_trading_daily.ps1`
+- 共享模块: `模拟交易/共享模块/risk_framework.ps1`, `模拟交易/共享模块/quote_engine.ps1`
+- 旧版存档: v1.5.md, v1.6.md
+
+## v1.6 (2026-05-23)
+
+> 豆包建议「风险-黑天鹅」落地：新增组合级别单日回撤保护机制。
+
+### Added
+- **§2.8 组合级别风控—黑天鹅单日回撤保护**: 单日回撤>3%黄色预警暂停开仓，>5%红色减仓自动卖出全部持仓50%+暂停开仓3日（模拟交易白皮书_v1.5.md 原L1063后插入）
+- **§2.5.1 出场优先级表**: 新增P0黑天鹅减仓行，位于P2和P3之间（模拟交易白皮书_v1.5.md L155-162）
+- **§3.1 每日运行流程**: 步骤6.5新增黑天鹅减仓检查，步骤7更新优先级顺序（模拟交易白皮书_v1.5.md L273-280）
+- **§4.4 自动预警条件**: 新增单日回撤>5%红旗+>3%黄旗两行（模拟交易白皮书_v1.5.md L561-566）
+
+### 文件信息
+- 白皮书: `模拟交易/模拟交易白皮书_v1.5.md`（内容已升级至v1.6，待更名）
+- 引擎: `模拟交易/交易引擎/sim_trading.ps1`（待实现P0检查逻辑）
+
 ## v1.5 (2026-05-23)
 
 > Alpha策略审查发现3个P0硬伤，阿黑修复。引擎行为修正，白皮书规格未变。

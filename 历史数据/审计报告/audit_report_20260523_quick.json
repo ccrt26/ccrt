@@ -1,0 +1,103 @@
+﻿{
+    "metrics":  {
+
+                },
+    "checks":  [
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "无重复行",
+                       "id":  "5",
+                       "desc":  "交易记录幂等性"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "G",
+                       "detail":  "check_report_style 通过",
+                       "id":  "3",
+                       "desc":  "报告样式检查"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "F",
+                       "detail":  "今日无ERROR",
+                       "id":  "4",
+                       "desc":  "错误日志扫描"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "交易记录与持仓3只股票一致",
+                       "id":  "1",
+                       "desc":  "跨文件交易一致性"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "关键数据文件均在48h内更新",
+                       "id":  "3",
+                       "desc":  "数据新鲜度"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "F",
+                       "detail":  "4条日志, Phase: ",
+                       "id":  "1",
+                       "desc":  "今日流水线执行"
+                   },
+                   {
+                       "status":  "FAIL",
+                       "section":  "G",
+                       "detail":  "version_supervisor 未通过",
+                       "id":  "2",
+                       "desc":  "版本一致性检查"
+                   },
+                   {
+                       "status":  "FAIL",
+                       "section":  "G",
+                       "detail":  "check_redlines 未通过",
+                       "id":  "1",
+                       "desc":  "红线合规检查"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "降级率 0%",
+                       "id":  "7",
+                       "desc":  "API降级频率"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "daily_report_20260523.html 含免责声明",
+                       "id":  "8",
+                       "desc":  "报告免责声明"
+                   }
+               ],
+    "failures":  [
+                     "[G-1] 红线合规检查 — check_redlines 未通过",
+                     "[G-2] 版本一致性检查 — version_supervisor 未通过"
+                 ],
+    "summary":  {
+                    "sections":  {
+                                     "section":  "",
+                                     "pass":  8,
+                                     "fail":  2,
+                                     "warn":  0
+                                 },
+                    "fail":  2,
+                    "pass":  8,
+                    "total_checks":  10,
+                    "overall_verdict":  "WARN",
+                    "warn":  0
+                },
+    "audit":  {
+                  "date":  "20260523",
+                  "timestamp":  "2026-05-24 00:04:40",
+                  "version":  "1.0",
+                  "mode":  "quick"
+              },
+    "warnings":  [
+
+                 ]
+}

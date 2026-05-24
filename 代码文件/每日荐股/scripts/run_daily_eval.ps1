@@ -12,7 +12,7 @@ param(
 
 $rootDir = "C:\Users\34269\Documents\Claude\股票分析"
 $modulePath = Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1"
-$dataFile = Join-Path $rootDir "代码文件\数据\data_final.json"
+$dataFile = Join-Path $rootDir "代码文件\数据\data_scored.json"
 $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
 # 输出目录 — 白皮书 §1.4: 评估报告存储于事后评估目录
@@ -114,15 +114,23 @@ if (-not (Test-Path $dataFile)) {
 
 $rawData = Get-Content $dataFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
-# 选取推荐股票 — 白皮书 §5: 推荐阈值≥70（牛市≥70/震荡≥65/熊市≥60）
-$selectThreshold = 60
-if ($rawData -is [array]) {
-    $topN = $rawData | Sort-Object TotalScore -Descending | Select-Object -First 8
+# Extract stocks from v2 format — 使用 Recommendations（含评分字段），AllStocks 仅有原始行情无评分
+if ($rawData.Recommendations -and @($rawData.Recommendations).Count -gt 0) {
+    $allStocks = @($rawData.Recommendations)
+} elseif ($rawData.AllStocks) {
+    Write-Warning "Recommendations为空，回退至AllStocks（评分字段将缺失）"
+    $allStocks = @($rawData.AllStocks)
+} elseif ($rawData -is [array]) {
+    $allStocks = $rawData
 } else {
-    $topN = @($rawData) | Sort-Object TotalScore -Descending | Select-Object -First 8
+    Write-Error "Unknown data format in $dataFile"
+    exit 1
 }
 
-Write-Host "T日荐股数据: $($rawData.Count) 只候选, 选取前 $($topN.Count) 只评估`n"
+# Select top stocks for evaluation
+$topN = $allStocks | Sort-Object TotalScore -Descending | Select-Object -First 8
+
+Write-Host "T日荐股数据: $($allStocks.Count) 只候选, 选取前 $($topN.Count) 只评估`n"
 Write-Host ("{0,-10} {1,-10} {2,-8} {3,-8} {4,-8} {5,-12}" -f "代码", "名称", "T日价", "总分", "评级", "行业")
 Write-Host ("{0,-10} {1,-10} {2,-8} {3,-8} {4,-8} {5,-12}" -f "------", "------", "------", "----", "----", "------")
 

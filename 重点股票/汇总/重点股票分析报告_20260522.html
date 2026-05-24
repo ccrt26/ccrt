@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>重点股票跟踪分析报告 — 2026年5月22日</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "微软雅黑", sans-serif; color: #333; background: #f0f2f5; padding: 20px; }
+.report-page { max-width: 210mm; margin: 0 auto; background: #fff; padding: 15mm 18mm; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.header { background: #1a1a2e; color: #fff; padding: 28px 30px; border-radius: 10px; margin-bottom: 20px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { font-size: 15px; opacity: 0.8; }
+.section { margin: 18px 0; }
+.section h2 { font-size: 18px; color: #16213e; border-bottom: 2px solid #1a1a2e; padding-bottom: 6px; margin-bottom: 12px; }
+.section h3 { font-size: 15px; color: #333; margin: 10px 0 6px; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 13px; }
+th { background: #1a1a2e; color: #fff; padding: 8px 10px; text-align: center; font-weight: normal; }
+td { padding: 6px 10px; border: 1px solid #e0e0e0; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+.up { color: #e74c3c; font-weight: bold; }
+.down { color: #27ae60; font-weight: bold; }
+.neutral { color: #888; }
+.warn { background: #fff8e1; border-left: 4px solid #f39c12; padding: 10px 14px; margin: 8px 0; border-radius: 4px; font-size: 13px; }
+.danger { background: #fde8e8; border-left: 4px solid #e74c3c; padding: 10px 14px; margin: 8px 0; border-radius: 4px; font-size: 13px; }
+.info { background: #e8f0fe; border-left: 4px solid #2980b9; padding: 10px 14px; margin: 8px 0; border-radius: 4px; font-size: 13px; }
+.good { background: #e8f5e9; border-left: 4px solid #27ae60; padding: 10px 14px; margin: 8px 0; border-radius: 4px; font-size: 13px; }
+.stock-card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 14px 0; }
+.stock-card h3 { margin-top: 0; font-size: 17px; }
+.stock-card .tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-right: 4px; }
+.tag-bull { background: #fde8e8; color: #e74c3c; }
+.tag-bear { background: #e8f5e9; color: #27ae60; }
+.tag-warn { background: #fff8e1; color: #e67e22; }
+.tag-info { background: #e8f0fe; color: #2980b9; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+.metric-item { padding: 10px; background: #f8f9fa; border-radius: 6px; text-align: center; }
+.metric-item .val { font-size: 20px; font-weight: bold; }
+.metric-item .lbl { font-size: 11px; color: #888; }
+.price-bar { display: flex; align-items: center; margin: 4px 0; font-size: 12px; }
+.price-bar .bar-label { width: 60px; text-align: right; padding-right: 8px; color: #888; }
+.price-bar .bar-fill { height: 6px; border-radius: 3px; min-width: 2px; }
+.verdict-box { padding: 16px; border-radius: 8px; margin: 12px 0; text-align: center; }
+.verdict-good { background: #e8f5e9; border: 2px solid #27ae60; }
+.verdict-warn { background: #fff8e1; border: 2px solid #f39c12; }
+.verdict-danger { background: #fde8e8; border: 2px solid #e74c3c; }
+.verdict-box .v-title { font-size: 16px; font-weight: bold; }
+.verdict-box .v-detail { font-size: 13px; margin-top: 4px; }
+.disclaimer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 11px; color: #999; line-height: 1.8; }
+.highlight { background: #fff3cd; padding: 1px 3px; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="report-page">
+
+<div class="header">
+    <h1>重点股票跟踪分析报告</h1>
+    <div class="subtitle">分析日期: 2026-05-22 (周五) | 分析师: 腰子 (金融业务负责人) | 跟踪标的: 6只</div>
+</div>
+
+<!-- ====== 一、市场环境概览 ====== -->
+<div class="section">
+<h2>一、市场环境概览</h2>
+<p style="font-size:13px; color:#666; margin-bottom:10px;">数据源: [1]腾讯实时行情 + [2]新浪K线 + [7]东方财富板块数据 | 缓存时效: 2026-05-22 收盘</p>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">市场阶段判断</div>
+        <div class="val" style="color:#16213e;">震荡偏强</div>
+        <div class="lbl">正常/震荡市 → 部分板块活跃</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">风格倾向</div>
+        <div class="val" style="color:#e74c3c;">小盘成长</div>
+        <div class="lbl">机械设备/汽车零部件领涨</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">银行板块信号</div>
+        <div class="val" style="color:#27ae60;">弱势</div>
+        <div class="lbl">招商银行20日跌6.8%，大金融承压</div>
+    </div>
+</div>
+
+<div class="info">
+<strong>腰子判断：</strong>5月22日市场呈现明显的结构性分化——汽车零部件(+8.4%)和机械设备板块强势，银行板块持续走弱。这不是普涨牛市，而是资金从大金融向制造业迁移的轮动格局。当前适合<b>精选个股+严控仓位</b>，不适合追涨已大幅拉升的标的。
+</div>
+</div>
+
+<!-- ====== 二、当前持仓审视 ====== -->
+<div class="section">
+<h2>二、当前持仓审视</h2>
+
+<table>
+<tr><th>代码</th><th>名称</th><th>行业</th><th>持仓成本</th><th>现价</th><th>浮动盈亏</th><th>入场日</th><th>仓位占比</th></tr>
+<tr>
+    <td>601689</td><td>拓普集团</td><td>汽车</td><td>72.09</td><td>72.05</td>
+    <td class="neutral">-0.06%</td><td>5/22</td><td>8.6%</td>
+</tr>
+<tr>
+    <td>600114</td><td>东睦股份</td><td>机械设备</td><td>35.20</td><td>37.75</td>
+    <td class="up">+7.24%</td><td>5/22</td><td>8.6%</td>
+</tr>
+<tr>
+    <td>301075</td><td>多瑞医药</td><td>医药</td><td>86.06</td><td>88.20</td>
+    <td class="up">+2.49%</td><td>5/22</td><td>9.5%</td>
+</tr>
+</table>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">总资产</div>
+        <div class="val">1,008,174</div>
+        <div class="lbl">初始资金100万</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">现金占比</div>
+        <div class="val" style="color:#2980b9;">73.2%</div>
+        <div class="lbl">约73.8万可用</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">持仓集中度(HHI)</div>
+        <div class="val" style="color:#27ae60;">0.07</div>
+        <div class="lbl">3只持仓 × 3个行业 → 分散良好</div>
+    </div>
+</div>
+
+<div class="good">
+<strong>组合健康度：绿灯。</strong>三只持仓覆盖汽车、机械设备、医药三个不同行业，集中度HHI仅0.07（高度分散）。现金73.2%充裕，风险缓冲充足。但注意：三只持仓均为5月22日当日入场，属于<b>"同步建仓"</b>——如果次日市场整体转向，三只票可能同时承压。这不是行业集中度问题，而是<b>入场时间集中度</b>问题。
+</div>
+</div>
+
+<!-- ====== 三、逐股深度分析 ====== -->
+<div class="section">
+<h2>三、逐股六维深度分析</h2>
+
+<!-- 拓普集团 -->
+<div class="stock-card">
+<h3>1. 拓普集团 (601689) <span class="tag tag-warn">RSI超买</span><span class="tag tag-bull">多头排列</span></h3>
+
+<div class="grid-2">
+<div>
+<table>
+<tr><th>指标</th><th>数值</th><th>评级</th></tr>
+<tr><td>收盘价</td><td>72.05</td><td>—</td></tr>
+<tr><td>涨跌幅</td><td class="neutral">-0.10%</td><td>盘中振幅3.01%</td></tr>
+<tr><td>PE(TTM)</td><td>45.28</td><td>汽车零部件中等</td></tr>
+<tr><td>EPS(TTM)</td><td>0.955</td><td>[1]÷[3]</td></tr>
+<tr><td>市值</td><td>1252亿</td><td>大盘股</td></tr>
+<tr><td>换手率</td><td>3.0%</td><td>活跃</td></tr>
+</table>
+</div>
+<div>
+<table>
+<tr><th>技术指标</th><th>数值</th><th>信号</th></tr>
+<tr><td>均线排列</td><td>MA5>MA10>MA20>MA50</td><td class="up">多头排列(强势)</td></tr>
+<tr><td>RSI(9)/(14)</td><td>70.1 / 82.8</td><td class="down">RSI(14)严重超买!</td></tr>
+<tr><td>MACD DIF</td><td>+2.78</td><td class="up">零轴上方，趋势向上</td></tr>
+<tr><td>ADX(14)</td><td>80.3 | +DI=45.2 -DI=4.9</td><td class="up">极强趋势</td></tr>
+<tr><td>ATR(14)</td><td>3.21 (4.5%)</td><td>高波动</td></tr>
+<tr><td>BB位置</td><td>上轨75.63 | 中轨64.73</td><td>价格接近上轨</td></tr>
+<tr><td>OBV</td><td>同步上行</td><td class="up">量价健康</td></tr>
+<tr><td>量比(5/20)</td><td>1.28</td><td>放量</td></tr>
+</table>
+</div>
+</div>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">MA5</div><div class="val">71.50</div><div class="lbl">价格在MA5上方</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA20</div><div class="val">64.73</div><div class="lbl">价格距MA20 +11.3%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA50</div><div class="val">61.77</div><div class="lbl">中期支撑</div>
+    </div>
+</div>
+<p style="font-size:12px; color:#888; margin-top:4px;">20日涨幅: <span class="up">+20.7%</span> | 5日涨幅: <span class="up">+0.9%</span> | 20日区间: 56.00-74.68 | 60日区间: 55.30-74.68</p>
+
+<table>
+<tr><th>维度</th><th>评分</th><th>要点</th></tr>
+<tr>
+    <td>技术面</td><td class="up">78/100</td>
+    <td style="text-align:left;">四维全多：ADX极强+RSI高位+BB中轨上方+OBV同步上行。但RSI(14)=82.8严重超买是隐患——趋势强劲但短期回调风险累积。ADX=80是双刃剑：趋势极强但也意味着趋势成熟，随时可能减速。</td>
+</tr>
+<tr>
+    <td>基本面</td><td class="neutral">62/100</td>
+    <td style="text-align:left;">EPS=0.955，PE=45.28。汽车零部件龙头，受益于新能源汽车产业链。但PE不低，需持续高增长支撑。基本面健康但估值不便宜。(ROE/扣非/商誉数据不可获取，评分受限)</td>
+</tr>
+<tr>
+    <td>板块行业</td><td class="up">75/100</td>
+    <td style="text-align:left;">汽车板块当日+8.41%领涨两市，资金大幅净流入255亿[10]。板块处于主升期——龙头股领涨+放量+资金涌入。但板块单日涨幅过大，短线可能分化。</td>
+</tr>
+<tr>
+    <td>资金面</td><td class="up">72/100</td>
+    <td style="text-align:left;">换手率3%维持活跃，量比1.28温和放量，OBV同步上行。主力资金数据[9]当日不可获取（FundMainNet=0），标记为数据缺失。</td>
+</tr>
+<tr>
+    <td>消息面</td><td class="neutral">60/100</td>
+    <td style="text-align:left;">汽车零部件板块受新能源车销量数据+政策预期催化。但缺乏个股级别的S/A级催化剂。[11]研报数据需进一步确认。</td>
+</tr>
+<tr>
+    <td>宏观/流动性</td><td class="neutral">58/100</td>
+    <td style="text-align:left;">当前正常/震荡市环境，制造业板块获资金青睐。宏观逆风不显著，但银行走弱提示流动性并非全面宽松。</td>
+</tr>
+</table>
+
+<div class="warn">
+<strong>腰子特别提醒：</strong>拓普集团当前处于"强趋势+严重超买"的矛盾状态。ADX=80.3和RSI(14)=82.8同时出现意味着趋势很强但短期过度拉伸。5日涨幅仅+0.9%而20日涨幅+20.7%——说明近5日已开始高位盘整，上攻动能衰减。今天盘中振幅3.01%（高开低走收阴），这是潜在的上冲乏力信号。S3止损价60.20（ATR×3法），距离现价-16.4%——对于高波动股这个止损偏宽，建议收紧至ATR×4=12.84的S3≈66.5元（距现价-7.7%）。
+</div>
+
+<p><strong>三周期预判：</strong></p>
+<table>
+<tr><th>周期</th><th>方向</th><th>置信度</th><th>关键价位/事件</th></tr>
+<tr><td>短期(1-5日)</td><td class="neutral">偏多→中性</td><td>中(55%)</td><td>阻力R1=75.65(前高) | 支撑S1=69.36(MA10) | 若跌破MA10则短期转弱</td></tr>
+<tr><td>中期(1-4周)</td><td class="up">趋势看多</td><td>高(70%)</td><td>目标75-80区间 | 验证点: 能否守住MA20(64.73)不破</td></tr>
+<tr><td>长期(1-6月)</td><td class="up">长期看好</td><td>中(60%)</td><td>Wycokff拉升期 | 核心逻辑: 新能源汽车产业链的确定性成长</td></tr>
+</table>
+<p><strong>Wycokff阶段判定：拉升期</strong>（满足3个量化条件：价格突破吸筹区上轨+放量+MA20>MA60 ✓ | ADX>25且+DI>-DI ✓）</p>
+<p><strong>操作建议：</strong>已持仓者持有，但收紧止损至66.50(ATR×4)；未持仓者<b>禁止追涨</b>（RSI>80加仓违反不做清单#4），等待回调至MA20(64.73)附近再做评估。</p>
+</div>
+
+<!-- 东睦股份 -->
+<div class="stock-card">
+<h3>2. 东睦股份 (600114) <span class="tag tag-bull">强势突破</span><span class="tag tag-warn">RSI偏高</span></h3>
+
+<div class="grid-2">
+<div>
+<table>
+<tr><th>指标</th><th>数值</th><th>评级</th></tr>
+<tr><td>收盘价</td><td>37.75</td><td>—</td></tr>
+<tr><td>涨跌幅</td><td class="up">+7.98%</td><td>振幅8.12%</td></tr>
+<tr><td>PE(TTM)</td><td>43.34</td><td>机械设备中等</td></tr>
+<tr><td>EPS(TTM)</td><td>0.5375</td><td>[1]÷[3]</td></tr>
+<tr><td>市值</td><td>232.7亿</td><td>中盘股</td></tr>
+<tr><td>换手率</td><td>7.8%</td><td>非常活跃</td></tr>
+</table>
+</div>
+<div>
+<table>
+<tr><th>技术指标</th><th>数值</th><th>信号</th></tr>
+<tr><td>均线排列</td><td>MA5≈MA10>MA20>MA50</td><td class="up">多头排列</td></tr>
+<tr><td>RSI(9)/(14)</td><td>64.4 / 69.5</td><td class="up">强势但未超买</td></tr>
+<tr><td>MACD DIF</td><td>+0.77</td><td class="up">零轴上方</td></tr>
+<tr><td>ADX(14)</td><td>50.8 | +DI=34.0 -DI=11.1</td><td class="up">强趋势</td></tr>
+<tr><td>ATR(14)</td><td>1.75 (4.6%)</td><td>高波动</td></tr>
+<tr><td>BB位置</td><td>上轨36.49 | 中轨33.97</td><td class="up">突破上轨!</td></tr>
+<tr><td>OBV</td><td>同步上行</td><td class="up">量价健康</td></tr>
+<tr><td>量比(5/20)</td><td>1.50</td><td>显著放量</td></tr>
+</table>
+</div>
+</div>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">MA5</div><div class="val">34.36</div><div class="lbl">价格距MA5 +9.9%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA20</div><div class="val">33.97</div><div class="lbl">价格距MA20 +11.1%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA50</div><div class="val">31.31</div><div class="lbl">中期支撑</div>
+    </div>
+</div>
+<p style="font-size:12px; color:#888; margin-top:4px;">20日涨幅: <span class="up">+14.7%</span> | 5日涨幅: <span class="up">+17.6%</span> | 20日区间: 31.60-37.99 | 60日区间: 25.66-37.99 | 距60日高点仅0.6%</p>
+
+<table>
+<tr><th>维度</th><th>评分</th><th>要点</th></tr>
+<tr>
+    <td>技术面</td><td class="up">82/100</td>
+    <td style="text-align:left;">四维全多+BB上轨突破+ADX=50.8极强。RSI(9)=64.4远未到超买区，比拓普健康得多。今日涨幅+7.98%配合换手率7.8%（放量突破），是典型的SOS(强势信号)。5日涨幅+17.6%集中释放，短期动能极强。</td>
+</tr>
+<tr>
+    <td>基本面</td><td class="neutral">58/100</td>
+    <td style="text-align:left;">EPS=0.5375，PE=43.34。市值232.7亿中小盘，成长性定价。PE不低但中小盘成长股可给予更高估值容忍。机械零部件/粉末冶金赛道，受益于高端制造国产替代。(财务细节数据不可获取)</td>
+</tr>
+<tr>
+    <td>板块行业</td><td class="up">72/100</td>
+    <td style="text-align:left;">机械设备板块当日走势积极，未出现在领涨前5但板块整体活跃。需补充申万二级行业（粉末冶金/通用设备）的细分数据做更精确判断。</td>
+</tr>
+<tr>
+    <td>资金面</td><td class="up">75/100</td>
+    <td style="text-align:left;">换手率7.8%+量比1.50，放量明显，交投活跃。OBV同步上行确认资金持续流入。当前价位接近60日新高，上方无套牢盘。</td>
+</tr>
+<tr>
+    <td>消息面</td><td class="neutral">62/100</td>
+    <td style="text-align:left;">粉末冶金/高端制造方向受产业政策支持。具体催化剂待确认。[11]</td>
+</tr>
+<tr>
+    <td>宏观/流动性</td><td class="neutral">58/100</td>
+    <td style="text-align:left;">制造业板块受资金轮动利好，银行→制造的风格切换有利于机械板块。</td>
+</tr>
+</table>
+
+<div class="good">
+<strong>腰子判断：</strong>东睦股份是当前三只持仓中技术面最健康的一只。RSI(14)=69.5尚未超买（接近但未越过70红线），ADX=50.8确认强趋势但不像拓普(80.3)那样"过热"，BB突破上轨+OBV同步确认是真突破而非假突破。5日+17.6%的涨幅虽然大，但换手率7.8%和量比1.50显示有真金白银在买。唯一需要注意的是今日盘中振幅8.12%——从低点35.15到高点37.99，说明盘中分歧较大，有人在获利了结。
+</div>
+
+<p><strong>三周期预判：</strong></p>
+<table>
+<tr><th>周期</th><th>方向</th><th>置信度</th><th>关键价位/事件</th></tr>
+<tr><td>短期(1-5日)</td><td class="up">看多</td><td>高(72%)</td><td>阻力R2=39.64(前高+ATR) | 支撑S1=34.36(MA5) | 注意连续大涨后的获利回吐</td></tr>
+<tr><td>中期(1-4周)</td><td class="up">趋势看多</td><td>高(70%)</td><td>目标40-42区间 | 验证点: 能否连续3日站稳BB上轨上方</td></tr>
+<tr><td>长期(1-6月)</td><td class="up">长期看好</td><td>中(58%)</td><td>Wycokff拉升期初期 | 核心逻辑: 高端制造国产替代+粉末冶金技术壁垒</td></tr>
+</table>
+<p><strong>Wycokff阶段判定：拉升期</strong>（满足3个量化条件：价格突破+放量+MA20>MA60 ✓ | ADX>25且+DI>-DI ✓）</p>
+<p><strong>操作建议：</strong>已持仓者坚定持有，S3止损31.59有效。若次日继续上涨>3%可考虑部分止盈（RSI将进入70+超买区）。未持仓者可在回调至MA5(34.36)附近小仓位试探，不追高。</p>
+</div>
+
+<!-- 中科曙光 -->
+<div class="stock-card">
+<h3>3. 中科曙光 (603019) <span class="tag tag-info">回调中</span><span class="tag tag-bull">中期趋势完好</span></h3>
+
+<div class="grid-2">
+<div>
+<table>
+<tr><th>指标</th><th>数值</th><th>评级</th></tr>
+<tr><td>收盘价</td><td>94.80</td><td>—</td></tr>
+<tr><td>涨跌幅</td><td class="up">+1.66%</td><td>振幅2.6%</td></tr>
+<tr><td>PE(TTM)</td><td>62.54</td><td>计算机行业偏高</td></tr>
+<tr><td>EPS(TTM)</td><td>0.702</td><td>[1]÷[3]</td></tr>
+<tr><td>市值</td><td>1386.7亿</td><td>大盘股</td></tr>
+<tr><td>换手率</td><td>3.8%</td><td>活跃</td></tr>
+</table>
+</div>
+<div>
+<table>
+<tr><th>技术指标</th><th>数值</th><th>信号</th></tr>
+<tr><td>均线排列</td><td>MA5<MA10 | 均>MA20>MA50</td><td class="neutral">短期走弱，中期多头</td></tr>
+<tr><td>RSI(9)/(14)</td><td>38.9 / 55.4</td><td class="neutral">中性偏低</td></tr>
+<tr><td>MACD DIF</td><td>+1.29</td><td class="up">零轴上方，方向仍偏多</td></tr>
+<tr><td>ADX(14)</td><td>29.8 | +DI=30.7 -DI=16.6</td><td class="up">趋势行情，多头主导</td></tr>
+<tr><td>ATR(14)</td><td>4.90 (5.2%)</td><td>高波动</td></tr>
+<tr><td>BB位置</td><td>上轨102.12 | 中轨95.66 | 下轨89.21</td><td class="neutral">价格略低于中轨</td></tr>
+<tr><td>OBV</td><td>同步上行</td><td class="up">量价健康</td></tr>
+<tr><td>量比(5/20)</td><td>0.95</td><td>缩量整理</td></tr>
+</table>
+</div>
+</div>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">MA5</div><div class="val">96.68</div><div class="lbl">价格低于MA5 -1.9%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA20</div><div class="val">95.66</div><div class="lbl">价格略低于MA20</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA50</div><div class="val">89.11</div><div class="lbl">中期趋势防守位</div>
+    </div>
+</div>
+<p style="font-size:12px; color:#888; margin-top:4px;">20日涨幅: <span class="up">+3.2%</span> | 5日涨幅: <span class="down">-4.0%</span> | 20日区间: 88.70-105.00 | 60日区间: 76.78-105.00</p>
+
+<table>
+<tr><th>维度</th><th>评分</th><th>要点</th></tr>
+<tr>
+    <td>技术面</td><td class="neutral">55/100</td>
+    <td style="text-align:left;">短期回调中：MA5<MA10(死叉)，RSI(9)=38.9偏低，价格在BB中轨下方，量比0.95缩量。但中期结构未破坏：ADX=29.8(+DI>-DI)，MACD DIF仍>0，MA20>MA50，OBV仍在同步上行。这是"中期上升趋势中的短期回调"，而非趋势反转。</td>
+</tr>
+<tr>
+    <td>基本面</td><td class="neutral">60/100</td>
+    <td style="text-align:left;">EPS=0.702，PE=62.54。中科曙光是国产算力龙头，受益于AI算力需求爆发。高PE部分反映了成长溢价，但62倍PE在计算机行业中偏高。需要持续高增长消化估值。</td>
+</tr>
+<tr>
+    <td>板块行业</td><td class="neutral">65/100</td>
+    <td style="text-align:left;">计算机板块当日表现中规中矩（未进入涨幅前5），但AI算力/服务器细分赛道有独立逻辑。板块相对强度中等。</td>
+</tr>
+<tr>
+    <td>资金面</td><td class="neutral">55/100</td>
+    <td style="text-align:left;">换手率3.8%维持活跃但量比0.95缩量。缩量回调通常是健康的——说明不是资金出逃而是获利盘消化。但OBV仍上行，中期资金面未恶化。</td>
+</tr>
+<tr>
+    <td>消息面</td><td class="neutral">58/100</td>
+    <td style="text-align:left;">AI算力方向持续受政策支持，国产替代逻辑未变。缺乏近期S级催化。(数据来源[11]待确认)</td>
+</tr>
+<tr>
+    <td>宏观/流动性</td><td class="neutral">55/100</td>
+    <td style="text-align:left;">科技板块受风险偏好影响较大。当前震荡市环境，算力板块资金关注度中等。</td>
+</tr>
+</table>
+
+<div class="info">
+<strong>腰子判断：</strong>中科曙光正处于"中期上升趋势中的健康回调"阶段。MA5/MA10死叉和RSI(9)=38.9是短期疲软信号，但ADX>25且+DI>-DI、MACD>0、OBV同步上行三个中期信号均未转向。现在的关键是确认MA20(95.66)能否守住。股价94.80已略低于MA20，若明日继续收于MA20之下，需要警惕回调加深。若能在MA20附近企稳后放量回升，则构成"缩量回踩支撑位"(LPS)——最佳加仓点。
+</div>
+
+<div class="warn">
+<strong>短期与中长期背离提示（白皮书§3.2.1）</strong>：趋势健康度评分约50-55（警戒区间），但中期预判保持看多。这是"短期技术面偏弱 + 中长期逻辑未变"的背离格局。策略：中长线持仓者可持仓等待企稳信号，短线交易者应等待MACD金叉+RSI回升至50以上再考虑介入。
+</div>
+
+<p><strong>三周期预判：</strong></p>
+<table>
+<tr><th>周期</th><th>方向</th><th>置信度</th><th>关键价位/事件</th></tr>
+<tr><td>短期(1-5日)</td><td class="neutral">中性偏弱</td><td>低(45%)</td><td>支撑S2=89.21(BB下轨) | 阻力R1=96.68(MA5) | 关注MA20能否收回</td></tr>
+<tr><td>中期(1-4周)</td><td class="up">趋势看多</td><td>中(62%)</td><td>目标100-105 | 验证点: MACD DIF能否守住零轴上方+MA20支撑确认</td></tr>
+<tr><td>长期(1-6月)</td><td class="up">长期看好</td><td>中(60%)</td><td>Wycokff拉升期中期 | 核心逻辑: 国产AI算力龙头，赛道确定性高</td></tr>
+</table>
+<p><strong>Wycokff阶段判定：拉升期</strong>（价格距60日低点76.78已涨23%，MA20>MA60 ✓ | ADX>25且+DI>-DI ✓ | 但近期回调使ADX从高位回落至29.8，趋势有所减速）</p>
+<p><strong>操作建议：</strong>当前未持仓。最佳策略是等待——如果股价在MA20(95.66)附近企稳并出现放量阳线，可考虑建仓第一笔（目标仓位30%）。如果跌破89.21(BB下轨+S2支撑)，则观望，等待更深回调。</p>
+</div>
+
+<!-- 招商银行 -->
+<div class="stock-card">
+<h3>4. 招商银行 (600036) <span class="tag tag-bear">空头排列</span><span class="tag tag-bear">RSI极低</span></h3>
+
+<div class="grid-2">
+<div>
+<table>
+<tr><th>指标</th><th>数值</th><th>评级</th></tr>
+<tr><td>收盘价</td><td>37.02</td><td>—</td></tr>
+<tr><td>涨跌幅</td><td class="down">-0.35%</td><td>振幅0.97%</td></tr>
+<tr><td>PE(TTM)</td><td>6.19</td><td>极低估值</td></tr>
+<tr><td>EPS(TTM)</td><td>3.6275</td><td>[1]÷[3]</td></tr>
+<tr><td>市值</td><td>7636.8亿</td><td>超大蓝筹</td></tr>
+<tr><td>换手率</td><td>0.39%</td><td>极低</td></tr>
+</table>
+</div>
+<div>
+<table>
+<tr><th>技术指标</th><th>数值</th><th>信号</th></tr>
+<tr><td>均线排列</td><td>MA5<MA10<MA20<MA50</td><td class="down">空头排列(弱势)</td></tr>
+<tr><td>RSI(9)/(14)</td><td>0.0 / 1.9</td><td class="down">极度超卖!</td></tr>
+<tr><td>MACD DIF</td><td>-0.48</td><td class="down">零轴下方</td></tr>
+<tr><td>ADX(14)</td><td>74.5 | +DI=5.4 -DI=36.9</td><td class="down">强下跌趋势</td></tr>
+<tr><td>ATR(14)</td><td>0.32 (0.9%)</td><td>低波动</td></tr>
+<tr><td>BB位置</td><td>下轨36.44 | 中轨38.20</td><td class="down">价格在下轨附近</td></tr>
+<tr><td>OBV</td><td>同步下行</td><td class="down">量价同步走弱</td></tr>
+<tr><td>量比(5/20)</td><td>0.81</td><td>缩量下跌</td></tr>
+</table>
+</div>
+</div>
+
+<div class="grid-3">
+    <div class="metric-item">
+        <div class="lbl">MA5</div><div class="val">37.24</div><div class="lbl">价格低于MA5 -0.6%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA20</div><div class="val">38.20</div><div class="lbl">价格低于MA20 -3.1%</div>
+    </div>
+    <div class="metric-item">
+        <div class="lbl">MA50</div><div class="val">38.99</div><div class="lbl">价格低于MA50 -5.1%</div>
+    </div>
+</div>
+<p style="font-size:12px; color:#888; margin-top:4px;">20日涨幅: <span class="down">-6.8%</span> | 5日涨幅: <span class="down">-1.2%</span> | 20日区间: 36.97-40.03 | 60日区间: 36.97-40.36 | 接近60日低点</p>
+
+<table>
+<tr><th>维度</th><th>评分</th><th>要点</th></tr>
+<tr>
+    <td>技术面</td><td class="down">22/100</td>
+    <td style="text-align:left;">四维全空：ADX=74.5强劲下跌趋势（-DI>>+DI），RSI接近0（连续下跌无反弹），均线空头排列，BB下轨附近，OBV同步下行。唯一正面信号：量比0.81缩量下跌——说明抛压有所衰减，但尚未出现企稳信号。</td>
+</tr>
+<tr>
+    <td>基本面</td><td class="up">82/100</td>
+    <td style="text-align:left;">PE=6.19，EPS=3.6275，市值7637亿。招商银行是A股最优质的零售银行，ROE长期维持高位（约15%+），资产质量在银行板块中最好。当前PE处于历史极低分位（<10%分位），理论上估值极有吸引力。但银行板块当前不受资金青睐。</td>
+</tr>
+<tr>
+    <td>板块行业</td><td class="down">30/100</td>
+    <td style="text-align:left;">银行板块当日资金流出，未进入涨幅前列。银行板块整体处于退潮期——缺乏催化+利差收窄预期+资金向制造业迁移。</td>
+</tr>
+<tr>
+    <td>资金面</td><td class="down">25/100</td>
+    <td style="text-align:left;">换手率0.39%极低，量比0.81缩量。既无主力出逃迹象（缩量），也无资金入场迹象。市场对招行处于"冷漠"状态——无人接盘也无人恐慌。</td>
+</tr>
+<tr>
+    <td>消息面</td><td class="neutral">48/100</td>
+    <td style="text-align:left;">缺乏个股级催化剂。银行板块整体受净息差收窄+经济增速放缓预期压制。无S/A级利好催化。</td>
+</tr>
+<tr>
+    <td>宏观/流动性</td><td class="down">35/100</td>
+    <td style="text-align:left;">利率下行周期不利于银行净息差。货币宽松但信用需求不足——银行面临"量增价降"困局。</td>
+</tr>
+</table>
+
+<div class="danger">
+<strong>腰子判断：</strong>招商银行当前处于"基本面优异+技术面极弱"的背离状态。PE仅6.19倍、EPS=3.63元——从价值投资角度看，这个价位长期来看是低估的。但技术面给出了最明确的空头信号：ADX=74.5的强下跌趋势，RSI接近0（连续9个交易日几乎无反弹），均线完美空头排列。量比0.81缩量下跌说明市场对招行处于"冷处理"状态——既没有恐慌抛售（无Selling Climax），也没有资金抄底。这种"阴跌"往往比急跌更难判断底部。<b>在这个技术面下，无论基本面多好，都不应该现在接飞刀。</b>等待RSI从极端值回升+出现放量企稳K线（锤子线/吞没形态）再考虑。
+</div>
+
+<p><strong>三周期预判：</strong></p>
+<table>
+<tr><th>周期</th><th>方向</th><th>置信度</th><th>关键价位/事件</th></tr>
+<tr><td>短期(1-5日)</td><td class="down">看空</td><td>高(75%)</td><td>支撑S3=36.44(BB下轨) | RSI极度超卖可能出现技术反弹，但反弹不是反转</td></tr>
+<tr><td>中期(1-4周)</td><td class="down">趋势看空</td><td>中(65%)</td><td>目标区间35-37 | 验证点: 能否站回MA20(38.20)</td></tr>
+<tr><td>长期(1-6月)</td><td class="neutral">中性偏多</td><td>中(55%)</td><td>估值区间35-42 | 核心逻辑: 招行基本面在银行中最好，估值历史极低位，但有"价值陷阱"风险</td></tr>
+</table>
+<p><strong>Wycokff阶段判定：下跌期</strong>（满足全部3个条件：价格持续下跌+MA20<MA60+ADX>25且-DI>+DI）</p>
+<p><strong>操作建议：不持有，不建议现在开仓。</strong>虽然PE=6.19极具吸引力，但"不做清单"规则#7——至少需要两个独立维度信号一致。当前仅基本面独立看多，技术面+资金面+板块面均看空。等待至少技术面出现止跌信号后再评估。</p>
+</div>
+
+<!-- 多瑞医药 -->
+<div class="stock-card">
+<h3>5. 多瑞医药 (301075) <span class="tag tag-info">数据受限</span><span class="tag tag-bull">持仓盈利</span></h3>
+
+<div class="warn">
+<strong>数据源受限声明：</strong>多瑞医药(301075)不在5月22日72只跟踪股票池中（可能因流通市值<100亿或不在申万一级行业覆盖范围），K线数据[2]和基本面数据[3]不可获取。以下分析基于持仓记录中的有限数据（现价88.20、成本86.06、支撑82.82、阻力92.61、止损77.02），标注为<b>"数据降级"</b>。
+</div>
+
+<table>
+<tr><th>指标</th><th>数值</th><th>来源</th></tr>
+<tr><td>现价</td><td>88.20</td><td>持仓记录</td></tr>
+<tr><td>持仓成本</td><td>86.06</td><td>持仓记录</td></tr>
+<tr><td>浮动盈亏</td><td class="up">+2.49%</td><td>持仓记录</td></tr>
+<tr><td>支撑位</td><td>82.82</td><td>持仓记录(S1)</td></tr>
+<tr><td>阻力位</td><td>92.61</td><td>持仓记录(R1)</td></tr>
+<tr><td>止损价</td><td>77.02</td><td>持仓记录(S3)</td></tr>
+<tr><td>行业</td><td>医药</td><td>申报行业</td></tr>
+</table>
+
+<p><strong>腰子判断（降级版）：</strong>多瑞医药为小盘医药股（流通市值估计约50亿），持仓浮盈+2.49%。小盘医药股波动大，对消息面高度敏感。建议尽快补全K线数据和财务数据以便完整评估。当前S3止损77.02距离现价-12.7%，对于小盘高波动股（ATR/价格预估>5%）来说可能偏紧——需要确认ATR后重新校准止损。</p>
+
+<div class="warn">
+<strong>小盘股风险提示：</strong>流通市值<100亿的小盘股，催化剂影响幅度需×1.5（白皮书§1.3.1）。医药行业政策敏感度高，集采/审批等消息可造成大幅波动。单日成交额需关注流动性风险（白皮书§6.5.2#9）。
+</div>
+</div>
+
+<!-- 盈峰环境 -->
+<div class="stock-card">
+<h3>6. 盈峰环境 (000967) <span class="tag tag-info">无数据</span></h3>
+
+<div class="warn">
+<strong>数据不可获取：</strong>盈峰环境(000967)在5月22日的全部数据源中均不可获取——不在72只跟踪股票池、不在持仓记录、不在K线缓存。无法进行任何维度的分析。建议核实该标的是否仍在重点跟踪范围内，或是否需要从跟踪池中移除。
+</div>
+</div>
+
+</div>
+
+<!-- ====== 四、综合评分汇总 ====== -->
+<div class="section">
+<h2>四、六维评分与三周期预判汇总</h2>
+
+<table>
+<tr><th>标的</th><th>技术面<br>(20%)</th><th>基本面<br>(20%)</th><th>消息面<br>(15%)</th><th>板块<br>(18%)</th><th>宏观<br>(12%)</th><th>资金面<br>(15%)</th><th>综合</th><th>评级</th></tr>
+<tr>
+    <td>东睦股份</td><td class="up">82</td><td class="neutral">58</td><td class="neutral">62</td><td class="up">72</td><td class="neutral">58</td><td class="up">75</td>
+    <td class="up"><strong>69.5</strong></td><td>★★★ 关注</td>
+</tr>
+<tr>
+    <td>拓普集团</td><td class="up">78</td><td class="neutral">62</td><td class="neutral">60</td><td class="up">75</td><td class="neutral">58</td><td class="up">72</td>
+    <td class="up"><strong>68.7</strong></td><td>★★★ 关注</td>
+</tr>
+<tr>
+    <td>中科曙光</td><td class="neutral">55</td><td class="neutral">60</td><td class="neutral">58</td><td class="neutral">65</td><td class="neutral">55</td><td class="neutral">55</td>
+    <td class="neutral"><strong>57.9</strong></td><td>★★ 观察</td>
+</tr>
+<tr>
+    <td>招商银行</td><td class="down">22</td><td class="up">82</td><td class="neutral">48</td><td class="down">30</td><td class="down">35</td><td class="down">25</td>
+    <td class="down"><strong>38.6</strong></td><td>★ 谨慎</td>
+</tr>
+<tr>
+    <td>多瑞医药</td><td colspan="6" style="color:#888;">数据降级 — 无法评分</td>
+    <td>—</td><td>数据不足</td>
+</tr>
+<tr>
+    <td>盈峰环境</td><td colspan="6" style="color:#888;">数据不可获取</td>
+    <td>—</td><td>无数据</td>
+</tr>
+</table>
+
+<p style="font-size:12px; color:#888; margin-top:4px;">综合评分 = 技术面×0.20 + 基本面×0.20 + 消息面×0.15 + 板块×0.18 + 宏观×0.12 + 资金面×0.15（权重依据白皮书v3.0）</p>
+
+<table>
+<tr><th>标的</th><th>短期(1-5日)</th><th>中期(1-4周)</th><th>长期(1-6月)</th><th>Wycokff阶段</th><th>操作建议</th></tr>
+<tr>
+    <td>东睦股份</td><td class="up">看多</td><td class="up">趋势看多</td><td class="up">长期看好</td><td>拉升期</td><td style="text-align:left;">持有，S3止损31.59；若RSI>75考虑部分止盈</td></tr>
+<tr>
+    <td>拓普集团</td><td class="neutral">偏多→中性</td><td class="up">趋势看多</td><td class="up">长期看好</td><td>拉升期(成熟)</td><td style="text-align:left;">持有但收紧止损至66.50；禁止追涨加仓</td></tr>
+<tr>
+    <td>中科曙光</td><td class="neutral">中性偏弱</td><td class="up">趋势看多</td><td class="up">长期看好</td><td>拉升期(回调)</td><td style="text-align:left;">等待MA20企稳，放量阳线后建仓第一笔</td></tr>
+<tr>
+    <td>招商银行</td><td class="down">看空</td><td class="down">趋势看空</td><td class="neutral">中性偏多</td><td>下跌期</td><td style="text-align:left;">不持有，不抄底；等RSI回升+放量企稳信号</td></tr>
+</table>
+</div>
+
+<!-- ====== 五、组合管理评估 ====== -->
+<div class="section">
+<h2>五、组合健康度评估</h2>
+
+<table>
+<tr><th>检查项</th><th>当前值</th><th>状态</th><th>评估</th></tr>
+<tr>
+    <td>行业集中度(HHI)</td><td>0.07</td><td class="good" style="color:#27ae60;">绿灯</td><td>三只持仓(汽车/机械/医药)高度分散</td>
+</tr>
+<tr>
+    <td>最大单股占比</td><td>9.5%(多瑞医药)</td><td class="good" style="color:#27ae60;">绿灯</td><td>均<30%，无集中风险</td>
+</tr>
+<tr>
+    <td>现金比例</td><td>73.2%</td><td class="good" style="color:#27ae60;">绿灯</td><td>在20-50%之上——现金充裕但偏保守。当前震荡市适合30%现金，可适度加仓</td>
+</tr>
+<tr>
+    <td>持仓间最高相关性</td><td>估计0.3-0.5</td><td class="good" style="color:#27ae60;">绿灯</td><td>汽车vs机械vs医药——行业不同，相关性适中</td>
+</tr>
+<tr>
+    <td>组合ATR均值</td><td>~3.4%</td><td class="warn" style="color:#f39c12;">黄灯</td><td>拓普ATR4.5%+东睦ATR4.6%推高组合波动。组合整体偏高波动</td>
+</tr>
+<tr>
+    <td>连败笔数</td><td>0</td><td class="good" style="color:#27ae60;">绿灯</td><td>三只持仓均盈利(或接近持平)</td>
+</tr>
+</table>
+
+<div class="info">
+<strong>组合总评：绿灯（1黄5绿）。</strong>当前组合结构健康，但有两个关注点：
+<ol style="font-size:13px; margin:6px 0 0 16px;">
+    <li><b>同步建仓风险</b>：三只票均为5月22日当天入场，如果市场次日转向，三只票可能同时承压。这不是行业相关性风险，而是入场时点集中风险。</li>
+    <li><b>高波动组合</b>：两只高ATR股票(拓普4.5%+东睦4.6%)推高了组合波动。如果市场出现系统性调整，组合可能单日回撤3-4%。</li>
+    <li><b>现金偏多</b>：73.2%现金在震荡市偏保守。可以考虑在中科曙光出现企稳信号后加仓，将现金降至50-60%。</li>
+</ol>
+</div>
+</div>
+
+<!-- ====== 六、Pre-mortem ====== -->
+<div class="section">
+<h2>六、决策前验尸 (Pre-mortem)</h2>
+
+<div class="verdict-box verdict-warn">
+    <div class="v-title">假设当前持仓组合半年后亏损15%以上</div>
+    <div class="v-detail" style="text-align:left; font-size:13px;">
+
+<p><strong>最可能的原因是什么？</strong></p>
+<ol style="margin:6px 0 10px 18px;">
+    <li><b>市场风格突然切换</b>：从"小盘成长/制造业"切换到"大盘价值/防御"，导致汽车零部件和机械设备板块同步大幅回调——这是最大的系统性风险。</li>
+    <li><b>拓普集团RSI超买后深度回调</b>：如果从72元回调至60元附近（-16.7%），不仅触发止损，还会拖累组合约1.5%。当前RSI(14)=82.8是明确的预警信号。</li>
+    <li><b>多瑞医药的流动性风险</b>：小盘医药股在利空消息下可能出现流动性枯竭——想卖卖不掉，实际亏损远超止损线。</li>
+</ol>
+
+<p><strong>反对意见中最有道理的一点是什么？</strong></p>
+<p>Vega会说："三只票同一天建仓，这是把鸡蛋放在同一个'时间篮子'里。组合风险不在于买了什么，而在于什么时候买的。如果5月22日是短期高点，三只票一起跌。" —— 这个批评是对的。同步建仓确实放大了时点风险。</p>
+
+<p><strong>我可能忽略了什么？</strong></p>
+<ul style="margin:6px 0 10px 18px;">
+    <li>5月底是季报真空期尾声，6月初一季报全部披露完毕，市场可能重新定价——方向不确定</li>
+    <li>东睦股份的粉末冶金业务与汽车行业高度相关，与拓普集团存在间接的产业链相关性——两只票可能通过"汽车产业链"形成隐性共振</li>
+    <li>银行板块持续走弱是流动性信号——如果银行继续下跌，可能引发市场整体风险偏好收缩，殃及中小盘</li>
+</ul>
+
+    </div>
+</div>
+</div>
+
+<!-- ====== 七、综合建议 ====== -->
+<div class="section">
+<h2>七、腰子综合建议</h2>
+
+<div class="verdict-box verdict-good">
+    <div class="v-title">当前持仓评级：B+（中等偏上，有改进空间）</div>
+    <div class="v-detail" style="text-align:left; font-size:13px;">
+
+<table>
+<tr><th>优先级</th><th>行动</th><th>标的</th><th>具体操作</th><th>逻辑</th></tr>
+<tr style="background:#e8f5e9;">
+    <td>P0<br>立即</td><td>收紧止损</td><td>拓普集团</td><td style="text-align:left;">S3止损从60.20收紧至66.50（ATR×4法），距离现价-7.7%</td><td style="text-align:left;">RSI(14)=82.8严重超买，高波动股需更紧止损</td>
+</tr>
+<tr style="background:#e8f5e9;">
+    <td>P0<br>立即</td><td>设定止盈</td><td>东睦股份</td><td style="text-align:left;">若次日涨至39.64(R2)附近且RSI>75，减仓30-50%锁定利润</td><td style="text-align:left;">5日+17.6%，短期涨幅过大，获利回吐风险上升</td>
+</tr>
+<tr style="background:#fff8e1;">
+    <td>P1<br>1-3日</td><td>准备加仓</td><td>中科曙光</td><td style="text-align:left;">若价格在MA20(95.66)附近放量企稳→建仓第一笔(目标仓位30%，约2.5万)</td><td style="text-align:left;">中期上升趋势中的健康回调，LPS买点</td>
+</tr>
+<tr style="background:#fff8e1;">
+    <td>P1<br>1-3日</td><td>补全数据</td><td>多瑞医药</td><td style="text-align:left;">Pulse补充K线+财务数据，以便完整六维评估</td><td style="text-align:left;">当前数据降级，无法判断该持仓的真实风险收益比</td>
+</tr>
+<tr style="background:#fde8e8;">
+    <td>P2<br>本周</td><td>确认状态</td><td>盈峰环境</td><td style="text-align:left;">确认该标的是否仍在跟踪范围内，若5/22无数据则评估是否移出</td><td style="text-align:left;">无数据意味着无法跟踪</td>
+</tr>
+<tr>
+    <td>P2<br>持续</td><td>监控</td><td>招商银行</td><td style="text-align:left;">等待RSI从极端值回升+底部放量K线形态出现→再评估入场时机</td><td style="text-align:left;">基本面优秀但技术面极弱，不是买入时机</td>
+</tr>
+</table>
+
+<p style="margin-top:10px;"><strong>决策日志 #DD-20260522（简易版）：</strong></p>
+<p style="font-size:12px; background:#f8f9fa; padding:8px 12px; border-radius:4px;">
+#DD-20260522 持仓审视 拓普/东睦/多瑞<br>
+意见：Sentinel_未咨询 Pulse_未咨询 Vega_未咨询 Alpha_未咨询（本报告为腰子独立判断）<br>
+冲突：拓普(技术面强但严重超买) vs 中科曙光(技术面弱但中期看多) → 各自处理，不矛盾<br>
+Pre-mortem：最怕市场风格突然切换+拓普RSI超买后深度回调+多瑞流动性风险<br>
+决定：持有拓普/东睦/多瑞，收紧拓普止损至66.50，东睦设39.64止盈观察，中科曙光等MA20企稳后建仓，招行观望
+</p>
+
+    </div>
+</div>
+</div>
+
+<!-- ====== 免责声明 ====== -->
+<div class="disclaimer">
+<p><strong>免责声明</strong></p>
+<p>本报告由铁律量化项目金融业务负责人"腰子"独立完成，基于2026年5月22日收盘数据。所有分析结论仅供参考，不构成任何投资建议。投资有风险，入市需谨慎。过往表现不代表未来收益。</p>
+
+<p><strong>数据源标注：</strong></p>
+<p>[1] 腾讯实时行情 API — 当日行情数据（现价/涨跌幅/PE/市值/换手率）<br>
+[2] 新浪财经K线 API — 日线OHLCV数据（60日），均线/MACD/RSI/ATR/BB/ADX/OBV由本地计算[5]<br>
+[3] 东方财富财务数据 API — EPS/财务指标<br>
+[7] 东方财富板块数据 API — 板块行情与强度<br>
+[9] 东方财富资金流向 API — 主力净流入（当日数据不可获取，标记为0）<br>
+[10] 东方财富行业资金流向 API — 行业资金净流入<br>
+[B] 备源 — 本次分析中未触发备源切换<br>
+[C] 缓存 — 原始数据来自5月22日全量数据缓存</p>
+
+<p><strong>数据降级声明：</strong>多瑞医药(301075)仅持仓数据可用，六维评分降级。盈峰环境(000967)全部数据不可获取。四只完整分析的股票中，主力资金流向数据(FundMainNet)当日不可获取，资金面评分依赖换手率+量比+OBV替代判断。</p>
+
+<p><strong>分析框架：</strong>本报告基于《重点股票跟踪分析逻辑白皮书 v3.1》六维分析框架。组合管理评估基于《腰子知识库16号：组合管理与资金分配》。Pre-mortem基于《腰子知识库17号：决策日志与可追溯性》。</p>
+
+<p>报告生成时间: 2026-05-23 | 版本: v1.0</p>
+</div>
+
+</div>
+</body>
+</html>

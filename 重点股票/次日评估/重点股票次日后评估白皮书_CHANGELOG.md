@@ -203,6 +203,8 @@
 - 格式：Office Open XML (.docx)
 - 生成工具：Claude Code + PowerShell OOXML
 
+> **OOS豁免**: 规则引入前的历史变更
+
 ---
 
 *本文件为重点股票次日后评估白皮书的版本变更记录，随文档版本同步更新。*

@@ -26,20 +26,20 @@ $WHITEPAPERS = @(
     @{
         Name     = '每日荐股分析逻辑白皮书'
         Dir      = '每日荐股\分析逻辑'
-        Current  = 'v2.4'
-        Date     = '2026-05-22'
+        Current  = 'v2.9'
+        Date     = '2026-05-23'
     }
     @{
         Name     = '次日后评估白皮书'
         Dir      = '每日荐股\事后评估'
-        Current  = 'v1.5'
-        Date     = '2026-05-22'
+        Current  = 'v1.6'
+        Date     = '2026-05-23'
     }
     @{
         Name     = '重点股票跟踪分析逻辑白皮书'
         Dir      = '重点股票\分析逻辑'
         Current  = 'v3.0'
-        Date     = '2026-05-21'
+        Date     = '2026-05-23'
     }
     @{
         Name     = '重点股票次日后评估白皮书'
@@ -50,14 +50,14 @@ $WHITEPAPERS = @(
     @{
         Name     = '分析的规则红线--Claude'
         Dir      = '规则红线'
-        Current  = 'v1.10'
-        Date     = '2026-05-23'
+        Current  = 'v1.14'
+        Date     = '2026-05-24'
     }
     @{
         Name     = '模拟交易白皮书'
         Dir      = '模拟交易'
-        Current  = 'v1.5'
-        Date     = '2026-05-23'
+        Current  = 'v1.6'
+        Date     = '2026-05-24'
     }
 )
 
@@ -65,7 +65,7 @@ $WHITEPAPERS = @(
 $ROSTER = @{
     Name    = '团队名册'
     Dir     = '项目成员'
-    Current = 'v1.4'
+    Current = 'v1.7'
     Date    = '2026-05-23'
 }
 
@@ -233,26 +233,64 @@ function Check-ChangelogPath {
 function Check-CrossReferences {
     Write-Host "`n[6/7] 跨文档版本号引用检查" -ForegroundColor Cyan
 
-    # 检查旧版引用模式
-    $checks = @(
-        @{ Path = "每日荐股\事后评估\次日后评估白皮书_v1.5.md";  Pattern = '分析逻辑白皮书_v2\.0'; Expected = 'v2.0'; Current = 'v2.4' }
-        @{ Path = "重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v2.0.md"; Pattern = '分析逻辑白皮书_v2\.0'; Expected = 'v2.0'; Current = 'v2.4' }
-        @{ Path = "重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v2.0.md"; Pattern = '红线 v1\.1'; Expected = 'v1.1'; Current = 'v1.3' }
-    )
+    $anyIssue = $false
 
-    foreach ($c in $checks) {
-        $fullPath = "$ROOT\$($c.Path)"
-        if (-not (Test-Path $fullPath)) {
-            Write-Warn "文件不存在: $($c.Path)"
-            continue
+    foreach ($wp in $WHITEPAPERS) {
+        $path = "$ROOT\$($wp.Dir)\$($wp.Name)_$($wp.Current).md"
+        if (-not (Test-Path $path)) { continue }
+        $rawContent = Get-Content $path -Raw -Encoding UTF8
+
+        # 过滤掉版本历史表行（|开头）和代码块（```之间），仅检查正文引用
+        $lines = $rawContent -split "`n"
+        $bodyLines = @()
+        $inCodeBlock = $false
+        foreach ($line in $lines) {
+            $trimmed = $line.Trim()
+            if ($trimmed -match '^```') { $inCodeBlock = -not $inCodeBlock; continue }
+            if ($inCodeBlock) { continue }
+            if ($trimmed -match '^\|') { continue }  # 跳过表格行（含版本历史表）
+            $bodyLines += $line
         }
-        $content = Get-Content $fullPath -Raw -Encoding UTF8
-        if ($content -match $c.Pattern) {
-            Write-Result $false "$($c.Path) — 引用 $($c.Expected)，应更新为 $($c.Current)"
+        $content = $bodyLines -join "`n"
+
+        # 检查是否引用了其他白皮书的旧版本号（按名称长度降序，避免短名误匹配长名）
+        $sortedOthers = $WHITEPAPERS | Where-Object { $_.Name -ne $wp.Name } | Sort-Object { $_.Name.Length } -Descending
+        $matchedPositions = @{}  # 记录已匹配位置，避免短名重复匹配长名的同一位置
+        foreach ($other in $sortedOthers) {
+            $escapedName = [regex]::Escape($other.Name)
+            $refPattern = "${escapedName}_v(\d+\.\d+(?:\.\d+)?)"
+            $refMatches = [regex]::Matches($content, $refPattern)
+            foreach ($m in $refMatches) {
+                # 跳过已被更长名称匹配的位置
+                $pos = $m.Index
+                $alreadyMatched = $false
+                foreach ($range in $matchedPositions.GetEnumerator()) {
+                    if ($pos -ge $range.Key -and $pos -lt ($range.Key + $range.Value)) {
+                        $alreadyMatched = $true; break
+                    }
+                }
+                if ($alreadyMatched) { continue }
+                $matchedPositions[$m.Index] = $m.Length
+
+                $refVersion = "v$($m.Groups[1].Value)"
+                if ($refVersion -ne $other.Current) {
+                    Write-Result $false "$($wp.Name) $($wp.Current) — 正文引用 $($other.Name) $refVersion，应为 $($other.Current)"
+                    $anyIssue = $true
+                }
+            }
+        }
+        # 检查是否引用了旧版规则红线
+        if ($content -match '规则红线.*?_v(\d+\.\d+(?:\.\d+)?)') {
+            $refRedline = "v$($matches[1])"
+            $redlineCurrent = ($WHITEPAPERS | Where-Object { $_.Name -match '规则红线' }).Current
+            if ($refRedline -ne $redlineCurrent) {
+                Write-Result $false "$($wp.Name) $($wp.Current) — 正文引用 规则红线 $refRedline，应为 $redlineCurrent"
+                $anyIssue = $true
+            }
         }
     }
-    # 如果没报错则报告成功
-    if (-not ($ERRORS | Where-Object { $_ -match '引用' })) {
+
+    if (-not $anyIssue) {
         Write-Host "  ✅ 所有跨文档引用版本号正确" -ForegroundColor Green
     }
 }

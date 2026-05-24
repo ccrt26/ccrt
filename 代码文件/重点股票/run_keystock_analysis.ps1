@@ -28,6 +28,18 @@ if ($Date -ne "") {
 $dateStr = $reportDate.ToString("yyyyMMdd")
 $dateLabel = $reportDate.ToString("yyyy-MM-dd")
 
+# 交易日检查（非交易日跳过，除非显式 -Force）
+$marketCheckScript = Join-Path $rootDir "代码文件\每日荐股\scripts\is_market_open.ps1"
+$holidayFile = Join-Path $rootDir "每日荐股\运营记录\holidays_2026.csv"
+if (Test-Path $marketCheckScript) {
+    $isOpen = & $marketCheckScript -Date $dateLabel -HolidayFile $holidayFile
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "非交易日 ($dateLabel)，跳过重点股票分析" -ForegroundColor Yellow
+        exit 0
+    }
+    Write-Host "交易日确认: $dateLabel" -ForegroundColor Green
+}
+
 # 全部6只股票
 $allStocks = @(
     @{ Code = "603019"; Name = "中科曙光"; Industry = "计算机" },
@@ -106,8 +118,10 @@ function Collect-StockFullData {
     # [3] 财务数据
     $financial = Invoke-ThrottledApi { Get-StockFinancial -Code $Code -Quarters 4 }
 
-    # [2]+[3]→[5] PE百分位
+    # [2]+[3]→[5] PE百分位（5年→3年→2年 阶梯降级，兼容上市不足5年的次新股）
     $pePercentile = Invoke-ThrottledApi { Get-PEPercentile -Code $Code -LookbackYears 5 }
+    if (-not $pePercentile) { $pePercentile = Invoke-ThrottledApi { Get-PEPercentile -Code $Code -LookbackYears 3 } }
+    if (-not $pePercentile) { $pePercentile = Invoke-ThrottledApi { Get-PEPercentile -Code $Code -LookbackYears 2 } }
 
     # [9] 个股资金流向
     $fundFlow = Invoke-ThrottledApi { Get-StockFundFlow -Code $Code -Days 5 }
@@ -116,7 +130,7 @@ function Collect-StockFullData {
     $northbound = Invoke-ThrottledApi { Get-NorthboundHold -Code $Code }
 
     # [11] 研报
-    $research = Invoke-ThrottledApi { Get-StockResearch -Code $Code -Count 5 -DaysBack 30 }
+    $research = Invoke-ThrottledApi { Get-StockResearch -Code $Code -Count 5 -DaysBack 90 }
 
     # [12] 融资融券
     $margin = Invoke-ThrottledApi { Get-MarginData -Code $Code -Days 5 }
@@ -308,7 +322,7 @@ function Get-FundamentalScore {
     # F. PEG (10分) — PE / 一致预期净利润增速
     if ($pep -and $pep.CurrentPE -gt 0) {
         $consensusGrowth = $null
-        if ($D.Research -and $D.Research.Count -gt 0) {
+        if ($D.Research -and @($D.Research).Count -gt 0) {
             $epsVals = @($D.Research | Where-Object { $_.ThisYearEPS -gt 0 } | ForEach-Object { $_.ThisYearEPS })
             if ($epsVals.Count -gt 0) { $consensusGrowth = ($epsVals | Measure-Object -Average).Average }
         }
@@ -421,7 +435,7 @@ function Get-CapitalScore {
     $score = 0
     # A. 主力资金 (35分)
     $ff = $D.FundFlow
-    if ($ff -and $ff.Count -gt 0) {
+    if ($ff -and @($ff).Count -gt 0) {
         $netInflows = $ff | ForEach-Object { $_.MainNetInflow }
         $posDays = ($netInflows | Where-Object { $_ -gt 0 }).Count
         $total = $netInflows.Count
@@ -583,7 +597,7 @@ function Get-TrendHealth {
     # 7. 板块共振度 (20分) — v3.0 非价格维度
     # Uses FundFlow as proxy for sector strength relative to market
     $sectorScore = 10
-    if ($D.FundFlow -and $D.FundFlow.Count -gt 0) {
+    if ($D.FundFlow -and @($D.FundFlow).Count -gt 0) {
         $recentMainIn = ($D.FundFlow[0].MainNetInflow)
         if ($recentMainIn -gt 5e7) { $sectorScore = 20 }
         elseif ($recentMainIn -gt 0) { $sectorScore = 15 }
@@ -1267,7 +1281,7 @@ function New-FundamentalSection {
     $pegStr = "N/A"; $pegEval = "N/A"
     if ($D.PEPercentile -and $D.PEPercentile.CurrentPE -gt 0) {
         $consGrowth = $null
-        if ($D.Research -and $D.Research.Count -gt 0) {
+        if ($D.Research -and @($D.Research).Count -gt 0) {
             $epsVals = @($D.Research | Where-Object { $_.ThisYearEPS -gt 0 } | ForEach-Object { $_.ThisYearEPS })
             if ($epsVals.Count -gt 0) { $consGrowth = ($epsVals | Measure-Object -Average).Average }
         }
@@ -1305,7 +1319,7 @@ function New-SentimentSection {
     <h2>消息面与情绪分析 [11] ✅已实测</h2>
 "@
     $r = $D.Research
-    if ($r -and $r.Count -gt 0) {
+    if ($r -and @($r).Count -gt 0) {
         $buyC = ($r | Where-Object { $_.EmRating -eq '买入' }).Count
         $holdC = ($r | Where-Object { $_.EmRating -eq '增持' }).Count
         $neutralC = ($r | Where-Object { $_.EmRating -eq '中性' -or $_.EmRating -eq '持有' }).Count
@@ -1321,7 +1335,7 @@ function New-SentimentSection {
     }
     # 融资融券情绪
     $mg = $D.Margin
-    if ($mg -and $mg.Count -gt 0) {
+    if ($mg -and @($mg).Count -gt 0) {
         $html += "<h3>融资融券 [12] ✅已实测</h3><table><tr><th>日期</th><th>融资余额(亿)</th><th>融券余额(亿)</th><th>融资净买入(万)</th></tr>"
         foreach ($m in $mg) {
             $dt = if ($m.Date -and $m.Date.Length -ge 10) { $m.Date.Substring(0,10) } else { "" }
@@ -1367,7 +1381,7 @@ function New-CapitalSection {
     $html = "<div class='section'><h2>资金面分析 [8][9][10] ✅已实测</h2>"
     # 主力资金
     $ff = $D.FundFlow
-    if ($ff -and $ff.Count -gt 0) {
+    if ($ff -and @($ff).Count -gt 0) {
         $html += "<h3>个股资金流向 [9]</h3><table class='fund-flow-table'><tr><th>日期</th><th>主力净流入(万)</th><th>超大单(万)</th><th>大单(万)</th><th>小单(万)</th></tr>"
         foreach ($f in $ff) {
             $html += "<tr><td>$($f.Date)</td><td>$([Math]::Round($f.MainNetInflow/10000,0))</td><td>$([Math]::Round($f.SuperLargeIn/10000,0))</td><td>$([Math]::Round($f.LargeIn/10000,0))</td><td>$([Math]::Round($f.SmallIn/10000,0))</td></tr>"
@@ -1746,7 +1760,7 @@ foreach ($s in $stocks) {
     $folderName = "${name}(${code})"
     $outDir = Join-Path $outRoot $folderName
     $pdfFile = Join-Path $outDir "${folderName}分析报告__${dateStr}.pdf"
-    $htmlFile = Join-Path $outDir "${folderName}_${dateStr}.html"
+    $htmlFile = Join-Path $outDir "${folderName}分析报告__${dateStr}.html"
 
     if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
 
@@ -1836,11 +1850,14 @@ foreach ($s in $stocks) {
     $_bollPos = if ($stockData.Bollinger -and $stockData.KLines.Count -gt 0) { $c=$stockData.KLines[-1].Close; $u=$stockData.Bollinger.Upper[-1]; $m=$stockData.Bollinger.MA[-1]; $l=$stockData.Bollinger.Lower[-1]; if($c -ge $u){"触及上轨"}elseif($c -ge $m){"中轨上方"}elseif($c -ge $l){"中轨下方"}else{"触及下轨"} } else { "N/A" }
     $_volRel = if ($stockData.VolMA5.Count -gt 1 -and $stockData.VolMA5[-2] -gt 0) { $vr=$stockData.KLines[-1].Volume/$stockData.VolMA5[-2]; $cg=$stockData.Quote.ChangePct; if($cg -ge 2 -and $vr -ge 1.5){"放量上涨"}elseif($cg -ge 0 -and $vr -le 1.1){"缩量上涨"}elseif($cg -lt -2 -and $vr -ge 1.5){"放量下跌"}elseif($cg -lt 0 -and $vr -le 0.8){"缩量下跌"}else{"量能正常"} } else { "N/A" }
     $_fin = $stockData.Financial
-    $_roeLevel = if ($_fin -and $_fin.Count -gt 0) { $r=[double]$_fin[0].WEIGHTAVG_ROE; if($r -ge 15){"优秀(≥15%)"}elseif($r -ge 10){"良好(≥10%)"}elseif($r -ge 5){"一般(≥5%)"}else{"较差(<5%)"} } else { "N/A" }
+    $_finArr = @($_fin)
+    $_roeLevel = if ($_finArr.Count -gt 0) { $r=[double]$_finArr[0].WEIGHTAVG_ROE; if($r -ge 15){"优秀(≥15%)"}elseif($r -ge 10){"良好(≥10%)"}elseif($r -ge 5){"一般(≥5%)"}else{"较差(<5%)"} } else { "N/A" }
     $_peZone = if ($stockData.PEPercentile) { $p=$stockData.PEPercentile.Percentile; if($p -lt 20){"低估(<20%)"}elseif($p -lt 40){"偏低(20-40%)"}elseif($p -lt 60){"合理(40-60%)"}elseif($p -lt 80){"偏高(60-80%)"}else{"高估(>80%)"} } else { "N/A" }
-    $_debtLevel = if ($_fin -and $_fin.Count -gt 0) { $d=[double]$_fin[0].DEBT_ASSET_RATIO; if($d -lt 30){"低杠杆"}elseif($d -lt 50){"合理"}elseif($d -lt 65){"偏高"}else{"高杠杆"} } else { "N/A" }
-    $_rCover = if ($stockData.Research -and $stockData.Research.Count -gt 0) { "有($($stockData.Research.Count)篇)" } else { "无研报" }
-    $_ffTrend = if ($stockData.FundFlow -and $stockData.FundFlow.Count -gt 0) { $pos=($stockData.FundFlow | Where-Object {$_.MainNetInflow -gt 0}).Count; if($pos -ge 3){"主力持续流入"}elseif($pos -ge 1){"主力流入>流出"}else{"主力流出"} } else { "N/A" }
+    $_debtLevel = if ($_finArr.Count -gt 0) { $d=[double]$_finArr[0].DEBT_ASSET_RATIO; if($d -lt 30){"低杠杆"}elseif($d -lt 50){"合理"}elseif($d -lt 65){"偏高"}else{"高杠杆"} } else { "N/A" }
+    $_rArr = @($stockData.Research)
+    $_rCover = if ($_rArr.Count -gt 0) { "有($($_rArr.Count)篇)" } else { "无研报" }
+    $_ffArr = @($stockData.FundFlow)
+    $_ffTrend = if ($_ffArr.Count -gt 0) { $pos=(@($_ffArr | Where-Object {$_.MainNetInflow -gt 0})).Count; if($pos -ge 3){"主力持续流入"}elseif($pos -ge 1){"主力流入>流出"}else{"主力流出"} } else { "N/A" }
     $_wyckoffPhase = Get-WyckoffPhase -D $stockData
 
     $script:evalStocks += @{
@@ -1862,6 +1879,17 @@ foreach ($s in $stocks) {
             ShortBull_Score = $pred.ShortBull; MidBull_Score = $pred.MidBull; LongBull_Score = $pred.LongBull
         }
     }
+
+    # 写入预判记录 CSV（闭环数据起点）
+    $predCsvDir = Join-Path $rootDir "重点股票\预判记录"
+    if (-not (Test-Path $predCsvDir)) { New-Item -ItemType Directory -Path $predCsvDir -Force | Out-Null }
+    $predCsvFile = Join-Path $predCsvDir "predictions.csv"
+    $predHeader = "date,stock_code,stock_name,short_term_dir,mid_term_dir,long_term_dir,resistance_r1,resistance_r2,resistance_r3,support_s1,support_s2,support_s3,confidence,accuracy,notes"
+    if (-not (Test-Path $predCsvFile)) {
+        Add-Content -Path $predCsvFile -Value $predHeader -Encoding UTF8
+    }
+    $predRow = "$dateStr,$code,$name,$($pred.Short),$($pred.Mid),$($pred.Long),$($ops.R1),$($ops.R2),$($ops.R3),$($ops.S1),$($ops.S2),$($ops.S3),$($pred.Confidence),,"
+    Add-Content -Path $predCsvFile -Value $predRow -Encoding UTF8
 
     Write-Host ""
 
@@ -1886,3 +1914,19 @@ $evalFile = Join-Path $evalDir "评估数据_${dateStr}.json"
     ConvertTo-Json -Depth 10 | Set-Content $evalFile -Encoding UTF8
 Write-Host "评估数据保存: $evalFile"
 
+# v3.0 字段完整性校验
+$requiredV30Fields = @("ADX_Value", "ADX_Trend", "OBV_Trend", "Wyckoff_Phase")
+$schemaOk = $true
+foreach ($s in $script:evalStocks) {
+    foreach ($f in $requiredV30Fields) {
+        if (-not $s.Signals.ContainsKey($f)) {
+            Write-Warning "评估数据 v3.0字段缺失: $($s.Code) $($s.Name) — $f"
+            $schemaOk = $false
+        }
+    }
+}
+if ($schemaOk) {
+    Write-Host "v3.0字段完整性校验通过 ($($script:evalStocks.Count)只股票 x $($requiredV30Fields.Count)字段)" -ForegroundColor Green
+} else {
+    Write-Warning "v3.0字段完整性校验失败，请检查报告输出"
+}

@@ -87,14 +87,35 @@ if (-not $SkipMarketCheck) {
 # -- mode: eval (白皮书 v1.5) --
 if ($Mode -eq "eval") {
     Write-Log -Msg "===== Starting Post-Evaluation (白皮书 v1.7, 分析逻辑 v3.1) ====="
-    # 白皮书 §1.3: N+1日19:00评估T日荐股
-    $evalDate = (Get-Date $Date).AddDays(-1).ToString("yyyy-MM-dd")
+    # 白皮书 §1.3: N+1日19:00评估最近交易日荐股
+    # Find the most recent trading day (handles weekends/holidays)
+    $evalDate = $Date
+    do {
+        $evalDate = (Get-Date $evalDate).AddDays(-1).ToString("yyyy-MM-dd")
+        & $marketCheckScript -Date $evalDate -HolidayFile $holidayFile 2>&1 | Out-Null
+        $isTrading = ($LASTEXITCODE -eq 0)
+        if ((Get-Date $evalDate) -lt (Get-Date).AddDays(-30)) {
+            Write-Log -Msg "Cannot find recent trading day within 30 days" -Level "ERROR"
+            throw "No recent trading day found"
+        }
+    } while (-not $isTrading)
+    Write-Log -Msg ("Eval target date: " + $evalDate + " (most recent trading day)")
     $reportDateStr = $evalDate -replace '-',''
     # 白皮书 §1.4: 评估报告_YYYYMMDD (YYYYMMDD=T日)
     $reportName = "评估报告_$reportDateStr"
     if ($LogOnly) {
         Write-Log -Msg "[LogOnly] Skipping actual evaluation"
     } else {
+        # ---- Pre-eval: Backfill historical returns ----
+        Write-Log -Msg "[Pre-eval] Backfilling historical returns..."
+        $backfillScript = Join-Path $scriptsDir "backfill_returns.py"
+        if (Test-Path $backfillScript) {
+            $backfillResult = & python $backfillScript 2>&1
+            Write-Log -Msg "[Pre-eval] Backfill complete: $backfillResult"
+        } else {
+            Write-Log -Msg "[Pre-eval] Backfill script not found, skipping" -Level "WARN"
+        }
+
         # ---- §2 实际评估：调用 run_daily_eval.ps1（白皮书 v1.5） ----
         $evalScript = Join-Path $scriptsDir "run_daily_eval.ps1"
         Write-Log -Msg ("Running evaluation: " + $evalScript)
@@ -171,17 +192,24 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         }
 
         # ---- Phase 3: Scoring engine v2 (veto + score) ----
-        Write-Log -Msg "[3/6] Running scoring engine..."
+        Write-Log -Msg "[3/7] Running scoring engine v2.9..."
         $scoringScript = Join-Path $logicDir "scoring_engine_v2.py"
-        python $scoringScript 2>&1 | ForEach-Object { Write-Log -Msg $_ }
+        python $scoringScript --date $Date 2>&1 | ForEach-Object { Write-Log -Msg $_ }
         if ($LASTEXITCODE -ne 0) {
             Write-Log -Msg "Scoring engine failed (exit: $LASTEXITCODE)" -Level "ERROR"
         } else {
             Write-Log -Msg "Scoring completed"
         }
 
+        # ---- Phase 3.5: Backfill returns (v2.9 路线二 阶段A) ----
+        Write-Log -Msg "[3.5/7] Backfilling historical returns..."
+        $backfillScript = Join-Path $scriptsDir "backfill_returns.py"
+        $backfillResult = & python $backfillScript 2>&1
+        Write-Log -Msg ("Backfill: " + ($backfillResult -join "; "))
+        Write-Host "[Phase 3.5] 收益回填完成" -ForegroundColor Cyan
+
         # ---- Phase 4: Generate report ----
-        Write-Log -Msg "[4/6] Generating report..."
+        Write-Log -Msg "[4/7] Generating report..."
         Write-Log -Msg ("Generating report via: " + $genScript)
         & $genScript -Date $Date -SkipPdf:$($Mode -eq "daily_latest" -or $reportAsHtml)
         if ($LASTEXITCODE -ne 0) {
@@ -190,7 +218,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
             Write-Log -Msg "Report generated successfully"
         }
         # ---- Phase 5: Key stock analysis ----
-        Write-Log -Msg "[5/6] Running keystock analysis..."
+        Write-Log -Msg "[5/7] Running keystock analysis..."
         $keystockScript = Join-Path $rootDir "代码文件\重点股票\run_keystock_analysis.ps1"
         & $keystockScript -Date $Date
         if ($LASTEXITCODE -ne 0) {
@@ -200,7 +228,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         }
 
         # ---- Phase 6: Archive data ----
-        Write-Log -Msg "[6/6] Archiving daily data..."
+        Write-Log -Msg "[6/7] Archiving daily data..."
         & $archiveScript -Date $Date
         if ($LASTEXITCODE -ne 0) {
             Write-Log -Msg "Archive step failed (exit: $LASTEXITCODE)" -Level "ERROR"
@@ -209,7 +237,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         }
 
         # ---- Phase 7: 模拟交易引擎 ----
-        Write-Host "`n[Phase 7] 启动模拟交易引擎..." -ForegroundColor Cyan
+        Write-Host "`n[Phase 7/7] 启动模拟交易引擎..." -ForegroundColor Cyan
         $simTradingScript = Join-Path $rootDir "模拟交易/交易引擎/sim_trading.ps1"
         $evalDateStr = $Date -replace '-',''
         $evalFile = Join-Path $rootDir "重点股票/次日评估/评估数据_${evalDateStr}.json"
@@ -223,7 +251,36 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         } else {
             Write-Warning "[Phase 7] 评估数据不存在: $evalFile，跳过模拟交易"
         }
-    }
+
+        # ---- Phase 7.5: 每日荐股模拟交易引擎 ----
+        Write-Host "`n[Phase 7.5/7] 启动每日荐股模拟交易引擎..." -ForegroundColor Cyan
+        $simDailyScript = Join-Path $rootDir "模拟交易/每日荐股赛道/交易引擎/sim_trading_daily.ps1"
+        $scoredFile = Join-Path $rootDir "代码文件/数据/data_scored.json"
+        if (Test-Path $scoredFile) {
+            $evalDateStr = $Date -replace '-',''
+            & $simDailyScript -Date $evalDateStr -DataFile $scoredFile -DryRun
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "[Phase 7.5] 每日荐股模拟交易引擎完成" -ForegroundColor Green
+            } else {
+                Write-Warning "[Phase 7.5] 每日荐股模拟交易引擎返回非零退出码"
+            }
+        } else {
+            Write-Warning "[Phase 7.5] data_scored.json 不存在: $scoredFile，跳过每日荐股模拟交易"
+        }
+
+        # ---- Phase 7.6: 综合审计 (Gauge 审计官) ----
+        Write-Host "`n[Phase 7.6/7] 综合审计..." -ForegroundColor Cyan
+        $auditScript = Join-Path $rootDir "代码文件\监督机制\run_full_audit.ps1"
+        if (Test-Path $auditScript) {
+            & $auditScript -Quick -Date $Date 2>&1 | ForEach-Object { Write-Log -Msg $_ }
+            if ($LASTEXITCODE -ne 0) {
+                Write-Log -Msg "审计发现需关注问题 (exit: $LASTEXITCODE)" -Level "WARN"
+            } else {
+                Write-Log -Msg "审计通过"
+            }
+        } else {
+            Write-Log -Msg "审计脚本不存在，跳过" -Level "WARN"
+        }
     Write-Record -Date $Date -Mode $Mode -Status "SUCCESS" -Notes ("Analysis done, output: " + $reportDir)
     Write-Log -Msg "===== Daily Stock Analysis Complete ====="
 }

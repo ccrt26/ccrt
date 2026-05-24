@@ -54,6 +54,20 @@ $tasks = @(
         Time = "09:00"
         Arg  = "$psArgs `"$scriptsDir\monthly_summary.ps1`""
         TriggerType = "Monthly"
+    },
+    @{
+        Name = "$taskPrefix-WeeklyFeedback"
+        Desc = "TieLv Weekly Feedback Loop (Mon 09:00)"
+        Time = "09:00"
+        Arg  = "$psArgs `"$scriptsDir\weekly_feedback_loop.ps1`""
+        TriggerType = "Weekly"
+    },
+    @{
+        Name = "$taskPrefix-MonthlyCalibration"
+        Desc = "TieLv Phase Discount Monthly Calibration (1st Mon 10:00)"
+        Time = "10:00"
+        Arg  = "$psArgs `"$scriptsDir\monthly_phase_calibration.ps1`""
+        TriggerType = "Monthly"
     }
 )
 

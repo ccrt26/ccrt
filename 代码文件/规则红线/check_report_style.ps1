@@ -50,7 +50,8 @@ function Check-GenScript {
     if ($c -notmatch "Microsoft YaHei") {
         Log -M "$Label missing font" -S "FAIL"; $ok = $false
     }
-    if ($c -notmatch "Heading1" -and $c -notmatch 'w:pStyle') {
+    $hasHeadingDefs = ($c -match "Heading1" -or $c -match 'w:pStyle' -or $c -match '<h[12]' -or $c -match '\.hdr h1')
+    if (-not $hasHeadingDefs) {
         Log -M "$Label missing heading defs" -S "WARN"
     }
     if ($ok) { Log -M "$Label style defs ok" -S "PASS" }
@@ -98,7 +99,7 @@ $global:lines += "================================================"
 
 # S0: Style baseline doc
 Sec "S0 - Baseline Doc"
-$bd = "$BASE\规则红线\报告样式基线_v1.0.md"
+$bd = "$BASE\规则红线\报告样式基线_v1.1.md"
 if (Test-Path $bd) { Log -M "baseline doc exists" -S "PASS" }
 else { Log -M "baseline doc missing" -S "FAIL" }
 

@@ -1,13 +1,12 @@
 ﻿================================================
      Tielv Quant - Report Style Check
-     2026-05-23 01:53
+     2026-05-24 15:44
 ================================================
 
 [S0 - Baseline Doc]
-  [OK] baseline doc exists
+  [XX] baseline doc missing
 
 [S1 - gen_daily_html.ps1]
-  [!!] gen_daily_html.ps1 missing heading defs
   [OK] gen_daily_html.ps1 style defs ok
 
 [S2 - HTML Report Check]
@@ -63,5 +62,11 @@
   [OK] md_to_docx.py: SIZE_H2 14pt
   [OK] md_to_docx.py: SIZE_H3 12pt
 
-[WARN] 1 warnings
-Pass=47 Warn=1 Fail=0 Total=48
+[S6 - build_docx.ps1 check]
+  [OK] build_docx.ps1 uses md_to_docx
+  [OK] build_docx.ps1 uses md_to_docx
+  [OK] build_docx.ps1 uses md_to_docx
+  [OK] build_docx.ps1 uses md_to_docx
+
+[FAIL] 0 warnings, 1 failures
+Pass=50 Warn=0 Fail=1 Total=51

@@ -1,0 +1,94 @@
+{
+  "_schema": "unified_market_data v1.0",
+  "_description": "统一市场数据中间层 — 两套模拟交易系统共用。Arch设计 v2026-05-24",
+  "_design_note": "只包含公共字段，各系统保留独立扩展schema。采集一次，两边读同一份。",
+
+  "generated_at": "2026-05-24T20:00:00",
+  "data_quality": {
+    "flag": "normal",
+    "degraded_fields": [],
+    "cached_fields": [],
+    "api_latency_ms": 0,
+    "quote_source": "[1]",
+    "checked_at": "2026-05-24T20:00:00"
+  },
+
+  "benchmark": {
+    "csi300_price": 0,
+    "csi300_change_pct": 0,
+    "market_turnover_billion": 0,
+    "all_a_share_avg_change_pct": 0
+  },
+
+  "stocks": {
+    "603019": {
+      "code": "603019",
+      "name": "中科曙光",
+      "market": "sh",
+      "board": "main",
+      "industry_sw": "计算机",
+      "industry_em": "计算机设备",
+
+      "quote": {
+        "price": 0,
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "prev_close": 0,
+        "change_pct": 0,
+        "volume": 0,
+        "turnover_rate": 0,
+        "source": "[1]"
+      },
+
+      "technical": {
+        "ma5": 0,
+        "ma10": 0,
+        "ma20": 0,
+        "ma60": 0,
+        "rsi": 0,
+        "atr14": 0,
+        "vol_ratio": 0,
+        "macd_status": ""
+      },
+
+      "fundamental": {
+        "pe_ttm": 0,
+        "pb": 0,
+        "eps_ttm": 0,
+        "total_market_value": 0,
+        "revenue_growth": 0,
+        "debt_ratio": 0
+      },
+
+      "sector": {
+        "phase": "潜伏期",
+        "confidence": 50,
+        "sector_name": "计算机",
+        "sector_code": "BK0476",
+        "sector_change_pct": 0,
+        "segment_rank": 0
+      },
+
+      "kline_60d": {
+        "dates": [],
+        "opens": [],
+        "highs": [],
+        "lows": [],
+        "closes": [],
+        "volumes": []
+      }
+    }
+  },
+
+  "_extension_points": {
+    "_key_stock_extra": {
+      "description": "重点股票模拟系统额外字段 (KeyLevels/TrendHealth/Short预测). 存储在独立 overlay JSON 中, 按需读取.",
+      "file": "模拟交易/每日荐股赛道/数据/key_stock_overlay.json"
+    },
+    "_daily_rec_extra": {
+      "description": "每日荐股模拟系统额外字段 (7维子评分/ThemePath/C7). 已含在 data_scored.json 中.",
+      "file": "代码文件/数据/data_scored.json"
+    }
+  }
+}

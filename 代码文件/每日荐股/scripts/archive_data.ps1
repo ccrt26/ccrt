@@ -83,25 +83,25 @@ function Trim-ToLatest {
 
 Write-Log -Msg "===== 开始归档 ($Date) ====="
 
-# ---------- 每日荐股数据 ----------
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\dynamic_pool.json") -ArchiveSubDir "daily_pool"
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_full.json") -ArchiveSubDir "raw_data"
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_scored.json") -ArchiveSubDir "scored"
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_final.json") -ArchiveSubDir "final"
+# ---------- 每日荐股数据 (Arch新架构: 04_原始数据 + 05_参考数据) ----------
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\dynamic_pool.json") -ArchiveSubDir "05_参考数据"
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_full.json") -ArchiveSubDir "04_原始数据"
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_scored.json") -ArchiveSubDir "04_原始数据"
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\data_final.json") -ArchiveSubDir "04_原始数据"
 
-# ---------- 板块/行业数据 ----------
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\sector_data.json") -ArchiveSubDir "sector"
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\industry_map.json") -ArchiveSubDir "sector"
-Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\eastmoney_sector_map.json") -ArchiveSubDir "sector"
+# ---------- 板块/行业数据 (Arch新架构: 05_参考数据) ----------
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\sector_data.json") -ArchiveSubDir "05_参考数据"
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\industry_map.json") -ArchiveSubDir "05_参考数据"
+Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\eastmoney_sector_map.json") -ArchiveSubDir "05_参考数据"
 
-# ---------- 每日荐股报告 ----------
+# ---------- 每日荐股报告 (Arch新架构: 03_分析报告/每日荐股) ----------
 $reportDir = Join-Path $dailyDir "股票报告"
 if (Test-Path $reportDir) {
     $reports = Get-ChildItem $reportDir -Filter "daily_report_*.html"
     $pdfReports = Get-ChildItem $reportDir -Filter "daily_report_*.pdf"
     $allReports = $reports + $pdfReports
     foreach ($rpt in $allReports) {
-        $targetDir = Join-Path $archiveRoot "reports"
+        $targetDir = Join-Path $archiveRoot "03_分析报告\每日荐股"
         if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
         $ext = [System.IO.Path]::GetExtension($rpt.Name)
         $baseName = [System.IO.Path]::GetFileNameWithoutExtension($rpt.Name)
@@ -111,26 +111,26 @@ if (Test-Path $reportDir) {
     }
 }
 
-# ---------- 重点股票数据 ----------
+# ---------- 重点股票数据 (Arch新架构: 02_评估数据) ----------
 $keyStockDir = Join-Path $SourceDir "重点股票"
 $keystockEvalData = Join-Path $keyStockDir "次日评估"
 if (Test-Path $keystockEvalData) {
     $evalFiles = Get-ChildItem $keystockEvalData -Filter "评估数据_*.json" | Where-Object { $_.Name -match "\d{8}" }
     foreach ($ef in $evalFiles) {
-        $targetDir = Join-Path $archiveRoot "重点股票"
+        $targetDir = Join-Path $archiveRoot "02_评估数据"
         if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
-        $archiveName = "${dateLabel}_$($ef.Name)"
+        $archiveName = $ef.Name  # 源文件名已含日期，不再加前缀
         Copy-Item -Path $ef.FullName -Destination (Join-Path $targetDir $archiveName) -Force
         Write-Log -Msg "归档: $($ef.FullName)"
     }
 }
 
-# ---------- 每日荐股评估报告 ----------
+# ---------- 每日荐股评估报告 (Arch新架构: 03_分析报告/后评估) ----------
 $evalReportDir = Join-Path $dailyDir "评估报告"
 if (Test-Path $evalReportDir) {
     $reports = Get-ChildItem $evalReportDir -Filter "每日荐股后评估报告.*"
     foreach ($rpt in $reports) {
-        $targetDir = Join-Path $archiveRoot "eval"
+        $targetDir = Join-Path $archiveRoot "03_分析报告\后评估"
         if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
         $ext = [System.IO.Path]::GetExtension($rpt.Name)
         $archiveName = "${dateLabel}_后评估报告${ext}"
@@ -139,23 +139,17 @@ if (Test-Path $evalReportDir) {
     }
 }
 
-# ---------- 裁剪保留（只保留最新5份，避免囤积） ----------
-Trim-ToLatest -ArchiveSubDir "daily_pool"
-Trim-ToLatest -ArchiveSubDir "raw_data"
-Trim-ToLatest -ArchiveSubDir "scored"
-Trim-ToLatest -ArchiveSubDir "final"
-Trim-ToLatest -ArchiveSubDir "sector"
-Trim-ToLatest -ArchiveSubDir "reports"
+# ---------- 裁剪保留（Arch新架构路径） ----------
+Trim-ToLatest -ArchiveSubDir "05_参考数据"
+Trim-ToLatest -ArchiveSubDir "04_原始数据"
+Trim-ToLatest -ArchiveSubDir "03_分析报告\每日荐股"
 
 # 保留90天清理
-Clean-OldArchives -ArchiveSubDir "daily_pool"
-Clean-OldArchives -ArchiveSubDir "raw_data"
-Clean-OldArchives -ArchiveSubDir "scored"
-Clean-OldArchives -ArchiveSubDir "final"
-Clean-OldArchives -ArchiveSubDir "sector"
-Clean-OldArchives -ArchiveSubDir "reports"
-Clean-OldArchives -ArchiveSubDir "eval"
-Clean-OldArchives -ArchiveSubDir "重点股票"
+Clean-OldArchives -ArchiveSubDir "05_参考数据"
+Clean-OldArchives -ArchiveSubDir "04_原始数据"
+Clean-OldArchives -ArchiveSubDir "03_分析报告\每日荐股"
+Clean-OldArchives -ArchiveSubDir "03_分析报告\后评估"
+Clean-OldArchives -ArchiveSubDir "02_评估数据"
 
 # ---------- 汇总 ----------
 Write-Log -Msg "归档完成。历史数据位置: $archiveRoot"

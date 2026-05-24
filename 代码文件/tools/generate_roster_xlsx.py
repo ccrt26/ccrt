@@ -72,12 +72,13 @@ ws1.cell(row=1, column=1, value="铁律量化 — 团队名册").font = TITLE_FO
 ws1.cell(row=1, column=1).alignment = CENTER
 
 ws1.merge_cells("A2:G2")
-ws1.cell(row=2, column=1, value=f"版本 v1.6 | {today} | 项目总监 阿黑").font = Font(name="Microsoft YaHei", color="666666", size=10)
+ws1.cell(row=2, column=1, value=f"版本 v1.7 | {today} | 项目总监 阿黑").font = Font(name="Microsoft YaHei", color="666666", size=10)
 ws1.cell(row=2, column=1).alignment = CENTER
 
 # Architecture diagram
 ws1.merge_cells("A4:G4")
-ws1.cell(row=4, column=1, value="团队架构").font = SUBTITLE_FONT
+ws1.cell(row=4, column=1, value="团队架构 — 三线并行，各司其职").font = SUBTITLE_FONT
+
 ws1.merge_cells("A5:G5")
 ws1.cell(row=5, column=1, value="金融线: 用户(创始人) → 阿黑(项目总监) → 腰子(金融负责人) ← Sentinel | Pulse | Vega | Alpha (专业支撑)").font = Font(name="Microsoft YaHei", color="1A1A2E", size=10)
 ws1.cell(row=5, column=1).alignment = CENTER
@@ -87,6 +88,11 @@ ws1.merge_cells("A6:G6")
 ws1.cell(row=6, column=1, value="工程线: 用户(创始人) → 阿黑(项目总监) → Arch | Forge | Dock | Proof | Craft").font = Font(name="Microsoft YaHei", color="16213E", size=10)
 ws1.cell(row=6, column=1).alignment = CENTER
 ws1.cell(row=6, column=1).fill = LIGHT_BG
+
+ws1.merge_cells("A7:G7")
+ws1.cell(row=7, column=1, value="审计线: Gauge(审计官) → 阿黑(项目总监)  [独立于金融线和工程线，直接对阿黑负责]").font = Font(name="Microsoft YaHei", color="E67E22", size=10)
+ws1.cell(row=7, column=1).alignment = CENTER
+ws1.cell(row=7, column=1).fill = LIGHT_BG
 
 # Member overview table
 headers = ["角色", "名称", "召唤", "核心职责", "一句话", "完整定义", "召唤命令"]
@@ -118,6 +124,8 @@ members = [
      ".claude/agents/质量工程师-Proof.md", ".claude/commands/Proof.md"],
     ["代码工匠", "Craft", "/Craft", "PowerShell/Python编码实现、接口落地", "把设计变成可运行的代码",
      ".claude/agents/代码工匠-Craft.md", ".claude/commands/Craft.md"],
+    ["审计官", "Gauge", "/Gauge", "四级审计(目标对齐/红线执行/成本/技术健康)、问题追踪、修复路线", "告诉团队哪里出了问题，怎么修",
+     ".claude/agents/审计官-Gauge.md", ".claude/commands/Gauge.md"],
 ]
 
 for i, m in enumerate(members):
@@ -151,6 +159,7 @@ detail_data = [
     ("Dock — 部署工程师(环境)", "环境配置管理；部署策略设计；运行监控方案；备份与恢复；不写代码，出部署方案和环境诊断"),
     ("Proof — 质量工程师(测试)", "测试策略设计；回归测试用例；变更影响分析；代码规范审查；不写代码，出测试方案和审查报告"),
     ("Craft — 代码工匠", "PowerShell/Python编码实现；接口落地；代码重构执行；按Arch设计和Forge流水线规范实现"),
+    ("Gauge — 审计官", "独立审计，直接对阿黑负责；四级审计体系(目标对齐/红线执行/成本/技术健康)；发现问题、给出修复指令、追踪修复状态"),
 ]
 
 h2 = ["角色", "详细职能", "硬边界"]
@@ -171,6 +180,7 @@ boundaries = [
     "不写代码、不设计架构、不构建流水线",
     "不写代码、不修bug、不设计架构或流水线",
     "不设计架构、不出测试方案、只按规范写代码",
+    "只审计不执行：发现问题、给出修复指令、追踪修复状态，不自己动手修代码",
 ]
 
 for i, (name, detail) in enumerate(detail_data):
@@ -226,6 +236,7 @@ chain_data = [
     ("部署环境", "Dock — 环境配置 / 依赖管理 / 版本发布"),
     ("质量验证", "Proof — 测试策略 / 回归验证 / 变更分析"),
     ("代码实现", "Craft — PowerShell/Python编码、脚本优化"),
+    ("独立审计", "Gauge — 四级审计体系 / 问题追踪 / 修复路线 → 直接对阿黑负责"),
 ]
 
 for i, (label, detail) in enumerate(chain_data):
@@ -252,6 +263,7 @@ rules = [
     ("跨团队协作", "腰子提金融需求 → 阿黑分派工程团队 → 工程团队实施 → 腰子验证金融结果"),
     ("争议解决", "金融团队内→腰子判断；工程团队内→阿黑判断；跨线→阿黑协调，用户最终决策"),
     ("红线共守", "所有角色共同遵守规则红线最新版本"),
+    ("审计独立", "Gauge独立于金融线和工程线，直接对阿黑负责；审计结论不受被审计方影响；任何人不得阻止或修改审计发现"),
 ]
 
 for i, (rule, desc) in enumerate(rules):
@@ -282,8 +294,8 @@ for c, h in enumerate(idx_headers, 1):
 style_header_row(ws4, r, len(idx_headers))
 
 files = [
-    ("本名册(v1.6 .md)", "项目成员/团队名册_v1.6.md", "Markdown 源文件（当前版本）"),
-    ("本名册(v1.6 .xlsx)", "项目成员/团队名册_v1.6.xlsx", "Excel 版本（当前版本）"),
+    ("本名册(v1.7 .md)", "项目成员/团队名册_v1.7.md", "Markdown 源文件（当前版本）"),
+    ("本名册(v1.7 .xlsx)", "项目成员/团队名册_v1.7.xlsx", "Excel 版本（当前版本）"),
     ("本名册(v1.5 归档)", "项目成员/团队名册_v1.5.md/.xlsx", "历史版本归档"),
     ("", "", ""),
     ("金融团队角色定义", "", ""),
@@ -301,6 +313,9 @@ files = [
     ("Proof角色定义", ".claude/agents/质量工程师-Proof.md", "质量工程师(测试)完整人设 (v2.0)"),
     ("Craft角色定义", ".claude/agents/代码工匠-Craft.md", "代码工匠完整人设 (v1.0)"),
     ("", "", ""),
+    ("独立审计角色定义", "", ""),
+    ("Gauge角色定义", ".claude/agents/审计官-Gauge.md", "审计官完整人设 (v1.0)"),
+    ("", "", ""),
     ("金融团队协作协议", ".claude/agents/金融团队-协作协议.md", "金融团队内部协作规范 (v1.0)"),
     ("金融团队学习计划", ".claude/agents/金融团队-学习计划.md", "支撑角色定向培训 (v1.0)"),
     ("", "", ""),
@@ -315,8 +330,9 @@ files = [
     ("Dock知识库 (4+1文件)", ".claude/agents/Dock-知识库/", "部署工程知识体系"),
     ("Proof知识库 (5+1文件)", ".claude/agents/Proof-知识库/", "质量工程知识体系"),
     ("Craft知识库 (5+1文件)", ".claude/agents/Craft-知识库/", "代码实现知识体系"),
+    ("Gauge知识库 (3文件)", ".claude/agents/Gauge-知识库/", "审计知识体系"),
     ("", "", ""),
-    ("召唤命令 ×10", ".claude/commands/腰子.md 等", "角色召唤触发器"),
+    ("召唤命令 ×11", ".claude/commands/腰子.md 等", "角色召唤触发器"),
     ("名册生成工具", "代码文件/tools/generate_roster_xlsx.py", "自动生成团队名册.xlsx"),
     ("规则红线", "规则红线/分析的规则红线--Claude_v1.9.md", "项目最高优先级规则"),
 ]
@@ -336,11 +352,11 @@ for i, (ftype, fpath, fdesc) in enumerate(files):
 auto_width(ws4)
 
 # Freeze panes for all sheets
-ws1.freeze_panes = "A8"
+ws1.freeze_panes = "A10"
 ws2.freeze_panes = "A4"
 ws3.freeze_panes = "A3"
 ws4.freeze_panes = "A4"
 
-output_path = r"c:\Users\34269\Documents\Claude\股票分析\项目成员\团队名册_v1.6.xlsx"
+output_path = r"c:\Users\34269\Documents\Claude\股票分析\项目成员\团队名册_v1.7.xlsx"
 wb.save(output_path)
 print(f"[OK] 团队名册.xlsx generated at {output_path}")

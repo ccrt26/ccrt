@@ -1,0 +1,47 @@
+{
+  "InitialCapital": 1000000,
+  "MaxPositions": 5,
+  "SingleStockLimitPct": 20,
+  "SlippagePct": 0.1,
+  "CooloffPeriodDays": 5,
+  "FullTakeProfitCooldownDays": 3,
+  "MinScore": 55,
+  "StopLossPct": 8.0,
+  "TakeProfitPct": 12.0,
+  "RSIOverbought": 75,
+  "RSIExtreme": 80,
+  "MinTurnoverRate": 1.5,
+  "MinVolRatio": 0.5,
+  "Commission": {
+    "Rate": 0.00025,
+    "MinPerOrder": 5.0
+  },
+  "StampTax": {
+    "Rate": 0.001,
+    "OnSellOnly": true
+  },
+  "PositionSizing": {
+    "Tiers": [
+      { "MinScore": 78, "Ratio": 20 },
+      { "MinScore": 65, "Ratio": 15 },
+      { "MinScore": 55, "Ratio": 10 },
+      { "MinScore": 0, "Ratio": 0 }
+    ]
+  },
+  "RiskControl": {
+    "YellowFlagDD": 3.0,
+    "RedFlagDD": 5.0,
+    "BlackFlagDD": 10.0,
+    "MaxConsecutiveLosses": 6,
+    "RedFlagCooldownDays": 3
+  },
+  "Benchmark": {
+    "Code": "000300.SH",
+    "Name": "沪深300",
+    "Enabled": true
+  },
+  "DataRetention": {
+    "SnapshotsKeepDays": 365,
+    "ArchiveAfterDays": 365
+  }
+}

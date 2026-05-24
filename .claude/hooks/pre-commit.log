@@ -162,3 +162,376 @@
 [PASS] [2026-05-23 20:14:34] ===== Check D: Commit Message Format =====
 [PASS] [2026-05-23 20:14:34] Commit message format OK: feat: 瑙掕壊鍗忎綔鍗忚 鈥?Token闆舵氮璐规満鍒讹紙CLAUDE.md 搂鍏級
 === Pre-commit check completed at 2026-05-23 20:14:34 ===
+=== Pre-commit check started at 2026-05-23 20:23:44 ===
+[PASS] [2026-05-23 20:23:44] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 20:23:44] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 20:23:44] No garbage files
+[PASS] [2026-05-23 20:23:44] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 20:23:44] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 20:23:44] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.4鈫抳2.5 鈥?涓夎鑹茶仈鍚堝鏌?9椤圭粨鏋勬€т紭鍖?
+=== Pre-commit check completed at 2026-05-23 20:23:44 ===
+=== Pre-commit check started at 2026-05-23 23:53:34 ===
+[PASS] [2026-05-23 23:53:34] No staged files, skip check.
+=== Pre-commit check started at 2026-05-23 23:53:39 ===
+[PASS] [2026-05-23 23:53:39] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 23:53:40] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 23:53:40] No garbage files
+[PASS] [2026-05-23 23:53:40] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 23:53:40] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 23:53:40] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-23 23:53:40] ===== Check E: Token Budget Gate =====
+[ERROR] [2026-05-23 23:53:40] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-23 23:53:40 ===
+=== Pre-commit check started at 2026-05-23 23:56:25 ===
+[PASS] [2026-05-23 23:56:25] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 23:56:25] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 23:56:25] No garbage files
+[PASS] [2026-05-23 23:56:25] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 23:56:25] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 23:56:25] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-23 23:56:25] ===== Check E: Token Budget Gate =====
+[ERROR] [2026-05-23 23:56:25] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-23 23:56:25 ===
+=== Pre-commit check started at 2026-05-23 23:57:34 ===
+[PASS] [2026-05-23 23:57:35] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 23:57:35] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 23:57:35] No garbage files
+[PASS] [2026-05-23 23:57:35] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 23:57:35] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 23:57:35] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-23 23:57:35] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-23 23:57:35] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-23 23:57:35] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 宏观巡检-Sentinel.md (103 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 宏观巡检-Sentinel.md (9.4KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 审计官-Gauge.md (95 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 审计官-Gauge.md (8.7KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 策略研究员-Alpha.md (90 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 策略研究员-Alpha.md (8.7KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 金融专家-腰子.md (129 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 金融专家-腰子.md (11.7KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-23 23:57:35] E1 PASS: 风控官-Vega.md (98 lines)
+[PASS] [2026-05-23 23:57:35] E2 PASS: 风控官-Vega.md (8.2KB)
+[PASS] [2026-05-23 23:57:35] Check E complete
+=== Pre-commit check completed at 2026-05-23 23:57:35 ===
+=== Pre-commit check started at 2026-05-23 23:58:18 ===
+[PASS] [2026-05-23 23:58:18] No staged files, skip check.
+=== Pre-commit check started at 2026-05-23 23:58:35 ===
+[PASS] [2026-05-23 23:58:35] ===== Check A: Version Consistency =====
+[PASS] [2026-05-23 23:58:35] ===== Check B: Garbage Files =====
+[PASS] [2026-05-23 23:58:35] No garbage files
+[PASS] [2026-05-23 23:58:35] ===== Check C: Document Completeness =====
+[PASS] [2026-05-23 23:58:35] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-23 23:58:35] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-23 23:58:35] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-23 23:58:35] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-23 23:58:35] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 宏观巡检-Sentinel.md (103 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 宏观巡检-Sentinel.md (9.4KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 审计官-Gauge.md (95 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 审计官-Gauge.md (8.7KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 策略研究员-Alpha.md (90 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 策略研究员-Alpha.md (8.7KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 金融专家-腰子.md (129 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 金融专家-腰子.md (11.7KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-23 23:58:35] E1 PASS: 风控官-Vega.md (98 lines)
+[PASS] [2026-05-23 23:58:35] E2 PASS: 风控官-Vega.md (8.2KB)
+[PASS] [2026-05-23 23:58:35] Check E complete
+=== Pre-commit check completed at 2026-05-23 23:58:35 ===
+=== Pre-commit check started at 2026-05-24 00:02:32 ===
+[PASS] [2026-05-24 00:02:32] No staged files, skip check.
+=== Pre-commit check started at 2026-05-24 00:10:09 ===
+[PASS] [2026-05-24 00:10:09] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 00:10:09] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 00:10:09] No garbage files
+[PASS] [2026-05-24 00:10:09] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 00:10:09] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 00:10:09] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-24 00:10:09] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 00:10:09] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 00:10:09] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 审计官-Gauge.md (95 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 审计官-Gauge.md (8.7KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 00:10:09] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-24 00:10:09] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 00:10:09] E2 PASS: 风控官-Vega.md (8.4KB)
+[PASS] [2026-05-24 00:10:09] Check E complete
+=== Pre-commit check completed at 2026-05-24 00:10:09 ===
+=== Pre-commit check started at 2026-05-24 00:33:03 ===
+[PASS] [2026-05-24 00:33:03] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 00:33:03] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 00:33:03] No garbage files
+[PASS] [2026-05-24 00:33:03] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 00:33:03] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-24 00:33:03] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 00:33:03] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-24 00:33:03] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 00:33:04] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 00:33:04] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 00:33:04] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-24 00:33:04] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 00:33:04] E2 PASS: 风控官-Vega.md (8.4KB)
+[ERROR] [2026-05-24 00:33:04] Script exception: 路径中具有非法字符。
+=== Pre-commit check completed at 2026-05-24 00:33:04 ===
+=== Pre-commit check started at 2026-05-24 00:35:19 ===
+[PASS] [2026-05-24 00:35:19] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 00:35:19] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 00:35:19] No garbage files
+[PASS] [2026-05-24 00:35:19] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 00:35:19] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-24 00:35:19] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 00:35:19] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-24 00:35:19] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 00:35:19] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 00:35:19] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 00:35:19] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-24 00:35:19] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 00:35:19] E2 PASS: 风控官-Vega.md (8.4KB)
+[ERROR] [2026-05-24 00:35:19] Script exception: 路径中具有非法字符。
+=== Pre-commit check completed at 2026-05-24 00:35:19 ===
+=== Pre-commit check started at 2026-05-24 00:36:35 ===
+[PASS] [2026-05-24 00:36:35] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 00:36:35] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 00:36:35] No garbage files
+[PASS] [2026-05-24 00:36:35] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 00:36:35] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-24 00:36:35] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 00:36:35] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-24 00:36:35] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 00:36:35] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 00:36:35] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 00:36:35] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-24 00:36:35] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 00:36:35] E2 PASS: 风控官-Vega.md (8.4KB)
+[ERROR] [2026-05-24 00:36:35] Script exception: 路径中具有非法字符。
+=== Pre-commit check completed at 2026-05-24 00:36:35 ===
+=== Pre-commit check started at 2026-05-24 00:40:19 ===
+[PASS] [2026-05-24 00:40:19] ===== Check A: Version Consistency =====
+[WARN] [2026-05-24 00:40:19] File not found: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.14.md
+[PASS] [2026-05-24 00:40:19] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 00:40:19] No garbage files
+[PASS] [2026-05-24 00:40:19] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 00:40:19] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-24 00:40:19] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.14.md
+[PASS] [2026-05-24 00:40:19] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鐗堟湰绠＄悊鎿嶄綔瑙勭▼.md
+[PASS] [2026-05-24 00:40:19] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 00:40:19] Commit message format OK: feat: 姣忔棩鑽愯偂鍒嗘瀽閫昏緫鐧界毊涔?v2.5鈫抳2.6 鈥?棰樻潗涓夊垎绫籔E宸紓鍖栦及鍊?
+[PASS] [2026-05-24 00:40:19] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 00:40:19] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 00:40:19] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 00:40:19] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 项目总监-阿黑.md (6.6KB)
+[PASS] [2026-05-24 00:40:19] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 00:40:19] E2 PASS: 风控官-Vega.md (8.4KB)
+[PASS] [2026-05-24 00:40:19] Check E complete
+=== Pre-commit check completed at 2026-05-24 00:40:19 ===
+=== Pre-commit check started at 2026-05-24 15:35:05 ===
+[PASS] [2026-05-24 15:35:05] ===== Check A: Version Consistency =====
+[WARN] [2026-05-24 15:35:05] File not found: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.15.md
+[PASS] [2026-05-24 15:35:05] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 15:35:05] No garbage files
+[PASS] [2026-05-24 15:35:05] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: .claude/knowledge/Craft鑷煡娓呭崟.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 涓存椂鎶ュ憡/涓柇褰卞搷璇勪及_2026-05-24.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 涓存椂鎶ュ憡/鑴氭湰杞婚噺鍖朹鎵ц璁″垝_2026-05-24.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 涓存椂鎶ュ憡/鑴氭湰杞婚噺鍖朹璐ㄩ噺淇濋殰浣撶郴_璁ㄨ鎶ュ憡_2026-05-24.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 瀹¤鎶ュ憡/渚濊禆鍒嗘瀽_璇勫垎寮曟搸.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 瀹¤鎶ュ憡/缂洪櫡鍙拌处.md
+[PASS] [2026-05-24 15:35:05] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.15.md
+[PASS] [2026-05-24 15:35:05] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 15:35:05] Commit message format OK: feat: 瑙勫垯绾㈢嚎v1.13鈫抳1.14缁撴瀯瀹¤浼樺寲 鈥?Gauge+闃块粦鑱斿悎瀹¤
+[PASS] [2026-05-24 15:35:05] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 15:35:05] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 15:35:05] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 15:35:05] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 项目总监-阿黑.md (6.8KB)
+[PASS] [2026-05-24 15:35:05] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 15:35:05] E2 PASS: 风控官-Vega.md (8.4KB)
+[PASS] [2026-05-24 15:35:05] Check E complete
+=== Pre-commit check completed at 2026-05-24 15:35:05 ===
+=== Pre-commit check started at 2026-05-24 15:45:08 ===
+[PASS] [2026-05-24 15:45:08] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 15:45:08] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 15:45:08] No garbage files
+[PASS] [2026-05-24 15:45:08] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 15:45:08] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 15:45:08] Commit message format OK: feat: 鑴氭湰杞婚噺鍖朠hase2瀹屾垚 鈥?涓ゅぇ鏍稿績妯″潡鎷嗗垎+璐ㄩ噺淇濋殰浣撶郴钀藉湴
+[PASS] [2026-05-24 15:45:08] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 15:45:08] E1 PASS: 代码工匠-Craft.md (135 lines)
+[WARN] [2026-05-24 15:45:08] E2 WARN: 代码工匠-Craft.md 鈥?12.7KB (>12KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 宏观巡检-Sentinel.md (104 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 宏观巡检-Sentinel.md (9.6KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 审计官-Gauge.md (99 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 审计官-Gauge.md (9.5KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 数据监理-Pulse.md (97 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 数据监理-Pulse.md (8.7KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 构建工程师-Forge.md (94 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 构建工程师-Forge.md (8.5KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 策略研究员-Alpha.md (91 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 策略研究员-Alpha.md (8.8KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 系统架构师-Arch.md (107 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 系统架构师-Arch.md (8.7KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 质量工程师-Proof.md (104 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 质量工程师-Proof.md (9.2KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 部署工程师-Dock.md (103 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 部署工程师-Dock.md (8.8KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 15:45:08] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 项目总监-阿黑.md (94 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 项目总监-阿黑.md (6.8KB)
+[PASS] [2026-05-24 15:45:08] E1 PASS: 风控官-Vega.md (99 lines)
+[PASS] [2026-05-24 15:45:08] E2 PASS: 风控官-Vega.md (8.4KB)
+[PASS] [2026-05-24 15:45:08] Check E complete
+=== Pre-commit check completed at 2026-05-24 15:45:08 ===

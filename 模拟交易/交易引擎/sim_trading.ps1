@@ -31,14 +31,27 @@ param(
 # ============================================================
 $simDir = Join-Path $RootDir "模拟交易"
 $configFile = Join-Path $simDir "sim_config.json"
-$positionsFile = Join-Path $simDir "持仓记录/positions.json"
-$txnFile = Join-Path $simDir "持仓记录/transactions.csv"
-$snapshotFile = Join-Path $simDir "每日快照/snapshot_${Date}.json"
-$perfFile = Join-Path $simDir "绩效报告/perf_summary.json"
 $exDivFile = Join-Path $simDir "ex_dividend_dates.json"
 $logDir = Join-Path $simDir "日志"
 
+# === 主路径: 历史数据/ 归档架构 (Arch 06-数据持久化) ===
+$canonBase = Join-Path $RootDir "历史数据"
+$positionsFile = Join-Path $canonBase "00_核心交易/positions.json"
+$txnFile = Join-Path $canonBase "00_核心交易/transactions.csv"
+$snapshotFile = Join-Path $canonBase "01_交易快照/snapshot_${Date}.json"
+$perfFile = Join-Path $canonBase "00_核心交易/perf_summary.json"
+$canonBackupDir = Join-Path $canonBase "_backup"
+
+# 旧路径(只读兼容) — 主路径不存在时回退
+$legacyPositionsFile = Join-Path $simDir "持仓记录/positions.json"
+$legacyTxnFile = Join-Path $simDir "持仓记录/transactions.csv"
+$legacyPerfFile = Join-Path $simDir "绩效报告/perf_summary.json"
+$legacySnapshotFile = Join-Path $simDir "每日快照/snapshot_${Date}.json"
+
 if (-not $DryRun -and -not (Test-Path $logDir)) { New-Item $logDir -ItemType Directory -Force | Out-Null }
+
+# Source shared risk module (Sentinel+Vega v2026-05-24)
+. (Join-Path $simDir "共享模块/risk_framework.ps1")
 
 # === 股票代码映射 ===
 $codeMap = @{
@@ -204,7 +217,12 @@ function Get-BenchmarkValue {
         if (-not $m.Success) { return $null }
         $parts = $m.Groups[1].Value -split '~'
         if ($parts.Count -lt 6) { return $null }
-        return @{ Price = [double]$parts[3]; Open = [double]$parts[5] }
+        $price = [double]$parts[3]
+        $prevClose = [double]$parts[4]
+        $changePct = 0
+        if ($prevClose -gt 0) { $changePct = [Math]::Round(($price / $prevClose - 1) * 100, 2) }
+        $turnover = 0; [double]::TryParse($parts[37], [ref]$turnover) | Out-Null
+        return @{ Price = $price; Open = [double]$parts[5]; ChangePct = $changePct; Turnover = $turnover }
     } catch { return $null }
 }
 
@@ -372,9 +390,14 @@ try { $config = Get-Content $configFile -Raw | ConvertFrom-Json } catch { Write-
 
 # ---- Step 2: 读取持仓 ----
 Write-Log "读取持仓..."
+$positionsLoaded = $false
 if (Test-Path $positionsFile) {
-    try { $positions = Get-Content $positionsFile -Raw | ConvertFrom-Json } catch { Write-Error "持仓文件解析失败: $_"; exit 1 }
-} else {
+    try { $positions = Get-Content $positionsFile -Raw | ConvertFrom-Json; $positionsLoaded = $true } catch { Write-Error "持仓文件解析失败: $_"; exit 1 }
+} elseif (Test-Path $legacyPositionsFile) {
+    Write-Log "主持仓文件不存在，从旧路径只读回退" "WARN"
+    try { $positions = Get-Content $legacyPositionsFile -Raw | ConvertFrom-Json; $positionsLoaded = $true } catch { Write-Log "旧持仓文件解析失败: $_" "WARN" }
+}
+if (-not $positionsLoaded) {
     Write-Log "持仓文件不存在，初始化默认持仓" "WARN"
     $positions = [PSCustomObject]@{
         Cash = $config.InitialCapital
@@ -458,6 +481,31 @@ if ($quotes.Count -eq 0) {
 Start-Sleep -Milliseconds 300  # API间隔≥0.3s (红线§3.2)
 $benchData = Get-BenchmarkValue
 if ($benchData) { Write-Log "沪深300: $($benchData.Price)" }
+
+# ---- Step 5.5: Market Circuit Breaker & Shared Cooldowns (Sentinel+Vega v2026-05-24) ----
+$sharedCooldownsFile = Join-Path $simDir "共享模块/shared/cooldowns.json"
+$sharedCooldowns = @{}
+if (Test-Path $sharedCooldownsFile) {
+    try { $sc = Get-Content $sharedCooldownsFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        $sc.PSObject.Properties | ForEach-Object { $sharedCooldowns[$_.Name] = $_.Value }
+    } catch {}
+}
+
+$csi300Change = 0
+$marketTurnover = 10000
+if ($benchData) {
+    if ($benchData.ChangePct) { $csi300Change = $benchData.ChangePct }
+    if ($benchData.Turnover) { $marketTurnover = $benchData.Turnover }
+}
+$marketCB = Get-MarketCircuitBreaker -CSI300ChangePct $csi300Change `
+    -MarketTurnover $marketTurnover -LowTurnoverDays 0
+if ($marketCB.Level -ne "none") {
+    Write-Log "MARKET CB: level=$($marketCB.Level) | $($marketCB.Action)" "WARN"
+    if ($marketCB.SkipOpen) {
+        $skipOpenNewPositions = $true
+        Write-Log "  -> New positions blocked by market circuit breaker" "WARN"
+    }
+}
 
 # ---- Step 6: 除权除息调整 ----
 Write-Log "检查除权除息..."
@@ -668,10 +716,12 @@ foreach ($txn in $txns) {
             $pos.LastStopLossDate = $Date
             if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
             $cooldowns[$code].LastStopLossDate = $Date
+            $sharedCooldowns[$code] = $cooldowns[$code]  # Vega: sync to shared
         } elseif ($txn.Reason -match "全部止盈") {
             $pos.LastFullTakeProfitDate = $Date
             if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
             $cooldowns[$code].LastFullTakeProfitDate = $Date
+            $sharedCooldowns[$code] = $cooldowns[$code]  # Vega: sync to shared
         }
         Write-Log "  $code 清仓完成，卖出价 $($txn.Price)"
     }
@@ -704,8 +754,8 @@ foreach ($code in $codeMap.Keys) {
     }
 
     $existingPos = $stockMap[$code]
-    # 冷却检查：先看当前持仓对象，再看持久化的 Cooldowns 字典（清仓后冷却标记不会丢失）
-    $coolSource = if ($existingPos) { $existingPos } elseif ($cooldowns[$code]) { $cooldowns[$code] } else { $null }
+    # 冷却检查：当前持仓 → 持久化 Cooldowns → 跨系统共享 Cooldowns (Vega v2026-05-24)
+    $coolSource = if ($existingPos) { $existingPos } elseif ($cooldowns[$code]) { $cooldowns[$code] } elseif ($sharedCooldowns[$code]) { $sharedCooldowns[$code] } else { $null }
     if ($coolSource -and $coolSource.LastStopLossDate) {
         $coolDays = Get-CoolingDays -DateStr $coolSource.LastStopLossDate
         if ($coolDays -lt $config.CooloffPeriodDays) {
@@ -849,27 +899,55 @@ if ($candidates.Count -gt 0) {
 }
 }  # 关闭 if (-not $skipOpenNewPositions) else 块
 
-# ---- Step 10: 写入交易流水 ----
+# ---- Step 10: 写入交易流水（幂等：防重复写入）----
 if ($txns.Count -gt 0 -and -not $DryRun) {
     $existingTxns = @()
-    if (Test-Path $txnFile) {
-        $existingContent = Get-Content $txnFile -Raw
+    $existingFingerprints = @{}
+    $txnReadPath = if (Test-Path $txnFile) { $txnFile } elseif (Test-Path $legacyTxnFile) { $legacyTxnFile } else { $null }
+    if ($txnReadPath) {
+        $existingContent = Get-Content $txnReadPath -Raw
         if ($existingContent.Trim().Length -gt 0) {
-            $existingTxns = $existingContent.Trim() -split "`n" | Select-Object -Skip 1
+            $allExisting = $existingContent.Trim() -split "`n"
+            $existingTxns = $allExisting | Select-Object -Skip 1
+            # 构建指纹集合(date|code|action)用于防重
+            foreach ($line in $existingTxns) {
+                $parts = $line -split ','
+                if ($parts.Count -ge 4) {
+                    $fp = "$($parts[0])|$($parts[1])|$($parts[3])"  # date|code|action
+                    if (-not $existingFingerprints.ContainsKey($fp)) {
+                        $existingFingerprints[$fp] = @()
+                    }
+                    $existingFingerprints[$fp] += $line
+                }
+            }
         }
     }
     $header = "date,code,name,action,price,shares,amount,commission,stamp_tax,total_cost,reason,entry_prediction,data_source"
-    $newLines = $txns | ForEach-Object {
-        "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}" -f
-            $_.Date, $_.Code, $_.Name, $_.Action,
-            $_.Price, $_.Shares, $_.Amount, $_.Commission,
-            $_.StampTax, $_.TotalCost, $_.Reason, $_.EntryPrediction,
-            $(if ($_.DataSource) { $_.DataSource } else { "[评估数据]" })
+    $newLines = @()
+    $dupCount = 0
+    foreach ($txn in $txns) {
+        $line = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}" -f
+            $txn.Date, $txn.Code, $txn.Name, $txn.Action,
+            $txn.Price, $txn.Shares, $txn.Amount, $txn.Commission,
+            $txn.StampTax, $txn.TotalCost, $txn.Reason, $txn.EntryPrediction,
+            $(if ($txn.DataSource) { $txn.DataSource } else { "[评估数据]" })
+        $fp = "$($txn.Date)|$($txn.Code)|$($txn.Action)"
+        # 同日同股同操作类型 → 跳过（已经写入过）
+        if ($existingFingerprints.ContainsKey($fp)) {
+            Write-Log "  ⚠ $($txn.Code) $($txn.Action) 今日已有记录，跳过重复写入" "WARN"
+            $dupCount++
+        } else {
+            $newLines += $line
+        }
     }
-    $allLines = @($header) + $existingTxns + $newLines
-    $allLines | Set-Content -Encoding UTF8 $txnFile
-    Assert-WriteSuccess -Path $txnFile
-    Write-Log "交易流水已写入: $($newLines.Count) 条"
+    if ($newLines.Count -gt 0) {
+        $allLines = @($header) + $existingTxns + $newLines
+        $allLines | Set-Content -Encoding UTF8 $txnFile
+        Assert-WriteSuccess -Path $txnFile
+        Write-Log "交易流水已写入: $($newLines.Count) 条 (跳过${dupCount}条重复)"
+    } else {
+        Write-Log "交易流水无新增 (${dupCount}条全部重复，已跳过)" "INFO"
+    }
 }
 
 # ---- Step 11: 更新持仓文件 ----
@@ -903,6 +981,13 @@ if (-not $DryRun) {
     $posOutput | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $positionsFile
     Assert-WriteSuccess -Path $positionsFile
     Write-Log "持仓已更新"
+
+    # Shared cooldowns sync (Vega v2026-05-24)
+    $sharedDir = Join-Path $simDir "共享模块/shared"
+    if (-not (Test-Path $sharedDir)) { New-Item $sharedDir -ItemType Directory -Force | Out-Null }
+    if ($sharedCooldowns.Count -gt 0) {
+        $sharedCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile
+    }
 }
 
 # ---- Step 12: 每日快照 ----
@@ -910,7 +995,9 @@ $dailyReturn = 0
 $totalReturn = 0
 $prevSnapshot = $null
 $prevDate = $scriptDateObj.AddDays(-1).ToString("yyyyMMdd")
-$prevSnapshotFile = Join-Path $simDir "每日快照/snapshot_${prevDate}.json"
+$prevSnapshotCanon = Join-Path $canonBase "01_交易快照/snapshot_${prevDate}.json"
+$prevSnapshotLegacy = Join-Path $simDir "每日快照/snapshot_${prevDate}.json"
+$prevSnapshotFile = if (Test-Path $prevSnapshotCanon) { $prevSnapshotCanon } elseif (Test-Path $prevSnapshotLegacy) { $prevSnapshotLegacy } else { $prevSnapshotCanon }
 if (Test-Path $prevSnapshotFile) {
     try { $prevSnapshot = Get-Content $prevSnapshotFile -Raw | ConvertFrom-Json } catch { Write-Error "前日快照文件解析失败: $_"; exit 1 }
     if ($prevSnapshot.TotalValue -gt 0) {
@@ -922,7 +1009,8 @@ $totalReturn = [Math]::Round(($positions.TotalValue / $config.InitialCapital - 1
 $benchmarkVal = $null
 if ($config.Benchmark.Enabled -and $benchData) {
     $benchVal = $benchData.Price
-    if (Test-Path $perfFile) { try { $perfSummary = Get-Content $perfFile -Raw | ConvertFrom-Json } catch { Write-Error "绩效文件解析失败: $_"; exit 1 } }
+    $perfReadPath1 = if (Test-Path $perfFile) { $perfFile } elseif (Test-Path $legacyPerfFile) { $legacyPerfFile } else { $null }
+    if ($perfReadPath1) { try { $perfSummary = Get-Content $perfReadPath1 -Raw -Encoding UTF8 | ConvertFrom-Json } catch { Write-Error "绩效文件解析失败: $_"; exit 1 } }
     if (-not $perfSummary) {
         $perfSummary = [PSCustomObject]@{ StartDate = $Date; InitialCapital = $config.InitialCapital; CurrentValue = $positions.TotalValue; TotalReturnPct = 0; MaxDrawdown = 0; IsDrawdownAlert = $false }
     }
@@ -968,7 +1056,8 @@ if (-not $DryRun) {
 
 # ---- Step 13: 更新绩效汇总 ----
 if (-not $perfSummary) {
-    if (Test-Path $perfFile) { try { $perfSummary = Get-Content $perfFile -Raw | ConvertFrom-Json } catch { Write-Error "绩效文件解析失败: $_"; exit 1 } }
+    $perfReadPath2 = if (Test-Path $perfFile) { $perfFile } elseif (Test-Path $legacyPerfFile) { $legacyPerfFile } else { $null }
+    if ($perfReadPath2) { try { $perfSummary = Get-Content $perfReadPath2 -Raw -Encoding UTF8 | ConvertFrom-Json } catch { Write-Error "绩效文件解析失败: $_"; exit 1 } }
     if (-not $perfSummary) {
         Write-Log "绩效文件不存在，初始化默认" "WARN"
         $perfSummary = [PSCustomObject]@{
@@ -1000,10 +1089,11 @@ if ($currentDD -lt $perfSummary.MaxDrawdown) {
 }
 
 $allTxns = @()
-if (Test-Path $txnFile) {
-    $txnContent = Get-Content $txnFile -Raw
+$txnReadPath2 = if (Test-Path $txnFile) { $txnFile } elseif (Test-Path $legacyTxnFile) { $legacyTxnFile } else { $null }
+if ($txnReadPath2) {
+    $txnContent = Get-Content $txnReadPath2 -Raw
     if ($txnContent.Trim().Length -gt 0) {
-        $allTxns = Import-Csv $txnFile | ForEach-Object {
+        $allTxns = Import-Csv $txnReadPath2 | ForEach-Object {
             [PSCustomObject]@{
                 Date = $_.date
                 Code = $_.code
@@ -1112,8 +1202,14 @@ foreach ($code in $codesToRemove) { $perStock.Remove($code) }
 $perfSummary | Add-Member -MemberType NoteProperty -Name "PerStock" -Value ([PSCustomObject]$perStock) -Force
 
 if (-not $DryRun) {
-    $perfSummary | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $perfFile
+    $jsonStr = $perfSummary | ConvertTo-Json -Depth 5
+    [System.IO.File]::WriteAllText($perfFile, $jsonStr, [System.Text.UTF8Encoding]::new($false))
     Assert-WriteSuccess -Path $perfFile
+    # S级资产镜像备份
+    if (Test-Path $canonBackupDir) {
+        $backupPerf = Join-Path $canonBackupDir "perf_summary.json"
+        [System.IO.File]::WriteAllText($backupPerf, $jsonStr, [System.Text.UTF8Encoding]::new($false))
+    }
 }
 
 # ---- Step 14: 控制台简报 ----
@@ -1153,4 +1249,20 @@ if (-not $DryRun) {
     $logContent = $logLines -join "`n"
     $logContent | Out-File -Encoding utf8 (Join-Path $logDir "sim_${Date}.log")
     Assert-WriteSuccess -Path (Join-Path $logDir "sim_${Date}.log")
+
+    # S级资产镜像备份 (Arch 06-数据持久化架构)
+    if (Test-Path $canonBackupDir) {
+        foreach ($asset in @("positions.json", "transactions.csv")) {
+            $srcAsset = Join-Path $canonBase "00_核心交易/$asset"
+            $dstAsset = Join-Path $canonBackupDir $asset
+            if (Test-Path $srcAsset) {
+                Copy-Item $srcAsset $dstAsset -Force
+                $srcHash = (Get-FileHash $srcAsset -Algorithm SHA256).Hash
+                $dstHash = (Get-FileHash $dstAsset -Algorithm SHA256).Hash
+                if ($srcHash -ne $dstHash) {
+                    Write-Warning "S级资产备份校验失败: $asset"
+                }
+            }
+        }
+    }
 }

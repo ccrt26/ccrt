@@ -223,9 +223,22 @@ foreach ($s in $stocks) {
     $code = $s.Code; $name = $s.Name
     Write-Host "[$idx/$($stocks.Count)] $name($code) — 获取行情..."
 
-    $quote = Invoke-ThrottledApi { Get-StockQuote -Code $code }
+    # 带重试的行情获取（API间歇不可达时最多重试3次）
+    $maxRetries = 3
+    $retryCount = 0
+    $quote = $null
+    do {
+        $retryCount++
+        $quote = Invoke-ThrottledApi { Get-StockQuote -Code $code }
+        if ($quote -and $quote.Price -gt 0) { break }
+        if ($retryCount -lt $maxRetries) {
+            Write-Host "  ⚠️ 行情获取失败，${retryCount}/${maxRetries}次重试，等待2s..."
+            Start-Sleep -Seconds 2
+        }
+    } while ($retryCount -lt $maxRetries)
+
     if (-not $quote -or $quote.Price -eq 0) {
-        Write-Host "  ⚠️ 行情获取失败，跳过"
+        Write-Host "  ❌ 行情获取失败（${maxRetries}次重试后仍失败），跳过 $name($code)"
         continue
     }
     $returnPct = $quote.ChangePct
@@ -644,6 +657,19 @@ $(foreach ($sg in $suggestions) { "- $($sg.Suggestion) (`$($sg.Section)`)`n" })
 "@
     Add-Content $improveLog -Encoding UTF8 -Value $logEntry
     Write-Host "  ✅ 改进日志已更新: $improveLog"
+} else {
+    # 强制写入：无建议也记录，确保评估→输出链不断裂
+    $noIssueEntry = @"
+### ${todayLabel}: 无异常
+
+- **样本数**：$($matchedResults.Count)/$($stocks.Count)只
+- **结论**：本次评估未触发优化建议
+- **状态**：已记录
+
+---
+"@
+    Add-Content $improveLog -Encoding UTF8 -Value $noIssueEntry
+    Write-Host "  📝 改进日志已记录（本次无异常）: $improveLog"
 }
 
 

@@ -1,5 +1,5 @@
 ﻿{
-    "BuildTime":  "2026-05-23 00:14:01",
+    "BuildTime":  "2026-05-23 21:43:38",
     "Stocks":  [
                    {
                        "Code":  "002156",
@@ -337,8 +337,23 @@
                                              0.567,
                                              0.2715
                                          ],
+                       "BPS":  10.317929961438,
+                       "RevenueTTM":  68557604378.880005,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  792595968
+                       "FundFlow_History":  792595968,
+                       "NorthboundSharesRatio":  4.62,
+                       "NorthboundFreeRatio":  4.6273,
+                       "NorthboundHoldMktCap":  2902094647.9,
+                       "MarginRZYE":  4777075771,
+                       "MarginRZMRE":  1552816311,
+                       "MarginRZJME":  -69817788,
+                       "MarginRQYL":  273283,
+                       "MarginRZYE_5dChange":  104155873,
+                       "ConsensusGrowth":  28,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "002371",
@@ -676,8 +691,23 @@
                                              7.1093,
                                              4.4496
                                          ],
+                       "BPS":  54.211649872044,
+                       "RevenueTTM":  93118902170.150009,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -266625456
+                       "FundFlow_History":  -266625456,
+                       "NorthboundSharesRatio":  13.14,
+                       "NorthboundFreeRatio":  13.1593,
+                       "NorthboundHoldMktCap":  42601944261,
+                       "MarginRZYE":  3234988094,
+                       "MarginRZMRE":  1338630631,
+                       "MarginRZJME":  302322631,
+                       "MarginRQYL":  78735,
+                       "MarginRZYE_5dChange":  322235305,
+                       "ConsensusGrowth":  34.49,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "688041",
@@ -1015,8 +1045,23 @@
                                              0.85,
                                              0.52
                                          ],
+                       "BPS":  9.67725947206,
+                       "RevenueTTM":  33364691551.560005,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -226972928
+                       "FundFlow_History":  -226972928,
+                       "NorthboundSharesRatio":  2.16,
+                       "NorthboundFreeRatio":  2.1651,
+                       "NorthboundHoldMktCap":  10581178697.34,
+                       "MarginRZYE":  11579545347,
+                       "MarginRZMRE":  1220496927,
+                       "MarginRZJME":  -21603456,
+                       "MarginRQYL":  125546,
+                       "MarginRZYE_5dChange":  203092387,
+                       "ConsensusGrowth":  51.18,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "002230",
@@ -1354,8 +1399,23 @@
                                              -0.0288,
                                              -0.1034
                                          ],
+                       "BPS":  8.12962889014,
+                       "RevenueTTM":  60279951804.7,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -64658248
+                       "FundFlow_History":  -64658248,
+                       "NorthboundSharesRatio":  2.35,
+                       "NorthboundFreeRatio":  2.4915,
+                       "NorthboundHoldMktCap":  2520594319.52,
+                       "MarginRZYE":  6223119563,
+                       "MarginRZMRE":  287080759,
+                       "MarginRZJME":  -23488727,
+                       "MarginRQYL":  372442,
+                       "MarginRZYE_5dChange":  -31207309,
+                       "ConsensusGrowth":  23.18,
+                       "ResearchReportCount":  7
                    },
                    {
                        "Code":  "688188",
@@ -1693,8 +1753,23 @@
                                              3.14,
                                              2.22
                                          ],
+                       "BPS":  22.133816545765,
+                       "RevenueTTM":  5466782150.4000006,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  15171408
+                       "FundFlow_History":  15171408,
+                       "NorthboundSharesRatio":  7.28,
+                       "NorthboundFreeRatio":  7.2848,
+                       "NorthboundHoldMktCap":  2722773112.2,
+                       "MarginRZYE":  292423779,
+                       "MarginRZMRE":  41096921,
+                       "MarginRZJME":  -669230,
+                       "MarginRQYL":  17468,
+                       "MarginRZYE_5dChange":  15089377,
+                       "ConsensusGrowth":  24.63,
+                       "ResearchReportCount":  6
                    },
                    {
                        "Code":  "688256",
@@ -2032,8 +2107,23 @@
                                              3.85,
                                              2.5
                                          ],
+                       "BPS":  30.523510402132,
+                       "RevenueTTM":  16869960780.29,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  115362816
+                       "FundFlow_History":  115362816,
+                       "NorthboundSharesRatio":  2.56,
+                       "NorthboundFreeRatio":  2.5667,
+                       "NorthboundHoldMktCap":  10555166964,
+                       "MarginRZYE":  25938896813,
+                       "MarginRZMRE":  1986069660,
+                       "MarginRZJME":  -185661189,
+                       "MarginRQYL":  60723,
+                       "MarginRZYE_5dChange":  1025655843,
+                       "ConsensusGrowth":  65.19,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "000758",
@@ -2371,8 +2461,23 @@
                                              0.2413,
                                              0.2211
                                          ],
+                       "BPS":  3.131925375904,
+                       "RevenueTTM":  25463948995.96,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  30462823
+                       "FundFlow_History":  30462823,
+                       "NorthboundSharesRatio":  2.46,
+                       "NorthboundFreeRatio":  2.4834,
+                       "NorthboundHoldMktCap":  321450531.35,
+                       "MarginRZYE":  660940722,
+                       "MarginRZMRE":  37723992,
+                       "MarginRZJME":  -14876966,
+                       "MarginRQYL":  598100,
+                       "MarginRZYE_5dChange":  -29115870,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "688981",
@@ -2710,8 +2815,23 @@
                                              0.48,
                                              0.29
                                          ],
+                       "BPS":  18.722359595308,
+                       "RevenueTTM":  166798875000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  1570368304
+                       "FundFlow_History":  1570368304,
+                       "NorthboundSharesRatio":  0.39,
+                       "NorthboundFreeRatio":  0.4,
+                       "NorthboundHoldMktCap":  752145876.9,
+                       "MarginRZYE":  13993742398,
+                       "MarginRZMRE":  2277788713,
+                       "MarginRZJME":  456364954,
+                       "MarginRQYL":  268793,
+                       "MarginRZYE_5dChange":  896844363,
+                       "ConsensusGrowth":  18.42,
+                       "ResearchReportCount":  9
                    },
                    {
                        "Code":  "601702",
@@ -3049,8 +3169,23 @@
                                              0.9,
                                              0.57
                                          ],
+                       "BPS":  6.689725182633,
+                       "RevenueTTM":  30535948125.940002,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  93180151
+                       "FundFlow_History":  93180151,
+                       "NorthboundSharesRatio":  0.49,
+                       "NorthboundFreeRatio":  0.4947,
+                       "NorthboundHoldMktCap":  95631875.68,
+                       "MarginRZYE":  239746054,
+                       "MarginRZMRE":  33111169,
+                       "MarginRZJME":  -743638,
+                       "MarginRQYL":  142900,
+                       "MarginRZYE_5dChange":  38715874,
+                       "ConsensusGrowth":  23.44,
+                       "ResearchReportCount":  3
                    },
                    {
                        "Code":  "300782",
@@ -3388,8 +3523,23 @@
                                              -0.3193,
                                              -0.2757
                                          ],
+                       "BPS":  18.454808451588,
+                       "RevenueTTM":  9026528472.36,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  39276672
+                       "FundFlow_History":  39276672,
+                       "NorthboundSharesRatio":  1.32,
+                       "NorthboundFreeRatio":  1.5769,
+                       "NorthboundHoldMktCap":  563561618.48,
+                       "MarginRZYE":  2460727307,
+                       "MarginRZMRE":  423171328,
+                       "MarginRZJME":  -126193739,
+                       "MarginRQYL":  53000,
+                       "MarginRZYE_5dChange":  -26505543,
+                       "ConsensusGrowth":  57.24,
+                       "ResearchReportCount":  6
                    },
                    {
                        "Code":  "300811",
@@ -3727,8 +3877,23 @@
                                              1.0221,
                                              0.6685
                                          ],
+                       "BPS":  10.460353618266,
+                       "RevenueTTM":  4453288117.72,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  100577904
+                       "FundFlow_History":  100577904,
+                       "NorthboundSharesRatio":  2.06,
+                       "NorthboundFreeRatio":  2.5175,
+                       "NorthboundHoldMktCap":  445129118.26,
+                       "MarginRZYE":  927646647,
+                       "MarginRZMRE":  134772560,
+                       "MarginRZJME":  -11419570,
+                       "MarginRQYL":  19500,
+                       "MarginRZYE_5dChange":  -81291663,
+                       "ConsensusGrowth":  25.38,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "000751",
@@ -4066,8 +4231,23 @@
                                              0.0318,
                                              0.04
                                          ],
+                       "BPS":  2.241442669232,
+                       "RevenueTTM":  46285669730.070007,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  8835132
+                       "FundFlow_History":  8835132,
+                       "NorthboundSharesRatio":  1.31,
+                       "NorthboundFreeRatio":  1.5046,
+                       "NorthboundHoldMktCap":  111789500.83,
+                       "MarginRZYE":  0,
+                       "MarginRZMRE":  0,
+                       "MarginRZJME":  0,
+                       "MarginRQYL":  0,
+                       "MarginRZYE_5dChange":  0,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "601318",
@@ -4405,8 +4585,23 @@
                                              7.56,
                                              3.87
                                          ],
+                       "BPS":  56.235365584272,
+                       "RevenueTTM":  2601927000000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -125616512
+                       "FundFlow_History":  -125616512,
+                       "NorthboundSharesRatio":  4.73,
+                       "NorthboundFreeRatio":  4.7363,
+                       "NorthboundHoldMktCap":  28667655846.62,
+                       "MarginRZYE":  38600062838,
+                       "MarginRZMRE":  435466061,
+                       "MarginRZJME":  169282997,
+                       "MarginRQYL":  1106900,
+                       "MarginRZYE_5dChange":  442822288,
+                       "ConsensusGrowth":  10.56,
+                       "ResearchReportCount":  9
                    },
                    {
                        "Code":  "300661",
@@ -4744,8 +4939,23 @@
                                              0.5564,
                                              0.3258
                                          ],
+                       "BPS":  8.813017869103,
+                       "RevenueTTM":  9615573953.98,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -42682493
+                       "FundFlow_History":  -42682493,
+                       "NorthboundSharesRatio":  3.03,
+                       "NorthboundFreeRatio":  3.1611,
+                       "NorthboundHoldMktCap":  1272440392.79,
+                       "MarginRZYE":  1021751096,
+                       "MarginRZMRE":  225186552,
+                       "MarginRZJME":  -34361923,
+                       "MarginRQYL":  58530,
+                       "MarginRZYE_5dChange":  -50628535,
+                       "ConsensusGrowth":  33.8,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "300750",
@@ -5083,8 +5293,23 @@
                                              11.02,
                                              6.92
                                          ],
+                       "BPS":  78.277309071872,
+                       "RevenueTTM":  1014791115000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -344117760
+                       "FundFlow_History":  -344117760,
+                       "NorthboundSharesRatio":  17.27,
+                       "NorthboundFreeRatio":  17.8846,
+                       "NorthboundHoldMktCap":  305820425905.8,
+                       "MarginRZYE":  21427560385,
+                       "MarginRZMRE":  937204282,
+                       "MarginRZJME":  -140169901,
+                       "MarginRQYL":  318272,
+                       "MarginRZYE_5dChange":  -244803640,
+                       "ConsensusGrowth":  23.32,
+                       "ResearchReportCount":  9
                    },
                    {
                        "Code":  "688008",
@@ -5422,8 +5647,23 @@
                                              1.44,
                                              1.02
                                          ],
+                       "BPS":  17.055877920673,
+                       "RevenueTTM":  13608180071.95,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  821552640
+                       "FundFlow_History":  821552640,
+                       "NorthboundSharesRatio":  12.76,
+                       "NorthboundFreeRatio":  12.7696,
+                       "NorthboundHoldMktCap":  18340181563.68,
+                       "MarginRZYE":  14543385580,
+                       "MarginRZMRE":  3149702289,
+                       "MarginRZJME":  319485025,
+                       "MarginRQYL":  197009,
+                       "MarginRZYE_5dChange":  -592547837,
+                       "ConsensusGrowth":  28.38,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "300697",
@@ -5761,8 +6001,23 @@
                                              0.295,
                                              0.19
                                          ],
+                       "BPS":  3.095078860323,
+                       "RevenueTTM":  8018301477.93,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  6171415
+                       "FundFlow_History":  6171415,
+                       "NorthboundSharesRatio":  0.32,
+                       "NorthboundFreeRatio":  0.4224,
+                       "NorthboundHoldMktCap":  20484039.12,
+                       "MarginRZYE":  0,
+                       "MarginRZMRE":  0,
+                       "MarginRZJME":  0,
+                       "MarginRQYL":  0,
+                       "MarginRZYE_5dChange":  0,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "688786",
@@ -6100,8 +6355,23 @@
                                              0.43,
                                              0.26
                                          ],
+                       "BPS":  5.366092428593,
+                       "RevenueTTM":  1072802905.4699999,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -23800958
+                       "FundFlow_History":  -23800958,
+                       "NorthboundSharesRatio":  0,
+                       "NorthboundFreeRatio":  0,
+                       "NorthboundHoldMktCap":  0,
+                       "MarginRZYE":  210873735,
+                       "MarginRZMRE":  52091769,
+                       "MarginRZJME":  -16407903,
+                       "MarginRQYL":  10800,
+                       "MarginRZYE_5dChange":  -767111,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "300124",
@@ -6439,8 +6709,23 @@
                                              1.58,
                                              1.1
                                          ],
+                       "BPS":  13.060015666116,
+                       "RevenueTTM":  107420031830.93001,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  277443824
+                       "FundFlow_History":  277443824,
+                       "NorthboundSharesRatio":  18.63,
+                       "NorthboundFreeRatio":  21.0326,
+                       "NorthboundHoldMktCap":  33802836717,
+                       "MarginRZYE":  2598477195,
+                       "MarginRZMRE":  409398129,
+                       "MarginRZJME":  16519880,
+                       "MarginRQYL":  220650,
+                       "MarginRZYE_5dChange":  -69003127,
+                       "ConsensusGrowth":  18.47,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "600961",
@@ -6778,8 +7063,23 @@
                                              0.75,
                                              0.51
                                          ],
+                       "BPS":  4.710156367675,
+                       "RevenueTTM":  55713961634.81,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  28446124
+                       "FundFlow_History":  28446124,
+                       "NorthboundSharesRatio":  1.17,
+                       "NorthboundFreeRatio":  1.1798,
+                       "NorthboundHoldMktCap":  154252656.27,
+                       "MarginRZYE":  766655204,
+                       "MarginRZMRE":  137251410,
+                       "MarginRZJME":  4224579,
+                       "MarginRQYL":  105000,
+                       "MarginRZYE_5dChange":  -77850525,
+                       "ConsensusGrowth":  6.33,
+                       "ResearchReportCount":  4
                    },
                    {
                        "Code":  "600276",
@@ -7117,8 +7417,25 @@
                                              0.89,
                                              0.7
                                          ],
+                       "BPS":  9.586311329774,
+                       "RevenueTTM":  78719257072.27,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -586580560
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  6.84,
+                       "NorthboundFreeRatio":  6.8447,
+                       "NorthboundHoldMktCap":  24110390422.36,
+                       "MarginRZYE":  5807444440,
+                       "MarginRZMRE":  292663622,
+                       "MarginRZJME":  -20233386,
+                       "MarginRQYL":  562196,
+                       "MarginRZYE_5dChange":  67903979,
+                       "ConsensusGrowth":  17.8,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "002203",
@@ -7456,8 +7773,25 @@
                                              0.51,
                                              0.36
                                          ],
+                       "BPS":  7.443508220499,
+                       "RevenueTTM":  216892660320.41998,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -11153105
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  1.27,
+                       "NorthboundFreeRatio":  1.3232,
+                       "NorthboundHoldMktCap":  406866663.7,
+                       "MarginRZYE":  810322170,
+                       "MarginRZMRE":  110414068,
+                       "MarginRZJME":  40678036,
+                       "MarginRQYL":  546431,
+                       "MarginRZYE_5dChange":  79251094,
+                       "ConsensusGrowth":  23.72,
+                       "ResearchReportCount":  8
                    },
                    {
                        "Code":  "000962",
@@ -7795,8 +8129,25 @@
                                              0.4149,
                                              0.2886
                                          ],
+                       "BPS":  7.591026108557,
+                       "RevenueTTM":  4015431268.3199997,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  322157920
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  0.6,
+                       "NorthboundFreeRatio":  0.6374,
+                       "NorthboundHoldMktCap":  141995956.67,
+                       "MarginRZYE":  259997397,
+                       "MarginRZMRE":  0,
+                       "MarginRZJME":  -2650730,
+                       "MarginRQYL":  0,
+                       "MarginRZYE_5dChange":  -5489999,
+                       "ConsensusGrowth":  25.51,
+                       "ResearchReportCount":  5
                    },
                    {
                        "Code":  "600845",
@@ -8134,8 +8485,25 @@
                                              0.385,
                                              0.25
                                          ],
+                       "BPS":  3.978787609426,
+                       "RevenueTTM":  25382631189.39,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  -32189971
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  1.68,
+                       "NorthboundFreeRatio":  1.6881,
+                       "NorthboundHoldMktCap":  828552230,
+                       "MarginRZYE":  671064669,
+                       "MarginRZMRE":  49612912,
+                       "MarginRZJME":  -3876026,
+                       "MarginRQYL":  72000,
+                       "MarginRZYE_5dChange":  14734903,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "002114",
@@ -8473,8 +8841,25 @@
                                              -0.3,
                                              -0.29
                                          ],
+                       "BPS":  2.234682474713,
+                       "RevenueTTM":  3222935960.1499996,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  749088
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  0,
+                       "NorthboundFreeRatio":  0,
+                       "NorthboundHoldMktCap":  0,
+                       "MarginRZYE":  0,
+                       "MarginRZMRE":  0,
+                       "MarginRZJME":  0,
+                       "MarginRQYL":  0,
+                       "MarginRZYE_5dChange":  0,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "300502",
@@ -8812,8 +9197,25 @@
                                              6.37,
                                              3.97
                                          ],
+                       "BPS":  18.030938816949,
+                       "RevenueTTM":  60121718357.82,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  1794499072
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  5.64,
+                       "NorthboundFreeRatio":  6.3426,
+                       "NorthboundHoldMktCap":  24868533552.68,
+                       "MarginRZYE":  21161292451,
+                       "MarginRZMRE":  2311996663,
+                       "MarginRZJME":  95305190,
+                       "MarginRQYL":  149140,
+                       "MarginRZYE_5dChange":  -273129392,
+                       "ConsensusGrowth":  50.43,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "688072",
@@ -9151,8 +9553,25 @@
                                              2,
                                              0.34
                                          ],
+                       "BPS":  25.667963468878,
+                       "RevenueTTM":  13805782234.48,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  238313824
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  4.26,
+                       "NorthboundFreeRatio":  4.2695,
+                       "NorthboundHoldMktCap":  4460227160,
+                       "MarginRZYE":  1924773508,
+                       "MarginRZMRE":  715195386,
+                       "MarginRZJME":  155629053,
+                       "MarginRQYL":  16776,
+                       "MarginRZYE_5dChange":  207008393,
+                       "ConsensusGrowth":  40.69,
+                       "ResearchReportCount":  9
                    },
                    {
                        "Code":  "603527",
@@ -9490,8 +9909,25 @@
                                              0.32,
                                              0.3
                                          ],
+                       "BPS":  6.692530820529,
+                       "RevenueTTM":  27374476727.62,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  21135297
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  0,
+                       "NorthboundFreeRatio":  0,
+                       "NorthboundHoldMktCap":  0,
+                       "MarginRZYE":  153715045,
+                       "MarginRZMRE":  38886487,
+                       "MarginRZJME":  1366794,
+                       "MarginRQYL":  10500,
+                       "MarginRZYE_5dChange":  -2802321,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "300308",
@@ -9829,8 +10265,25 @@
                                              6.48,
                                              3.64
                                          ],
+                       "BPS":  32.028176069571,
+                       "RevenueTTM":  97530209413.74,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  1268403456
+                       "FundFlow_History":  {
+
+                                            },
+                       "NorthboundSharesRatio":  6.97,
+                       "NorthboundFreeRatio":  7.0083,
+                       "NorthboundHoldMktCap":  44115717347.9,
+                       "MarginRZYE":  33776932546,
+                       "MarginRZMRE":  3993591306,
+                       "MarginRZJME":  516055983,
+                       "MarginRQYL":  122333,
+                       "MarginRZYE_5dChange":  2793184501,
+                       "ConsensusGrowth":  73.84,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "300033",
@@ -10168,10 +10621,25 @@
                                              2.24,
                                              0.93
                                          ],
+                       "BPS":  13.001502067597,
+                       "RevenueTTM":  12122746897.65,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.85,
+                       "NorthboundFreeRatio":  3.1903,
+                       "NorthboundHoldMktCap":  2982151713,
+                       "MarginRZYE":  5270560458,
+                       "MarginRZMRE":  1228517684,
+                       "MarginRZJME":  -56761374,
+                       "MarginRQYL":  43780,
+                       "MarginRZYE_5dChange":  -119691532,
+                       "ConsensusGrowth":  20.2,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "600584",
@@ -10509,10 +10977,25 @@
                                              0.53,
                                              0.26
                                          ],
+                       "BPS":  16.075665234122,
+                       "RevenueTTM":  95316584617.430008,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  4.18,
+                       "NorthboundFreeRatio":  4.1874,
+                       "NorthboundHoldMktCap":  2903554550,
+                       "MarginRZYE":  6497596582,
+                       "MarginRZMRE":  2788182977,
+                       "MarginRZJME":  977858396,
+                       "MarginRQYL":  175400,
+                       "MarginRZYE_5dChange":  1373874607,
+                       "ConsensusGrowth":  23.44,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "300274",
@@ -10850,10 +11333,25 @@
                                              5.73,
                                              3.73
                                          ],
+                       "BPS":  23.471175460125,
+                       "RevenueTTM":  214680036176.53998,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  8.3,
+                       "NorthboundFreeRatio":  10.8358,
+                       "NorthboundHoldMktCap":  25969653468.48,
+                       "MarginRZYE":  11929760906,
+                       "MarginRZMRE":  2465444440,
+                       "MarginRZJME":  76206179,
+                       "MarginRQYL":  223904,
+                       "MarginRZYE_5dChange":  985338150,
+                       "ConsensusGrowth":  20.93,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "605376",
@@ -11191,10 +11689,25 @@
                                              0.58,
                                              0.4
                                          ],
+                       "BPS":  6.728991295375,
+                       "RevenueTTM":  2885392296.12,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  2.65,
+                       "NorthboundFreeRatio":  2.6544,
+                       "NorthboundHoldMktCap":  640371069,
+                       "MarginRZYE":  790397785,
+                       "MarginRZMRE":  155895191,
+                       "MarginRZJME":  -28333631,
+                       "MarginRQYL":  72600,
+                       "MarginRZYE_5dChange":  -112969867,
+                       "ConsensusGrowth":  44.64,
+                       "ResearchReportCount":  4
                    },
                    {
                        "Code":  "688561",
@@ -11532,10 +12045,25 @@
                                              -0.9,
                                              -1.13
                                          ],
+                       "BPS":  10.916131123287,
+                       "RevenueTTM":  9688943754.75,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0.58,
+                       "NorthboundFreeRatio":  0.5839,
+                       "NorthboundHoldMktCap":  117476128.08,
+                       "MarginRZYE":  526306311,
+                       "MarginRZMRE":  11625306,
+                       "MarginRZJME":  -13248539,
+                       "MarginRQYL":  206023,
+                       "MarginRZYE_5dChange":  -24192235,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "600519",
@@ -11873,10 +12401,25 @@
                                              51.53,
                                              36.18
                                          ],
+                       "BPS":  216.32234994607,
+                       "RevenueTTM":  448754736464.99,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  4.69,
+                       "NorthboundFreeRatio":  4.6901,
+                       "NorthboundHoldMktCap":  85162950050,
+                       "MarginRZYE":  19590217189,
+                       "MarginRZMRE":  673518405,
+                       "MarginRZJME":  53571678,
+                       "MarginRQYL":  131118,
+                       "MarginRZYE_5dChange":  174317935,
+                       "ConsensusGrowth":  6.28,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "688012",
@@ -12214,10 +12757,25 @@
                                              1.94,
                                              1.13
                                          ],
+                       "BPS":  38.823724017131,
+                       "RevenueTTM":  28322791172.300003,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  10.52,
+                       "NorthboundFreeRatio":  10.5257,
+                       "NorthboundHoldMktCap":  20192354730.34,
+                       "MarginRZYE":  5623309448,
+                       "MarginRZMRE":  1941074866,
+                       "MarginRZJME":  524352357,
+                       "MarginRQYL":  80756,
+                       "MarginRZYE_5dChange":  751918332,
+                       "ConsensusGrowth":  30.18,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "601689",
@@ -12555,10 +13113,23 @@
                                              1.14,
                                              0.75
                                          ],
+                       "BPS":  14.148798233076,
+                       "RevenueTTM":  70072466766.72,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  {
-
-                                            }
+                       "FundFlow_History":  -227672784,
+                       "NorthboundSharesRatio":  2.85,
+                       "NorthboundFreeRatio":  2.8502,
+                       "NorthboundHoldMktCap":  2813446000,
+                       "MarginRZYE":  3255183866,
+                       "MarginRZMRE":  495637693,
+                       "MarginRZJME":  63949763,
+                       "MarginRQYL":  305200,
+                       "MarginRZYE_5dChange":  158769549,
+                       "ConsensusGrowth":  23.54,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "601020",
@@ -12896,10 +13467,25 @@
                                              0.98,
                                              0.222
                                          ],
+                       "BPS":  5.244271082022,
+                       "RevenueTTM":  4555001604.62,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0.59,
+                       "NorthboundFreeRatio":  0.5961,
+                       "NorthboundHoldMktCap":  137793199.23,
+                       "MarginRZYE":  2219375354,
+                       "MarginRZMRE":  43596866,
+                       "MarginRZJME":  -2753202,
+                       "MarginRQYL":  200500,
+                       "MarginRZYE_5dChange":  -28082923,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "000060",
@@ -13237,10 +13823,25 @@
                                              0.22,
                                              0.15
                                          ],
+                       "BPS":  4.497596755438,
+                       "RevenueTTM":  159207342964.38998,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0.85,
+                       "NorthboundFreeRatio":  0.8506,
+                       "NorthboundHoldMktCap":  231178079.52,
+                       "MarginRZYE":  1772425274,
+                       "MarginRZMRE":  142668221,
+                       "MarginRZJME":  15366208,
+                       "MarginRQYL":  423200,
+                       "MarginRZYE_5dChange":  -38632397,
+                       "ConsensusGrowth":  6.02,
+                       "ResearchReportCount":  2
                    },
                    {
                        "Code":  "002463",
@@ -13578,10 +14179,25 @@
                                              1.4134,
                                              0.8754
                                          ],
+                       "BPS":  8.724895094497,
+                       "RevenueTTM":  47165639105,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  10.07,
+                       "NorthboundFreeRatio":  10.0832,
+                       "NorthboundHoldMktCap":  14729162361,
+                       "MarginRZYE":  4150572703,
+                       "MarginRZMRE":  892578806,
+                       "MarginRZJME":  120620965,
+                       "MarginRQYL":  185100,
+                       "MarginRZYE_5dChange":  10227008,
+                       "ConsensusGrowth":  39.97,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "603019",
@@ -13919,10 +14535,23 @@
                                              0.662,
                                              0.5
                                          ],
+                       "BPS":  15.416230380384,
+                       "RevenueTTM":  32833256090.05,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  {
-
-                                            }
+                       "FundFlow_History":  -66707072,
+                       "NorthboundSharesRatio":  0.33,
+                       "NorthboundFreeRatio":  0.3358,
+                       "NorthboundHoldMktCap":  386027472.6,
+                       "MarginRZYE":  9352885559,
+                       "MarginRZMRE":  769419024,
+                       "MarginRZJME":  -71329790,
+                       "MarginRQYL":  113300,
+                       "MarginRZYE_5dChange":  -441634453,
+                       "ConsensusGrowth":  21.86,
+                       "ResearchReportCount":  4
                    },
                    {
                        "Code":  "300454",
@@ -14260,10 +14889,25 @@
                                              -0.19,
                                              -0.54
                                          ],
+                       "BPS":  25.185198140727,
+                       "RevenueTTM":  17804477333.98,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  2.34,
+                       "NorthboundFreeRatio":  3.5156,
+                       "NorthboundHoldMktCap":  1029917136.12,
+                       "MarginRZYE":  1411529739,
+                       "MarginRZMRE":  161059717,
+                       "MarginRZJME":  -26177321,
+                       "MarginRQYL":  35833,
+                       "MarginRZYE_5dChange":  -90329089,
+                       "ConsensusGrowth":  28.61,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "002594",
@@ -14601,10 +15245,25 @@
                                              2.56,
                                              1.71
                                          ],
+                       "BPS":  25.436830482348,
+                       "RevenueTTM":  1891736766000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.62,
+                       "NorthboundFreeRatio":  5.6552,
+                       "NorthboundHoldMktCap":  20752534030,
+                       "MarginRZYE":  13869759135,
+                       "MarginRZMRE":  276647549,
+                       "MarginRZJME":  -72170646,
+                       "MarginRQYL":  592388,
+                       "MarginRZYE_5dChange":  -83424891,
+                       "ConsensusGrowth":  27.39,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "601899",
@@ -14942,10 +15601,25 @@
                                              1.425,
                                              0.877
                                          ],
+                       "BPS":  7.418933205038,
+                       "RevenueTTM":  869487058914,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  6.23,
+                       "NorthboundFreeRatio":  6.2312,
+                       "NorthboundHoldMktCap":  42004025970,
+                       "MarginRZYE":  14093047830,
+                       "MarginRZMRE":  716980983,
+                       "MarginRZJME":  -111138543,
+                       "MarginRQYL":  1964900,
+                       "MarginRZYE_5dChange":  171931927,
+                       "ConsensusGrowth":  17.89,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "000977",
@@ -15283,10 +15957,25 @@
                                              1.0067,
                                              0.5425
                                          ],
+                       "BPS":  15.187591059328,
+                       "RevenueTTM":  401113775542.08,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  2.3,
+                       "NorthboundFreeRatio":  2.3065,
+                       "NorthboundHoldMktCap":  1897353462.32,
+                       "MarginRZYE":  4139842767,
+                       "MarginRZMRE":  727410829,
+                       "MarginRZJME":  277954156,
+                       "MarginRQYL":  117200,
+                       "MarginRZYE_5dChange":  114082569,
+                       "ConsensusGrowth":  26.23,
+                       "ResearchReportCount":  7
                    },
                    {
                        "Code":  "002475",
@@ -15624,10 +16313,25 @@
                                              1.59,
                                              0.92
                                          ],
+                       "BPS":  12.124713117137,
+                       "RevenueTTM":  761650736758.49,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  5.7,
+                       "NorthboundFreeRatio":  5.7145,
+                       "NorthboundHoldMktCap":  20462647693.62,
+                       "MarginRZYE":  7442136630,
+                       "MarginRZMRE":  1291695212,
+                       "MarginRZJME":  -575375510,
+                       "MarginRQYL":  591398,
+                       "MarginRZYE_5dChange":  -1320374441,
+                       "ConsensusGrowth":  21.69,
+                       "ResearchReportCount":  8
                    },
                    {
                        "Code":  "002236",
@@ -15965,10 +16669,25 @@
                                              1.09,
                                              0.76
                                          ],
+                       "BPS":  11.487662943338,
+                       "RevenueTTM":  77740001968.150009,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  2.82,
+                       "NorthboundFreeRatio":  4.3939,
+                       "NorthboundHoldMktCap":  1566585681.4,
+                       "MarginRZYE":  2098412902,
+                       "MarginRZMRE":  76380818,
+                       "MarginRZJME":  -12957581,
+                       "MarginRQYL":  93000,
+                       "MarginRZYE_5dChange":  -82166167,
+                       "ConsensusGrowth":  11.36,
+                       "ResearchReportCount":  3
                    },
                    {
                        "Code":  "603986",
@@ -16306,10 +17025,25 @@
                                              1.64,
                                              0.87
                                          ],
+                       "BPS":  36.047950793414,
+                       "RevenueTTM":  24373481775.28,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  6.19,
+                       "NorthboundFreeRatio":  6.1943,
+                       "NorthboundHoldMktCap":  9849844135.8,
+                       "MarginRZYE":  16779016905,
+                       "MarginRZMRE":  4674422388,
+                       "MarginRZJME":  1053392738,
+                       "MarginRQYL":  84600,
+                       "MarginRZYE_5dChange":  1741322405,
+                       "ConsensusGrowth":  28.48,
+                       "ResearchReportCount":  8
                    },
                    {
                        "Code":  "300835",
@@ -16647,10 +17381,25 @@
                                              1.1169,
                                              0.7142
                                          ],
+                       "BPS":  10.66794809285,
+                       "RevenueTTM":  3152276922.45,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.34,
+                       "NorthboundFreeRatio":  1.9269,
+                       "NorthboundHoldMktCap":  126387460.08,
+                       "MarginRZYE":  0,
+                       "MarginRZMRE":  0,
+                       "MarginRZJME":  0,
+                       "MarginRQYL":  0,
+                       "MarginRZYE_5dChange":  0,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "000858",
@@ -16988,10 +17737,25 @@
                                              1.668,
                                              1.1912
                                          ],
+                       "BPS":  32.975166898552,
+                       "RevenueTTM":  117514233638.12,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  2.1,
+                       "NorthboundFreeRatio":  2.1017,
+                       "NorthboundHoldMktCap":  8424396377.05,
+                       "MarginRZYE":  6156515095,
+                       "MarginRZMRE":  247221669,
+                       "MarginRZJME":  -18900578,
+                       "MarginRQYL":  793720,
+                       "MarginRZYE_5dChange":  -113747879,
+                       "ConsensusGrowth":  8.94,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "300604",
@@ -17329,10 +18093,25 @@
                                              1.3789,
                                              0.68
                                          ],
+                       "BPS":  8.02807499395,
+                       "RevenueTTM":  12615748584.75,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.46,
+                       "NorthboundFreeRatio":  4.4958,
+                       "NorthboundHoldMktCap":  2663784174.6,
+                       "MarginRZYE":  4073129579,
+                       "MarginRZMRE":  978011466,
+                       "MarginRZJME":  3089953,
+                       "MarginRQYL":  107200,
+                       "MarginRZYE_5dChange":  316164020,
+                       "ConsensusGrowth":  35.42,
+                       "ResearchReportCount":  3
                    },
                    {
                        "Code":  "600703",
@@ -17670,10 +18449,25 @@
                                              0.02,
                                              0.04
                                          ],
+                       "BPS":  6.992090210983,
+                       "RevenueTTM":  43660802903.08,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.78,
+                       "NorthboundFreeRatio":  1.7804,
+                       "NorthboundHoldMktCap":  1036603516.17,
+                       "MarginRZYE":  4331009904,
+                       "MarginRZMRE":  282489261,
+                       "MarginRZJME":  -17016660,
+                       "MarginRQYL":  26600,
+                       "MarginRZYE_5dChange":  -45591529,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "300394",
@@ -18011,10 +18805,25 @@
                                              1.8863,
                                              1.158
                                          ],
+                       "BPS":  7.691983663774,
+                       "RevenueTTM":  12867996058.009998,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  7.11,
+                       "NorthboundFreeRatio":  7.1278,
+                       "NorthboundHoldMktCap":  16678794267.2,
+                       "MarginRZYE":  10173249753,
+                       "MarginRZMRE":  1743481592,
+                       "MarginRZJME":  -342810149,
+                       "MarginRQYL":  124817,
+                       "MarginRZYE_5dChange":  -972605967,
+                       "ConsensusGrowth":  31.52,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "688231",
@@ -18352,10 +19161,25 @@
                                              0.29,
                                              0.21
                                          ],
+                       "BPS":  11.371253192904,
+                       "RevenueTTM":  4555563516.14,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0,
+                       "NorthboundFreeRatio":  0.0004,
+                       "NorthboundHoldMktCap":  32292,
+                       "MarginRZYE":  98857383,
+                       "MarginRZMRE":  25442734,
+                       "MarginRZJME":  536093,
+                       "MarginRQYL":  8797,
+                       "MarginRZYE_5dChange":  11090908,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "601677",
@@ -18693,10 +19517,25 @@
                                              1.12,
                                              0.75
                                          ],
+                       "BPS":  15.933210618297,
+                       "RevenueTTM":  87774965763.269989,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  5.58,
+                       "NorthboundFreeRatio":  5.5806,
+                       "NorthboundHoldMktCap":  1035897455.76,
+                       "MarginRZYE":  957493413,
+                       "MarginRZMRE":  107626437,
+                       "MarginRZJME":  -14568503,
+                       "MarginRQYL":  44800,
+                       "MarginRZYE_5dChange":  -19178366,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "600888",
@@ -19034,10 +19873,25 @@
                                              0.383,
                                              0.2835
                                          ],
+                       "BPS":  8.242723107638,
+                       "RevenueTTM":  19642950142.44,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0.53,
+                       "NorthboundFreeRatio":  0.5371,
+                       "NorthboundHoldMktCap":  66644685.88,
+                       "MarginRZYE":  784559097,
+                       "MarginRZMRE":  97051328,
+                       "MarginRZJME":  19553937,
+                       "MarginRQYL":  280800,
+                       "MarginRZYE_5dChange":  19857150,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "000333",
@@ -19375,10 +20229,25 @@
                                              4.98,
                                              3.41
                                          ],
+                       "BPS":  30.553633197059,
+                       "RevenueTTM":  1207130847000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  14,
+                       "NorthboundFreeRatio":  14.2063,
+                       "NorthboundHoldMktCap":  74321291475.9,
+                       "MarginRZYE":  3903422783,
+                       "MarginRZMRE":  156148935,
+                       "MarginRZJME":  -95945729,
+                       "MarginRQYL":  1856628,
+                       "MarginRZYE_5dChange":  -105372866,
+                       "ConsensusGrowth":  8.43,
+                       "ResearchReportCount":  9
                    },
                    {
                        "Code":  "600338",
@@ -19716,10 +20585,25 @@
                                              0.4775,
                                              0.3291
                                          ],
+                       "BPS":  4.895497460076,
+                       "RevenueTTM":  6123812114.75,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  4.79,
+                       "NorthboundFreeRatio":  4.795,
+                       "NorthboundHoldMktCap":  746094285.54,
+                       "MarginRZYE":  1080000878,
+                       "MarginRZMRE":  70702169,
+                       "MarginRZJME":  -1776688,
+                       "MarginRQYL":  261500,
+                       "MarginRZYE_5dChange":  -3109615,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "603501",
@@ -20057,10 +20941,25 @@
                                              2.67,
                                              1.69
                                          ],
+                       "BPS":  26.04769857509,
+                       "RevenueTTM":  71007281479.1,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  8.7,
+                       "NorthboundFreeRatio":  8.702,
+                       "NorthboundHoldMktCap":  10001478062.48,
+                       "MarginRZYE":  5726882119,
+                       "MarginRZMRE":  592176698,
+                       "MarginRZJME":  94032118,
+                       "MarginRQYL":  145400,
+                       "MarginRZYE_5dChange":  230565257,
+                       "ConsensusGrowth":  22.31,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "600531",
@@ -20398,10 +21297,25 @@
                                              0.5692,
                                              0.4445
                                          ],
+                       "BPS":  5.873712112039,
+                       "RevenueTTM":  123203414278.56999,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.23,
+                       "NorthboundFreeRatio":  3.2329,
+                       "NorthboundHoldMktCap":  515268093.28,
+                       "MarginRZYE":  1048867148,
+                       "MarginRZMRE":  64117025,
+                       "MarginRZJME":  -13175362,
+                       "MarginRQYL":  228000,
+                       "MarginRZYE_5dChange":  -119968702,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "688521",
@@ -20739,10 +21653,25 @@
                                              -0.68,
                                              -0.64
                                          ],
+                       "BPS":  5.983853977882,
+                       "RevenueTTM":  7216520778.6599989,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.96,
+                       "NorthboundFreeRatio":  1.9682,
+                       "NorthboundHoldMktCap":  2094010334.5,
+                       "MarginRZYE":  4266947290,
+                       "MarginRZMRE":  594941226,
+                       "MarginRZJME":  42575090,
+                       "MarginRQYL":  42058,
+                       "MarginRZYE_5dChange":  -355306337,
+                       "ConsensusGrowth":  156.63,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "600114",
@@ -21080,10 +22009,23 @@
                                              0.67,
                                              0.42
                                          ],
+                       "BPS":  5.644932406126,
+                       "RevenueTTM":  14920669550.08,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  {
-
-                                            }
+                       "FundFlow_History":  121239587,
+                       "NorthboundSharesRatio":  5.4,
+                       "NorthboundFreeRatio":  5.4016,
+                       "NorthboundHoldMktCap":  924260427.84,
+                       "MarginRZYE":  1616534707,
+                       "MarginRZMRE":  263246189,
+                       "MarginRZJME":  105599082,
+                       "MarginRQYL":  34600,
+                       "MarginRZYE_5dChange":  149252627,
+                       "ConsensusGrowth":  24.6,
+                       "ResearchReportCount":  3
                    },
                    {
                        "Code":  "002916",
@@ -21421,10 +22363,25 @@
                                              3.49,
                                              2.04
                                          ],
+                       "BPS":  26.558029045846,
+                       "RevenueTTM":  57450035042.22,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.75,
+                       "NorthboundFreeRatio":  3.8473,
+                       "NorthboundHoldMktCap":  5614499464.2,
+                       "MarginRZYE":  1803176811,
+                       "MarginRZMRE":  781995535,
+                       "MarginRZJME":  335646589,
+                       "MarginRQYL":  32620,
+                       "MarginRZYE_5dChange":  303347118,
+                       "ConsensusGrowth":  30.8,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "002415",
@@ -21762,10 +22719,25 @@
                                              1.014,
                                              0.615
                                          ],
+                       "BPS":  9.390747766109,
+                       "RevenueTTM":  220799063105.94,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  0.4,
+                       "NorthboundFreeRatio":  0.4098,
+                       "NorthboundHoldMktCap":  1127786425.74,
+                       "MarginRZYE":  4717630159,
+                       "MarginRZMRE":  237576625,
+                       "MarginRZJME":  -4751880,
+                       "MarginRQYL":  2056878,
+                       "MarginRZYE_5dChange":  -235851704,
+                       "ConsensusGrowth":  13.32,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "688120",
@@ -22103,10 +23075,25 @@
                                              2.25,
                                              2.14
                                          ],
+                       "BPS":  21.089923134124,
+                       "RevenueTTM":  10993032118.15,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  4.8,
+                       "NorthboundFreeRatio":  4.8073,
+                       "NorthboundHoldMktCap":  2958212280,
+                       "MarginRZYE":  1370246353,
+                       "MarginRZMRE":  270171258,
+                       "MarginRZJME":  -19053795,
+                       "MarginRQYL":  129787,
+                       "MarginRZYE_5dChange":  143094748,
+                       "ConsensusGrowth":  29.42,
+                       "ResearchReportCount":  5
                    },
                    {
                        "Code":  "688111",
@@ -22444,10 +23431,25 @@
                                              2.55,
                                              1.62
                                          ],
+                       "BPS":  32.651339300428,
+                       "RevenueTTM":  14377475238.02,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.93,
+                       "NorthboundFreeRatio":  1.934,
+                       "NorthboundHoldMktCap":  2093059384.44,
+                       "MarginRZYE":  5281532182,
+                       "MarginRZMRE":  250758897,
+                       "MarginRZJME":  -19750772,
+                       "MarginRQYL":  30834,
+                       "MarginRZYE_5dChange":  -118597556,
+                       "ConsensusGrowth":  14.2,
+                       "ResearchReportCount":  10
                    },
                    {
                        "Code":  "600497",
@@ -22785,10 +23787,25 @@
                                              0.2626,
                                              0.1831
                                          ],
+                       "BPS":  3.41059646714,
+                       "RevenueTTM":  58179383142.64,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.53,
+                       "NorthboundFreeRatio":  1.5332,
+                       "NorthboundHoldMktCap":  607424140.5,
+                       "MarginRZYE":  1794961086,
+                       "MarginRZMRE":  304201369,
+                       "MarginRZJME":  17239847,
+                       "MarginRQYL":  1611700,
+                       "MarginRZYE_5dChange":  389191,
+                       "ConsensusGrowth":  16.1,
+                       "ResearchReportCount":  3
                    },
                    {
                        "Code":  "300418",
@@ -23126,10 +24143,25 @@
                                              -0.54,
                                              -0.69
                                          ],
+                       "BPS":  9.756353554597,
+                       "RevenueTTM":  20306272543.45,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.5,
+                       "NorthboundFreeRatio":  1.5081,
+                       "NorthboundHoldMktCap":  927002482,
+                       "MarginRZYE":  3648075800,
+                       "MarginRZMRE":  220845805,
+                       "MarginRZJME":  -32529149,
+                       "MarginRQYL":  204749,
+                       "MarginRZYE_5dChange":  31009319,
+                       "ConsensusGrowth":  1262.5,
+                       "ResearchReportCount":  4
                    },
                    {
                        "Code":  "600570",
@@ -23467,10 +24499,25 @@
                                              0.24,
                                              0.14
                                          ],
+                       "BPS":  5.266494967363,
+                       "RevenueTTM":  12604567763.810001,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.97,
+                       "NorthboundFreeRatio":  3.9773,
+                       "NorthboundHoldMktCap":  1922829683.34,
+                       "MarginRZYE":  3222846754,
+                       "MarginRZMRE":  101843553,
+                       "MarginRZJME":  -9939043,
+                       "MarginRQYL":  370740,
+                       "MarginRZYE_5dChange":  -29777043,
+                       "ConsensusGrowth":  19.57,
+                       "ResearchReportCount":  7
                    },
                    {
                        "Code":  "600490",
@@ -23808,10 +24855,25 @@
                                              0.1058,
                                              0.0639
                                          ],
+                       "BPS":  2.862077769658,
+                       "RevenueTTM":  11194195913.77,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  1.93,
+                       "NorthboundFreeRatio":  1.9372,
+                       "NorthboundHoldMktCap":  294522936.61,
+                       "MarginRZYE":  1292811930,
+                       "MarginRZMRE":  52982067,
+                       "MarginRZJME":  -2197383,
+                       "MarginRQYL":  291400,
+                       "MarginRZYE_5dChange":  -15148493,
+                       "ConsensusGrowth":  0,
+                       "ResearchReportCount":  0
                    },
                    {
                        "Code":  "000630",
@@ -24149,10 +25211,25 @@
                                              0.14,
                                              0.11
                                          ],
+                       "BPS":  2.795438488869,
+                       "RevenueTTM":  435496857774.23004,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
                        "FundFlow_History":  {
 
-                                            }
+                                            },
+                       "NorthboundSharesRatio":  3.4,
+                       "NorthboundFreeRatio":  4.095,
+                       "NorthboundHoldMktCap":  2651139376.41,
+                       "MarginRZYE":  2373997010,
+                       "MarginRZMRE":  141755973,
+                       "MarginRZJME":  2025882,
+                       "MarginRQYL":  883300,
+                       "MarginRZYE_5dChange":  -20061778,
+                       "ConsensusGrowth":  23.66,
+                       "ResearchReportCount":  6
                    },
                    {
                        "Code":  "600036",
@@ -24490,10 +25567,23 @@
                                              4.43,
                                              2.89
                                          ],
+                       "BPS":  44.899524187153,
+                       "RevenueTTM":  845861000000,
+                       "RevenueYOY":  null,
+                       "NetProfitYOY":  null,
+                       "GrossMargin":  null,
                        "FundMainNet":  0,
-                       "FundFlow_History":  {
-
-                                            }
+                       "FundFlow_History":  -120226768,
+                       "NorthboundSharesRatio":  5.8,
+                       "NorthboundFreeRatio":  5.8069,
+                       "NorthboundHoldMktCap":  47101299659.52,
+                       "MarginRZYE":  12262778866,
+                       "MarginRZMRE":  183867716,
+                       "MarginRZJME":  13568780,
+                       "MarginRQYL":  1064850,
+                       "MarginRZYE_5dChange":  91881867,
+                       "ConsensusGrowth":  4.48,
+                       "ResearchReportCount":  9
                    }
                ],
     "SectorData":  [
@@ -34551,5 +35641,9 @@
                                          "date":  "2026-05-22"
                                      }
                                  ]
-                    }
+                    },
+    "CommodityPrices":  {
+
+                        },
+    "MarketTurnover":  0
 }

@@ -1,7 +1,7 @@
 ﻿<#
 .SYNOPSIS
   生成铁律量化每日推荐报告（横板 HTML）
-  遵循白皮书：每日荐股分析逻辑白皮书 v2.4（§报告输出格式、§数据源标注）
+  遵循白皮书：每日荐股分析逻辑白皮书 v2.9（§报告输出格式、§数据源标注）
 .DESCRIPTION
   读取 data_final.json，计算板块轮动和突破评分，
   生成横板 A4 横向 HTML 报告，并转为 PDF。
@@ -190,13 +190,69 @@ $phaseOrder = @{ "潜伏期"=0; "主升调整"=1; "高潮期"=2; "衰退期"=3 }
 $sectorRows = $sectorRows | Sort-Object @{e={$phaseOrder[$_.phase]}; a=$true}, @{e={[math]::Abs($_.avgChg)}; d=$true}
 $phaseMap = @{}; foreach ($r in $sectorRows) { $phaseMap[$r.name] = $r }
 
-# ----- Compute scores (from recommended passed stocks) -----
+# ----- v2.9 推荐分层：A档蓄势埋伏 / B档趋势跟踪 / C档高潮回避 + C8拦截 + A档强制席位 -----
+function Get-TierInfo($s, $phaseInfo, $trendMap) {
+    $phase = if ($phaseInfo) { $phaseInfo.phase } else { "潜伏期" }
+    $trendScore = 0
+    if ($trendMap) {
+        $ind = $s.Industry
+        $ti = $trendMap.$ind
+        if (-not $ti -and $BROAD_TO_EM.ContainsKey($ind)) {
+            foreach ($sub in $BROAD_TO_EM[$ind]) { if ($trendMap.$sub) { $ti = $trendMap.$sub; break } }
+        }
+        if ($ti) { $trendScore = $ti.trend_score }
+    }
+    # A档: 潜伏期 + 板块趋势>=4 → 蓄势埋伏
+    if ($phase -eq "潜伏期" -and $trendScore -ge 4) {
+        return @{ tier="A"; label="蓄势埋伏"; tclass="t-green"; desc="优先关注·未来1-2周布局窗口" }
+    }
+    # B档: 主升 + 主线(>=6) → 趋势跟踪
+    if ($phase -eq "主升调整" -and $trendScore -ge 6) {
+        return @{ tier="B"; label="趋势跟踪"; tclass="t-yellow"; desc="顺势而为·主线板块动量延续" }
+    }
+    # C档: 高潮期 → 减仓回避
+    if ($phase -eq "高潮期") {
+        return @{ tier="C"; label="高潮回避"; tclass="t-red"; desc="板块过热·技术面已打折" }
+    }
+    # 默认B档
+    return @{ tier="B"; label="趋势跟踪"; tclass="t-yellow"; desc="关注·注意追涨风险" }
+}
+
+# v2.9 C8拦截: 单日>7%且非潜伏期 → 不进Top 5
+function Test-C8Block($s, $phaseMap) {
+    $pi = $phaseMap[$s.Industry]
+    $phase = if ($pi) { $pi.phase } else { "潜伏期" }
+    return ($s.ChangePct -gt 7 -and $phase -ne "潜伏期")
+}
+
+$trendMap = @{}
+if ($data.SectorTrendMap) {
+    foreach ($prop in $data.SectorTrendMap.PSObject.Properties) {
+        $trendMap[$prop.Name] = $prop.Value
+    }
+}
 $scored = @()
 foreach ($s in $stocks) {
-    $scored += @{ s=$s; total=$s.TotalScore }
+    $pi = $phaseMap[$s.Industry]
+    $ti = Get-TierInfo $s $pi $trendMap
+    $tierOrder = if ($ti.tier -eq "A") { 0 } elseif ($ti.tier -eq "B") { 1 } else { 2 }
+    $c8Block = Test-C8Block $s $phaseMap
+    $scored += @{ s=$s; total=$s.TotalScore; tier=$ti; tierOrder=$tierOrder; c8Block=$c8Block }
 }
-$scored = $scored | Sort-Object @{Expression={$_.total}} -Descending
-$top5 = $scored | Select-Object -First 5
+# v2.9: 按分层排序(A→B→C)，同层按总分降序
+$scored = $scored | Sort-Object @{Expression={$_.tierOrder}; Ascending=$true}, @{Expression={$_.total}; Ascending=$false}
+
+# ----- v2.9 Top 5 选取: A档强制席位 + C8拦截 -----
+# A档强制至少2只（不足则有多少放多少）
+$aStocks = $scored | Where-Object { $_.tier.tier -eq "A" }
+$nonAC8Stocks = $scored | Where-Object { $_.tier.tier -ne "A" -and -not $_.c8Block }
+$top5 = @()
+$aToShow = $aStocks | Select-Object -First 2
+$top5 += $aToShow
+$remaining = 5 - $top5.Count
+if ($remaining -gt 0) {
+    $top5 += ($nonAC8Stocks | Select-Object -First $remaining)
+}
 
 # ----- Build HTML strings -----
 $sectorHtml = ""
@@ -211,12 +267,14 @@ foreach ($r in $sectorRows) {
 $cardHtml = ""
 foreach ($item in $top5) {
     $s = $item.s
+    $ti = $item.tier
     $cc = "down"; if ($s.ChangePct -ge 0) { $cc = "up" }
     $pi = $phaseMap[$s.Industry]
     $pl = ""; $ptc = "t-green"; if ($pi) { $pl = $pi.phase; $ptc = $pi.tagClass }
     $cs = "{0:F2}%" -f $s.ChangePct; if ($s.ChangePct -ge 0) { $cs = "+{0:F2}%" -f $s.ChangePct }
     $reason = Get-ReasonText -s $s -phaseInfo $pi
-    $cardHtml += "<div class=""card""><div class=""c-hdr""><div><span class=""c-name"">$($s.Name)</span><span class=""c-code"">$($s.Code)</span></div><div><span class=""tag $ptc"">$pl</span><span class=""c-scr"" style=""margin-left:10px"">$($item.total)<span>/100</span></span></div></div>"
+    $tierBadge = "<span class=""tag $($ti.tclass)"" style=""font-size:11px;margin-right:6px"">$($ti.tier)档·$($ti.label)</span>"
+    $cardHtml += "<div class=""card""><div class=""c-hdr""><div><span class=""c-name"">$($s.Name)</span><span class=""c-code"">$($s.Code)</span></div><div>$tierBadge<span class=""tag $ptc"">$pl</span><span class=""c-scr"" style=""margin-left:10px"">$($item.total)<span>/100</span></span></div></div>"
     $cardHtml += "<div class=""c-meta""><span class=""c-meta-item"">$($s.Industry)</span><span class=""c-meta-item"">$($s.Price)$(Get-SourceTag 'Price')元</span><span class=""c-meta-item $cc"">$cs$(Get-SourceTag 'ChangePct')</span><span class=""c-meta-item"">换手$($s.TurnoverRate)$(Get-SourceTag 'TurnoverRate')%</span><span class=""c-meta-item"">PE $($s.PE)$(Get-SourceTag 'PE')</span></div>"
     $cardHtml += "<div class=""c-logic"">$reason</div>"
     $cardHtml += "<div class=""s-bar""><div class=""s-fill bg-green"" style=""width:$($item.total)%""></div></div></div>`n"
@@ -224,9 +282,11 @@ foreach ($item in $top5) {
 
 $fullHtml = ""
 $rank = 0
-$allScored = $stocks | Sort-Object TotalScore -Descending | Select-Object -First 25 | ForEach-Object { @{ s=$_; total=$_.TotalScore } }
+# v2.9: 使用$scored(已有tier排序)生成全表，取前25只
+$allScored = $scored | Select-Object -First 25
 foreach ($item in $allScored) {
     $rank++; $s = $item.s
+    $ti = $item.tier
     $cc = "down"; if ($s.ChangePct -ge 0) { $cc = "up" }
     $sc = ""; if ($s.TotalScore -ge 60) { $sc = "sc-high" } elseif ($s.TotalScore -ge 48) { $sc = "sc-mid" }
     $star = ""; if ($s.TotalScore -ge 60) { $star = "⭐⭐" } elseif ($s.TotalScore -ge 48) { $star = "⭐" }
@@ -234,7 +294,9 @@ foreach ($item in $allScored) {
     if ($pi2) { $sp = Get-ShortPhase $pi2.phase; $emoji2 = Get-PhaseEmoji $pi2.phase }
     $cs = "{0:F2}%" -f $s.ChangePct; if ($s.ChangePct -ge 0) { $cs = "+{0:F2}%" -f $s.ChangePct }
     $stTrend = if ($null -ne $s.S_SectorTrend) { $s.S_SectorTrend } else { 0 }
-$fullHtml += "<tr><td>$rank</td><td>$($s.Code)</td><td style=""font-weight:600;text-align:left;padding-left:8px"">$($s.Name)</td><td>$($s.Industry)</td><td>$($s.Price)$(Get-SourceTag 'Price')</td><td class=""$cc"">$cs$(Get-SourceTag 'ChangePct')</td><td>$($s.TurnoverRate)$(Get-SourceTag 'TurnoverRate')%</td><td>$($s.Amplitude)%</td><td>$($s.PE)$(Get-SourceTag 'PE')</td><td>$($s.S_Base)</td><td>$($s.S_Fund)</td><td>$($s.S_Tech)</td><td>$($s.S_Money)</td><td>$($s.S_News)</td><td>$($s.S_Risk)</td><td>$stTrend</td><td class=""$sc"">$($s.TotalScore)</td><td>$star</td><td>$emoji2$sp</td></tr>`n"
+    $tierLabel = "$($ti.tier)档"
+    $tierCls = $ti.tclass
+$fullHtml += "<tr><td>$rank</td><td>$($s.Code)</td><td style=""font-weight:600;text-align:left;padding-left:8px"">$($s.Name)</td><td>$($s.Industry)</td><td>$($s.Price)$(Get-SourceTag 'Price')</td><td class=""$cc"">$cs$(Get-SourceTag 'ChangePct')</td><td>$($s.TurnoverRate)$(Get-SourceTag 'TurnoverRate')%</td><td>$($s.Amplitude)%</td><td>$($s.PE)$(Get-SourceTag 'PE')</td><td>$($s.S_Base)</td><td>$($s.S_Fund)</td><td>$($s.S_Tech)</td><td>$($s.S_Money)</td><td>$($s.S_News)</td><td>$($s.S_Risk)</td><td>$stTrend</td><td class=""$sc"">$($s.TotalScore)</td><td>$star</td><td><span class=""tag $tierCls"">$tierLabel</span></td><td>$emoji2$sp</td></tr>`n"
 }
 
 
@@ -279,14 +341,14 @@ $html = "<!DOCTYPE html><html lang=""zh-CN""><head><meta charset=""UTF-8"">"
 $html += "<title>铁律量化 · 每日股票推荐 $Date</title><style>$css</style></head><body><div class=""container"">"
 
 $html += "<div class=""hdr""><h1>铁律量化 · 每日股票推荐</h1>"
-$html += "<div class=""sub""><span>${Date} 收盘</span><span>七维前向评分体系 v2.4</span></div>"
+$html += "<div class=""sub""><span>${Date} 收盘</span><span>七维前向评分体系 v2.9</span></div>"
 $totalCount = if ($summaryInfo) { $summaryInfo.Total } else { $allStocks.Count }
 $vetoedCount = if ($summaryInfo) { $summaryInfo.Vetoed } else { 0 }
 $html += "<div class=""tag"">动态池: ${totalCount}只 | 通过否决: $($allStocks.Count)只 | 否决: ${vetoedCount}只 | 推荐上限: 25只 | 否决制+七维评分 | 板块轮动选股</div></div>"
 
 $html += "<div class=""sec""><h2>板块轮动速览</h2><table><tr><th>板块</th><th>股票</th><th>平均涨跌</th><th>平均换手</th><th>轮动相位</th><th>操作建议</th></tr>$sectorHtml</table></div>"
 
-# ----- 板块趋势持续性（v2.4新增）-----
+# ----- 板块趋势持续性（v2.7新增）-----
 $sectorTrendHtml = ""
 if ($data.SectorTrendMap) {
     $trendItems = @()
@@ -308,14 +370,19 @@ if ($data.SectorTrendMap) {
 } else {
     $sectorTrendHtml = "<tr><td colspan=""4"" style=""color:#999"">暂无板块趋势持续性数据（SectorTrendMap 为空）</td></tr>"
 }
-$html += "<div class=""sec""><h2>板块趋势持续性 <span style=""font-size:12px;color:#999;font-weight:400"">(v2.4 新增 · 5分制)</span></h2><table><tr><th>板块</th><th>持续性评分</th><th>主线判定</th><th>K线数据</th></tr>$sectorTrendHtml</table></div>"
+$html += "<div class=""sec""><h2>板块趋势持续性 <span style=""font-size:12px;color:#999;font-weight:400"">(v2.9 · 20分制 五因子+相位折扣)</span></h2><table><tr><th>板块</th><th>持续性评分</th><th>主线判定</th><th>K线数据</th></tr>$sectorTrendHtml</table></div>"
 
 $html += "<div class=""sec""><h2>精选推荐 Top 5</h2>"
-$html += "<div class=""note"" style=""border-left-color:#2ecc71""><strong>评分理念：</strong>一票否决制(14条规则)先筛除不合格股票→通过者按七维总分排序→取前5只展示推荐理由。总分=基础(10)+基本面(15)+技术面(30)+资金面(20)+消息面(15)+风控(5)+板块趋势(5)=100分。</div>"
+$html += "<div class=""note"" style=""border-left-color:#1a1a2e;margin-bottom:14px""><strong>v2.9 推荐分层：</strong>"
+$html += "<span class=""tag t-green"">A档·蓄势埋伏</span> 潜伏期板块+蓄势充分→<strong>强制Top5席位≥2只</strong>，优先关注·未来1-2周布局窗口 | "
+$html += "<span class=""tag t-yellow"">B档·趋势跟踪</span> 主升/主线板块→顺势而为，注意追涨风险 | "
+$html += "<span class=""tag t-red"">C档·高潮回避</span> 高潮期板块→技术面已打55折，减仓回避 | "
+$html += "<strong>C8拦截</strong>：当日>7%且非潜伏期→不进Top5</div>"
+$html += "<div class=""note"" style=""border-left-color:#2ecc71""><strong>评分理念：</strong>一票否决制(14条规则)先筛除不合格股票→通过者按七维总分排序→取前5只展示推荐理由。总分=基础(10)+基本面(15)+技术面(20)+资金面(20)+消息面(15)+风控(5)+板块趋势(20)=105上限100分。v2.9相位折扣扩展至技术面+资金面+消息面三项(潜伏×1.0/主升×0.75/高潮×0.55)+C8单日追涨拦截。</div>"
 $html += "<div class=""card-grid"">$cardHtml</div></div>"
 
 $html += "<div class=""sec""><h2>全部标的评分表</h2><div style=""overflow-x:auto""><table>"
-$html += "<tr><th>#</th><th>代码</th><th>名称</th><th>行业</th><th>价格</th><th>涨跌</th><th>换手</th><th>振幅</th><th>PE</th><th>基础</th><th>基本</th><th>技术</th><th>资金</th><th>消息</th><th>风控</th><th>趋势</th><th>总分</th><th>评级</th><th>状态</th></tr>$fullHtml</table></div></div>"
+$html += "<tr><th>#</th><th>代码</th><th>名称</th><th>行业</th><th>价格</th><th>涨跌</th><th>换手</th><th>振幅</th><th>PE</th><th>基础</th><th>基本</th><th>技术</th><th>资金</th><th>消息</th><th>风控</th><th>趋势</th><th>总分</th><th>评级</th><th>分层</th><th>状态</th></tr>$fullHtml</table></div></div>"
 
 
 $html += "<div class=""row-2""><div class=""col""><div class=""sec""><h2>数据来源</h2><table>"
@@ -323,11 +390,11 @@ $html += "<tr><th style=""width:22%"">数据</th><th style=""width:28%"">来源<
 $html += "<tr><td style=""font-weight:600"">个股行情</td><td>腾讯行情</td><td>实时价格、涨跌幅、换手率</td></tr>"
 $html += "<tr><td style=""font-weight:600"">板块数据</td><td>东方财富板块API</td><td>行业板块指数+资金流向真实市场数据，计算轮动相位</td></tr>"
 $html += "<tr><td style=""font-weight:600"">行业归属</td><td>申万一级行业</td><td>${totalCount}只股票覆盖$($sectorRows.Count)个行业</td></tr>"
-$html += "<tr><td style=""font-weight:600"">评分计算</td><td>本地计算</td><td>七维前向评分体系 v2.4</td></tr></table></div></div>"
+$html += "<tr><td style=""font-weight:600"">评分计算</td><td>本地计算</td><td>七维前向评分体系 v2.9</td></tr></table></div></div>"
 $html += "<div class=""col""><div class=""sec""><h2>免责声明</h2>"
-$html += "<div style=""font-size:11px;color:#666;line-height:1.6"">本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。股票投资有风险，过往表现不预示未来收益。请理性投资，风险自担。<br><span style=""color:#999"">铁律量化 · v2.4 · ${Date} 收盘</span></div></div></div></div>"
+$html += "<div style=""font-size:11px;color:#666;line-height:1.6"">本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。股票投资有风险，过往表现不预示未来收益。请理性投资，风险自担。<br><span style=""color:#999"">铁律量化 · v2.9 · ${Date} 收盘</span></div></div></div></div>"
 
-$html += "<div class=""ftr""><strong>免责声明</strong><br>本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。<br>股票投资有风险，过往表现不预示未来收益。<br><br>铁律量化 · v2.4 · ${Date} 收盘</div>"
+$html += "<div class=""ftr""><strong>免责声明</strong><br>本报告由铁律量化系统自动生成，仅供学习研究参考，不构成投资建议。<br>股票投资有风险，过往表现不预示未来收益。<br><br>铁律量化 · v2.9 · ${Date} 收盘</div>"
 $html += "</div></body></html>"
 
 # ----- Write files -----

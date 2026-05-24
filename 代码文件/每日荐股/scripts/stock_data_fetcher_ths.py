@@ -240,11 +240,94 @@ def do_financial(code, quarters=4):
     safe_json(result)
 
 
+def do_commodity_price(days=20):
+    """
+    大宗商品期货价格 — Sina期货主力合约行情 (v2.7 TECH-05)
+
+    采集品种: 铜/铝/锌/黄金/原油/螺纹钢/碳酸锂
+    返回: [{symbol, name, price, change_pct, trend_10d, trend_20d, volume, date}]
+    """
+    try:
+        import akshare as ak
+    except ImportError:
+        print(json.dumps({"error": "akshare not installed"}))
+        return
+
+    # 期货品种 → 新浪symbol 映射
+    FUTURES_MAP = {
+        "CU": ("铜", "沪铜主力"),
+        "AL": ("铝", "沪铝主力"),
+        "ZN": ("锌", "沪锌主力"),
+        "AU": ("黄金", "沪金主力"),
+        "AG": ("白银", "沪银主力"),
+        "SC": ("原油", "上海原油主力"),
+        "RB": ("螺纹钢", "螺纹钢主力"),
+        "LC": ("碳酸锂", "碳酸锂主力"),
+    }
+
+    results = []
+    for symbol, (name_cn, display_name) in FUTURES_MAP.items():
+        try:
+            # Sina期货日K线 — futures_zh_daily_sina 返回英文字段名 (v2026-05-24 fix)
+            df = ak.futures_zh_daily_sina(symbol=f"{symbol}0")
+            if df is None or df.empty:
+                continue
+
+            # 取最近 days+1 日数据
+            df = df.tail(days + 1)
+            if len(df) < 5:
+                continue
+
+            closes = df["close"].values if "close" in df.columns else []
+            volumes = df["volume"].values if "volume" in df.columns else []
+            opens = df["open"].values if "open" in df.columns else []
+
+            if len(closes) < 5:
+                continue
+
+            current = float(closes[-1])
+            prev = float(closes[-2]) if len(closes) >= 2 else current
+
+            change_pct = round((current - prev) / prev * 100, 2) if prev > 0 else 0
+
+            # 10日趋势
+            trend_10d = 0
+            if len(closes) >= 10 and float(closes[-10]) > 0:
+                trend_10d = round((current - float(closes[-10])) / float(closes[-10]) * 100, 2)
+
+            # 20日趋势
+            trend_20d = 0
+            if len(closes) >= 20 and float(closes[-20]) > 0:
+                trend_20d = round((current - float(closes[-20])) / float(closes[-20]) * 100, 2)
+
+            last_date = str(df.iloc[-1]["date"]) if "date" in df.columns else ""
+
+            results.append({
+                "symbol": symbol,
+                "name": name_cn,
+                "display_name": display_name,
+                "price": round(current, 2),
+                "change_pct": change_pct,
+                "trend_10d": trend_10d,
+                "trend_20d": trend_20d,
+                "volume": float(volumes[-1]) if len(volumes) > 0 else 0,
+                "date": last_date
+            })
+        except Exception as e:
+            # 单个品种失败不阻断整体
+            results.append({
+                "symbol": symbol, "name": name_cn,
+                "error": str(e)[:80]
+            })
+
+    safe_json(results)
+
+
 def main():
     parser = argparse.ArgumentParser(description="同花顺(THS)数据桥接")
     parser.add_argument("action", choices=[
         "sector_ranking", "sector_kline", "sector_fund_flow",
-        "sector_list", "financial"
+        "sector_list", "financial", "commodity_price"
     ], help="操作类型")
     parser.add_argument("--top", type=int, default=30, help="返回条数（默认30）")
     parser.add_argument("--name", type=str, default="", help="行业名称（sector_kline 用）")
@@ -274,6 +357,8 @@ def main():
                 print(json.dumps({"error": "--code is required for financial"}))
                 sys.exit(1)
             do_financial(code=args.code, quarters=args.quarters)
+        elif args.action == "commodity_price":
+            do_commodity_price(days=args.days)
     except Exception as e:
         print(json.dumps({"error": f"THS bridge error: {str(e)}"}))
         sys.exit(1)
