@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    数据质检脚本 — 每日荐股模拟交易前置检查 (Pulse设计)
+    数据质检脚本 — 每日荐股模拟交易前置检查 (玉夜设计)
 .DESCRIPTION
     检查API连通性、数据完整性、缓存新鲜度，输出质检报告。
     被 sim_trading_daily.ps1 在 Step 4 调用。
@@ -19,13 +19,19 @@ param(
     [ValidateSet("daily_sim", "key_stock", "eval")]
     [string]$Mode = "daily_sim",
     [string]$DataFile = "",
-    [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析"
+    [string]$RootDir = ""
 )
+
+# Auto-detect project root if not provided
+if (-not $RootDir) {
+    $RootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+}
 
 $result = [PSCustomObject]@{
     CheckedAt       = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
     Mode            = $Mode
     Flag            = "normal"   # normal | degraded | cached
+    AlertLevel      = "L0"       # L0=正常, L1=轻微降级, L2=中度降级, L3=严重(双源全挂)
     Passed          = $true
     DegradedFields  = @()
     CachedFields    = @()
@@ -151,6 +157,14 @@ if (Test-Path $cacheDir) {
     }
 } else {
     Add-Check "财务缓存目录" $false "INFO" "缓存目录不存在, 首次运行"
+}
+
+# ---- AlertLevel 判定 (P1-1: L3事件告警) ----
+if ($result.Flag -eq "cached") {
+    if (-not $result.Passed) { $result.AlertLevel = "L3" }
+    else { $result.AlertLevel = "L2" }
+} elseif ($result.Flag -eq "degraded") {
+    $result.AlertLevel = "L1"
 }
 
 # ---- 输出 ----

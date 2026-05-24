@@ -15,7 +15,7 @@
 #>
 param([switch]$Quick, [string]$ReportPath = "")
 
-$BASE        = "C:\Users\34269\Documents\Claude\股票分析"
+$BASE        = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $RPT_DIR     = "$BASE\每日荐股\股票报告"
 $RED_DIR     = "$BASE\代码文件\规则红线"
 $OUT_FILE    = "$RED_DIR\check_report_style_report.txt"

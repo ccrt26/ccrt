@@ -452,7 +452,7 @@ def main(run_date=None, verbose=False):
             "PathTag": s.get("PathTag", "震荡"),
             "TechAnalysis": s.get("TechAnalysis", ""),
             "SectorPhase": s.get("SectorPhase", ""),
-            "ATR14": s.get("ATR14", 0),  # Vega v2026-05-24
+            "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
         } for s in passed[:25]],  # 限制推荐不超过25只
         "AllStocks": passed,  # 仅含通过股
         "VetoedStocks": [{  # v2.4.1: VetoedStocks供内部审计用，不再在HTML报告中展示
@@ -478,9 +478,9 @@ def main(run_date=None, verbose=False):
             "VolumePercentile": s.get("VolumePercentile"),
             "PathTag": s.get("PathTag", "震荡"),
             "SectorPhase": s.get("SectorPhase", ""),
-            "ATR14": s.get("ATR14", 0),  # Vega v2026-05-24
+            "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
         } for s in vetoed],
-        "data_quality": {  # Pulse v2026-05-24
+        "data_quality": {  # 玉夜 v2026-05-24
             "flag": "normal",
             "degraded_fields": [],
             "cached_fields": [],

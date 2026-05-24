@@ -236,7 +236,7 @@ function New-RedlinesDocBody {
     AddE $sb; AddH $sb "六、文件信息" 1
     AddTbl $sb @("项目","内容") @(
         ,@("文件名","分析的规则红线--Claude_v1.2.docx")
-        ,@("存储路径","C:\Users\34269\Documents\Claude\股票分析\规则红线")
+        ,@("存储路径","Split-Path -Parent (Split-Path -Parent $PSScriptRoot)\规则红线")
         ,@("当前版本","v1.2")
         ,@("最后更新","2026-05-22")
         ,@("更新人","Claude")
@@ -250,7 +250,7 @@ function New-RedlinesDocBody {
     return $sb.ToString()
 }
 # Main
-$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\规则红线\分析的规则红线--Claude_v1.2.docx")
+$docPath = [System.IO.Path]::GetFullPath("Split-Path -Parent (Split-Path -Parent $PSScriptRoot)\规则红线\分析的规则红线--Claude_v1.2.docx")
 $tmpZip = [System.IO.Path]::GetTempFileName() + ".zip"
 $bodyContent = New-RedlinesDocBody
 $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

@@ -10,7 +10,7 @@ param(
     [switch]$KeepHtml = $false
 )
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $modulePath = Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1"
 $dataFile = Join-Path $rootDir "代码文件\数据\data_scored.json"
 $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -657,7 +657,7 @@ tr:nth-child(even) { background: #f8f9fa; }
 # 使用白皮书§1.4命名规范：评估报告_YYYYMMDD
 $reportDateStr = if ($ReportDate) { $ReportDate } else { (Get-Date).AddDays(-1).ToString("yyyyMMdd") }
 $htmlFile = Join-Path $evalReportDir "评估报告_$reportDateStr.html"
-[System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.UTF8Encoding]::new($false))
 Write-Host "  HTML: $htmlFile"
 
 # ============================================================

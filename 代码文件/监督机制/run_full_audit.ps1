@@ -14,7 +14,7 @@
   .\run_full_audit.ps1 -Quick       快速日检
   .\run_full_audit.ps1 -Date 2026-05-23
 .NOTES
-  版本: v1.1 | 2026-05-24 | 审计官: Gauge
+  版本: v1.1 | 2026-05-24 | 审计官: 旧影
   变更: v1.1 — 拆分为 core/sections 两子模块，$rootDir 改为 $PSScriptRoot 相对路径
 #>
 
@@ -71,12 +71,26 @@ if ($script:failures.Count -gt 0) {
     Write-Host "⛔ =======================================" -ForegroundColor Red
     Write-Host "  审计状态: 未关闭 (OPEN)" -ForegroundColor Red
     Write-Host "  仍有 $($script:failures.Count) 项 FAIL 未修复，禁止关闭此审计。" -ForegroundColor Red
-    Write-Host "  Gauge必须汇报阿黑 → 修复 → 重新审计 → 验证通过。" -ForegroundColor Red
+    Write-Host "  旧影必须汇报阿黑 → 修复 → 重新审计 → 验证通过。" -ForegroundColor Red
     Write-Host "⛔ =======================================" -ForegroundColor Red
 }
 if ($script:warnings.Count -gt 0) {
     Write-Host "`n⚠ WARN 项:" -ForegroundColor Yellow
     $script:warnings | ForEach-Object { Write-Host "  $_" -ForegroundColor Yellow }
+}
+
+# P1-4: 错误案例库 — FAIL项自动入库
+if ($script:failures.Count -gt 0) {
+    $errLibFile = Join-Path $rootDir ".claude\knowledge\常见错误.md"
+    if (Test-Path $errLibFile) {
+        $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') — 审计失败`n"
+        foreach ($f in $script:failures) {
+            $entry += "- $f`n"
+        }
+        $entry += "`n**标签**: #数据  `n**审计模式**: $(if ($Quick) {'Quick'} else {'Full'})`n`n---`n"
+        Add-Content -Path $errLibFile -Value $entry -Encoding UTF8
+        Write-Host "`n📝 错误案例库已更新: $errLibFile" -ForegroundColor DarkGray
+    }
 }
 
 # ---- 输出 JSON ----

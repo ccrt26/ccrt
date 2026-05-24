@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    相位折扣系数月度校准脚本 (Alpha v2026-05-24)
+    相位折扣系数月度校准脚本 (青山 v2026-05-24)
 .DESCRIPTION
     每月第1个周一 10:00 运行: 回测上月模拟交易数据 → 搜索最优折扣系数 → 输出校准建议书
     执行日期: 每月第一个周一 10:00 (首次执行: 2026-06-01)
@@ -9,7 +9,7 @@
 
 [CmdletBinding()]
 param(
-    [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
+    [string]$RootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))",
     [string]$Month = (Get-Date -Format "yyyy-MM"),
     [switch]$DryRun
 )
@@ -130,7 +130,7 @@ $lines += "| 系数 | 当前值 | 建议值 | 依据 | 腰子决策 |
 
 $lines += ""
 $lines += "---"
-$lines += "> **流程**: Alpha自动生成校准建议 → 腰子审核 → 更新白皮书 §二十二 → 更新 scoring_engine_v2.py phase_penalty_map → 灰度3天 → 正式上线"
+$lines += "> **流程**: 青山自动生成校准建议 → 腰子审核 → 更新白皮书 §二十二 → 更新 scoring_engine_v2.py phase_penalty_map → 灰度3天 → 正式上线"
 
 $report = $lines -join "`n"
 if (-not $DryRun) {

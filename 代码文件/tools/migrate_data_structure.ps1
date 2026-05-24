@@ -1,10 +1,10 @@
 # 铁律量化 — 历史数据目录重组迁移脚本
-# 基于 Arch 06-数据持久化架构设计.md
+# 基于 情墨 06-数据持久化架构设计.md
 # 用法：.\migrate_data_structure.ps1 [-WhatIf] [-Force]
 param([switch]$WhatIf, [switch]$Force)
 
 $ErrorActionPreference = "Stop"
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $newBase = Join-Path $rootDir "历史数据"
 $backupLog = Join-Path $rootDir "代码文件\tools\migration_log.txt"
 

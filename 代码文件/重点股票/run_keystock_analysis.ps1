@@ -15,7 +15,7 @@ param(
 # ============================================================
 # 配置
 # ============================================================
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $outRoot = Join-Path $rootDir "重点股票\股票报告"
 $modulePath = Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1"
 $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -47,7 +47,8 @@ $allStocks = @(
     @{ Code = "600114"; Name = "东睦股份"; Industry = "电子/机械" },
     @{ Code = "301075"; Name = "多瑞医药"; Industry = "医药" },
     @{ Code = "000967"; Name = "盈峰环境"; Industry = "环保" },
-    @{ Code = "600036"; Name = "招商银行"; Industry = "银行" }
+    @{ Code = "601727"; Name = "上海电气"; Industry = "电力设备" },
+    @{ Code = "600584"; Name = "长电科技"; Industry = "半导体" }
 )
 if ($TargetStocks.Count -gt 0) {
     $stocks = $allStocks | Where-Object { $_.Code -in $TargetStocks }
@@ -227,12 +228,28 @@ function Get-TechScore {
         else { $score += 10 }
     }
 
+    # P1-1: 量价质量乘数 — 缩量上涨/放量下跌扣分（红线§4 证据加权原则）
+    $volQualityMultiplier = 1.0
+    if ($D.KLines.Count -ge 3 -and $D.VolMA5.Count -gt 1) {
+        $latestVol = $D.KLines[-1].Volume
+        $avgVol5 = $D.VolMA5[-2]
+        $priceChg = $D.Quote.ChangePct
+        if ($avgVol5 -gt 0) {
+            $volRatio = $latestVol / $avgVol5
+            if ($priceChg -gt 0 -and $volRatio -lt 1.0) { $volQualityMultiplier = 0.85 }      # 缩量上涨→量价背离
+            elseif ($priceChg -lt -2 -and $volRatio -gt 1.5) { $volQualityMultiplier = 0.75 } # 放量下跌→主力出货
+            elseif ($priceChg -gt 2 -and $volRatio -gt 1.5) { $volQualityMultiplier = 1.05 }  # 放量上涨→轻微加分
+        }
+    }
+    $score = [Math]::Round($score * $volQualityMultiplier)
+
     return [Math]::Min([Math]::Max($score, 0), 100)
 }
 
 function Get-FundamentalScore {
     param($D)
     $score = 0
+    $script:DataIssueFlag = $false
     $fin = $D.Financial
     if (-not $fin -or $fin.Count -eq 0) { return 40 }
 
@@ -279,16 +296,18 @@ function Get-FundamentalScore {
         } else { $score += 5 }
     }
 
-    # C. 毛利率 (10分)
+    # C. 毛利率 (10分) — P0-1: 数据异常校验
     $rev = [double]$fin[0].TOTAL_OPERATE_INCOME; $cost = [double]$fin[0].OPERATE_COST
-    if ($rev -gt 0) {
+    if ($rev -gt 0 -and $cost -gt 0) {
         $gm = ($rev - $cost) / $rev * 100
-        if ($gm -ge 50) { $score += 10 }
+        # 合理性检查：毛利率≥99%极可能数据异常（OPERATE_COST≈0）
+        if ($gm -ge 99) { $score += 5; $script:DataIssueFlag = $true }
+        elseif ($gm -ge 50) { $score += 10 }
         elseif ($gm -ge 30) { $score += 8 }
         elseif ($gm -ge 15) { $score += 5 }
         elseif ($gm -ge 5) { $score += 2 }
         else { $score += 0 }
-    } else { $score += 5 }
+    } else { $score += 5; $script:DataIssueFlag = $true }
 
     # D. 商誉/净资产 (15分) — A股并购雷区
     $goodwill = 0; $equity = 0; $hasGoodwill = $false
@@ -343,13 +362,20 @@ function Get-FundamentalScore {
         }
     } else { $score += 4 }
 
-    # G. 负债率 (10分)
+    # G. 负债率 (10分) — P0-1: 数据异常校验
     $debt = [double]$fin[0].DEBT_ASSET_RATIO
-    if ($debt -lt 30) { $score += 10 }
+    if ($debt -eq 0) { $score += 5; $script:DataIssueFlag = $true }
+    elseif ($debt -lt 30) { $score += 10 }
     elseif ($debt -lt 50) { $score += 7 }
     elseif ($debt -lt 65) { $score += 4 }
     elseif ($debt -lt 80) { $score += 1 }
     else { $score += 0 }
+
+    # P1-2: 亏损股基本面分数封顶（红线§1.3 数据驱动+§4 风险第一）
+    $netProfit = [double]$fin[0].PARENT_NETPROFIT
+    $roeVal = [double]$fin[0].WEIGHTAVG_ROE
+    if ($netProfit -lt 0) { $score = [Math]::Min($score, 45) }
+    elseif ($roeVal -lt 0) { $score = [Math]::Min($score, 50) }
 
     return [Math]::Min([Math]::Max($score, 0), 100)
 }
@@ -384,32 +410,32 @@ function Get-SentimentScore {
 function Get-SectorScore {
     param($D, $GlobalSectors, $GlobalSectorFund)
     $score = 0
-    $ind = $D.Name  # 用股票名匹配板块 — 实际需要行业字段
-    # 从财务数据获取行业
     $industry = ""
     if ($D.Financial -and $D.Financial.Count -gt 0 -and $D.Financial[0].INDUSTRY) {
         $industry = $D.Financial[0].INDUSTRY
     }
-    # A. 板块相位 (40分) — 基于板块涨跌幅和资金流向判断
+    # A. 板块相位 (35分)
     $secData = $null; $secFund = $null
     if ($industry -ne "") {
         $secData = $GlobalSectors | Where-Object { $_.SectorName -eq $industry }
         $secFund = $GlobalSectorFund | Where-Object { $_.SectorName -eq $industry }
     }
-    # 如果没有精确匹配，使用行业板块TOP20的平均值
     if ($secData) {
         $chg = $secData.ChangePct
-        if     ($chg -ge 3)   { $score += 40 }  # 主升
-        elseif ($chg -ge 1)   { $score += 30 }  # 启动
-        elseif ($chg -ge 0)   { $score += 20 }  # 见底/企稳
-        elseif ($chg -ge -1)  { $score += 15 }  # 高潮期回落
-        else                  { $score += 5 }   # 退潮
+        if     ($chg -ge 3)   { $score += 35 }
+        elseif ($chg -ge 1)   { $score += 26 }
+        elseif ($chg -ge 0)   { $score += 18 }
+        elseif ($chg -ge -1)  { $score += 12 }
+        else                  { $score += 5 }
     } else {
-        # 使用TOP20均值
+        # P2-2: 未匹配行业时，用个股涨跌幅vs市场均值做差异化，不再给固定分
         $avgChg = ($GlobalSectors | Measure-Object ChangePct -Average).Average
-        if     ($avgChg -ge 1)  { $score += 25 }
-        elseif ($avgChg -ge 0)  { $score += 18 }
-        else                    { $score += 10 }
+        $stockChg = $D.Quote.ChangePct
+        $diff = $stockChg - $avgChg
+        if     ($diff -gt 2)   { $score += 28 }
+        elseif ($diff -gt 0)   { $score += 20 }
+        elseif ($diff -gt -2)  { $score += 12 }
+        else                   { $score += 5 }
     }
     # B. 板块资金流 (30分)
     if ($secFund) {
@@ -419,14 +445,18 @@ function Get-SectorScore {
         elseif ($ni -gt -3e8)  { $score += 10 }
         else                   { $score += 3 }
     } else { $score += 15 }
-    # C. 个股vs板块表现 (30分)
-    if ($secData -and $D.Quote.ChangePct -ne 0) {
-        $relStr = $D.Quote.ChangePct - $secData.ChangePct
-        if     ($relStr -gt 2)   { $score += 30 }
-        elseif ($relStr -gt 0)   { $score += 20 }
-        elseif ($relStr -gt -2)  { $score += 10 }
-        else                     { $score += 3 }
-    } else { $score += 15 }
+    # C. 个股相对强度 (35分) — P2-2: 增加行业差异化
+    $stockChg2 = $D.Quote.ChangePct
+    if ($secData) {
+        $relStr = $stockChg2 - $secData.ChangePct
+    } else {
+        $relStr = $stockChg2 - $avgChg
+    }
+    if     ($relStr -gt 3)   { $score += 35 }
+    elseif ($relStr -gt 1)   { $score += 26 }
+    elseif ($relStr -gt 0)   { $score += 18 }
+    elseif ($relStr -gt -2)  { $score += 10 }
+    else                     { $score += 4 }
     return [Math]::Min([Math]::Max($score, 0), 100)
 }
 
@@ -478,24 +508,34 @@ function Get-MacroScore {
     $total = $GlobalSectors.Count
     if ($total -eq 0) { return 50 }
 
-    # A. 市场广度 (40分) — 板块涨跌比
+    # A. 市场广度 (35分) — 板块涨跌比
     $positive = ($GlobalSectors | Where-Object { $_.ChangePct -ge 0 }).Count
     $posRatio = $positive / $total
-    $score += [Math]::Round($posRatio * 40)
+    $score += [Math]::Round($posRatio * 35)
 
-    # B. 强势板块占比 (30分)
-    $strong = ($GlobalSectors | Where-Object { $_.ChangePct -ge 2 }).Count
+    # B. 强势板块占比 (25分) — 阈值≥3%为强势
+    $strong = ($GlobalSectors | Where-Object { $_.ChangePct -ge 3 }).Count
     $strongRatio = $strong / $total
-    $score += [Math]::Round([Math]::Min($strongRatio * 100, 30))
+    $score += [Math]::Round([Math]::Min($strongRatio * 100, 25))
 
-    # C. 资金情绪 (30分) — 板块成交额活跃度
+    # C. 资金情绪 (20分)
     $avgTurnover = ($GlobalSectors | Measure-Object Turnover -Average).Average
-    if ($avgTurnover -gt 100) { $score += 30 }
-    elseif ($avgTurnover -gt 50) { $score += 20 }
-    elseif ($avgTurnover -gt 20) { $score += 12 }
-    else { $score += 5 }
+    if ($avgTurnover -gt 100) { $score += 20 }
+    elseif ($avgTurnover -gt 50) { $score += 14 }
+    elseif ($avgTurnover -gt 20) { $score += 8 }
+    else { $score += 3 }
 
-    return [Math]::Min($score, 100)
+    # D. 市场阶段判定 (20分) — P2-1: 增加实质性分析
+    $avgChg = ($GlobalSectors | Measure-Object ChangePct -Average).Average
+    if ($posRatio -ge 0.8 -and $avgChg -ge 2) { $score += 20 }       # 强势普涨
+    elseif ($posRatio -ge 0.6 -and $avgChg -ge 0) { $score += 14 }   # 偏强震荡
+    elseif ($posRatio -ge 0.4 -and $avgChg -ge -1) { $score += 8 }   # 弱势震荡
+    elseif ($posRatio -ge 0.2) { $score += 4 }                       # 偏弱
+    else { $score += 0 }                                              # 恐慌
+
+    $phaseLabel = if ($score -ge 80) { "强势普涨" } elseif ($score -ge 60) { "偏强震荡" } elseif ($score -ge 40) { "弱势震荡" } elseif ($score -ge 20) { "偏弱调整" } else { "恐慌退潮" }
+
+    return [PSCustomObject]@{ Score = [Math]::Min($score, 100); Phase = $phaseLabel; PosRatio = [Math]::Round($posRatio*100,0); AvgChg = [Math]::Round($avgChg,1) }
 }
 
 # ============================================================
@@ -646,11 +686,10 @@ function Get-ThreePeriodPrediction {
     } else {
         $resistance = [Math]::Round($D.Price * 1.05, 2)
     }
-    $stopLoss = [Math]::Round($support * 0.93, 2)
     $confidence = if ($shortBull -ge 3) { "高(>70%)" } elseif ($shortBull -eq 2) { "中(50-70%)" } else { "低(<50%)" }
     return @{
         Short = $shortDir; Mid = $midDir; Long = $longDir
-        Support = $support; Resistance = $resistance; StopLoss = $stopLoss
+        Support = $support; Resistance = $resistance
         Confidence = $confidence; ShortBull = $shortBull
         MidBull = $midBull; LongBull = $longBull
     }
@@ -1299,11 +1338,11 @@ function New-FundamentalSection {
     <tr><th>指标</th><th>最新值</th><th>评估</th></tr>
     <tr><td>ROE</td><td>$([Math]::Round($roe,2))%</td><td>$(if($roe-ge15){'优秀'}elseif($roe-ge10){'良好'}elseif($roe-ge5){'一般'}else{'较差'})</td></tr>
     <tr><td>扣非净利润增速</td><td>$deductedStr</td><td>$deductedEval</td></tr>
-    <tr><td>毛利率</td><td>$([Math]::Round($gm,1))%</td><td>$(if($gm-ge50){'优秀'}elseif($gm-ge30){'良好'}elseif($gm-ge15){'一般'}else{'较低'})</td></tr>
+    <tr><td>毛利率</td><td>$([Math]::Round($gm,1))%$(if($cost -le 0 -or $gm -ge 99){' <span style="color:#e67e22;font-size:11px;">⚠数据存疑</span>'})</td><td>$(if($gm-ge50){'优秀'}elseif($gm-ge30){'良好'}elseif($gm-ge15){'一般'}else{'较低'})</td></tr>
     <tr><td>营收增速</td><td>$revGrowthStr</td><td>同比</td></tr>
     <tr><td>净利润</td><td>$([Math]::Round($np/100000000,2))亿</td><td>归母净利润</td></tr>
     <tr><td>EPS</td><td>$eps 元</td><td>基本每股收益</td></tr>
-    <tr><td>资产负债率</td><td>$([Math]::Round($debt,1))%</td><td>$(if($debt-lt30){'低杠杆'}elseif($debt-lt50){'合理'}elseif($debt-lt65){'偏高'}else{'高杠杆'})</td></tr>
+    <tr><td>资产负债率</td><td>$([Math]::Round($debt,1))%$(if($debt -eq 0){' <span style="color:#e67e22;font-size:11px;">⚠数据存疑</span>'})</td><td>$(if($debt-lt30){'低杠杆'}elseif($debt-lt50){'合理'}elseif($debt-lt65){'偏高'}else{'高杠杆'})</td></tr>
     <tr><td>商誉/净资产</td><td>$goodwillStr</td><td>$goodwillEval</td></tr>
     <tr><td>PE估值</td><td>$peStr</td><td>$(if($D.PEPercentile){$D.PEPercentile.Valuation}else{'N/A'})</td></tr>
     <tr><td>PEG</td><td>$pegStr</td><td>$pegEval</td></tr>
@@ -1398,15 +1437,15 @@ function New-CapitalSection {
 }
 
 function New-TrendHealthSection {
-    param($Health, $D, $Pred)
+    param($Health, $D, $Pred, $Ops)
     $c = New-ScoreColor $Health.Score
     $pullbackTxt = if ($Health.Pullback) { "当前从20日高点回调 $([Math]::Round($Health.Pullback,1))%" } else { "" }
 
     # 构建具体可执行的操作建议（基于实际数据，非模板文案）
     $adviceItems = @()
 
-    # 距止损位距离百分比
-    $stopDistPct = if ($Pred.StopLoss -and $D.Price -gt 0) { [Math]::Round(($D.Price - $Pred.StopLoss) / $D.Price * 100, 1) } else { $null }
+    # 距止损位距离百分比 — 统一使用Ops.S3为唯一止损源
+    $stopDistPct = if ($Ops.S3 -and $D.Price -gt 0) { [Math]::Round(($D.Price - $Ops.S3) / $D.Price * 100, 1) } else { $null }
 
     if ($Health.Score -ge 80) {
         $adviceItems += "<li><strong>[持有]</strong> 趋势健康，正常持有"
@@ -1445,13 +1484,13 @@ function New-TrendHealthSection {
             $adviceItems += "<li><strong>MACD死叉</strong>(DIF=$dif &lt; DEA=$dea) — 短线动能转负，预计调整持续2-4个交易日，待DIF拐头向上或出现底背离再参与</li>"
         }
         # 止损价位（含距止损距离）
-        if ($Pred.StopLoss) {
+        if ($Ops.S3) {
             if ($Health.Score -ge 60) {
-                $adviceItems += "<li><strong>止损设于 ¥$($Pred.StopLoss)</strong> — 当前距止损$($stopDistPct)%，未触发前继续持有</li>"
+                $adviceItems += "<li><strong>止损设于 ¥$($Ops.S3)</strong> — 当前距止损$($stopDistPct)%，未触发前继续持有</li>"
             } elseif ($Health.Score -ge 40) {
-                $adviceItems += "<li><strong>跌破¥$($Pred.StopLoss)须减仓一半</strong> — 当前距止损$($stopDistPct)%，跌破后半仓观望，等企稳信号出现再补回</li>"
+                $adviceItems += "<li><strong>跌破¥$($Ops.S3)须减仓一半</strong> — 当前距止损$($stopDistPct)%，跌破后半仓观望，等企稳信号出现再补回</li>"
             } else {
-                $adviceItems += "<li><strong>跌破¥$($Pred.StopLoss)(S3)→清仓</strong> — 当前距止损$($stopDistPct)%，严格执行止损纪律，不因中长线看好而扛单</li>"
+                $adviceItems += "<li><strong>跌破¥$($Ops.S3)(S3)→清仓</strong> — 当前距止损$($stopDistPct)%，严格执行止损纪律，不因中长线看好而扛单</li>"
             }
         }
     }
@@ -1498,14 +1537,14 @@ function New-TrendHealthSection {
 }
 
 function New-KeyLevelsSection {
-    param($Pred)
+    param($Pred, $Ops)
     return @"
 <div class="section">
     <h2>关键价位</h2>
     <div class="key-levels">
         <div class="level-item level-resist"><div class="lbl">上方阻力</div><div class="val">¥$($Pred.Resistance)</div></div>
         <div class="level-item level-supp"><div class="lbl">下方支撑</div><div class="val">¥$($Pred.Support)</div></div>
-        <div class="level-item level-stop"><div class="lbl">止损价位</div><div class="val">¥$($Pred.StopLoss)</div></div>
+        <div class="level-item level-stop"><div class="lbl">止损价位</div><div class="val">¥$($Ops.S3)</div></div>
     </div>
 </div>
 "@
@@ -1720,8 +1759,8 @@ function New-StockReportHtml {
     [void]$sb.Append((New-SentimentSection -D $D))
     [void]$sb.Append((New-SectorSection -D $D -GlobalSectors $GlobalSectors -GlobalSectorFund $GlobalSectorFund))
     [void]$sb.Append((New-CapitalSection -D $D))
-    [void]$sb.Append((New-TrendHealthSection -Health $Health -D $D -Pred $Pred))
-    [void]$sb.Append((New-KeyLevelsSection -Pred $Pred))
+    [void]$sb.Append((New-TrendHealthSection -Health $Health -D $D -Pred $Pred -Ops $Ops))
+    [void]$sb.Append((New-KeyLevelsSection -Pred $Pred -Ops $Ops))
     [void]$sb.Append((New-Disclaimer))
     [void]$sb.Append('</div></body></html>')
     return $sb.ToString()
@@ -1777,11 +1816,11 @@ foreach ($s in $stocks) {
     $sectS = Get-SectorScore -D $stockData -GlobalSectors $globalSectors -GlobalSectorFund $globalSectorFund
     $capS = Get-CapitalScore -D $stockData
     $macS = Get-MacroScore -GlobalSectors $globalSectors
-    $comp = Get-CompositeScore -TechS $techS -FundS $fundS -SentS $sentS -SectS $sectS -CapS $capS -MacS $macS
+    $comp = Get-CompositeScore -TechS $techS -FundS $fundS -SentS $sentS -SectS $sectS -CapS $capS -MacS $macS.Score
     $health = Get-TrendHealth -D $stockData
     $pred = Get-ThreePeriodPrediction -D $stockData -TechS $techS -FundS $fundS -SectS $sectS -CapS $capS
-    $scores = @{ Technical=$techS; Fundamental=$fundS; Sentiment=$sentS; Sector=$sectS; Capital=$capS; Macro=$macS; Composite=$comp.Score; Rating=$comp.Rating; RatingShort=$comp.RatingShort }
-    Write-Host "  [评分] 技术$techS 基本面$fundS 消息$sentS 板块$sectS 资金$capS 宏观$macS → 综合$($comp.Score)分 [$($comp.RatingShort)]"
+    $scores = @{ Technical=$techS; Fundamental=$fundS; Sentiment=$sentS; Sector=$sectS; Capital=$capS; Macro=$macS.Score; MacroPhase=$macS.Phase; Composite=$comp.Score; Rating=$comp.Rating; RatingShort=$comp.RatingShort }
+    Write-Host "  [评分] 技术$techS 基本面$fundS 消息$sentS 板块$sectS 资金$capS 宏观$($macS.Score)($($macS.Phase)) → 综合$($comp.Score)分 [$($comp.RatingShort)]"
     Write-Host "  [预判] 短期:$($pred.Short) 中期:$($pred.Mid) 长期:$($pred.Long) 支撑:$($pred.Support) 阻力:$($pred.Resistance)"
 
     # 极端事件检查 (v3.0)
@@ -1813,7 +1852,7 @@ foreach ($s in $stocks) {
 
     # 生成HTML
     $html = New-StockReportHtml -D $stockData -Scores $scores -Pred $pred -Health $health -Ops $ops -GlobalSectors $globalSectors -GlobalSectorFund $globalSectorFund -dateLabel $dateLabel -ExtremeEvents $extremeEvents -ConflictResult $conflict -DontDoResult $dontDo
-    [System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.Encoding]::UTF8)
+    [System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.UTF8Encoding]::new($false))
     Write-Host "  [HTML] $htmlFile"
 
     # 转PDF
@@ -1910,9 +1949,23 @@ Write-Host "=============================="
 $evalDir = Join-Path (Join-Path $rootDir "重点股票") "次日评估"
 if (-not (Test-Path $evalDir)) { New-Item -ItemType Directory -Path $evalDir -Force | Out-Null }
 $evalFile = Join-Path $evalDir "评估数据_${dateStr}.json"
-@{ Date=$dateStr; GeneratedAt=(Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); Stocks=$script:evalStocks } |
-    ConvertTo-Json -Depth 10 | Set-Content $evalFile -Encoding UTF8
+$evalJson = @{
+    Date = $dateStr
+    GeneratedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+    Stocks = $script:evalStocks
+    _schema_version = "1.0"
+    _generated_by = "run_keystock_analysis.ps1"
+    _generated_at = (Get-Date -Format 'yyyy-MM-ddTHH:mm:ss')
+} | ConvertTo-Json -Depth 10
+[System.IO.File]::WriteAllText($evalFile, $evalJson, [System.Text.UTF8Encoding]::new($false))
 Write-Host "评估数据保存: $evalFile"
+
+# P0-1: 双写到历史数据/02_评估数据/ (情墨持久化架构)
+$archiveEvalDir = Join-Path $rootDir "历史数据\02_评估数据"
+if (-not (Test-Path $archiveEvalDir)) { New-Item -ItemType Directory -Path $archiveEvalDir -Force | Out-Null }
+$archiveEvalFile = Join-Path $archiveEvalDir "评估数据_${dateStr}.json"
+Copy-Item $evalFile $archiveEvalFile -Force
+Write-Host "评估数据双写: $archiveEvalFile"
 
 # v3.0 字段完整性校验
 $requiredV30Fields = @("ADX_Value", "ADX_Trend", "OBV_Trend", "Wyckoff_Phase")

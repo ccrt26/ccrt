@@ -39,7 +39,7 @@ param(
     [switch]$SkipDataBackfill
 )
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $scriptsDir = Join-Path $rootDir "代码文件\每日荐股\scripts"
 $recordFile = Join-Path $rootDir "每日荐股\运营记录\workflow_records.csv"
 $marketCheckScript = Join-Path $scriptsDir "is_market_open.ps1"

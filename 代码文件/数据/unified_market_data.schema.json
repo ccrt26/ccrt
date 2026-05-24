@@ -1,6 +1,6 @@
 {
   "_schema": "unified_market_data v1.0",
-  "_description": "统一市场数据中间层 — 两套模拟交易系统共用。Arch设计 v2026-05-24",
+  "_description": "统一市场数据中间层 — 两套模拟交易系统共用。情墨设计 v2026-05-24",
   "_design_note": "只包含公共字段，各系统保留独立扩展schema。采集一次，两边读同一份。",
 
   "generated_at": "2026-05-24T20:00:00",

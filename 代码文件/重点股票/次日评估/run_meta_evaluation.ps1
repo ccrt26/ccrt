@@ -10,7 +10,7 @@ param(
 # ============================================================
 # 配置
 # ============================================================
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $evalRoot = Join-Path $rootDir "重点股票\次日评估"
 $logicDir = Join-Path $evalRoot "逻辑积累"
 $metaDir = Join-Path $logicDir "元评估"

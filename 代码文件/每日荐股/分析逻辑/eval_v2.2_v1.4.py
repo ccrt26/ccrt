@@ -9,7 +9,7 @@ import json, os, math
 from datetime import datetime
 from collections import defaultdict
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 DATA_DIR = os.path.join(ROOT, "代码文件", "数据")
 REPORT_DIR = os.path.join(ROOT, "临时报告")
 

@@ -1,15 +1,6 @@
 ﻿<#
-.SYNOPSIS
-  批量数据采集 — 对动态池中所有股票采集行情/K线/资金流/财务数据
-.DESCRIPTION
-  输入: dynamic_pool.json (由 build_dynamic_pool.ps1 生成)
-  输出: data_full.json (含K线数组，供 scoring_engine_v2.py 使用)
-.PARAMETER PoolFile
-  动态池文件路径
-.PARAMETER OutputFile
-  输出文件路径
-.PARAMETER SkipKLine
-  跳过K线采集（仅更新行情）
+.SYNOPSIS 批量数据采集 — 行情/K线/资金流/财务/板块/北向/两融/研报
+.INPUT dynamic_pool.json .OUTPUT data_full.json
 #>
 param(
     [string]$PoolFile = "",
@@ -17,10 +8,9 @@ param(
     [switch]$SkipKLine
 )
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 if (-not $PoolFile) { $PoolFile = Join-Path $rootDir "代码文件\数据\dynamic_pool.json" }
 if (-not $OutputFile) { $OutputFile = Join-Path $rootDir "代码文件\数据\data_full.json" }
-
 if (-not (Test-Path $PoolFile)) { Write-Error "动态池文件不存在: $PoolFile"; exit 1 }
 
 Import-Module (Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1") -Force -DisableNameChecking
@@ -29,18 +19,13 @@ $pool = Get-Content $PoolFile -Encoding UTF8 | ConvertFrom-Json
 $stocks = $pool.Stocks
 if (-not $stocks -or $stocks.Count -eq 0) { Write-Error "动态池为空"; exit 1 }
 Write-Host "动态池: $($stocks.Count) 只股票, 开始采集数据"
-
 # --- 1. 批量行情 ---
 Write-Host "`n[1/5] 批量行情..."
 $codes = $stocks | ForEach-Object { $_.Code }
 $quotes = Get-StockQuoteBatch -Codes $codes
 $quoteMap = @{}
-if ($quotes) {
-    foreach ($q in $quotes) { $quoteMap[$q.Code] = $q }
-    Write-Host "  成功: $($quotes.Count)/$($codes.Count)"
-} else {
-    Write-Warning "  批量行情失败"
-}
+if ($quotes) { foreach ($q in $quotes) { $quoteMap[$q.Code] = $q } } else { Write-Warning "批量行情失败" }
+Write-Host "  成功: $(if($quotes){$quotes.Count}else{0})/$($codes.Count)"
 
 # --- 2. 财务数据（缓存为主） ---
 Write-Host "[2/5] 财务数据..."
@@ -230,7 +215,7 @@ if ($sectorRanking -and $sectorRanking.Count -gt 0) {
                 }
             }
 
-            # 写入缓存（兼容旧缓存格式，但新读取侧优先匹配新格式）
+    # 板块K线缓存（24h TTL），兼容旧格式，新读取侧优先匹配新格式
             $toCache = @{ Timestamp = (Get-Date).ToString("o"); Data = $klineList }
             $toCache | ConvertTo-Json -Depth 5 -Compress | Set-Content $cacheFile -Encoding UTF8
 
@@ -390,7 +375,7 @@ foreach ($s in $stocks) {
         continue
     }
 
-    # 财务数据（多季度）— v2.6 扩展字段：BPS/营收/增长率 用于三路径PE评分
+    # 财务数据（多季度）— BPS/营收/增长率 用于三路径PE评分
     $eps = $null
     $epsQuarterly = @()
     $bps = $null           # 每股净资产 → PB估值(周期成长路径)
@@ -435,13 +420,13 @@ foreach ($s in $stocks) {
         if (-not $gmVal) { $gmVal = $fin[0].SALE_GROSS_PROFIT_RATIO }
         if ($gmVal) { $grossMargin = [double]$gmVal }
 
-        # v2026-05-24 P1: 股息率 (最新股息率ZXGXL) — 稳定价值蓝筹估值锚点
+        # v2026-05-24 P1: 股息率 — 稳定价值蓝筹估值锚点
         $divYield = $null
         $zxgxlVal = $fin[0].ZXGXL
         if ($zxgxlVal) { $divYield = [double]$zxgxlVal }
     }
 
-    # 初始化各维度评分（将在 scoring_engine_v2.py 中重新计算）
+# 初始化各维度评分（由 scoring_engine_v2.py 重新计算）
     $obj = [PSCustomObject]@{
         Code         = $s.Code
         Name         = $s.Name

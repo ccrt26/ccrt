@@ -21,7 +21,7 @@ param(
     [switch]$SkipPdf
 )
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 if (-not $DataFile) { $DataFile = Join-Path $rootDir "代码文件\数据\data_scored.json" }
 if (-not $OutDir)  { $OutDir  = Join-Path $rootDir "每日荐股\股票报告" }
 

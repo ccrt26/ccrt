@@ -37,7 +37,7 @@ def calc_ema(values, n):
     return result
 
 def calc_atr(highs, lows, closes, period=14):
-    """计算 ATR(14) (Vega v2026-05-24)"""
+    """计算 ATR(14) (流金 v2026-05-24)"""
     result = []
     trs = []
     for i in range(len(closes)):

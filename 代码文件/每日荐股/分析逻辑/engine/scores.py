@@ -238,7 +238,7 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         s["RSI"] = round(rsi, 1)
         s["VolRatio"] = round(vol_ratio, 2)
 
-        # ATR14 calculation (Vega v2026-05-24)
+        # ATR14 calculation (流金 v2026-05-24)
         highs = s.get("KHigh", [])
         lows = s.get("KLow", [])
         if highs and lows and closes and len(highs) >= 15 and len(lows) >= 15 and len(closes) >= 15:

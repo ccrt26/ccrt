@@ -7,7 +7,7 @@ param(
 )
 
 $errors = @()
-$BASE = "C:\Users\34269\Documents\Claude\股票分析"
+$BASE = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 
 # 1. 红线合规快速预检（仅捕获失败）
 $rl = & "$BASE\代码文件\规则红线\check_redlines.ps1" -Quick 2>&1

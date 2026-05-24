@@ -84,7 +84,7 @@ print(f"sector.py: {len(mod)} lines")
 
 # ── veto.py (L2) ──
 mod = make_header("否决体系 + 市场状态检测 [L2]")
-mod.append("# L2 风控模块 — 每条规则引用红线条款编号，变更须经 Vega 复核")
+mod.append("# L2 风控模块 — 每条规则引用红线条款编号，变更须经 流金 复核")
 mod.append("# 交叉导入:")
 mod.append("from .theme import classify_theme, check_theme_purity, load_industry_whitelist")
 mod.append("from .technical import calc_ma")

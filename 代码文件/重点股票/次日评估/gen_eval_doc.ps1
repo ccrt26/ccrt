@@ -5,8 +5,8 @@
 [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
 [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression") | Out-Null
 
-$mdPath = "C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\重点股票次日后评估白皮书_v1.3.md"
-$docxPath = "C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\重点股票次日后评估白皮书_v1.3.docx"
+$mdPath = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\重点股票\次日评估\重点股票次日后评估白皮书_v1.3.md"
+$docxPath = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\重点股票\次日评估\重点股票次日后评估白皮书_v1.3.docx"
 $timestamp = "2026-05-22"
 
 # --- XML 模板 ---
@@ -330,7 +330,7 @@ Add-Para $sb "各维度评分：分析报告中JSON保存 | 指标信号状态�
 
 # ===== 第七章：文件信息 =====
 Add-Para $sb "九、文件信息" "2" $true
-Add-Para $sb "根目录：C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估"
+Add-Para $sb "根目录：Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\重点股票\次日评估"
 Add-Para $sb "逻辑诊断报告：复盘报告\逻辑诊断报告_YYYYMMDD.pdf"
 Add-Para $sb "评估数据：评估数据_YYYYMMDD.json"
 Add-Para $sb "评估结果：评估结果\评估结果_YYYYMMDD.json"

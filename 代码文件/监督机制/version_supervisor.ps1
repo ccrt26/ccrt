@@ -69,7 +69,7 @@ $ROSTER = @{
     Date    = '2026-05-23'
 }
 
-$ROOT = "C:\Users\34269\Documents\Claude\股票分析"
+$ROOT = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $ERRORS = @()
 $WARNS  = @()
 

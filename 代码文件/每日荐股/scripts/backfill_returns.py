@@ -25,7 +25,7 @@ import json, os, sys, time, argparse, urllib.request, urllib.error
 from datetime import date, timedelta
 from collections import defaultdict
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 HISTORY_FILE = os.path.join(ROOT, "代码文件", "数据", "score_history.jsonl")
 
 # ---------- 新浪K线 (数据源[2]) ----------

@@ -353,7 +353,7 @@ function New-KeystockDocBody {
     return $sb.ToString()
 }
 # Main
-$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v1.2.docx")
+$docPath = [System.IO.Path]::GetFullPath("Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v1.2.docx")
 $tmpZip = [System.IO.Path]::GetTempFileName() + ".zip"
 $bodyContent = New-KeystockDocBody
 $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

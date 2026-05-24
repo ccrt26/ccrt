@@ -11,7 +11,7 @@
 
 param([switch]$Uninstall)
 
-$scriptsDir = "C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts"
+$scriptsDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\代码文件\每日荐股\scripts"
 $prefix = "TieLv"
 
 function Add-Task {

@@ -14,7 +14,7 @@
   .\run_full_audit.ps1 -Quick       快速日检
   .\run_full_audit.ps1 -Date 2026-05-23
 .NOTES
-  版本: v1.0 | 2026-05-23 | 审计官: Gauge
+  版本: v1.0 | 2026-05-23 | 审计官: 旧影
 #>
 
 param(
@@ -23,7 +23,7 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $auditDir = Join-Path $rootDir "历史数据"
 $reportOutDir = Join-Path $rootDir "历史数据\审计报告"
 $redlinesDir = Join-Path $rootDir "代码文件\规则红线"
@@ -97,7 +97,7 @@ function Invoke-ExistingScript {
 Write-Host ""
 Write-Host "╔══════════════════════════════════════╗" -ForegroundColor Cyan
 Write-Host "║  铁律量化 · 综合审计 (Phase 1)        ║" -ForegroundColor Cyan
-Write-Host "║  Gauge 审计官 | $Date              ║" -ForegroundColor Cyan
+Write-Host "║  旧影 审计官 | $Date              ║" -ForegroundColor Cyan
 Write-Host "╚══════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""
 
@@ -665,7 +665,7 @@ if ($script:failures.Count -gt 0) {
     Write-Host "⛔ =======================================" -ForegroundColor Red
     Write-Host "  审计状态: 未关闭 (OPEN)" -ForegroundColor Red
     Write-Host "  仍有 $($script:failures.Count) 项 FAIL 未修复，禁止关闭此审计。" -ForegroundColor Red
-    Write-Host "  Gauge必须汇报阿黑 → 修复 → 重新审计 → 验证通过。" -ForegroundColor Red
+    Write-Host "  旧影必须汇报阿黑 → 修复 → 重新审计 → 验证通过。" -ForegroundColor Red
     Write-Host "⛔ =======================================" -ForegroundColor Red
 }
 if ($script:warnings.Count -gt 0) {

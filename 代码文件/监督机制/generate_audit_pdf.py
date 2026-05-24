@@ -142,7 +142,7 @@ class AuditPDF(FPDF):
         self.set_y(-16)
         self.set_text_color(180, 180, 180)
         self.set_font("YaHei", "", 7)
-        self.cell(0, 5, f"铁律量化 Gauge审计官 · 生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", align='C')
+        self.cell(0, 5, f"铁律量化 旧影审计官 · 生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", align='C')
 
 
 def map_checks_to_levels(checks):

@@ -118,7 +118,7 @@ $scoredData.Recommendations | ForEach-Object {
 }
 Write-Log "Candidate pool: $($candidates.Count) stocks"
 
-# Step 4: Data quality check (Pulse v2026-05-24)
+# Step 4: Data quality check (玉夜 v2026-05-24)
 Write-Log "Running data quality check..."
 $dqScript = Join-Path $RootDir "代码文件/tools/check_data_quality.ps1"
 $dqJson = ""
@@ -173,7 +173,7 @@ if (-not $DryRun -and $quotes.Count -gt 0) {
     Save-QuoteCache -Quotes $quotes -CacheFile $cacheFile
 }
 
-# Step 6.5: Market circuit breaker (Sentinel v2026-05-24)
+# Step 6.5: Market circuit breaker (山猫 v2026-05-24)
 $blackSwanTriggered = $false
 $csi300Change = 0
 $marketTurnover = 10000
@@ -195,7 +195,7 @@ if ($marketCB.Level -ne "none") {
     }
 }
 
-# Sector phase check on holdings (Sentinel v2026-05-24)
+# Sector phase check on holdings (山猫 v2026-05-24)
 $sectorPhases = @{}
 foreach ($code in $validCandidates.Keys) {
     $sc = $validCandidates[$code]
@@ -325,7 +325,7 @@ foreach ($code in $stockMap.Keys) {
 
     $quoteSrc = if ($quote -and $quote.DataSource) { $quote.DataSource } else { "[C]" }
 
-    # ATR dynamic stop loss (Vega v2026-05-24)
+    # ATR dynamic stop loss (流金 v2026-05-24)
     $atrN = 2.0
     if ($pos.EntryScore -ge 78) { $atrN = 2.5 }
     elseif ($pos.EntryScore -ge 65) { $atrN = 2.0 }
@@ -556,7 +556,7 @@ if ($skipOpenNewPositions) {
 
     $entryCandidates = @()
 
-    # Industry concentration check (Vega v2026-05-24)
+    # Industry concentration check (流金 v2026-05-24)
     $indResult = Get-IndustryConcentration -Positions $stockMap -MaxPerIndustry 2
     if ($indResult.Violations.Count -gt 0) {
         foreach ($ind in $indResult.Violations.Keys) {
@@ -650,7 +650,7 @@ if ($skipOpenNewPositions) {
                 $posPct = [Math]::Round($posPct * $posMultiplier, 1)
                 if ($posPct -le 0) { continue }
 
-                # Industry concentration skip (Vega v2026-05-24)
+                # Industry concentration skip (流金 v2026-05-24)
                 $entryIndustry = if ($sc.Industry) { $sc.Industry } else { "未知" }
                 $indCount = @($stockMap.Values | Where-Object { $_.Shares -gt 0 -and $_.EntryIndustry -eq $entryIndustry }).Count
                 if ($indCount -ge 2) {
@@ -794,7 +794,7 @@ if (-not $DryRun) {
     Assert-WriteSuccess -Path $positionsFile
     Write-Log "Positions updated"
 
-    # Shared cooldowns sync (Vega v2026-05-24)
+    # Shared cooldowns sync (流金 v2026-05-24)
     $sharedDir = Join-Path $simDir "共享模块/shared"
     $sharedCooldownsFile = Join-Path $sharedDir "cooldowns.json"
     if (-not (Test-Path $sharedDir)) { New-Item $sharedDir -ItemType Directory -Force | Out-Null }

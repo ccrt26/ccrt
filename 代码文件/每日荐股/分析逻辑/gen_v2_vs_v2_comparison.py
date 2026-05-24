@@ -7,7 +7,7 @@ v2.2 评分对比：5月21日 vs 5月22日
 import json, os
 from datetime import datetime
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 DATA_DIR = os.path.join(ROOT, "代码文件", "数据")
 REPORT_DIR = os.path.join(ROOT, "临时报告")
 

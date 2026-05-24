@@ -14,7 +14,7 @@ param(
     [switch]$Quick
 )
 
-$BASE = "C:\Users\34269\Documents\Claude\股票分析"
+$BASE = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $DATA_DIR = "$BASE\代码文件\数据"
 $CACHE_DIR = "$BASE\代码文件\每日荐股\data_cache"
 $REDLINES_DIR = "$BASE\代码文件\规则红线"

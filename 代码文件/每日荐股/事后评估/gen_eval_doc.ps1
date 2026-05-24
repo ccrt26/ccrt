@@ -203,7 +203,7 @@ function New-EvalDocBody {
     return $sb.ToString()
 }
 # Main
-$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\每日荐股\事后评估\次日后评估白皮书_v1.3.docx")
+$docPath = [System.IO.Path]::GetFullPath("Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\每日荐股\事后评估\次日后评估白皮书_v1.3.docx")
 $tmpZip = [System.IO.Path]::GetTempFileName() + ".zip"
 $bodyContent = New-EvalDocBody
 $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

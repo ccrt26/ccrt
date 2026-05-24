@@ -34,7 +34,7 @@ $configFile = Join-Path $simDir "sim_config.json"
 $exDivFile = Join-Path $simDir "ex_dividend_dates.json"
 $logDir = Join-Path $simDir "日志"
 
-# === 主路径: 历史数据/ 归档架构 (Arch 06-数据持久化) ===
+# === 主路径: 历史数据/ 归档架构 (情墨 06-数据持久化) ===
 $canonBase = Join-Path $RootDir "历史数据"
 $positionsFile = Join-Path $canonBase "00_核心交易/positions.json"
 $txnFile = Join-Path $canonBase "00_核心交易/transactions.csv"
@@ -50,7 +50,7 @@ $legacySnapshotFile = Join-Path $simDir "每日快照/snapshot_${Date}.json"
 
 if (-not $DryRun -and -not (Test-Path $logDir)) { New-Item $logDir -ItemType Directory -Force | Out-Null }
 
-# Source shared risk module (Sentinel+Vega v2026-05-24)
+# Source shared risk module (山猫+流金 v2026-05-24)
 . (Join-Path $simDir "共享模块/risk_framework.ps1")
 
 # === 股票代码映射 ===
@@ -482,7 +482,7 @@ Start-Sleep -Milliseconds 300  # API间隔≥0.3s (红线§3.2)
 $benchData = Get-BenchmarkValue
 if ($benchData) { Write-Log "沪深300: $($benchData.Price)" }
 
-# ---- Step 5.5: Market Circuit Breaker & Shared Cooldowns (Sentinel+Vega v2026-05-24) ----
+# ---- Step 5.5: Market Circuit Breaker & Shared Cooldowns (山猫+流金 v2026-05-24) ----
 $sharedCooldownsFile = Join-Path $simDir "共享模块/shared/cooldowns.json"
 $sharedCooldowns = @{}
 if (Test-Path $sharedCooldownsFile) {
@@ -716,12 +716,12 @@ foreach ($txn in $txns) {
             $pos.LastStopLossDate = $Date
             if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
             $cooldowns[$code].LastStopLossDate = $Date
-            $sharedCooldowns[$code] = $cooldowns[$code]  # Vega: sync to shared
+            $sharedCooldowns[$code] = $cooldowns[$code]  # 流金: sync to shared
         } elseif ($txn.Reason -match "全部止盈") {
             $pos.LastFullTakeProfitDate = $Date
             if (-not $cooldowns[$code]) { $cooldowns[$code] = @{ Code = $code; Name = $pos.Name; LastStopLossDate = $null; LastFullTakeProfitDate = $null } }
             $cooldowns[$code].LastFullTakeProfitDate = $Date
-            $sharedCooldowns[$code] = $cooldowns[$code]  # Vega: sync to shared
+            $sharedCooldowns[$code] = $cooldowns[$code]  # 流金: sync to shared
         }
         Write-Log "  $code 清仓完成，卖出价 $($txn.Price)"
     }
@@ -754,7 +754,7 @@ foreach ($code in $codeMap.Keys) {
     }
 
     $existingPos = $stockMap[$code]
-    # 冷却检查：当前持仓 → 持久化 Cooldowns → 跨系统共享 Cooldowns (Vega v2026-05-24)
+    # 冷却检查：当前持仓 → 持久化 Cooldowns → 跨系统共享 Cooldowns (流金 v2026-05-24)
     $coolSource = if ($existingPos) { $existingPos } elseif ($cooldowns[$code]) { $cooldowns[$code] } elseif ($sharedCooldowns[$code]) { $sharedCooldowns[$code] } else { $null }
     if ($coolSource -and $coolSource.LastStopLossDate) {
         $coolDays = Get-CoolingDays -DateStr $coolSource.LastStopLossDate
@@ -982,7 +982,7 @@ if (-not $DryRun) {
     Assert-WriteSuccess -Path $positionsFile
     Write-Log "持仓已更新"
 
-    # Shared cooldowns sync (Vega v2026-05-24)
+    # Shared cooldowns sync (流金 v2026-05-24)
     $sharedDir = Join-Path $simDir "共享模块/shared"
     if (-not (Test-Path $sharedDir)) { New-Item $sharedDir -ItemType Directory -Force | Out-Null }
     if ($sharedCooldowns.Count -gt 0) {
@@ -1250,7 +1250,7 @@ if (-not $DryRun) {
     $logContent | Out-File -Encoding utf8 (Join-Path $logDir "sim_${Date}.log")
     Assert-WriteSuccess -Path (Join-Path $logDir "sim_${Date}.log")
 
-    # S级资产镜像备份 (Arch 06-数据持久化架构)
+    # S级资产镜像备份 (情墨 06-数据持久化架构)
     if (Test-Path $canonBackupDir) {
         foreach ($asset in @("positions.json", "transactions.csv")) {
             $srcAsset = Join-Path $canonBase "00_核心交易/$asset"

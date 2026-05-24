@@ -7,7 +7,7 @@
 
 param(
     [string]$Month = (Get-Date).AddMonths(-1).ToString("yyyy-MM"),
-    [string]$SourceDir = "C:\Users\34269\Documents\Claude\股票分析"
+    [string]$SourceDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 )
 
 $dailyDir = Join-Path $SourceDir "每日荐股"

@@ -124,7 +124,7 @@ function Invoke-ThsFallback {
         [Parameter(Mandatory=$true)][string]$Action,
         [string]$Params = ""
     )
-    $thsScript = Join-Path $PSScriptRoot "stock_data_fetcher_ths.py"
+    $thsScript = Join-Path (Split-Path $PSScriptRoot -Parent) "stock_data_fetcher_ths.py"
     if (-not (Test-Path $thsScript)) {
         Write-Warning "THS桥接脚本不存在: $thsScript"
         return $null

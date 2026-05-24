@@ -1,8 +1,8 @@
 ﻿﻿# 铁律量化 · catchup_launcher 逻辑测试
-# Proof 验证脚本 — 模拟5个场景，验证追赶决策正确性
+# 新安 验证脚本 — 模拟5个场景，验证追赶决策正确性
 param([switch]$Verbose)
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $scriptsDir = Join-Path $rootDir "代码文件\每日荐股\scripts"
 $catchupScript = Join-Path $scriptsDir "catchup_launcher.ps1"
 
@@ -162,7 +162,7 @@ function Test-Scenario {
 }
 
 # ==================== 场景 1-6: 原有 workflow 追赶逻辑 ====================
-Write-Host "`n========== Proof: catchup_launcher workflow 逻辑验证 ==========" -ForegroundColor Magenta
+Write-Host "`n========== 新安: catchup_launcher workflow 逻辑验证 ==========" -ForegroundColor Magenta
 
 # 场景1: 工作日 18:00 开机，今天的任务都还没过期
 Test-Scenario -Name "S1: 提前开机" `
@@ -207,7 +207,7 @@ Test-Scenario -Name "S6: 一切正常" `
     -ExpectedActions @("NONE")
 
 # ==================== 场景 7-12: 多日离线数据补偿逻辑 ====================
-Write-Host "`n========== Proof: 多日离线数据补偿逻辑验证 ==========" -ForegroundColor Magenta
+Write-Host "`n========== 新安: 多日离线数据补偿逻辑验证 ==========" -ForegroundColor Magenta
 
 # 与 catchup_launcher.ps1 保持一致的节假日清单
 $holidays = @(

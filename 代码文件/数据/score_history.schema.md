@@ -1,6 +1,6 @@
 # score_history.jsonl — Schema 定义
 
-> v2026-05-24 | Arch设计 + 腰子审核 + Craft实现
+> v2026-05-24 | 情墨设计 + 腰子审核 + 红结实现
 
 ## 格式
 

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    评估→参数自动反馈链路 (Alpha v2026-05-24)
+    评估→参数自动反馈链路 (青山 v2026-05-24)
 .DESCRIPTION
     每周一 09:00 运行: 读取后评估周报 → 检测异常指标 → 生成调参建议 → 提交腰子审核
     执行日期: 每周一 09:00
@@ -9,7 +9,7 @@
 
 [CmdletBinding()]
 param(
-    [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
+    [string]$RootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))",
     [string]$Date = (Get-Date -Format "yyyy-MM-dd"),
     [switch]$DryRun
 )
@@ -90,7 +90,7 @@ $lines += "| 日期 | 建议 | 腰子决策 | 灰度结果 | 正式上线 |
 
 $lines += ""
 $lines += "---"
-$lines += "> **流程**: Alpha自动生成建议 → 腰子审核确认 → Claude执行参数变更 → 灰度3天 → Alpha回检 → 腰子决定正式上线/回滚"
+$lines += "> **流程**: 青山自动生成建议 → 腰子审核确认 → Claude执行参数变更 → 灰度3天 → 青山回检 → 腰子决定正式上线/回滚"
 
 $report = $lines -join "`n"
 if (-not $DryRun) {

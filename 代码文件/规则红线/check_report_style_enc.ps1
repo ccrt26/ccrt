@@ -16,7 +16,7 @@ param(
     [string]$ReportPath = ""
 )
 
-$BASE = "C:\Users\34269\Documents\Claude\鑲＄エ鍒嗘瀽"
+$BASE = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $REPORT_DIR = "$BASE\姣忔棩鑽愯偂\鑲＄エ鎶ュ憡"
 $EVAL_REPORT_DIR = "$BASE\鍘嗗彶鏁版嵁\eval"
 $REDLINES_DIR = "$BASE\浠ｇ爜鏂囦欢\瑙勫垯绾㈢嚎"

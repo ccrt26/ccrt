@@ -29,7 +29,7 @@ param(
     [switch]$LogOnly
 )
 
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $dailyCodeDir = Join-Path $rootDir "代码文件\每日荐股"
 $dailyDocDir = Join-Path $rootDir "每日荐股"
 $scriptsDir = Join-Path $dailyCodeDir "scripts"
@@ -128,7 +128,7 @@ if ($Mode -eq "eval") {
         }
 
         # ---- 归档评估数据 ----
-        Write-Log -Msg "Archiving evaluation data..."
+        Write-Log -Msg "情墨iving evaluation data..."
         & $archiveScript -Date $Date
 
         # ---- 重点股票评估 ----
@@ -191,7 +191,25 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
             Write-Log -Msg "Data collection completed"
         }
 
-        # ---- Phase 3: Scoring engine v2 (veto + score) ----
+        # ---- Quality Gate QC-1: Post-Collection Data Check ----
+        Write-Log -Msg "[QC-1] Running data quality check after collection..."
+        $qcScript = Join-Path $rootDir "代码文件\tools\check_data_quality.ps1"
+        $dataFullPath = Join-Path $rootDir "代码文件\数据\data_full.json"
+        $qcResult1 = & $qcScript -Mode daily_sim -DataFile $dataFullPath -RootDir $rootDir 2>&1
+        try {
+            $qcJson1 = $qcResult1 | ConvertFrom-Json
+            if (-not $qcJson1.Passed -or $qcJson1.Flag -eq "cached") {
+                Write-Log -Msg "[QC-1] DATA QUALITY FAILED (Flag: $($qcJson1.Flag), Passed: $($qcJson1.Passed))" -Level "ERROR"
+                Write-Log -Msg "[QC-1] Degraded: $($qcJson1.DegradedFields -join ', '); Cached: $($qcJson1.CachedFields -join ', ')"
+                Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: data quality gate failed (Flag: $($qcJson1.Flag))"
+                exit 1
+            }
+            Write-Log -Msg "[QC-1] Data quality check PASSED (Flag: $($qcJson1.Flag))"
+        } catch {
+            Write-Log -Msg "[QC-1] Quality check script error: $_" -Level "ERROR"
+            Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: quality check script crashed"
+            exit 1
+        }
         Write-Log -Msg "[3/7] Running scoring engine v2.9..."
         $scoringScript = Join-Path $logicDir "scoring_engine_v2.py"
         python $scoringScript --date $Date 2>&1 | ForEach-Object { Write-Log -Msg $_ }
@@ -207,6 +225,25 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         $backfillResult = & python $backfillScript 2>&1
         Write-Log -Msg ("Backfill: " + ($backfillResult -join "; "))
         Write-Host "[Phase 3.5] 收益回填完成" -ForegroundColor Cyan
+
+        # ---- Quality Gate QC-2: Post-Scoring Data Check ----
+        Write-Log -Msg "[QC-2] Running data quality check after scoring..."
+        $scoredPath = Join-Path $rootDir "代码文件\数据\data_scored.json"
+        $qcResult2 = & $qcScript -Mode daily_sim -DataFile $scoredPath -RootDir $rootDir 2>&1
+        try {
+            $qcJson2 = $qcResult2 | ConvertFrom-Json
+            if (-not $qcJson2.Passed) {
+                Write-Log -Msg "[QC-2] SCORED DATA QUALITY FAILED (Flag: $($qcJson2.Flag))" -Level "ERROR"
+                Write-Log -Msg "[QC-2] Degraded: $($qcJson2.DegradedFields -join ', '); Cached: $($qcJson2.CachedFields -join ', ')"
+                Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-2: scored data quality gate failed"
+                exit 1
+            }
+            Write-Log -Msg "[QC-2] Scored data quality check PASSED (Flag: $($qcJson2.Flag))"
+        } catch {
+            Write-Log -Msg "[QC-2] Quality check script error: $_" -Level "ERROR"
+            Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-2: quality check script crashed"
+            exit 1
+        }
 
         # ---- Phase 4: Generate report ----
         Write-Log -Msg "[4/7] Generating report..."
@@ -228,7 +265,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         }
 
         # ---- Phase 6: Archive data ----
-        Write-Log -Msg "[6/7] Archiving daily data..."
+        Write-Log -Msg "[6/7] 情墨iving daily data..."
         & $archiveScript -Date $Date
         if ($LASTEXITCODE -ne 0) {
             Write-Log -Msg "Archive step failed (exit: $LASTEXITCODE)" -Level "ERROR"
@@ -268,7 +305,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
             Write-Warning "[Phase 7.5] data_scored.json 不存在: $scoredFile，跳过每日荐股模拟交易"
         }
 
-        # ---- Phase 7.6: 综合审计 (Gauge 审计官) ----
+        # ---- Phase 7.6: 综合审计 (旧影 审计官) ----
         Write-Host "`n[Phase 7.6/7] 综合审计..." -ForegroundColor Cyan
         $auditScript = Join-Path $rootDir "代码文件\监督机制\run_full_audit.ps1"
         if (Test-Path $auditScript) {

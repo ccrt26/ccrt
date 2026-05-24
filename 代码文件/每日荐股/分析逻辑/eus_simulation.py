@@ -7,7 +7,7 @@
 import json, os, random
 from datetime import datetime
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 SCORED_FILE = os.path.join(ROOT, "代码文件", "数据", "data_scored.json")
 FULL_FILE = os.path.join(ROOT, "代码文件", "数据", "data_full.json")
 OUT_DIR = os.path.join(ROOT, "历史数据", "临时回溯")

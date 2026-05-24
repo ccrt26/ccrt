@@ -20,7 +20,7 @@
 param([switch]$Unregister)
 
 $taskName = "铁律量化-开机追赶"
-$catchupScript = "C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\catchup_launcher.ps1"
+$catchupScript = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\代码文件\每日荐股\scripts\catchup_launcher.ps1"
 $startupDir = [Environment]::GetFolderPath("Startup")
 $shortcutPath = Join-Path $startupDir "$taskName.lnk"
 
@@ -56,7 +56,7 @@ $WshShell = New-Object -ComObject WScript.Shell
 $shortcut = $WshShell.CreateShortcut($shortcutPath)
 $shortcut.TargetPath = "powershell.exe"
 $shortcut.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$catchupScript`""
-$shortcut.WorkingDirectory = "C:\Users\34269\Documents\Claude\股票分析"
+$shortcut.WorkingDirectory = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $shortcut.WindowStyle = 7   # Minimized
 $shortcut.Description = "铁律量化 · 登录时检查并追赶因关机错过的定时任务"
 $shortcut.Save()

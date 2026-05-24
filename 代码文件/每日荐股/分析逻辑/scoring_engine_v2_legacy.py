@@ -20,7 +20,7 @@ v2.8 核心变更 (权重重构+相位折扣+CAR5修复):
 import json, math, os, sys
 from datetime import date
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 DATA_FILE = os.path.join(ROOT, "代码文件", "数据", "data_full.json")
 OUTPUT_FILE = os.path.join(ROOT, "代码文件", "数据", "data_scored.json")
 THEME_WHITELIST_FILE = os.path.join(ROOT, "每日荐股", "配置", "industry_whitelist.json")
@@ -128,7 +128,7 @@ def calc_ema(values, n):
     return result
 
 def calc_atr(highs, lows, closes, period=14):
-    """计算 ATR(14) (Vega v2026-05-24)"""
+    """计算 ATR(14) (流金 v2026-05-24)"""
     result = []
     trs = []
     for i in range(len(closes)):
@@ -1440,7 +1440,7 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         s["RSI"] = round(rsi, 1)
         s["VolRatio"] = round(vol_ratio, 2)
 
-        # ATR14 calculation (Vega v2026-05-24)
+        # ATR14 calculation (流金 v2026-05-24)
         highs = s.get("KHigh", [])
         lows = s.get("KLow", [])
         if highs and lows and closes and len(highs) >= 15 and len(lows) >= 15 and len(closes) >= 15:
@@ -2277,7 +2277,7 @@ def main(run_date=None, verbose=False):
             "PathTag": s.get("PathTag", "震荡"),
             "TechAnalysis": s.get("TechAnalysis", ""),
             "SectorPhase": s.get("SectorPhase", ""),
-            "ATR14": s.get("ATR14", 0),  # Vega v2026-05-24
+            "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
         } for s in passed[:25]],  # 限制推荐不超过25只
         "AllStocks": passed,  # 仅含通过股
         "VetoedStocks": [{  # v2.4.1: VetoedStocks供内部审计用，不再在HTML报告中展示
@@ -2303,9 +2303,9 @@ def main(run_date=None, verbose=False):
             "VolumePercentile": s.get("VolumePercentile"),
             "PathTag": s.get("PathTag", "震荡"),
             "SectorPhase": s.get("SectorPhase", ""),
-            "ATR14": s.get("ATR14", 0),  # Vega v2026-05-24
+            "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
         } for s in vetoed],
-        "data_quality": {  # Pulse v2026-05-24
+        "data_quality": {  # 玉夜 v2026-05-24
             "flag": "normal",
             "degraded_fields": [],
             "cached_fields": [],

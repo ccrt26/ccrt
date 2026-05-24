@@ -150,7 +150,7 @@ function Get-RiskCooldownState {
     return @{ InCooldown = $true; DaysRemaining = $remaining }
 }
 
-# ---- 大盘系统性熔断 (Sentinel v2026-05-24) ----
+# ---- 大盘系统性熔断 (山猫 v2026-05-24) ----
 # 返回: @{ Level="none"|"warn"|"meltdown"; Action=""; SkipOpen=$false; ForceReduce=$false }
 function Get-MarketCircuitBreaker {
     param(
@@ -179,7 +179,7 @@ function Get-MarketCircuitBreaker {
     return $result
 }
 
-# ---- 板块相位持仓检查 (Sentinel v2026-05-24) ----
+# ---- 板块相位持仓检查 (山猫 v2026-05-24) ----
 # 返回: @{ Warnings=@(); ForceReduce=@() }
 function Get-SectorPhaseAlerts {
     param(
@@ -214,7 +214,7 @@ function Get-SectorPhaseAlerts {
     return @{ Warnings = $warnings; ForceReduce = $forceReduce }
 }
 
-# ---- 行业集中度检查 (Vega v2026-05-24) ----
+# ---- 行业集中度检查 (流金 v2026-05-24) ----
 function Get-IndustryConcentration {
     param(
         [hashtable]$Positions,

@@ -1,6 +1,6 @@
 # 规则红线 MD→DOCX 转换
 param([string]$Version = "v1.14")
-$root = "C:\Users\34269\Documents\Claude\股票分析"
+$root = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $md = "$root\规则红线\分析的规则红线--Claude_$Version.md"
 $docx = "$root\规则红线\分析的规则红线--Claude_$Version.docx"
 if (-not (Test-Path $md)) { Write-Error "未找到: $md"; exit 1 }

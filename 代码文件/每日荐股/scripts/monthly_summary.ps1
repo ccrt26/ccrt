@@ -12,7 +12,7 @@
 
 param(
     [string]$Month = (Get-Date).AddMonths(-1).ToString("yyyy-MM"),
-    [string]$SourceDir = "C:\Users\34269\Documents\Claude\股票分析"
+    [string]$SourceDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 )
 
 $archiveRoot = Join-Path $SourceDir "历史数据"

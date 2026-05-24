@@ -636,7 +636,7 @@ function New-OoxmlDoc {
 }
 
 # Main generation
-$docPath = [System.IO.Path]::GetFullPath("C:\Users\34269\Documents\Claude\股票分析\每日荐股\分析逻辑\每日荐股分析逻辑白皮书_v2.2.docx")
+$docPath = [System.IO.Path]::GetFullPath("Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\每日荐股\分析逻辑\每日荐股分析逻辑白皮书_v2.2.docx")
 $tmpZip = [System.IO.Path]::GetTempFileName() + ".zip"
 
 $bodyContent = New-OoxmlDoc

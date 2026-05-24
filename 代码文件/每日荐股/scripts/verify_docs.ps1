@@ -11,7 +11,7 @@
 param(
     [Parameter(Mandatory = $true)][string]$DocName,
     [Parameter(Mandatory = $true)][string]$ExpectedVersion,
-    [string]$BaseDir = "C:\Users\34269\Documents\Claude\股票分析\每日荐股\事后评估"
+    [string]$BaseDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\每日荐股\事后评估"
 )
 $errors = @(); $warnings = @()
 Write-Output "============================================"

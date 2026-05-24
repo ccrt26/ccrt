@@ -13,7 +13,7 @@ from . import (
     PE_COND_EXEMPT_SCORE, C3_EXEMPT_SCORE, C5_EXEMPT_SCORE, FIELD_SOURCE_MAP,
 )
 
-# L2 风控模块 — 每条规则引用红线条款编号，变更须经 Vega 复核
+# L2 风控模块 — 每条规则引用红线条款编号，变更须经 流金 复核
 # 交叉导入:
 from .theme import classify_theme, check_theme_purity, load_industry_whitelist
 from .technical import calc_ma

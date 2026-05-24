@@ -1,0 +1,46 @@
+{
+  "_schema_version": "1.0",
+  "_description": "铁律量化项目统一配置 — 所有路径由此派生，换机器只需改rootDir",
+  "rootDir": "__AUTO__",
+  "paths": {
+    "dataDir": "代码文件/数据",
+    "cacheDir": "历史数据/cache",
+    "scriptsDir": "代码文件/每日荐股/scripts",
+    "logicDir": "代码文件/每日荐股/分析逻辑",
+    "toolsDir": "代码文件/tools",
+    "dailyReportDir": "每日荐股/股票报告",
+    "dailyEvalDir": "每日荐股/事后评估",
+    "keystockDir": "重点股票",
+    "keystockReportDir": "重点股票/股票报告",
+    "keystockEvalDir": "重点股票/次日评估",
+    "keystockPredictDir": "重点股票/预判记录",
+    "simTradingDir": "模拟交易",
+    "simLogDir": "模拟交易/日志",
+    "operationsDir": "每日荐股/运营记录",
+    "redlinesDir": "代码文件/规则红线",
+    "auditDir": "审计报告",
+    "supervisorDir": "代码文件/监督机制"
+  },
+  "tiers": {
+    "S_core": "历史数据/00_核心交易",
+    "A_snapshot": "历史数据/01_交易快照",
+    "A_eval": "历史数据/02_评估数据",
+    "A_reports": "历史数据/03_分析报告",
+    "B_raw": "历史数据/04_原始数据",
+    "B_ref": "历史数据/05_参考数据",
+    "A_monthly": "历史数据/06_月度归档",
+    "S_backup": "历史数据/_backup",
+    "C_cache": "历史数据/cache"
+  },
+  "encoding": {
+    "json": "UTF8NoBOM",
+    "csv": "UTF8",
+    "log": "UTF8"
+  },
+  "cleanup": {
+    "cacheMaxFiles": 500,
+    "cacheMaxAgeHours": 168,
+    "archiveRetentionDays": 90,
+    "keepLatestCount": 60
+  }
+}

@@ -19,7 +19,7 @@
   .\audit_on_boot.ps1 -Force   强制执行完整审计
   .\audit_on_boot.ps1 -Quick   仅日检模式
 .NOTES
-  版本: v1.0 | 2026-05-23 | 创建人: 阿黑 (for Gauge)
+  版本: v1.0 | 2026-05-23 | 创建人: 阿黑 (for 旧影)
 #>
 
 param(
@@ -28,7 +28,7 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $auditDir = Join-Path $rootDir "历史数据\审计报告"
 $supervisorDir = Join-Path $rootDir "代码文件\监督机制"
 $redlinesDir = Join-Path $rootDir "代码文件\规则红线"
@@ -201,7 +201,7 @@ function Invoke-FullAudit {
 # ==============================
 # 主逻辑
 # ==============================
-Write-AuditLog "===== Gauge 开机审计启动 ====="
+Write-AuditLog "===== 旧影 开机审计启动 ====="
 Write-AuditLog "启动时间: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 Write-AuditLog "计算机名: $env:COMPUTERNAME"
 

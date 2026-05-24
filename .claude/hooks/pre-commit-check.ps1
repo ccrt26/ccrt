@@ -240,7 +240,7 @@ try {
     }
 
     # E5: 新增AI禁止读取文件
-    $ForbiddenPatterns = @('\.env$','\.env\.','credentials','secret','password','token','\.pem$','\.key$','\.pfx$','\.p12$','private_key','privatekey','id_rsa','id_ed25519','id_ecdsa','\.htpasswd$','oauth','service_account\.json$','settings\.local\.json$')
+    $ForbiddenPatterns = @('\.env$','\.env\.','credentials\.(json|txt|yml|yaml|env|conf)$','secret\.(json|txt|yml|yaml)$','password','(?:^|[\\/])token\.(json|txt|yml|yaml|env)$','\.pem$','\.key$','\.pfx$','\.p12$','private_key','privatekey','id_rsa','id_ed25519','id_ecdsa','\.htpasswd$','oauth','service_account\.json$','settings\.local\.json$')
     foreach ($nf in $NewFiles) {
         foreach ($pat in $ForbiddenPatterns) {
             if (($nf -replace '\\','/') -match $pat) {
@@ -250,6 +250,51 @@ try {
         }
     }
     Write-Log "PASS" "Check E complete"
+
+    # ========================================================================
+    # Check F: Code File Write Protection — 代码文件写入保护 (§八 操作三级分类)
+    # F1. 检查staged文件是否在 代码文件/ 目录下
+    # F2. 若是，检查 .claude/pipeline_active.json 是否存在且 executor=红结
+    # F3. 无合法令牌 → BLOCK提交，强制走§七工程交付管线
+    # ========================================================================
+    Write-Log "PASS" "===== Check F: Code File Write Protection ====="
+    $StagedCodeFiles = $StagedFiles | Where-Object {
+        $_ -match '^代码文件[\\/]' -or $_ -match '^代码文件/'
+    }
+    if ($StagedCodeFiles.Count -gt 0) {
+        Write-Log "PASS" "Code files staged ($($StagedCodeFiles.Count) files):"
+        foreach ($cf in $StagedCodeFiles) { Write-Log "PASS" "  - $cf" }
+
+        $PipelineToken = Join-Path $ProjectRoot ".claude\pipeline_active.json"
+        $PipelineValid = $false
+        if (Test-Path $PipelineToken) {
+            try {
+                $token = Get-Content $PipelineToken -Raw -Encoding UTF8 | ConvertFrom-Json
+                if ($token.active -eq $true -and $token.executor -eq "红结") {
+                    $PipelineValid = $true
+                    Write-Log "PASS" "F2 PASS: Pipeline active, executor=红结, stage=$($token.stage)"
+                } else {
+                    $exec = if ($token) { $token.executor } else { "null" }
+                    $act = if ($token) { $token.active } else { "null" }
+                    Write-Log "BLOCK" "F2 BLOCK: Pipeline token invalid (active=$act, executor=$exec, need 红结)"
+                }
+            } catch {
+                Write-Log "BLOCK" "F2 BLOCK: Pipeline token corrupted: $_"
+            }
+        } else {
+            Write-Log "BLOCK" "F2 BLOCK: No pipeline token found. Code file changes require pipeline (情墨->新安+旧影->红结->新安->红枫)"
+        }
+
+        if (-not $PipelineValid) {
+            Write-Log "BLOCK" "F3 BLOCK: Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'"
+            Write-Log "BLOCK" "  Staged code files:"
+            foreach ($cf in $StagedCodeFiles) { Write-Log "BLOCK" "    $cf" }
+            $script:HasError = $true
+        }
+    } else {
+        Write-Log "PASS" "F1 PASS: No code files staged. Check F skipped."
+    }
+    Write-Log "PASS" "Check F complete"
 }
 catch {
     Write-Log "ERROR" "Script exception: $_"

@@ -4,6 +4,10 @@
       {
         "matcher": "Bash(*.ps1) || Bash(*.py) || Bash(python *)",
         "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\监督机制\\PreToolUse_hook.ps1\""
+      },
+      {
+        "matcher": "Edit(*) || Write(*)",
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\监督机制\\write_protection_hook.ps1\""
       }
     ]
   },

@@ -75,6 +75,6 @@ function Invoke-ExistingScript {
 Write-Host ""
 Write-Host "╔══════════════════════════════════════╗" -ForegroundColor Cyan
 Write-Host "║  铁律量化 · 综合审计 (Phase 1)        ║" -ForegroundColor Cyan
-Write-Host "║  Gauge 审计官 | $Date              ║" -ForegroundColor Cyan
+Write-Host "║  旧影 审计官 | $Date              ║" -ForegroundColor Cyan
 Write-Host "╚══════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""

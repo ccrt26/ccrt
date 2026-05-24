@@ -21,9 +21,24 @@ function Get-StockFinancial {
         $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
         $json = $r.Content | ConvertFrom-Json
         if ($json.result -and $json.result.data) {
-            $script:SourceUsed["Financial"] = "东方财富"
-            Save-DataCache -Key "Financial_$Code" -Data $json.result.data
-            return $json.result.data
+            # P0-1: 字段合理性校验 — 关键字段为0则尝试THS降级
+            $latest = $json.result.data[0]
+            $hasDataIssue = $false
+            if ($latest.PSObject.Properties.Name -contains 'OPERATE_COST') {
+                $operateCost = [double]$latest.OPERATE_COST
+                $operateIncome = [double]$latest.TOTAL_OPERATE_INCOME
+                if ($operateCost -eq 0 -and $operateIncome -gt 0) { $hasDataIssue = $true }
+            }
+            if ($latest.PSObject.Properties.Name -contains 'DEBT_ASSET_RATIO') {
+                if ([double]$latest.DEBT_ASSET_RATIO -eq 0) { $hasDataIssue = $true }
+            }
+            if (-not $hasDataIssue) {
+                $script:SourceUsed["Financial"] = "东方财富"
+                Save-DataCache -Key "Financial_$Code" -Data $json.result.data
+                return $json.result.data
+            } else {
+                Write-Warning "[财务] 东方财富关键字段异常(OPERATE_COST=0或DEBT_ASSET_RATIO=0)，尝试THS降级"
+            }
         }
     } catch {
         Write-Warning "Get-StockFinancial failed for $Code : $_"

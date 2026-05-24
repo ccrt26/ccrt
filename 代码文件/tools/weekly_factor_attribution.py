@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-铁律量化 · 周度因子归因脚本 (Alpha v2026-05-24)
+铁律量化 · 周度因子归因脚本 (青山 v2026-05-24)
 =================================================
 从每日荐股模拟交易流水提取子维度归因，输出周度报告。
 调度: 每周一 09:00 自动运行
@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta
 from collections import defaultdict
 import math
 
-ROOT = r"C:\Users\34269\Documents\Claude\股票分析"
+ROOT = r"Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 TXN_FILE = os.path.join(ROOT, "模拟交易", "每日荐股赛道", "持仓记录", "transactions_daily.csv")
 OUT_DIR = os.path.join(ROOT, "模拟交易", "每日荐股赛道", "周报")
 PERF_FILE = os.path.join(ROOT, "模拟交易", "每日荐股赛道", "绩效报告", "perf_summary_daily.json")

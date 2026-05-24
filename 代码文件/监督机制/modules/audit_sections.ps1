@@ -233,6 +233,33 @@ if (Test-Path $scoringScript) {
     else { Add-Check 'D' '3' 'PE(TTM)计算路径' 'WARN' "未检测到PE计算" }
 }
 
+# D-4: Schema版本一致性 (P2-4)
+$keyDataFiles = @(
+    @{Path="代码文件\数据\data_scored.json"; Name="data_scored"},
+    @{Path="代码文件\数据\data_final.json"; Name="data_final"},
+    @{Path="代码文件\数据\dynamic_pool.json"; Name="dynamic_pool"}
+)
+$schemaVersions = @{}
+foreach ($df in $keyDataFiles) {
+    $dfFull = Join-Path $rootDir $df.Path
+    if (Test-Path $dfFull) {
+        try {
+            $content = Get-Content $dfFull -Raw -Encoding UTF8 | ConvertFrom-Json
+            $ver = if ($content._schema_version) { $content._schema_version } else { "缺失" }
+            $schemaVersions[$df.Name] = $ver
+        } catch { $schemaVersions[$df.Name] = "解析失败" }
+    }
+}
+$missingSchema = ($schemaVersions.GetEnumerator() | Where-Object { $_.Value -eq "缺失" }).Count
+$mismatchSchema = ($schemaVersions.GetEnumerator() | Where-Object { $_.Value -ne "缺失" -and $_.Value -ne "1.0" }).Count
+if ($missingSchema -eq 0 -and $mismatchSchema -eq 0) {
+    Add-Check 'D' '4' 'Schema版本一致性' 'PASS' "所有核心数据文件 _schema_version=1.0"
+} elseif ($missingSchema -gt 0) {
+    Add-Check 'D' '4' 'Schema版本一致性' 'WARN' "$missingSchema 个文件缺少 _schema_version 字段"
+} else {
+    Add-Check 'D' '4' 'Schema版本一致性' 'FAIL' "Schema版本不一致: $($schemaVersions.GetEnumerator() | ForEach-Object { \"$($_.Key)=$($_.Value)\" }) -join '; '"
+}
+
 # ============================================================
 # Section E: 文件系统卫生 (每周)
 # ============================================================

@@ -12,7 +12,7 @@ param(
 # ============================================================
 # 配置
 # ============================================================
-$rootDir = "C:\Users\34269\Documents\Claude\股票分析"
+$rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $evalRoot = Join-Path $rootDir "重点股票\次日评估"
 $modulePath = Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1"
 $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -823,7 +823,7 @@ foreach ($sr in $signalResults) {
             target_section = "§1.1-1.5"
             proposed_change = "审查$($sr.Name)信号参数/阈值"
             priority = "P2"
-            status = "待Alpha审查"
+            status = "待青山审查"
         }
     }
 }
@@ -845,7 +845,7 @@ if ($allMatchedCount -ge 20) {
                 target_section = "§3.1.1"
                 proposed_change = "审查评分阈值，优秀/良好区间区分度不足"
                 priority = "P1"
-                status = "待Alpha审查"
+                status = "待青山审查"
             }
         }
     }

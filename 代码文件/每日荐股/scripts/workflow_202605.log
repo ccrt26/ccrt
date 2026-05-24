@@ -2,7 +2,7 @@
 [2026-05-22 19:05:55][INFO] ===== Starting Post-Evaluation =====
 [2026-05-22 19:05:55][INFO] Running evaluation: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\run_daily_eval.ps1
 [2026-05-22 19:06:02][ERROR] Evaluation script failed (exit: )
-[2026-05-22 19:06:02][INFO] Archiving evaluation data...
+[2026-05-22 19:06:02][INFO] 情墨iving evaluation data...
 [2026-05-22 19:06:02][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
 [2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
 [2026-05-22 19:06:02][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
@@ -50,7 +50,7 @@
 [2026-05-22 19:11:23][INFO] ===== Starting Post-Evaluation =====
 [2026-05-22 19:11:23][INFO] Running evaluation: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\run_daily_eval.ps1
 [2026-05-22 19:11:33][ERROR] Evaluation script failed (exit: )
-[2026-05-22 19:11:33][INFO] Archiving evaluation data...
+[2026-05-22 19:11:33][INFO] 情墨iving evaluation data...
 [2026-05-22 19:11:33][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
 [2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
 [2026-05-22 19:11:33][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json
@@ -211,7 +211,7 @@
 [2026-05-22 20:42:26][INFO] Report generated successfully
 [2026-05-22 20:42:26][INFO] [5/6] Running keystock analysis...
 [2026-05-22 20:44:11][INFO] Keystock analysis completed
-[2026-05-22 20:44:11][INFO] [6/6] Archiving daily data...
+[2026-05-22 20:44:11][INFO] [6/6] 情墨iving daily data...
 [2026-05-22 20:44:11][ARCHIVE][INFO] ===== 开始归档 (2026-05-22) =====
 [2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\daily_pool\20260522_dynamic_pool.json
 [2026-05-22 20:44:11][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\raw_data\20260522_data_full.json

@@ -22,7 +22,8 @@ param(
 )
 
 $taskPrefix = "TieLv"
-$scriptsDir = "C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts"
+$rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+$scriptsDir = Join-Path $rootDir "代码文件\每日荐股\scripts"
 $psPath = "powershell.exe"
 $psArgs = '-NoProfile -ExecutionPolicy Bypass -File'
 
