@@ -1,0 +1,49 @@
+name: 模拟交易自动执行
+
+on:
+  schedule:
+    - cron: "35 1 * * 1-5"  # 北京时间 09:35 周一至周五
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sim-trading:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config user.name "铁律量化"
+          git config user.email "tielv@bot"
+
+      - name: Run Key Stock Sim
+        run: |
+          $dateStr = Get-Date -Format 'yyyyMMdd'
+          Write-Host "=== 重点股票赛道: $dateStr ==="
+          & "模拟交易/交易引擎/sim_trading.ps1" -Date $dateStr -RootDir $env:GITHUB_WORKSPACE -Force
+        shell: powershell
+
+      - name: Run Daily Rec Sim
+        run: |
+          $dateStr = Get-Date -Format 'yyyyMMdd'
+          Write-Host "=== 每日荐股赛道: $dateStr ==="
+          & "模拟交易/每日荐股赛道/交易引擎/sim_trading_daily.ps1" -Date $dateStr -RootDir $env:GITHUB_WORKSPACE -Force
+        shell: powershell
+
+      - name: Commit and Push
+        run: |
+          git add -A
+          $hasChanges = git diff --staged --quiet; $hasChanges = $LASTEXITCODE
+          if ($hasChanges -ne 0) {
+            $dateStr = Get-Date -Format 'yyyyMMdd'
+            git commit -m "sim: ${dateStr} 模拟交易自动执行"
+            git push
+            Write-Host "Changes committed and pushed."
+          } else {
+            Write-Host "No changes to commit."
+          }
+        shell: powershell

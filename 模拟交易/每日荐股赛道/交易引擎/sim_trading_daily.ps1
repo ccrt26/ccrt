@@ -19,7 +19,8 @@ param(
     [string]$Date = (Get-Date -Format "yyyyMMdd"),
     [string]$DataFile = "",
     [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
-    [switch]$DryRun = $false
+    [switch]$DryRun = $false,
+    [switch]$Force = $false
 )
 
 $simDir = Join-Path $RootDir "模拟交易"
@@ -60,7 +61,7 @@ if (-not (Test-IsTradingDay -Date $Date)) {
 $currentTime = Get-Date
 $cutoffTime = Get-Date -Hour 9 -Minute 45 -Second 0
 $skipOpenNewPositions = $false
-if ($currentTime -gt $cutoffTime) {
+if (-not $Force -and $currentTime -gt $cutoffTime) {
     $skipOpenNewPositions = $true
     Write-Log "Past 09:45, skip new positions" "WARN"
 }

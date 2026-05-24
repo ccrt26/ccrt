@@ -23,7 +23,8 @@ param(
     [string]$Date = (Get-Date -Format "yyyyMMdd"),
     [string]$DataFile = "",
     [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
-    [switch]$DryRun = $false
+    [switch]$DryRun = $false,
+    [switch]$Force = $false
 )
 
 # ============================================================
@@ -377,7 +378,7 @@ if ($holidays2026 -contains $Date) {
 # ---- 时间检查: 09:45 超时 ----
 $currentTime = Get-Date
 $cutoffTime = Get-Date -Hour 9 -Minute 45 -Second 0
-if ($currentTime -gt $cutoffTime) {
+if (-not $Force -and $currentTime -gt $cutoffTime) {
     $script:skipOpenNewPositions = $true
     Write-Log "当前时间 $($currentTime.ToString('HH:mm')) 超过 09:45，禁止开新仓" "WARN"
 } else {
