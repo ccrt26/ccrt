@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     数据质检脚本 — 每日荐股模拟交易前置检查 (玉夜设计)
 .DESCRIPTION
@@ -96,7 +96,8 @@ if ($DataFile -and (Test-Path $DataFile)) {
     try {
         $data = Get-Content $DataFile -Raw -Encoding UTF8 | ConvertFrom-Json
         $recCount = 0
-        if ($data.Recommendations) { $recCount = @($data.Recommendations).Count }
+        $records = if ($data.Recommendations) { $data.Recommendations } elseif ($data.Stocks) { $data.Stocks } else { @() }
+        $recCount = @($records).Count
 
         if ($recCount -lt 20) {
             Add-Check "推荐股票数" $false "WARN" "仅${recCount}只(<20), 异常少"
@@ -105,15 +106,18 @@ if ($DataFile -and (Test-Path $DataFile)) {
         }
 
         # null值穿透检查
-        $nullFields = @()
-        foreach ($r in $data.Recommendations) {
-            if (-not $r.TotalScore -or $r.TotalScore -lt 0) { $nullFields += "$($r.Code):TotalScore" }
-            if (-not $r.MA5) { $nullFields += "$($r.Code):MA5" }
-            if (-not $r.MA10) { $nullFields += "$($r.Code):MA10" }
-            if (-not $r.MA20) { $nullFields += "$($r.Code):MA20" }
+        $nullCritical = @()  # TotalScore → ERROR
+        $nullDegraded = @()  # MA/技术指标 → WARN
+        foreach ($r in $records) {
+            if (-not $r.TotalScore -or $r.TotalScore -lt 0) { $nullCritical += "$($r.Code):TotalScore" }
+            if (-not $r.MA5) { $nullDegraded += "$($r.Code):MA5" }
+            if (-not $r.MA10) { $nullDegraded += "$($r.Code):MA10" }
+            if (-not $r.MA20) { $nullDegraded += "$($r.Code):MA20" }
         }
-        if ($nullFields.Count -gt 0) {
-            Add-Check "null值穿透" $false "ERROR" "检测到null关键字段: $($nullFields -join ', ')"
+        if ($nullCritical.Count -gt 0) {
+            Add-Check "null值穿透" $false "ERROR" "检测到null关键字段: $($nullCritical -join ', ')"
+        } elseif ($nullDegraded.Count -gt 0) {
+            Add-Check "null值穿透" $true "WARN" "技术指标缺失(K线降级): $($nullDegraded -join ', ')"
         } else {
             Add-Check "null值穿透" $true "INFO" "无null关键字段"
         }

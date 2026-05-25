@@ -171,8 +171,30 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
     if ($LogOnly) {
         Write-Log -Msg "[LogOnly] Skipping analysis"
     } else {
+        # ---- Phase 0: Health Check (pre-flight) ----
+        Write-Log -Msg "[0/7] Running pre-flight health check..."
+        $healthScript = Join-Path $rootDir "代码文件\tools\health_check.ps1"
+        $dataFullPath = Join-Path $rootDir "代码文件\数据\data_full.json"
+        if (Test-Path $healthScript) {
+            $healthResult = & $healthScript -Mode daily_sim -DataFile $dataFullPath -RootDir $rootDir 2>&1
+            try {
+                $healthJson = $healthResult | Select-Object -Last 1 | ConvertFrom-Json
+                if ($healthJson.Flag -eq "blocked" -or $healthJson.AlertLevel -eq "L3") {
+                    Write-Log -Msg "[HEALTH] L3 BLOCKED — 数据健康检测不通过, 停止全部下游流水线" -Level "ERROR"
+                    Write-Log -Msg "[HEALTH] $($healthJson.Messages -join '; ')"
+                    Write-Record -Date $Date -Mode $Mode -Status "BLOCKED" -Notes "Health check L3: $($healthJson.Flag)"
+                    exit 1
+                }
+                Write-Log -Msg "[HEALTH] Pre-flight PASSED (Level: $($healthJson.AlertLevel), Flag: $($healthJson.Flag))"
+            } catch {
+                Write-Log -Msg "[HEALTH] Health check parse error, proceeding with caution: $_" -Level "WARN"
+            }
+        } else {
+            Write-Log -Msg "[HEALTH] Health check script not found, skipping" -Level "WARN"
+        }
+
         # ---- Phase 1: Build dynamic pool ----
-        Write-Log -Msg "[1/6] Building dynamic pool..."
+        Write-Log -Msg "[1/7] Building dynamic pool..."
         $poolScript = Join-Path $scriptsDir "build_dynamic_pool.ps1"
         & $poolScript
         if ($LASTEXITCODE -ne 0) {
@@ -191,25 +213,48 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
             Write-Log -Msg "Data collection completed"
         }
 
-        # ---- Quality Gate QC-1: Post-Collection Data Check ----
-        Write-Log -Msg "[QC-1] Running data quality check after collection..."
-        $qcScript = Join-Path $rootDir "代码文件\tools\check_data_quality.ps1"
-        $dataFullPath = Join-Path $rootDir "代码文件\数据\data_full.json"
-        $qcResult1 = & $qcScript -Mode daily_sim -DataFile $dataFullPath -RootDir $rootDir 2>&1
-        try {
-            $qcJson1 = $qcResult1 | ConvertFrom-Json
-            if (-not $qcJson1.Passed -or $qcJson1.Flag -eq "cached") {
-                Write-Log -Msg "[QC-1] DATA QUALITY FAILED (Flag: $($qcJson1.Flag), Passed: $($qcJson1.Passed))" -Level "ERROR"
-                Write-Log -Msg "[QC-1] Degraded: $($qcJson1.DegradedFields -join ', '); Cached: $($qcJson1.CachedFields -join ', ')"
-                Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: data quality gate failed (Flag: $($qcJson1.Flag))"
-                exit 1
+        # ---- Quality Gate QC-1: Post-Collection Data Check (max 3 retries) ----
+        $maxRetries = 3
+        $retryCount = 0
+        $qc1Passed = $false
+        do {
+            $retryCount++
+            Write-Log -Msg "[QC-1] Running data quality check after collection (attempt $retryCount/$maxRetries)..."
+            $qcScript = Join-Path $rootDir "代码文件\tools\check_data_quality.ps1"
+            $dataFullPath = Join-Path $rootDir "代码文件\数据\data_full.json"
+            $qcResult1 = & $qcScript -Mode daily_sim -DataFile $dataFullPath -RootDir $rootDir 2>&1
+            try {
+                $qcJson1 = $qcResult1 | ConvertFrom-Json
+                if (-not $qcJson1.Passed -or $qcJson1.Flag -eq "cached") {
+                    Write-Log -Msg "[QC-1] DATA QUALITY FAILED (Flag: $($qcJson1.Flag), Passed: $($qcJson1.Passed))" -Level "ERROR"
+                    Write-Log -Msg "[QC-1] Degraded: $($qcJson1.DegradedFields -join ', '); Cached: $($qcJson1.CachedFields -join ', ')"
+                    if ($retryCount -ge $maxRetries) {
+                        Write-Log -Msg "[QC-1] FAILED after $maxRetries retries, ABORTING" -Level "ERROR"
+                        Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: data quality gate failed after $maxRetries retries (Flag: $($qcJson1.Flag))"
+                        # Generate health alert HTML
+                        $alertHtml = Join-Path $rootDir "临时报告\health_alert_$($Date -replace '-','').html"
+                        & $healthScript -Mode daily_sim -DataFile $dataFullPath -OutputHtml $alertHtml -RootDir $rootDir 2>&1 | Out-Null
+                        exit 1
+                    }
+                    Write-Log -Msg "[QC-1] Retrying in 30s..." -Level "WARN"
+                    Start-Sleep -Seconds 30
+                    # Re-collect data before retry
+                    Write-Log -Msg "[QC-1] Re-collecting data before retry..."
+                    & $collectScript 2>&1 | Out-Null
+                } else {
+                    $qc1Passed = $true
+                    Write-Log -Msg "[QC-1] Data quality check PASSED (Flag: $($qcJson1.Flag))"
+                }
+            } catch {
+                Write-Log -Msg "[QC-1] Quality check script error: $_" -Level "ERROR"
+                if ($retryCount -ge $maxRetries) {
+                    Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: quality check script crashed after $maxRetries retries"
+                    exit 1
+                }
+                Write-Log -Msg "[QC-1] Retrying in 30s..." -Level "WARN"
+                Start-Sleep -Seconds 30
             }
-            Write-Log -Msg "[QC-1] Data quality check PASSED (Flag: $($qcJson1.Flag))"
-        } catch {
-            Write-Log -Msg "[QC-1] Quality check script error: $_" -Level "ERROR"
-            Write-Record -Date $Date -Mode $Mode -Status "FAILED" -Notes "QC-1: quality check script crashed"
-            exit 1
-        }
+        } while (-not $qc1Passed -and $retryCount -lt $maxRetries)
         Write-Log -Msg "[3/7] Running scoring engine v2.9..."
         $scoringScript = Join-Path $logicDir "scoring_engine_v2.py"
         python $scoringScript --date $Date 2>&1 | ForEach-Object { Write-Log -Msg $_ }
@@ -320,6 +365,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         }
     Write-Record -Date $Date -Mode $Mode -Status "SUCCESS" -Notes ("Analysis done, output: " + $reportDir)
     Write-Log -Msg "===== Daily Stock Analysis Complete ====="
+    }
 }
 
 Write-Log -Msg "Execution Summary:"
