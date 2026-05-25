@@ -31,6 +31,8 @@ $script:SourcePriority = @{
     Northbound = @("东方财富")             # 北向资金（独有）
     Research   = @("东方财富")             # 研报（独有）
     Margin     = @("东方财富")             # 融资融券（独有）
+    Billboard  = @("东方财富")             # 龙虎榜（独有，仅供参考）
+    InstitutionVisit = @("东方财富")       # 机构调研（独有，仅供参考）
 }
 $script:SourceUsed = @{}    # 记录每次调用实际使用的源
 
@@ -50,6 +52,8 @@ $script:CacheTTL = @{
     Northbound = 24   # 北向资金日频
     Research   = 24   # 研报每日更新
     Margin     = 24   # 融资融券每日更新
+    Billboard  = 24   # 龙虎榜日频
+    InstitutionVisit = 24   # 机构调研日频
     PEPercentile = 168 # PE百分位变化慢，7天
 }
 

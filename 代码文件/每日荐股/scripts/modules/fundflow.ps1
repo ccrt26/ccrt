@@ -138,7 +138,148 @@ function Get-PEPercentile {
 }
 
 # ============================================================
-# [8] 北向资金持股（季度）
-# API: datacenter-web.eastmoney.com RPT_MUTUAL_HOLDSTOCKNORTH_STA
-# 返回：北向资金持股数量/市值/占总股本比例
+# [8] 北向资金持股明细
+# API: datacenter.eastmoney.com RPT_MUTUAL_HOLDSTOCKNORTH_STA
+# 返回：北向资金持股数量/市值/占总股本比例 (日频)
 # ============================================================
+function Get-NorthboundDetail {
+    param([Parameter(Mandatory=$true)][string]$Code)
+
+    $cached = Load-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 24
+    if ($cached) {
+        $script:SourceUsed["NorthboundDetail"] = "缓存[C]"
+        return $cached
+    }
+
+    $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
+    $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
+    $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_MUTUAL_HOLDSTOCKNORTH_STA&columns=ALL&filter=(SECUCODE=%22${encoded}%22)&pageSize=5&sortColumns=TRADE_DATE&sortTypes=-1"
+
+    try {
+        $r = Invoke-ThrottledApiCall { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"} }
+        $json = $r.Content | ConvertFrom-Json
+        if (-not $json.result -or -not $json.result.data -or $json.result.data.Count -eq 0) { return $null }
+
+        $data = $json.result.data
+        $latest = $data[0]
+        $result = [PSCustomObject]@{
+            TradeDate         = $latest.TRADE_DATE
+            HoldShares        = [double]$latest.HOLD_SHARES
+            HoldMktCap        = [double]$latest.HOLD_MARKET_CAP
+            HoldRatio         = [double]$latest.HOLD_RATIO
+            FreeHoldRatio     = if ($latest.PSObject.Properties.Name -contains 'FREE_HOLD_RATIO') { [double]$latest.FREE_HOLD_RATIO } else { $null }
+            Change1W          = if ($data.Count -ge 5) { [math]::Round(([double]$data[0].HOLD_SHARES - [double]$data[4].HOLD_SHARES) / [double]$data[4].HOLD_SHARES * 100, 2) } else { $null }
+            Source            = "东方财富"
+        }
+        $script:SourceUsed["NorthboundDetail"] = "东方财富"
+        Save-DataCache -Key "NorthboundDetail_${Code}" -Data $result
+        return $result
+    } catch {
+        Write-Warning "Get-NorthboundDetail failed for $Code : $_"
+    }
+    $script:SourceUsed["NorthboundDetail"] = "失败"
+    $staleCache = Load-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 720
+    if ($staleCache) { Write-Warning "[北向资金] API失败，使用过期缓存兜底"; return $staleCache }
+    return $null
+}
+
+# ============================================================
+# [11] 龙虎榜数据
+# API: datacenter.eastmoney.com RPT_DAILY_BILLBOARD_DETAILS
+# 注意：无免费备源API，标注"仅供参考"
+# ============================================================
+function Get-BillboardDetail {
+    param(
+        [Parameter(Mandatory=$true)][string]$Code,
+        [int]$Days = 20
+    )
+
+    $cached = Load-DataCache -Key "Billboard_${Code}" -TTLHours 24
+    if ($cached) {
+        $script:SourceUsed["Billboard"] = "缓存[C]"
+        return $cached
+    }
+
+    $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
+    $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
+    $startDate = (Get-Date).AddDays(-$Days).ToString("yyyy-MM-dd")
+    $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_DAILY_BILLBOARD_DETAILS&columns=ALL&filter=(SECUCODE=%22${encoded}%22)(TRADE_DATE%3E=%27${startDate}%27)&pageSize=20&sortColumns=TRADE_DATE&sortTypes=-1"
+
+    try {
+        $r = Invoke-ThrottledApiCall { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"} }
+        $json = $r.Content | ConvertFrom-Json
+        if (-not $json.result -or -not $json.result.data -or $json.result.data.Count -eq 0) {
+            $result = @()  # 近期无上榜，正常情况
+        } else {
+            $result = $json.result.data | ForEach-Object {
+                [PSCustomObject]@{
+                    TradeDate    = $_.TRADE_DATE
+                    SecuName     = $_.SECUNAME
+                    BuyAmount    = if ($_.BUY_AMOUNT) { [double]$_.BUY_AMOUNT } else { $null }
+                    SellAmount   = if ($_.SELL_AMOUNT) { [double]$_.SELL_AMOUNT } else { $null }
+                    NetAmount    = if ($_.NET_AMOUNT) { [double]$_.NET_AMOUNT } else { $null }
+                    Reason       = $_.BILLBOARD_REASON
+                    ChangePct3D  = if ($_.PSObject.Properties.Name -contains 'CHANGE_3D') { [double]$_.CHANGE_3D } else { $null }
+                }
+            }
+        }
+        $script:SourceUsed["Billboard"] = "东方财富(仅供参考)"
+        Save-DataCache -Key "Billboard_${Code}" -Data $result
+        return $result
+    } catch {
+        Write-Warning "Get-BillboardDetail failed for $Code : $_"
+    }
+    $script:SourceUsed["Billboard"] = "失败"
+    $staleCache = Load-DataCache -Key "Billboard_${Code}" -TTLHours 720
+    if ($staleCache) { Write-Warning "[龙虎榜] API失败，使用过期缓存兜底"; return $staleCache }
+    return @()
+}
+
+# ============================================================
+# [13] 机构调研记录
+# API: datacenter.eastmoney.com RPT_ORG_INVESTIGATION
+# 注意：无免费备源API，标注"仅供参考"
+# ============================================================
+function Get-InstitutionVisit {
+    param(
+        [Parameter(Mandatory=$true)][string]$Code,
+        [int]$Count = 5
+    )
+
+    $cached = Load-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 24
+    if ($cached) {
+        $script:SourceUsed["InstitutionVisit"] = "缓存[C]"
+        return $cached
+    }
+
+    $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
+    $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
+    $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_ORG_INVESTIGATION&columns=ALL&filter=(SECUCODE=%22${encoded}%22)&pageSize=${Count}&sortColumns=VISIT_DATE&sortTypes=-1"
+
+    try {
+        $r = Invoke-ThrottledApiCall { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"} }
+        $json = $r.Content | ConvertFrom-Json
+        if (-not $json.result -or -not $json.result.data -or $json.result.data.Count -eq 0) {
+            $result = @()
+        } else {
+            $result = $json.result.data | ForEach-Object {
+                [PSCustomObject]@{
+                    VisitDate     = $_.VISIT_DATE
+                    OrgCount      = if ($_.ORG_COUNT) { [int]$_.ORG_COUNT } else { $null }
+                    OrgTypes      = $_.ORG_TYPES
+                    ContentSummary = if ($_.CONTENT_SUMMARY) { $_.CONTENT_SUMMARY.Substring(0, [math]::Min(200, $_.CONTENT_SUMMARY.Length)) } else { "" }
+                    SurveyType    = $_.SURVEY_TYPE
+                }
+            }
+        }
+        $script:SourceUsed["InstitutionVisit"] = "东方财富(仅供参考)"
+        Save-DataCache -Key "InstitutionVisit_${Code}" -Data $result
+        return $result
+    } catch {
+        Write-Warning "Get-InstitutionVisit failed for $Code : $_"
+    }
+    $script:SourceUsed["InstitutionVisit"] = "失败"
+    $staleCache = Load-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 720
+    if ($staleCache) { Write-Warning "[机构调研] API失败，使用过期缓存兜底"; return $staleCache }
+    return @()
+}
