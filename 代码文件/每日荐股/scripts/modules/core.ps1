@@ -1,6 +1,7 @@
-﻿# 铁律量化 - 股票数据获取模块
+﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
+# 铁律量化 - 股票数据获取模块
 # 数据源：腾讯行情[1], 新浪K线[2], 东方财富财务[3][6][7][9][10]
-# 最后更新：2026-05-22
+# 最后更新：2026-05-25
 # 合规状态：详见 §1.5 数据源实测状态
 
 # ============================================================
@@ -114,6 +115,219 @@ function Get-LastUsedSource {
     param([string]$DataName)
     if ($DataName) { return $script:SourceUsed[$DataName] }
     return $script:SourceUsed
+}
+
+# ============================================================
+# 统一数据获取框架 — Source Registry + Invoke-DataSource
+# 设计文档：审计报告/架构设计/design_data_acquisition_framework_v1.0.md
+# 代码等级: L1 (数据源/策略层)
+# ============================================================
+
+# 源注册表（结构化 — name/call/fieldMap/cacheTTL/validate/tier）
+# 每个数据类别的主源+备源+校验规则在此集中声明
+# 新增数据源只需在此注册 + 写API调用函数，引擎自动处理降级链
+$script:SourceRegistry = @{
+    Quote = @{
+        Tier = 1
+        CacheTTL = 1
+        Primary = @{ Name = "腾讯[1]"; Call = $null }
+        Backups = @(
+            @{ Name = "新浪[2]"; Call = $null },
+            @{ Name = "必盈[13]"; Call = $null }
+        )
+        Validate = $null
+    }
+    KLine = @{
+        Tier = 1
+        CacheTTL = 24
+        Primary = @{ Name = "新浪[2]"; Call = $null }
+        Backups = @(
+            @{ Name = "腾讯[1]"; Call = $null },
+            @{ Name = "必盈[13]"; Call = $null }
+        )
+        Validate = $null
+    }
+    Financial = @{
+        Tier = 3
+        CacheTTL = 168
+        Primary = @{ Name = "东方财富[3]"; Call = $null }
+        Backups = @(
+            @{ Name = "同花顺[THS]"; Call = $null },
+            @{ Name = "必盈[13]"; Call = $null }
+        )
+        Validate = @{
+            Fields = @("BASIC_EPS", "TOTAL_OPERATE_INCOME")
+            Rules  = @(">0")
+        }
+    }
+    FundFlow = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富[9]"; Call = $null }
+        Backups = @(
+            @{ Name = "同花顺[THS]"; Call = $null }
+        )
+        Validate = $null
+    }
+    SectorFundFlow = @{
+        Tier = 2
+        CacheTTL = 6
+        Primary = @{ Name = "东方财富[10]"; Call = $null }
+        Backups = @(
+            @{ Name = "同花顺[THS]"; Call = $null }
+        )
+        Validate = $null
+    }
+    Northbound = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富[8]"; Call = $null }
+        Backups = @()   # 独有；2024/08政策变更后个股数据不可得
+        Validate = $null
+    }
+    Research = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富[11]"; Call = $null }
+        Backups = @(
+            @{ Name = "同花顺[THS]"; Call = $null }
+        )
+        Validate = $null
+    }
+    Margin = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富[12]"; Call = $null }
+        Backups = @(
+            @{ Name = "同花顺[THS]"; Call = $null }
+        )
+        Validate = $null
+    }
+    PEPercentile = @{
+        Tier = 1
+        CacheTTL = 72
+        Primary = @{ Name = "计算值"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+    Billboard = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+    InstitutionVisit = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+    FinancialRatios = @{
+        Tier = 3
+        CacheTTL = 168
+        Primary = @{ Name = "东方财富[3]"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+    ScenarioEPS = @{
+        Tier = 3
+        CacheTTL = 168
+        Primary = @{ Name = "计算值"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+    ComparableValuation = @{
+        Tier = 2
+        CacheTTL = 24
+        Primary = @{ Name = "东方财富"; Call = $null }
+        Backups = @()
+        Validate = $null
+    }
+}
+
+# 统一降级引擎 — 所有数据获取函数的标准降级链
+# 流程: 新鲜缓存 → 主源API → 字段校验 → 备源API → 过期缓存兜底
+# 自动追踪 SourceUsed + 降级日志
+function Invoke-DataSource {
+    param(
+        [Parameter(Mandatory=$true)][string]$Category,
+        [Parameter(Mandatory=$true)][string]$CacheKey,
+        [Parameter(Mandatory=$true)][scriptblock]$PrimaryCall,
+        [scriptblock]$BackupCall,
+        [scriptblock]$ValidateBlock,
+        [string]$PrimaryName = "",
+        [string]$BackupName = "",
+        [int]$CacheTTLOverride = 0
+    )
+
+    # 确定缓存TTL（参数覆盖 > 注册表 > 默认24h）
+    $ttl = if ($CacheTTLOverride -gt 0) { $CacheTTLOverride }
+           elseif ($script:CacheTTL.ContainsKey($Category)) { $script:CacheTTL[$Category] }
+           else { 24 }
+
+    # === 步骤1: 检查新鲜缓存 ===
+    $cached = Load-DataCache -Key $CacheKey -TTLHours $ttl
+    if ($cached) {
+        $script:SourceUsed[$Category] = "缓存[C]"
+        return $cached
+    }
+
+    # === 步骤2: 主源API + 字段校验 ===
+    try {
+        $primaryResult = & $PrimaryCall
+        if ($null -ne $primaryResult) {
+            # 字段校验
+            $valid = $true
+            if ($ValidateBlock) {
+                try {
+                    $valid = & $ValidateBlock $primaryResult
+                } catch {
+                    $valid = $false
+                }
+            }
+            if ($valid) {
+                $srcName = if ($PrimaryName) { $PrimaryName } else { "主源" }
+                $script:SourceUsed[$Category] = $srcName
+                Save-DataCache -Key $CacheKey -Data $primaryResult
+                return $primaryResult
+            }
+            Write-Warning "[$Category] 主源字段校验失败，降级到备源"
+        }
+    } catch {
+        Write-Warning "[$Category] 主源API失败: $_"
+    }
+
+    # === 步骤3: 备源API ===
+    if ($BackupCall) {
+        try {
+            $backupResult = & $BackupCall
+            if ($null -ne $backupResult) {
+                $srcName = if ($BackupName) { $BackupName } else { "备源" }
+                $script:SourceUsed[$Category] = $srcName
+                Save-DataCache -Key $CacheKey -Data $backupResult
+                return $backupResult
+            }
+        } catch {
+            Write-Warning "[$Category] 备源API失败: $_"
+        }
+    }
+
+    # === 步骤4: 过期缓存兜底 (720h=30天) ===
+    $staleCache = Load-DataCache -Key $CacheKey -TTLHours 720
+    if ($staleCache) {
+        Write-Warning "[$Category] API双源失败，使用过期缓存兜底 (30天TTL)"
+        # 标记过期数据，让下游风控模块可拒绝基于过期数据的决策
+        if ($staleCache -is [PSCustomObject]) {
+            $staleCache | Add-Member -MemberType NoteProperty -Name 'IsStale' -Value $true -Force
+        }
+        $script:SourceUsed[$Category] = "过期缓存[C]"
+        return $staleCache
+    }
+
+    $script:SourceUsed[$Category] = "失败"
+    return $null
 }
 
 # ============================================================

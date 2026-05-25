@@ -1,4 +1,6 @@
-﻿# 依赖: dot-source "$PSScriptRoot/core.ps1"
+﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
+# 依赖: dot-source "$PSScriptRoot/core.ps1"
+# 最后更新: 2026-05-25 — 接入Invoke-DataSource统一降级引擎
 
 function Get-StockFinancial {
     param(
@@ -6,91 +8,85 @@ function Get-StockFinancial {
         [int]$Quarters = 4  # 返回最近N个季度
     )
 
-    # --- 缓存优先（财务数据季度更新，Tier 3）---
-    $cached = Load-DataCache -Key "Financial_$Code" -TTLHours 168
-    if ($cached) {
-        $script:SourceUsed["Financial"] = "缓存"
-        return $cached
-    }
+    return Invoke-DataSource -Category "Financial" `
+        -CacheKey "Financial_$Code" `
+        -PrimaryName "东方财富[3]" `
+        -BackupName "备源链(THS→必盈)" `
+        -PrimaryCall {
+            $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
+            $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
+            $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=(SECUCODE=%22${encoded}%22)&pageSize=${Quarters}&sortColumns=NOTICE_DATE&sortTypes=-1"
 
-    $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
-    $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
-    $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_LICO_FN_CPD&columns=ALL&filter=(SECUCODE=%22${encoded}%22)&pageSize=${Quarters}&sortColumns=NOTICE_DATE&sortTypes=-1"
-
-    try {
-        $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
-        $json = $r.Content | ConvertFrom-Json
-        if ($json.result -and $json.result.data) {
-            # P0-1: 字段合理性校验 — 关键字段为0则尝试THS降级
-            $latest = $json.result.data[0]
-            $hasDataIssue = $false
-            if ($latest.PSObject.Properties.Name -contains 'OPERATE_COST') {
-                $operateCost = [double]$latest.OPERATE_COST
-                $operateIncome = [double]$latest.TOTAL_OPERATE_INCOME
-                if ($operateCost -eq 0 -and $operateIncome -gt 0) { $hasDataIssue = $true }
-            }
-            if ($latest.PSObject.Properties.Name -contains 'DEBT_ASSET_RATIO') {
-                if ([double]$latest.DEBT_ASSET_RATIO -eq 0) { $hasDataIssue = $true }
-            }
-            if (-not $hasDataIssue) {
-                $script:SourceUsed["Financial"] = "东方财富"
-                Save-DataCache -Key "Financial_$Code" -Data $json.result.data
+            $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
+            $json = $r.Content | ConvertFrom-Json
+            if ($json.result -and $json.result.data) {
                 return $json.result.data
-            } else {
-                Write-Warning "[财务] 东方财富关键字段异常(OPERATE_COST=0或DEBT_ASSET_RATIO=0)，尝试THS降级"
             }
-        }
-    } catch {
-        Write-Warning "Get-StockFinancial failed for $Code : $_"
-        # 尝试同花顺 THS 备份
-        Write-Warning "[财务] 尝试同花顺 THS 备份..."
-        $thsResult = Invoke-ThsFallback -Action "financial" -Params "--code $Code --quarters $Quarters"
-        if ($thsResult) {
-            $script:SourceUsed["Financial"] = "同花顺"
-            Save-DataCache -Key "Financial_$Code" -Data $thsResult
-            return $thsResult
-        }
-    }
-
-    # [13] 必盈API备源（利润表→映射到东方财富字段格式）
-    Write-Warning "[财务] 尝试必盈API[13]备源..."
-    $biyingFin = Get-BiyingFinancial -Code $Code -Quarters $Quarters
-    if ($biyingFin -and $biyingFin.Count -gt 0) {
-        $mapped = $biyingFin | ForEach-Object {
-            [PSCustomObject]@{
-                BASIC_EPS            = $_.BasicEPS
-                DILUTED_EPS          = $_.DilutedEPS
-                TOTAL_OPERATE_INCOME = $_.Revenue
-                OPERATE_COST         = $_.OperCost
-                NET_PROFIT           = $_.NetProfit
-                PARENT_NET_PROFIT    = $_.ParentProfit
-                NOTICE_DATE          = $_.PublishDate
-                REPORT_DATE          = $_.ReportDate
-                # 资产负债表字段：必盈免费版权限不足，标注不可得
-                DEBT_ASSET_RATIO     = $null
-                CURRENT_RATIO        = $null
-                QUICK_RATIO          = $null
-                TOTAL_CURRENT_ASSETS = $null
-                TOTAL_CURRENT_LIABILITIES = $null
-                INVENTORY            = $null
-                SHORT_BORROWINGS     = $null
-                LONG_TERM_BORROWINGS = $null
-                TOTAL_ASSETS         = $null
-                ACCOUNTS_RECEIVABLE  = $null
-                TOTAL_LIABILITIES    = $null
-                ROE                  = $null
+            return $null
+        } `
+        -ValidateBlock {
+            param($data)
+            if (-not $data -or $data.Count -eq 0) { return $false }
+            $latest = $data[0]
+            $props = $latest.PSObject.Properties.Name
+            if ($props -contains 'OPERATE_COST') {
+                $oc = [double]$latest.OPERATE_COST
+                $oi = [double]$latest.TOTAL_OPERATE_INCOME
+                if ($oc -eq 0 -and $oi -gt 0) {
+                    Write-Warning "[财务] 东方财富字段异常(OPERATE_COST=0)，触发备源降级"
+                    return $false
+                }
             }
-        }
-        $script:SourceUsed["Financial"] = "必盈[13]"
-        Save-DataCache -Key "Financial_$Code" -Data $mapped
-        return $mapped
-    }
+            if ($props -contains 'DEBT_ASSET_RATIO') {
+                if ([double]$latest.DEBT_ASSET_RATIO -eq 0) {
+                    Write-Warning "[财务] 东方财富字段异常(DEBT_ASSET_RATIO=0)，触发备源降级"
+                    return $false
+                }
+            }
+            return $true
+        } `
+        -BackupCall {
+            # 第一备源：同花顺 THS
+            Write-Warning "[财务] 尝试同花顺 THS 备源..."
+            $thsResult = Invoke-ThsFallback -Action "financial" -Params "--code $Code --quarters $Quarters"
+            if ($thsResult) {
+                $script:SourceUsed["Financial"] = "同花顺[THS]"
+                return $thsResult
+            }
 
-    $script:SourceUsed["Financial"] = "失败"
-    # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "Financial_$Code" -TTLHours 720
-    if ($staleCache) { Write-Warning "[财务] API双源失败，使用过期缓存兜底"; return $staleCache }
-    return $null
+            # 第二备源：必盈API[13] 利润表→映射
+            Write-Warning "[财务] 尝试必盈API[13]备源..."
+            $biyingFin = Get-BiyingFinancial -Code $Code -Quarters $Quarters
+            if ($biyingFin -and $biyingFin.Count -gt 0) {
+                $mapped = $biyingFin | ForEach-Object {
+                    [PSCustomObject]@{
+                        BASIC_EPS            = $_.BasicEPS
+                        DILUTED_EPS          = $_.DilutedEPS
+                        TOTAL_OPERATE_INCOME = $_.Revenue
+                        OPERATE_COST         = $_.OperCost
+                        NET_PROFIT           = $_.NetProfit
+                        PARENT_NET_PROFIT    = $_.ParentProfit
+                        NOTICE_DATE          = $_.PublishDate
+                        REPORT_DATE          = $_.ReportDate
+                        DEBT_ASSET_RATIO     = $null
+                        CURRENT_RATIO        = $null
+                        QUICK_RATIO          = $null
+                        TOTAL_CURRENT_ASSETS = $null
+                        TOTAL_CURRENT_LIABILITIES = $null
+                        INVENTORY            = $null
+                        SHORT_BORROWINGS     = $null
+                        LONG_TERM_BORROWINGS = $null
+                        TOTAL_ASSETS         = $null
+                        ACCOUNTS_RECEIVABLE  = $null
+                        TOTAL_LIABILITIES    = $null
+                        ROE                  = $null
+                    }
+                }
+                $script:SourceUsed["Financial"] = "必盈[13]"
+                return $mapped
+            }
+            return $null
+        }
 }
 
 # ============================================================

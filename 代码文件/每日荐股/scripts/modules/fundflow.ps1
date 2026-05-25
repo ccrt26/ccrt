@@ -1,44 +1,43 @@
-﻿# 依赖: dot-source "$PSScriptRoot/core.ps1"
+﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
+# 依赖: dot-source "$PSScriptRoot/core.ps1"
+# 最后更新: 2026-05-25 — 接入Invoke-DataSource统一降级引擎
 
 function Get-StockFundFlow {
     param([Parameter(Mandatory=$true)][string]$Code, [int]$Days = 5)
 
-    # --- 缓存优先（资金流向盘后固定，Tier 2）---
-    $cached = Load-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 24
+    # 缓存优先 + 数量校验
+    $cacheKey = "FundFlow_${Code}_${Days}"
+    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Days) {
-        $script:SourceUsed["FundFlow"] = "缓存"
+        $script:SourceUsed["FundFlow"] = "缓存[C]"
         return $cached
     }
 
-    $market = if ($Code.StartsWith("6")) { "1" } else { "0" }
-    $url = "http://push2.eastmoney.com/api/qt/stock/fflow/daykline/get?cb=&secid=${market}.${Code}&fields1=f1,f2,f3,f4,f5,f6,f7&fields2=f51,f52,f53,f54,f55&lmt=${Days}"
-    try {
-        $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
-        $json = $r.Content | ConvertFrom-Json
-        $result = @()
-        if ($json.data -and $json.data.klines) {
-            foreach ($kline in $json.data.klines) {
-                $parts = $kline -split ','
-                $result += [PSCustomObject]@{
-                    Date        = $parts[0]
-                    MainNetInflow  = [double]$parts[1]
-                    SuperLargeIn   = [double]$parts[2]
-                    LargeIn        = [double]$parts[3]
-                    SmallIn        = [double]$parts[4]
+    return Invoke-DataSource -Category "FundFlow" `
+        -CacheKey $cacheKey `
+        -PrimaryName "东方财富[9]" `
+        -PrimaryCall {
+            $market = if ($Code.StartsWith("6")) { "1" } else { "0" }
+            $url = "http://push2.eastmoney.com/api/qt/stock/fflow/daykline/get?cb=&secid=${market}.${Code}&fields1=f1,f2,f3,f4,f5,f6,f7&fields2=f51,f52,f53,f54,f55&lmt=${Days}"
+
+            $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
+            $json = $r.Content | ConvertFrom-Json
+            $result = @()
+            if ($json.data -and $json.data.klines) {
+                foreach ($kline in $json.data.klines) {
+                    $parts = $kline -split ','
+                    $result += [PSCustomObject]@{
+                        Date          = $parts[0]
+                        MainNetInflow = [double]$parts[1]
+                        SuperLargeIn  = [double]$parts[2]
+                        LargeIn       = [double]$parts[3]
+                        SmallIn       = [double]$parts[4]
+                    }
                 }
+                return $result
             }
-            $script:SourceUsed["FundFlow"] = "东方财富"
-            Save-DataCache -Key "FundFlow_${Code}_${Days}" -Data $result
-            return $result
+            return $null
         }
-    } catch {
-        Write-Warning "Get-StockFundFlow failed for $Code : $_"
-    }
-    $script:SourceUsed["FundFlow"] = "失败"
-    # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 720
-    if ($staleCache) { Write-Warning "[资金流向] API双源失败，使用过期缓存兜底"; return $staleCache }
-    return $null
 }
 
 # ============================================================
@@ -46,40 +45,40 @@ function Get-StockFundFlow {
 # ============================================================
 function Get-SectorFundFlow {
     param([int]$Top = 10)
-    $url = "http://push2.eastmoney.com/api/qt/clist/get?cb=&pn=1&pz=${Top}&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f62&fs=m:90+t:2&fields=f12,f14,f62,f184,f66,f69"
-    try {
-        $r = Invoke-ThrottledApiCall { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"} }
-        $json = $r.Content | ConvertFrom-Json
-        if ($json.data -and $json.data.diff) {
-            $result = $json.data.diff | ForEach-Object {
-                [PSCustomObject]@{
-                    SectorCode  = $_.f12
-                    SectorName  = $_.f14
-                    NetInflow   = [double]$_.f62
-                    MainInflow  = [double]$_.f66
-                    ChangePct   = [double]$_.f184
-                    TurnRate    = [double]$_.f69
-                }
+
+    return Invoke-DataSource -Category "SectorFundFlow" `
+        -CacheKey "SectorFundFlow_$Top" `
+        -PrimaryName "东方财富[10]" `
+        -BackupName "同花顺[THS]" `
+        -CacheTTLOverride 0 `
+        -PrimaryCall {
+            $url = "http://push2.eastmoney.com/api/qt/clist/get?cb=&pn=1&pz=${Top}&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f62&fs=m:90+t:2&fields=f12,f14,f62,f184,f66,f69"
+
+            $r = Invoke-ThrottledApiCall { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"} }
+            $json = $r.Content | ConvertFrom-Json
+            if ($json.data -and $json.data.diff) {
+                return ($json.data.diff | ForEach-Object {
+                    [PSCustomObject]@{
+                        SectorCode  = $_.f12
+                        SectorName  = $_.f14
+                        NetInflow   = [double]$_.f62
+                        MainInflow  = [double]$_.f66
+                        ChangePct   = [double]$_.f184
+                        TurnRate    = [double]$_.f69
+                    }
+                })
             }
-            $script:SourceUsed["SectorFundFlow"] = "东方财富"
-            Save-DataCache -Key "SectorFundFlow_$Top" -Data $result
-            return $result
+            return $null
+        } `
+        -BackupCall {
+            Write-Warning "[行业资金] 尝试同花顺 THS 备份..."
+            $thsResult = Invoke-ThsFallback -Action "sector_fund_flow" -Params "--top $Top"
+            if ($thsResult) {
+                $script:SourceUsed["SectorFundFlow"] = "同花顺[THS]"
+                return $thsResult
+            }
+            return $null
         }
-    } catch {
-        Write-Warning "Get-SectorFundFlow failed: $_"
-        # 尝试同花顺 THS 备份
-        Write-Warning "[行业资金] 尝试同花顺 THS 备份..."
-        $thsResult = Invoke-ThsFallback -Action "sector_fund_flow" -Params "--top $Top"
-        if ($thsResult) {
-            $script:SourceUsed["SectorFundFlow"] = "同花顺"
-            Save-DataCache -Key "SectorFundFlow_$Top" -Data $thsResult
-            return $thsResult
-        }
-    }
-    $script:SourceUsed["SectorFundFlow"] = "失败"
-    $cached = Load-DataCache -Key "SectorFundFlow_$Top" -TTLHours 6
-    if ($cached) { Write-Warning "[行业资金] API失败，使用缓存"; return $cached }
-    return $null
 }
 
 # ============================================================
