@@ -18,10 +18,19 @@
 param(
     [string]$Date = (Get-Date -Format "yyyyMMdd"),
     [string]$DataFile = "",
-    [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
+    [string]$RootDir = "",
     [switch]$DryRun = $false,
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [string]$InstructionFile = ""
 )
+
+if (-not $RootDir) {
+    if ($PSScriptRoot) {
+        $RootDir = (Resolve-Path "$PSScriptRoot/../../..").Path
+    } else {
+        $RootDir = "C:\Users\34269\Documents\Claude\股票分析"
+    }
+}
 
 $simDir = Join-Path $RootDir "模拟交易"
 $sharedDir = Join-Path $simDir "共享模块"
@@ -119,12 +128,39 @@ $scoredData.Recommendations | ForEach-Object {
 }
 Write-Log "Candidate pool: $($candidates.Count) stocks"
 
+# Step 3.5: 读取腰子交易指令 (Phase 1 指令通道 v2.1)
+if (-not $InstructionFile) {
+    $InstructionFile = Join-Path $simDir "交易决策/交易指令_${Date}.json"
+}
+$yaoziSells = @{}; $yaoziBuys = @{}; $yaoziHolds = @{}
+$hasYaoziInstructions = $false
+if (Test-Path $InstructionFile) {
+    try {
+        $yaoziRaw = Get-Content $InstructionFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($d in $yaoziRaw.decisions) {
+            if ($d.status -ne "pending") { continue }
+            if ($d.action -eq "SELL" -or $d.action -eq "SELL_HALF") { $yaoziSells[$d.code] = $d }
+            elseif ($d.action -eq "BUY") { $yaoziBuys[$d.code] = $d }
+            elseif ($d.action -eq "HOLD") { $yaoziHolds[$d.code] = $d }
+        }
+        $hasYaoziInstructions = ($yaoziSells.Count + $yaoziBuys.Count + $yaoziHolds.Count) -gt 0
+        if ($hasYaoziInstructions) {
+            Write-Log "腰子指令: SELL=$($yaoziSells.Count) BUY=$($yaoziBuys.Count) HOLD=$($yaoziHolds.Count)"
+        }
+    } catch {
+        Write-Log "腰子指令解析失败: $_" "WARN"
+        $yaoziSells = @{}; $yaoziBuys = @{}; $yaoziHolds = @{}
+    }
+}
+
 # Step 4: Data quality check (玉夜 v2026-05-24)
 Write-Log "Running data quality check..."
 $dqScript = Join-Path $RootDir "代码文件/tools/check_data_quality.ps1"
 $dqJson = ""
 if (Test-Path $dqScript) {
-    try { $dqJson = & powershell -File $dqScript -Mode daily_sim -DataFile $DataFile -RootDir $RootDir 2>$null } catch {}
+    try { $dqJson = & powershell -File $dqScript -Mode daily_sim -DataFile $DataFile -RootDir $RootDir } catch {
+        Write-Log "数据质检脚本执行失败: $_" "WARN"
+    }
 }
 $dqFlag = "normal"
 $dqDegradedFields = @()

@@ -22,10 +22,20 @@
 param(
     [string]$Date = (Get-Date -Format "yyyyMMdd"),
     [string]$DataFile = "",
-    [string]$RootDir = "C:\Users\34269\Documents\Claude\股票分析",
+    [string]$RootDir = "",
     [switch]$DryRun = $false,
-    [switch]$Force = $false
+    [switch]$Force = $false,
+    [string]$InstructionFile = ""
 )
+
+# Resolve RootDir: use parameter if provided, else derive from script location
+if (-not $RootDir) {
+    if ($PSScriptRoot) {
+        $RootDir = (Resolve-Path "$PSScriptRoot/../..").Path
+    } else {
+        $RootDir = "C:\Users\34269\Documents\Claude\股票分析"
+    }
+}
 
 # ============================================================
 # PATHS
@@ -426,7 +436,7 @@ if (-not $DataFile) {
     $DataFile = Join-Path $RootDir "重点股票/次日评估/评估数据_${Date}.json"
 }
 if (-not (Test-Path $DataFile)) {
-    # 降级: GitHub Actions环境无本地分析管线，回退至最近一次可用评估数据
+    # 降级: GitHub Actions环境无本地分析流程，回退至最近一次可用评估数据
     $evalDir = Join-Path $RootDir "重点股票/次日评估"
     $latestEval = Get-ChildItem $evalDir -Filter "评估数据_*.json" -ErrorAction SilentlyContinue `
         | Sort-Object Name -Descending | Select-Object -First 1
@@ -481,6 +491,41 @@ foreach ($code in $codeMap.Keys) {
     }
 }
 Write-Log "数据质量检查完成"
+
+# ---- Step 4.5: 读取腰子交易指令 (Phase 1 指令通道 v2.1) ----
+if (-not $InstructionFile) {
+    $InstructionFile = Join-Path $simDir "交易决策/交易指令_${Date}.json"
+}
+$yaoziSells = @{}   # code → decision
+$yaoziBuys = @{}     # code → decision
+$yaoziHolds = @{}    # code → decision
+$yaoziExecuted = @{}  # code → $true (mark after execution)
+$hasYaoziInstructions = $false
+if (Test-Path $InstructionFile) {
+    try {
+        $yaoziRaw = Get-Content $InstructionFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($d in $yaoziRaw.decisions) {
+            if ($d.status -ne "pending") { continue }
+            $code = $d.code
+            if ($d.action -eq "SELL" -or $d.action -eq "SELL_HALF") {
+                $yaoziSells[$code] = $d
+            } elseif ($d.action -eq "BUY") {
+                $yaoziBuys[$code] = $d
+            } elseif ($d.action -eq "HOLD") {
+                $yaoziHolds[$code] = $d
+            }
+        }
+        $hasYaoziInstructions = ($yaoziSells.Count + $yaoziBuys.Count + $yaoziHolds.Count) -gt 0
+        if ($hasYaoziInstructions) {
+            Write-Log "腰子指令已加载: SELL=$($yaoziSells.Count) BUY=$($yaoziBuys.Count) HOLD=$($yaoziHolds.Count)"
+        }
+    } catch {
+        Write-Log "腰子指令文件解析失败: $_，回退至纯自动模式" "WARN"
+        $yaoziSells = @{}; $yaoziBuys = @{}; $yaoziHolds = @{}
+    }
+} else {
+    Write-Log "无腰子指令文件，使用纯自动模式"
+}
 
 # ---- Step 5: 获取行情 ----
 Write-Log "获取实时行情..."
@@ -650,8 +695,48 @@ foreach ($code in $stockMap.Keys) {
         continue
     }
 
+    # --- 腰子SELL: 人工卖出指令(P1/P2安全网之下, P3自动规则之上) ---
+    if ($yaoziSells.ContainsKey($code)) {
+        $yd = $yaoziSells[$code]
+        $targetShares = if ($yd.action -eq "SELL_HALF") {
+            [int]($pos.Shares / 2 / 100) * 100
+        } else {
+            [int]$pos.Shares
+        }
+        if ($targetShares -ge 100) {
+            $shares = $targetShares
+            $sp = Get-SellProceeds -Price $currentPrice -Shares $shares
+            $yaoziReason = $yd.reason
+            if ($yd.analysis_ref) {
+                $yaoziSummary = "山猫:$($yd.analysis_ref.shanyao)|流金:$($yd.analysis_ref.liujin)|青山:$($yd.analysis_ref.qingshan)"
+            } else {
+                $yaoziSummary = ""
+            }
+            $txns += [PSCustomObject]@{
+                Date = $Date; Code = $code; Name = $pos.Name
+                Action = $yd.action; Price = $currentPrice; Shares = $shares
+                Amount = $sp.Amount; Commission = $sp.Commission; StampTax = $sp.StampTax
+                TotalCost = $sp.NetProceeds; Reason = $yaoziReason
+                Source = "manual"; AnalysisSummary = $yaoziSummary
+                EntryPrediction = $pos.EntryShortPrediction; DataSource = $quoteDataSource
+            }
+            $exitReasons[$code] = "腰子指令"
+            $yaoziExecuted[$code] = $true
+            Write-Log "  $code 腰子指令: $($yd.action) ${shares}股, 理由: $yaoziReason"
+        } else {
+            Write-Log "  $code 腰子SELL指令但持仓不足100股, 跳过" "WARN"
+        }
+        continue
+    }
+
+    # --- 腰子HOLD保护: 腰子明确HOLD则跳过P3/P4/P5自动卖出 ---
+    $skipAutoSell = $yaoziHolds.ContainsKey($code)
+    if ($skipAutoSell) {
+        Write-Log "  $code 腰子HOLD指令: 跳过P3/P4/P5自动卖出检查"
+    }
+
     # --- P3: 预判转空 ---
-    if ($evalStock -and $pos.EntryShortPrediction) {
+    if (-not $skipAutoSell -and $evalStock -and $pos.EntryShortPrediction) {
         $currentShort = $evalStock.Prediction.Short
         if ($currentShort -eq "中性" -or $currentShort -eq "看空") {
             $shares = [int]$pos.Shares
@@ -670,7 +755,7 @@ foreach ($code in $stockMap.Keys) {
     }
 
     # --- P4: 全部止盈 ---
-    if ($currentPrice -ge $r3) {
+    if (-not $skipAutoSell -and $currentPrice -ge $r3) {
         $shares = [int]$pos.Shares
         $sp = Get-SellProceeds -Price $currentPrice -Shares $shares
         $txns += [PSCustomObject]@{
@@ -686,7 +771,7 @@ foreach ($code in $stockMap.Keys) {
     }
 
     # --- P5: 止盈减仓 ---
-    if ($currentPrice -ge $r2) {
+    if (-not $skipAutoSell -and $currentPrice -ge $r2) {
         $sellShares = [int]($pos.Shares / 2)
         $sellShares = $sellShares - ($sellShares % 100)
         if ($sellShares -lt 100) { $sellShares = [int]$pos.Shares }
@@ -742,6 +827,89 @@ Write-Log "执行开仓检查..."
 if ($skipOpenNewPositions) { Write-Log "09:45 超时标志触发，跳过开新仓" "WARN" }
 else {
 $candidates = @()
+
+# --- 腰子BUY: 人工买入指令优先于自动开仓 ---
+foreach ($code in $yaoziBuys.Keys) {
+    $yd = $yaoziBuys[$code]
+    $evalStock = $stocks[$code]
+    if (-not $evalStock) {
+        Write-Log "  $code 腰子BUY指令但无评估数据，跳过" "WARN"
+        continue
+    }
+    if ($stockMap[$code] -and $stockMap[$code].Shares -gt 0) {
+        Write-Log "  $code 腰子BUY指令但已有持仓，跳过" "WARN"
+        continue
+    }
+    $coolSource = if ($cooldowns[$code]) { $cooldowns[$code] } elseif ($sharedCooldowns[$code]) { $sharedCooldowns[$code] } else { $null }
+    if ($coolSource -and $coolSource.LastStopLossDate) {
+        $coolDays = Get-CoolingDays -DateStr $coolSource.LastStopLossDate
+        if ($coolDays -lt $config.CooloffPeriodDays) {
+            Write-Log "  $code 腰子BUY指令但止损冷却期($coolDays/${$config.CooloffPeriodDays}日)，跳过" "WARN"
+            continue
+        }
+    }
+    $quote = $quotes[$code]
+    if ($quote -and $quote.ChangePct -ne 999 -and (Test-IsLimitUp -ChangePct $quote.ChangePct -Board $codeMap[$code].Board)) {
+        Write-Log "  $code 腰子BUY指令但涨停，跳过" "WARN"
+        continue
+    }
+    if (-not $evalStock.KeyLevels -or $evalStock.KeyLevels.StopLoss -ge $evalStock.Price) {
+        Write-Log "  $code 腰子BUY指令但KeyLevels数据异常，跳过" "WARN"
+        continue
+    }
+
+    $posPct = Get-PositionSize -Score $evalStock.Scores.Composite
+    if ($posPct -le 0) { $posPct = 10 }
+    $posAmount = [Math]::Round($positions.Cash * $posPct / 100, 2)
+    $maxAmount = [Math]::Round($positions.TotalValue * $config.SingleStockLimitPct / 100, 2)
+    if ($posAmount -gt $maxAmount) { $posAmount = $maxAmount }
+
+    $entryPrice = if ($quote -and $quote.Price -gt 0) { $quote.Price } else { $evalStock.Price }
+    $slippagePct = if ($config.SlippagePct) { $config.SlippagePct } else { 0.001 }
+    $slippedPrice = [Math]::Round($entryPrice * (1 + $slippagePct), 2)
+    $shares = [Math]::Floor($posAmount / $slippedPrice / 100) * 100
+    if ($shares -lt 100) { Write-Log "  $code 腰子BUY指令但资金不足100股，跳过" "WARN"; continue }
+
+    $actualAmount = $slippedPrice * $shares
+    $commission = [Math]::Max($actualAmount * $config.Commission.Rate / 100, $config.Commission.MinPerOrder)
+    $totalCost = $actualAmount + $commission
+
+    if ($totalCost -gt $positions.Cash) {
+        $shares = [Math]::Floor(($positions.Cash * 0.98) / $slippedPrice / 100) * 100
+        if ($shares -lt 100) { Write-Log "  $code 腰子BUY指令但现金不足，跳过" "WARN"; continue }
+        $actualAmount = $slippedPrice * $shares
+        $commission = [Math]::Max($actualAmount * $config.Commission.Rate / 100, $config.Commission.MinPerOrder)
+        $totalCost = $actualAmount + $commission
+    }
+
+    $yaoziReason = $yd.reason
+    if ($yd.analysis_ref) {
+        $yaoziSummary = "山猫:$($yd.analysis_ref.shanyao)|流金:$($yd.analysis_ref.liujin)|青山:$($yd.analysis_ref.qingshan)"
+    } else { $yaoziSummary = "" }
+
+    $txns += [PSCustomObject]@{
+        Date = $Date; Code = $code; Name = $codeMap[$code].Name
+        Action = "BUY"; Price = $slippedPrice; Shares = $shares
+        Amount = -$actualAmount; Commission = $commission; StampTax = 0
+        TotalCost = -$totalCost; Reason = $yaoziReason
+        Source = "manual"; AnalysisSummary = $yaoziSummary
+        EntryPrediction = $evalStock.Prediction.Short; DataSource = $(if ($quote -and $quote.DataSource) { $quote.DataSource } else { "[评估数据]" })
+    }
+    $positions.Cash = [Math]::Round($positions.Cash - $totalCost, 2)
+    $avgCost = [Math]::Round($totalCost / $shares, 2)
+    $stockMap[$code] = [PSCustomObject]@{
+        Code = $code; Name = $codeMap[$code].Name
+        Shares = $shares; AvgCost = $avgCost; CurrentPrice = $entryPrice
+        EntryDate = $Date; EntryScore = $evalStock.Scores.Composite
+        EntryShortPrediction = $evalStock.Prediction.Short
+        StopLoss = $evalStock.KeyLevels.StopLoss
+        Support = $evalStock.KeyLevels.Support
+        Resistance = $evalStock.KeyLevels.Resistance
+        UnrealizedPnL = 0; UnrealizedPnLPct = 0
+    }
+    $yaoziExecuted[$code] = $true
+    Write-Log "  $code 腰子BUY: $shares x $slippedPrice = $actualAmount, 理由: $yaoziReason"
+}
 
 foreach ($code in $codeMap.Keys) {
     $evalStock = $stocks[$code]
@@ -919,11 +1087,11 @@ if ($txns.Count -gt 0 -and -not $DryRun) {
         if ($existingContent.Trim().Length -gt 0) {
             $allExisting = $existingContent.Trim() -split "`n"
             $existingTxns = $allExisting | Select-Object -Skip 1
-            # 构建指纹集合(date|code|action)用于防重
+            # 构建指纹集合(date|code|action|shares)用于防重
             foreach ($line in $existingTxns) {
                 $parts = $line -split ','
-                if ($parts.Count -ge 4) {
-                    $fp = "$($parts[0])|$($parts[1])|$($parts[3])"  # date|code|action
+                if ($parts.Count -ge 5) {
+                    $fp = "$($parts[0])|$($parts[1])|$($parts[3])|$($parts[4])"  # date|code|action|shares
                     if (-not $existingFingerprints.ContainsKey($fp)) {
                         $existingFingerprints[$fp] = @()
                     }
@@ -932,17 +1100,20 @@ if ($txns.Count -gt 0 -and -not $DryRun) {
             }
         }
     }
-    $header = "date,code,name,action,price,shares,amount,commission,stamp_tax,total_cost,reason,entry_prediction,data_source"
+    $header = "date,code,name,action,price,shares,amount,commission,stamp_tax,total_cost,reason,entry_prediction,data_source,source,analysis_summary"
     $newLines = @()
     $dupCount = 0
     foreach ($txn in $txns) {
-        $line = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}" -f
+        $txnSource = if ($txn.Source) { $txn.Source } else { "auto" }
+        $txnAnalysis = if ($txn.AnalysisSummary) { $txn.AnalysisSummary } else { "" }
+        $line = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}" -f
             $txn.Date, $txn.Code, $txn.Name, $txn.Action,
             $txn.Price, $txn.Shares, $txn.Amount, $txn.Commission,
             $txn.StampTax, $txn.TotalCost, $txn.Reason, $txn.EntryPrediction,
-            $(if ($txn.DataSource) { $txn.DataSource } else { "[评估数据]" })
-        $fp = "$($txn.Date)|$($txn.Code)|$($txn.Action)"
-        # 同日同股同操作类型 → 跳过（已经写入过）
+            $(if ($txn.DataSource) { $txn.DataSource } else { "[评估数据]" }),
+            $txnSource, $txnAnalysis
+        $fp = "$($txn.Date)|$($txn.Code)|$($txn.Action)|$($txn.Shares)"
+        # 同日同股同操作同股数 → 跳过（已经写入过）
         if ($existingFingerprints.ContainsKey($fp)) {
             Write-Log "  ⚠ $($txn.Code) $($txn.Action) 今日已有记录，跳过重复写入" "WARN"
             $dupCount++
@@ -988,7 +1159,7 @@ $positions.TotalValue = [Math]::Round($positions.Cash + $stockValue, 2)
 
 if (-not $DryRun) {
     $posOutput = @{ Cash = $positions.Cash; TotalValue = $positions.TotalValue; LastUpdated = $Date; Positions = $posObj; Cooldowns = $cooldowns; Watchlist = $watchlist }
-    $posOutput | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $positionsFile
+    $posOutput | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $positionsFile
     Assert-WriteSuccess -Path $positionsFile
     Write-Log "持仓已更新"
 
@@ -997,6 +1168,28 @@ if (-not $DryRun) {
     if (-not (Test-Path $sharedDir)) { New-Item $sharedDir -ItemType Directory -Force | Out-Null }
     if ($sharedCooldowns.Count -gt 0) {
         $sharedCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile
+    }
+
+    # 更新腰子指令状态 (Phase 1 指令通道)
+    if ($hasYaoziInstructions -and (Test-Path $InstructionFile)) {
+        try {
+            $yaoziUpdate = Get-Content $InstructionFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            $updatedDecisions = @()
+            foreach ($d in $yaoziUpdate.decisions) {
+                $code = $d.code
+                if ($yaoziExecuted.ContainsKey($code)) {
+                    $d | Add-Member -MemberType NoteProperty -Name "status" -Value "queued" -Force
+                    $d | Add-Member -MemberType NoteProperty -Name "executed_at" -Value (Get-Date -Format "yyyy-MM-ddTHH:mm:ss") -Force
+                }
+                $updatedDecisions += $d
+            }
+            $yaoziUpdate | Add-Member -MemberType NoteProperty -Name "decisions" -Value $updatedDecisions -Force
+            $yaoziUpdate | Add-Member -MemberType NoteProperty -Name "engine_processed_at" -Value (Get-Date -Format "yyyy-MM-ddTHH:mm:ss") -Force
+            $yaoziUpdate | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $InstructionFile
+            Write-Log "腰子指令状态已更新: executed=$($yaoziExecuted.Count)"
+        } catch {
+            Write-Log "腰子指令状态更新失败: $_" "WARN"
+        }
     }
 }
 
