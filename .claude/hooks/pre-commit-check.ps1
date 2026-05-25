@@ -9,6 +9,7 @@ param()
 $ErrorActionPreference = "Stop"
 
 $HookDir = Split-Path -Parent $PSCommandPath
+. "$HookDir\shared\pipeline-auth.ps1"
 $ProjectRoot = (Resolve-Path (Join-Path $HookDir "..\..")).Path
 $LogFile = Join-Path $HookDir "pre-commit.log"
 $script:HasError = $false
@@ -252,27 +253,13 @@ try {
     Write-Log "PASS" "Check E complete"
 
     # ========================================================================
-    # Check F: Code File Write Protection — v1.1 expanded scope
-    # F1. Detect protected code files (代码文件/ + 模拟交易/ engine paths)
-    # F2. Verify pipeline token exists with executor in allowed roles
-    # F3. If token has files_scope, verify staged files are within scope
-    # F4. Block commit if validation fails
+    # Check F: Code File Write Protection — v2.0 unified (shared pipeline-auth.ps1)
+    # Protected paths, executor whitelist, gate_1 check, scope check — single source of truth
     # ========================================================================
     Write-Log "PASS" "===== Check F: Code File Write Protection ====="
-    $CodeFilePatterns = @(
-        '^代码文件[\\/]',
-        '^模拟交易[\\/]sim_orchestrator\.ps1$',
-        '^模拟交易[\\/]交易引擎[\\/]',
-        '^模拟交易[\\/]每日荐股赛道[\\/]交易引擎[\\/]',
-        '^模拟交易[\\/]共享模块[\\/]',
-        '^模拟交易[\\/]否决审查[\\/]',
-        '^模拟交易[\\/]分析[\\/]',
-        '^模拟交易[\\/]展示[\\/]',
-        '^模拟交易[\\/]工具[\\/]'
-    )
     $StagedCodeFiles = $StagedFiles | Where-Object {
         $f = $_ -replace '\\', '/'
-        foreach ($pat in $CodeFilePatterns) {
+        foreach ($pat in $script:ProtectedPaths) {
             if ($f -match $pat) { return $true }
         }
         return $false
@@ -281,59 +268,19 @@ try {
         Write-Log "PASS" "Code files staged ($($StagedCodeFiles.Count) files):"
         foreach ($cf in $StagedCodeFiles) { Write-Log "PASS" "  - $cf" }
 
-        $PipelineToken = Join-Path $ProjectRoot ".claude\pipeline_active.json"
-        $PipelineValid = $false
-        if (Test-Path $PipelineToken) {
-            try {
-                $token = Get-Content $PipelineToken -Raw -Encoding UTF8 | ConvertFrom-Json
-                if ($token.active -eq $true -and ($token.executor -eq "红结" -or $token.executor -eq "红枫")) {
-                    $PipelineValid = $true
-                    Write-Log "PASS" "F2 PASS: Pipeline active, executor=$($token.executor), stage=$($token.stage)"
-                } else {
-                    $exec = if ($token) { $token.executor } else { "null" }
-                    $act = if ($token) { $token.active } else { "null" }
-                    Write-Log "BLOCK" "F2 BLOCK: Pipeline token invalid (active=$act, executor=$exec, need HongJie/HongFeng)"
-                }
-            } catch {
-                Write-Log "BLOCK" "F2 BLOCK: Pipeline token corrupted: $_"
-            }
-        } else {
-            Write-Log "BLOCK" "F2 BLOCK: No pipeline token found. Code file changes require pipeline (情墨->新安+旧影->红结->新安->红枫)"
-        }
-
-        # F3: Scope check — staged files must be within pipeline files_scope
-        if ($PipelineValid -and $token.files_scope -and ($token.files_scope.Count -gt 0)) {
-            $outOfScope = @()
-            foreach ($cf in $StagedCodeFiles) {
-                $normalizedFile = ($cf -replace '\\', '/')
-                $inScope = $false
-                foreach ($scope in $token.files_scope) {
-                    $normalizedScope = ($scope -replace '\\', '/')
-                    if ($normalizedFile.StartsWith($normalizedScope, [StringComparison]::OrdinalIgnoreCase)) {
-                        $inScope = $true; break
-                    }
-                }
-                if (-not $inScope) { $outOfScope += $cf }
-            }
-            if ($outOfScope.Count -gt 0) {
-                Write-Log "BLOCK" "F3 BLOCK: Files outside pipeline scope ($($token.task)):"
-                foreach ($f in $outOfScope) {
-                    Write-Log "BLOCK" "  $f (declared scope: $($token.files_scope -join ', '))"
-                }
-                $script:HasError = $true
+        $anyBlocked = $false
+        foreach ($cf in $StagedCodeFiles) {
+            $auth = Test-PipelineAuthorization -FilePath $cf -ProjectRoot $ProjectRoot
+            if ($auth.Authorized) {
+                Write-Log "PASS" "F PASS: $cf — $($auth.Reason)"
             } else {
-                Write-Log "PASS" "F3 PASS: All code files within pipeline scope"
+                Write-Log "BLOCK" "F BLOCK: $cf — $($auth.Reason)"
+                $script:HasError = $true
+                $anyBlocked = $true
             }
-        } elseif ($PipelineValid -and (-not $token.files_scope -or $token.files_scope.Count -eq 0)) {
-            Write-Log "WARN" "F3 WARN: Pipeline token has no files_scope — scope check skipped"
         }
-
-        # F4: Block if no valid pipeline token
-        if (-not $PipelineValid) {
-            Write-Log "BLOCK" "F4 BLOCK: Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'"
-            Write-Log "BLOCK" "  Staged code files:"
-            foreach ($cf in $StagedCodeFiles) { Write-Log "BLOCK" "    $cf" }
-            $script:HasError = $true
+        if ($anyBlocked) {
+            Write-Log "BLOCK" "Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'"
         }
     } else {
         Write-Log "PASS" "F1 PASS: No code files staged. Check F skipped."
