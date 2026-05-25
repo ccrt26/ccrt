@@ -240,6 +240,134 @@ def do_financial(code, quarters=4):
     safe_json(result)
 
 
+def do_margin_detail(code, days=5):
+    """
+    融资融券个股明细 — 上交所/深交所官方数据
+    输出字段与 Get-MarginData 对齐：
+      DATE, RZYE, RQYE, RZRQYE, RZMRE, RZCHE, RZJME, RQYL, RQMCL
+    """
+    import akshare as ak
+    from datetime import datetime, timedelta
+
+    market = "sse" if code.startswith("6") else "szse"
+    results = []
+
+    for i in range(max(days + 5, 14)):  # 多回溯几天以跳过周末/假期
+        date_str = (datetime.now() - timedelta(days=i)).strftime("%Y%m%d")
+        try:
+            if market == "sse":
+                df = ak.stock_margin_detail_sse(date=date_str)
+            else:
+                df = ak.stock_margin_detail_szse(date=date_str)
+
+            if df is None or df.empty:
+                continue
+
+            # 列名(实测): 证券代码, 证券简称, 融资买入额, 融资余额, 融券卖出量, 融券余量, 融券余额, 融资融券余额
+            # 字段映射: 融资买入额→RZMRE, 融资余额→RZYE, 融券卖出量→RQMCL,
+            #          融券余量→RQYL, 融券余额→RQYE, 融资融券余额→RZRQYE
+            col_map = {
+                "证券代码": "stock_code", "证券简称": "stock_name",
+                "融资买入额": "rzmre", "融资余额": "rzye",
+                "融券卖出量": "rqmcl", "融券余量": "rqyl",
+                "融券余额": "rqye", "融资融券余额": "rzrqye"
+            }
+            df = df.rename(columns=col_map)
+
+            # 筛选目标股票
+            target = df[df["stock_code"].astype(str).str.strip() == str(code).strip()]
+            if target.empty:
+                continue
+
+            row = target.iloc[0]
+            rzye = float(row.get("rzye", 0)) if pd.notna(row.get("rzye")) else 0
+            rzmre = float(row.get("rzmre", 0)) if pd.notna(row.get("rzmre")) else 0
+            rqye = float(row.get("rqye", 0)) if pd.notna(row.get("rqye")) else 0
+            rzrqye = float(row.get("rzrqye", 0)) if pd.notna(row.get("rzrqye")) else 0
+            rqyl = float(row.get("rqyl", 0)) if pd.notna(row.get("rqyl")) else 0
+            rqmcl = float(row.get("rqmcl", 0)) if pd.notna(row.get("rqmcl")) else 0
+            # 融资偿还额和净买入需自行计算（从两日融资余额差值推算）
+            rzche = 0
+            rzjme = 0
+
+            results.append({
+                "DATE": date_str,
+                "RZYE": rzye,
+                "RQYE": rqye,
+                "RZRQYE": rzrqye,
+                "RZMRE": rzmre,
+                "RZCHE": rzche,
+                "RZJME": rzjme,
+                "RQYL": rqyl,
+                "RQMCL": rqmcl,
+            })
+            break  # 找到数据就停止
+        except Exception:
+            continue
+        finally:
+            import time
+            time.sleep(0.3)
+
+    if not results:
+        print(json.dumps({"error": f"no margin data for {code}"}))
+        return
+
+    safe_json(results)
+
+
+def do_institute_recommend(code):
+    """
+    机构评级 — 新浪财经
+    输出: 评级机构, 评级日期, 最新评级, 分析师, 目标价
+    """
+    import akshare as ak
+
+    try:
+        df = ak.stock_institute_recommend_detail(stock=code)
+    except Exception:
+        # 尝试不带前导0的代码
+        df = ak.stock_institute_recommend_detail(stock=str(int(code)))
+
+    if df is None or df.empty:
+        print(json.dumps({"error": f"no recommend data for {code}"}))
+        return
+
+    result = []
+    for _, row in df.head(10).iterrows():
+        result.append({
+            "OrgName": str(row.get("评级机构", "")) if pd.notna(row.get("评级机构")) else "",
+            "PublishDate": str(row.get("评级日期", "")) if pd.notna(row.get("评级日期")) else "",
+            "EmRating": str(row.get("最新评级", "")) if pd.notna(row.get("最新评级")) else "",
+            "Author": str(row.get("分析师", "")) if pd.notna(row.get("分析师")) else "",
+            "TargetPrice": float(row.get("目标价", 0)) if pd.notna(row.get("目标价")) else None,
+        })
+
+    safe_json(result)
+
+
+def do_profit_forecast(code):
+    """
+    盈利预测 — 同花顺
+    输出: 机构名称, 研究员, 报告日期, 预测EPS(今年/明年)
+    """
+    import akshare as ak
+
+    df = ak.stock_profit_forecast_ths(symbol=code, indicator="业绩预测详表-机构")
+    if df is None or df.empty:
+        print(json.dumps({"error": f"no forecast data for {code}"}))
+        return
+
+    result = []
+    for _, row in df.head(20).iterrows():
+        entry = {}
+        for col in df.columns:
+            val = row.get(col)
+            entry[str(col)] = str(val) if pd.notna(val) else ""
+        result.append(entry)
+
+    safe_json(result)
+
+
 def do_commodity_price(days=20):
     """
     大宗商品期货价格 — Sina期货主力合约行情 (v2.7 TECH-05)
@@ -327,7 +455,8 @@ def main():
     parser = argparse.ArgumentParser(description="同花顺(THS)数据桥接")
     parser.add_argument("action", choices=[
         "sector_ranking", "sector_kline", "sector_fund_flow",
-        "sector_list", "financial", "commodity_price"
+        "sector_list", "financial", "commodity_price",
+        "margin_detail", "institute_recommend", "profit_forecast"
     ], help="操作类型")
     parser.add_argument("--top", type=int, default=30, help="返回条数（默认30）")
     parser.add_argument("--name", type=str, default="", help="行业名称（sector_kline 用）")
@@ -359,6 +488,21 @@ def main():
             do_financial(code=args.code, quarters=args.quarters)
         elif args.action == "commodity_price":
             do_commodity_price(days=args.days)
+        elif args.action == "margin_detail":
+            if not args.code:
+                print(json.dumps({"error": "--code is required for margin_detail"}))
+                sys.exit(1)
+            do_margin_detail(code=args.code, days=args.days)
+        elif args.action == "institute_recommend":
+            if not args.code:
+                print(json.dumps({"error": "--code is required for institute_recommend"}))
+                sys.exit(1)
+            do_institute_recommend(code=args.code)
+        elif args.action == "profit_forecast":
+            if not args.code:
+                print(json.dumps({"error": "--code is required for profit_forecast"}))
+                sys.exit(1)
+            do_profit_forecast(code=args.code)
     except Exception as e:
         print(json.dumps({"error": f"THS bridge error: {str(e)}"}))
         sys.exit(1)

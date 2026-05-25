@@ -91,6 +91,35 @@ function Get-StockResearch {
     } catch {
         Write-Warning "Get-StockResearch failed for $Code : $_"
     }
+
+    # [THS] AKShare盈利预测备源（同花顺，EPS预测+机构+报告日期）
+    Write-Warning "[研报] 尝试AKShare盈利预测备源..."
+    $forecastResult = Invoke-ThsFallback -Action "profit_forecast" -Params "--code $Code"
+    if ($forecastResult -and $forecastResult.Count -gt 0) {
+        $result = $forecastResult | Select-Object -First $Count | ForEach-Object {
+            $thisYearEPS = $null
+            try { $thisYearEPS = [double]$_.'预测年报每股收益2026预测' } catch {}
+            $nextYearEPS = $null
+            try { $nextYearEPS = [double]$_.'预测年报每股收益2027预测' } catch {}
+
+            [PSCustomObject]@{
+                Title         = "备源-盈利预测"
+                OrgName       = $_.'机构名称'
+                PublishDate   = $_.'报告日期'
+                EmRating      = "备源(同花顺)"
+                LastRating    = ""
+                ThisYearEPS   = $thisYearEPS
+                NextYearEPS   = $nextYearEPS
+                ThisYearPE    = $null
+                NextYearPE    = $null
+                Author        = $_.'研究员'
+            }
+        }
+        $script:SourceUsed["Research"] = "同花顺[THS]"
+        Save-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -Data $result
+        return $result
+    }
+
     $script:SourceUsed["Research"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
     $staleCache = Load-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 720
@@ -141,6 +170,29 @@ function Get-MarginData {
     } catch {
         Write-Warning "Get-MarginData failed for $Code : $_"
     }
+
+    # [THS] AKShare融资融券备源（上交所/深交所官方数据）
+    Write-Warning "[融资融券] 尝试AKShare备源..."
+    $marginResult = Invoke-ThsFallback -Action "margin_detail" -Params "--code $Code --days $Days"
+    if ($marginResult -and $marginResult.Count -gt 0) {
+        $result = $marginResult | ForEach-Object {
+            [PSCustomObject]@{
+                Date          = $_.DATE
+                RZYE          = [double]$_.RZYE
+                RQYE          = [double]$_.RQYE
+                RZRQYE        = [double]$_.RZRQYE
+                RZMRE         = [double]$_.RZMRE
+                RZCHE         = [double]$_.RZCHE
+                RZJME         = [double]$_.RZJME
+                RQYL          = [double]$_.RQYL
+                RQMCL         = [double]$_.RQMCL
+            }
+        }
+        $script:SourceUsed["Margin"] = "同花顺[THS]"
+        Save-DataCache -Key "Margin_${Code}_${Days}" -Data $result
+        return $result
+    }
+
     $script:SourceUsed["Margin"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
     $staleCache = Load-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 720
