@@ -1,4 +1,4 @@
-# 铁律量化 - 每日荐股次日后评估执行脚本
+﻿# 铁律量化 - 每日荐股次日后评估执行脚本
 # 基于：次日后评估白皮书 v1.5
 # 数据源：[1]腾讯行情 [1B]新浪行情 [2]新浪K线 [2B]腾讯K线 [3]东方财富财务 [7]东方财富板块 [9]东方财富资金流向 [C]缓存兜底
 # 评估流程：数据采集(§2.1) → 模拟交易(§2.2) → 维度回检(§3) → 规则验证(§4) → 评估报告(附录A) → 参数校准建议(§5)
@@ -9,6 +9,7 @@ param(
     [string]$ReportDate = "",
     [switch]$KeepHtml = $false
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $modulePath = Join-Path $rootDir "代码文件\每日荐股\scripts\stock_data_fetcher.psm1"
@@ -403,6 +404,29 @@ foreach ($r in $evalResults) {
     Add-Content -Path $recordsFile -Value $recordLine -Encoding UTF8
 }
 Write-Host "  已写入 $($evalResults.Count) 条记录到 records.csv"
+
+# ============================================================
+# 写入 summary.csv — 白皮书 §6.1.2
+# ============================================================
+Write-Host "写入评估汇总 summary.csv [§6.1.2]..."
+$summaryFile = Join-Path $evalReportDir "summary.csv"
+$summaryExists = Test-Path $summaryFile
+if (-not $summaryExists) {
+    $summaryHeader = "period,start_date,end_date,total_recommendations,wins,losses,win_rate,total_profit,total_loss,profit_loss_ratio,portfolio_return,hs300_return,excess_return,tech_misjudge_rate,money_misjudge_rate,sector_misjudge_rate,news_misjudge_rate,veto_kill_rate,exemption_win_rate,recommended_win_rate,vetoed_win_rate,market_win_rate,veto_effectiveness,score_distinction"
+    Add-Content -Path $summaryFile -Value $summaryHeader -Encoding UTF8
+    Write-Host "  创建新文件: $summaryFile"
+}
+$techMisRate = ($dimChecks | Where-Object { $_.Dim -eq "技术面" }).Rate
+if (-not $techMisRate) { $techMisRate = "-" }
+$moneyMisRate = ($dimChecks | Where-Object { $_.Dim -eq "资金面" }).Rate
+if (-not $moneyMisRate) { $moneyMisRate = "-" }
+$sectorMisRate = ($dimChecks | Where-Object { $_.Dim -eq "板块面" }).Rate
+if (-not $sectorMisRate) { $sectorMisRate = "-" }
+$newsMisRate = ($dimChecks | Where-Object { $_.Dim -eq "消息面" }).Rate
+if (-not $newsMisRate) { $newsMisRate = "-" }
+$summaryLine = "single,$todayStr,$todayStr,$totalEval,$winCount,$lossCount,$winRate,$avgWin,$avgLoss,$profitLossRatio,$portfolioReturn,$hs300Change,$excessReturn,$techMisRate,$moneyMisRate,$sectorMisRate,$newsMisRate,-,-,-,-,-,-,$scoreDistinction"
+Add-Content -Path $summaryFile -Value $summaryLine -Encoding UTF8
+Write-Host "  已追加评估汇总到 summary.csv"
 
 # ============================================================
 # 输出汇总 — 白皮书 §1.2、附录B

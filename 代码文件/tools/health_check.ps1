@@ -23,6 +23,7 @@ param(
     [string]$RootDir = "",
     [string]$OutputHtml = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 if (-not $RootDir) {
     $RootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -84,6 +85,27 @@ try {
     Add-Msg "新浪API[2]备源不可达" "Red"
     if ($result.Flag -eq "degraded") { $result.Flag = "cached" }
 }
+
+# 新浪连续失败计数 (P0-2: 连续3次不可达→L2告警)
+$sinaStateFile = Join-Path $RootDir "代码文件\数据\.sina_health.json"
+$sinaConsecutiveFails = 0
+if (Test-Path $sinaStateFile) {
+    try {
+        $sinaState = Get-Content $sinaStateFile -Raw | ConvertFrom-Json
+        $sinaConsecutiveFails = [int]$sinaState.ConsecutiveFails
+    } catch {}
+}
+if ($result.Flag -eq "cached" -or $result.Flag -eq "degraded") {
+    $sinaConsecutiveFails++
+    if ($sinaConsecutiveFails -ge 3) {
+        Add-Msg "新浪API[2]连续${sinaConsecutiveFails}次不可达，建议排查网络/DNS" "Red"
+        if ($result.AlertLevel -lt "L2") { $result.AlertLevel = "L2" }
+    }
+} else {
+    $sinaConsecutiveFails = 0
+}
+@{ ConsecutiveFails = $sinaConsecutiveFails; LastCheck = (Get-Date).ToString("o") } |
+    ConvertTo-Json | Set-Content $sinaStateFile -Encoding UTF8
 
 # 双源全挂 → L2缓存态
 if ($result.Flag -eq "cached") {
@@ -203,14 +225,18 @@ if (Test-Path $historyFile) {
         }
         $coverage = if ($totalLines -gt 0) { [Math]::Round($filledLines / $totalLines * 100, 1) } else { 0 }
         $result.BackfillCoverage = $coverage
-        if ($coverage -lt 50) {
+        # P1-3: 分层阈值 — <30%阻断, 30-50%降级告警不阻断, ≥50%正常
+        if ($coverage -lt 30) {
             if ($Mode -eq "boot") {
                 Add-Msg "回填覆盖率${coverage}% (boot模式, 仅告警不阻断)" "Yellow"
             } else {
-                Add-Msg "回填覆盖率${coverage}% (<50%, T0阻断)" "Red"
+                Add-Msg "回填覆盖率${coverage}% (<30%, T0阻断)" "Red"
                 $result.Passed = $false
                 $result.Flag = "blocked"
             }
+        } elseif ($coverage -lt 50) {
+            Add-Msg "回填覆盖率${coverage}% (30-50%, L1降级不阻断)" "Yellow"
+            if ($result.Flag -eq "normal") { $result.Flag = "degraded" }
         } elseif ($coverage -lt 80) {
             Add-Msg "回填覆盖率${coverage}% (<80%)" "Yellow"
         } else {

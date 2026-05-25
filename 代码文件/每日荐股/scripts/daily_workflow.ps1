@@ -28,6 +28,7 @@ param(
     [switch]$SkipMarketCheck,
     [switch]$LogOnly
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 $dailyCodeDir = Join-Path $rootDir "代码文件\每日荐股"
@@ -172,6 +173,12 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
         Write-Log -Msg "[LogOnly] Skipping analysis"
     } else {
         # ---- Phase 0: Health Check (pre-flight) ----
+        Write-Log -Msg "[0/7] Backfill pre-warming..."
+        $backfillScript = Join-Path $scriptsDir "backfill_returns.py"
+        if (Test-Path $backfillScript) {
+            $null = & python $backfillScript 2>&1
+            Write-Log -Msg "[0/7] Backfill pre-warming complete"
+        }
         Write-Log -Msg "[0/7] Running pre-flight health check..."
         $healthScript = Join-Path $rootDir "代码文件\tools\health_check.ps1"
         $dataFullPath = Join-Path $rootDir "代码文件\数据\data_full.json"

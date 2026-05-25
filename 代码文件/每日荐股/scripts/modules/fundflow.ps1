@@ -1,9 +1,9 @@
-﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
-# 依赖: dot-source "$PSScriptRoot/core.ps1"
+﻿# 依赖: dot-source "$PSScriptRoot/core.ps1"
 # 最后更新: 2026-05-25 — 接入Invoke-DataSource统一降级引擎
 
 function Get-StockFundFlow {
     param([Parameter(Mandatory=$true)][string]$Code, [int]$Days = 5)
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
 
     # 缓存优先 + 数量校验
     $cacheKey = "FundFlow_${Code}_${Days}"
@@ -36,6 +36,17 @@ function Get-StockFundFlow {
                 }
                 return $result
             }
+            return $null
+        } `
+        -BackupName "同花顺[THS]" `
+        -BackupCall {
+            Write-Warning "[资金流] 东方财富[9]失败，尝试同花顺THS备源..."
+            $thsResult = Invoke-ThsFallback -Action "stock_fund_flow" -Params "--code $Code --days $Days"
+            if ($thsResult -and $thsResult.Count -gt 0) {
+                $script:SourceUsed["FundFlow"] = "同花顺[THS]"
+                return $thsResult
+            }
+            Write-Warning "[资金流] THS个股资金流不可用（可能仅支持行业级）"
             return $null
         }
 }
