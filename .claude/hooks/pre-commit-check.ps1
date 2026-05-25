@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   TieLu LiangHua Pre-Commit self-check script.
   Runs before each git commit: version consistency, garbage files, doc integrity, commit msg format.
