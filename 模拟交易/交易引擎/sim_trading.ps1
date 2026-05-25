@@ -426,8 +426,17 @@ if (-not $DataFile) {
     $DataFile = Join-Path $RootDir "重点股票/次日评估/评估数据_${Date}.json"
 }
 if (-not (Test-Path $DataFile)) {
-    Write-Log "评估数据不存在: $DataFile" "ERROR"
-    exit 1
+    # 降级: GitHub Actions环境无本地分析管线，回退至最近一次可用评估数据
+    $evalDir = Join-Path $RootDir "重点股票/次日评估"
+    $latestEval = Get-ChildItem $evalDir -Filter "评估数据_*.json" -ErrorAction SilentlyContinue `
+        | Sort-Object Name -Descending | Select-Object -First 1
+    if ($latestEval) {
+        Write-Log "当日评估数据不存在，回退至: $($latestEval.Name)" "WARN"
+        $DataFile = $latestEval.FullName
+    } else {
+        Write-Log "评估数据不存在: $DataFile，且无历史回退文件" "ERROR"
+        exit 1
+    }
 }
 Write-Log "读取评估数据..."
 try { $evalDataRaw = Get-Content $DataFile -Raw | ConvertFrom-Json } catch { Write-Error "评估数据文件解析失败: $_"; exit 1 }
