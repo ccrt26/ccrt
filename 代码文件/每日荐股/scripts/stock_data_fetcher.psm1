@@ -9,6 +9,7 @@
 . "$PSScriptRoot/modules/financial.ps1"
 . "$PSScriptRoot/modules/technical.ps1"
 . "$PSScriptRoot/modules/sector.ps1"
+. "$PSScriptRoot/modules/biying.ps1"
 . "$PSScriptRoot/modules/fundflow.ps1"
 . "$PSScriptRoot/modules/external.ps1"
 . "$PSScriptRoot/modules/test.ps1"

@@ -51,6 +51,41 @@ function Get-StockFinancial {
             return $thsResult
         }
     }
+
+    # [13] 必盈API备源（利润表→映射到东方财富字段格式）
+    Write-Warning "[财务] 尝试必盈API[13]备源..."
+    $biyingFin = Get-BiyingFinancial -Code $Code -Quarters $Quarters
+    if ($biyingFin -and $biyingFin.Count -gt 0) {
+        $mapped = $biyingFin | ForEach-Object {
+            [PSCustomObject]@{
+                BASIC_EPS            = $_.BasicEPS
+                DILUTED_EPS          = $_.DilutedEPS
+                TOTAL_OPERATE_INCOME = $_.Revenue
+                OPERATE_COST         = $_.OperCost
+                NET_PROFIT           = $_.NetProfit
+                PARENT_NET_PROFIT    = $_.ParentProfit
+                NOTICE_DATE          = $_.PublishDate
+                REPORT_DATE          = $_.ReportDate
+                # 资产负债表字段：必盈免费版权限不足，标注不可得
+                DEBT_ASSET_RATIO     = $null
+                CURRENT_RATIO        = $null
+                QUICK_RATIO          = $null
+                TOTAL_CURRENT_ASSETS = $null
+                TOTAL_CURRENT_LIABILITIES = $null
+                INVENTORY            = $null
+                SHORT_BORROWINGS     = $null
+                LONG_TERM_BORROWINGS = $null
+                TOTAL_ASSETS         = $null
+                ACCOUNTS_RECEIVABLE  = $null
+                TOTAL_LIABILITIES    = $null
+                ROE                  = $null
+            }
+        }
+        $script:SourceUsed["Financial"] = "必盈[13]"
+        Save-DataCache -Key "Financial_$Code" -Data $mapped
+        return $mapped
+    }
+
     $script:SourceUsed["Financial"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
     $staleCache = Load-DataCache -Key "Financial_$Code" -TTLHours 720

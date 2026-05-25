@@ -23,16 +23,16 @@ function Invoke-ThrottledApiCall {
 }
 
 $script:SourcePriority = @{
-    Quote      = @("腾讯", "新浪")         # 实时行情
-    KLine      = @("新浪", "腾讯")         # K线数据
-    Financial  = @("东方财富", "同花顺")    # 财务数据（THS备份）
-    Sector     = @("东方财富", "同花顺")    # 板块行情（THS备份）
-    FundFlow   = @("东方财富", "同花顺")    # 资金流向（THS备份）
-    Northbound = @("东方财富")             # 北向资金（独有）
-    Research   = @("东方财富")             # 研报（独有）
-    Margin     = @("东方财富")             # 融资融券（独有）
-    Billboard  = @("东方财富")             # 龙虎榜（独有，仅供参考）
-    InstitutionVisit = @("东方财富")       # 机构调研（独有，仅供参考）
+    Quote      = @("腾讯", "新浪", "必盈")             # 实时行情（必盈[13]JSON格式更稳定）
+    KLine      = @("新浪", "腾讯", "必盈")             # K线数据（必盈[13]5种除权+等比复权）
+    Financial  = @("东方财富", "同花顺", "必盈")        # 财务数据（THS备源+必盈[13]三大报表）
+    Sector     = @("东方财富", "同花顺")                # 板块行情（THS备份）
+    FundFlow   = @("东方财富", "同花顺")                # 资金流向（THS备份；必盈免费版不含此接口）
+    Northbound = @("东方财富")                         # 北向资金（独有）
+    Research   = @("东方财富")                         # 研报（独有）
+    Margin     = @("东方财富")                         # 融资融券（独有）
+    Billboard  = @("东方财富")                         # 龙虎榜（独有，仅供参考）
+    InstitutionVisit = @("东方财富")                   # 机构调研（独有，仅供参考）
 }
 $script:SourceUsed = @{}    # 记录每次调用实际使用的源
 
