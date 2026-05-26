@@ -2797,3 +2797,197 @@
 [PASS] [2026-05-26 00:34:00] F1 PASS: No code files staged. Check F skipped.
 [PASS] [2026-05-26 00:34:00] Check F complete
 === Pre-commit check completed at 2026-05-26 00:34:00 ===
+=== Pre-commit check started at 2026-05-26 08:56:49 ===
+[PASS] [2026-05-26 08:56:49] ===== Check A: Version Consistency =====
+[WARN] [2026-05-26 08:56:49] File not found: 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/浜嬪悗璇勪及/gen_eval_doc_v1.5.ps1
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_pipeline_7stage_v1.1_20260525.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_pipeline_7stage_v1.1_20260525.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_baostock_v1.0_鏁版嵁婧?4鍏ㄩ噺闆嗘垚.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_brief_v1.8_align_20260526.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_pick_p0p1_transplant_v1.0.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_fundflow_multi_backup_v1.0.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_init_encoding_rollout_v1.0.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_pipeline_7stage_v1.1_鑵板瓙闂搁棬鎷嗗垎.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_pipeline_token_v1.1_闃舵鏍￠獙.md
+[WARN] [2026-05-26 08:56:49] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_scoring_methodology_v1.0_p0p1p2.md
+[WARN] [2026-05-26 08:56:49] File not found: 姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/鍓嶅悜棰勬湡鏀剁泭妯″瀷_璁捐鏂囨。_v1.0.md
+[WARN] [2026-05-26 08:56:49] File not found: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.16.md
+[WARN] [2026-05-26 08:56:49] File not found: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.8.md
+[PASS] [2026-05-26 08:56:49] ===== Check B: Garbage Files =====
+[PASS] [2026-05-26 08:56:49] No garbage files
+[PASS] [2026-05-26 08:56:49] ===== Check C: Document Completeness =====
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/浠ｇ爜宸ュ尃-绾㈢粨.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?06-褰撳墠瀹氭椂浠诲姟娓呭崟.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/鏃у奖-鐭ヨ瘑搴?06-瀹¤鎶ュ憡鏍囧噯妯℃澘.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/鐜夊-鐭ヨ瘑搴?05-寮傚父妫€娴嬩笌鍛婅.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/绯荤粺鏋舵瀯甯?鎯呭ⅷ.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/绾㈡灚-鐭ヨ瘑搴?05-褰撳墠鐜閰嶇疆蹇収.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/鑵板瓙-鐭ヨ瘑搴?09-绐佺牬鎬ц川鍒嗙被.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/閲戣瀺涓撳-鑵板瓙.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/闈掑北-鐭ヨ瘑搴?01-鍥犲瓙浣撶郴鎬昏.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/闈掑北-鐭ヨ瘑搴?09-浜嬩欢椹卞姩鍥犲瓙浣撶郴.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/agents/椤圭洰鎬荤洃-闃块粦.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/boundary_scans/boundary_scan_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鍗冨厜.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/瀹¤.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/灞辩尗.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鎯呭ⅷ.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鏂板畨.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鏃ユ姤.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鏃у奖.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/娴侀噾.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/娣卞害鍒嗘瀽.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鐜夊.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/绾㈡灚.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/绾㈢粨.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/鑵板瓙.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/commands/闈掑北.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/knowledge/甯歌閿欒.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/knowledge/瑙掕壊杈圭晫瀹珷.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: .claude/knowledge/椤圭洰杩愯鎬佷华琛ㄧ洏.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/000967_鐩堝嘲鐜_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/301075_澶氱憺鍖昏嵂_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/600036_鎷涘晢閾惰_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/600114_涓滅潶鑲′唤_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/600584_闀跨數绉戞妧_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/601689_鎷撴櫘闆嗗洟_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/601727_涓婃捣鐢垫皵_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/603019_涓鏇欏厜_娣卞害鍒嗘瀽_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/鏁版嵁娌夋穩鐜扮姸鐩樻煡_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/鏁版嵁璐ㄩ噺淇濋殰瀹¤_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/娴佺▼瀹¤/R1-R6_鍏ㄧ嚎绔ｅ伐姹囨€籣20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/娴佺▼瀹¤/R1-R6_鎯呭ⅷ鏋舵瀯璁捐瀹℃煡_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/娴佺▼瀹¤/R1-R6_鏂板畨鍥涘眰楠岃瘉_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/娴佺▼瀹¤/R1-R6_鏂板畨鏋舵瀯鍚堣瀹℃煡_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/娴佺▼瀹¤/R1-R6_鏃у奖鐙珛瀹¤_20260524.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 涓存椂鎶ュ憡/鑴氭湰杞婚噺鍖朹璐ㄩ噺淇濋殰浣撶郴_璁ㄨ鎶ュ憡_2026-05-24.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/R2_鏂板畨鏋舵瀯瀹℃煡_design_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/R2_鏂板畨鏋舵瀯瀹℃煡_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/R2_鏃у奖鐙珛瀹¤_design_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/R2_鏃у奖鐙珛瀹¤_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍙樻洿褰卞搷_PDF杞崲鍣ㄤ慨澶峗20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍙樻洿褰卞搷_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍚庤瘎浼癬eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍚庤瘎浼癬md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍚庤瘎浼癬pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍥炲綊_PDF杞崲鍣ㄤ慨澶峗20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍥炲綊妫€鏌daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鍥炴粴鏂规_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_L绫绘娊鏌font_fix_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍙樻洿褰卞搷鍒嗘瀽_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍙樻洿褰卞搷鍒嗘瀽_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍙樻洿褰卞搷鍒嗘瀽_pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍥涘眰楠岃瘉_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍥炲綊妫€鏌eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍥炲綊妫€鏌md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鍥炲綊楠岃瘉_pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_pipeline_7stage_v1.1_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯瀹℃煡_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_娴嬭瘯鎶ュ憡_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_娴嬭瘯鎶ュ憡_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_娴嬭瘯鎶ュ憡_pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_绾㈢嚎妫€鏌eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_绾㈢嚎妫€鏌md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_绾㈢嚎妫€鏌pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨鍥涘眰楠岃瘉_娴佺▼寮曟搸v1.0_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鏋舵瀯瀹¤_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_pipeline_7stage_v1.1_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖鐙珛瀹¤_娴佺▼寮曟搸v1.0_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/Phase3_灞曠ず灞俖鎯呭ⅷ璁捐浜や粯鐗20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/Phase3_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/Phase3_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/Phase3_闂搁棬1瀹℃煡鎶ュ憡_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/deploy_daily_pick_p0p1_grayscale_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_9ced818_GitHub_Actions_妯℃嫙浜ゆ槗.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_L2L1L0_鍒嗗眰鏋舵瀯_妯℃嫙浜ゆ槗寮曟搸_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_b627916_瀹夊叏闃叉姢涓夊眰_瑙掕壊閲嶇粍.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_baostock_v1.0_鏁版嵁婧?4鍏ㄩ噺闆嗘垚.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_brief_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_brief_v1.8_align_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_brief_v2_fix_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_pick_p0p1_transplant_v1.0.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_pipeline_hotfix_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_eps_quarterly_table_format.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_fundflow_multi_backup_v1.0.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_infra_hardening_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_init_encoding_rollout_v1.0.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_md_to_pdf_toolchain.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_pdf_converter_fix_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_pipeline_7stage_v1.1_鑵板瓙闂搁棬鎷嗗垎.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_pipeline_token_v1.1_闃舵鏍￠獙.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_scoring_methodology_v1.0_p0p1p2.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_weekly_deep_analysis_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1a_review_infra_hardening_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_fundflow_backup_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_infra_hardening_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/posteval_daily_pick_p0p1_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/verification_daily_pick_p0p1_stage4_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/娴嬭瘯鎶ュ憡_PDF杞崲鍣ㄤ慨澶峗20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/娴嬭瘯鎶ュ憡_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_鍥炴粴鏂规_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_鍥炴粴鏂规_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_鍥炴粴鏂规_pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_閮ㄧ讲璁板綍_daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_閮ㄧ讲璁板綍_eps_table_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_閮ㄧ讲璁板綍_md_to_pdf_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈡灚_閮ㄧ讲璁板綍_pipeline_7stage_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈢嚎_PDF杞崲鍣ㄤ慨澶峗20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瀹¤鎶ュ憡/绾㈢嚎妫€鏌daily_scheduler_20260525.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/鏋舵瀯璁捐/妯℃嫙浜ゆ槗_鏋舵瀯閲嶈璁v2.0.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/姣忔棩鑽愯偂璧涢亾/姣忔棩鑽愯偂妯℃嫙浜ゆ槗鐧界毊涔v1.1.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 姣忔棩鑽愯偂/浜嬪悗璇勪及/娆℃棩鍚庤瘎浼扮櫧鐨功_CHANGELOG.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/鍓嶅悜棰勬湡鏀剁泭妯″瀷_璁捐鏂囨。_v1.0.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.16.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鏂囨。鐗堟湰绱㈠紩.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/閲嶇偣鑲＄エ璺熻釜鍒嗘瀽閫昏緫鐧界毊涔CHANGELOG.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/閲嶇偣鑲＄エ璺熻釜鍒嗘瀽閫昏緫鐧界毊涔v3.3.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閫昏緫绉疮/鏀硅繘鏃ュ織.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_CHANGELOG.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.8.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娣卞害鍒嗘瀽/涓滅潶鑲′唤(600114)娣卞害鍒嗘瀽鎶ュ憡_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/涓婃捣鐢垫皵(601727)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/涓滅潶鑲′唤(600114)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/涓鏇欏厜(603019)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/澶氱憺鍖昏嵂(301075)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/鎷撴櫘闆嗗洟(601689)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/鎷涘晢閾惰(600036)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/鐩堝嘲鐜(000967)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鑲＄エ鎶ュ憡/闀跨數绉戞妧(600584)/閲嶇偣鍏虫敞鑲＄エ鏃ユ姤_20260526.md
+[PASS] [2026-05-26 08:56:49] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-26 08:56:49] Commit message format OK: fix: 鏁版嵁绠＄嚎P0/P1鍥涘悎涓€鎵规淇 鈥?FundFlow澶囨簮鎺ョ嚎+鏂版氮涓嶅彲杈剧洃鎺?鍥炲～闃堝€煎垎灞?summary.csv鐢熸垚
+[PASS] [2026-05-26 08:56:49] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-26 08:56:49] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-26 08:56:49] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-26 08:56:49] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-26 08:56:49] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-26 08:56:50] Check E complete
+[PASS] [2026-05-26 08:56:50] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-26 08:56:50] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-26 08:56:50] Check F complete
+=== Pre-commit check completed at 2026-05-26 08:56:50 ===
