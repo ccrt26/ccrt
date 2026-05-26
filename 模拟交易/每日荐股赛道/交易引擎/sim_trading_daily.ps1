@@ -794,8 +794,9 @@ if ($txns.Count -gt 0 -and -not $DryRun) {
     }
     if ($newLines.Count -gt 0) {
         $allLines = @($header) + $existingLines + $newLines
-        $allLines | Set-Content -Encoding UTF8 $txnFile
-        Assert-WriteSuccess -Path $txnFile
+        $txnBefore = if (Test-Path $txnFile) { (Get-Item $txnFile).LastWriteTime } else { [datetime]::MinValue }
+        try { $allLines | Set-Content -Encoding UTF8 $txnFile -ErrorAction Stop } catch { Write-Error "Daily txn write error: $_"; exit 1 }
+        Assert-WriteSuccess -Path $txnFile -BeforeWrite $txnBefore
         Write-Log "Transactions written: $($newLines.Count) ($dupCount dupes)"
     }
 }
@@ -827,8 +828,9 @@ if (-not $DryRun) {
         Cooldowns = $cooldowns
         RiskCooldowns = $riskCooldowns
     }
-    $posOutput | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $positionsFile
-    Assert-WriteSuccess -Path $positionsFile
+    $posBefore = if (Test-Path $positionsFile) { (Get-Item $positionsFile).LastWriteTime } else { [datetime]::MinValue }
+    $posOutput | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $positionsFile -ErrorAction Stop
+    Assert-WriteSuccess -Path $positionsFile -BeforeWrite $posBefore
     Write-Log "Positions updated"
 
     # Shared cooldowns sync (流金 v2026-05-24)
@@ -838,7 +840,7 @@ if (-not $DryRun) {
     $syncCooldowns = @{}
     $cooldowns.GetEnumerator() | ForEach-Object { $syncCooldowns[$_.Key] = $_.Value }
     if ($syncCooldowns.Count -gt 0) {
-        $syncCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile
+        try { $syncCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile -ErrorAction Stop } catch { Write-Log "Shared cooldowns write error: $_" "WARN" }
     }
 }
 
@@ -901,8 +903,9 @@ $snapshot = @{
     Benchmark = $benchmarkVal
 }
 if (-not $DryRun) {
-    $snapshot | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $snapshotFile
-    Assert-WriteSuccess -Path $snapshotFile
+    $snapBefore = if (Test-Path $snapshotFile) { (Get-Item $snapshotFile).LastWriteTime } else { [datetime]::MinValue }
+    try { $snapshot | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $snapshotFile -ErrorAction Stop } catch { Write-Error "Daily snapshot write error: $_"; exit 1 }
+    Assert-WriteSuccess -Path $snapshotFile -BeforeWrite $snapBefore
     Write-Log "Snapshot written: $snapshotFile"
 }
 

@@ -55,7 +55,7 @@
     "lookback_days": 3
   },
   "schedule": {
-    "daily_trigger": "15:30",
+    "daily_trigger": "19:00",
     "skip_holidays": true,
     "holidays_file": "每日荐股/运营记录/holidays_2026.csv"
   },

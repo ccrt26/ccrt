@@ -12,3 +12,5 @@ Date,Mode,Status,ReportName,VersionBefore,VersionAfter,Notes
 2026-05-25,daily_latest,SUCCESS,,,,"玉夜手动补跑: 报告+归档+重点股票均完成, 资金流向全量503降级, K线74%可用"
 2026-05-25,eval,SUCCESS,评估报告_20260522,,,Evaluation v1.5 done
 2026-05-26,daily_latest,SUCCESS,,,,Analysis done, output: C:\Users\34269\Documents\Claude\股票分析\每日荐股\股票报告
+2026-05-26,eval,SUCCESS,每日荐股后评估报告_20260525,,,Evaluation v1.5 done
+2026-05-26,daily_latest,SUCCESS,,,,Analysis done, output: C:\Users\34269\Documents\Claude\股票分析\每日荐股\股票报告

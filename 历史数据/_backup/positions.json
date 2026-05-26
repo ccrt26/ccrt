@@ -1,17 +1,49 @@
 ﻿{
-    "TotalValue":  1008174.49,
-    "LastUpdated":  "20260522",
-    "Cash":  737869.49,
-    "Cooldowns":  {},
+    "Cooldowns":  {
+                      "600114":  {
+                                     "LastStopLossDate":  null,
+                                     "Code":  "600114",
+                                     "Name":  "涓滅潶鑲′唤",
+                                     "LastFullTakeProfitDate":  "20260526"
+                                 },
+                      "301075":  {
+                                     "LastStopLossDate":  "20260526",
+                                     "Code":  "301075",
+                                     "Name":  "澶氱憺鍖昏嵂",
+                                     "LastFullTakeProfitDate":  null
+                                 }
+                  },
+    "Watchlist":  {
+
+                  },
+    "LastUpdated":  "20260526",
+    "Cash":  825309.44,
+    "TotalValue":  996747.44,
     "Positions":  {
+                      "603019":  {
+                                     "Code":  "603019",
+                                     "Name":  "中科曙光",
+                                     "Shares":  900,
+                                     "AvgCost":  94.44,
+                                     "CurrentPrice":  94.42,
+                                     "EntryDate":  "20260526",
+                                     "EntryShortPrediction":  "偏多",
+                                     "LastStopLossDate":  null,
+                                     "LastFullTakeProfitDate":  null,
+                                     "Support":  89.61,
+                                     "Resistance":  95.89,
+                                     "StopLoss":  0,
+                                     "UnrealizedPnL":  -18.00,
+                                     "UnrealizedPnLPct":  -0.02
+                                 },
                       "601689":  {
                                      "Code":  "601689",
-                                     "Name":  "拓普集团",
+                                     "Name":  "鎷撴櫘闆嗗洟",
                                      "Shares":  1200,
                                      "AvgCost":  72.09,
                                      "CurrentPrice":  72.05,
                                      "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
+                                     "EntryShortPrediction":  "鐪嬪",
                                      "LastStopLossDate":  null,
                                      "LastFullTakeProfitDate":  null,
                                      "Support":  64.73,
@@ -19,38 +51,6 @@
                                      "StopLoss":  60.2,
                                      "UnrealizedPnL":  -48.00,
                                      "UnrealizedPnLPct":  -0.06
-                                 },
-                      "600114":  {
-                                     "Code":  "600114",
-                                     "Name":  "东睦股份",
-                                     "Shares":  2300,
-                                     "AvgCost":  35.20,
-                                     "CurrentPrice":  37.75,
-                                     "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
-                                     "LastStopLossDate":  null,
-                                     "LastFullTakeProfitDate":  null,
-                                     "Support":  33.97,
-                                     "Resistance":  39.64,
-                                     "StopLoss":  31.59,
-                                     "UnrealizedPnL":  5865.00,
-                                     "UnrealizedPnLPct":  7.24
-                                 },
-                      "301075":  {
-                                     "Code":  "301075",
-                                     "Name":  "多瑞医药",
-                                     "Shares":  1100,
-                                     "AvgCost":  86.06,
-                                     "CurrentPrice":  88.2,
-                                     "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
-                                     "LastStopLossDate":  null,
-                                     "LastFullTakeProfitDate":  null,
-                                     "Support":  82.82,
-                                     "Resistance":  92.61,
-                                     "StopLoss":  77.02,
-                                     "UnrealizedPnL":  2354.00,
-                                     "UnrealizedPnLPct":  2.49
                                  }
                   }
 }

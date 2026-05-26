@@ -4,6 +4,7 @@
   "SingleStockLimitPct": 30,
   "SlippagePct": 0.1,
   "CooloffPeriodDays": 5,
+  "InstructionMode": "strict",
   "FullTakeProfitCooldownDays": 3,
   "Commission": {
     "Rate": 0.00025,

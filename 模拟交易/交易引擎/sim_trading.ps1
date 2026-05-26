@@ -79,8 +79,14 @@ $codeMap = @{
 # ============================================================
 $logLines = @()
 function Assert-WriteSuccess {
-    param([string]$Path)
-    if (-not (Test-Path $Path)) { Write-Error "写入失败: $Path"; exit 1 }
+    param([string]$Path, [datetime]$BeforeWrite)
+    if (-not (Test-Path $Path)) { Write-Error "写入失败(文件不存在): $Path"; exit 1 }
+    if ($BeforeWrite) {
+        $actualWriteTime = (Get-Item $Path).LastWriteTime
+        if ($actualWriteTime -le $BeforeWrite) {
+            Write-Error "写入失败(时间戳未更新): $Path (before=$BeforeWrite, actual=$actualWriteTime)"; exit 1
+        }
+    }
 }
 
 function Write-Log {
@@ -495,6 +501,18 @@ Write-Log "数据质量检查完成"
 # ---- Step 4.5: 读取腰子交易指令 (Phase 1 指令通道 v2.1) ----
 if (-not $InstructionFile) {
     $InstructionFile = Join-Path $simDir "交易决策/交易指令_${Date}.json"
+    if (-not (Test-Path $InstructionFile)) {
+        $prevTradingDay = $scriptDateObj.AddDays(-1)
+        while ($prevTradingDay.DayOfWeek -eq "Saturday" -or $prevTradingDay.DayOfWeek -eq "Sunday") {
+            $prevTradingDay = $prevTradingDay.AddDays(-1)
+        }
+        $prevDateStr = $prevTradingDay.ToString("yyyyMMdd")
+        $prevInstructionFile = Join-Path $simDir "交易决策/交易指令_${prevDateStr}.json"
+        if (Test-Path $prevInstructionFile) {
+            Write-Log "当日无腰子指令，回溯至前一交易日指令: 交易指令_${prevDateStr}.json"
+            $InstructionFile = $prevInstructionFile
+        }
+    }
 }
 $yaoziSells = @{}   # code → decision
 $yaoziBuys = @{}     # code → decision
@@ -525,6 +543,15 @@ if (Test-Path $InstructionFile) {
     }
 } else {
     Write-Log "无腰子指令文件，使用纯自动模式"
+}
+
+# 决策优先级三层架构 v2.0: 腰子指令模式标志
+$yaoziActive = ($yaoziSells.Count + $yaoziBuys.Count + $yaoziHolds.Count) -gt 0
+$strictMode = ($config.InstructionMode -eq "strict") -and $yaoziActive
+if ($strictMode) {
+    Write-Log "腰子指令模式(strict): 引擎退位为执行器，仅P0熔断+P1止损保留，禁止自动开仓"
+} elseif ($yaoziActive) {
+    Write-Log "腰子指令模式(safety_net): 腰子指令优先，无指令股票仍可自动交易"
 }
 
 # ---- Step 5: 获取行情 ----
@@ -735,10 +762,12 @@ foreach ($code in $stockMap.Keys) {
         continue
     }
 
-    # --- 腰子HOLD保护: 腰子明确HOLD则跳过P3/P4/P5自动卖出 ---
-    $skipAutoSell = $yaoziHolds.ContainsKey($code)
-    if ($skipAutoSell) {
+    # --- 腰子HOLD保护: 腰子HOLD或strict模式(该股无腰子指令)则跳过P3/P4/P5 ---
+    $skipAutoSell = $yaoziHolds.ContainsKey($code) -or ($strictMode -and -not ($yaoziSells.ContainsKey($code) -or $yaoziBuys.ContainsKey($code)))
+    if ($yaoziHolds.ContainsKey($code)) {
         Write-Log "  $code 腰子HOLD指令: 跳过P3/P4/P5自动卖出检查"
+    } elseif ($strictMode -and -not ($yaoziSells.ContainsKey($code) -or $yaoziBuys.ContainsKey($code))) {
+        Write-Log "  $code strict模式(无腰子指令): 跳过P3/P4/P5，仅P1止损保留"
     }
 
     # --- P3: 预判转空 ---
@@ -830,8 +859,12 @@ foreach ($txn in $txns) {
 
 # ---- Step 9: 开仓检查 ----
 Write-Log "执行开仓检查..."
-if ($skipOpenNewPositions) { Write-Log "09:45 超时标志触发，跳过开新仓" "WARN" }
-else {
+$blockAutoOpen = $strictMode
+if ($blockAutoOpen) {
+    Write-Log "strict模式: 仅执行腰子BUY指令，禁止自动开仓"
+}
+if ($skipOpenNewPositions -and -not $strictMode) { Write-Log "09:45 超时标志触发，跳过开新仓" "WARN" }
+if ((-not $skipOpenNewPositions) -or $strictMode) {
 $candidates = @()
 
 # --- 腰子BUY: 人工买入指令优先于自动开仓 ---
@@ -866,6 +899,11 @@ foreach ($code in $yaoziBuys.Keys) {
 
     $posPct = Get-PositionSize -Score $evalStock.Scores.Composite
     if ($posPct -le 0) { $posPct = 10 }
+    # 流金 v2026-05-26: TrendHealth风险提示（腰子可risk_override覆盖）
+    $thLabel = $evalStock.TrendHealth.Label
+    if ($thLabel -eq "警戒" -or $thLabel -eq "预警关注") {
+        Write-Log "  $code 腰子BUY: TrendHealth=$thLabel，建议降档(当前${posPct}%)，腰子可用risk_override覆盖" "WARN"
+    }
     $posAmount = [Math]::Round($positions.Cash * $posPct / 100, 2)
     $maxAmount = [Math]::Round($positions.TotalValue * $config.SingleStockLimitPct / 100, 2)
     if ($posAmount -gt $maxAmount) { $posAmount = $maxAmount }
@@ -923,6 +961,7 @@ foreach ($code in $yaoziBuys.Keys) {
     Write-Log "  $code 腰子BUY: $shares x $slippedPrice = $actualAmount, 理由: $yaoziReason"
 }
 
+if (-not $blockAutoOpen) {
 foreach ($code in $codeMap.Keys) {
     $evalStock = $stocks[$code]
     if (-not $evalStock) { continue }
@@ -1031,6 +1070,25 @@ if ($candidates.Count -gt 0) {
             $entryPrice = [Math]::Round($entryPrice * (1 + $config.SlippagePct / 100), 2)
 
             $posPct = Get-PositionSize -Score $evalStock.Scores.Composite
+
+            # 流金+青山 v2026-05-26: TrendHealth=警戒/预警→自动降一档仓位
+            $thLabel = $evalStock.TrendHealth.Label
+            if ($thLabel -eq "警戒" -or $thLabel -eq "预警关注") {
+                $tiers = @(25, 20, 10, 5, 0)
+                $origPct = $posPct
+                $idx = [Array]::IndexOf($tiers, [int]$posPct)
+                if ($idx -ge 0 -and $idx -lt $tiers.Count - 1) {
+                    $posPct = $tiers[$idx + 1]
+                    Write-Log "  $code TrendHealth=$thLabel，仓位降档: $origPct%→$posPct%"
+                } elseif ($idx -eq $tiers.Count - 1) {
+                    $posPct = 0
+                }
+                if ($posPct -le 0) {
+                    Write-Log "  $code TrendHealth=$thLabel，仓位降档至0%，跳过" "WARN"
+                    continue
+                }
+            }
+
             $posAmount = [Math]::Round($positions.Cash * $posPct / 100, 2)
 
             $maxAmount = [Math]::Round($positions.TotalValue * $config.SingleStockLimitPct / 100, 2)
@@ -1087,7 +1145,8 @@ if ($candidates.Count -gt 0) {
 } else {
     Write-Log "无符合开仓条件的股票"
 }
-}  # 关闭 if (-not $skipOpenNewPositions) else 块
+}  # 关闭 if (-not $blockAutoOpen)
+}  # 关闭 if ((-not $skipOpenNewPositions) -or $strictMode) 块
 
 # ---- Step 10: 写入交易流水（幂等：防重复写入）----
 if ($txns.Count -gt 0 -and -not $DryRun) {
@@ -1135,8 +1194,9 @@ if ($txns.Count -gt 0 -and -not $DryRun) {
     }
     if ($newLines.Count -gt 0) {
         $allLines = @($header) + $existingTxns + $newLines
-        $allLines | Set-Content -Encoding UTF8 $txnFile
-        Assert-WriteSuccess -Path $txnFile
+        $txnBefore = if (Test-Path $txnFile) { (Get-Item $txnFile).LastWriteTime } else { [datetime]::MinValue }
+        try { $allLines | Set-Content -Encoding UTF8 $txnFile -ErrorAction Stop } catch { Write-Error "交易流水写入异常: $_"; exit 1 }
+        Assert-WriteSuccess -Path $txnFile -BeforeWrite $txnBefore
         Write-Log "交易流水已写入: $($newLines.Count) 条 (跳过${dupCount}条重复)"
     } else {
         Write-Log "交易流水无新增 (${dupCount}条全部重复，已跳过)" "INFO"
@@ -1171,15 +1231,16 @@ $positions.TotalValue = [Math]::Round($positions.Cash + $stockValue, 2)
 
 if (-not $DryRun) {
     $posOutput = @{ Cash = $positions.Cash; TotalValue = $positions.TotalValue; LastUpdated = $Date; Positions = $posObj; Cooldowns = $cooldowns; Watchlist = $watchlist }
-    $posOutput | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $positionsFile
-    Assert-WriteSuccess -Path $positionsFile
+    $posBefore = if (Test-Path $positionsFile) { (Get-Item $positionsFile).LastWriteTime } else { [datetime]::MinValue }
+    try { $posOutput | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $positionsFile -ErrorAction Stop } catch { Write-Error "持仓文件写入异常: $_"; exit 1 }
+    Assert-WriteSuccess -Path $positionsFile -BeforeWrite $posBefore
     Write-Log "持仓已更新"
 
     # Shared cooldowns sync (流金 v2026-05-24)
     $sharedDir = Join-Path $simDir "共享模块/shared"
     if (-not (Test-Path $sharedDir)) { New-Item $sharedDir -ItemType Directory -Force | Out-Null }
     if ($sharedCooldowns.Count -gt 0) {
-        $sharedCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile
+        try { $sharedCooldowns | ConvertTo-Json -Depth 3 | Set-Content -Encoding UTF8 $sharedCooldownsFile -ErrorAction Stop } catch { Write-Log "共享冷却期文件写入异常: $_" "WARN" }
     }
 
     # 更新腰子指令状态 (Phase 1 指令通道)
@@ -1197,7 +1258,7 @@ if (-not $DryRun) {
             }
             $yaoziUpdate | Add-Member -MemberType NoteProperty -Name "decisions" -Value $updatedDecisions -Force
             $yaoziUpdate | Add-Member -MemberType NoteProperty -Name "engine_processed_at" -Value (Get-Date -Format "yyyy-MM-ddTHH:mm:ss") -Force
-            $yaoziUpdate | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $InstructionFile
+            try { $yaoziUpdate | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $InstructionFile -ErrorAction Stop } catch { Write-Log "腰子指令状态文件写入异常: $_" "WARN" }
             Write-Log "腰子指令状态已更新: executed=$($yaoziExecuted.Count)"
         } catch {
             Write-Log "腰子指令状态更新失败: $_" "WARN"
@@ -1264,8 +1325,9 @@ $snapshot = @{
     Benchmark = $benchmarkVal
 }
 if (-not $DryRun) {
-    $snapshot | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $snapshotFile
-    Assert-WriteSuccess -Path $snapshotFile
+    $snapBefore = if (Test-Path $snapshotFile) { (Get-Item $snapshotFile).LastWriteTime } else { [datetime]::MinValue }
+    try { $snapshot | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 $snapshotFile -ErrorAction Stop } catch { Write-Error "快照写入异常: $_"; exit 1 }
+    Assert-WriteSuccess -Path $snapshotFile -BeforeWrite $snapBefore
     Write-Log "快照已写入: $snapshotFile"
 }
 

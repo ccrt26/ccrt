@@ -2046,7 +2046,7 @@ foreach ($s in $stocks) {
         Scores = @{ Technical=$techS; Fundamental=$fundS; Sentiment=$sentS; Sector=$sectS; Capital=$capS; Macro=$macS; Composite=$comp.Score }
         Rating = $comp.RatingShort; RatingFull = $comp.Rating
         Prediction = @{ Short=$pred.Short; Mid=$pred.Mid; Long=$pred.Long; Confidence=$pred.Confidence; ShortBull=$pred.ShortBull; MidBull=$pred.MidBull; LongBull=$pred.LongBull }
-        KeyLevels = @{ Support=[Math]::Round($pred.Support,2); Resistance=[Math]::Round($pred.Resistance,2); StopLoss=[Math]::Round($pred.StopLoss,2) }
+        KeyLevels = @{ Support=[Math]::Round($pred.Support,2); Resistance=[Math]::Round($pred.Resistance,2); StopLoss=[Math]::Round($ops.StopLoss,2) }
         TrendHealth = @{ Score=$health.Score; Label=$health.Label }
         Signals = @{
             MA_Trend = $_maTrend; MACD_Position = $_macdPos

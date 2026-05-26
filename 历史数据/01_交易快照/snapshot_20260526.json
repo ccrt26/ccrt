@@ -1,0 +1,37 @@
+﻿{
+    "StockDetails":  [
+                         {
+                             "Name":  "中科曙光",
+                             "Code":  "603019",
+                             "UnrealizedPnLPct":  -0.02,
+                             "UnrealizedPnL":  -18.00,
+                             "CurrentPrice":  94.42,
+                             "Shares":  900,
+                             "AvgCost":  94.44
+                         },
+                         {
+                             "Name":  "鎷撴櫘闆嗗洟",
+                             "Code":  "601689",
+                             "UnrealizedPnLPct":  -0.06,
+                             "UnrealizedPnL":  -48.00,
+                             "CurrentPrice":  72.05,
+                             "Shares":  1200,
+                             "AvgCost":  72.09
+                         }
+                     ],
+    "TotalValue":  996747.44,
+    "DailyReturn":  -1.13,
+    "Cash":  825309.44,
+    "Date":  "20260526",
+    "Benchmark":  {
+                      "Name":  "沪深300",
+                      "Code":  "000300.SH",
+                      "InitialValue":  4845.10,
+                      "BenchmarkReturnPct":  2.12,
+                      "CurrentValue":  4947.85,
+                      "ExcessReturnPct":  -2.45
+                  },
+    "Positions":  2,
+    "StockValue":  171438.00,
+    "TotalReturnPct":  -0.33
+}

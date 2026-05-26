@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-05-26T23:00:00",
+  "trade_date": "20260527",
+  "version": "2.1",
+  "instruction_mode": "strict",
+  "market_phase": "震荡偏强",
+  "decisions": [
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "action": "SELL",
+      "reason": "无止损保护(StopLoss=0)+评分仅60+趋势缠绕方向不明+入场未经腰子授权。清仓退出，等信号明确再评估。",
+      "status": "pending",
+      "risk_override": true,
+      "risk_override_reason": "流金P0红灯：无止损保护，裸奔仓位。覆盖引擎自动HOLD逻辑。",
+      "analysis_ref": {
+        "shanyao": "市场偏强震荡，个股分化剧烈",
+        "xinge": "无重大事件催化，信息真空期",
+        "yuye": "StopLoss=0数据异常，TechAnalysis字段格式不匹配",
+        "liujin": "P0红灯-无止损裸奔；P1黄灯-未经授权开仓",
+        "qingshan": "评分60刚过线，MA缠绕趋势不明"
+      }
+    },
+    {
+      "code": "601689",
+      "name": "拓普集团",
+      "action": "HOLD",
+      "reason": "趋势完好(MA5>MA20多头)+评分63。RSI=79.9接近超买但未触发P5减仓(R2=75.69)。持有观察，若触发R2按规则减半仓。",
+      "status": "pending",
+      "risk_override": false,
+      "analysis_ref": {
+        "shanyao": "市场偏强震荡",
+        "xinge": "无重大事件",
+        "yuye": "数据正常，止损60.2有效",
+        "liujin": "P1黄旗-RSI接近超买；止损距离偏宽但可接受",
+        "qingshan": "趋势完好，等待P5触发窗口"
+      }
+    },
+    {
+      "code": "600114",
+      "name": "东睦股份",
+      "action": "HOLD",
+      "reason": "5/26刚全仓止盈(冷却期至5/29)+趋势信号仍强(RSI=69,MA多头)。冷却期结束后重新评估。",
+      "status": "pending",
+      "risk_override": false,
+      "analysis_ref": {
+        "qingshan": "趋势强劲但遵守冷却期规则",
+        "liujin": "止盈冷却期3天，5/29前不重新开仓"
+      }
+    }
+  ],
+  "meta": {
+    "portfolio_value": 996747.44,
+    "daily_pnl_pct": -1.13,
+    "cumulative_pnl_pct": -0.33,
+    "positions_count": 2,
+    "cash": 825309.44,
+    "benchmark_return": 2.12,
+    "excess_return": -2.45
+  }
+}

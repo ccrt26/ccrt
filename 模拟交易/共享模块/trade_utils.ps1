@@ -106,10 +106,16 @@ function Get-PositionSize {
 
 # ---- 文件写入验证 ----
 function Assert-WriteSuccess {
-    param([string]$Path)
+    param([string]$Path, [datetime]$BeforeWrite)
     if (-not (Test-Path $Path)) {
-        Write-Error "写入失败: $Path"
+        Write-Error "写入失败(文件不存在): $Path"
         exit 1
+    }
+    if ($BeforeWrite) {
+        $actualWriteTime = (Get-Item $Path).LastWriteTime
+        if ($actualWriteTime -le $BeforeWrite) {
+            Write-Error "写入失败(时间戳未更新): $Path (before=$BeforeWrite, actual=$actualWriteTime)"; exit 1
+        }
     }
 }
 

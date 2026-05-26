@@ -1,0 +1,14 @@
+﻿{
+    "600114":  {
+                   "LastStopLossDate":  null,
+                   "Code":  "600114",
+                   "Name":  "涓滅潶鑲′唤",
+                   "LastFullTakeProfitDate":  "20260526"
+               },
+    "301075":  {
+                   "LastStopLossDate":  "20260526",
+                   "Code":  "301075",
+                   "Name":  "澶氱憺鍖昏嵂",
+                   "LastFullTakeProfitDate":  null
+               }
+}

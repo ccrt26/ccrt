@@ -1,0 +1,67 @@
+﻿{
+    "files_scope":  [
+                        "代码文件/信鸽信息采集/,代码文件/数据/,代码文件/每日荐股/scripts/,代码文件/规则红线/"
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 6/6: 后评估 | Executor: PostEval",
+    "updated":  "2026-05-26T14:47:35",
+    "started":  "2026-05-26T14:06:28",
+    "gate_2":  "PASS",
+    "task":  "信鸽信息采集模块全量交付——5个代码文件+配置+调度注册",
+    "stage":  6,
+    "next_action":  "done",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_pigeon_info_collection_v1.0.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-26T14:44:56",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-26T14:45:08"
+                          },
+                          {
+                              "output":  "代码文件/信鸽信息采集/pigeon_collector.ps1",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-26T14:46:44",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安",
+                              "stage":  4,
+                              "entered":  "2026-05-26T14:46:50"
+                          },
+                          {
+                              "output":  "代码文件/信鸽信息采集/register_pigeon_scheduler.ps1",
+                              "gate":  "PASS",
+                              "executor":  "红枫",
+                              "validated":  "2026-05-26T14:47:29",
+                              "stage":  5
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "PostEval",
+                              "stage":  6,
+                              "entered":  "2026-05-26T14:47:32"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "后评估",
+    "gate_3":  "PASS",
+    "executor":  "PostEval",
+    "completed":  "2026-05-26T14:47:45"
+}

@@ -1,35 +1,35 @@
-﻿{
+{
     "StartDate":  "20260522",
     "InitialCapital":  1000000,
-    "CurrentValue":  1008174.49,
-    "TotalReturnPct":  0.82,
-    "MaxDrawdown":  -0.71,
-    "MaxDrawdownDate":  "20260522",
+    "CurrentValue":  996747.44,
+    "TotalReturnPct":  -0.33,
+    "MaxDrawdown":  -1.13,
+    "MaxDrawdownDate":  "20260526",
     "PeakValue":  1008174.49,
     "LastUpdated":  "20260522",
-    "TotalTrades":  0,
+    "TotalTrades":  2,
     "WinningTrades":  0,
-    "LosingTrades":  0,
-    "WinRate":  null,
-    "ConsecutiveLosses":  0,
+    "LosingTrades":  2,
+    "WinRate":  0,
+    "ConsecutiveLosses":  2,
     "IsDrawdownAlert":  false,
     "Benchmark":  {
                       "Name":  "沪深300",
                       "Code":  "000300.SH",
                       "InitialValue":  4845.10,
-                      "BenchmarkReturnPct":  0,
-                      "CurrentValue":  4845.1,
-                      "ExcessReturnPct":  0.82
+                      "BenchmarkReturnPct":  2.12,
+                      "CurrentValue":  4947.85,
+                      "ExcessReturnPct":  -2.45
                   },
     "RiskMetrics":  {
-                        "MaxDrawdown":  -0.71,
-                        "MaxDrawdownDate":  "20260522",
-                        "AvgStopLossDistance":  12.42,
-                        "ConsecutiveLosses":  0,
+                        "MaxDrawdown":  -1.13,
+                        "MaxDrawdownDate":  "20260526",
+                        "AvgStopLossDistance":  16.49,
+                        "ConsecutiveLosses":  2,
                         "SharpeRatio":  null,
                         "InformationRatio":  null,
                         "IsDrawdownAlert":  false,
-                        "CurrentDrawdown":  0,
+                        "CurrentDrawdown":  -1.13,
                         "AvgWinPct":  null,
                         "AvgLossPct":  null,
                         "ProfitFactor":  null
@@ -44,23 +44,14 @@
                                     "UnrealizedPnLPct":  -0.06,
                                     "CurrentShares":  1200
                                 },
-                     "600114":  {
-                                    "Name":  "东睦股份",
-                                    "Trades":  0,
+                     "603019":  {
                                     "WinRate":  null,
-                                    "TotalPnL":  7168.00,
-                                    "UnrealizedPnL":  5865.00,
-                                    "UnrealizedPnLPct":  7.24,
-                                    "CurrentShares":  2300
-                                },
-                     "301075":  {
-                                    "WinRate":  null,
-                                    "Name":  "多瑞医药",
+                                    "Name":  "中科曙光",
                                     "Trades":  0,
-                                    "UnrealizedPnLPct":  2.49,
-                                    "UnrealizedPnL":  2354.00,
+                                    "UnrealizedPnLPct":  -0.02,
+                                    "UnrealizedPnL":  -18.00,
                                     "TotalPnL":  -18.00,
-                                    "CurrentShares":  1100
+                                    "CurrentShares":  900
                                 }
                  }
 }

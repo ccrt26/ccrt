@@ -35,7 +35,7 @@ function Invoke-CninfoAnnouncement {
     $intervalMs = $config.api.cninfo_interval_ms
 
     $searchKey = [System.Web.HttpUtility]::UrlEncode($StockName)
-    $url = "${baseUrl}?searchkey=${searchKey}&sdate=${StartDate}&edate=${EndDate}&isfulltext=false&sortName=pubdate&sortType=desc&pageNum=1"
+    $url = "${baseUrl}?searchkey=${searchKey}&sdate=${StartDate}&edate=${EndDate}&isfulltext=true&sortName=pubdate&sortType=desc&pageNum=1"
 
     $headers = @{
         "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
@@ -57,14 +57,32 @@ function Invoke-CninfoAnnouncement {
                 for ($i = 0; $i -lt $count; $i++) {
                     $item = $response.announcements[$i]
                     $title = $item.announcementTitle -replace '<em>', '' -replace '</em>', ''
+                    $contentText = if ($item.announcementContent) { $item.announcementContent -replace '<em>', '' -replace '</em>', '' } else { "" }
+
+                    # 提取 announcementId（三级回退）
+                    $annId = $null
+                    if ($item.announcementId) {
+                        $annId = "$($item.announcementId)"
+                    } elseif ($item.announcementid) {
+                        $annId = "$($item.announcementid)"
+                    } elseif ($item.adjunctUrl -match '/(\d+)\.PDF$') {
+                        $annId = $matches[1]
+                    }
+                    $cninfoUrl = if ($annId) {
+                        "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=$($item.secCode)&announcementId=$annId"
+                    } else { $null }
+
                     $results += [PSCustomObject]@{
-                        title        = $title
-                        publish_time = $item.announcementTime
-                        pdf_url      = "http://static.cninfo.com.cn/" + $item.adjunctUrl
-                        sec_name     = $item.secName
-                        sec_code     = $item.secCode
-                        source       = "cninfo"
-                        source_type  = "primary"
+                        title           = $title
+                        content         = $contentText
+                        publish_time    = $item.announcementTime
+                        pdf_url         = "http://static.cninfo.com.cn/" + $item.adjunctUrl
+                        sec_name        = $item.secName
+                        sec_code        = $item.secCode
+                        source          = "cninfo"
+                        source_type     = "primary"
+                        announcement_id = $annId
+                        cninfo_url      = $cninfoUrl
                     }
                 }
                 Write-Host "[cninfo] $StockCode $StockName : $(@($results).Count) announcements fetched"

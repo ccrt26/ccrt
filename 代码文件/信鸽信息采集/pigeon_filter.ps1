@@ -147,7 +147,11 @@ function Invoke-PigeonFilter {
             structured_fields = $tag.StructuredFields
             raw_summary  = if ($msg.title.Length -gt 200) { $msg.title.Substring(0, 200) } else { $msg.title }
             publish_time = $msg.publish_time
-            keywords     = $tag.Keywords
+            pdf_url         = if ($msg.pdf_url) { $msg.pdf_url } else { $null }
+            content         = if ($msg.content) { $msg.content } else { "" }
+            announcement_id = if ($msg.announcement_id) { $msg.announcement_id } else { $null }
+            cninfo_url      = if ($msg.cninfo_url) { $msg.cninfo_url } else { $null }
+            keywords        = $tag.Keywords
             is_p0        = $tag.IsP0
         }
         $taggedEvents += $event

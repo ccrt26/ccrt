@@ -91,7 +91,11 @@ function Export-PigeonEventJson {
             title          = $event.title
             direction      = $event.direction
             impact_score   = $event.impact_score
-            fetch_date     = $fetchDate
+            pdf_url         = $event.pdf_url
+            content         = $event.content
+            announcement_id = $event.announcement_id
+            cninfo_url      = $event.cninfo_url
+            fetch_date      = $fetchDate
             # S3: T+N回测预留字段 (事后由青山回填)
             actual_return_T1  = $null
             actual_return_T3  = $null
