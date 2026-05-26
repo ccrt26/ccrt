@@ -1,9 +1,10 @@
-# P2-1: 配置中心化 — 共享配置加载器
+﻿# P2-1: 配置中心化 — 共享配置加载器
 # 使用方式: . (Join-Path $PSScriptRoot "config_loader.ps1"); $cfg = Get-ProjectConfig
 # 或指定脚本路径: $cfg = Get-ProjectConfig -StartDir $PSScriptRoot
 
 function Get-ProjectConfig {
     param([string]$StartDir = $PSScriptRoot)
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
     # 上溯找项目根目录 (包含 代码文件/数据/project_config.json)
     $dir = $StartDir

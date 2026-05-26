@@ -1,0 +1,35 @@
+﻿{
+    "gate_1":  "PENDING",
+    "attempts":  0,
+    "loop_context":  "Stage 5/6: 灰度部署 | Executor: 红枫",
+    "updated":  "2026-05-25T09:46:50",
+    "started":  "2026-05-25T17:28:00",
+    "gate_2":  "PENDING",
+    "task":  "管线引擎化v1.0：文档驱动→引擎驱动架构升级",
+    "stage":  5,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安",
+                              "stage":  4,
+                              "entered":  "2026-05-25T09:45:03"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红枫",
+                              "stage":  5,
+                              "entered":  "2026-05-25T09:46:50"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "灰度部署",
+    "gate_3":  "PENDING",
+    "executor":  "红枫"
+}

@@ -8,6 +8,7 @@ param(
     [string]$PreviousDate = "",    # 被评估的报告日期 YYYYMMDD，默认昨天
     [switch]$KeepHtml = $false      # 保留中间HTML文件
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 # ============================================================
 # 配置

@@ -1,11 +1,11 @@
-﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
-# 依赖: dot-source "$PSScriptRoot/core.ps1"
+﻿# 依赖: dot-source "$PSScriptRoot/core.ps1"
 # 最后更新: 2026-05-25 — 接入Invoke-DataSource统一降级引擎
 
 function Get-NorthboundHold {
     param(
         [Parameter(Mandatory=$true)][string]$Code
     )
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
 
     return Invoke-DataSource -Category "Northbound" `
         -CacheKey "Northbound_$Code" `

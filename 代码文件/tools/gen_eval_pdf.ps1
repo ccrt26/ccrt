@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 $edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 $reportDir = "C:\Users\34269\Documents\Claude\股票分析\临时报告"
 $htmlFile = Join-Path $reportDir "v2.3_v1.5_evaluation_report.html"

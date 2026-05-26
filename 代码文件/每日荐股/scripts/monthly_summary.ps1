@@ -14,6 +14,7 @@ param(
     [string]$Month = (Get-Date).AddMonths(-1).ToString("yyyy-MM"),
     [string]$SourceDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $archiveRoot = Join-Path $SourceDir "历史数据"
 $dailyDir = Join-Path $SourceDir "每日荐股"

@@ -14,6 +14,7 @@ param(
     [string]$CoreStocksFile = "",
     [string]$OutputFile = ""
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 # ---- Load config (paths with Chinese chars live in JSON) ----
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path

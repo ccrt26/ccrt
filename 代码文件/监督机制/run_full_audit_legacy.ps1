@@ -21,6 +21,7 @@ param(
     [switch]$Quick,
     [string]$Date = (Get-Date -Format "yyyy-MM-dd")
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $ErrorActionPreference = "Continue"
 $rootDir = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"

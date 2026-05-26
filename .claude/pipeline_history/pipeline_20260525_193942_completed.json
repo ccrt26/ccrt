@@ -1,0 +1,75 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_pipeline_7stage_v1.1_腰子闸门拆分.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T11:37:10",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_pipeline_7stage_v1.1_腰子闸门拆分.md",
+                              "gate":  "PASS",
+                              "executor":  "腰子",
+                              "validated":  "2026-05-25T11:37:14",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "审计报告/新安_架构合规审查_pipeline_7stage_v1.1_20260525.md,审计报告/旧影_独立审计_pipeline_7stage_v1.1_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-25T11:37:20",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红结",
+                              "stage":  4,
+                              "entered":  "2026-05-25T11:37:20"
+                          },
+                          {
+                              "output":  "审计报告/新安_变更影响分析_pipeline_7stage_20260525.md,审计报告/新安_测试报告_pipeline_7stage_20260525.md,审计报告/新安_回归验证_pipeline_7stage_20260525.md,审计报告/新安_红线检查_pipeline_7stage_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "新安",
+                              "validated":  "2026-05-25T11:38:41",
+                              "stage":  5
+                          },
+                          {
+                              "output":  "审计报告/红枫_部署记录_pipeline_7stage_20260525.md,审计报告/红枫_回滚方案_pipeline_7stage_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "红枫",
+                              "validated":  "2026-05-25T11:39:15",
+                              "stage":  6
+                          },
+                          {
+                              "output":  "审计报告/后评估_pipeline_7stage_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "PostEval",
+                              "validated":  "2026-05-25T11:39:42",
+                              "stage":  7
+                          }
+                      ],
+    "gate_1a":  "PASS",
+    "loop_context":  "Stage 7/7: 后评估 | Executor: PostEval",
+    "attempts":  0,
+    "started":  "2026-05-25T11:37:04",
+    "gate_2":  "FAIL",
+    "task":  "流水线7阶段重构：插入腰子设计确认阶段，闸门1拆分为1a/1b",
+    "stage":  7,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "max_attempts":  3,
+    "schema_version":  "1.1",
+    "stage_name":  "后评估",
+    "gate_3":  "FAIL",
+    "updated":  "2026-05-25T11:39:42",
+    "executor":  "PostEval",
+    "gate_1b":  "PASS",
+    "completed":  "2026-05-25T11:39:42"
+}

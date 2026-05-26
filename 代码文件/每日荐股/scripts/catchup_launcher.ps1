@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   铁律量化 · 启动时追赶调度器
 .DESCRIPTION
@@ -38,6 +38,7 @@ param(
     [switch]$SkipDelay,
     [switch]$SkipDataBackfill
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $rootDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $scriptsDir = Join-Path $rootDir "代码文件\每日荐股\scripts"

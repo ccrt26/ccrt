@@ -1,0 +1,39 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_data_health_check_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T11:58:20",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "腰子",
+                              "stage":  2,
+                              "entered":  "2026-05-25T11:58:59"
+                          }
+                      ],
+    "gate_1a":  "PENDING",
+    "loop_context":  "Stage 2/7: 设计确认 | Executor: 腰子",
+    "attempts":  1,
+    "started":  "2026-05-25T11:56:43",
+    "gate_2":  "PENDING",
+    "task":  "数据获取检测机制+两Bug修复",
+    "stage":  2,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "max_attempts":  3,
+    "schema_version":  "1.1",
+    "stage_name":  "设计确认",
+    "gate_3":  "PENDING",
+    "updated":  "2026-05-25T12:04:23",
+    "executor":  "腰子",
+    "gate_1b":  "PENDING"
+}

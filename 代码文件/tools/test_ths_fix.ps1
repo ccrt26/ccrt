@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 # Test THS fallback after path fix
 Write-Host "=== Test THS sector_ranking via Python ==="
 $thsPath = "C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\stock_data_fetcher_ths.py"

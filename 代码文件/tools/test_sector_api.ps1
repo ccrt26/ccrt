@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 # Sector API diagnostics
 Set-ExecutionPolicy Bypass -Scope Process -Force
 

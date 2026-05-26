@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 $file = 'C:\Users\34269\Desktop\每日荐股报告优化建议--豆包.docx'
 try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem

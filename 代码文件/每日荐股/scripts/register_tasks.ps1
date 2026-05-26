@@ -1,4 +1,4 @@
-#requires -RunAsAdministrator
+﻿#requires -RunAsAdministrator
 <#
 .SYNOPSIS
   铁律量化 · 注册定时任务（管理员权限）
@@ -10,6 +10,7 @@
 #>
 
 param([switch]$Uninstall)
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $scriptsDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\代码文件\每日荐股\scripts"
 $prefix = "TieLv"

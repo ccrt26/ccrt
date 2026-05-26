@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 # Convert comparison report HTML to PDF using Edge headless
 $edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 $reportDir = "C:\Users\34269\Documents\Claude\股票分析\临时报告"

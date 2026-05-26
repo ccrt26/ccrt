@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 # Test alternative sector data sources
 Write-Host "=== Test: nufm.dfcfw.com sector data format ==="
 try {

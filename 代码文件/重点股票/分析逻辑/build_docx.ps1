@@ -1,5 +1,6 @@
-# 重点股票跟踪分析逻辑白皮书 MD→DOCX 转换
+﻿# 重点股票跟踪分析逻辑白皮书 MD→DOCX 转换
 param([string]$Version = "v1.1")
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 $root = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $md = "$root\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_$Version.md"
 $docx = "$root\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_$Version.docx"

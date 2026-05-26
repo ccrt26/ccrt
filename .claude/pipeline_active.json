@@ -1,69 +1,21 @@
-﻿{
-    "gate_1":  "PASS",
-    "attempts":  0,
-    "loop_context":  "Stage 6/6: 后评估 | Executor: 腰子+青山",
-    "updated":  "2026-05-25T18:43:27",
-    "started":  "2026-05-25T18:25:00",
-    "gate_2":  "PASS",
-    "task":  "深度分析三模块升级: 财务比率提取+三情景估值+资金面三板斧",
-    "stage":  6,
-    "next_action":  "done",
-    "l3_reason":  "",
-    "l3_triggered":  false,
-    "active":  true,
-    "stage_name":  "后评估",
-    "gate_3":  "PASS",
-    "executor":  "红枫",
-    "files_scope":  [
-                        ".claude/hooks/pre-commit-check.ps1",
-                        "代码文件/监督机制/pipeline_engine.ps1",
-                        "代码文件/监督机制/pipeline_token.ps1",
-                        "审计报告/"
-                    ],
-    "schema_version":  "1.0",
-    "max_attempts":  3,
-    "stage_history":  [
-                          {
-                              "output":  "临时报告/architecture_design_深度分析三模块升级_20260525.md",
-                              "gate":  "PASS",
-                              "executor":  "情墨",
-                              "validated":  "2026-05-25T18:28:00",
-                              "stage":  1
-                          },
-                          {
-                              "output":  "闸门1: 新安审查PASS + 腰子确认PASS",
-                              "gate":  "PASS",
-                              "executor":  "新安+旧影",
-                              "validated":  "2026-05-25T18:29:00",
-                              "stage":  2
-                          },
-                          {
-                              "output":  "代码文件/每日荐股/scripts/modules/financial.ps1, fundflow.ps1, core.ps1",
-                              "gate":  "PASS",
-                              "executor":  "红结",
-                              "validated":  "2026-05-25T18:31:00",
-                              "stage":  3
-                          },
-                          {
-                              "output":  "四层验证: B2-01修复确认, 闸门2 PASS",
-                              "gate":  "PASS",
-                              "executor":  "新安",
-                              "validated":  "2026-05-25T18:34:00",
-                              "stage":  4
-                          },
-                          {
-                              "output":  "部署评估: 回滚方案就绪, 闸门3 PASS",
-                              "gate":  "PASS",
-                              "executor":  "红枫",
-                              "validated":  "2026-05-25T18:36:00",
-                              "stage":  5
-                          },
-                          {
-                              "output":  "青山策略验证 + 腰子最终验收: 6/6需求交付",
-                              "gate":  "PASS",
-                              "executor":  "腰子+青山",
-                              "validated":  "2026-05-25T18:41:00",
-                              "stage":  6
-                          }
-                      ]
+{
+    "schema_version": "1.0",
+    "active": false,
+    "task": "",
+    "executor": "",
+    "stage": 0,
+    "stage_name": "",
+    "next_action": "done",
+    "gate_1": "PENDING",
+    "gate_2": "PENDING",
+    "gate_3": "PENDING",
+    "attempts": 0,
+    "max_attempts": 3,
+    "l3_triggered": false,
+    "l3_reason": "",
+    "files_scope": [],
+    "loop_context": "",
+    "stage_history": [],
+    "started": "2026-05-26T02:05:00",
+    "updated": "2026-05-26T02:05:00"
 }

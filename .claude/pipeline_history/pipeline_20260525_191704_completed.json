@@ -1,0 +1,32 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-25T11:16:56",
+    "started":  "2026-05-25T11:16:32",
+    "gate_2":  "PENDING",
+    "task":  "pre-commit hook保护机制统一设计：合并两套写保护+补gate_1检查+威胁建模",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/新安_四层验证_daily_scheduler_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T11:16:33",
+                              "stage":  1
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨",
+    "completed":  "2026-05-25T11:17:04"
+}

@@ -1,0 +1,38 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 2/6: 架构审查 | Executor: 新安+旧影",
+    "updated":  "2026-05-26T00:10:20",
+    "started":  "2026-05-26T00:08:05",
+    "gate_2":  "PENDING",
+    "task":  "每日荐股P0-P1移植：资金结构维度(简化)+突破性质分类过滤器+行业锚定参照展示",
+    "stage":  2,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_daily_pick_p0p1_transplant_v1.0.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-26T00:10:04",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_daily_pick_p0p1_transplant_v1.0.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-26T00:10:20",
+                              "stage":  2
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构审查",
+    "gate_3":  "PENDING",
+    "executor":  "新安+旧影"
+}

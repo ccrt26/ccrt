@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>数据健康报告 - 20260525_200725</title>
+<style>
+body{font-family:'Microsoft YaHei',sans-serif;max-width:700px;margin:40px auto;padding:20px;color:#1a1a2e}
+.badge{display:inline-block;padding:4px 16px;border-radius:12px;color:#fff;font-weight:bold;background:red}
+h1{font-size:1.4em;margin:16px 0}
+.section{border:1px solid #e0e0e0;border-radius:8px;padding:16px;margin:16px 0}
+.section h2{font-size:1.1em;margin:0 0 12px 0}
+.pass{color:#27ae60}.fail{color:#e74c3c}.warn{color:#e67e22}
+table{width:100%;border-collapse:collapse;font-size:0.9em}
+th,td{padding:6px 12px;text-align:left;border-bottom:1px solid #eee}
+th{background:#f5f5f5}
+.footer{margin-top:24px;font-size:0.8em;color:#999}
+</style>
+</head>
+<body>
+<h1>铁律量化 · 数据健康报告</h1>
+<p>检测时间: 2026-05-25T20:07:21 | 模式: daily_sim | 状态: <span class="badge">阻断</span></p>
+
+<div class="section">
+<h2>检测消息</h2>
+<ul><li>腾讯API[1]正常 (194ms)</li>
+<li>新浪API[2]备源不可达</li>
+<li>数据文件新鲜 (0.6h)</li>
+<li>T0字段完整</li>
+<li>T1字段缺失率0%</li>
+<li>回填覆盖率0% (<50%, T0阻断)</li></ul>
+</div>
+
+<div class="section">
+<h2>T0 阻断字段</h2>
+<p class="green">{"Fields":["Price","PE","TotalScore"],"Missing":0,"Total":134,"Passed":true}</p>
+</div>
+
+<div class="section">
+<h2>T1 降级字段</h2>
+<p>{"Ratio":0,"Fields":["FundMainNet","NorthboundSharesRatio","MarginRZYE"],"Missing":0,"Total":134}</p>
+</div>
+
+<div class="section">
+<h2>T2 可选字段</h2>
+<p>{"Fields":["PB","PS","PEG","ConsensusGrowth"],"Missing":402,"Total":134}</p>
+</div>
+
+<div class="section">
+<h2>回填覆盖率</h2>
+<p>0%</p>
+</div>
+
+<div class="footer">
+<p>铁律量化系统 · 自动生成 · 2026-05-25 20:07:25</p>
+</div>
+</body>
+</html>

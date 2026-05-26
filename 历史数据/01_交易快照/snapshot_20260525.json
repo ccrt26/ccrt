@@ -1,0 +1,46 @@
+﻿{
+    "StockDetails":  [
+                         {
+                             "Name":  "拓普集团",
+                             "Code":  "601689",
+                             "UnrealizedPnLPct":  -0.06,
+                             "UnrealizedPnL":  -48.00,
+                             "CurrentPrice":  72.05,
+                             "Shares":  1200,
+                             "AvgCost":  72.09
+                         },
+                         {
+                             "Name":  "东睦股份",
+                             "Code":  "600114",
+                             "UnrealizedPnLPct":  7.24,
+                             "UnrealizedPnL":  3060.00,
+                             "CurrentPrice":  37.75,
+                             "Shares":  1200,
+                             "AvgCost":  35.20
+                         },
+                         {
+                             "Name":  "多瑞医药",
+                             "Code":  "301075",
+                             "UnrealizedPnLPct":  2.49,
+                             "UnrealizedPnL":  2354.00,
+                             "CurrentPrice":  88.2,
+                             "Shares":  1100,
+                             "AvgCost":  86.06
+                         }
+                     ],
+    "TotalValue":  1008122.59,
+    "DailyReturn":  0,
+    "Cash":  779342.59,
+    "Date":  "20260525",
+    "Benchmark":  {
+                      "Name":  "沪深300",
+                      "Code":  "000300.SH",
+                      "InitialValue":  4845.10,
+                      "BenchmarkReturnPct":  1.58,
+                      "CurrentValue":  4921.6,
+                      "ExcessReturnPct":  -0.77
+                  },
+    "Positions":  3,
+    "StockValue":  228780.00,
+    "TotalReturnPct":  0.81
+}

@@ -1,0 +1,318 @@
+﻿{
+    "Date":  "20260523",
+    "Stocks":  [
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "计算机",
+                       "Price":  94.8,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  90.06,
+                                         "StopLoss":  83.76,
+                                         "Resistance":  95.66
+                                     },
+                       "Name":  "中科曙光",
+                       "Signals":  {
+                                       "MA_Trend":  "纠缠/不明",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "死叉",
+                                       "LongBull_Score":  1,
+                                       "RSI_Value":  55.4,
+                                       "Volume_Relation":  "缩量上涨",
+                                       "Bollinger_Position":  "中轨下方",
+                                       "ShortBull_Score":  1,
+                                       "Research_Coverage":  "无研报",
+                                       "MidBull_Score":  2,
+                                       "RSI_Zone":  "中性偏强",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "偏高(60-80%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "中性",
+                                          "MidBull":  2,
+                                          "Long":  "长期中性",
+                                          "Mid":  "区间震荡",
+                                          "Confidence":  "低(\u003c50%)",
+                                          "ShortBull":  1,
+                                          "LongBull":  1
+                                      },
+                       "Code":  "603019",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  53,
+                                      "Composite":  48,
+                                      "Technical":  49,
+                                      "Sentiment":  25,
+                                      "Fundamental":  42
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "警戒",
+                                           "Score":  48
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "汽车零部件",
+                       "Price":  72.05,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  64.73,
+                                         "StopLoss":  60.2,
+                                         "Resistance":  75.65
+                                     },
+                       "Name":  "拓普集团",
+                       "Signals":  {
+                                       "MA_Trend":  "多头排列",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "LongBull_Score":  1,
+                                       "RSI_Value":  82.8,
+                                       "Volume_Relation":  "缩量下跌",
+                                       "Bollinger_Position":  "中轨上方",
+                                       "ShortBull_Score":  3,
+                                       "Research_Coverage":  "有(2篇)",
+                                       "MidBull_Score":  2,
+                                       "RSI_Zone":  "超买",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "高估(\u003e80%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "看多",
+                                          "MidBull":  2,
+                                          "Long":  "长期中性",
+                                          "Mid":  "区间震荡",
+                                          "Confidence":  "高(\u003e70%)",
+                                          "ShortBull":  3,
+                                          "LongBull":  1
+                                      },
+                       "Code":  "601689",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  33,
+                                      "Composite":  53,
+                                      "Technical":  82,
+                                      "Sentiment":  25,
+                                      "Fundamental":  39
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "健康",
+                                           "Score":  80
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "电子/机械",
+                       "Price":  37.75,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  33.97,
+                                         "StopLoss":  31.59,
+                                         "Resistance":  39.64
+                                     },
+                       "Name":  "东睦股份",
+                       "Signals":  {
+                                       "MA_Trend":  "纠缠/不明",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "LongBull_Score":  1,
+                                       "RSI_Value":  69.5,
+                                       "Volume_Relation":  "放量上涨",
+                                       "Bollinger_Position":  "触及上轨",
+                                       "ShortBull_Score":  3,
+                                       "Research_Coverage":  "无研报",
+                                       "MidBull_Score":  2,
+                                       "RSI_Zone":  "中性偏强",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "高估(\u003e80%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "看多",
+                                          "MidBull":  2,
+                                          "Long":  "长期中性",
+                                          "Mid":  "区间震荡",
+                                          "Confidence":  "高(\u003e70%)",
+                                          "ShortBull":  3,
+                                          "LongBull":  1
+                                      },
+                       "Code":  "600114",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  58,
+                                      "Composite":  53,
+                                      "Technical":  70,
+                                      "Sentiment":  23,
+                                      "Fundamental":  39
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "健康",
+                                           "Score":  94
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "医药",
+                       "Price":  88.2,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  82.82,
+                                         "StopLoss":  77.02,
+                                         "Resistance":  92.61
+                                     },
+                       "Name":  "多瑞医药",
+                       "Signals":  {
+                                       "MA_Trend":  "多头排列",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "零轴上金叉",
+                                       "LongBull_Score":  2,
+                                       "RSI_Value":  59.8,
+                                       "Volume_Relation":  "缩量上涨",
+                                       "Bollinger_Position":  "中轨上方",
+                                       "ShortBull_Score":  4,
+                                       "Research_Coverage":  "无研报",
+                                       "MidBull_Score":  3,
+                                       "RSI_Zone":  "中性偏强",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "N/A"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "看多",
+                                          "MidBull":  3,
+                                          "Long":  "长期看好",
+                                          "Mid":  "趋势看多",
+                                          "Confidence":  "高(\u003e70%)",
+                                          "ShortBull":  4,
+                                          "LongBull":  2
+                                      },
+                       "Code":  "301075",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  33,
+                                      "Composite":  61,
+                                      "Technical":  93,
+                                      "Sentiment":  25,
+                                      "Fundamental":  67
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "预警关注",
+                                           "Score":  79
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "环保",
+                       "Price":  12.98,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  12.33,
+                                         "StopLoss":  11.47,
+                                         "Resistance":  13.92
+                                     },
+                       "Name":  "盈峰环境",
+                       "Signals":  {
+                                       "MA_Trend":  "空头排列",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "死叉",
+                                       "LongBull_Score":  2,
+                                       "RSI_Value":  45.1,
+                                       "Volume_Relation":  "量能正常",
+                                       "Bollinger_Position":  "中轨下方",
+                                       "ShortBull_Score":  1,
+                                       "Research_Coverage":  "无研报",
+                                       "MidBull_Score":  3,
+                                       "RSI_Zone":  "中性偏弱",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "高估(\u003e80%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "中性",
+                                          "MidBull":  3,
+                                          "Long":  "长期看好",
+                                          "Mid":  "趋势看多",
+                                          "Confidence":  "低(\u003c50%)",
+                                          "ShortBull":  1,
+                                          "LongBull":  2
+                                      },
+                       "Code":  "000967",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  60,
+                                      "Composite":  52,
+                                      "Technical":  44,
+                                      "Sentiment":  25,
+                                      "Fundamental":  59
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "危险",
+                                           "Score":  21
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "银行",
+                       "Price":  37.02,
+                       "Date":  "20260523",
+                       "KeyLevels":  {
+                                         "Support":  35.17,
+                                         "StopLoss":  32.71,
+                                         "Resistance":  38.99
+                                     },
+                       "Name":  "招商银行",
+                       "Signals":  {
+                                       "MA_Trend":  "空头排列",
+                                       "Debt_Level":  "低杠杆",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "MACD_Position":  "死叉",
+                                       "LongBull_Score":  2,
+                                       "RSI_Value":  2,
+                                       "Volume_Relation":  "量能正常",
+                                       "Bollinger_Position":  "中轨下方",
+                                       "ShortBull_Score":  0,
+                                       "Research_Coverage":  "有(3篇)",
+                                       "MidBull_Score":  2,
+                                       "RSI_Zone":  "超卖",
+                                       "FundFlow_Trend":  "N/A",
+                                       "PE_Percentile_Zone":  "低估(\u003c20%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "中性",
+                                          "MidBull":  2,
+                                          "Long":  "长期看好",
+                                          "Mid":  "区间震荡",
+                                          "Confidence":  "低(\u003c50%)",
+                                          "ShortBull":  0,
+                                          "LongBull":  2
+                                      },
+                       "Code":  "600036",
+                       "Scores":  {
+                                      "Sector":  55,
+                                      "Macro":  100,
+                                      "Capital":  58,
+                                      "Composite":  51,
+                                      "Technical":  24,
+                                      "Sentiment":  57,
+                                      "Fundamental":  57
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "危险",
+                                           "Score":  35
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   }
+               ],
+    "GeneratedAt":  "2026-05-23 01:39:42"
+}

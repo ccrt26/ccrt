@@ -7,6 +7,7 @@ param(
     [string]$OutputFile = "",
     [switch]$SkipKLine
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 if (-not $PoolFile) { $PoolFile = Join-Path $rootDir "代码文件\数据\dynamic_pool.json" }

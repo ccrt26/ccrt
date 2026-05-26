@@ -1,0 +1,18 @@
+{
+  "StockDetails": [],
+  "TotalValue": 1000000.0,
+  "DailyReturn": 0,
+  "Cash": 1000000.0,
+  "Date": "20260521",
+  "Benchmark": {
+    "Name": "沪深300",
+    "Code": "000300",
+    "InitialValue": 1000000.0,
+    "BenchmarkReturnPct": 0.0,
+    "CurrentValue": 1000000.0,
+    "ExcessReturnPct": 0.0
+  },
+  "Positions": 0,
+  "StockValue": 0.0,
+  "TotalReturnPct": 0.0
+}

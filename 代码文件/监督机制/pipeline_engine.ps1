@@ -16,6 +16,7 @@ param(
     [string[]]$Scope = @(),
     [switch]$Force
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $ErrorActionPreference = "Stop"
 $BASE = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
@@ -154,8 +155,7 @@ function Test-Stage3Complete {
         $unstaged  = git -c core.quotepath=false diff --name-only 2>&1 | Where-Object { $_ -notmatch 'warning:|LF will be replaced|CRLF' }
         $staged    = git -c core.quotepath=false diff --cached --name-only 2>&1 | Where-Object { $_ -notmatch 'warning:|LF will be replaced|CRLF' }
         $untracked = git -c core.quotepath=false ls-files --others --exclude-standard 2>&1 | Where-Object { $_ -notmatch 'warning:|LF will be replaced|CRLF' }
-        $all = @($unstaged, $staged, $untracked | Where-Object { $_ }) -join "`n"
-        $codeFiles = $all -split "`n" | Where-Object { $_ -match '^代码文件[\\/]' } | Where-Object { $_ }
+        $codeFiles = @($unstaged) + @($staged) + @($untracked) | Where-Object { $_ -match '^代码文件[\\/]' }
         if ($codeFiles.Count -eq 0) {
             $lastMsg = git log -1 --format="%s" 2>&1
             return $false, "No changes in 代码文件/ (last commit: $lastMsg)"

@@ -449,7 +449,7 @@ if (-not (Test-Path $DataFile)) {
     }
 }
 Write-Log "读取评估数据..."
-try { $evalDataRaw = Get-Content $DataFile -Raw | ConvertFrom-Json } catch { Write-Error "评估数据文件解析失败: $_"; exit 1 }
+try { $evalDataRaw = Get-Content $DataFile -Raw -Encoding UTF8 | ConvertFrom-Json } catch { Write-Error "评估数据文件解析失败: $_"; exit 1 }
 $stocks = @{}
 $evalDataRaw.Stocks | ForEach-Object { $stocks[$_.Code] = $_ }
 
@@ -707,6 +707,12 @@ foreach ($code in $stockMap.Keys) {
             $shares = $targetShares
             $sp = Get-SellProceeds -Price $currentPrice -Shares $shares
             $yaoziReason = $yd.reason
+            $overrideMark = ""
+            if ($yd.risk_override -eq $true -and $yd.risk_override_reason) {
+                $yaoziReason = "$yaoziReason | [风险覆盖]$($yd.risk_override_reason)"
+                $overrideMark = "_override"
+                Write-Log "  $code [风险覆盖] 腰子SELL覆盖流金警告: $($yd.risk_override_reason)" "WARN"
+            }
             if ($yd.analysis_ref) {
                 $yaoziSummary = "山猫:$($yd.analysis_ref.shanyao)|流金:$($yd.analysis_ref.liujin)|青山:$($yd.analysis_ref.qingshan)"
             } else {
@@ -717,7 +723,7 @@ foreach ($code in $stockMap.Keys) {
                 Action = $yd.action; Price = $currentPrice; Shares = $shares
                 Amount = $sp.Amount; Commission = $sp.Commission; StampTax = $sp.StampTax
                 TotalCost = $sp.NetProceeds; Reason = $yaoziReason
-                Source = "manual"; AnalysisSummary = $yaoziSummary
+                Source = "manual$overrideMark"; AnalysisSummary = $yaoziSummary
                 EntryPrediction = $pos.EntryShortPrediction; DataSource = $quoteDataSource
             }
             $exitReasons[$code] = "腰子指令"
@@ -883,6 +889,12 @@ foreach ($code in $yaoziBuys.Keys) {
     }
 
     $yaoziReason = $yd.reason
+    $overrideMarkBuy = ""
+    if ($yd.risk_override -eq $true -and $yd.risk_override_reason) {
+        $yaoziReason = "$yaoziReason | [风险覆盖]$($yd.risk_override_reason)"
+        $overrideMarkBuy = "_override"
+        Write-Log "  $code [风险覆盖] 腰子BUY覆盖流金警告: $($yd.risk_override_reason)" "WARN"
+    }
     if ($yd.analysis_ref) {
         $yaoziSummary = "山猫:$($yd.analysis_ref.shanyao)|流金:$($yd.analysis_ref.liujin)|青山:$($yd.analysis_ref.qingshan)"
     } else { $yaoziSummary = "" }
@@ -892,7 +904,7 @@ foreach ($code in $yaoziBuys.Keys) {
         Action = "BUY"; Price = $slippedPrice; Shares = $shares
         Amount = -$actualAmount; Commission = $commission; StampTax = 0
         TotalCost = -$totalCost; Reason = $yaoziReason
-        Source = "manual"; AnalysisSummary = $yaoziSummary
+        Source = "manual$overrideMarkBuy"; AnalysisSummary = $yaoziSummary
         EntryPrediction = $evalStock.Prediction.Short; DataSource = $(if ($quote -and $quote.DataSource) { $quote.DataSource } else { "[评估数据]" })
     }
     $positions.Cash = [Math]::Round($positions.Cash - $totalCost, 2)

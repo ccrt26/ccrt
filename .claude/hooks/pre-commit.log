@@ -986,3 +986,1814 @@
 [PASS] [2026-05-24 22:13:39] F2 PASS: Pipeline active, executor=绾㈢粨, stage=3
 [PASS] [2026-05-24 22:13:39] Check F complete
 === Pre-commit check completed at 2026-05-24 22:13:39 ===
+=== Pre-commit check started at 2026-05-24 22:14:42 ===
+[PASS] [2026-05-24 22:14:42] ===== Check A: Version Consistency =====
+[WARN] [2026-05-24 22:14:42] File not found: 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/浜嬪悗璇勪及/gen_eval_doc_v1.5.ps1
+[WARN] [2026-05-24 22:14:42] File not found: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.16.md
+[WARN] [2026-05-24 22:14:42] File not found: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.9.md
+[WARN] [2026-05-24 22:14:42] File not found: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.5.md
+[WARN] [2026-05-24 22:14:42] File not found: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.6.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.3.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.4.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.5.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.6.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.7.md
+[WARN] [2026-05-24 22:14:42] File not found: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.8.md
+[PASS] [2026-05-24 22:14:42] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 22:14:42] No garbage files
+[PASS] [2026-05-24 22:14:42] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/浠ｇ爜宸ュ尃-绾㈢粨.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?02-瀹氭椂浠诲姟缂栨帓.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?03-浠ｇ爜鐢熸垚妯″紡.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?04-鏋勫缓鑴氭湰瑙勮寖.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?05-骞傜瓑鎬т笌澶辫触鎭㈠.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?06-褰撳墠瀹氭椂浠诲姟娓呭崟.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鍗冨厜-鐭ヨ瘑搴?07-Windows浠诲姟璁″垝绋嬪簭鎿嶄綔鎵嬪唽.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/瀹忚宸℃-灞辩尗.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/瀹¤瀹?鏃у奖.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/灞辩尗-鐭ヨ瘑搴?03-瀹忚鏁版嵁瑙ｈ妗嗘灦.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/灞辩尗-鐭ヨ瘑搴?05-甯傚満鎯呯华鎸囨爣浣撶郴.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/灞辩尗-鐭ヨ瘑搴?06-鍏ㄧ悆瀹忚鑱斿姩.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/灞辩尗-鐭ヨ瘑搴?07-A鑲℃瀬绔簨浠剁紪骞村彶.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/灞辩尗-鐭ヨ瘑搴?09-鏀跨瓥鏃ュ巻妯℃澘.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/宸ョ▼鍥㈤槦-鍗忎綔鍗忚.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?01-椤圭洰妯″潡鍏ㄦ櫙.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?02-鎺ュ彛濂戠害璁捐.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?03-鎶€鏈€夊瀷鍐崇瓥.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?04-鍙嶆ā寮忓簱.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?07-椤圭洰瀹¤浣撶郴璁捐.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鎯呭ⅷ-鐭ヨ瘑搴?08-浠ｇ爜鍒嗙骇瀹℃牳鍒跺害.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏁版嵁鐩戠悊-鐜夊.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏂板畨-鐭ヨ瘑搴?01-娴嬭瘯绛栫暐鍒嗗眰.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏂板畨-鐭ヨ瘑搴?06-Golden Master鍩虹嚎.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏂板畨-鐭ヨ瘑搴?07-娴嬭瘯鏁版嵁宸ュ巶.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏂板畨-鐭ヨ瘑搴?08-宸茬煡涓嶇ǔ瀹氶」娓呭崟.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏃у奖-鐭ヨ瘑搴?02-绾㈢嚎閫愭潯瀹¤鏍囧噯.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏃у奖-鐭ヨ瘑搴?03-寮€鏈哄璁′笌璋冨害绛栫暐.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏃у奖-鐭ヨ瘑搴?04-瀹¤澶勭悊娴佺▼.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏃у奖-鐭ヨ瘑搴?06-瀹¤鎶ュ憡鏍囧噯妯℃澘.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鏋勫缓宸ョ▼甯?鍗冨厜.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/娴侀噾-鐭ヨ瘑搴?03-鎸佷粨椋庨櫓搴﹂噺.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/娴侀噾-鐭ヨ瘑搴?06-浜ゆ槗绾緥瀹℃煡娓呭崟.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/娴侀噾-鐭ヨ瘑搴?08-椋庢帶浜嬩欢鏃ュ織妯℃澘.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鐜夊-鐭ヨ瘑搴?02-鏁版嵁璐ㄩ噺缁村害.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鐜夊-鐭ヨ瘑搴?05-寮傚父妫€娴嬩笌鍛婅.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/鐜夊-鐭ヨ瘑搴?06-鏁版嵁鏃舵晥鎬т笌寤惰繜搴﹂噺.md
+[PASS] [2026-05-24 22:14:42] No .docx counterpart, skip: .claude/agents/绛栫暐鐮旂┒鍛?闈掑北.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绯荤粺鏋舵瀯甯?鎯呭ⅷ.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈡灚-鐭ヨ瘑搴?01-鐜閰嶇疆绠＄悊.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈡灚-鐭ヨ瘑搴?02-渚濊禆绠＄悊.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈡灚-鐭ヨ瘑搴?05-褰撳墠鐜閰嶇疆蹇収.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈡灚-鐭ヨ瘑搴?07-鍘嗗彶鍙戝竷璁板綍妯℃澘.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈢粨-鐭ヨ瘑搴?01-PowerShell缂栫爜瑙勮寖.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈢粨-鐭ヨ瘑搴?02-Python缂栫爜瑙勮寖.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈢粨-鐭ヨ瘑搴?03-API璋冪敤妯″紡.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈢粨-鐭ヨ瘑搴?05-椤圭洰缂栫爜绾﹀畾.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/绾㈢粨-鐭ヨ瘑搴?08-璋冭瘯鎵嬪唽.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/鑵板瓙-鐭ヨ瘑搴?10-鍥犲瓙琛板噺涓庤繃鎷熷悎闃茶寖.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/鑵板瓙-鐭ヨ瘑搴?18-浜嬩欢椹卞姩绛栫暐妗嗘灦.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/璐ㄩ噺宸ョ▼甯?鏂板畨.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/閮ㄧ讲宸ョ▼甯?绾㈡灚.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/閲戣瀺涓撳-鑵板瓙.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/閲戣瀺鍥㈤槦-鍗忎綔鍗忚.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/闈掑北-鐭ヨ瘑搴?01-鍥犲瓙浣撶郴鎬昏.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/闈掑北-鐭ヨ瘑搴?05-绛栫暐浼樺寲鎻愭妗嗘灦.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/闈掑北-鐭ヨ瘑搴?07-褰撳墠娲昏穬鍥犲瓙娓呭崟.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/椤圭洰鎬荤洃-闃块粦.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/agents/椋庢帶瀹?娴侀噾.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/boundary_scans/boundary_scan_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/Craft.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鍗冨厜.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/瀹¤.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/灞辩尗.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鎯呭ⅷ.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鏂板畨.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鏃у奖.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/娴侀噾.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鐜夊.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/绾㈡灚.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/绾㈢粨.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/鑵板瓙.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/commands/闈掑北.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/knowledge/Craft鑷煡娓呭崟.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/knowledge/甯歌閿欒.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/knowledge/绾㈢嚎瑙勫垯鎽樿.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/knowledge/瑙掕壊杈圭晫瀹珷.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: .claude/knowledge/椤圭洰杩愯鎬佷华琛ㄧ洏.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: CLAUDE.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/batch_fix_checkpoint_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/涓柇褰卞搷璇勪及_2026-05-24.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/鏁版嵁娌夋穩鐜扮姸鐩樻煡_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/鏁版嵁璐ㄩ噺淇濋殰瀹¤_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/绠＄嚎瀹¤/R1-R6_鍏ㄧ嚎绔ｅ伐姹囨€籣20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/绠＄嚎瀹¤/R1-R6_鎯呭ⅷ鏋舵瀯璁捐瀹℃煡_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/绠＄嚎瀹¤/R1-R6_鏂板畨鍥涘眰楠岃瘉_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/绠＄嚎瀹¤/R1-R6_鏂板畨鏋舵瀯鍚堣瀹℃煡_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/绠＄嚎瀹¤/R1-R6_鏃у奖鐙珛瀹¤_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/鑴氭湰杞婚噺鍖朹鎵ц璁″垝_2026-05-24.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 涓存椂鎶ュ憡/鑴氭湰杞婚噺鍖朹璐ㄩ噺淇濋殰浣撶郴_璁ㄨ鎶ュ憡_2026-05-24.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 浠ｇ爜鏂囦欢/鏁版嵁/score_history.schema.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 鍘嗗彶鏁版嵁/涓存椂鍥炴函/閲嶇偣鑲＄エ妯℃嫙浜ゆ槗绯荤粺璁捐鏂规.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/data_audit_final_20260524.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/甯歌閿欒.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/缂洪櫡鍙拌处.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/妯℃嫙浜ゆ槗鐧界毊涔CHANGELOG.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/妯℃嫙浜ゆ槗鐧界毊涔v1.5.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/妯℃嫙浜ゆ槗鐧界毊涔v1.6.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/姣忔棩鑽愯偂璧涢亾/姣忔棩鑽愯偂妯℃嫙浜ゆ槗鐧界毊涔v1.1.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_CHANGELOG.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.16.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鍒嗘瀽鐨勮鍒欑孩绾?-Claude_v1.9.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 瑙勫垯绾㈢嚎/鏂囨。鐗堟湰绱㈠紩.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/閲嶇偣鑲＄エ璺熻釜鍒嗘瀽閫昏緫鐧界毊涔CHANGELOG.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/閲嶇偣鑲＄エ璺熻釜鍒嗘瀽閫昏緫鐧界毊涔v3.0.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_CHANGELOG.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.5.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 閲嶇偣鑲＄エ/娆℃棩璇勪及/閲嶇偣鑲＄エ娆℃棩鍚庤瘎浼扮櫧鐨功_v1.6.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.3.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.4.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.5.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.6.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.7.md
+[PASS] [2026-05-24 22:14:43] No .docx counterpart, skip: 椤圭洰鎴愬憳/鍥㈤槦鍚嶅唽_v1.8.md
+[PASS] [2026-05-24 22:14:43] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 22:14:43] Commit message format OK: feat: 绠＄嚎鑷姩鍖?杞婚噺鍖栬鑼冨叏闈㈣惤鍦?鈥?涓夌嚎12瑙掕壊寮哄埗鎵ц
+[PASS] [2026-05-24 22:14:43] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 22:14:43] E1 PASS: 代码工匠-红结.md (135 lines)
+[WARN] [2026-05-24 22:14:43] E2 WARN: 代码工匠-红结.md 鈥?12.8KB (>12KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 22:14:43] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 项目总监-阿黑.md (107 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 项目总监-阿黑.md (7.8KB)
+[PASS] [2026-05-24 22:14:43] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-24 22:14:43] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-24 22:14:43] Check E complete
+[PASS] [2026-05-24 22:14:43] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-24 22:14:43] Code files staged (87 files):
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/_extract_docx.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/_patch_sector_trend.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/batch_convert_pdf.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/check_data_quality.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/diag_financial.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/eval_v23_v15.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/gen_eval_pdf.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/gen_keystock_pdf.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/gen_keystock_pdf.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/gen_pdf.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/generate_quality_dashboard.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/generate_roster_xlsx.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/migrate_data_structure.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/test_alt_api.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/test_data_quality_regression.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/test_sector_api.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/test_ths_fix.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/tools/weekly_factor_attribution.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_final.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_full.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_full_live.bak
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_full_may22.bak
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_scored.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/data_scored_live.bak
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/dynamic_pool.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/project_config.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/score_history.schema.md
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鏁版嵁/unified_market_data.schema.json
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/archive_data.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/backfill_returns.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/batch_data_collector.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/catchup_launcher.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/daily_workflow.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/gen_monthly_report.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/monthly_learn.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/monthly_phase_calibration.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/monthly_summary.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/register_catchup_task.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/register_tasks.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/run_daily_eval.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/setup_scheduler.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/test_catchup_logic.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/verify_docs.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/weekly_feedback_loop.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/workflow_202605.log
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/write_alert.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/浜嬪悗璇勪及/build_docx.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/浜嬪悗璇勪及/gen_eval_doc.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/浜嬪悗璇勪及/gen_eval_doc_v1.5.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/_split_v2.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/build_docx.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/engine/engine.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/engine/scores.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/engine/technical.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/engine/veto.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/eus_simulation.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/eval_v2.2_v1.4.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/gen_daily_html.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/gen_doc_v2.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/gen_v2_vs_v2_comparison.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/鍒嗘瀽閫昏緫/scoring_engine_v2_legacy.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/PreToolUse_hook.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/audit_on_boot.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/gauge_boundary_scan.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/generate_audit_pdf.py
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/modules/audit_core.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/modules/audit_sections.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/modules/config_loader.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/run_full_audit.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/run_full_audit_legacy.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/verify_report_output.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/version_supervisor.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/瑙勫垯绾㈢嚎/build_docx.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/瑙勫垯绾㈢嚎/check_redlines.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/瑙勫垯绾㈢嚎/check_report_style.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/瑙勫垯绾㈢嚎/check_report_style_enc.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/瑙勫垯绾㈢嚎/gen_redlines_doc.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/run_keystock_analysis.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/build_docx.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/鍒嗘瀽閫昏緫/gen_doc.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/娆℃棩璇勪及/gen_eval_doc.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/娆℃棩璇勪及/run_keystock_evaluation.ps1
+[PASS] [2026-05-24 22:14:43]   - 浠ｇ爜鏂囦欢/閲嶇偣鑲＄エ/娆℃棩璇勪及/run_meta_evaluation.ps1
+[PASS] [2026-05-24 22:14:43] F2 PASS: Pipeline active, executor=绾㈢粨, stage=3
+[PASS] [2026-05-24 22:14:43] Check F complete
+=== Pre-commit check completed at 2026-05-24 22:14:43 ===
+=== Pre-commit check started at 2026-05-24 22:38:17 ===
+[PASS] [2026-05-24 22:38:17] ===== Check A: Version Consistency =====
+[PASS] [2026-05-24 22:38:17] ===== Check B: Garbage Files =====
+[PASS] [2026-05-24 22:38:17] No garbage files
+[PASS] [2026-05-24 22:38:17] ===== Check C: Document Completeness =====
+[PASS] [2026-05-24 22:38:17] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-24 22:38:17] Commit message format OK: feat: 浠ｇ爜瀹夊叏闃叉姢涓夊眰浣撶郴 + 瑙掕壊涓枃鏄电О閲嶇粍 + Sector API淇
+[PASS] [2026-05-24 22:38:17] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-24 22:38:17] E1 PASS: 代码工匠-红结.md (135 lines)
+[WARN] [2026-05-24 22:38:17] E2 WARN: 代码工匠-红结.md 鈥?12.8KB (>12KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 金融专家-腰子.md (161 lines)
+[WARN] [2026-05-24 22:38:17] E2 WARN: 金融专家-腰子.md 鈥?14.7KB (>12KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 项目总监-阿黑.md (107 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 项目总监-阿黑.md (7.8KB)
+[PASS] [2026-05-24 22:38:17] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-24 22:38:17] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-24 22:38:17] Check E complete
+[PASS] [2026-05-24 22:38:17] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-24 22:38:17] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-24 22:38:17] Check F complete
+=== Pre-commit check completed at 2026-05-24 22:38:17 ===
+=== Pre-commit check started at 2026-05-25 17:17:08 ===
+[PASS] [2026-05-25 17:17:08] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 17:17:08] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 17:17:08] No garbage files
+[PASS] [2026-05-25 17:17:08] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 17:17:08] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 17:17:08] Commit message format OK: feat: GitHub Actions妯℃嫙浜ゆ槗鑷姩杩愯 + 寮曟搸-Force鍙傛暟
+[PASS] [2026-05-25 17:17:08] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 17:17:08] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 金融专家-腰子.md (156 lines)
+[WARN] [2026-05-25 17:17:08] E2 WARN: 金融专家-腰子.md 鈥?14.3KB (>12KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 项目总监-阿黑.md (107 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 项目总监-阿黑.md (7.8KB)
+[PASS] [2026-05-25 17:17:08] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 17:17:08] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 17:17:08] Check E complete
+[PASS] [2026-05-25 17:17:08] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 17:17:08] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 17:17:08] Check F complete
+=== Pre-commit check completed at 2026-05-25 17:17:08 ===
+=== Pre-commit check started at 2026-05-25 18:09:13 ===
+[PASS] [2026-05-25 18:09:13] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:09:13] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:09:13] No garbage files
+[PASS] [2026-05-25 18:09:13] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:09:13] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/浜ゆ槗鍐崇瓥/浜ゆ槗鎸囦护_20260525.md
+[PASS] [2026-05-25 18:09:13] No .docx counterpart, skip: 妯℃嫙浜ゆ槗/鏋舵瀯璁捐/妯℃嫙浜ゆ槗_鏋舵瀯閲嶈璁v2.0.md
+[PASS] [2026-05-25 18:09:13] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:09:13] Commit message format OK: fix: sim_trading.ps1璇勪及鏁版嵁鍥為€€ 鈥?GitHub Actions鏃犳湰鍦扮绾挎椂闄嶇骇鑷虫渶杩戝彲鐢ㄦ暟鎹?
+[PASS] [2026-05-25 18:09:13] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:09:13] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:09:13] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:09:13] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:09:13] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:09:13] Check E complete
+[PASS] [2026-05-25 18:09:13] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:09:13] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 18:09:13] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:09:13 ===
+=== Pre-commit check started at 2026-05-25 18:40:35 ===
+[PASS] [2026-05-25 18:40:35] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:40:35] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:40:35] No garbage files
+[PASS] [2026-05-25 18:40:35] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:40:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:40:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:40:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:40:35] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:40:35] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:40:35] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:40:35] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:40:35] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:40:35] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:40:35] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:40:35] Check E complete
+[PASS] [2026-05-25 18:40:35] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:40:35] Code files staged (2 files):
+[PASS] [2026-05-25 18:40:35]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:40:35]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:40:35] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:40:35 ===
+=== Pre-commit check started at 2026-05-25 18:41:24 ===
+[PASS] [2026-05-25 18:41:24] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:41:24] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:41:24] No garbage files
+[PASS] [2026-05-25 18:41:24] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:41:24] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:41:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:41:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:41:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:41:24] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:41:24] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:41:24] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:41:24] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:41:24] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:41:24] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:41:24] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:41:24] Check E complete
+[PASS] [2026-05-25 18:41:24] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:41:24] Code files staged (5 files):
+[PASS] [2026-05-25 18:41:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:41:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:41:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:41:24]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:41:24]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:41:24] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:41:24 ===
+=== Pre-commit check started at 2026-05-25 18:41:34 ===
+[PASS] [2026-05-25 18:41:34] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:41:34] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:41:34] No garbage files
+[PASS] [2026-05-25 18:41:34] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:41:34] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:41:34] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:41:34] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:41:34] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:41:34] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:41:34] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:41:34] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:41:34] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:41:34] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:41:34] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:41:34] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:41:34] Check E complete
+[PASS] [2026-05-25 18:41:34] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:41:34] Code files staged (5 files):
+[PASS] [2026-05-25 18:41:34]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:41:34]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:41:34]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:41:34]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:41:34]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:41:34] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:41:34 ===
+=== Pre-commit check started at 2026-05-25 18:42:36 ===
+[PASS] [2026-05-25 18:42:36] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:42:36] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:42:36] No garbage files
+[PASS] [2026-05-25 18:42:36] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:42:36] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:42:36] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:42:36] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:42:36] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:42:36] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:42:36] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:42:36] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:42:36] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:42:36] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:42:36] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:42:36] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:42:36] Check E complete
+[PASS] [2026-05-25 18:42:36] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:42:36] Code files staged (5 files):
+[PASS] [2026-05-25 18:42:36]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:42:36]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:42:36]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:42:36]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:42:36]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:42:36] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:42:36 ===
+=== Pre-commit check started at 2026-05-25 18:42:57 ===
+[PASS] [2026-05-25 18:42:58] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:42:58] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:42:58] No garbage files
+[PASS] [2026-05-25 18:42:58] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:42:58] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:42:58] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:42:58] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:42:58] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:42:58] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:42:58] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:42:58] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:42:58] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:42:58] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:42:58] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:42:58] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:42:58] Check E complete
+[PASS] [2026-05-25 18:42:58] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:42:58] Code files staged (5 files):
+[PASS] [2026-05-25 18:42:58]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:42:58]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:42:58]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:42:58]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:42:58]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:42:58] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:42:58 ===
+=== Pre-commit check started at 2026-05-25 18:43:24 ===
+[PASS] [2026-05-25 18:43:24] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:43:24] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:43:24] No garbage files
+[PASS] [2026-05-25 18:43:24] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:43:24] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:43:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:43:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:43:24] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:43:24] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:43:24] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:43:24] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:43:24] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:43:24] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:43:24] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:43:24] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:43:24] Check E complete
+[PASS] [2026-05-25 18:43:24] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:43:24] Code files staged (3 files):
+[PASS] [2026-05-25 18:43:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:43:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:43:24]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[ERROR] [2026-05-25 18:43:24] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:43:24 ===
+=== Pre-commit check started at 2026-05-25 18:43:27 ===
+[PASS] [2026-05-25 18:43:27] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:43:27] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:43:27] No garbage files
+[PASS] [2026-05-25 18:43:27] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:43:27] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:43:27] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:43:27] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:43:27] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:43:27] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:43:27] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:43:27] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:43:27] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:43:27] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:43:27] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:43:27] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:43:28] Check E complete
+[PASS] [2026-05-25 18:43:28] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:43:28] Code files staged (3 files):
+[PASS] [2026-05-25 18:43:28]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:43:28]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:43:28]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[ERROR] [2026-05-25 18:43:28] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:43:28 ===
+=== Pre-commit check started at 2026-05-25 18:46:46 ===
+[PASS] [2026-05-25 18:46:46] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:46:46] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:46:46] No garbage files
+[PASS] [2026-05-25 18:46:46] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:46:46] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:46:46] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨鍥涘眰楠岃瘉_20260525.md
+[PASS] [2026-05-25 18:46:46] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏂板畨瀹℃煡_20260525.md
+[PASS] [2026-05-25 18:46:46] No .docx counterpart, skip: 瀹¤鎶ュ憡/Pipeline淇濇姢v1.1_鏃у奖瀹¤_20260525.md
+[PASS] [2026-05-25 18:46:46] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:46:46] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:46:46] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:46:46] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:46:46] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:46:46] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:46:46] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:46:46] Check E complete
+[PASS] [2026-05-25 18:46:46] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:46:46] Code files staged (5 files):
+[PASS] [2026-05-25 18:46:46]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:46:46]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:46:46]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:46:46]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:46:46]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[ERROR] [2026-05-25 18:46:46] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:46:46 ===
+=== Pre-commit check started at 2026-05-25 18:47:27 ===
+[PASS] [2026-05-25 18:47:27] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:47:27] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:47:27] No garbage files
+[PASS] [2026-05-25 18:47:27] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:47:27] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:47:27] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:47:27] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:47:27] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:47:27] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:47:27] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:47:27] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:47:27] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:47:27] Check E complete
+[PASS] [2026-05-25 18:47:27] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:47:27] Code files staged (3 files):
+[PASS] [2026-05-25 18:47:27]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:47:27]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:47:27]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[ERROR] [2026-05-25 18:47:27] Script exception: 无法将参数绑定到参数“Path”，因为该参数是空值。
+=== Pre-commit check completed at 2026-05-25 18:47:27 ===
+=== Pre-commit check started at 2026-05-25 18:47:55 ===
+[PASS] [2026-05-25 18:47:55] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:47:55] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:47:55] No garbage files
+[PASS] [2026-05-25 18:47:55] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:47:55] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:47:55] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:47:55] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:47:55] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:47:55] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:47:55] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:47:55] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:47:55] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:47:55] Check E complete
+[PASS] [2026-05-25 18:47:55] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:47:55] Code files staged (5 files):
+[PASS] [2026-05-25 18:47:55]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:47:55]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:47:55]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:47:55]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:47:55]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[BLOCK] [2026-05-25 18:47:55] F2 BLOCK: Pipeline token invalid (active=True, executor=红枫, need 绾㈢粨)
+[BLOCK] [2026-05-25 18:47:55] F3 BLOCK: Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[BLOCK] [2026-05-25 18:47:55]   Staged code files:
+[BLOCK] [2026-05-25 18:47:55]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[BLOCK] [2026-05-25 18:47:55]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[BLOCK] [2026-05-25 18:47:55]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[BLOCK] [2026-05-25 18:47:55]     浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[BLOCK] [2026-05-25 18:47:55]     浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[PASS] [2026-05-25 18:47:55] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:47:55 ===
+=== Pre-commit check started at 2026-05-25 18:48:45 ===
+[PASS] [2026-05-25 18:48:45] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:48:45] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:48:45] No garbage files
+[PASS] [2026-05-25 18:48:45] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:48:45] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:48:45] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:48:45] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:48:45] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:48:45] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 系统架构师-情墨.md (107 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 系统架构师-情墨.md (8.8KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:48:45] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:48:45] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:48:45] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:48:45] Check E complete
+[PASS] [2026-05-25 18:48:45] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:48:45] Code files staged (5 files):
+[PASS] [2026-05-25 18:48:45]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:48:45]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:48:45]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:48:45]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[PASS] [2026-05-25 18:48:45]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[BLOCK] [2026-05-25 18:48:45] F2 BLOCK: Pipeline token invalid (active=True, executor=红枫, need HongJie/HongFeng)
+[BLOCK] [2026-05-25 18:48:45] F4 BLOCK: Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[BLOCK] [2026-05-25 18:48:45]   Staged code files:
+[BLOCK] [2026-05-25 18:48:45]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[BLOCK] [2026-05-25 18:48:45]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[BLOCK] [2026-05-25 18:48:45]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[BLOCK] [2026-05-25 18:48:45]     浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_engine.ps1
+[BLOCK] [2026-05-25 18:48:45]     浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/pipeline_token.ps1
+[PASS] [2026-05-25 18:48:45] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:48:45 ===
+=== Pre-commit check started at 2026-05-25 18:49:36 ===
+[PASS] [2026-05-25 18:49:36] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:49:36] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:49:36] No garbage files
+[PASS] [2026-05-25 18:49:36] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:49:36] No .docx counterpart, skip: 涓存椂鎶ュ憡/architecture_design_娣卞害鍒嗘瀽涓夋ā鍧楀崌绾20260525.md
+[PASS] [2026-05-25 18:49:36] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:49:36] Commit message format OK: feat: 妯℃嫙浜ゆ槗鏋舵瀯閲嶈璁2.1钀藉湴 鈥?鑵板瓙鎸囦护閫氶亾+鍙岃禌閬撶粺涓€+GitHub Actions瀹夊叏淇
+[PASS] [2026-05-25 18:49:36] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:49:36] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:49:36] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:49:36] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:49:36] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:49:36] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:49:37] E2 WARN: 金融专家-腰子.md 鈥?14.6KB (>12KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:49:37] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:49:37] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:49:37] Check E complete
+[PASS] [2026-05-25 18:49:37] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:49:37] Code files staged (3 files):
+[PASS] [2026-05-25 18:49:37]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[PASS] [2026-05-25 18:49:37]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[PASS] [2026-05-25 18:49:37]   - 浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[BLOCK] [2026-05-25 18:49:37] F2 BLOCK: Pipeline token invalid (active=True, executor=红枫, need HongJie/HongFeng)
+[BLOCK] [2026-05-25 18:49:37] F4 BLOCK: Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[BLOCK] [2026-05-25 18:49:37]   Staged code files:
+[BLOCK] [2026-05-25 18:49:37]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/core.ps1
+[BLOCK] [2026-05-25 18:49:37]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/financial.ps1
+[BLOCK] [2026-05-25 18:49:37]     浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/modules/fundflow.ps1
+[PASS] [2026-05-25 18:49:37] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:49:37 ===
+=== Pre-commit check started at 2026-05-25 18:50:33 ===
+[PASS] [2026-05-25 18:50:33] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:50:33] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:50:33] No garbage files
+[PASS] [2026-05-25 18:50:33] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:50:33] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:50:33] Commit message format OK: feat: Pipeline淇濇姢鑼冨洿v1.1 鈥?Check F鎵╁睍鑷虫ā鎷熶氦鏄撳紩鎿?files_scope浜掓枼閿?
+[PASS] [2026-05-25 18:50:33] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:50:33] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:50:33] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:50:33] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:50:33] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:50:33] Check E complete
+[PASS] [2026-05-25 18:50:33] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:50:34] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 18:50:34] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:50:34 ===
+=== Pre-commit check started at 2026-05-25 18:51:00 ===
+[PASS] [2026-05-25 18:51:00] No staged files, skip check.
+=== Pre-commit check started at 2026-05-25 18:51:12 ===
+[PASS] [2026-05-25 18:51:12] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 18:51:12] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 18:51:12] No garbage files
+[PASS] [2026-05-25 18:51:12] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 18:51:12] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 18:51:12] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 18:51:12] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 18:51:12] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 18:51:12] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 18:51:12] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 18:51:12] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 18:51:12] Check E complete
+[PASS] [2026-05-25 18:51:12] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 18:51:12] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 18:51:12] Check F complete
+=== Pre-commit check completed at 2026-05-25 18:51:12 ===
+=== Pre-commit check started at 2026-05-25 19:27:43 ===
+[PASS] [2026-05-25 19:27:43] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 19:27:43] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:27:43] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:27:43] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:27:43] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 19:27:43] No garbage files
+[PASS] [2026-05-25 19:27:43] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 19:27:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:27:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:27:43] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:27:43] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 19:27:43] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 19:27:43] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 19:27:43] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 19:27:43] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 19:27:43] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 19:27:43] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 19:27:44] Check E complete
+[PASS] [2026-05-25 19:27:44] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 19:27:44] Code files staged (1 files):
+[PASS] [2026-05-25 19:27:44]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1
+[BLOCK] [2026-05-25 19:27:44] F BLOCK: 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1 — Invalid executor=红结, need 绾㈢粨(coding) or 绾㈡灚(deploy)
+[BLOCK] [2026-05-25 19:27:44] Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[PASS] [2026-05-25 19:27:44] Check F complete
+=== Pre-commit check completed at 2026-05-25 19:27:44 ===
+=== Pre-commit check started at 2026-05-25 19:28:34 ===
+[PASS] [2026-05-25 19:28:34] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 19:28:35] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:28:35] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:28:35] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:28:35] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 19:28:35] No garbage files
+[PASS] [2026-05-25 19:28:35] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 19:28:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:28:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:28:35] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:28:35] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 19:28:35] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 19:28:35] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 19:28:35] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 19:28:35] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 19:28:35] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 19:28:35] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 19:28:35] Check E complete
+[PASS] [2026-05-25 19:28:35] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 19:28:35] Code files staged (1 files):
+[PASS] [2026-05-25 19:28:35]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1
+[BLOCK] [2026-05-25 19:28:35] F BLOCK: 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1 — Invalid executor=红结, need 绾㈢粨(coding) or 绾㈡灚(deploy)
+[BLOCK] [2026-05-25 19:28:35] Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[PASS] [2026-05-25 19:28:35] Check F complete
+=== Pre-commit check completed at 2026-05-25 19:28:35 ===
+=== Pre-commit check started at 2026-05-25 19:30:01 ===
+[PASS] [2026-05-25 19:30:01] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 19:30:01] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:30:01] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:30:01] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:30:01] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 19:30:01] No garbage files
+[PASS] [2026-05-25 19:30:01] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 19:30:01] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:30:01] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:30:01] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:30:01] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 19:30:01] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 19:30:01] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 19:30:01] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 19:30:01] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 19:30:01] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 19:30:01] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 19:30:01] Check E complete
+[PASS] [2026-05-25 19:30:01] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 19:30:01] Code files staged (1 files):
+[PASS] [2026-05-25 19:30:01]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1
+[BLOCK] [2026-05-25 19:30:01] F BLOCK: 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1 — Invalid executor: 情墨
+[BLOCK] [2026-05-25 19:30:01] Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[PASS] [2026-05-25 19:30:01] Check F complete
+=== Pre-commit check completed at 2026-05-25 19:30:01 ===
+=== Pre-commit check started at 2026-05-25 19:30:37 ===
+[PASS] [2026-05-25 19:30:37] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 19:30:37] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:30:37] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:30:37] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:30:37] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 19:30:37] No garbage files
+[PASS] [2026-05-25 19:30:37] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 19:30:37] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:30:37] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:30:37] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:30:37] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 19:30:37] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 19:30:37] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 19:30:37] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 19:30:37] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 19:30:37] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 19:30:37] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 19:30:37] Check E complete
+[PASS] [2026-05-25 19:30:37] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 19:30:37] Code files staged (1 files):
+[PASS] [2026-05-25 19:30:37]   - 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1
+[BLOCK] [2026-05-25 19:30:37] F BLOCK: 浠ｇ爜鏂囦欢/鐩戠潱鏈哄埗/write_protection_hook.ps1 — File outside pipeline scope (declared: 代码文件/监督机制/)
+[BLOCK] [2026-05-25 19:30:37] Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'
+[PASS] [2026-05-25 19:30:37] Check F complete
+=== Pre-commit check completed at 2026-05-25 19:30:37 ===
+=== Pre-commit check started at 2026-05-25 19:33:55 ===
+[PASS] [2026-05-25 19:33:55] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 19:33:56] File not found: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:33:56] File not found: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[WARN] [2026-05-25 19:33:56] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:33:56] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 19:33:56] No garbage files
+[PASS] [2026-05-25 19:33:56] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 19:33:56] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏂板畨_鏋舵瀯鍚堣瀹℃煡_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:33:56] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏃у奖_鐙珛瀹¤_precommit_v1.2_20260525.md
+[PASS] [2026-05-25 19:33:56] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_precommit_unified_protection_v1.2.md
+[PASS] [2026-05-25 19:33:56] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 19:33:56] Commit message format OK: fix: pre-commit hook BOM淇 + pipeline token files_scope淇
+[PASS] [2026-05-25 19:33:56] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 19:33:56] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 19:33:56] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 19:33:56] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 19:33:56] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 19:33:56] Check E complete
+[PASS] [2026-05-25 19:33:56] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 19:33:56] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 19:33:56] Check F complete
+=== Pre-commit check completed at 2026-05-25 19:33:56 ===
+=== Pre-commit check started at 2026-05-25 20:14:46 ===
+[PASS] [2026-05-25 20:14:46] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:14:46] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:14:46] No garbage files
+[PASS] [2026-05-25 20:14:46] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:14:46] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:14:46] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:14:46] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:14:46] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:14:46] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:14:46] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:14:46] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:14:46] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:14:46] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:14:47] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:14:47] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:14:47] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:14:47] E2 PASS: 风控官-流金.md (8.5KB)
+[ERROR] [2026-05-25 20:14:47] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:14:47 ===
+=== Pre-commit check started at 2026-05-25 20:14:54 ===
+[PASS] [2026-05-25 20:14:54] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:14:54] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:14:54] No garbage files
+[PASS] [2026-05-25 20:14:54] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:14:54] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:14:54] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:14:54] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:14:54] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:14:54] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:14:54] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:14:54] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:14:54] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:14:54] E2 PASS: 风控官-流金.md (8.5KB)
+[ERROR] [2026-05-25 20:14:54] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:14:54 ===
+=== Pre-commit check started at 2026-05-25 20:16:21 ===
+[PASS] [2026-05-25 20:16:21] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:16:21] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:16:21] No garbage files
+[PASS] [2026-05-25 20:16:21] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:16:21] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:16:21] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:16:21] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:16:21] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:16:21] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:16:21] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:16:21] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:16:21] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:16:21] E2 PASS: 风控官-流金.md (8.5KB)
+[ERROR] [2026-05-25 20:16:21] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:16:21 ===
+=== Pre-commit check started at 2026-05-25 20:23:04 ===
+[PASS] [2026-05-25 20:23:04] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:23:04] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:23:04] No garbage files
+[PASS] [2026-05-25 20:23:04] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:23:04] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:23:04] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:23:04] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:23:04] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:23:04] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:23:04] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:23:04] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:23:04] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:23:04] E2 PASS: 风控官-流金.md (8.5KB)
+[ERROR] [2026-05-25 20:23:04] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:23:04 ===
+=== Pre-commit check started at 2026-05-25 20:23:11 ===
+[PASS] [2026-05-25 20:23:11] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:23:11] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:23:11] No garbage files
+[PASS] [2026-05-25 20:23:11] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:23:11] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:23:11] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:23:11] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:23:11] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:23:11] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:23:11] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:23:11] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:23:11] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:23:11] E2 PASS: 风控官-流金.md (8.5KB)
+[ERROR] [2026-05-25 20:23:11] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:23:11 ===
+=== Pre-commit check started at 2026-05-25 20:24:02 ===
+[PASS] [2026-05-25 20:24:02] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:24:02] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:24:02] No garbage files
+[PASS] [2026-05-25 20:24:02] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:24:02] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:24:02] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:24:02] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:24:02] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:24:02] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:24:02] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:24:02] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:24:02] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:24:02] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 20:24:02] DEBUG E3.1: entering E3 section
+[PASS] [2026-05-25 20:24:02] DEBUG E3.2: CoreScriptDirs = C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\分析逻辑, C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts
+[PASS] [2026-05-25 20:24:02] DEBUG E3.3: StagedPy count = 1
+[PASS] [2026-05-25 20:24:02] DEBUG E3.4: processing pyFile=浠ｇ爜鏂囦欢/姣忔棩鑽愯偂/scripts/backfill_returns.py
+[PASS] [2026-05-25 20:24:02] DEBUG E3.5: absPy=C:\Users\34269\Documents\Claude\股票分析\浠ｇ爜鏂囦欢\姣忔棩鑽愯偂\scripts\backfill_returns.py
+[PASS] [2026-05-25 20:24:02] DEBUG E3.6: dir=C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\分析逻辑
+[PASS] [2026-05-25 20:24:02] DEBUG E3.7: resolved is null=False
+[PASS] [2026-05-25 20:24:02] DEBUG E3.8: resolvedDir=C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\分析逻辑
+[ERROR] [2026-05-25 20:24:02] Script exception: 不能对 Null 值表达式调用方法。
+=== Pre-commit check completed at 2026-05-25 20:24:02 ===
+=== Pre-commit check started at 2026-05-25 20:25:23 ===
+[PASS] [2026-05-25 20:25:23] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:25:23] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:25:23] No garbage files
+[PASS] [2026-05-25 20:25:23] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:25:23] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:25:23] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:25:23] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:25:23] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:25:23] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:25:23] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:25:23] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:25:23] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:25:23] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:25:24] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:25:24] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:25:24] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:25:24] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 20:25:24] Check E complete
+[PASS] [2026-05-25 20:25:24] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 20:25:24] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 20:25:24] Check F complete
+=== Pre-commit check completed at 2026-05-25 20:25:24 ===
+=== Pre-commit check started at 2026-05-25 20:25:42 ===
+[PASS] [2026-05-25 20:25:42] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 20:25:42] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 20:25:42] No garbage files
+[PASS] [2026-05-25 20:25:42] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 20:25:42] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_health_check_20260525.md
+[PASS] [2026-05-25 20:25:42] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_health_check_20260525.md
+[PASS] [2026-05-25 20:25:42] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 20:25:42] Commit message format OK: feat: pre-commit hook淇濇姢鏈哄埗v2.0缁熶竴 鈥?鍏变韩楠岃瘉妯″潡+gate_1妫€鏌?濞佽儊寤烘ā
+[PASS] [2026-05-25 20:25:42] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 20:25:42] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 20:25:42] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 20:25:42] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 20:25:42] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 20:25:42] Check E complete
+[PASS] [2026-05-25 20:25:43] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 20:25:43] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 20:25:43] Check F complete
+=== Pre-commit check completed at 2026-05-25 20:25:43 ===
+=== Pre-commit check started at 2026-05-25 21:07:13 ===
+[PASS] [2026-05-25 21:07:13] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 21:07:13] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 21:07:13] No garbage files
+[PASS] [2026-05-25 21:07:13] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 21:07:13] No .docx counterpart, skip: .claude/knowledge/鏁版嵁瀛楀吀.md
+[PASS] [2026-05-25 21:07:13] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 21:07:13] Commit message format OK: feat: 鏁版嵁鍋ュ悍妫€娴嬫満鍒秜1.0 鈥?T0/T1/T2涓夌骇瀛楁妫€鏌?L1/L2/L3鍛婅+鐔旀柇+寮€鏈烘娴?
+[PASS] [2026-05-25 21:07:13] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 21:07:14] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 21:07:14] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 21:07:14] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 21:07:14] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 21:07:14] Check E complete
+[PASS] [2026-05-25 21:07:14] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 21:07:14] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 21:07:14] Check F complete
+=== Pre-commit check completed at 2026-05-25 21:07:14 ===
+=== Pre-commit check started at 2026-05-25 21:26:05 ===
+[PASS] [2026-05-25 21:26:05] ===== Check A: Version Consistency =====
+[PASS] [2026-05-25 21:26:05] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 21:26:05] No garbage files
+[PASS] [2026-05-25 21:26:05] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 21:26:05] No .docx counterpart, skip: .claude/knowledge/鏁版嵁瀛楀吀.md
+[PASS] [2026-05-25 21:26:05] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 21:26:05] Commit message format OK: feat: 鏁版嵁婧怺13]蹇呯泩API鍏嶈垂鐗堥泦鎴?鈥?琛屾儏/K绾?璐㈠姟涓夌骇闄嶇骇澧炲己
+[PASS] [2026-05-25 21:26:05] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 21:26:05] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 21:26:05] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 21:26:05] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 21:26:05] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 21:26:05] Check E complete
+[PASS] [2026-05-25 21:26:05] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 21:26:05] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 21:26:05] Check F complete
+=== Pre-commit check completed at 2026-05-25 21:26:05 ===
+=== Pre-commit check started at 2026-05-25 21:51:08 ===
+[PASS] [2026-05-25 21:51:08] ===== Check A: Version Consistency =====
+[WARN] [2026-05-25 21:51:08] File not found: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_acquisition_framework_v1.0.md
+[PASS] [2026-05-25 21:51:08] ===== Check B: Garbage Files =====
+[PASS] [2026-05-25 21:51:08] No garbage files
+[PASS] [2026-05-25 21:51:08] ===== Check C: Document Completeness =====
+[PASS] [2026-05-25 21:51:08] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/design_data_acquisition_framework_v1.0.md
+[PASS] [2026-05-25 21:51:08] No .docx counterpart, skip: 瀹¤鎶ュ憡/鏋舵瀯璁捐/gate_1b_review_data_framework_20260525.md
+[PASS] [2026-05-25 21:51:08] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-25 21:51:08] Commit message format OK: feat: 铻嶈祫铻嶅埜[12]+鐮旀姤[11] AKShare澶囨簮闆嗘垚 鈥?margin_detail/profit_forecast鍙屾ˉ鎺?瀛楁鏄犲皠+缂撳瓨鍏滃簳
+[PASS] [2026-05-25 21:51:08] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-25 21:51:08] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-25 21:51:08] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-25 21:51:08] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-25 21:51:08] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-25 21:51:09] Check E complete
+[PASS] [2026-05-25 21:51:09] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-25 21:51:09] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-25 21:51:09] Check F complete
+=== Pre-commit check completed at 2026-05-25 21:51:09 ===
+=== Pre-commit check started at 2026-05-26 00:33:59 ===
+[PASS] [2026-05-26 00:34:00] ===== Check A: Version Consistency =====
+[PASS] [2026-05-26 00:34:00] ===== Check B: Garbage Files =====
+[PASS] [2026-05-26 00:34:00] No garbage files
+[PASS] [2026-05-26 00:34:00] ===== Check C: Document Completeness =====
+[PASS] [2026-05-26 00:34:00] ===== Check D: Commit Message Format =====
+[PASS] [2026-05-26 00:34:00] Commit message format OK: feat: 缁熶竴鏁版嵁鑾峰彇妗嗘灦v1.0 鈥?Invoke-DataSource闄嶇骇寮曟搸+SourceRegistry娉ㄥ唽琛?4妯″潡閲嶆瀯
+[PASS] [2026-05-26 00:34:00] ===== Check E: Token Budget Gate =====
+[PASS] [2026-05-26 00:34:00] E1 PASS: 代码工匠-红结.md (122 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 代码工匠-红结.md (11.5KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 宏观巡检-山猫.md (104 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 宏观巡检-山猫.md (9.6KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 审计官-旧影.md (100 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 审计官-旧影.md (9.5KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 工程团队-协作协议.md (76 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 工程团队-协作协议.md (4.5KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 数据监理-玉夜.md (97 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 数据监理-玉夜.md (8.7KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 构建工程师-千光.md (96 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 构建工程师-千光.md (8.6KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 策略研究员-青山.md (91 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 策略研究员-青山.md (8.8KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 系统架构师-情墨.md (117 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 系统架构师-情墨.md (9.9KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 质量工程师-新安.md (104 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 质量工程师-新安.md (9.2KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 部署工程师-红枫.md (103 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 部署工程师-红枫.md (8.8KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 金融专家-腰子.md (157 lines)
+[WARN] [2026-05-26 00:34:00] E2 WARN: 金融专家-腰子.md — 14.6KB (>12KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 金融团队-协作协议.md (115 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 金融团队-协作协议.md (8.3KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 项目总监-阿黑.md (113 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 项目总监-阿黑.md (7.9KB)
+[PASS] [2026-05-26 00:34:00] E1 PASS: 风控官-流金.md (99 lines)
+[PASS] [2026-05-26 00:34:00] E2 PASS: 风控官-流金.md (8.5KB)
+[PASS] [2026-05-26 00:34:00] Check E complete
+[PASS] [2026-05-26 00:34:00] ===== Check F: Code File Write Protection =====
+[PASS] [2026-05-26 00:34:00] F1 PASS: No code files staged. Check F skipped.
+[PASS] [2026-05-26 00:34:00] Check F complete
+=== Pre-commit check completed at 2026-05-26 00:34:00 ===

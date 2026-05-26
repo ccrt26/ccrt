@@ -1,0 +1,45 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PENDING",
+    "attempts":  0,
+    "loop_context":  "Stage 3/6: 编码实现 | Executor: 红结",
+    "updated":  "2026-05-25T16:29:20",
+    "started":  "2026-05-25T16:26:03",
+    "gate_2":  "PENDING",
+    "task":  "玉夜5/25数据质量核查P0/P1修复: FundFlow备源接线+新浪API不可达+回填覆盖率阈值+summary.csv生成",
+    "stage":  3,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "情墨",
+                              "stage":  1,
+                              "entered":  "2026-05-25T16:26:03"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-25T16:28:31"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红结",
+                              "stage":  3,
+                              "entered":  "2026-05-25T16:29:20"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "编码实现",
+    "gate_3":  "PENDING",
+    "executor":  "红结"
+}

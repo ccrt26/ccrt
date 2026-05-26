@@ -2,6 +2,7 @@
 
 function Calc-MovingAverage {
     param([array]$Data, [string]$Field = "Close", [int]$Period = 5)
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
     $values = $Data | ForEach-Object { [double]$_.$Field }
     $result = @()
     for ($i = 0; $i -lt $values.Count; $i++) {

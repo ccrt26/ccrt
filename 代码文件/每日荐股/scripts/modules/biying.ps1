@@ -1,4 +1,4 @@
-# 必盈API免费版封装模块 [13]
+﻿# 必盈API免费版封装模块 [13]
 # 依赖: dot-source "$PSScriptRoot/core.ps1"
 # 限流: 免费版200次/天, 自动计数+80%告警+100%熔断
 # Licence: 从环境变量 $env:BIYING_LICENCE 读取
@@ -23,6 +23,7 @@ function Invoke-BiyingApi {
         [Parameter(Mandatory=$true)][string]$Path,
         [int]$TimeoutSec = 8
     )
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
     Reset-BiyingCounter
 
     if ($script:BiyingCallCount -ge $script:BiyingDailyLimit) {

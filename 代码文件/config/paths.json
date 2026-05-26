@@ -1,0 +1,42 @@
+{
+    "_comment": "铁律量化 — 项目路径配置 v1.0",
+    "root": ".",
+    "directories": {
+        "code": "代码文件",
+        "lib": "代码文件/lib",
+        "config": "代码文件/config",
+        "tools": "代码文件/tools",
+        "data": "代码文件/数据",
+        "daily_recommendation": {
+            "scripts": "代码文件/每日荐股/scripts",
+            "analysis": "代码文件/每日荐股/分析逻辑",
+            "evaluation": "代码文件/每日荐股/事后评估",
+            "reports": "每日荐股/股票报告"
+        },
+        "keystock": {
+            "analysis": "代码文件/重点股票/分析逻辑",
+            "evaluation": "代码文件/重点股票/次日评估",
+            "reports": "重点股票/股票报告"
+        },
+        "simulation": {
+            "engine": "模拟交易/交易引擎",
+            "tools": "模拟交易/工具",
+            "analysis": "模拟交易/分析",
+            "reports": "模拟交易/绩效报告"
+        },
+        "supervision": "代码文件/监督机制",
+        "redlines": "代码文件/规则红线",
+        "rules": "规则红线",
+        "whitepapers": {
+            "daily": "每日荐股/分析逻辑",
+            "keystock": "重点股票/分析逻辑"
+        },
+        "output": {
+            "reports": "每日荐股/股票报告",
+            "temp": "临时报告",
+            "archive": "历史数据/临时回溯"
+        },
+        "cache": "代码文件/数据/cache",
+        "logs": "代码文件/数据/logs"
+    }
+}

@@ -1,0 +1,46 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_data_health_check_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T11:58:20",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_data_health_check_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "腰子",
+                              "validated":  "2026-05-25T12:04:40",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  3,
+                              "entered":  "2026-05-25T12:04:40"
+                          }
+                      ],
+    "gate_1a":  "PASS",
+    "loop_context":  "Stage 3/7: 架构审查 | Executor: 新安+旧影",
+    "attempts":  0,
+    "started":  "2026-05-25T11:56:43",
+    "gate_2":  "PENDING",
+    "task":  "数据获取检测机制+两Bug修复",
+    "stage":  3,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "max_attempts":  3,
+    "schema_version":  "1.1",
+    "stage_name":  "架构审查",
+    "gate_3":  "PENDING",
+    "updated":  "2026-05-25T12:04:40",
+    "executor":  "新安+旧影",
+    "gate_1b":  "PENDING"
+}

@@ -22,6 +22,7 @@ param(
     [switch]$Quick,
     [string]$Date = (Get-Date -Format "yyyy-MM-dd")
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 # $PSScriptRoot = 代码文件/监督机制/，上溯2级到项目根
 $rootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)

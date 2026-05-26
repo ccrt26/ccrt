@@ -13,6 +13,7 @@ param(
     [string[]]$Scope = @(),
     [switch]$Force
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $ENGINE = Join-Path $PSScriptRoot "pipeline_engine.ps1"
 $STAGES = @("情墨", "新安+旧影", "红结", "新安", "红枫", "PostEval")

@@ -1,0 +1,35 @@
+﻿{
+    "gate_1":  "PENDING_REVIEW",
+    "attempts":  1,
+    "loop_context":  "Stage 2/6: 架构审查 | Executor: 新安+旧影",
+    "updated":  "2026-05-25T10:23:09",
+    "started":  "2026-05-25T10:19:52",
+    "gate_2":  "PENDING",
+    "task":  "Phase3展示层: 持仓仪表盘HTML + risk_override字段 + 统一归因",
+    "stage":  2,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/Phase3_新安审查_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T10:22:49",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-25T10:22:55"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构审查",
+    "gate_3":  "PENDING",
+    "executor":  "新安+旧影"
+}

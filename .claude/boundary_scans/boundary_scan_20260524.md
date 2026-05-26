@@ -1,4 +1,4 @@
-﻿# 旧影 Boundary Scan Report
+# 旧影 Boundary Scan Report
 
 **Period**: 2026-05-20 ~ 2026-05-25
 **Generated**: 2026-05-24 17:06:10
@@ -12,9 +12,9 @@ No commits touching code files in this period.
 | # | Task | Started | Completed | Stages |
 |:--|:-----|:--------|:----------|:-------|
 | 1 | Test pre-commit hook | 2026-05-24 | 2026-05-24 | 3/6 |
-| 2 | Hook拦截升级+管线令牌自动化 | 2026-05-24 | 2026-05-24 | 6/6 |
+| 2 | Hook拦截升级+流程令牌自动化 | 2026-05-24 | 2026-05-24 | 6/6 |
 | 3 | Integration test | 2026-05-24 | 2026-05-24 | 3/6 |
-| 4 | Hook拦截升级+管线令牌自动化 | 2026-05-24 | 2026-05-24 | 4/6 |
+| 4 | Hook拦截升级+流程令牌自动化 | 2026-05-24 | 2026-05-24 | 4/6 |
 
 ## 3. Write Protection Hook Log
 

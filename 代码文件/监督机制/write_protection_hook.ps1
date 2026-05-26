@@ -1,4 +1,4 @@
-# 铁律量化 · Write Protection Hook — v3.0 unified (shared pipeline-auth.ps1)
+﻿# 铁律量化 · Write Protection Hook — v3.0 unified (shared pipeline-auth.ps1)
 # 检测非流程内的代码文件直接写入，阻断并记录
 # matcher: Write || Edit
 # 升级说明 v2.0→v3.0: 共享验证模块 + 模拟交易/保护 + gate_1检查 + 空scope=BLOCK
@@ -7,6 +7,7 @@
 param(
     [string]$ToolInput = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $BASE = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $LOG_FILE = "$BASE\.claude\hooks\write_violations.log"

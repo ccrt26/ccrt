@@ -1,0 +1,35 @@
+﻿{
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 2/6: 架构审查 | Executor: 新安+旧影",
+    "updated":  "2026-05-25T10:28:23",
+    "started":  "2026-05-25T10:26:10",
+    "gate_2":  "PENDING",
+    "task":  "Pipeline保护范围扩展v1.1: Check F覆盖模拟交易+活跃pipeline互斥锁",
+    "stage":  2,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_pipeline_protection_v1.1_CheckF扩展+互斥锁.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T10:27:21",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/Pipeline保护v1.1_新安审查_20260525.md,审计报告/Pipeline保护v1.1_旧影审计_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-25T10:28:23",
+                              "stage":  2
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构审查",
+    "gate_3":  "PENDING",
+    "executor":  "新安+旧影"
+}

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>600584 长电科技 — 深度分析报告</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>600584 长电科技 — 深度分析报告</h1>
+<blockquote>
+<p><strong>日期</strong>: 2026年5月25日（基于5月22日收盘数据）
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 玉夜（数据诊断）+ 流金（风险评估）
+<strong>数据来源</strong>: 东方财富财务[3]、5月22日预判记录
+<strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</blockquote>
+<hr />
+<h2>一、公司概要</h2>
+<p>长电科技（600584.SH）是<strong>中国第一、全球第三的半导体封装测试企业</strong>，上交所主板上市。主营集成电路封装测试（先进封装/传统封装/测试），为芯片设计公司（Fabless）提供后道制造服务。客户覆盖高通、博通、AMD、华为海思等全球头部芯片厂商，是半导体产业链不可或缺的一环。</p>
+<p><strong>核心投资逻辑</strong>：
+1. 先进封装（Chiplet/2.5D/3D）是"后摩尔时代"的关键技术路径，长电是A股最纯正的先进封装标的
+2. AI算力爆发 → 先进封装需求激增（CoWoS/HBM等封装产能全球紧缺）
+3. 国产替代 — 国内芯片设计公司越来越需要本土封测产能保障供应链安全
+4. 业绩拐点 — Q1 2026 EPS+45%加速增长，可能标志着新一轮上行周期的开始</p>
+<hr />
+<h2>二、宏观与行业环境（山猫）</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">行业生命周期</td>
+<td style="text-align: left;"><strong>成长期</strong></td>
+<td style="text-align: left;">先进封装是半导体行业中增速最快的细分赛道（CAGR 10-15%）</td>
+</tr>
+<tr>
+<td style="text-align: left;">AI驱动</td>
+<td style="text-align: left;"><strong>强力利好</strong></td>
+<td style="text-align: left;">AI芯片对先进封装的需求呈指数级增长</td>
+</tr>
+<tr>
+<td style="text-align: left;">半导体周期</td>
+<td style="text-align: left;"><strong>复苏初期</strong></td>
+<td style="text-align: left;">全球半导体周期从2025Q4开始温和复苏</td>
+</tr>
+<tr>
+<td style="text-align: left;">地缘政治</td>
+<td style="text-align: left;"><strong>中性偏利好</strong></td>
+<td style="text-align: left;">美国芯片限制反而加速国产封测需求</td>
+</tr>
+<tr>
+<td style="text-align: left;">板块资金</td>
+<td style="text-align: left;"><strong>中性</strong></td>
+<td style="text-align: left;">半导体非5/22最热板块（汽车/机械领涨），但科技轮动可期</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>山猫结论</strong>：长电科技所处的封测赛道是半导体产业链中"最稳健+最确定"的环节。不同于芯片设计的高波动和晶圆制造的重资产，封测需求与芯片出货量线性相关，预测性更强。AI算力爆发给先进封装带来额外的结构性增量。但需要注意：封测是B2B代工模式，毛利率天然偏低（14-15%），盈利能力取决于产能利用率。</p>
+<hr />
+<h2>三、财务深度分析（玉夜）</h2>
+<h3>3.1 收入与利润趋势</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">期间</th>
+<th style="text-align: left;">营收(亿)</th>
+<th style="text-align: left;">归母净利(亿)</th>
+<th style="text-align: left;">EPS</th>
+<th style="text-align: left;">扣非EPS</th>
+<th style="text-align: left;">营收YoY</th>
+<th style="text-align: left;">净利YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FY2024</td>
+<td style="text-align: left;">359.62</td>
+<td style="text-align: left;">16.10</td>
+<td style="text-align: left;">0.90</td>
+<td style="text-align: left;">0.86</td>
+<td style="text-align: left;">+21.2%</td>
+<td style="text-align: left;">+9.4%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q1 2025</td>
+<td style="text-align: left;">93.35</td>
+<td style="text-align: left;">2.03</td>
+<td style="text-align: left;">0.11</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">+16.4%</td>
+<td style="text-align: left;">+5.2%</td>
+</tr>
+<tr>
+<td style="text-align: left;">H1 2025</td>
+<td style="text-align: left;">186.05</td>
+<td style="text-align: left;">4.71</td>
+<td style="text-align: left;">0.26</td>
+<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">+20.1%</td>
+<td style="text-align: left;">-24.0%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q1-Q3 2025</td>
+<td style="text-align: left;">286.69</td>
+<td style="text-align: left;">9.54</td>
+<td style="text-align: left;">0.53</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">+14.8%</td>
+<td style="text-align: left;">-11.4%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FY2025</strong></td>
+<td style="text-align: left;"><strong>388.71</strong></td>
+<td style="text-align: left;"><strong>15.65</strong></td>
+<td style="text-align: left;"><strong>0.87</strong></td>
+<td style="text-align: left;"><strong>0.77</strong></td>
+<td style="text-align: left;"><strong>+8.1%</strong></td>
+<td style="text-align: left;"><strong>-2.8%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Q1 2026</strong></td>
+<td style="text-align: left;"><strong>91.71</strong></td>
+<td style="text-align: left;"><strong>2.90</strong></td>
+<td style="text-align: left;"><strong>0.16</strong></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><strong>-1.8%</strong></td>
+<td style="text-align: left;"><strong>+42.9%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>单季EPS走势</strong>（还原为独立季度）：</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">季度</th>
+<th style="text-align: center;">Q1'25</th>
+<th style="text-align: center;">Q2'25</th>
+<th style="text-align: center;">Q3'25</th>
+<th style="text-align: center;">Q4'25</th>
+<th style="text-align: center;">Q1'26</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">EPS</td>
+<td style="text-align: center;">0.11</td>
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">0.27</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">0.16</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键发现</strong>：
+- <strong>FY2025微降是周期底部</strong>：营收+8.1%但净利-2.8%，H1利润下滑明显（-24%），H2强劲回升。全年呈现"前低后高"的周期复苏态势
+- <strong>Q1 2026利润暴增42.9%</strong>：虽然营收-1.8%（季节性+去库存），但净利大增。毛利率从12.63%(Q1 2025)→14.55%(Q1 2026)，提升近2个百分点——产能利用率回升+产品结构升级
+- <strong>Q3-Q4 2025是利润加速期</strong>：Q3(0.27)+Q4(0.34)连续两个季度创单季利润新高，说明半导体封测周期在2025下半年已明确复苏
+- <strong>扣非EPS差距主要来自政府补贴和资产处置</strong>，在制造业中属于正常水平
+- <strong>TTM EPS = 0.92</strong>（0.15+0.27+0.34+0.16）</p>
+<h3>3.2 盈利能力</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: center;">FY2024</th>
+<th style="text-align: center;">FY2025</th>
+<th style="text-align: center;">Q1 2026</th>
+<th style="text-align: center;">趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ROE(加权)</td>
+<td style="text-align: center;">6.00%</td>
+<td style="text-align: center;">5.56%</td>
+<td style="text-align: center;">1.01%</td>
+<td style="text-align: center;">→ 底部徘徊</td>
+</tr>
+<tr>
+<td style="text-align: left;">毛利率</td>
+<td style="text-align: center;">13.06%</td>
+<td style="text-align: center;">14.15%</td>
+<td style="text-align: center;"><strong>14.55%</strong></td>
+<td style="text-align: center;">↑ 趋势向好</td>
+</tr>
+<tr>
+<td style="text-align: left;">EPS(基本)</td>
+<td style="text-align: center;">0.90</td>
+<td style="text-align: center;">0.87</td>
+<td style="text-align: center;">0.16</td>
+<td style="text-align: center;">↓ → ↑ 拐点出现</td>
+</tr>
+<tr>
+<td style="text-align: left;">扣非EPS</td>
+<td style="text-align: center;">0.86</td>
+<td style="text-align: center;">0.77</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">↓</td>
+</tr>
+<tr>
+<td style="text-align: left;">每股经营现金流</td>
+<td style="text-align: center;">3.26</td>
+<td style="text-align: center;">2.60</td>
+<td style="text-align: center;">0.99</td>
+<td style="text-align: center;">↓ 但充沛</td>
+</tr>
+<tr>
+<td style="text-align: left;">每股净资产(BPS)</td>
+<td style="text-align: center;">15.43</td>
+<td style="text-align: center;">16.02</td>
+<td style="text-align: center;">16.08</td>
+<td style="text-align: center;">↑</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>三个核心判断</strong>：</p>
+<ol>
+<li>
+<p><strong>毛利率拐点是最重要的信号</strong> — 从FY2024的13.06%→FY2025的14.15%→Q1 2026的14.55%，连续两个报告期改善。封测行业的毛利率与产能利用率高度相关，毛利率上行=行业景气度回升</p>
+</li>
+<li>
+<p><strong>ROE仅5.56%偏低</strong> — 封测行业ROE普遍不高（台积电&gt;20%，但那是晶圆制造），长电5.56%的ROE在封测行业中处于中等偏上水平。关键在于ROE能否随毛利率改善而回升至7-8%</p>
+</li>
+<li>
+<p><strong>经营现金流远超利润</strong> — FY2025经营CF/股2.60元是EPS 0.87元的3倍。封测行业设备折旧大，现金流天然高于账面利润。这是"真赚钱"的信号</p>
+</li>
+</ol>
+<h3>3.3 利润真实性验证</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">扣非EPS vs 基本EPS</td>
+<td style="text-align: left;">FY2025: 0.77 vs 0.87（差距11.5%）</td>
+<td style="text-align: left;">✅ 合理范围</td>
+</tr>
+<tr>
+<td style="text-align: left;">经营现金流 vs 净利润</td>
+<td style="text-align: left;">经营CF/股 2.60 &gt; EPS 0.87（3.0倍）</td>
+<td style="text-align: left;">✅ 现金质量优秀</td>
+</tr>
+<tr>
+<td style="text-align: left;">毛利率趋势</td>
+<td style="text-align: left;">13.1%→14.2%→14.6%，连续改善</td>
+<td style="text-align: left;">✅ 周期复苏确认</td>
+</tr>
+<tr>
+<td style="text-align: left;">商誉减值风险</td>
+<td style="text-align: left;">扣非差距主要来自补贴</td>
+<td style="text-align: left;">✅ 无大额减值</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>玉夜结论</strong>：财务可信度B+级。利润真实、现金流充沛、毛利率趋势向好。最重要的是——Q1 2026的利润暴增（+42.9%）配合毛利率上行，很可能标志着半导体封测周期底部已经确认，新一轮上行周期正在启动。ROE偏低是行业特征而非个体问题。</p>
+<hr />
+<h2>四、技术面分析</h2>
+<h3>4.1 预判数据（5/22）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">周期</th>
+<th style="text-align: left;">方向</th>
+<th style="text-align: left;">置信度</th>
+<th style="text-align: left;">关键价位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">短期(1-5日)</td>
+<td style="text-align: left;">看多</td>
+<td style="text-align: left;">高(&gt;70%)</td>
+<td style="text-align: left;">阻力R1=74.7</td>
+</tr>
+<tr>
+<td style="text-align: left;">中期(1-4周)</td>
+<td style="text-align: left;">区间震荡</td>
+<td style="text-align: left;">高(&gt;70%)</td>
+<td style="text-align: left;">支撑S1=53.49</td>
+</tr>
+<tr>
+<td style="text-align: left;">长期(1-6月)</td>
+<td style="text-align: left;">中性</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p>5/22预判为"看多"，置信度&gt;70%。但5/22汇总报告中未包含长电科技的六维评分（当时仅覆盖6只标的），技术面数据需进一步补全。</p>
+<h3>4.2 关键技术位（基于预判记录）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">价格</th>
+<th style="text-align: left;">依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">强阻力</td>
+<td style="text-align: left;">78.86</td>
+<td style="text-align: left;">R3</td>
+</tr>
+<tr>
+<td style="text-align: left;">次阻力</td>
+<td style="text-align: left;">76.94</td>
+<td style="text-align: left;">R2</td>
+</tr>
+<tr>
+<td style="text-align: left;">阻力</td>
+<td style="text-align: left;">74.70</td>
+<td style="text-align: left;">R1</td>
+</tr>
+<tr>
+<td style="text-align: left;">支撑</td>
+<td style="text-align: left;">53.49</td>
+<td style="text-align: left;">S1</td>
+</tr>
+<tr>
+<td style="text-align: left;">强支撑</td>
+<td style="text-align: left;">42.94</td>
+<td style="text-align: left;">S2</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>五、风险评估（流金）</h2>
+<h3>5.1 半导体封测特有风险</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">风险</th>
+<th style="text-align: center;">严重度</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>半导体周期</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">封测行业与全球半导体周期高度同步，下行周期利润可腰斩</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>产能利用率</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">高固定成本的折旧压力在产能利用率低时被放大</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>技术替代</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">先进封装技术路线仍在演进，存在被新技术替代的风险</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>客户集中</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">前5大客户（高通/博通/AMD等）占比可能较高</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>地缘政治</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">中美科技博弈可能影响海外客户合作</td>
+</tr>
+</tbody>
+</table></div>
+<h3>5.2 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">红旗</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">①极端估值</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">TTM PE约取决于现价，但毛利率改善中估值应合理</td>
+</tr>
+<tr>
+<td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: center;">🟡</td>
+<td style="text-align: left;">受半导体周期影响，FY2025利润-2.8%，但拐点已现</td>
+</tr>
+<tr>
+<td style="text-align: left;">③高波动</td>
+<td style="text-align: center;">🟡</td>
+<td style="text-align: left;">半导体股波动性较高（行业特征）</td>
+</tr>
+<tr>
+<td style="text-align: left;">④流动性风险</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">日均成交5亿+</td>
+</tr>
+<tr>
+<td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">流动性好，关键价位清晰</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>3绿2黄0红</strong>。风险可控，最大不确定性是半导体周期节奏。</p>
+</blockquote>
+<hr />
+<h2>六、估值分析</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">估值方法</th>
+<th style="text-align: left;">FY2024</th>
+<th style="text-align: left;">FY2025</th>
+<th style="text-align: left;">趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ROE</td>
+<td style="text-align: left;">6.00%</td>
+<td style="text-align: left;">5.56%</td>
+<td style="text-align: left;">↓→ 拐点临近</td>
+</tr>
+<tr>
+<td style="text-align: left;">毛利率</td>
+<td style="text-align: left;">13.06%</td>
+<td style="text-align: left;">14.15%</td>
+<td style="text-align: left;">↑ 改善</td>
+</tr>
+<tr>
+<td style="text-align: left;">经营CF/股</td>
+<td style="text-align: left;">3.26</td>
+<td style="text-align: left;">2.60</td>
+<td style="text-align: left;">↓ 但仍充沛</td>
+</tr>
+<tr>
+<td style="text-align: left;">BPS</td>
+<td style="text-align: left;">15.43</td>
+<td style="text-align: left;">16.02</td>
+<td style="text-align: left;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">TTM EPS</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">0.92</td>
+<td style="text-align: left;">↑</td>
+</tr>
+</tbody>
+</table></div>
+<p>由于5/22行情数据不完整，精确PE无法计算。按板块估值中枢30-40x PE推算，合理价格区间约27-37元。</p>
+<p><strong>三情景EPS预测（v3.3 §1.2.2）</strong>：</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">情景</th>
+<th style="text-align: center;">FY2026E EPS</th>
+<th style="text-align: left;">远期PE</th>
+<th style="text-align: left;">计算依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>乐观</strong></td>
+<td style="text-align: center;">1.14</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">TTM 0.92 × (1+8.1%) × 1.15，先进封装放量+毛利率继续改善</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>中性</strong></td>
+<td style="text-align: center;">0.97</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">TTM 0.92 × (1+5.7%) × 1.0，封测周期温和复苏</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>悲观</strong></td>
+<td style="text-align: center;">0.80</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">TTM 0.92 × (1+2.4%) × 0.85，半导体周期再次下行</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>近3年营收增速参考：FY2024 +21.2% / FY2025 +8.1% / Q1 2026 -1.8%，中位数≈8.1%。Q1 2026营收微降但净利暴增43%——"增利不增收"说明毛利率改善才是核心驱动。当前价缺失故PE暂不计算。</p>
+</blockquote>
+<p><strong>竞争格局（v3.3 §1.4.4）</strong>：</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">竞争者</th>
+<th style="text-align: left;">市场地位</th>
+<th style="text-align: left;">关键差异</th>
+<th style="text-align: center;">威胁度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">日月光</td>
+<td style="text-align: left;">全球封测第一</td>
+<td style="text-align: left;">规模最大、技术最全，先进封装领先</td>
+<td style="text-align: center;">高</td>
+</tr>
+<tr>
+<td style="text-align: left;">通富微电</td>
+<td style="text-align: left;">国内第二</td>
+<td style="text-align: left;">AMD深度绑定，Chiplet封装布局早</td>
+<td style="text-align: center;">中</td>
+</tr>
+<tr>
+<td style="text-align: left;">华天科技</td>
+<td style="text-align: left;">国内第三</td>
+<td style="text-align: left;">成本优势突出，但先进封装布局较晚</td>
+<td style="text-align: center;">低</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>长电的护城河在于：①国内唯一具备CoWoS级先进封装量产能力的OSAT ②高通/博通/AMD等顶级客户群 ③与中芯国际的虚拟IDM协同。</p>
+</blockquote>
+<p><strong>估值结论</strong>：长电科技的估值锚定全球半导体封测周期。在周期底部（利润低迷期），PE看起来很高；在周期顶部（利润高峰期），PE会急剧压缩。当前处于<strong>周期复苏初期</strong>——利润正在加速但尚未回到FY2024水平。三情景中性EPS 0.97，若封测周期如期复苏，估值有向上空间。</p>
+<hr />
+<h2>七、综合评分</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">评分(10)</th>
+<th style="text-align: left;">核心依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">基本面</td>
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: left;">毛利率改善、利润拐点确认、现金流充沛，但ROE偏低</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术面</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: left;">预判看多，但技术数据不完整</td>
+</tr>
+<tr>
+<td style="text-align: left;">资金面</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: left;">半导体非当前最热主线</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业面</td>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: left;">先进封装成长赛道，AI驱动增量，国产替代受益</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: left;">ROE偏低但毛利率正在改善，处于周期复苏初期</td>
+</tr>
+<tr>
+<td style="text-align: left;">风控</td>
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: left;">流动性好，半导体周期风险可控</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>加权综合</strong></td>
+<td style="text-align: center;"><strong>5.7</strong></td>
+<td style="text-align: left;">行业赛道好+周期拐点确认，可纳入观察，等待技术面确认</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>八、操作策略</h2>
+<h3>8.1 当前状态</h3>
+<p>长电科技不在模拟盘持仓中。处于"半导体周期复苏初期+毛利率改善"阶段。</p>
+<h3>8.2 入场条件</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">条件</th>
+<th style="text-align: left;">触发信号</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>观察</strong></td>
+<td style="text-align: left;">当前</td>
+<td style="text-align: left;">补全K线数据+技术指标，确认5/22"看多"信号</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>入场</strong></td>
+<td style="text-align: left;">价格在支撑位53.49附近企稳</td>
+<td style="text-align: left;">建仓第一笔5-8%仓位</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>加仓</strong></td>
+<td style="text-align: left;">Q2业绩预告确认利润持续高增</td>
+<td style="text-align: left;">加至10-12%仓位</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>放弃</strong></td>
+<td style="text-align: left;">半导体板块整体退潮+毛利率重新下滑</td>
+<td style="text-align: left;">移除观察</td>
+</tr>
+</tbody>
+</table></div>
+<h3>8.3 硬性纪律</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">规则</th>
+<th style="text-align: left;">价位</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>建仓价</strong></td>
+<td style="text-align: left;">53-70</td>
+<td style="text-align: left;">在支撑位附近或回调至合理区间</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>止损线</strong></td>
+<td style="text-align: left;">42.94</td>
+<td style="text-align: left;">S2支撑，跌破则趋势可能逆转</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>仓位上限</strong></td>
+<td style="text-align: left;">12%</td>
+<td style="text-align: left;">半导体周期股，仓位不宜过重</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>九、中长期展望与跟踪节点</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">时间</th>
+<th style="text-align: left;">事件</th>
+<th style="text-align: left;">关键观察点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">近期</td>
+<td style="text-align: left;">补全数据</td>
+<td style="text-align: left;">K线+行情数据补全，完善六维评分</td>
+</tr>
+<tr>
+<td style="text-align: left;">7月中旬</td>
+<td style="text-align: left;">Q2业绩预告</td>
+<td style="text-align: left;">单季EPS能否≥0.30？毛利率能否继续改善？</td>
+</tr>
+<tr>
+<td style="text-align: left;">8月底</td>
+<td style="text-align: left;">2026半年报</td>
+<td style="text-align: left;">ROE趋势、先进封装收入占比、产能利用率</td>
+</tr>
+<tr>
+<td style="text-align: left;">持续</td>
+<td style="text-align: left;">全球半导体周期</td>
+<td style="text-align: left;">台积电/日月光等龙头指引的方向</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>战略定位</strong>：600584是8只重点股票中<strong>最有"周期复苏+成长赛道"双重逻辑</strong>的标的。先进封装的长期趋势（Chiplet/AI）叠加短期周期复苏（毛利率改善+利润暴增），构成了一个有吸引力的投资逻辑。Q1 2026净利+42.9%是最明确的积极信号。建议在补全技术数据后，择机纳入观察仓。</p>
+<hr />
+<blockquote>
+<p><strong>报告编制</strong>: 腰子（金融综合判断） | <strong>协作</strong>: 山猫（宏观行业）、玉夜（数据诊断）、流金（风险评估）
+<strong>版本</strong>: v1.0 | <strong>日期</strong>: 2026-05-25</p>
+</blockquote>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

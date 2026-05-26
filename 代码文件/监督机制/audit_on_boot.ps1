@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   铁律量化 · 开机自动审计脚本
 .DESCRIPTION
@@ -26,6 +26,7 @@ param(
     [switch]$Force,
     [switch]$Quick
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $ErrorActionPreference = "Continue"
 $rootDir = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"

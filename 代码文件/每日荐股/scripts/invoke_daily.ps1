@@ -1,4 +1,5 @@
-﻿<#
+﻿. "$PSScriptRoot/../../lib/init_encoding.ps1"
+<#
 .SYNOPSIS
   铁律量化 · 每日管线幂等守卫
 .DESCRIPTION

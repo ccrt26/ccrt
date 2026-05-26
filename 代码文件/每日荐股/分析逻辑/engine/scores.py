@@ -339,6 +339,16 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
     elif amplitude > 10: money -= 2
     if fund_net > 0: money += 2
     elif fund_net < -10000000: money -= 2
+    # P0a: 连续N日主力趋势 (2026-05-26)
+    fund_net_3d = s.get("FundMainNet_3d", 0) or 0
+    fund_net_5d = s.get("FundMainNet_5d", 0) or 0
+    fund_days_pos = s.get("FundMainNet_PosDays", 0) or 0
+    if fund_days_pos >= 5 and fund_net_5d > 0:
+        money += 4
+    elif fund_days_pos >= 3 and fund_net_3d > 0:
+        money += 2
+    elif fund_days_pos <= 1 and fund_net_5d < 0:
+        money -= 2
     # v2.8: 北向资金 [8] — 外资持仓信号
     if nb_shares_ratio > 5: money += 3      # 外资重仓(>5%)
     elif nb_shares_ratio > 2: money += 2     # 外资关注(>2%)
@@ -407,6 +417,10 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         market_5d = s.get("_Market5DMedian", 0)
         car5 = round(stock_5d - market_5d, 2)
 
+    # P1a: 行业锚定参照 (2026-05-26)
+    from . import INDUSTRY_BENCHMARK
+    s["IndustryBenchmark"] = INDUSTRY_BENCHMARK.get(industry, 5.0)
+
     return {
         "S_Base": base, "S_Fund": fund, "S_Tech": tech,
         "S_Money": money, "S_News": news, "S_Risk": risk,
@@ -419,6 +433,71 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         "EPS_Growth": eps_growth, "GrowthSource": growth_source,
         "ThemePath": s.get("_ThemePath", ""),
     }, tech_detail
+
+
+# ============ P0b 突破性质分类 (2026-05-26) [L2] ============
+# 变更须经 流金 复核
+
+def detect_breakthrough(s):
+    """检测是否发生放量突破关键位。
+    返回 (is_breakthrough, strength: 0|1|2)
+    strength: 2=52周新高突破, 1=MA20以上放量突破, 0=无突破
+    """
+    chg_pct = s.get("ChangePct", 0) or 0
+    vol_ratio = s.get("VolRatio", 1) or 1
+    price = s.get("Price", 0) or 0
+    closes = s.get("KClose", [])
+
+    # 条件1: 量价确认 — 放量上涨
+    volume_surge = vol_ratio > 1.5 and chg_pct > 3
+
+    if not volume_surge:
+        return False, 0
+
+    # 条件2: 突破关键位
+    # 2a: 52周新高 (最强信号)
+    if len(closes) >= 250:
+        recent_high = max(closes[-250:])
+        if price >= recent_high:
+            return True, 2
+
+    # 2b: MA20以上+涨幅>5%
+    ma20 = s.get("MA20", 0) or 0
+    if ma20 > 0 and price > ma20 * 1.03 and chg_pct > 5:
+        return True, 1
+
+    # 2c: 10日横盘后突破 (S3_Volume_Price判定)
+    td = s.get("S_Tech_Details", {})
+    if td.get("S3_Volume_Price", 0) >= 4 and td.get("S7_Breakout", 0) >= 3:
+        return True, 1
+
+    return False, 0
+
+
+def classify_breakthrough_nature(s, scores):
+    """突破性质四分类，返回类型字符串或 None。
+    - "quality_momentum": 质量+动量共振 (最优)
+    - "fund_driven": 资金驱动 (基本面弱但有资金)
+    - "pure_momentum": 纯动量 (无基本面+无资金确认)
+    - None: 无有效突破
+    """
+    is_bt, strength = detect_breakthrough(s)
+    if not is_bt:
+        return None
+
+    fund_quality = scores.get("S_Fund", 0)  # 0-15
+    fund_net = s.get("FundMainNet", 0) or 0
+    fund_net_3d = s.get("FundMainNet_3d", 0) or 0
+
+    fund_positive = fund_net > 0 and fund_net_3d > 0
+    quality_pass = fund_quality >= 8  # 基本面过半
+
+    if quality_pass and fund_positive:
+        return "quality_momentum"
+    elif not quality_pass and fund_positive:
+        return "fund_driven"
+    else:
+        return "pure_momentum"
 
 
 # ============ 技术面子项评分（从scoring_engine.py复用） ============

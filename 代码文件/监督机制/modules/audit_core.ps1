@@ -18,6 +18,7 @@ $script:metrics = @{}
 
 function Add-Check {
     param([string]$Section, [string]$Id, [string]$Desc, [string]$Status, [string]$Detail = "")
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
     $key = "${Section}_${Id}"
     $script:results[$key] = @{ section=$Section; id=$Id; desc=$Desc; status=$Status; detail=$Detail }
     $icon = if($Status -eq 'PASS'){[char]0x2705}elseif($Status -eq 'WARN'){[char]0x26A0}else{[char]0x274C}

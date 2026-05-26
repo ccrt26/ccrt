@@ -55,7 +55,18 @@ def append_history(stocks, sector_phase_map, run_date=None):
     if run_date is None:
         run_date = date.today().strftime("%Y-%m-%d")
 
-    existing = set()
+    # P0 防卫: 周末/非交易日拒绝写入
+    try:
+        dt = datetime.strptime(run_date, "%Y-%m-%d")
+        if dt.weekday() >= 5:  # Saturday=5, Sunday=6
+            print(f"[History] {run_date} is weekend, skipping score_history append")
+            return
+    except ValueError:
+        pass
+
+    # 构建双重去重索引: (date, code) + 内容指纹
+    existing_codes = set()       # 当日code去重
+    content_fingerprints = {}    # code → set of (price, score, change_pct)
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
             for line in f:
@@ -64,18 +75,32 @@ def append_history(stocks, sector_phase_map, run_date=None):
                     continue
                 try:
                     rec = json.loads(line)
-                    key = (rec.get("date"), rec.get("code"))
-                    if key[0] == run_date:
-                        existing.add(key[1])
+                    code = rec.get("code", "")
+                    rec_date = rec.get("date", "")
+                    # 当日去重
+                    if rec_date == run_date:
+                        existing_codes.add(code)
+                    # 内容指纹 (防同一份数据被不同日期重复写入)
+                    fp = (rec.get("price"), rec.get("TotalScore"), rec.get("change_pct"))
+                    if code not in content_fingerprints:
+                        content_fingerprints[code] = set()
+                    content_fingerprints[code].add(fp)
                 except json.JSONDecodeError:
                     pass
 
     written = 0
+    skipped_fp = 0
     with open(HISTORY_FILE, "a", encoding="utf-8") as f:
         for s in stocks:
             code = s.get("Code", "")
-            if code in existing:
-                continue  # 当日已记录，跳过重复
+            if code in existing_codes:
+                continue  # 当日已记录
+
+            # 内容指纹检查: 同code+同price+同score+同涨跌幅=同一份源数据
+            fp = (s.get("Price", 0), s.get("TotalScore", 0), s.get("ChangePct", 0))
+            if fp in content_fingerprints.get(code, set()):
+                skipped_fp += 1
+                continue
 
             industry = s.get("Industry", "")
             phase = sector_phase_map.get(industry, {}).get("phase", "潜伏期") if sector_phase_map else "潜伏期"
@@ -121,6 +146,11 @@ def append_history(stocks, sector_phase_map, run_date=None):
                 "phase_multiplier": s.get("PhaseMultiplier", 1.0),
                 "theme_path": s.get("ThemePath", ""),
                 "veto_status": s.get("VetoStatus", "passed"),
+                # P0a/P0b/P1a (2026-05-26)
+                "breakthrough_type": s.get("_BreakthroughType"),
+                "c8_penalty": s.get("_C8_Penalty"),
+                "c8_bonus": s.get("_C8_Bonus"),
+                "industry_benchmark": s.get("IndustryBenchmark"),
                 "adx14": s.get("ADX14"),
                 "bb_upper": s.get("BB_Upper"),
                 "bb_lower": s.get("BB_Lower"),
@@ -134,7 +164,7 @@ def append_history(stocks, sector_phase_map, run_date=None):
         os.fsync(f.fileno())
 
     print(f"[History] {run_date}: appended {written} records to score_history.jsonl "
-          f"(skipped {len(existing)} duplicates)")
+          f"(skipped {len(existing_codes)} date-dupes, {skipped_fp} content-dupes)")
 
 def main(run_date=None, verbose=False):
     """run_date: 交易日 YYYY-MM-DD，默认今天（用于评分历史的日期标记）"""
@@ -354,7 +384,12 @@ def main(run_date=None, verbose=False):
         scores, tech_info = compute_scores(s, sector_info, sector_trend_info)
         s.update(scores)
 
-        # Phase C: 条件否决（v2.7: +D.1市场自适应参数）
+        # Phase B2: 突破性质分类 (2026-05-26 P0b) [L2实验性]
+        from .scores import classify_breakthrough_nature
+        bt_type = classify_breakthrough_nature(s, scores)
+        s["_BreakthroughType"] = bt_type
+
+        # Phase C: 条件否决（v2.7: +D.1市场自适应参数 + C8突破性质）
         veto = check_conditional_vetoes(s, scores, sector_phases, sector_trends, market_state)
         if veto:
             s["VetoStatus"] = veto[0]

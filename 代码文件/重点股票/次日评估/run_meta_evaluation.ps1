@@ -6,6 +6,7 @@
 param(
     [switch]$GenerateReport = $true  # 是否生成PDF自检报告
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 # ============================================================
 # 配置

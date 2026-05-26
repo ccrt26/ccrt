@@ -1,5 +1,6 @@
-# 规则红线 MD→DOCX 转换
+﻿# 规则红线 MD→DOCX 转换
 param([string]$Version = "v1.14")
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 $root = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $md = "$root\规则红线\分析的规则红线--Claude_$Version.md"
 $docx = "$root\规则红线\分析的规则红线--Claude_$Version.docx"

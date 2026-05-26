@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模拟交易持仓仪表盘 — 铁律量化</title>
+<style>
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: #1f2b47;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0b0;
+  --accent-up: #e74c3c;
+  --accent-down: #27ae60;
+  --accent-gold: #f0c040;
+  --border: #2a3a5e;
+  --manual: #e67e22;
+  --auto: #3498db;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+.header { background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary)); padding: 24px 32px; border-bottom: 2px solid var(--border); }
+.header h1 { font-size: 24px; font-weight: 600; }
+.header .subtitle { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.card .label { color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.card .value { font-size: 28px; font-weight: 700; margin-top: 6px; }
+.card .sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.card.up .value { color: var(--accent-up); }
+.card.down .value { color: var(--accent-down); }
+.section { margin-bottom: 28px; }
+.section-title { font-size: 16px; font-weight: 600; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.section-title .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; vertical-align: middle; }
+.badge-manual { background: rgba(230,126,34,0.2); color: var(--manual); }
+.badge-auto { background: rgba(52,152,219,0.2); color: var(--auto); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; padding: 10px 12px; background: rgba(22,33,62,0.6); color: var(--text-secondary); font-weight: 500; font-size: 12px; text-transform: uppercase; }
+td { padding: 12px; border-bottom: 1px solid var(--border); }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.pnl-up { color: var(--accent-up); }
+.pnl-down { color: var(--accent-down); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 500; }
+.tag-k { background: rgba(231,76,60,0.15); color: var(--accent-up); }
+.tag-d { background: rgba(52,152,219,0.15); color: var(--auto); }
+.tag-manual { background: rgba(230,126,34,0.15); color: var(--manual); }
+.tag-auto { background: rgba(52,152,219,0.15); color: var(--auto); }
+.benchmark-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.benchmark-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; flex: 1; min-width: 180px; }
+.benchmark-item .blabel { font-size: 11px; color: var(--text-secondary); }
+.benchmark-item .bvalue { font-size: 20px; font-weight: 700; margin-top: 4px; }
+.attribution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.attr-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.attr-card h3 { font-size: 14px; margin-bottom: 12px; }
+.attr-stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.attr-stat .sval { font-weight: 600; }
+.empty-state { text-align: center; padding: 32px; color: var(--text-secondary); font-size: 13px; }
+.chart-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; height: 240px; position: relative; }
+.chart-svg { width: 100%; height: 100%; }
+.warn-banner { background: rgba(230,126,34,0.1); border: 1px solid rgba(230,126,34,0.3); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; display: flex; align-items: center; gap: 10px; }
+.warn-banner .icon { font-size: 18px; }
+.footer { text-align: center; padding: 24px; color: var(--text-secondary); font-size: 11px; border-top: 1px solid var(--border); margin-top: 32px; }
+.footer a { color: var(--text-secondary); }
+@media (max-width: 768px) {
+  .attribution-grid { grid-template-columns: 1fr; }
+  .summary-cards { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>模拟交易持仓仪表盘</h1>
+  <div class="subtitle">铁律量化 · 统一视图 · 生成时间: <span id="genTime"></span></div>
+</div>
+
+<div class="container">
+
+  <!-- 摘要卡片 -->
+  <div class="summary-cards">
+    <div class="card up">
+      <div class="label">统一净值</div>
+      <div class="value" id="nav">--</div>
+      <div class="sub" id="navReturn"></div>
+    </div>
+    <div class="card">
+      <div class="label">现金</div>
+      <div class="value" id="cash">--</div>
+      <div class="sub" id="cashPct"></div>
+    </div>
+    <div class="card">
+      <div class="label">持仓市值</div>
+      <div class="value" id="stockVal">--</div>
+      <div class="sub" id="posCount"></div>
+    </div>
+    <div class="card down">
+      <div class="label">最大回撤</div>
+      <div class="value" id="maxdd">--</div>
+      <div class="sub" id="peakVal"></div>
+    </div>
+    <div class="card">
+      <div class="label">完成交易</div>
+      <div class="value" id="totalTrades">0</div>
+      <div class="sub" id="winRate">--</div>
+    </div>
+  </div>
+
+  <!-- 待执行指令提示 -->
+  <div class="warn-banner" id="pendingBanner" style="display:none">
+    <span class="icon">⚡</span>
+    <span id="pendingMsg"></span>
+  </div>
+
+  <!-- 基准对比 -->
+  <div class="section">
+    <div class="section-title">基准对比</div>
+    <div class="benchmark-row">
+      <div class="benchmark-item">
+        <div class="blabel">铁律量化 模拟组合</div>
+        <div class="bvalue pnl-up" id="bmPortReturn">--</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">沪深300 (000300.SH)</div>
+        <div class="bvalue pnl-up" id="bmIdxReturn">--</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">超额收益</div>
+        <div class="bvalue pnl-down" id="bmExcess">--</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">初始基准点位</div>
+        <div class="bvalue" style="font-size:16px" id="bmInitial">--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 持仓明细 -->
+  <div class="section">
+    <div class="section-title">
+      持仓明细
+      <span class="badge badge-manual" style="margin-left:4px">[K] 重点股票</span>
+      <span class="badge badge-auto" style="margin-left:4px">[D] 每日荐股</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>赛道</th><th>代码</th><th>名称</th><th>持仓(股)</th><th>成本价</th><th>现价</th><th>市值</th><th>浮动盈亏</th><th>盈亏%</th><th>入场日期</th>
+        </tr>
+      </thead>
+      <tbody id="posTable"></tbody>
+    </table>
+    <div class="empty-state" id="posEmpty" style="display:none">暂无持仓</div>
+  </div>
+
+  <!-- 决策来源归因 -->
+  <div class="section">
+    <div class="section-title">决策来源对比 <span style="font-weight:400;font-size:12px;color:var(--text-secondary)">— 统一归因入口</span></div>
+    <div class="attribution-grid">
+      <div class="attr-card">
+        <h3><span class="tag tag-manual">手工 (腰子指令)</span></h3>
+        <div id="manualStats"></div>
+      </div>
+      <div class="attr-card">
+        <h3><span class="tag tag-auto">自动 (规则引擎)</span></h3>
+        <div id="autoStats"></div>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <table>
+        <thead>
+          <tr><th>来源</th><th>日期</th><th>代码</th><th>名称</th><th>操作</th><th>价格</th><th>股数</th><th>金额</th><th>原因</th></tr>
+        </thead>
+        <tbody id="attrTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 风险指标 -->
+  <div class="section">
+    <div class="section-title">风险快照</div>
+    <div class="benchmark-row">
+      <div class="benchmark-item">
+        <div class="blabel">当前回撤</div>
+        <div class="bvalue pnl-down" id="riskCurDD">--</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">平均止损距离</div>
+        <div class="bvalue" style="font-size:20px" id="riskAvgSL">--</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">连续亏损</div>
+        <div class="bvalue" id="riskConsec">0</div>
+      </div>
+      <div class="benchmark-item">
+        <div class="blabel">回撤告警</div>
+        <div class="bvalue" style="font-size:16px" id="riskAlert">否</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  铁律量化 · 模拟交易系统 v2.2 · 数据来源: positions.json + perf_summary.json + transactions.csv
+</div>
+
+<script>
+// ===== 嵌入式数据 =====
+const positions = {"601689":{"Code":"601689","Name":"拓普集团","Shares":1200,"AvgCost":72.09,"CurrentPrice":72.05,"EntryDate":"20260522","UnrealizedPnL":-48.0,"UnrealizedPnLPct":-0.06,"Track":"重点股票"},"600114":{"Code":"600114","Name":"东睦股份","Shares":1200,"AvgCost":35.20,"CurrentPrice":37.75,"EntryDate":"20260522","UnrealizedPnL":3060.0,"UnrealizedPnLPct":7.24,"Track":"重点股票"},"301075":{"Code":"301075","Name":"多瑞医药","Shares":1100,"AvgCost":86.06,"CurrentPrice":88.2,"EntryDate":"20260522","UnrealizedPnL":2354.0,"UnrealizedPnLPct":2.49,"Track":"重点股票"}};
+
+const perf = {"StartDate":"20260522","InitialCapital":1000000,"CurrentValue":1008122.59,"TotalReturnPct":0.81,"MaxDrawdown":-0.71,"MaxDrawdownDate":"20260522","PeakValue":1008174.49,"TotalTrades":0,"WinningTrades":0,"LosingTrades":0,"WinRate":null,"ConsecutiveLosses":0,"Benchmark":{"Name":"沪深300","Code":"000300.SH","InitialValue":4845.10,"BenchmarkReturnPct":1.58,"CurrentValue":4921.6,"ExcessReturnPct":-0.77},"RiskMetrics":{"MaxDrawdown":-0.71,"AvgStopLossDistance":12.42,"ConsecutiveLosses":0,"CurrentDrawdown":-0.01,"IsDrawdownAlert":false}};
+
+const transactions = [
+  {date:"20260522",code:"301075",name:"多瑞医药",action:"BUY",price:86.04,shares:1100,amount:-94644.0,total_cost:-94667.66,reason:"开仓_看多_预警关注",source:"auto"},
+  {date:"20260522",code:"601689",name:"拓普集团",action:"BUY",price:72.07,shares:1200,amount:-86484.0,total_cost:-86505.62,reason:"开仓_看多_健康",source:"auto"},
+  {date:"20260522",code:"600114",name:"东睦股份",action:"BUY",price:35.19,shares:2300,amount:-80937.0,total_cost:-80957.23,reason:"开仓_看多_健康",source:"auto"},
+  {date:"20260525",code:"600114",name:"东睦股份",action:"SELL_HALF",price:37.75,shares:1100,amount:41525,total_cost:41473.10,reason:"止盈减仓_R2",source:"auto"}
+];
+
+// 腰子待执行指令 (从 交易指令_20260525.json)
+const pendingInstructions = [
+  {action:"SELL",code:"301075",name:"多瑞医药",shares:1100,reason:"MACD死叉+毛利率崩溃,清仓止损",priority:"P0_腰子"},
+  {action:"SELL_HALF",code:"600114",name:"东睦股份",shares:1150,reason:"+11%盈利锁利,减半仓",priority:"P1_腰子"},
+  {action:"HOLD",code:"601689",name:"拓普集团",reason:"MA多头完好,继续持有观察",priority:"P2_腰子"}
+];
+
+// ===== 渲染 =====
+document.getElementById('genTime').textContent = new Date().toLocaleString('zh-CN');
+
+// 摘要
+const nav = perf.CurrentValue;
+const ret = perf.TotalReturnPct;
+const cash = 779342.59;
+const stockVal = nav - cash;
+const posArr = Object.values(positions);
+document.getElementById('nav').textContent = '¥' + nav.toLocaleString('zh-CN',{minimumFractionDigits:2});
+document.getElementById('navReturn').textContent = (ret>=0?'+':'') + ret + '% 累计收益';
+document.getElementById('cash').textContent = '¥' + cash.toLocaleString('zh-CN',{minimumFractionDigits:2});
+document.getElementById('cashPct').textContent = (cash/nav*100).toFixed(1) + '% 仓位占比';
+document.getElementById('stockVal').textContent = '¥' + stockVal.toLocaleString('zh-CN',{minimumFractionDigits:2});
+document.getElementById('posCount').textContent = posArr.length + ' 只持仓 | ' + (stockVal/nav*100).toFixed(1) + '% 仓位';
+document.getElementById('maxdd').textContent = perf.MaxDrawdown + '%';
+document.getElementById('peakVal').textContent = '峰值 ¥' + perf.PeakValue.toLocaleString('zh-CN',{minimumFractionDigits:2});
+document.getElementById('totalTrades').textContent = perf.TotalTrades;
+document.getElementById('winRate').textContent = perf.WinRate !== null ? (perf.WinRate*100).toFixed(0)+'% 胜率' : '持仓中';
+
+// 基准
+document.getElementById('bmPortReturn').textContent = (ret>=0?'+':'') + ret + '%';
+document.getElementById('bmIdxReturn').textContent = '+' + perf.Benchmark.BenchmarkReturnPct + '%';
+document.getElementById('bmExcess').textContent = perf.Benchmark.ExcessReturnPct + '%';
+document.getElementById('bmInitial').textContent = perf.Benchmark.InitialValue;
+
+// 待执行指令
+if (pendingInstructions.length > 0) {
+  document.getElementById('pendingBanner').style.display = 'flex';
+  document.getElementById('pendingMsg').textContent = '待执行腰子指令: ' + pendingInstructions.map(i=>i.action+' '+i.name+'('+i.reason+')').join(' | ');
+}
+
+// 持仓表
+const tbody = document.getElementById('posTable');
+posArr.forEach(p => {
+  const mv = p.CurrentPrice * p.Shares;
+  const pnlCls = p.UnrealizedPnLPct >= 0 ? 'pnl-up' : 'pnl-down';
+  const sign = p.UnrealizedPnLPct >= 0 ? '+' : '';
+  const trackTag = p.Track === '重点股票' ? '<span class="tag tag-k">K</span>' : '<span class="tag tag-d">D</span>';
+  tbody.innerHTML += `<tr>
+    <td>${trackTag}</td>
+    <td>${p.Code}</td><td>${p.Name}</td>
+    <td>${p.Shares.toLocaleString()}</td>
+    <td>¥${p.AvgCost.toFixed(2)}</td>
+    <td>¥${p.CurrentPrice.toFixed(2)}</td>
+    <td>¥${mv.toLocaleString('zh-CN',{minimumFractionDigits:0})}</td>
+    <td class="${pnlCls}">¥${p.UnrealizedPnL.toLocaleString('zh-CN',{minimumFractionDigits:2})}</td>
+    <td class="${pnlCls}">${sign}${p.UnrealizedPnLPct}%</td>
+    <td>${p.EntryDate}</td>
+  </tr>`;
+});
+
+// 归因统计
+const manualTxs = transactions.filter(t=>t.source==='manual');
+const autoTxs = transactions.filter(t=>t.source==='auto');
+
+function renderAttributionStats(txs, containerId) {
+  const c = document.getElementById(containerId);
+  if (txs.length === 0) {
+    c.innerHTML = '<div class="attr-stat"><span>暂无记录</span><span class="sval">—</span></div>';
+    return;
+  }
+  const buys = txs.filter(t=>t.action==='BUY');
+  const sells = txs.filter(t=>t.action.includes('SELL'));
+  const totalBuyAmt = buys.reduce((s,t)=>s+Math.abs(t.amount),0);
+  const totalSellAmt = sells.reduce((s,t)=>s+Math.abs(t.amount),0);
+  let html = '';
+  html += `<div class="attr-stat"><span>交易总数</span><span class="sval">${txs.length}</span></div>`;
+  html += `<div class="attr-stat"><span>买入</span><span class="sval">${buys.length} 笔 / ¥${totalBuyAmt.toLocaleString()}</span></div>`;
+  html += `<div class="attr-stat"><span>卖出</span><span class="sval">${sells.length} 笔 / ¥${totalSellAmt.toLocaleString()}</span></div>`;
+  html += `<div class="attr-stat"><span>已完成交易</span><span class="sval">0 (持仓中)</span></div>`;
+  c.innerHTML = html;
+}
+renderAttributionStats(manualTxs, 'manualStats');
+renderAttributionStats(autoTxs, 'autoStats');
+
+// 归因交易表
+const attrTbody = document.getElementById('attrTable');
+transactions.slice().reverse().forEach(t => {
+  const srcTag = t.source === 'manual' ? '<span class="tag tag-manual">手工</span>' : '<span class="tag tag-auto">自动</span>';
+  const actCls = t.action.includes('SELL') ? 'pnl-down' : 'pnl-up';
+  attrTbody.innerHTML += `<tr>
+    <td>${srcTag}</td>
+    <td>${t.date}</td><td>${t.code}</td><td>${t.name}</td>
+    <td class="${actCls}">${t.action}</td>
+    <td>¥${t.price.toFixed(2)}</td>
+    <td>${t.shares}</td>
+    <td>¥${Math.abs(t.total_cost).toLocaleString('zh-CN',{minimumFractionDigits:2})}</td>
+    <td style="font-size:12px;color:var(--text-secondary)">${t.reason}</td>
+  </tr>`;
+});
+
+// 风险
+const rm = perf.RiskMetrics;
+document.getElementById('riskCurDD').textContent = rm.CurrentDrawdown + '%';
+document.getElementById('riskAvgSL').textContent = rm.AvgStopLossDistance + '%';
+document.getElementById('riskConsec').textContent = rm.ConsecutiveLosses;
+document.getElementById('riskAlert').textContent = rm.IsDrawdownAlert ? '⚠ 是' : '否';
+</script>
+</body>
+</html>

@@ -1,10 +1,11 @@
-# 铁律量化 · PreToolUse hook - 红线预检 + 样式合规 + 白皮书对照 (静默模式)
+﻿# 铁律量化 · PreToolUse hook - 红线预检 + 样式合规 + 白皮书对照 (静默模式)
 # 仅在检查失败时输出，通过时不消耗token
 # matcher: Bash(*.ps1) || Bash(*.py) || Bash(python *)
 
 param(
     [string]$ToolInput = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $errors = @()
 $BASE = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工程项目标准交付流程 — 全流程图</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --text: #e0e0e0;
+    --accent: #e2b04a;
+    --up: #e74c3c;
+    --down: #27ae60;
+    --cyan: #0ea5e9;
+    --purple: #a855f7;
+    --gray: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+    padding: 40px 60px;
+    line-height: 1.6;
+  }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--gray);
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 20px;
+    color: var(--cyan);
+    margin: 50px 0 20px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .mermaid-container {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 30px 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+  }
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>工程项目标准交付流程</h1>
+<p class="subtitle">架构版本 v1.0 | 引擎驱动 | 六阶段串行 | 三道质量闸门 | 生成日期: 2026-05-25</p>
+
+<!-- ====== FIGURE 1: Main 6-Stage Pipeline ====== -->
+<h2>一、六阶段串行流程总览</h2>
+
+<div class="legend">
+  <span><span class="dot" style="background:#e2b04a"></span> 设计阶段</span>
+  <span><span class="dot" style="background:#0ea5e9"></span> 审查阶段</span>
+  <span><span class="dot" style="background:#e74c3c"></span> 编码阶段</span>
+  <span><span class="dot" style="background:#27ae60"></span> 验证阶段</span>
+  <span><span class="dot" style="background:#a855f7"></span> 部署阶段</span>
+  <span><span class="dot" style="background:#64748b"></span> 后评估</span>
+</div>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart LR
+    S([腰子 提金融需求]) --> A
+
+    subgraph P[工程项目标准交付流程 — 六阶段]
+      direction LR
+      A[① 情墨<br/>架构设计] -->|闸门1| B[② 新安+旧影<br/>架构审查]
+      B --> C[③ 红结<br/>编码实现]
+      C -->|闸门2| D[④ 新安<br/>四层验证]
+      D -->|闸门3| E[⑤ 红枫<br/>灰度部署]
+      E --> F[⑥ 腰子+青山<br/>后评估]
+    end
+
+    F --> T([交付完成])
+
+    G1[闸门1: 设计闸<br/>设计文档+腰子确认<br/>+新安审查] -.->|PASS| B
+    G2[闸门2: 代码闸<br/>代码变更+四层验证<br/>+红线审查] -.->|PASS| D
+    G3[闸门3: 上线闸<br/>前置闸门全PASS<br/>+部署+回滚方案] -.->|PASS| E
+
+    style A fill:#e2b04a,stroke:#e2b04a,color:#1a1a2e
+    style B fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    style C fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style D fill:#27ae60,stroke:#27ae60,color:#fff
+    style E fill:#a855f7,stroke:#a855f7,color:#fff
+    style F fill:#64748b,stroke:#64748b,color:#fff
+    style S fill:#1a1a2e,stroke:#e2b04a,color:#e2b04a
+    style T fill:#1a1a2e,stroke:#27ae60,color:#27ae60
+    style G1 fill:#fff8e1,stroke:#e2b04a,color:#1a1a2e
+    style G2 fill:#fff8e1,stroke:#e2b04a,color:#1a1a2e
+    style G3 fill:#fff8e1,stroke:#e2b04a,color:#1a1a2e
+    style P fill:none,stroke:#334155,color:#94a3b8
+</pre>
+</div>
+
+<!-- ====== FIGURE 2: 阿黑 7-Step Loop ====== -->
+<h2>二、阿黑七步执行循环（全自动驱管）</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TD
+    L1[1. 读取引擎状态<br/>pipeline_engine.ps1 -Status] --> L2{2. next_action?}
+
+    L2 -->|done| L2D[输出摘要<br/>流程结束]
+    L2 -->|stop_l3| L2S[呈现 L3 原因<br/>等待用户决策]
+    L2 -->|invoke_role| L3[3. 读取角色 command 文件<br/>以该角色身份执行]
+    L2 -->|retry| L3R[静默打回<br/>重新执行上一步]
+
+    L3 --> L4[4. 角色产出完成<br/>pipeline_engine.ps1 -Validate]
+    L3R --> L1
+
+    L4 --> L5{5. 上下文 > 70%?}
+    L5 -->|是| L5Y[ScheduleWakeup 60s<br/>自动续跑]
+    L5 -->|否| L6[6. 推进到下一阶段<br/>pipeline_engine.ps1 -Advance]
+    L5Y --> L1
+
+    L6 --> L7[7. 循环回到步骤1]
+    L7 --> L1
+
+    style L1 fill:#16213e,stroke:#0ea5e9,color:#e0e0e0
+    style L2 fill:#16213e,stroke:#e2b04a,color:#e2b04a
+    style L2D fill:#27ae60,stroke:#27ae60,color:#fff
+    style L2S fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style L3 fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    style L3R fill:#a855f7,stroke:#a855f7,color:#fff
+    style L4 fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    style L5 fill:#16213e,stroke:#e2b04a,color:#e2b04a
+    style L5Y fill:#a855f7,stroke:#a855f7,color:#fff
+    style L6 fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+</pre>
+</div>
+
+<!-- ====== FIGURE 3: Engine State Machine ====== -->
+<div class="page-break"></div>
+<h2>三、流程引擎状态机（pipeline_engine.ps1）</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> Idle: 无活跃流程
+
+    Idle --> Stage1_情墨: -Start
+    Stage1_情墨 --> Gate1: -Validate
+
+    Gate1 --> Stage1_情墨: FAIL → -Retry
+    Gate1 --> Stage2_审查: PASS → -Advance
+
+    Stage2_审查 --> Stage3_红结: -Advance
+
+    Stage3_红结 --> Gate2: -Validate
+    Gate2 --> Stage3_红结: FAIL → -Retry
+    Gate2 --> Stage4_验证: PASS → -Advance
+
+    Stage4_验证 --> Gate3: -Validate
+    Gate3 --> Stage4_验证: FAIL → -Retry
+    Gate3 --> Stage5_部署: PASS → -Advance
+
+    Stage5_部署 --> Stage6_后评估: -Advance
+    Stage6_后评估 --> [*]: -Complete → 归档
+
+    note right of Gate1: 闸门1 — 设计闸
+    note right of Gate2: 闸门2 — 代码闸
+    note right of Gate3: 闸门3 — 上线闸
+</pre>
+</div>
+
+<!-- ====== FIGURE 4: Gate Details ====== -->
+<h2>四、三道质量闸门详解</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TD
+    subgraph G1[闸门1 — 设计闸 ①→②]
+      direction TB
+      G1A[情墨 设计文档完成] --> G1B{文件系统检测}
+      G1B --> G1C[✓ 设计文档存在]
+      G1B --> G1F1[✗ 缺失: 打回情墨]
+      G1C --> G1D[腰子召集全团咨询<br/>§6.0 强制流程]
+      G1D --> G1SM[① 山猫: 宏观/政策/情绪]
+      G1SM --> G1YY[② 玉夜: 数据可用性/合规]
+      G1YY --> G1LJ[③ 流金: 风险评估/红线边界]
+      G1LJ --> G1QS[④ 青山: 策略/因子维度]
+      G1QS --> G1YZ{腰子综合四角色意见<br/>做出最终决策}
+      G1YZ -->|通过| G1E[✓ 签字: finance_confirmed: true]
+      G1YZ -->|否决| G1F2[✗ 打回情墨修改]
+      G1E --> G1PASS[闸门1 PASS]
+    end
+
+    subgraph G2[闸门2 — 代码闸 ③→④]
+      direction TB
+      G2A[红结 代码提交] --> G2B{四层验证}
+      G2B --> G2C[① 变更影响分析]
+      G2C --> G2D[② 测试报告]
+      G2D --> G2E[③ 回归验证]
+      G2E --> G2F[④ 红线审查]
+      G2F --> G2PASS[闸门2 PASS]
+      G2B --> G2FAIL[任一FAIL: 打回红结]
+    end
+
+    subgraph G3[闸门3 — 上线闸 ④→⑤]
+      direction TB
+      G3A[新安验证完成] --> G3B{前置闸门检查}
+      G3B --> G3C[✓ G1 PASS + G2 PASS]
+      G3C --> G3D[✓ 部署方案就绪]
+      G3D --> G3E[✓ 回滚方案就绪]
+      G3E --> G3PASS[闸门3 PASS]
+      G3B --> G3FAIL[✗ 不满足: 不得上线]
+    end
+
+    style G1 fill:#16213e,stroke:#e2b04a,color:#e2b04a
+    style G2 fill:#16213e,stroke:#e74c3c,color:#e74c3c
+    style G3 fill:#16213e,stroke:#a855f7,color:#a855f7
+    style G1PASS fill:#27ae60,stroke:#27ae60,color:#fff
+    style G2PASS fill:#27ae60,stroke:#27ae60,color:#fff
+    style G3PASS fill:#27ae60,stroke:#27ae60,color:#fff
+    style G1F1 fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style G1F2 fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style G2FAIL fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style G3FAIL fill:#e74c3c,stroke:#e74c3c,color:#fff
+</pre>
+</div>
+
+<!-- ====== FIGURE 5: 腰子全团强制咨询 ====== -->
+<h2>五、腰子全团强制咨询流程（闸门1 核心环节）</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TD
+    START([闸门1: 情墨设计文档就绪]) --> YZ[腰子收到设计文档]
+
+    YZ --> S1[① 山猫 先出判断<br/>宏观周期定位 + 政策风向<br/>+ 市场情绪 + 事件风险]
+
+    S1 --> S2[② 玉夜 数据确认<br/>涉及数据可用性<br/>+ 1+2主备合规<br/>+ 降级路径标注]
+
+    S2 --> S3[③ 流金 风险评估<br/>红线边界检查<br/>+ 持仓约束<br/>+ 极端情景影响]
+
+    S3 --> S4[④ 青山 策略判断<br/>因子信号维度<br/>+ 后评估规律<br/>+ 策略一致性]
+
+    S4 --> YZD{腰子综合四角色意见<br/>独立做出最终决策}
+
+    YZD -->|通过| SIGN[签字: finance_confirmed: true<br/>设计文档标记完成]
+    YZD -->|有条件通过| MOD[提出修改意见<br/>打回情墨修改]
+    YZD -->|否决| REJ[设计驳回<br/>需重新设计]
+
+    MOD --> YZ
+    SIGN --> G1PASS([闸门1 PASS → 进入阶段②])
+
+    style START fill:#1a1a2e,stroke:#e2b04a,color:#e2b04a
+    style YZ fill:#e2b04a,stroke:#e2b04a,color:#1a1a2e
+    style S1 fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    style S2 fill:#27ae60,stroke:#27ae60,color:#fff
+    style S3 fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style S4 fill:#a855f7,stroke:#a855f7,color:#fff
+    style YZD fill:#e2b04a,stroke:#e2b04a,color:#1a1a2e
+    style SIGN fill:#27ae60,stroke:#27ae60,color:#fff
+    style MOD fill:#f59e0b,stroke:#f59e0b,color:#1a1a2e
+    style REJ fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style G1PASS fill:#27ae60,stroke:#27ae60,color:#fff
+</pre>
+</div>
+
+<!-- ====== FIGURE 6: L3 Escalation ====== -->
+<h2>六、L3 升级条件（唯一用户介入点）</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TD
+    L3T{触发条件判定} --> L3A[策略方向变更]
+    L3T --> L3B[新因子上线/退役]
+    L3T --> L3C[交易阈值调整]
+    L3T --> L3D[跨线争议无法一致]
+    L3T --> L3E[架构重大变更]
+    L3T --> L3F[数据源变更]
+    L3T --> L3G[max_attempts 超限]
+    L3T --> L3H[流程 > 30min 无进展]
+
+    L3A --> STOP[🛑 停止自动推进<br/>等待用户决策]
+    L3B --> STOP
+    L3C --> STOP
+    L3D --> STOP
+    L3E --> STOP
+    L3F --> STOP
+    L3G --> STOP
+    L3H --> STOP
+
+    style L3T fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style STOP fill:#1a1a2e,stroke:#e74c3c,color:#e74c3c
+</pre>
+</div>
+
+<!-- ====== FIGURE 6: Role Collaboration ====== -->
+<div class="page-break"></div>
+<h2>七、角色协作全景</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TB
+    subgraph FIN[金融线]
+      direction LR
+      YZ[腰子 金融负责人<br/>全团强制咨询]
+      SM[山猫 宏观/政策]
+      YY[玉夜 数据质量]
+      LJ[流金 风险控制]
+      QS[青山 策略/因子]
+    end
+
+    subgraph ENG[工程线 — 工程项目标准交付流程]
+      direction LR
+      QM[情墨 架构设计]
+      XA[新安 质量验证]
+      JY[旧影 独立审计]
+      HJ[红结 编码实现]
+      HF[红枫 灰度部署]
+    end
+
+    subgraph COORD[调度层]
+      AH[阿黑 总调度<br/>驱管①→⑥全自动]
+    end
+
+    YZ -->|金融需求| AH
+    AH -->|分派工程线| QM
+    AH -->|协调金融确认| YZ
+
+    FIN -->|策略指导| ENG
+    ENG -->|实现反馈| FIN
+
+    style FIN fill:#16213e,stroke:#e2b04a,color:#e2b04a
+    style ENG fill:#16213e,stroke:#0ea5e9,color:#0ea5e9
+    style COORD fill:#16213e,stroke:#a855f7,color:#a855f7
+    style AH fill:#a855f7,stroke:#a855f7,color:#fff
+</pre>
+</div>
+
+<!-- ====== FIGURE 7: next_action State Machine ====== -->
+<h2>八、引擎指令枚举（next_action）</h2>
+
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart LR
+    subgraph CMDS[next_action 六种指令]
+      direction TB
+      C1[invoke_role<br/>调用角色执行]
+      C2[validate_gate<br/>校验闸门条件]
+      C3[advance<br/>推进到下一阶段]
+      C4[retry<br/>打回重做]
+      C5[stop_l3<br/>L3升级暂停]
+      C6[done<br/>流程完成]
+    end
+
+    C1 -->|角色产出完成| C2
+    C2 -->|闸门 PASS| C3
+    C2 -->|闸门 FAIL| C4
+    C4 -->|重新执行| C1
+    C4 -->|超最大重试| C5
+    C3 -->|还有下一阶段| C1
+    C3 -->|第6阶段完成| C6
+
+    style C1 fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    style C2 fill:#e2b04a,stroke:#e2b04a,color:#1a1a2e
+    style C3 fill:#27ae60,stroke:#27ae60,color:#fff
+    style C4 fill:#a855f7,stroke:#a855f7,color:#fff
+    style C5 fill:#e74c3c,stroke:#e74c3c,color:#fff
+    style C6 fill:#64748b,stroke:#64748b,color:#fff
+</pre>
+</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#0ea5e9',
+    primaryTextColor: '#e0e0e0',
+    primaryBorderColor: '#0ea5e9',
+    lineColor: '#64748b',
+    secondaryColor: '#16213e',
+    tertiaryColor: '#1a1a2e',
+    background: '#16213e',
+    mainBkg: '#16213e',
+    nodeBorder: '#334155',
+    clusterBkg: '#16213e',
+    clusterBorder: '#334155',
+    titleColor: '#e2b04a',
+    edgeLabelBackground: '#16213e',
+    fontSize: '14px'
+  },
+  flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+});
+</script>
+
+</body>
+</html>

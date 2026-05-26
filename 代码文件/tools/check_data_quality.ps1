@@ -21,6 +21,7 @@ param(
     [string]$DataFile = "",
     [string]$RootDir = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 # Auto-detect project root if not provided
 if (-not $RootDir) {

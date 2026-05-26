@@ -20,6 +20,7 @@ param(
     [switch]$Quick,
     [switch]$CrossCheck
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 # ═════ 配置：白皮书清单 ═══════════════════════════════════════
 $WHITEPAPERS = @(

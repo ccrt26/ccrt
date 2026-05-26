@@ -206,9 +206,14 @@ try {
     $PyCorePaths = @()
     foreach ($pyFile in $StagedPy) {
         $absPy = Join-Path $ProjectRoot $pyFile
+        # Verify file exists before trying to resolve (encoding mismatch can cause Resolve-Path to return null)
+        if (-not (Test-Path -LiteralPath $absPy)) { continue }
         foreach ($dir in $CoreScriptDirs) {
-            $resolvedDir = (Resolve-Path $dir -ErrorAction SilentlyContinue).Path
-            if ($resolvedDir -and (Resolve-Path $absPy -ErrorAction SilentlyContinue).Path.StartsWith($resolvedDir, [StringComparison]::OrdinalIgnoreCase)) {
+            $resolvedDirInfo = Resolve-Path $dir -ErrorAction SilentlyContinue
+            if (-not $resolvedDirInfo) { continue }
+            $resolvedPyInfo = Resolve-Path $absPy -ErrorAction SilentlyContinue
+            if (-not $resolvedPyInfo) { continue }
+            if ($resolvedPyInfo.Path.StartsWith($resolvedDirInfo.Path, [StringComparison]::OrdinalIgnoreCase)) {
                 $PyCorePaths += $absPy; break
             }
         }

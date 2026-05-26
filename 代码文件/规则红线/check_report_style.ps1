@@ -14,6 +14,7 @@
     Exit: 0 = pass, 1 = fail
 #>
 param([switch]$Quick, [string]$ReportPath = "")
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $BASE        = "Split-Path -Parent (Split-Path -Parent $PSScriptRoot)"
 $RPT_DIR     = "$BASE\每日荐股\股票报告"

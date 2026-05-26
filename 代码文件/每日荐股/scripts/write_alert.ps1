@@ -1,4 +1,4 @@
-# P1-1: L3事件告警 — 严重数据质量事件写入issues.csv
+﻿# P1-1: L3事件告警 — 严重数据质量事件写入issues.csv
 function Write-DataAlert {
     param(
         [Parameter(Mandatory=$true)][string]$Date,
@@ -8,6 +8,7 @@ function Write-DataAlert {
         [string[]]$CachedFields = @(),
         [string]$Detail = ""
     )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
     $rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
     $issuesFile = Join-Path $rootDir "每日荐股\运营记录\issues.csv"
     $issuesDir = Split-Path -Parent $issuesFile

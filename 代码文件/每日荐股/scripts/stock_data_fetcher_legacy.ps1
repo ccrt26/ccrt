@@ -14,6 +14,7 @@ $script:LastApiCallTime = [datetime]::MinValue
 
 function Invoke-ThrottledApiCall {
     param([scriptblock]$ScriptBlock)
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
     $elapsed = ([datetime]::Now - $script:LastApiCallTime).TotalMilliseconds
     if ($elapsed -lt 300) { Start-Sleep -Milliseconds (300 - $elapsed) }
     $script:GlobalApiCallCount++

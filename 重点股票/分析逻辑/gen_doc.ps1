@@ -8,10 +8,10 @@
   白皮书版本号，默认 v2.0
 #>
 param([string]$Version = "v2.0")
-$buildScript = "C:\Users\34269\Documents\Claude\股票分析\代码文件\重点股票\分析逻辑\build_docx.ps1"
+$buildScript = Join-Path $PSScriptRoot "..\..\代码文件\重点股票\分析逻辑\build_docx.ps1"
 if (Test-Path $buildScript) {
     & $buildScript -Version $Version
 } else {
-    Write-Error "build_docx.ps1 不存在: $buildScript"
+    Write-Error "build_docx.ps1 not found: $buildScript"
     exit 1
 }

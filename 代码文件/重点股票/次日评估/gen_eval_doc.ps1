@@ -108,6 +108,7 @@ $sb = [System.Text.StringBuilder]::new()
 
 function Add-Para {
     param($sb, $text, [string]$style="a", [string]$bold=$null, [string]$color=$null, [string]$sz=$null, [string]$justification=$null)
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
     [void]$sb.Append('<w:p><w:pPr>')
     if ($style -ne "a") { [void]$sb.Append("<w:pStyle w:val=`"$style`"/>") }
     if ($justification) { [void]$sb.Append("<w:jc w:val=`"$justification`"/>") }

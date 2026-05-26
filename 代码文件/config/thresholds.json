@@ -1,0 +1,47 @@
+{
+    "_comment": "铁律量化 — 阈值配置 v1.0",
+    "scoring": {
+        "total_max": 100,
+        "base_weight": 10,
+        "fundamental_weight": 15,
+        "technical_weight": 20,
+        "money_weight": 20,
+        "news_weight": 15,
+        "risk_weight": 5,
+        "sector_trend_weight": 20,
+        "phase_discounts": {
+            "潜伏期": 1.0,
+            "主升调整": 0.75,
+            "高潮期": 0.55
+        }
+    },
+    "veto": {
+        "pe_min": 0,
+        "pe_max": 500,
+        "turnover_min": 0.5,
+        "turnover_max": 30,
+        "amplitude_max": 15,
+        "change_max": 9.9,
+        "c8_block_threshold": 7.0,
+        "market_cap_min_billion": 10
+    },
+    "sector_phase": {
+        "潜伏期": {"avg_turn_max": 4, "avg_chg_min": -1.5},
+        "主升调整": {"avg_turn_min": 2, "avg_chg_range": [-3, 3]},
+        "高潮期": {"avg_turn_min": 3, "avg_chg_min": 2},
+        "衰退期": {"avg_turn_min": 3, "avg_chg_max": -3}
+    },
+    "trading": {
+        "max_single_position_pct": 30,
+        "max_total_positions": 10,
+        "cooldown_days": 2,
+        "stop_loss_pct": -8,
+        "take_profit_pct": 20,
+        "trailing_stop_pct": 5
+    },
+    "trend": {
+        "main_line_min_score": 6,
+        "tier_a_min_score": 4,
+        "kline_min_days": 20
+    }
+}

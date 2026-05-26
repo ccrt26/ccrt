@@ -259,4 +259,18 @@ def check_conditional_vetoes(s, scores, sector_phases=None, sector_trends=None, 
             else:
                 return ("vetoed_cond_6", f"PE估值泡沫(板块衰退): PE={pe:.0f} > {pe_abs_threshold}({industry}) 且板块处于衰退期")
 
+    # C8: 突破性质分类降权/加分 (2026-05-26 P0b) [L2实验性参数]
+    # 纯动量突破-10/资金驱动-3/质量共振+3，不直接否决
+    # 变更须经 流金 复核；参数灰度期后固化为正式阈值
+    breakthrough_type = s.get("_BreakthroughType")
+    if breakthrough_type == "pure_momentum":
+        scores["TotalScore"] = max(0, scores["TotalScore"] - 10)
+        scores["_C8_Penalty"] = -10
+    elif breakthrough_type == "fund_driven":
+        scores["TotalScore"] = max(0, scores["TotalScore"] - 3)
+        scores["_C8_Penalty"] = -3
+    elif breakthrough_type == "quality_momentum":
+        scores["TotalScore"] = min(100, scores["TotalScore"] + 3)
+        scores["_C8_Bonus"] = 3
+
     return None

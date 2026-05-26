@@ -1,5 +1,6 @@
-# 次日后评估白皮书 MD→DOCX 转换
+﻿# 次日后评估白皮书 MD→DOCX 转换
 param([string]$Version = "v1.5")
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 $root = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 $md = "$root\每日荐股\事后评估\次日后评估白皮书_$Version.md"
 $docx = "$root\每日荐股\事后评估\次日后评估白皮书_$Version.docx"

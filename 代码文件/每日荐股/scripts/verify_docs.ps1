@@ -13,6 +13,7 @@ param(
     [Parameter(Mandatory = $true)][string]$ExpectedVersion,
     [string]$BaseDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\每日荐股\事后评估"
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 $errors = @(); $warnings = @()
 Write-Output "============================================"
 Write-Output ("  Verify: " + $DocName + " " + $ExpectedVersion)

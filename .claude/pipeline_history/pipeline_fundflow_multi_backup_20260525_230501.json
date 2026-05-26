@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.1",
+  "active": true,
+  "task": "fundflow_multi_backup_v1.0",
+  "executor": "红枫",
+  "stage": 6,
+  "stage_name": "红枫灰度部署",
+  "next_action": "await_user_keys",
+  "gate_1a": "PASS",
+  "gate_1b": "PASS",
+  "gate_2": "PASS",
+  "gate_3": "PENDING",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "files_scope": [
+    "代码文件/每日荐股/scripts/modules/core.ps1",
+    "代码文件/每日荐股/scripts/modules/fundflow.ps1",
+    "代码文件/每日荐股/scripts/stock_data_fetcher_diya.py",
+    "代码文件/每日荐股/scripts/stock_data_fetcher_mairei.py",
+    "代码文件/每日荐股/scripts/stock_data_fetcher_zhitu.py",
+    "代码文件/每日荐股/scripts/stock_data_fetcher_stocktv.py"
+  ],
+  "stage_history": [
+    {
+      "stage": 1,
+      "executor": "情墨",
+      "action": "架构设计开始",
+      "time": "2026-05-25T21:00:00"
+    },
+    {
+      "stage": 1,
+      "executor": "情墨",
+      "action": "设计完成: design_fundflow_multi_backup_v1.0.md",
+      "time": "2026-05-25T21:10:00"
+    },
+    {
+      "stage": 2,
+      "executor": "腰子",
+      "action": "闸门1a PASS: 全团咨询通过(山猫/玉夜/流金/青山一致同意)",
+      "time": "2026-05-25T21:15:00"
+    },
+    {
+      "stage": 3,
+      "executor": "新安+旧影",
+      "action": "闸门1b PASS: 设计完整性+红线合规通过",
+      "time": "2026-05-25T21:20:00"
+    },
+    {
+      "stage": 4,
+      "executor": "红结",
+      "action": "编码完成: 4桥接脚本+fundflow.ps1+core.ps1",
+      "time": "2026-05-25T21:35:00"
+    },
+    {
+      "stage": 5,
+      "executor": "新安",
+      "action": "四层验证PASS: 语法/接口/降级链/下游兼容",
+      "time": "2026-05-25T21:40:00"
+    }
+  ],
+  "started": "2026-05-25T21:00:00",
+  "updated": "2026-05-25T21:40:00"
+}

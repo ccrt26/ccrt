@@ -1,8 +1,9 @@
-# P3-3: 数据质量回归测试集
+﻿# P3-3: 数据质量回归测试集
 # 构造已知损坏数据 → 验证 check_data_quality.ps1 能正确检出
 param(
     [string]$RootDir = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 if (-not $RootDir) { $RootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot) }
 
 $qcScript = Join-Path $RootDir "代码文件\tools\check_data_quality.ps1"

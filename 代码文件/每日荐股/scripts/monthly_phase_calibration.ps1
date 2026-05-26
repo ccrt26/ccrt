@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     相位折扣系数月度校准脚本 (青山 v2026-05-24)
 .DESCRIPTION
@@ -13,6 +13,7 @@ param(
     [string]$Month = (Get-Date -Format "yyyy-MM"),
     [switch]$DryRun
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $simTrackDir = Join-Path $RootDir "模拟交易\每日荐股赛道"
 $txnFile = Join-Path $simTrackDir "持仓记录\transactions_daily.csv"

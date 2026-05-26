@@ -1,4 +1,5 @@
-﻿# ⚠️ 注意：此脚本通过硬编码 OOXML 生成 DOCX，仅用于遗留兼容
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
+# ⚠️ 注意：此脚本通过硬编码 OOXML 生成 DOCX，仅用于遗留兼容
 # 新开发请使用 ..\tools\md_to_docx.py 从 .md 自动转换
 # 真正的红线检查请使用 check_redlines.ps1
 

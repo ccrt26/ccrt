@@ -1,5 +1,4 @@
-﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
-# 铁律量化 - 股票数据获取模块
+﻿# 铁律量化 - 股票数据获取模块
 # 数据源：腾讯行情[1], 新浪K线[2], 东方财富财务[3][6][7][9][10]
 # 最后更新：2026-05-25
 # 合规状态：详见 §1.5 数据源实测状态
@@ -15,6 +14,7 @@ $script:LastApiCallTime = [datetime]::MinValue
 
 function Invoke-ThrottledApiCall {
     param([scriptblock]$ScriptBlock)
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
     $elapsed = ([datetime]::Now - $script:LastApiCallTime).TotalMilliseconds
     if ($elapsed -lt 300) { Start-Sleep -Milliseconds (300 - $elapsed) }
     $script:GlobalApiCallCount++
@@ -25,8 +25,8 @@ function Invoke-ThrottledApiCall {
 
 $script:SourcePriority = @{
     Quote      = @("腾讯", "新浪", "必盈")             # 实时行情（必盈[13]JSON格式更稳定）
-    KLine      = @("新浪", "腾讯", "必盈")             # K线数据（必盈[13]5种除权+等比复权）
-    Financial  = @("东方财富", "同花顺", "必盈")        # 财务数据（THS备源+必盈[13]三大报表）
+    KLine      = @("新浪", "腾讯", "必盈", "baostock") # K线（必盈[13]5种除权+baostock[14]第三备源）
+    Financial  = @("东方财富", "同花顺", "必盈", "baostock") # 财务（baostock[14]第四备源：杜邦/现金流/成长）
     Sector     = @("东方财富", "同花顺")                # 板块行情（THS备份）
     FundFlow   = @("东方财富", "同花顺")                # 资金流向（THS备份；必盈免费版不含此接口）
     Northbound = @("东方财富")                         # 北向资金（独有；2024/08政策变更后个股数据不可得）
@@ -34,6 +34,11 @@ $script:SourcePriority = @{
     Margin     = @("东方财富", "同花顺")                # 融资融券（THS官方交易所数据备源）
     Billboard  = @("东方财富")                         # 龙虎榜（独有，仅供参考）
     InstitutionVisit = @("东方财富")                   # 机构调研（独有，仅供参考）
+    Dividend   = @("baostock")                        # 分红除权（[14]独有源，标注"仅供参考"）
+    AdjustFactor = @("baostock")                      # 复权因子（[14]独有源）
+    Macro      = @("baostock")                        # 宏观经济（[14]独有源：利率/准备金/货币供应/SHIBOR）
+    Forecast   = @("baostock")                        # 业绩预告（[14]独有源，标注"仅供参考"）
+    Express    = @("baostock")                        # 业绩快报（[14]独有源，标注"仅供参考"）
 }
 $script:SourceUsed = @{}    # 记录每次调用实际使用的源
 
@@ -55,7 +60,14 @@ $script:CacheTTL = @{
     Margin     = 24   # 融资融券每日更新
     Billboard  = 24   # 龙虎榜日频
     InstitutionVisit = 24   # 机构调研日频
-    PEPercentile = 168 # PE百分位变化慢，7天
+    PEPercentile = 168      # PE百分位变化慢，7天
+    Dividend    = 168       # 分红除权历史数据，7天
+    AdjustFactor = 168      # 复权因子历史数据，7天
+    Macro       = 168       # 宏观经济数据（利率类低频）
+    MacroMoneySupply = 720  # 货币供应量（月度发布），30天
+    MacroRRR    = 720       # 准备金率（极少调整），30天
+    Forecast    = 24        # 业绩预告（财报季高频），日频
+    Express     = 72        # 业绩快报（公布后不变），3天
 }
 
 function Save-DataCache {
@@ -374,6 +386,53 @@ function Invoke-ThsFallback {
         }
     } catch {
         Write-Warning "THS fallback failed for $Action : $_"
+    }
+    return $null
+}
+
+function Invoke-BaostockFallback {
+    <#
+    .SYNOPSIS
+      调用 Python 桥接脚本获取 baostock[14] 数据（备源/独有源）
+    .DESCRIPTION
+      数据源[14] baostock — 免费A股历史数据库。覆盖分红除权、宏观经济、
+      业绩预告快报、K线/财务备源增强。无实时数据，仅盘后/按需调用。
+      独有数据（无备源）标注"仅供参考"。
+    #>
+    param(
+        [Parameter(Mandatory=$true)][string]$Action,
+        [string]$Params = ""
+    )
+    $bsScript = Join-Path (Split-Path $PSScriptRoot -Parent) "stock_data_fetcher_baostock.py"
+    if (-not (Test-Path $bsScript)) {
+        Write-Warning "baostock桥接脚本不存在: $bsScript"
+        return $null
+    }
+    try {
+        $oldEncoding = $env:PYTHONIOENCODING
+        $env:PYTHONIOENCODING = "utf-8"
+
+        $tmpFile = [System.IO.Path]::GetTempFileName()
+        cmd /c "python `"$bsScript`" $Action $Params > `"$tmpFile`"" 2>$null
+
+        $env:PYTHONIOENCODING = $oldEncoding
+
+        if ((Test-Path $tmpFile) -and ((Get-Item $tmpFile).Length -gt 0)) {
+            $raw = [System.IO.File]::ReadAllText($tmpFile, [System.Text.Encoding]::UTF8)
+            Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
+            if ($raw.Trim().Length -gt 0) {
+                $parsed = $raw | ConvertFrom-Json
+                if ($parsed -is [array] -and $parsed.Count -gt 0 -and $parsed[0].error) {
+                    Write-Warning "baostock bridge returned error: $($parsed[0].error)"
+                    return $null
+                }
+                return $parsed
+            }
+        } else {
+            Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
+        }
+    } catch {
+        Write-Warning "baostock bridge failed for $Action : $_"
     }
     return $null
 }

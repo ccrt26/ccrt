@@ -1,0 +1,19 @@
+{
+  "schema_name": "baostock_macro",
+  "version": "1.0",
+  "source": "[14] baostock 宏观经济5接口",
+  "description": "中国宏观金融指标 — 利率/准备金率/货币供应量/SHIBOR",
+  "interfaces": {
+    "deposit_rate": {"function": "query_deposit_rate_data()", "period": "1990-至今", "fields": ["date","beforeRate","afterRate","changedate"]},
+    "loan_rate": {"function": "query_loan_rate_data()", "period": "1990-至今", "fields": ["date","beforeRate","afterRate","changedate"]},
+    "rrr": {"function": "query_required_reserve_ratio_data()", "period": "1999-至今", "fields": ["date","beforeRatio","afterRatio","changedate"]},
+    "money_supply_month": {"function": "query_money_supply_data_month()", "period": "1978-至今", "fields": ["date","m0","m1","m2","m0_yoy","m1_yoy","m2_yoy"]},
+    "money_supply_year": {"function": "query_money_supply_data_year()", "period": "1952-至今", "fields": ["date","m0","m1","m2","m0_growth","m1_growth","m2_growth"]},
+    "shibor": {"function": "query_shibor_data()", "period": "—", "status": "baostock v0.9.1未收录，待后续版本"}
+  },
+  "validation": {
+    "m2_gt_m1_gt_m0": true,
+    "rate_range_0_20_pct": true,
+    "shibor_year_valid": true
+  }
+}

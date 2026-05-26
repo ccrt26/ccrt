@@ -1,5 +1,4 @@
-﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
-# 依赖: dot-source "$PSScriptRoot/core.ps1"
+﻿# 依赖: dot-source "$PSScriptRoot/core.ps1"
 # 最后更新: 2026-05-25 — 接入Invoke-DataSource统一降级引擎
 
 function Get-StockFinancial {
@@ -7,6 +6,7 @@ function Get-StockFinancial {
         [Parameter(Mandatory=$true)][string]$Code,
         [int]$Quarters = 4  # 返回最近N个季度
     )
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
 
     return Invoke-DataSource -Category "Financial" `
         -CacheKey "Financial_$Code" `

@@ -1,0 +1,29 @@
+{
+  "schema_name": "baostock_forecast_express",
+  "version": "1.0",
+  "source": "[14] baostock query_forcast_report() + query_performance_express_report()",
+  "description": "业绩预告(2003年起)与业绩快报(2006年起) — 财报正式公布前的先行指标",
+  "forecast_fields": {
+    "code": {"type": "string", "description": "证券代码"},
+    "forecastType": {"type": "string", "enum": ["预增","预减","续盈","续亏","首亏","扭亏","略增","略减","不确定"], "description": "预告类型"},
+    "profitRangeUp": {"type": "float", "description": "预计净利润上限(元)"},
+    "profitRangeDown": {"type": "float", "description": "预计净利润下限(元)"},
+    "profitYoyRangeUp": {"type": "float", "description": "预计同比增幅上限(%)"},
+    "profitYoyRangeDown": {"type": "float", "description": "预计同比增幅下限(%)"},
+    "summary": {"type": "string", "description": "变动原因说明"},
+    "noticeDate": {"type": "string", "description": "公告日期"}
+  },
+  "express_fields": {
+    "code": {"type": "string", "description": "证券代码"},
+    "basicEps": {"type": "float", "description": "每股收益"},
+    "weightAvgRoe": {"type": "float", "description": "加权ROE"},
+    "totalOperateIncome": {"type": "float", "description": "营业总收入"},
+    "parentNetProfit": {"type": "float", "description": "归属母公司净利润"},
+    "bps": {"type": "float", "description": "每股净资产"},
+    "noticeDate": {"type": "string", "description": "公告日期"}
+  },
+  "validation": {
+    "profit_growth_range_500pct": true,
+    "report_date_not_future": true
+  }
+}

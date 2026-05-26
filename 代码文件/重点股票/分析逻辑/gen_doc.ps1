@@ -1,4 +1,5 @@
-﻿# Generate 重点股票跟踪分析逻辑白皮书 v1.0.docx
+﻿. "$PSScriptRoot/../../lib/init_encoding.ps1"
+# Generate 重点股票跟踪分析逻辑白皮书 v1.0.docx
 # 遵循白皮书：重点股票跟踪分析逻辑白皮书 v2.0（§多周期预判、§证据加权、§操作建议体系）
 # 注意：此脚本为遗留硬编码版本，后续修改请使用 build_docx.ps1 从 .md 生成
 function New-KeystockDocBody {

@@ -1,0 +1,25 @@
+{
+  "schema_name": "baostock_dividend",
+  "version": "1.0",
+  "source": "[14] baostock query_dividend_data()",
+  "description": "A股分红除权数据 — 除权除息日、分红方案、送转股比例",
+  "fields": {
+    "date": {"type": "string", "format": "YYYY-MM-DD", "description": "除权除息日"},
+    "code": {"type": "string", "pattern": "^(sh|sz|bj)\\.\\d{6}$", "description": "证券代码"},
+    "dividPreNoticeDate": {"type": "string", "nullable": true, "description": "预案公告日"},
+    "dividAgmPumDate": {"type": "string", "nullable": true, "description": "股东大会决议公告日"},
+    "dividPlanAnnounceDate": {"type": "string", "nullable": true, "description": "实施公告日"},
+    "dividRegistDate": {"type": "string", "nullable": true, "description": "股权登记日"},
+    "dividOperateDate": {"type": "string", "nullable": true, "description": "除权除息日"},
+    "dividCashPsBeforeTax": {"type": "float", "description": "每股税前现金红利"},
+    "dividCashPsAfterTax": {"type": "float", "description": "每股税后现金红利"},
+    "dividStocksPs": {"type": "float", "description": "每股送转股数"},
+    "dividCashStock": {"type": "string", "description": "分红方案文本"},
+    "dividExStatus": {"type": "string", "enum": ["未实施","实施中","已完成"], "description": "实施状态"}
+  },
+  "validation": {
+    "cash_div_non_negative": true,
+    "date_not_future": true,
+    "min_records": 1
+  }
+}

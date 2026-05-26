@@ -278,3 +278,119 @@ def get_monthly_kline_cache(code, dates, opens, highs, lows, closes, volumes):
             pass
 
     return result
+
+def calc_volume_profile(highs, lows, closes, volumes, num_bins=50, lookback=None):
+    """成交量分布图 (Volume Profile) — 基于OHLCV数据计算价格区间成交量分布
+
+    Args:
+        highs, lows, closes, volumes: 并行OHLCV数组 (同索引)
+        num_bins: 价格区间分档数 (默认50)
+        lookback: 回看K线数 (None=全部, 建议60-120)
+
+    Returns:
+        { POC, VAH, VAL, HVN_Above, HVN_Below, LVN_Zones,
+          bin_centers, bin_volumes, price, price_range, total_volume }
+        数据不足时返回空dict
+    """
+    n = min(len(highs), len(lows), len(closes), len(volumes))
+    if lookback is not None:
+        n = min(n, lookback)
+    if n < 10:
+        return {}
+
+    h = highs[-n:]
+    l = lows[-n:]
+    c = closes[-n:]
+    v = volumes[-n:]
+
+    price = c[-1] if c else 0
+    price_min = min(l)
+    price_max = max(h)
+    if price_max <= price_min:
+        price_max = price_min + 0.01
+
+    bin_width = (price_max - price_min) / num_bins
+    bin_volumes = [0.0] * num_bins
+    bin_centers = [round(price_min + bin_width * (i + 0.5), 2) for i in range(num_bins)]
+
+    total_volume = 0.0
+    for i in range(n):
+        bar_high = h[i]
+        bar_low = l[i]
+        bar_vol = float(v[i]) if v[i] else 0.0
+        if bar_vol <= 0 or bar_high <= bar_low:
+            continue
+        total_volume += bar_vol
+        span = bar_high - bar_low
+        for j in range(num_bins):
+            bin_low = price_min + bin_width * j
+            bin_high = bin_low + bin_width
+            overlap_low = max(bar_low, bin_low)
+            overlap_high = min(bar_high, bin_high)
+            if overlap_high > overlap_low:
+                fraction = (overlap_high - overlap_low) / span
+                bin_volumes[j] += bar_vol * fraction
+
+    if total_volume <= 0:
+        return {}
+
+    max_vol = max(bin_volumes)
+    poc_idx = bin_volumes.index(max_vol)
+    poc = bin_centers[poc_idx]
+
+    sorted_by_vol = sorted(enumerate(bin_volumes), key=lambda x: x[1], reverse=True)
+    va_cum = 0.0
+    va_indices = set()
+    for idx, bv in sorted_by_vol:
+        va_cum += bv
+        va_indices.add(idx)
+        if va_cum >= total_volume * 0.70:
+            break
+    va_list = sorted(va_indices)
+    val = bin_centers[va_list[0]] if va_list else poc
+    vah = bin_centers[va_list[-1]] if va_list else poc
+
+    avg_vol = total_volume / num_bins
+    hvn_above = []
+    hvn_below = []
+    lvn_zones = []
+    lvn_start = None
+
+    for i, bv in enumerate(bin_volumes):
+        center = bin_centers[i]
+        if bv > avg_vol * 1.5:
+            if center > price:
+                hvn_above.append((center, round(bv, 0)))
+            else:
+                hvn_below.append((center, round(bv, 0)))
+        if bv < avg_vol * 0.5:
+            if lvn_start is None:
+                lvn_start = price_min + bin_width * i
+        else:
+            if lvn_start is not None:
+                lvn_end = price_min + bin_width * i
+                if lvn_end - lvn_start >= bin_width * 1.5:
+                    lvn_zones.append((round(lvn_start, 2), round(lvn_end, 2)))
+                lvn_start = None
+
+    if lvn_start is not None:
+        lvn_end = price_max
+        if lvn_end - lvn_start >= bin_width * 1.5:
+            lvn_zones.append((round(lvn_start, 2), round(lvn_end, 2)))
+
+    hvn_above.sort(key=lambda x: x[0])
+    hvn_below.sort(key=lambda x: x[0], reverse=True)
+
+    return {
+        "POC": round(poc, 2),
+        "VAH": round(vah, 2),
+        "VAL": round(val, 2),
+        "HVN_Above": hvn_above[:3],
+        "HVN_Below": hvn_below[:3],
+        "LVN_Zones": lvn_zones[:3],
+        "bin_centers": bin_centers,
+        "bin_volumes": [round(bv, 0) for bv in bin_volumes],
+        "price": round(price, 2),
+        "price_range": [round(price_min, 2), round(price_max, 2)],
+        "total_volume": round(total_volume, 0),
+    }

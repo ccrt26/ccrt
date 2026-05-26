@@ -18,6 +18,7 @@
 #>
 
 param([switch]$Unregister)
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $taskName = "铁律量化-开机追赶"
 $catchupScript = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))\代码文件\每日荐股\scripts\catchup_launcher.ps1"

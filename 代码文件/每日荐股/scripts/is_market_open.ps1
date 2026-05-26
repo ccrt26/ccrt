@@ -20,6 +20,7 @@ param(
     [string]$Date = (Get-Date -Format "yyyy-MM-dd"),
     [string]$HolidayFile = ""
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $targetDate = Get-Date $Date -ErrorAction Stop
 $dateStr = $targetDate.ToString("yyyy-MM-dd")

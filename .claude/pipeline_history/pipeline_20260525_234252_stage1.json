@@ -1,0 +1,31 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  1,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-25T15:42:52",
+    "started":  "2026-05-25T15:40:44",
+    "gate_2":  "PENDING",
+    "task":  "MDtoPDF toolchain: batch convert keystock MD reports to PDF with v3.3 features and date consistency preflight",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_md_to_pdf_toolchain.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T15:42:52",
+                              "stage":  1
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
+}

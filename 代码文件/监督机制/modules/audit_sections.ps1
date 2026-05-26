@@ -1,4 +1,5 @@
-﻿# 依赖: dot-source "$PSScriptRoot/audit_core.ps1"
+﻿. "$PSScriptRoot/../../lib/init_encoding.ps1"
+# 依赖: dot-source "$PSScriptRoot/audit_core.ps1"
 # $rootDir, helper functions, and script: variables are inherited from audit_core.ps1
 
 # ============================================================

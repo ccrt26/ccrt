@@ -1,0 +1,66 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 6/6: 后评估 | Executor: PostEval",
+    "updated":  "2026-05-25T15:51:40",
+    "started":  "2026-05-25T15:40:44",
+    "gate_2":  "PASS",
+    "task":  "MDtoPDF toolchain: batch convert keystock MD reports to PDF with v3.3 features and date consistency preflight",
+    "stage":  6,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_md_to_pdf_toolchain.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T15:42:52",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-25T15:42:55"
+                          },
+                          {
+                              "output":  "代码文件/tools/convert_md_to_pdf.py",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-25T15:48:51",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "审计报告/新安_测试报告_md_to_pdf_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "新安",
+                              "validated":  "2026-05-25T15:50:49",
+                              "stage":  4
+                          },
+                          {
+                              "output":  "审计报告/红枫_部署记录_md_to_pdf_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "红枫",
+                              "validated":  "2026-05-25T15:51:18",
+                              "stage":  5
+                          },
+                          {
+                              "output":  "审计报告/后评估_md_to_pdf_20260525.md",
+                              "gate":  "PASS",
+                              "executor":  "PostEval",
+                              "validated":  "2026-05-25T15:51:40",
+                              "stage":  6
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "后评估",
+    "gate_3":  "PASS",
+    "executor":  "PostEval"
+}

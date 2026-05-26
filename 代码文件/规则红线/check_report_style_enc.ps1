@@ -15,6 +15,7 @@ param(
     [switch]$Quick,
     [string]$ReportPath = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $BASE = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $REPORT_DIR = "$BASE\姣忔棩鑽愯偂\鑲＄エ鎶ュ憡"

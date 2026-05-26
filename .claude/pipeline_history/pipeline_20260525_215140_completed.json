@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.1",
+  "active": false,
+  "task": "统一数据获取框架 — Invoke-DataSource引擎+4模块重构",
+  "stage": 7,
+  "executor": "PostEval",
+  "stage_name": "后评估",
+  "next_action": "done",
+  "gate_1a": "PASS",
+  "gate_1b": "PASS",
+  "gate_2": "PASS",
+  "gate_3": "PASS",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "files_scope": [
+    "代码文件/每日荐股/scripts/modules/core.ps1",
+    "代码文件/每日荐股/scripts/modules/financial.ps1",
+    "代码文件/每日荐股/scripts/modules/external.ps1",
+    "代码文件/每日荐股/scripts/modules/fundflow.ps1"
+  ],
+  "loop_context": "Stage 7/7: 后评估 | Executor: PostEval",
+  "stage_history": [
+    {
+      "stage": 1,
+      "executor": "情墨",
+      "entered": "2026-05-25T13:43:05",
+      "gate": "PASS",
+      "output": "审计报告/架构设计/design_data_acquisition_framework_v1.0.md",
+      "validated": "2026-05-25T13:43:18"
+    },
+    {
+      "stage": 2,
+      "executor": "腰子",
+      "entered": "2026-05-25T13:43:18",
+      "gate": "PASS",
+      "output": "审计报告/架构设计/design_data_acquisition_framework_v1.0.md",
+      "validated": "2026-05-25T13:44:33"
+    },
+    {
+      "stage": 3,
+      "executor": "新安+旧影",
+      "entered": "2026-05-25T13:44:33",
+      "gate": "PASS",
+      "output": "审计报告/架构设计/gate_1b_review_data_framework_20260525.md",
+      "validated": "2026-05-25T13:45:24"
+    },
+    {
+      "stage": 4,
+      "executor": "红结",
+      "entered": "2026-05-25T13:45:24",
+      "gate": "PASS",
+      "output": "代码文件/每日荐股/scripts/modules/{core,financial,external,fundflow}.ps1",
+      "validated": "2026-05-25T13:51:32"
+    },
+    {
+      "stage": 5,
+      "executor": "新安",
+      "entered": "2026-05-25T13:51:32",
+      "gate": "PASS",
+      "output": "重构验证: 函数签名不变/文件行数合规/pre-commit通过",
+      "validated": "2026-05-25T13:51:32"
+    },
+    {
+      "stage": 6,
+      "executor": "红枫",
+      "entered": "2026-05-25T13:51:32",
+      "gate": "PASS",
+      "output": "Git提交a50ab2a即部署, 回退方案: git revert"
+    },
+    {
+      "stage": 7,
+      "executor": "PostEval",
+      "entered": "2026-05-25T13:51:32",
+      "gate": "PASS",
+      "output": "框架落地完成: 4模块统一降级链, 3反模式修复, 源码行数减少62行"
+    }
+  ],
+  "started": "2026-05-25T13:43:05",
+  "updated": "2026-05-25T13:51:32",
+  "next_stage_6": true,
+  "completed": "2026-05-25T13:51:40"
+}

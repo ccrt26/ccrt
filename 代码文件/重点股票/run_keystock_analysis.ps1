@@ -11,6 +11,7 @@ param(
     [switch]$KeepHtml = $false,    # 保留中间HTML文件
     [string[]]$TargetStocks = @()  # 指定股票代码，默认全部6只
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 # ============================================================
 # 配置
@@ -699,8 +700,35 @@ function Get-ThreePeriodPrediction {
 # Phase 3.5: 操作建议与交易计划计算（v2.0）
 # ============================================================
 
+function Get-VolumeProfile {
+    param($KLines, [int]$NumBins = 50)
+    $vp = $null
+    if (-not $KLines -or $KLines.Count -lt 10) { return $vp }
+    try {
+        $vpInput = @{
+            highs    = @($KLines | ForEach-Object { [double]$_.High })
+            lows     = @($KLines | ForEach-Object { [double]$_.Low })
+            closes   = @($KLines | ForEach-Object { [double]$_.Close })
+            volumes  = @($KLines | ForEach-Object { [long]$_.Volume })
+            num_bins = $NumBins
+        } | ConvertTo-Json -Compress
+
+        $vpCliPath = Join-Path $PSScriptRoot "..\每日荐股\分析逻辑\engine\vp_cli.py"
+        $vpCliPath = [System.IO.Path]::GetFullPath($vpCliPath)
+        if (-not (Test-Path $vpCliPath)) {
+            Write-Host "  [VP] vp_cli.py not found: $vpCliPath" -ForegroundColor DarkGray
+            return $vp
+        }
+        $vpJson = $vpInput | python $vpCliPath 2>&1
+        $vp = $vpJson | ConvertFrom-Json
+    } catch {
+        Write-Host "  [VP] compute failed: $_" -ForegroundColor DarkGray
+    }
+    return $vp
+}
+
 function Get-OperationPlan {
-    param($D, $Pred, $TechS, $FundS, $CompScore)
+    param($D, $Pred, $TechS, $FundS, $CompScore, $VP)
 
     $P = $D.Price
     $ATR = $null
@@ -774,6 +802,32 @@ function Get-OperationPlan {
     if ($atrPct -gt 5) { $s3 = [Math]::Round($P - $ATR * 4, 2) }
     elseif ($atrPct -lt 2) { $s3 = [Math]::Round($P - $ATR * 2, 2) }
 
+    # Volume Profile 成交密集区增强 (2026-05-26 P2)
+    # VP不替代MA，而是交叉验证：HVN节点可提升MA-based支撑/压力的可靠性
+    $vpUsed = $false
+    if ($VP -and $VP.POC) {
+        $vpUsed = $true
+        # HVN支撑增强: 最近下方HVN如果在MA-based S1上方且距离<10% → 提升S1
+        if ($VP.HVN_Below -and $VP.HVN_Below.Count -gt 0) {
+            $nearestHVNLow = [double]$VP.HVN_Below[0].center
+            if ($nearestHVNLow -gt $s1 -and $nearestHVNLow -lt $P -and ($P - $nearestHVNLow) / $P -lt 0.10) {
+                $s1 = [Math]::Round($nearestHVNLow, 2)
+            }
+        }
+        # HVN压力增强: 最近上方HVN如果在MA-based R1下方且距离<10% → 调整R1
+        if ($VP.HVN_Above -and $VP.HVN_Above.Count -gt 0) {
+            $nearestHVNHigh = [double]$VP.HVN_Above[0].center
+            if ($nearestHVNHigh -lt $r1 -and $nearestHVNHigh -gt $P -and ($nearestHVNHigh - $P) / $P -lt 0.10) {
+                $r1 = [Math]::Round($nearestHVNHigh, 2)
+            }
+        }
+        # POC支撑: POC在价下方且在S2上方 → 作为S2备选
+        $vpPOC = [double]$VP.POC
+        if ($vpPOC -lt $P -and $vpPOC -gt $s2 -and ($P - $vpPOC) / $P -lt 0.20) {
+            $s2 = [Math]::Round($vpPOC, 2)
+        }
+    }
+
     # 合理性修正
     if ($r1 -le $P) { $r1 = [Math]::Round($P * 1.025, 2) }
     if ($r2 -le $r1) { $r2 = [Math]::Round($r1 * 1.03, 2) }
@@ -827,6 +881,7 @@ function Get-OperationPlan {
         Target1=$target1; Target2=$target2; StopLoss=$stopLoss
         Scenarios=$scenarios; Bullish=$isBullish; Neutral=$isNeutral; Bearish=$isBearish
         DistToR1=$distToR1; DistToS1=$distToS1
+        VP=$VP; VPUsed=$vpUsed
     }
 }
 
@@ -1076,6 +1131,7 @@ tr:nth-child(even){background:#f8f9fa}
 .research-item{padding:6px 0;border-bottom:1px dashed #e0e0e0;font-size:13px}
 .research-item .org{color:#2980b9;font-weight:bold}
 .research-item .rating-buy{color:#e74c3c}.research-item .rating-hold{color:#e67e22}
+.vp-table{margin:6px 0} .vp-table th{background:#1a1a2e;color:#fff;padding:6px 10px;text-align:center;font-weight:normal;font-size:12px} .vp-table td{padding:5px 10px;border:1px solid #e0e0e0;text-align:center;font-size:12px}
 '@
 
 function New-ScoreColor {
@@ -1588,6 +1644,56 @@ function New-Disclaimer {
 # 操作建议 HTML 模板函数（v2.0 新增）
 # ============================================================
 
+function New-VolumeProfileSection {
+    param($Ops, $P)
+    if (-not $Ops.VP -or -not $Ops.VP.POC) { return "" }
+    $vp = $Ops.VP
+    $poc = [double]$vp.POC
+    $vah = [double]$vp.VAH
+    $val = [double]$vp.VAL
+    $delta = [Math]::Round(($P - $poc) / $poc * 100, 1)
+    $deltaSign = if ($delta -gt 0) { "+" } else { "" }
+    $deltaColor = if ($P -gt $poc) { "color:#e74c3c" } else { "color:#27ae60" }
+    $vpUsedNote = if ($Ops.VPUsed) { "(已用于价格梯队增强)" } else { "(仅展示参考)" }
+
+    $sb = [System.Text.StringBuilder]::new()
+    [void]$sb.Append("<div class='section'><h2>成交密集区 · Volume Profile <span style='font-size:11px;color:#888'>$vpUsedNote</span></h2>")
+    [void]$sb.Append("<p style='font-size:12px;color:#888;margin-bottom:8px;'>基于近60日OHLCV数据，50档价格区间成交量分布。HVN=高成交量节点(>1.5倍均值)，LVN=低成交量节点(<0.5倍均值)。</p>")
+    [void]$sb.Append("<table class='vp-table'><tr><th>POC 公允价</th><td style='$deltaColor'>¥$poc</td><td style='font-size:12px;color:#888'>当前价${deltaSign}${delta}%</td></tr>")
+    [void]$sb.Append("<tr><th>VAH 价值区上沿</th><td style='color:#e74c3c'>¥$vah</td><td></td></tr>")
+    [void]$sb.Append("<tr><th>VAL 价值区下沿</th><td style='color:#27ae60'>¥$val</td><td></td></tr></table>")
+
+    if ($vp.HVN_Above -and $vp.HVN_Above.Count -gt 0) {
+        [void]$sb.Append("<p style='margin:8px 0 4px;font-weight:bold;font-size:13px;'>上方HVN（阻力）</p><table class='vp-table'><tr><th>价格</th><th>成交量</th><th>类型</th></tr>")
+        foreach ($h in $vp.HVN_Above) {
+            $c = [double]$h.center; $v = [double]$h.volume
+            $vStr = if($v -gt 1e8){[Math]::Round($v/1e8,1).ToString()+'亿'}else{[Math]::Round($v/1e4,0).ToString()+'万'}
+            [void]$sb.Append("<tr><td style='color:#e74c3c'>¥$c</td><td>$vStr</td><td>阻力</td></tr>")
+        }
+        [void]$sb.Append("</table>")
+    }
+    if ($vp.HVN_Below -and $vp.HVN_Below.Count -gt 0) {
+        [void]$sb.Append("<p style='margin:8px 0 4px;font-weight:bold;font-size:13px;'>下方HVN（支撑）</p><table class='vp-table'><tr><th>价格</th><th>成交量</th><th>类型</th></tr>")
+        foreach ($h in $vp.HVN_Below) {
+            $c = [double]$h.center; $v = [double]$h.volume
+            $vStr = if($v -gt 1e8){[Math]::Round($v/1e8,1).ToString()+'亿'}else{[Math]::Round($v/1e4,0).ToString()+'万'}
+            [void]$sb.Append("<tr><td style='color:#27ae60'>¥$c</td><td>$vStr</td><td>支撑</td></tr>")
+        }
+        [void]$sb.Append("</table>")
+    }
+    if ($vp.LVN_Zones -and $vp.LVN_Zones.Count -gt 0) {
+        [void]$sb.Append("<p style='margin:8px 0 4px;font-weight:bold;font-size:13px;'>LVN（快速穿越区）</p><table class='vp-table'><tr><th>价格区间</th><th>相对位置</th><th>特征</th></tr>")
+        foreach ($z in $vp.LVN_Zones) {
+            $lo = [double]$z[0]; $hi = [double]$z[1]
+            $tag = if ($P -gt $hi) { "下方" } elseif ($P -lt $lo) { "上方" } else { "当前" }
+            [void]$sb.Append("<tr><td>¥$lo - ¥$hi</td><td>$tag</td><td style='color:#f39c12'>快速穿越区</td></tr>")
+        }
+        [void]$sb.Append("</table>")
+    }
+    [void]$sb.Append("<p style='font-size:11px;color:#888;margin-top:6px;'>说明：HVN代表密集成交区，价格到此附近易获支撑/压力。LVN代表成交稀疏区，价格可能快速穿越。</p></div>")
+    return $sb.ToString()
+}
+
 function New-PriceLadder {
     param($Ops, $P)
     $r3c = if ($Ops.R3 -gt $P) { "color:#e74c3c" } else { "color:#555" }
@@ -1743,6 +1849,7 @@ function New-StockReportHtml {
 
     [void]$sb.Append((New-ExecutiveSummary -Scores $Scores -Pred $Pred))
     [void]$sb.Append((New-PriceLadder -Ops $Ops -P $D.Price))
+    [void]$sb.Append((New-VolumeProfileSection -Ops $Ops -P $D.Price))
     [void]$sb.Append((New-ShortTermAction -Ops $Ops -Pred $Pred -P $D.Price))
     [void]$sb.Append((New-PositionSizingSection -Ops $Ops -Pred $Pred -CompScore $Scores.Composite))
 
@@ -1833,8 +1940,11 @@ foreach ($s in $stocks) {
         }
     }
 
+    # Volume Profile (G1: 成交密集区 → 增强支撑/压力位)
+    $vp = Get-VolumeProfile -KLines $stockData.KLines
+
     # 操作建议计算 (v3.0 S3硬优先级)
-    $ops = Get-OperationPlan -D $stockData -Pred $pred -TechS $techS -FundS $fundS -CompScore $comp.Score
+    $ops = Get-OperationPlan -D $stockData -Pred $pred -TechS $techS -FundS $fundS -CompScore $comp.Score -VP $vp
     Write-Host "  [操作] S1:$($ops.S1) R1:$($ops.R1) 止损:S3=$($ops.StopLoss) 仓位上限:$($ops.MaxPosition)%"
 
     # 信号冲突裁决 (v3.0)

@@ -17,6 +17,7 @@ param(
     [switch]$List,
     [switch]$Quick
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 # ═════ 任务→白皮书映射表 ══════════════════════════════════════════
 # 格式: Pattern(正则), TaskName, Whitepaper, Path, KeyReqs(数组)
@@ -63,8 +64,8 @@ $TASK_MAP += @{
 $TASK_MAP += @{
     Pattern  = 'keystock.*gen_doc'
     Task     = '重点股票深度分析'
-    WP       = '重点股票跟踪分析逻辑白皮书 v3.0'
-    WPath    = '重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v3.0.md'
+    WP       = '重点股票跟踪分析逻辑白皮书 v3.3'
+    WPath    = '重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v3.3.md'
     Reqs     = @(
         '多周期融合: 短期/中期/长期三维预测',
         '证据加权: 多个独立维度同向方可形成结论',

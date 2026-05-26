@@ -1,4 +1,4 @@
-# 旧影 Boundary Scan v1.0 — Weekly cross-reference audit
+﻿# 旧影 Boundary Scan v1.0 — Weekly cross-reference audit
 # Scans git commits touching code files vs pipeline archives vs hook logs
 # Flags: violations, bypasses, blocks — generates audit report
 param(
@@ -6,6 +6,7 @@ param(
     [string]$Until = "",
     [string]$OutputPath = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $BASE = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $HOOK_LOG = "$BASE\.claude\hooks\write_violations.log"

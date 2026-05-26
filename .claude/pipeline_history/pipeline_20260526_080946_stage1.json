@@ -1,0 +1,31 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PENDING",
+    "attempts":  1,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-26T00:09:46",
+    "started":  "2026-05-26T00:08:05",
+    "gate_2":  "PENDING",
+    "task":  "每日荐股P0-P1移植：资金结构维度(简化)+突破性质分类过滤器+行业锚定参照展示",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "情墨",
+                              "stage":  1,
+                              "entered":  "2026-05-26T00:08:05"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
+}

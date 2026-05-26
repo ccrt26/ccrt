@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>600036 招商银行 — 深度分析报告</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>600036 招商银行 — 深度分析报告</h1>
+<blockquote>
+<p><strong>日期</strong>: 2026年5月25日（基于5月22日收盘数据）
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 玉夜（数据诊断）+ 流金（风险评估）
+<strong>数据来源</strong>: 腾讯行情[1]、新浪K线[1]、东方财富财务[3]
+<strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</blockquote>
+<hr />
+<h2>一、公司概要</h2>
+<p>招商银行（600036.SH）是A股公认的<strong>最优零售银行</strong>，上交所主板上市，所属申万行业为"股份制银行"。以零售业务（财富管理/信用卡/消费贷）见长，零售存款和AUM（管理客户资产）规模在股份制银行中遥遥领先，不良贷款率和拨备覆盖率均为行业最优水平。</p>
+<p><strong>核心投资逻辑</strong>：
+1. 零售银行护城河 — 高净值客户粘性极强，零售存款成本远低于同行
+2. 财富管理转型 — 从"赚息差"到"赚手续费"，轻资产模式ROE更高
+3. 资产质量最优 — 不良率+拨备率双优，在经济下行期抗风险能力最强
+4. 估值历史低位 — PE 6.5x，处于过去10年最低分位区间，提供了深度价值</p>
+<hr />
+<h2>二、宏观与行业环境（山猫）</h2>
+<h3>2.1 银行板块当前生态</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">净息差</td>
+<td style="text-align: left;"><strong>承压</strong></td>
+<td style="text-align: left;">LPR持续下调，贷款利率走低，存款成本刚性</td>
+</tr>
+<tr>
+<td style="text-align: left;">信贷需求</td>
+<td style="text-align: left;"><strong>偏弱</strong></td>
+<td style="text-align: left;">企业中长期贷款增速放缓，居民房贷需求低迷</td>
+</tr>
+<tr>
+<td style="text-align: left;">银行板块资金</td>
+<td style="text-align: left;"><strong>流出</strong></td>
+<td style="text-align: left;">5/22银行板块弱势，资金向制造业迁移</td>
+</tr>
+<tr>
+<td style="text-align: left;">政策面</td>
+<td style="text-align: left;"><strong>中性偏紧</strong></td>
+<td style="text-align: left;">"银行让利实体经济"的政策导向未变</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场风格</td>
+<td style="text-align: left;"><strong>不利于银行</strong></td>
+<td style="text-align: left;">成长&gt;&gt;价值，小盘&gt;&gt;大盘，银行两头不受益</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>山猫结论</strong>：银行板块正在经历"量增价降"的困境——贷款规模在增长但净息差持续压缩，营收增速跑不赢资产增速。更关键的是，当前市场风格完全不利于银行——资金从大金融向制造业迁移的趋势在5/22表现得非常明显（汽车零部件+8.41% vs 银行走弱）。招商银行是银行里最好的，但"最好的银行"在银行板块退潮期也难独善其身。</p>
+<hr />
+<h2>三、财务深度分析（玉夜）</h2>
+<h3>3.1 收入与利润趋势</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">期间</th>
+<th style="text-align: left;">营收(亿)</th>
+<th style="text-align: left;">归母净利(亿)</th>
+<th style="text-align: left;">EPS</th>
+<th style="text-align: left;">扣非EPS</th>
+<th style="text-align: left;">营收YoY</th>
+<th style="text-align: left;">净利YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FY2024</td>
+<td style="text-align: left;">3374.88</td>
+<td style="text-align: left;">1483.91</td>
+<td style="text-align: left;">5.66</td>
+<td style="text-align: left;">5.65</td>
+<td style="text-align: left;">-0.5%</td>
+<td style="text-align: left;">+1.2%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q1 2025</td>
+<td style="text-align: left;">837.51</td>
+<td style="text-align: left;">372.86</td>
+<td style="text-align: left;">1.48</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">-1.8%</td>
+<td style="text-align: left;">+0.1%</td>
+</tr>
+<tr>
+<td style="text-align: left;">H1 2025</td>
+<td style="text-align: left;">1699.69</td>
+<td style="text-align: left;">749.30</td>
+<td style="text-align: left;">2.89</td>
+<td style="text-align: left;">2.89</td>
+<td style="text-align: left;">-1.7%</td>
+<td style="text-align: left;">+0.2%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q1-Q3 2025</td>
+<td style="text-align: left;">2514.20</td>
+<td style="text-align: left;">1137.72</td>
+<td style="text-align: left;">4.43</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">-0.5%</td>
+<td style="text-align: left;">+0.5%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>FY2025</strong></td>
+<td style="text-align: left;"><strong>3375.32</strong></td>
+<td style="text-align: left;"><strong>1501.81</strong></td>
+<td style="text-align: left;"><strong>5.70</strong></td>
+<td style="text-align: left;"><strong>5.70</strong></td>
+<td style="text-align: left;"><strong>+0.0%</strong></td>
+<td style="text-align: left;"><strong>+1.2%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Q1 2026</strong></td>
+<td style="text-align: left;"><strong>869.40</strong></td>
+<td style="text-align: left;"><strong>378.52</strong></td>
+<td style="text-align: left;"><strong>1.49</strong></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><strong>+3.8%</strong></td>
+<td style="text-align: left;"><strong>+1.5%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>单季EPS走势</strong>（还原为独立季度）：</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">季度</th>
+<th style="text-align: center;">Q1'25</th>
+<th style="text-align: center;">Q2'25</th>
+<th style="text-align: center;">Q3'25</th>
+<th style="text-align: center;">Q4'25</th>
+<th style="text-align: center;">Q1'26</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">EPS</td>
+<td style="text-align: center;">1.48</td>
+<td style="text-align: center;">1.41</td>
+<td style="text-align: center;">1.54</td>
+<td style="text-align: center;">1.27</td>
+<td style="text-align: center;">1.49</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键发现</strong>：
+- <strong>几乎零增长</strong>：FY2025营收同比0%，净利+1.2%。银行已进入"利润高原期"——不大幅下滑已是不易，增长更是艰难
+- <strong>Q1 2026略有起色</strong>：营收+3.8%是近5个季度首次明显正增长，可能暗示净息差正在筑底
+- <strong>ROE持续下降</strong>：14.49%(FY2024)→13.44%(FY2025)→年化13.48%(Q1 2026)，每年降约1个百分点。这是全行业趋势——息差收窄导致ROE结构性下行
+- <strong>TTM EPS = 5.71</strong>（1.41+1.54+1.27+1.49）</p>
+<h3>3.2 盈利能力</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: center;">FY2024</th>
+<th style="text-align: center;">FY2025</th>
+<th style="text-align: center;">Q1 2026</th>
+<th style="text-align: center;">趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ROE(加权)</td>
+<td style="text-align: center;">14.49%</td>
+<td style="text-align: center;">13.44%</td>
+<td style="text-align: center;">3.37%</td>
+<td style="text-align: center;">↓ 逐年下降</td>
+</tr>
+<tr>
+<td style="text-align: left;">EPS(基本)</td>
+<td style="text-align: center;">5.66</td>
+<td style="text-align: center;">5.70</td>
+<td style="text-align: center;">1.49</td>
+<td style="text-align: center;">→ 基本持平</td>
+</tr>
+<tr>
+<td style="text-align: left;">扣非EPS</td>
+<td style="text-align: center;">5.65</td>
+<td style="text-align: center;">5.70</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">→</td>
+</tr>
+<tr>
+<td style="text-align: left;">每股经营现金流</td>
+<td style="text-align: center;">17.72</td>
+<td style="text-align: center;">17.90</td>
+<td style="text-align: center;">4.99</td>
+<td style="text-align: center;">↑ 充沛</td>
+</tr>
+<tr>
+<td style="text-align: left;">每股净资产(BPS)</td>
+<td style="text-align: center;">41.46</td>
+<td style="text-align: center;">43.43</td>
+<td style="text-align: center;">44.90</td>
+<td style="text-align: center;">↑ 持续积累</td>
+</tr>
+</tbody>
+</table></div>
+<h3>3.3 利润真实性验证</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">扣非EPS vs 基本EPS</td>
+<td style="text-align: left;">FY2025: 5.70 vs 5.70（零差异）</td>
+<td style="text-align: left;">✅ 利润质量极高</td>
+</tr>
+<tr>
+<td style="text-align: left;">经营现金流 vs 净利润</td>
+<td style="text-align: left;">经营CF/股 17.90 = EPS 5.70的3.14倍</td>
+<td style="text-align: left;">✅ 银行现金流天然&gt;利润</td>
+</tr>
+<tr>
+<td style="text-align: left;">ROE趋势</td>
+<td style="text-align: left;">14.49%→13.44%，每年降1pp</td>
+<td style="text-align: left;">⚠️ 结构性下行</td>
+</tr>
+<tr>
+<td style="text-align: left;">分红政策</td>
+<td style="text-align: left;">FY2025 10派20元，分红率35%</td>
+<td style="text-align: left;">✅ 高分红，股息率5.4%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>玉夜结论</strong>：财务可信度A+级，是8只重点股票中财务质量最高的。利润几乎100%真实（扣非=基本），现金流是利润的3倍，分红率35%对应股息率5.4%（37.02元/股）。唯一瑕疵是ROE结构性下行——每年降1个百分点，5年后ROE将降至8%左右。这不是招行自身的问题，是整个银行业在利率下行周期面临的共同困境。</p>
+<hr />
+<h2>四、技术面深度分析</h2>
+<h3>4.1 K线指标（基于5/22收盘）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">数值</th>
+<th style="text-align: left;">信号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">收盘价</td>
+<td style="text-align: left;">37.02</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">均线排列</td>
+<td style="text-align: left;">MA5&lt;MA10&lt;MA20&lt;MA50</td>
+<td style="text-align: left;">🔴 完美空头排列</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSI(9)/(14)</td>
+<td style="text-align: left;">0.0 / 1.9</td>
+<td style="text-align: left;">🔴 极度超卖</td>
+</tr>
+<tr>
+<td style="text-align: left;">MACD DIF</td>
+<td style="text-align: left;">-0.48，零轴下方</td>
+<td style="text-align: left;">趋势向下</td>
+</tr>
+<tr>
+<td style="text-align: left;">ADX(14)</td>
+<td style="text-align: left;"><strong>74.5</strong></td>
+<td style="text-align: left;">-DI=36.9, +DI=5.4，强下跌趋势</td>
+</tr>
+<tr>
+<td style="text-align: left;">ATR(14)</td>
+<td style="text-align: left;">0.32 (0.9%)</td>
+<td style="text-align: left;">低波动（符合银行股特征）</td>
+</tr>
+<tr>
+<td style="text-align: left;">布林带</td>
+<td style="text-align: left;">下轨36.44 / 中轨38.20</td>
+<td style="text-align: left;">价格接近下轨</td>
+</tr>
+<tr>
+<td style="text-align: left;">OBV</td>
+<td style="text-align: left;">同步下行</td>
+<td style="text-align: left;">量价同步走弱</td>
+</tr>
+<tr>
+<td style="text-align: left;">量比(5/20)</td>
+<td style="text-align: left;">0.81</td>
+<td style="text-align: left;">缩量下跌</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>价格轨迹</strong>（60日）：
+- 20日涨幅：-6.8% | 5日涨幅：-1.2%
+- 20日区间：36.97-40.03 | 60日区间：36.97-40.36
+- <strong>接近60日低点</strong>，连续阴跌无明显反弹</p>
+<h3>4.2 Wyckoff周期定位</h3>
+<p>当前处于<strong>Markdown（下跌）阶段</strong>——满足全部三个条件：
+- 价格持续下跌（20日-6.8%，60日在低位）
+- ADX=74.5且-DI&gt;&gt;+DI（空头主导）
+- MA5&lt;MA10&lt;MA20&lt;MA50完美空头排列</p>
+<p>但值得注意的特征：
+- <strong>缩量下跌</strong>（量比0.81）：说明不是恐慌性抛售，而是"无人接盘"式的阴跌
+- <strong>RSI接近0</strong>：技术上极度超卖，反弹需求在累积，但超卖可以持续很久
+- <strong>没有Selling Climax（恐慌抛售）</strong>：底部信号尚未出现</p>
+<h3>4.3 关键技术位</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">价格</th>
+<th style="text-align: left;">依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">阻力</td>
+<td style="text-align: left;">38.20</td>
+<td style="text-align: left;">MA20（布林中轨）</td>
+</tr>
+<tr>
+<td style="text-align: left;">强阻力</td>
+<td style="text-align: left;">38.99</td>
+<td style="text-align: left;">MA50</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>关键位</strong></td>
+<td style="text-align: left;"><strong>36.97</strong></td>
+<td style="text-align: left;"><strong>60日低点</strong> — 跌破则打开下行空间</td>
+</tr>
+<tr>
+<td style="text-align: left;">支撑</td>
+<td style="text-align: left;">36.44</td>
+<td style="text-align: left;">BB下轨</td>
+</tr>
+<tr>
+<td style="text-align: left;">强支撑</td>
+<td style="text-align: left;">35.01</td>
+<td style="text-align: left;">持仓记录S2</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>五、风险评估（流金）</h2>
+<h3>5.1 银行股特有风险</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">风险</th>
+<th style="text-align: center;">严重度</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>净息差压缩</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">持续LPR下调+存款成本刚性，息差未见底</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>房地产风险暴露</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">虽招行房地产敞口在银行中最低，但行业风险仍在</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>阴跌不止</strong></td>
+<td style="text-align: center;">🔴 高</td>
+<td style="text-align: left;">ADX 74.5强下跌趋势，RSI可长期保持低位</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>"价值陷阱"</strong></td>
+<td style="text-align: center;">🔴 高</td>
+<td style="text-align: left;">PE 6.5x看起来便宜，但ROE每年降1pp，5年后就不便宜了</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>风格不利</strong></td>
+<td style="text-align: center;">🟡 中</td>
+<td style="text-align: left;">市场偏好成长/中小盘，银行不受资金青睐</td>
+</tr>
+</tbody>
+</table></div>
+<h3>5.2 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">红旗</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">①极端估值</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">PE 6.5x，历史极低分位，估值有安全边际</td>
+</tr>
+<tr>
+<td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">四个季度EPS在1.27-1.54窄幅波动，高度稳定</td>
+</tr>
+<tr>
+<td style="text-align: left;">③高波动</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">ATR仅0.9%，银行股天然低波动</td>
+</tr>
+<tr>
+<td style="text-align: left;">④流动性风险</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">日均成交20亿+，上证50成分股</td>
+</tr>
+<tr>
+<td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">关键位清晰，流动性极好</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>5绿0黄0红</strong>。从风控角度看，招商银行是所有8只股票中最安全的。但"安全"不等于"会涨"——关键问题是趋势方向。</p>
+</blockquote>
+<hr />
+<h2>六、估值分析</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">估值方法</th>
+<th style="text-align: left;">计算</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TTM PE</td>
+<td style="text-align: left;">37.02/5.71</td>
+<td style="text-align: left;"><strong>6.48x</strong></td>
+<td style="text-align: left;">历史极低分位</td>
+</tr>
+<tr>
+<td style="text-align: left;">FY2025 PE</td>
+<td style="text-align: left;">37.02/5.70</td>
+<td style="text-align: left;"><strong>6.49x</strong></td>
+<td style="text-align: left;">历史极低分位</td>
+</tr>
+<tr>
+<td style="text-align: left;">PB</td>
+<td style="text-align: left;">37.02/43.43</td>
+<td style="text-align: left;"><strong>0.85x</strong></td>
+<td style="text-align: left;">破净！</td>
+</tr>
+<tr>
+<td style="text-align: left;">股息率</td>
+<td style="text-align: left;">2.00/37.02</td>
+<td style="text-align: left;"><strong>5.40%</strong></td>
+<td style="text-align: left;">极高，超过大多数理财产品</td>
+</tr>
+<tr>
+<td style="text-align: left;">PE×ROE</td>
+<td style="text-align: left;">6.49×13.44%</td>
+<td style="text-align: left;"><strong>0.87</strong></td>
+<td style="text-align: left;">&lt;1，理论上低估</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>三情景EPS预测（v3.3 §1.2.2）</strong>：</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">情景</th>
+<th style="text-align: center;">FY2026E EPS</th>
+<th style="text-align: left;">远期PE(37.02)</th>
+<th style="text-align: left;">计算依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>乐观</strong></td>
+<td style="text-align: center;">6.60</td>
+<td style="text-align: left;">5.6x</td>
+<td style="text-align: left;">TTM 5.71 × (1+1.2%) × 1.15，净息差企稳+财富管理收入恢复</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>中性</strong></td>
+<td style="text-align: center;">5.75</td>
+<td style="text-align: left;">6.4x</td>
+<td style="text-align: left;">TTM 5.71 × (1+0.8%) × 1.0，现状延续，微增长</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>悲观</strong></td>
+<td style="text-align: center;">4.88</td>
+<td style="text-align: left;">7.6x</td>
+<td style="text-align: left;">TTM 5.71 × (1+0.4%) × 0.85，净息差继续压缩+不良率上升</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>招行利润高度稳定，三情景EPS区间很窄（4.88-6.60），这本身也是低风险的体现。近3年净利增速≈0-1.5%，EPS预测主要反映净息差方向的敏感性。</p>
+</blockquote>
+<p><strong>估值结论</strong>：招商银行当前估值处于<strong>历史极低水平</strong>。PE 6.5x、PB 0.85x（破净）、股息率5.4%——从任何传统的价值投资标准来看，这都是"便宜"的价格。问题是：市场为什么给这么低的估值？因为市场在定价两件事：①净息差持续压缩→ROE将继续下降②银行板块不是当前资金偏好方向。<strong>低估值本身不是买入理由——需要有"催化剂"让估值修复。</strong></p>
+<hr />
+<h2>七、综合评分</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">评分(10)</th>
+<th style="text-align: left;">核心依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">基本面</td>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: left;">A+财务质量，ROE 13.4%，股息率5.4%，利润100%真实</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术面</td>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: left;">完美空头排列，ADX 74.5强下跌趋势，RSI接近0</td>
+</tr>
+<tr>
+<td style="text-align: left;">资金面</td>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: left;">缩量阴跌（量比0.81），无资金入场迹象</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业面</td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: left;">银行板块退潮，资金向制造业迁移</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值</td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: left;">PE 6.5x历史极低，PB 0.85x破净，股息率5.4%</td>
+</tr>
+<tr>
+<td style="text-align: left;">风控</td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: left;">5红旗全绿，流动性好，波动低</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>加权综合</strong></td>
+<td style="text-align: center;"><strong>5.2</strong></td>
+<td style="text-align: left;">基本面+估值是"好公司好价格"，技术面+资金面是"差趋势"</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>八、操作策略</h2>
+<h3>8.1 当前状态</h3>
+<p>招商银行不在模拟盘持仓中。当前处于"基本面优异+技术面极弱"的背离状态。</p>
+<h3>8.2 腰子的核心判断</h3>
+<p>招商银行是所有8只重点股票中<strong>最难判断</strong>的一只。PE 6.5x、PB 0.85x、股息率5.4%——任何一个价值投资者都会认为这是买入机会。但ADX 74.5的强下跌趋势和RSI接近0的现实同样不容忽视。</p>
+<p><strong>"价值陷阱"的风险是真实存在的</strong>：如果ROE每年下降1个百分点（从13.4%→8%用5年），那么5年后的PE 6.5x对应ROE 8%，PB约0.5x——这只股票可能继续在低位徘徊5年。资金是有机会成本的。</p>
+<h3>8.3 入场条件（不急于抄底）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">条件</th>
+<th style="text-align: left;">触发信号</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>底线信号</strong></td>
+<td style="text-align: left;">RSI从&lt;5回升至30以上</td>
+<td style="text-align: left;">空头动能衰竭的第一个信号</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>确认信号</strong></td>
+<td style="text-align: left;">出现放量阳线（量比&gt;1.5）+收复MA5</td>
+<td style="text-align: left;">空头趋势可能结束</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>最佳信号</strong></td>
+<td style="text-align: left;">站回MA20(38.20) + MACD金叉</td>
+<td style="text-align: left;">中期趋势反转确认，可建仓</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>当前</strong></td>
+<td style="text-align: left;">RSI≈0，ADX=74.5空头</td>
+<td style="text-align: left;">⛔ 不要接飞刀</td>
+</tr>
+</tbody>
+</table></div>
+<h3>8.4 硬性纪律</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">规则</th>
+<th style="text-align: left;">价位</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>不入场</strong></td>
+<td style="text-align: left;">当前</td>
+<td style="text-align: left;">技术面未出任何止跌信号</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>观察入场</strong></td>
+<td style="text-align: left;">37.50+</td>
+<td style="text-align: left;">RSI回升+放量阳线后</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>确认入场</strong></td>
+<td style="text-align: left;">38.20+</td>
+<td style="text-align: left;">站上MA20后，建仓5-8%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>止损线</strong></td>
+<td style="text-align: left;">35.00</td>
+<td style="text-align: left;">跌破60日低点区间，坚决出清</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>九、中长期展望与跟踪节点</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">时间</th>
+<th style="text-align: left;">事件</th>
+<th style="text-align: left;">关键观察点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">每日</td>
+<td style="text-align: left;">技术面监控</td>
+<td style="text-align: left;">RSI何时脱离极端超卖区？是否出现放量企稳K线？</td>
+</tr>
+<tr>
+<td style="text-align: left;">7月中旬</td>
+<td style="text-align: left;">Q2业绩</td>
+<td style="text-align: left;">净息差是否企稳？营收增速能否转正？</td>
+</tr>
+<tr>
+<td style="text-align: left;">8月底</td>
+<td style="text-align: left;">2026半年报</td>
+<td style="text-align: left;">ROE下降趋势是否放缓？资产质量是否有变化？</td>
+</tr>
+<tr>
+<td style="text-align: left;">持续</td>
+<td style="text-align: left;">宏观利率</td>
+<td style="text-align: left;">LPR是否继续下调？存款利率是否跟随下调？</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>战略定位</strong>：600036是一个"迟早会涨，但不知道什么时候涨"的标的。基本面在银行中无出其右，估值处于历史地板价，但技术面给出的信号是"不要现在买"。最佳策略是将其放在"密切关注"清单上，等待技术面确认趋势反转后再入场。在RSI从0回升到30以上之前，任何"抄底"行为都是接飞刀。</p>
+<hr />
+<blockquote>
+<p><strong>报告编制</strong>: 腰子（金融综合判断） | <strong>协作</strong>: 山猫（宏观行业）、玉夜（数据诊断）、流金（风险评估）
+<strong>版本</strong>: v1.0 | <strong>日期</strong>: 2026-05-25
+<strong>特别标注</strong>: 基本面与技术面严重背离——这是最需要耐心的标的。</p>
+</blockquote>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

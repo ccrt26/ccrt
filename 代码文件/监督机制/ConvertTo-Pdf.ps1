@@ -26,6 +26,7 @@ function ConvertTo-Pdf {
         [switch]$Landscape,
         [string]$EdgePath = ""
     )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
     # 1. 检查 HTML 是否存在
     if (-not (Test-Path $HtmlFile)) {

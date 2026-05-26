@@ -1,0 +1,79 @@
+{
+  "files_scope": [],
+  "stage_history": [
+    {
+      "output": "审计报告/架构设计/design_infra_hardening_20260525.md",
+      "gate": "PASS",
+      "executor": "情墨",
+      "validated": "2026-05-25T13:28:35",
+      "stage": 1
+    },
+    {
+      "output": "审计报告/架构设计/gate_1a_review_infra_hardening_20260525.md",
+      "gate": "PASS",
+      "executor": "腰子",
+      "validated": "2026-05-25T13:29:52",
+      "stage": 2
+    },
+    {
+      "output": "审计报告/架构设计/gate_1b_review_infra_hardening_20260525.md",
+      "gate": "PASS",
+      "executor": "新安+旧影",
+      "validated": "2026-05-25T13:30:35",
+      "stage": 3
+    },
+    {
+      "output": "",
+      "gate": "PENDING",
+      "executor": "红结",
+      "stage": 4,
+      "entered": "2026-05-25T13:30:39"
+    },
+    {
+      "output": "代码文件/lib/init_encoding.ps1",
+      "gate": "PASS",
+      "executor": "红结",
+      "validated": "2026-05-25T21:40:05",
+      "stage": 4
+    },
+    {
+      "output": "",
+      "gate": "PASS",
+      "executor": "新安",
+      "validated": "2026-05-25T21:40:05",
+      "stage": 5
+    },
+    {
+      "output": "",
+      "gate": "PASS",
+      "executor": "红枫",
+      "validated": "2026-05-25T21:40:05",
+      "stage": 6
+    },
+    {
+      "output": "",
+      "gate": "PASS",
+      "executor": "PostEval",
+      "validated": "2026-05-25T21:40:05",
+      "stage": 7
+    }
+  ],
+  "gate_1a": "PASS",
+  "loop_context": "Task complete: 代码基础设施现代化",
+  "attempts": 0,
+  "started": "2026-05-25T13:28:28",
+  "gate_2": "PASS",
+  "task": "代码基础设施现代化",
+  "stage": 7,
+  "next_action": "done",
+  "l3_reason": "",
+  "l3_triggered": false,
+  "active": false,
+  "max_attempts": 3,
+  "schema_version": "1.1",
+  "stage_name": "后评估",
+  "gate_3": "PASS",
+  "updated": "2026-05-25T21:40:05",
+  "executor": "PostEval",
+  "gate_1b": "PASS"
+}

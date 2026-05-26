@@ -1,0 +1,32 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_pipeline_7stage_v1.1_腰子闸门拆分.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-25T11:37:10",
+                              "stage":  1
+                          }
+                      ],
+    "gate_1a":  "PENDING",
+    "loop_context":  "Stage 1/7: 架构设计 | Executor: 情墨",
+    "attempts":  0,
+    "started":  "2026-05-25T11:37:04",
+    "gate_2":  "PENDING",
+    "task":  "流水线7阶段重构：插入腰子设计确认阶段，闸门1拆分为1a/1b",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "max_attempts":  3,
+    "schema_version":  "1.1",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "updated":  "2026-05-25T11:37:10",
+    "executor":  "情墨",
+    "gate_1b":  "PENDING"
+}

@@ -4,6 +4,7 @@ function Get-StockQuote {
     param(
         [Parameter(Mandatory=$true)][string]$Code
     )
+. "$PSScriptRoot/../../../lib/init_encoding.ps1"
     # --- 腾讯（主） ---
     try {
         $prefix = if ($Code.StartsWith("6")) { "sh" } else { "sz" }

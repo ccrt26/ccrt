@@ -1,0 +1,101 @@
+{
+    "_comment": "铁律量化 — API配置 v1.0",
+    "sources": {
+        "1": {
+            "name": "腾讯行情API",
+            "base_url": "http://qt.gtimg.cn/q=",
+            "type": "realtime_quote",
+            "timeout_ms": 5000,
+            "retry": 2,
+            "rate_limit_per_min": 60,
+            "encoding": "gbk"
+        },
+        "2": {
+            "name": "新浪K线API",
+            "base_url": "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData",
+            "type": "kline",
+            "timeout_ms": 8000,
+            "retry": 2,
+            "rate_limit_per_min": 30,
+            "encoding": "gbk"
+        },
+        "3": {
+            "name": "东方财富datacenter API",
+            "base_url": "https://datacenter.eastmoney.com/api/data/v1/get",
+            "type": "financial",
+            "timeout_ms": 10000,
+            "retry": 3,
+            "rate_limit_per_min": 20,
+            "encoding": "utf-8"
+        },
+        "7": {
+            "name": "东方财富push2 API (板块)",
+            "base_url": "https://push2.eastmoney.com/api/qt/clist/get",
+            "type": "sector",
+            "timeout_ms": 8000,
+            "retry": 2,
+            "rate_limit_per_min": 30,
+            "encoding": "utf-8"
+        },
+        "8": {
+            "name": "东方财富北向资金API",
+            "base_url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+            "type": "northbound",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 20,
+            "encoding": "utf-8"
+        },
+        "9": {
+            "name": "东方财富个股资金流向API",
+            "base_url": "https://push2.eastmoney.com/api/qt/stock/fflow/kline/get",
+            "type": "fund_flow",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 20,
+            "encoding": "utf-8"
+        },
+        "10": {
+            "name": "东方财富行业资金流向API",
+            "base_url": "https://push2.eastmoney.com/api/qt/clist/get",
+            "type": "sector_fund_flow",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 20,
+            "encoding": "utf-8"
+        },
+        "11": {
+            "name": "东方财富研报API",
+            "base_url": "https://reportapi.eastmoney.com/report/list",
+            "type": "analyst_report",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 10,
+            "encoding": "utf-8"
+        },
+        "12": {
+            "name": "东方财富融资融券API",
+            "base_url": "https://datacenter.eastmoney.com/api/data/v1/get",
+            "type": "margin",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 20,
+            "encoding": "utf-8"
+        },
+        "13": {
+            "name": "必盈API",
+            "base_url": "https://api.biyingapi.com",
+            "type": "multi",
+            "timeout_ms": 8000,
+            "retry": 2,
+            "rate_limit_per_min": 10,
+            "encoding": "utf-8"
+        }
+    },
+    "global": {
+        "min_api_interval_ms": 300,
+        "max_concurrent_requests": 3,
+        "default_timeout_ms": 10000,
+        "fallback_encoding": "gbk"
+    }
+}

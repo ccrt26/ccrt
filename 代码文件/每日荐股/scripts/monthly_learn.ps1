@@ -18,6 +18,7 @@ param(
     [string]$Month = (Get-Date).AddMonths(-1).ToString("yyyy-MM"),
     [string]$SourceDir = "Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))"
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 # ============================================================
 # 路径配置

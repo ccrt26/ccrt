@@ -20,6 +20,7 @@ param(
     [string]$UserName = "",
     [string]$Password = ""
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $taskPrefix = "TieLv"
 $rootDir = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))

@@ -1,8 +1,9 @@
-# P2-2: 数据质量仪表盘 — 从审计JSON生成HTML趋势图
+﻿# P2-2: 数据质量仪表盘 — 从审计JSON生成HTML趋势图
 param(
     [string]$RootDir = "",
     [string]$OutputFile = ""
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 if (-not $RootDir) { $RootDir = Split-Path -Parent (Split-Path -Parent $PSScriptRoot) }
 if (-not $OutputFile) { $OutputFile = Join-Path $RootDir "历史数据\03_分析报告\quality_dashboard.html" }
 

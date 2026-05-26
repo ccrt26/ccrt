@@ -1,3 +1,4 @@
+﻿. "$PSScriptRoot/../lib/init_encoding.ps1"
 # Diagnostic script for stock data APIs
 $ErrorActionPreference = "Continue"
 Import-Module "$PSScriptRoot\..\代码文件\每日荐股\scripts\stock_data_fetcher.psm1" -Force -WarningAction SilentlyContinue 2>$null

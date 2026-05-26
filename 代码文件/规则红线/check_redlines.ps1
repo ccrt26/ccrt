@@ -13,6 +13,7 @@
 param(
     [switch]$Quick
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $BASE = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $DATA_DIR = "$BASE\代码文件\数据"
@@ -333,7 +334,7 @@ $versionFiles = @(
     "$BASE\每日荐股\分析逻辑\每日荐股分析逻辑白皮书_v2.1.md"
     "$BASE\每日荐股\事后评估\次日后评估白皮书_v1.6.md"
     "$BASE\每日荐股\事后评估\次日后评估白皮书_v1.4.md"
-    "$BASE\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v3.0.md"
+    "$BASE\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v3.3.md"
     "$BASE\重点股票\分析逻辑\重点股票跟踪分析逻辑白皮书_v2.0.md"
     "$BASE\重点股票\次日评估\重点股票次日后评估白皮书_v1.4.md"
     "$BASE\重点股票\次日评估\重点股票次日后评估白皮书_v1.3.md"

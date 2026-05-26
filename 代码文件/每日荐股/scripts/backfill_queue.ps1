@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   铁律量化 · 数据回填队列机制
 .DESCRIPTION
@@ -40,6 +40,7 @@ param(
 
     [switch]$SkipStatus
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 # ============================================================
 # Configuration

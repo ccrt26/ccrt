@@ -1,8 +1,9 @@
-# Convert key stock HTML report to PDF using Edge headless
+﻿# Convert key stock HTML report to PDF using Edge headless
 param(
     [string]$HtmlPath = "C:\Users\34269\Documents\Claude\股票分析\重点股票\汇总\重点股票分析报告_20260522.html",
     [string]$PdfPath = "C:\Users\34269\Documents\Claude\股票分析\重点股票\汇总\重点股票分析报告_20260522.pdf"
 )
+. "$PSScriptRoot/../lib/init_encoding.ps1"
 
 $edgePaths = @(
     "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",

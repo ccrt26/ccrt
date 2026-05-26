@@ -1,0 +1,31 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PENDING",
+    "attempts":  1,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-25T15:07:48",
+    "started":  "2026-05-25T15:05:09",
+    "gate_2":  "PENDING",
+    "task":  "init_encoding.ps1正确引入方案——解决param()块前置问题",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "情墨",
+                              "stage":  1,
+                              "entered":  "2026-05-25T15:05:09"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
+}

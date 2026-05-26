@@ -1,4 +1,5 @@
-﻿# 依赖: dot-source all sibling modules
+﻿. "$PSScriptRoot/../../../lib/init_encoding.ps1"
+# 依赖: dot-source all sibling modules
 
 function Test-AllDataSources {
     Write-Output "====== 数据源综合测试 ======"

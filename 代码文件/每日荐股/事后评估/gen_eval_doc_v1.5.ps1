@@ -1,4 +1,5 @@
-﻿# Generate 次日后评估白皮书 v1.5.docx
+﻿. "$PSScriptRoot/../../lib/init_encoding.ps1"
+# Generate 次日后评估白皮书 v1.5.docx
 # 遵循白皮书：次日后评估白皮书 v1.5（§模拟交易、§归因分析、§误判分类）
 # 注意：此脚本为遗留硬编码版本，后续修改请使用 build_docx.ps1 从 .md 生成
 function New-EvalDocBody {

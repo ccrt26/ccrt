@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     评估→参数自动反馈链路 (青山 v2026-05-24)
 .DESCRIPTION
@@ -13,6 +13,7 @@ param(
     [string]$Date = (Get-Date -Format "yyyy-MM-dd"),
     [switch]$DryRun
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $evalDir = Join-Path $RootDir "每日荐股\事后评估"
 $issuesFile = Join-Path $evalDir "issues.csv"

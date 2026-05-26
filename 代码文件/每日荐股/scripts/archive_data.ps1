@@ -17,6 +17,7 @@ param(
     [string]$SourceDir = (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))),
     [int]$RetentionDays = 90
 )
+. "$PSScriptRoot/../../lib/init_encoding.ps1"
 
 $archiveRoot = Join-Path $SourceDir "历史数据"
 $dateLabel = $Date -replace '-', ''
