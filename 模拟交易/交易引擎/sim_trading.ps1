@@ -1323,6 +1323,10 @@ $snapshot = @{
         @{ Code = $_.Code; Name = $_.Name; Shares = $_.Shares; AvgCost = $_.AvgCost; CurrentPrice = $_.CurrentPrice; UnrealizedPnL = $_.UnrealizedPnL; UnrealizedPnLPct = $_.UnrealizedPnLPct }
     })
     Benchmark = $benchmarkVal
+    MarketContext = @{
+        CSI300ChangePct = $csi300Change
+        MarketTurnover = $marketTurnover
+    }
 }
 if (-not $DryRun) {
     $snapBefore = if (Test-Path $snapshotFile) { (Get-Item $snapshotFile).LastWriteTime } else { [datetime]::MinValue }
