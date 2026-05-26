@@ -711,6 +711,7 @@ function Get-VolumeProfile {
             closes   = @($KLines | ForEach-Object { [double]$_.Close })
             volumes  = @($KLines | ForEach-Object { [long]$_.Volume })
             num_bins = $NumBins
+            lookback = 60
         } | ConvertTo-Json -Compress
 
         $vpCliPath = Join-Path $PSScriptRoot "..\每日荐股\分析逻辑\engine\vp_cli.py"
@@ -719,8 +720,39 @@ function Get-VolumeProfile {
             Write-Host "  [VP] vp_cli.py not found: $vpCliPath" -ForegroundColor DarkGray
             return $vp
         }
-        $vpJson = $vpInput | python $vpCliPath 2>&1
-        $vp = $vpJson | ConvertFrom-Json
+        # Write input to temp file and pipe to Python (avoid PowerShell pipe issues)
+        $tmpFile = [System.IO.Path]::GetTempFileName()
+        try {
+            [System.IO.File]::WriteAllText($tmpFile, $vpInput, [System.Text.UTF8Encoding]::new($false))
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = 'python'
+            $psi.Arguments = $vpCliPath
+            $psi.RedirectStandardInput = $true
+            $psi.RedirectStandardOutput = $true
+            $psi.RedirectStandardError = $true
+            $psi.UseShellExecute = $false
+            $psi.CreateNoWindow = $true
+            $proc = New-Object System.Diagnostics.Process
+            $proc.StartInfo = $psi
+            $proc.Start() | Out-Null
+            $proc.StandardInput.Write($vpInput)
+            $proc.StandardInput.Close()
+            $vpJson = $proc.StandardOutput.ReadToEnd()
+            $stderr = $proc.StandardError.ReadToEnd()
+            $proc.WaitForExit(10000) | Out-Null
+            if (-not $proc.HasExited) { $proc.Kill() }
+        } finally {
+            if (Test-Path $tmpFile) { Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue }
+        }
+        if (-not $vpJson) {
+            Write-Host "  [VP] python returned empty (stderr: $stderr)" -ForegroundColor DarkGray
+            return $vp
+        }
+        try {
+            $vp = $vpJson | ConvertFrom-Json
+        } catch {
+            Write-Host "  [VP] JSON parse failed: $_" -ForegroundColor DarkGray
+        }
     } catch {
         Write-Host "  [VP] compute failed: $_" -ForegroundColor DarkGray
     }
@@ -809,14 +841,14 @@ function Get-OperationPlan {
         $vpUsed = $true
         # HVN支撑增强: 最近下方HVN如果在MA-based S1上方且距离<10% → 提升S1
         if ($VP.HVN_Below -and $VP.HVN_Below.Count -gt 0) {
-            $nearestHVNLow = [double]$VP.HVN_Below[0].center
+            $nearestHVNLow = [double]$VP.HVN_Below[0][0]
             if ($nearestHVNLow -gt $s1 -and $nearestHVNLow -lt $P -and ($P - $nearestHVNLow) / $P -lt 0.10) {
                 $s1 = [Math]::Round($nearestHVNLow, 2)
             }
         }
         # HVN压力增强: 最近上方HVN如果在MA-based R1下方且距离<10% → 调整R1
         if ($VP.HVN_Above -and $VP.HVN_Above.Count -gt 0) {
-            $nearestHVNHigh = [double]$VP.HVN_Above[0].center
+            $nearestHVNHigh = [double]$VP.HVN_Above[0][0]
             if ($nearestHVNHigh -lt $r1 -and $nearestHVNHigh -gt $P -and ($nearestHVNHigh - $P) / $P -lt 0.10) {
                 $r1 = [Math]::Round($nearestHVNHigh, 2)
             }
@@ -1666,7 +1698,7 @@ function New-VolumeProfileSection {
     if ($vp.HVN_Above -and $vp.HVN_Above.Count -gt 0) {
         [void]$sb.Append("<p style='margin:8px 0 4px;font-weight:bold;font-size:13px;'>上方HVN（阻力）</p><table class='vp-table'><tr><th>价格</th><th>成交量</th><th>类型</th></tr>")
         foreach ($h in $vp.HVN_Above) {
-            $c = [double]$h.center; $v = [double]$h.volume
+            $c = [double]$h[0]; $v = [double]$h[1]
             $vStr = if($v -gt 1e8){[Math]::Round($v/1e8,1).ToString()+'亿'}else{[Math]::Round($v/1e4,0).ToString()+'万'}
             [void]$sb.Append("<tr><td style='color:#e74c3c'>¥$c</td><td>$vStr</td><td>阻力</td></tr>")
         }
@@ -1675,7 +1707,7 @@ function New-VolumeProfileSection {
     if ($vp.HVN_Below -and $vp.HVN_Below.Count -gt 0) {
         [void]$sb.Append("<p style='margin:8px 0 4px;font-weight:bold;font-size:13px;'>下方HVN（支撑）</p><table class='vp-table'><tr><th>价格</th><th>成交量</th><th>类型</th></tr>")
         foreach ($h in $vp.HVN_Below) {
-            $c = [double]$h.center; $v = [double]$h.volume
+            $c = [double]$h[0]; $v = [double]$h[1]
             $vStr = if($v -gt 1e8){[Math]::Round($v/1e8,1).ToString()+'亿'}else{[Math]::Round($v/1e4,0).ToString()+'万'}
             [void]$sb.Append("<tr><td style='color:#27ae60'>¥$c</td><td>$vStr</td><td>支撑</td></tr>")
         }
