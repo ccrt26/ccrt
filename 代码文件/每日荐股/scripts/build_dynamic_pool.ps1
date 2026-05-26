@@ -204,4 +204,11 @@ $output = @{
 $json = $output | ConvertTo-Json -Depth 3
 [System.IO.File]::WriteAllText($OutputFile, $json, [System.Text.Encoding]::UTF8)
 Write-Host "  Output: $OutputFile"
+
+# Auto-commit: data_pipeline outputs
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $null = & $gitAuto -Module "data_pipeline" -Paths @("历史数据\") -Message "动态股票池产出"
+}
+
 Write-Host "Done"

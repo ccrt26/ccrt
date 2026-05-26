@@ -720,3 +720,9 @@ Write-Host "报告已保存: $pdfFile"
 Write-Host "数据已追加: $recordsFile"
 Write-Host "评估基于白皮书 v1.5（§§2.2模拟交易/§3.2动态基线/§6.1.1记录存储已实现）"
 Write-Host "=============================="
+
+# Auto-commit: post_eval outputs
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $null = & $gitAuto -Module "post_eval" -Paths @("历史数据\02_评估数据\", "临时报告\") -Message "每日荐股后评估产出"
+}

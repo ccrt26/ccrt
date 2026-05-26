@@ -1118,3 +1118,9 @@ Write-Host "  优化建议: $suggestFile"
 Write-Host "  评估结果: $resultFile"
 Write-Host "逻辑诊断报告: $pdfFile"
 Write-Host "================================"
+
+# Auto-commit: post_eval outputs
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $null = & $gitAuto -Module "post_eval" -Paths @("重点股票\次日评估\", "历史数据\02_评估数据\") -Message "重点股票后评估产出"
+}

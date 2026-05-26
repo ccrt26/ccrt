@@ -496,4 +496,11 @@ $finalOutput = [PSCustomObject]@{
 }
 $finalOutput | ConvertTo-Json -Depth 5 | Set-Content $OutputFile -Encoding UTF8
 Write-Host "  个股: $($output.Count) 只, 板块: $(if($sectorRanking){$sectorRanking.Count}else{0}) 个, 板块K线: $(if($sectorKLineDict){$sectorKLineDict.Count}else{0}) 条, 全市场成交额: $(if($avgMarketTurnover){"${avgMarketTurnover}亿"}else{'N/A'}) → $OutputFile"
+
+# Auto-commit: data_pipeline outputs
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $null = & $gitAuto -Module "data_pipeline" -Paths @("历史数据\") -Message "批量数据采集产出"
+}
+
 Write-Host "Done"

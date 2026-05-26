@@ -375,6 +375,13 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
     }
 }
 
+# Auto-commit: daily_pick outputs (covers reports, scored data, pool data)
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $reportParent = Split-Path $reportDir -Parent
+    $null = & $gitAuto -Module "daily_pick" -Paths @($reportParent, "历史数据\") -Message "每日荐股全流程产出"
+}
+
 Write-Log -Msg "Execution Summary:"
 Write-Log -Msg ("  Mode:   " + $Mode)
 Write-Log -Msg ("  Date:   " + $Date)

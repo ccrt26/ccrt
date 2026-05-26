@@ -1,5 +1,5 @@
 """Generate daily brief MD files from eval data - v2 format with interpretations."""
-import json, os, sys
+import json, os, sys, subprocess
 from daily_brief_interpreters import (adx_read, rsi_read, bb_read, obv_read,
     fund_read, wyckoff_read, sector_read, conflict_analysis,
     t5_outlook, market_regime_read)
@@ -327,5 +327,14 @@ for s in stocks:
     lines = md.count('\n')
     print(f'[OK] {name}({code}): {lines}行, {comp}分{rating} | 技术{sc["Technical"]} 基本{sc["Fundamental"]} 板块{sc["Sector"]} 资金{sc["Capital"]}')
     generated += 1
+
+# Auto-commit: daily_brief outputs
+subprocess.run([
+    'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+    '-File', '代码文件/tools/git_autocommit.ps1',
+    '-Module', 'daily_brief',
+    '-Paths', '重点股票/股票报告/',
+    '-Message', '日报产出'
+], capture_output=True)
 
 print(f'\nDone: {generated} daily briefs in v2 format')

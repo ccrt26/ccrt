@@ -2125,3 +2125,9 @@ if ($schemaOk) {
 } else {
     Write-Warning "v3.0字段完整性校验失败，请检查报告输出"
 }
+
+# Auto-commit: deep_analysis outputs
+$gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
+if (Test-Path $gitAuto) {
+    $null = & $gitAuto -Module "deep_analysis" -Paths @("重点股票\股票报告\", "重点股票\次日评估\") -Message "深度分析产出"
+}
