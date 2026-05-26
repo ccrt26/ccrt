@@ -1,0 +1,67 @@
+{
+  "_comment": "信鸽信息采集系统配置 v1.0 | 2026-05-26",
+  "target_stocks": [
+    {"code": "600114", "name": "东睦股份", "market": "sh"},
+    {"code": "603019", "name": "中科曙光", "market": "sh"},
+    {"code": "301075", "name": "多瑞医药", "market": "sz"},
+    {"code": "601689", "name": "拓普集团", "market": "sh"},
+    {"code": "000967", "name": "盈峰环境", "market": "sz"},
+    {"code": "601727", "name": "上海电气", "market": "sh"},
+    {"code": "600584", "name": "长电科技", "market": "sh"}
+  ],
+  "blacklist_keywords": [
+    "行情点评", "原因何在", "技术分析", "MACD", "金叉", "死叉",
+    "压力位", "支撑位", "明日展望", "涨停预测", "机构推荐",
+    "盘后总结", "龙虎榜解读", "资金流向解读", "涨停板复盘",
+    "短线机会", "牛股推荐", "暴涨", "暴跌", "翻倍", "腰斩",
+    "散户", "股吧", "吧友", "大神", "老师"
+  ],
+  "blacklist_domains": [
+    "guba.eastmoney.com", "xueqiu.com", "weibo.com",
+    "tieba.baidu.com", "douyin.com", "kuaishou.com"
+  ],
+  "q1_q5_rules": {
+    "Q1_financial": "净利润|营收|EPS|ROE|毛利|订单金额|减值|分红|派现|扣非|利润分配|业绩|盈利",
+    "Q2_ownership": "增持|减持|回购|质押|解禁|收购|股权|控制权|定增|重组|购买资产|发行股份|合并|要约|转让",
+    "Q3_regulatory": "问询|立案|处罚|警示|ST|退市|注册批复|核准|通过|暂停上市",
+    "Q4_capacity": "投产|量产|定点|获批|新产品|新线|产能|中标|合同|供货",
+    "Q5_competitive": "破产|退出|禁令|制裁|反倾销|补贴|关税|准入|政策|法规"
+  },
+  "p0_keywords": [
+    "立案调查", "ST风险", "*ST", "退市风险", "全部质押", "重组失败", "破产"
+  ],
+  "dedup_similarity_threshold": 0.70,
+  "max_events_per_stock": 5,
+  "impact_score_weights": {
+    "业绩": 8,
+    "并购重组": 9,
+    "股东行为": 6,
+    "经营事件": 7,
+    "监管合规": 10,
+    "行业政策": 5
+  },
+  "freshness_weights": {
+    "today": 1.0,
+    "yesterday": 0.8,
+    "3days": 0.5,
+    "week": 0.3
+  },
+  "api": {
+    "cninfo_base_url": "http://www.cninfo.com.cn/new/fulltextSearch/full",
+    "cninfo_interval_ms": 1000,
+    "cninfo_max_retries": 2,
+    "cninfo_timeout_sec": 10,
+    "baostock_interval_ms": 500,
+    "lookback_days": 3
+  },
+  "schedule": {
+    "daily_trigger": "15:30",
+    "skip_holidays": true,
+    "holidays_file": "每日荐股/运营记录/holidays_2026.csv"
+  },
+  "output": {
+    "base_dir": "重点股票/消息面数据",
+    "cache_dir": "重点股票/消息面数据/cache",
+    "events_db": "重点股票/消息面数据/events_db.json"
+  }
+}

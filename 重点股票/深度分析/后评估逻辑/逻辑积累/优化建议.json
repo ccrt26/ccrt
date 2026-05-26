@@ -1,0 +1,23 @@
+﻿{
+    "suggestions":  [
+                        {
+                            "suggestion":  "检查不可用数据源的API连通性",
+                            "section":  "数据源",
+                            "priority":  "P2",
+                            "date":  "2026-05-26",
+                            "issue":  "8个数据源不可用，降级率100%",
+                            "target":  "数据管线",
+                            "status":  "待确认"
+                        },
+                        {
+                            "suggestion":  "检查不可用数据源的API连通性",
+                            "section":  "数据源",
+                            "priority":  "P2",
+                            "date":  "2026-05-26",
+                            "issue":  "8个数据源不可用，降级率100%",
+                            "target":  "数据管线",
+                            "status":  "待确认"
+                        }
+                    ],
+    "date":  "2026-05-26"
+}

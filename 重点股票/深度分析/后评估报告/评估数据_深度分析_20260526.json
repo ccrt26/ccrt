@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "date": "20260526",
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "methodology_version": "1.1",
+    "report_path": "重点股票/深度分析/东睦股份(600114)深度分析报告_20260526.md"
+  },
+  "scores": {
+    "fundamental": 20,
+    "technical": 4,
+    "fund_flow": 1,
+    "sector": 18,
+    "valuation": 4,
+    "risk_control": 7,
+    "composite": 6.6
+  },
+  "market_judgment": {
+    "phase": "中期",
+    "style": "成长占优"
+  },
+  "industry_judgment": {},
+  "catalysts": [],
+  "valuation_scenarios": {
+    "optimistic_eps": 1.0,
+    "neutral_eps": 0.93,
+    "pessimistic_eps": 0.79,
+    "current_price": 39.06
+  },
+  "wyckoff_stage": {
+    "stage": "Markup"
+  },
+  "five_red_flags": {
+    "flag1_extreme_valuation": "green",
+    "flag2_unstable_earnings": "green",
+    "flag3_high_volatility": "yellow",
+    "flag4_liquidity_risk": "green",
+    "flag5_stop_loss_feasibility": "green"
+  },
+  "stop_loss": {
+    "hard_stop": 31.63,
+    "trailing_stop": 37.0,
+    "suggested_max_pct": 10,
+    "current_pct": 0
+  },
+  "scenarios": null,
+  "company_type": "成长型",
+  "anti_hallucination_flags": [
+    "### ⚠️ AI幻觉检查（v1.1 §0.4 强制执行）",
+    "| ROE(加权) | 14.87% | **17.64%** | 3.62%（⚠️单季非年化） | ↑ 改善 |",
+    "| 近3月最大回撤 | -27.5%（35.85→26.00） | ⚠️ 幅度较大 |",
+    "| 主力净流入（超大单+大单） | 5/22净流入1.21亿，5/25数据缺失 | 近5日偏流入 | ⚠️ 数据不全 |",
+    "| 结构健康度 | ⚠️ 数据不足（主力[9]备源失败） | — | 无法完整判定 |"
+  ],
+  "data_source_status": {},
+  "signals": {
+    "S05": false,
+    "S06": true,
+    "S07": false,
+    "S12": false,
+    "S17": true,
+    "S18": false,
+    "S26": false,
+    "S27": true,
+    "S28": false,
+    "S29": false
+  }
+}

@@ -1,0 +1,66 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "FAIL",
+    "attempts":  0,
+    "loop_context":  "Stage 6/6: 后评估 | Executor: PostEval",
+    "updated":  "2026-05-26T05:34:32",
+    "started":  "2026-05-26T05:27:25",
+    "gate_2":  "PASS",
+    "task":  "深度分析方法论v1.1→v1.2升级：证据等级评定(L1-L4)+竞争格局对比+估值可比对标+资金面替代指标+概念映射差距分析+并购催化剂量化模板+景气度监视器",
+    "stage":  6,
+    "next_action":  "advance",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "c:/Users/34269/Documents/Claude/股票分析/审计报告/架构设计/design_methodology_v1.2_deep_analysis.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-26T05:29:50",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "c:/Users/34269/Documents/Claude/股票分析/审计报告/架构设计/gate_1b_review_methodology_v1.2_20260526.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-26T05:31:02",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "c:/Users/34269/Documents/Claude/股票分析/重点股票/深度分析/深度分析逻辑/深度分析.md",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-26T05:34:09",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安",
+                              "stage":  4,
+                              "entered":  "2026-05-26T05:34:14"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红枫",
+                              "stage":  5,
+                              "entered":  "2026-05-26T05:34:24"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "PostEval",
+                              "stage":  6,
+                              "entered":  "2026-05-26T05:34:32"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "后评估",
+    "gate_3":  "PENDING",
+    "executor":  "PostEval"
+}

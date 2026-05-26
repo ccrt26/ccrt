@@ -866,8 +866,8 @@ if ($bridgeSuggestions.Count -gt 0) {
 # ============================================================
 Write-Host "`n===== 生成逻辑诊断报告 ====="
 
-$pdfFile = Join-Path $reportDir "逻辑诊断报告_${prevDateStr}.pdf"
-$htmlFile = Join-Path $reportDir "逻辑诊断报告_${prevDateStr}.html"
+$pdfFile = Join-Path $reportDir "重点股票每日分析后评估报告_${prevDateStr}.pdf"
+$htmlFile = Join-Path $reportDir "重点股票每日分析后评估报告_${prevDateStr}.html"
 
 # CSS
 $CSS = @'

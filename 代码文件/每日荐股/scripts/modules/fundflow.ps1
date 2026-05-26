@@ -18,9 +18,9 @@ function Get-StockFundFlow {
         -PrimaryName "东方财富[9]" `
         -PrimaryCall {
             $market = if ($Code.StartsWith("6")) { "1" } else { "0" }
-            $url = "http://push2.eastmoney.com/api/qt/stock/fflow/daykline/get?cb=&secid=${market}.${Code}&fields1=f1,f2,f3,f4,f5,f6,f7&fields2=f51,f52,f53,f54,f55&lmt=${Days}"
+            $url = "https://push2.eastmoney.com/api/qt/stock/fflow/kline/get?cb=&secid=${market}.${Code}&fields1=f1,f2,f3,f4,f5,f6,f7&fields2=f51,f52,f53,f54,f55&lmt=${Days}"
 
-            $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
+            $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -DisableKeepAlive -Headers @{"User-Agent"="Mozilla/5.0"}
             $json = $r.Content | ConvertFrom-Json
             $result = @()
             if ($json.data -and $json.data.klines) {
@@ -42,7 +42,7 @@ function Get-StockFundFlow {
         -BackupCall {
             Write-Warning "[资金流] 东方财富[9]失败，尝试同花顺THS备源..."
             $thsResult = Invoke-ThsFallback -Action "stock_fund_flow" -Params "--code $Code --days $Days"
-            if ($thsResult -and $thsResult.Count -gt 0) {
+            if ($thsResult -and (-not $thsResult.error) -and @($thsResult).Count -gt 0) {
                 $script:SourceUsed["FundFlow"] = "同花顺[THS]"
                 return $thsResult
             }

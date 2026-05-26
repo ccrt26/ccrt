@@ -103,7 +103,7 @@ if ($Mode -eq "eval") {
     Write-Log -Msg ("Eval target date: " + $evalDate + " (most recent trading day)")
     $reportDateStr = $evalDate -replace '-',''
     # 白皮书 §1.4: 评估报告_YYYYMMDD (YYYYMMDD=T日)
-    $reportName = "评估报告_$reportDateStr"
+    $reportName = "每日荐股后评估报告_$reportDateStr"
     if ($LogOnly) {
         Write-Log -Msg "[LogOnly] Skipping actual evaluation"
     } else {
@@ -380,6 +380,12 @@ $gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"
 if (Test-Path $gitAuto) {
     $reportParent = Split-Path $reportDir -Parent
     $null = & $gitAuto -Module "daily_pick" -Paths @($reportParent, "历史数据\") -Message "每日荐股全流程产出"
+}
+
+# Auto-commit: engineering sweep (catch-all for any remaining uncommitted changes)
+$gitSweep = Join-Path $rootDir "代码文件\tools\git_sweep.ps1"
+if (Test-Path $gitSweep) {
+    $null = & $gitSweep
 }
 
 Write-Log -Msg "Execution Summary:"

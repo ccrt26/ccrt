@@ -13,6 +13,7 @@
     sector_ranking   -- 行业排名（替代 东方财富[7]）
     sector_kline     -- 行业K线（替代 东方财富板块K线）
     sector_fund_flow -- 行业资金流向（替代 东方财富[10]）
+    stock_fund_flow  -- 个股资金流向（替代 东方财富[9] push2，10jqka源）
     sector_list      -- 行业列表（获取THS行业名称与代码）
     financial        -- 财务数据（替代 东方财富[3]）
 
@@ -168,6 +169,98 @@ def do_sector_fund_flow(top=30, period="即时"):
     df["TurnRate"] = 0.0
 
     result = df.head(top).to_dict(orient="records")
+    safe_json(result)
+
+
+def _parse_unit(val):
+    """解析带单位的资金值: '7.58亿', '-117.45万' → float"""
+    if val is None:
+        return 0.0
+    s = str(val).strip()
+    if not s:
+        return 0.0
+    try:
+        return float(s)
+    except ValueError:
+        pass
+    unit_map = {"亿": 1e8, "万": 1e4, "%": 1.0}
+    for unit, mult in unit_map.items():
+        if unit in s:
+            try:
+                return float(s.replace(unit, "").replace(",", "").replace("+", "")) * mult
+            except ValueError:
+                return 0.0
+    try:
+        return float(s.replace(",", "").replace("%", ""))
+    except ValueError:
+        return 0.0
+
+
+def do_stock_fund_flow(code, days=5):
+    """
+    个股资金流向日K线 — 同花顺(10jqka) [THS备源]
+    替代东方财富[9] push2 API（已限制匿名访问）。
+    输出字段与 Get-StockFundFlow 对齐：
+      Date, MainNetInflow, SuperLargeIn, LargeIn, SmallIn
+
+    注意: 10jqka仅提供当日实时排行（流入/流出/净额），
+    无超大单/大单/中小单拆分。字段做近似映射：
+      MainNetInflow←净额, SuperLargeIn←流入资金, LargeIn←流出资金。
+    首调用~8秒下载全市场5191只股票，后续调用从10分钟缓存读取。
+    """
+    import akshare as ak
+    import os
+    import time as _time
+
+    # 使用临时文件缓存全量数据（同一管线内10分钟有效）
+    tmpdir = os.environ.get("TEMP") or os.environ.get("TMPDIR") or "/tmp"
+    cache_file = os.path.join(tmpdir, "ths_stock_fund_flow_cache.json")
+    cache_ttl = 600
+
+    df = None
+    if os.path.exists(cache_file):
+        try:
+            mtime = os.path.getmtime(cache_file)
+            if _time.time() - mtime < cache_ttl:
+                df = pd.read_json(cache_file)
+        except Exception:
+            pass
+
+    if df is None or df.empty:
+        df = ak.stock_fund_flow_individual(symbol="即时")
+        if df is not None and not df.empty:
+            try:
+                df.to_json(cache_file)
+            except Exception:
+                pass
+
+    if df is None or df.empty:
+        safe_json([{"error": "no data from 10jqka"}])
+        return
+
+    # 过滤目标代码（列名: 股票代码）
+    code_col = "股票代码" if "股票代码" in df.columns else df.columns[1]
+    code_str = str(code).zfill(6)
+    stock = df[df[code_col].astype(str).str.replace("'", "").str.strip().str.zfill(6) == code_str]
+
+    if stock.empty:
+        safe_json([{"error": f"stock {code} not found in fund flow data"}])
+        return
+
+    row = stock.iloc[0]
+    # THS列: 序号,股票代码,股票简称,最新价,涨跌幅,换手率,流入资金,流出资金,净额,成交额
+    net_flow = _parse_unit(row.get("净额", 0))
+    inflow = _parse_unit(row.get("流入资金", 0))
+    outflow = _parse_unit(row.get("流出资金", 0))
+
+    result = [{
+        "Date": _time.strftime("%Y-%m-%d"),
+        "MainNetInflow": net_flow,
+        "SuperLargeIn": inflow,
+        "LargeIn": outflow,
+        "SmallIn": 0.0,
+    }]
+
     safe_json(result)
 
 
@@ -455,6 +548,7 @@ def main():
     parser = argparse.ArgumentParser(description="同花顺(THS)数据桥接")
     parser.add_argument("action", choices=[
         "sector_ranking", "sector_kline", "sector_fund_flow",
+        "stock_fund_flow",
         "sector_list", "financial", "commodity_price",
         "margin_detail", "institute_recommend", "profit_forecast"
     ], help="操作类型")
@@ -479,6 +573,11 @@ def main():
             do_sector_kline(name=args.name, days=args.days)
         elif args.action == "sector_fund_flow":
             do_sector_fund_flow(top=args.top, period=args.period)
+        elif args.action == "stock_fund_flow":
+            if not args.code:
+                print(json.dumps({"error": "--code is required for stock_fund_flow"}))
+                sys.exit(1)
+            do_stock_fund_flow(code=args.code, days=args.days)
         elif args.action == "sector_list":
             do_sector_list()
         elif args.action == "financial":

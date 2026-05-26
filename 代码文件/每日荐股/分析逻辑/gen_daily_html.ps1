@@ -412,7 +412,7 @@ Write-Host "[OK] HTML: $htmlFile ($htmlSize bytes)"
 
 if (-not $SkipPdf) {
     $edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    $pdfFile = Join-Path $OutDir "每日股票推荐_${dc}_landscape.pdf"
+    $pdfFile = Join-Path $OutDir "每日股票推荐_${dc}.pdf"
     if (Test-Path $edge) {
         $ok = ConvertTo-Pdf -HtmlFile $htmlFile -PdfFile $pdfFile -EdgePath $edge -Landscape -MinSize 50000
         if ($ok) {

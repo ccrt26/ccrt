@@ -1,0 +1,83 @@
+{
+  "$schema": "铁律量化 — 东方财富Skills MCP API返回结构定义 v1.0",
+  "endpoint": {
+    "url": "https://mkapi2.dfcfs.com/finskillshub/api/claw/query",
+    "method": "POST",
+    "auth": "Header: apikey",
+    "contentType": "application/json",
+    "requestBody": {
+      "toolQuery": "string (自然语言查询，如 '贵州茅台 PE PB ROE 最新')"
+    }
+  },
+  "response": {
+    "questionId": "string (请求唯一标识)",
+    "dataTableDTOList": [
+      {
+        "code": "string (证券代码，如 300059.SZ)",
+        "entityName": "string (证券全称)",
+        "title": "string (数据标题)",
+        "table": "object (标准化表格数据，键=指标编码, 值=数值数组)",
+        "rawTable": "object (原始表格数据)",
+        "nameMap": "object (列名映射，如 f2→最新价)",
+        "indicatorOrder": ["string (指标列排序)"],
+        "field": [
+          {
+            "returnCode": "string (指标唯一编码)",
+            "returnName": "string (指标中文名，如'最新价')",
+            "returnSourceCode": "string (原始来源编码，如 f2/CLOSE)",
+            "startDate": "string (查询起始日期)",
+            "endDate": "string (查询结束日期)",
+            "dateGranularity": "string (数据粒度: DAY/MIN)"
+          }
+        ],
+        "entityTagDTO": {
+          "secuCode": "string (纯代码，如 300059)",
+          "marketChar": "string (市场标识: .SZ/.SH)",
+          "fullName": "string (证券中文全称)",
+          "entityTypeName": "string (类型: A股/港股/债券)"
+        }
+      }
+    ],
+    "rawDataTableDTOList": "array (原始未加工数据)",
+    "condition": "string (查询条件记录)",
+    "entityTagDTOList": "array (涉事证券主体汇总，去重)"
+  },
+  "dataCategories": {
+    "quote": {
+      "skills": ["金融数据查询"],
+      "fields": ["最新价", "涨跌幅", "换手率", "PE", "PB", "市值", "成交量", "成交额"],
+      "cacheTTL_hours": 1
+    },
+    "financial": {
+      "skills": ["金融数据查询"],
+      "fields": ["ROE", "ROA", "毛利率", "净利率", "资产负债率", "营收增速", "EPS"],
+      "cacheTTL_hours": 168
+    },
+    "fundFlow": {
+      "skills": ["金融数据查询"],
+      "fields": ["主力净流入", "超大单净流入", "大单净流入", "散户净流入"],
+      "cacheTTL_hours": 6
+    },
+    "macro": {
+      "skills": ["宏观数据洞察"],
+      "fields": ["GDP", "CPI", "PPI", "PMI", "中美利差", "M1", "M2", "社融"],
+      "cacheTTL_hours": 168
+    },
+    "research": {
+      "skills": ["财经资讯穿透"],
+      "fields": ["研报标题", "机构", "评级", "目标价", "EPS预测", "发布日期"],
+      "cacheTTL_hours": 24
+    },
+    "sector": {
+      "skills": ["金融数据查询"],
+      "fields": ["板块指数", "涨跌幅", "成交额", "成分股"],
+      "cacheTTL_hours": 6
+    }
+  },
+  "rateLimit": {
+    "dailyPerSkill": 50,
+    "warnThreshold": 40,
+    "blockThreshold": 50,
+    "resetTime": "次日0点"
+  }
+}

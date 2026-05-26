@@ -20,7 +20,7 @@
 
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("daily_pick", "deep_analysis", "daily_brief", "post_eval", "data_pipeline", "pipeline_eng")]
+    [ValidateSet("daily_pick", "deep_analysis", "daily_brief", "post_eval", "data_pipeline", "pipeline_eng", "engineering")]
     [string]$Module,
 
     [Parameter(Mandatory = $true)]

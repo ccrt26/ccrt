@@ -1,0 +1,3 @@
+﻿{"timestamp":"2026-05-26 13:41:06","module":"post_eval","status":"SKIPPED","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"Path not found: 重点股票\\深度分析\\后评估","message":"深度分析后评估产出 [Quick]"}
+{"timestamp":"2026-05-26 15:42:17","module":"deep_analysis","status":"COMMITTED","commit_hash":"14c78be","files_count":11,"dry_run":false,"skip_hook":false,"error":"","message":"深度分析产出"}
+{"timestamp":"2026-05-26 16:37:34","module":"engineering","status":"DRYRUN","commit_hash":"","files_count":116,"dry_run":true,"skip_hook":false,"error":"","message":"daily sweep"}

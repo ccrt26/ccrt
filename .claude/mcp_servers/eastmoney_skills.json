@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "eastmoney_skills": {
+      "type": "http",
+      "url": "https://mkapi2.dfcfs.com/finskillshub/api/claw/query",
+      "method": "POST",
+      "headers": {
+        "apikey": "${MX_APIKEY}",
+        "Content-Type": "application/json"
+      },
+      "bodyTemplate": {
+        "toolQuery": "{{query}}"
+      },
+      "timeout": 10000,
+      "description": "东方财富妙想Skills — 官方金融数据MCP接口。覆盖行情/财务/资金流向/宏观/研报/选股。免费版50次/天/技能。",
+      "skills": ["金融数据查询", "宏观数据洞察", "财经资讯穿透", "智能选股", "量化API", "妙想问答"],
+      "rateLimit": {
+        "daily": 50,
+        "warnThreshold": 40,
+        "blockThreshold": 50
+      }
+    }
+  }
+}

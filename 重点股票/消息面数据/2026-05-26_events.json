@@ -1,0 +1,129 @@
+﻿{
+    "fetch_date":  "2026-05-26",
+    "fetch_time":  "16:32:05",
+    "total_raw":  11,
+    "total_filtered":  5,
+    "filter_stats":  {
+                         "L1_dropped":  0,
+                         "L2_dropped":  6,
+                         "L3_dropped":  0,
+                         "L4_dropped":  0
+                     },
+    "events":  [
+                   {
+                       "event_id":  "PIGEON_20260526_603019_001",
+                       "code":  "603019",
+                       "name":  "中科曙光",
+                       "category":  "经营事件",
+                       "subtype":  "其他",
+                       "title":  "中科曙光：北京市中伦律师事务所关于曙光信息产业股份有限公司差异化分红的法律意见书",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  0,
+                       "impact_score":  7.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "其他",
+                                                 "status":  "announced"
+                                             },
+                       "raw_summary":  "中科曙光：北京市中伦律师事务所关于曙光信息产业股份有限公司差异化分红的法律意见书",
+                       "publish_time":  1779724800000,
+                       "keywords":  "Q1_financial",
+                       "is_p0":  false
+                   },
+                   {
+                       "event_id":  "PIGEON_20260526_000967_001",
+                       "code":  "000967",
+                       "name":  "盈峰环境",
+                       "category":  "股东行为",
+                       "subtype":  "减持",
+                       "title":  "盈峰环境：关于持股5%以上股东减持公司股份比例触及1%整数倍的公告（中联重科）",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  -1,
+                       "impact_score":  6.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "减持",
+                                                 "status":  "announced"
+                                             },
+                       "raw_summary":  "盈峰环境：关于持股5%以上股东减持公司股份比例触及1%整数倍的公告（中联重科）",
+                       "publish_time":  1779724800000,
+                       "keywords":  "Q2_ownership",
+                       "is_p0":  false
+                   },
+                   {
+                       "event_id":  "PIGEON_20260526_000967_002",
+                       "code":  "000967",
+                       "name":  "盈峰环境",
+                       "category":  "股东行为",
+                       "subtype":  "减持",
+                       "title":  "盈峰环境：关于控股股东宁波盈峰、实际控制人及其一致行动人减持公司股份比例触及1%整数倍的公告",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  -1,
+                       "impact_score":  6.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "减持",
+                                                 "status":  "announced"
+                                             },
+                       "raw_summary":  "盈峰环境：关于控股股东宁波盈峰、实际控制人及其一致行动人减持公司股份比例触及1%整数倍的公告",
+                       "publish_time":  1779724800000,
+                       "keywords":  "Q2_ownership",
+                       "is_p0":  false
+                   },
+                   {
+                       "event_id":  "PIGEON_20260526_600114_001",
+                       "code":  "600114",
+                       "name":  "东睦股份",
+                       "category":  "并购重组",
+                       "subtype":  "并购进展",
+                       "title":  "东睦股份：东睦股份关于实施2025年度利润分配后发行股份及支付现金购买资产并募集配套资金暨关联交易所涉发行股份购买资产的股份发行价格调整的公告",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  1,
+                       "impact_score":  9.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "并购进展",
+                                                 "status":  "confirmed"
+                                             },
+                       "raw_summary":  "东睦股份：东睦股份关于实施2025年度利润分配后发行股份及支付现金购买资产并募集配套资金暨关联交易所涉发行股份购买资产的股份发行价格调整的公告",
+                       "publish_time":  1779724800000,
+                       "keywords":  "Q1_financial,Q2_ownership",
+                       "is_p0":  false
+                   },
+                   {
+                       "event_id":  "PIGEON_20260526_601689_001",
+                       "code":  "601689",
+                       "name":  "拓普集团",
+                       "category":  "业绩",
+                       "subtype":  "正式财报",
+                       "title":  "拓普集团：拓普集团关于举办2025年度暨2026年第一季度业绩说明会的公告",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  0,
+                       "impact_score":  8.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "正式财报",
+                                                 "status":  "announced"
+                                             },
+                       "raw_summary":  "拓普集团：拓普集团关于举办2025年度暨2026年第一季度业绩说明会的公告",
+                       "publish_time":  1779724800000,
+                       "keywords":  "Q1_financial",
+                       "is_p0":  false
+                   }
+               ]
+}

@@ -1,0 +1,81 @@
+{
+  "versions": {
+    "v1.0": {
+      "release_date": "2026-05-26",
+      "mandatory_chapters": 9,
+      "checklist_items": 12,
+      "has_sub_sector_drilldown": false,
+      "has_catalyst_mandatory": false,
+      "has_valuation_matrix": false,
+      "has_anti_hallucination": false,
+      "has_fundflow_3day": false,
+      "has_price_tier_5level": false,
+      "scoring_weights": {
+        "fundamental": 20, "technical": 20, "fund_flow": 15,
+        "sector": 18, "valuation": 12, "risk_control": 15
+      }
+    },
+    "v1.1": {
+      "release_date": "2026-05-26",
+      "mandatory_chapters": 9,
+      "checklist_items": 15,
+      "has_sub_sector_drilldown": true,
+      "has_catalyst_mandatory": true,
+      "has_valuation_matrix": true,
+      "has_anti_hallucination": true,
+      "has_fundflow_3day": true,
+      "has_price_tier_5level": true,
+      "scoring_weights": {
+        "fundamental": 20, "technical": 20, "fund_flow": 15,
+        "sector": 18, "valuation": 12, "risk_control": 15
+      },
+      "scoring_weights_sector_frenzy": {
+        "fundamental": 17.5, "technical": 20, "fund_flow": 15,
+        "sector": 25, "valuation": 9.5, "risk_control": 15
+      },
+      "new_vs_v1_0": [
+        "子赛道三步下钻(§一.3)",
+        "催化剂强制识别≥2条(§一.4)",
+        "估值方法选择矩阵(价值/成长/周期三分法)",
+        "AI幻觉防范(§0.4)",
+        "资金面3日/5日连续趋势+结构维度(§六.3)",
+        "价格梯队五层+多源交叉验证(§八.3)"
+      ]
+    },
+    "v1.2": {
+      "release_date": "2026-05-26",
+      "mandatory_chapters": 9,
+      "checklist_items": 18,
+      "has_sub_sector_drilldown": true,
+      "has_catalyst_mandatory": true,
+      "has_valuation_matrix": true,
+      "has_anti_hallucination": true,
+      "has_fundflow_3day": true,
+      "has_price_tier_5level": true,
+      "has_concept_gap_analysis": true,
+      "has_competitive_position": true,
+      "has_industry_monitor": true,
+      "has_ma_quantification": true,
+      "has_evidence_risk_discount": true,
+      "has_alternative_indicators": true,
+      "scoring_weights": {
+        "fundamental": 20, "technical": 20, "fund_flow": 15,
+        "sector": 18, "valuation": 12, "risk_control": 15
+      },
+      "scoring_weights_sector_frenzy": {
+        "fundamental": 17.5, "technical": 20, "fund_flow": 15,
+        "sector": 25, "valuation": 9.5, "risk_control": 15
+      },
+      "new_vs_v1_1": [
+        "概念映射差距分析(§1.1a)",
+        "竞争位势对比(§1.5)",
+        "行业景气度监视器(§2.4)",
+        "可比公司估值对标(§5.2)",
+        "并购催化剂量化(§5.3)",
+        "L3证据风险折扣(§七)",
+        "数据缺失替代指标",
+        "证据等级跟踪制度"
+      ]
+    }
+  }
+}

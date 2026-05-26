@@ -17,7 +17,7 @@ $dataFile = Join-Path $rootDir "代码文件\数据\data_scored.json"
 $edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
 # 输出目录 — 白皮书 §1.4: 评估报告存储于事后评估目录
-$evalReportDir = Join-Path $rootDir "每日荐股\事后评估"
+$evalReportDir = Join-Path $rootDir "每日荐股\评估报告"
 if (-not (Test-Path $evalReportDir)) { New-Item -ItemType Directory -Path $evalReportDir -Force | Out-Null }
 
 # records.csv 路径 — 白皮书 §6.1.1
@@ -545,7 +545,7 @@ $html = @"
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>评估报告_$(Get-Date -Format "yyyyMMdd")</title>
+<title>每日荐股后评估报告_$(Get-Date -Format "yyyyMMdd")</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: "Microsoft YaHei", "微软雅黑", sans-serif; color: #333; background: #f0f2f5; padding: 20px; }
@@ -590,7 +590,7 @@ tr:nth-child(even) { background: #f8f9fa; }
 <body>
 <div class="report-page">
     <div class="header">
-        <h1>评估报告_$(Get-Date -Format "yyyyMMdd")</h1>
+        <h1>每日荐股后评估报告_$(Get-Date -Format "yyyyMMdd")</h1>
         <div class="subtitle">
             评估 T日荐股表现 | 生成时间: $execDate | 评估股票: $totalEval 只
             <span class="env-tag env-$(if($marketEnv -eq '强势'){'strong'}elseif($marketEnv -eq '弱势'){'weak'}else{'normal'})">$marketEnv 市场</span>
@@ -680,14 +680,14 @@ tr:nth-child(even) { background: #f8f9fa; }
 
 # 使用白皮书§1.4命名规范：评估报告_YYYYMMDD
 $reportDateStr = if ($ReportDate) { $ReportDate } else { (Get-Date).AddDays(-1).ToString("yyyyMMdd") }
-$htmlFile = Join-Path $evalReportDir "评估报告_$reportDateStr.html"
+$htmlFile = Join-Path $evalReportDir "每日荐股后评估报告_$reportDateStr.html"
 [System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.UTF8Encoding]::new($false))
 Write-Host "  HTML: $htmlFile"
 
 # ============================================================
 # 转 PDF
 # ============================================================
-$pdfFile = Join-Path $evalReportDir "评估报告_$reportDateStr.pdf"
+$pdfFile = Join-Path $evalReportDir "每日荐股后评估报告_$reportDateStr.pdf"
 
 if (-not (Test-Path $edgePath)) {
     $altEdge = Get-ChildItem "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -ErrorAction SilentlyContinue

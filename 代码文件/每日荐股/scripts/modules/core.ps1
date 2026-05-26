@@ -1,6 +1,6 @@
 ﻿# 铁律量化 - 股票数据获取模块
-# 数据源：腾讯行情[1], 新浪K线[2], 东方财富财务[3][6][7][9][10]
-# 最后更新：2026-05-25
+# 数据源：腾讯行情[1], 新浪K线[2], 东方财富财务[3][6][7][9][10], 必盈[13], baostock[14], 东方财富Skills MCP[15]
+# 最后更新：2026-05-26
 # 合规状态：详见 §1.5 数据源实测状态
 
 # ============================================================
@@ -24,19 +24,19 @@ function Invoke-ThrottledApiCall {
 }
 
 $script:SourcePriority = @{
-    Quote      = @("腾讯", "新浪", "必盈")             # 实时行情（必盈[13]JSON格式更稳定）
-    KLine      = @("新浪", "腾讯", "必盈", "baostock") # K线（必盈[13]5种除权+baostock[14]第三备源）
-    Financial  = @("东方财富", "同花顺", "必盈", "baostock") # 财务（baostock[14]第四备源：杜邦/现金流/成长）
-    Sector     = @("东方财富", "同花顺")                # 板块行情（THS备份）
-    FundFlow   = @("东方财富", "同花顺")                # 资金流向（THS备份；必盈免费版不含此接口）
+    Quote      = @("腾讯", "新浪", "必盈", "Skills")       # 实时行情（Skills[15]MCP第四备源）
+    KLine      = @("新浪", "腾讯", "必盈", "baostock") # K线（必盈[13]5种除权+baostock[14]第三备源；Skills不覆盖K线）
+    Financial  = @("东方财富", "同花顺", "必盈", "baostock", "Skills") # 财务（Skills[15]MCP第五备源）
+    Sector     = @("东方财富", "同花顺", "Skills")        # 板块行情（Skills[15]MCP第三备源）
+    FundFlow   = @("东方财富", "同花顺", "Skills")        # 资金流向（Skills[15]MCP第三备源，含主力资金）
     Northbound = @("东方财富")                         # 北向资金（独有；2024/08政策变更后个股数据不可得）
-    Research   = @("东方财富", "同花顺")                # 研报（THS盈利预测备源）
+    Research   = @("东方财富", "同花顺", "Skills")        # 研报（Skills[15]财经资讯穿透备源，消灭独有源风险）
     Margin     = @("东方财富", "同花顺")                # 融资融券（THS官方交易所数据备源）
     Billboard  = @("东方财富")                         # 龙虎榜（独有，仅供参考）
     InstitutionVisit = @("东方财富")                   # 机构调研（独有，仅供参考）
     Dividend   = @("baostock")                        # 分红除权（[14]独有源，标注"仅供参考"）
     AdjustFactor = @("baostock")                      # 复权因子（[14]独有源）
-    Macro      = @("baostock")                        # 宏观经济（[14]独有源：利率/准备金/货币供应/SHIBOR）
+    Macro      = @("baostock", "Skills")                # 宏观经济（Skills[15]宏观数据洞察备源，消灭独有源风险）
     Forecast   = @("baostock")                        # 业绩预告（[14]独有源，标注"仅供参考"）
     Express    = @("baostock")                        # 业绩快报（[14]独有源，标注"仅供参考"）
 }
@@ -68,6 +68,14 @@ $script:CacheTTL = @{
     MacroRRR    = 720       # 准备金率（极少调整），30天
     Forecast    = 24        # 业绩预告（财报季高频），日频
     Express     = 72        # 业绩快报（公布后不变），3天
+    # Skills[15] MCP数据源（东方财富妙想Skills，免费版50次/天/技能）
+    # 限流由MCP层管理，>=45次告警, >=50次熔断降级至缓存[C]
+    SkillsQuote     = 1     # 行情1h
+    SkillsFinancial = 168   # 财务7d
+    SkillsSector    = 6     # 板块6h
+    SkillsFundFlow  = 6     # 资金流6h
+    SkillsMacro     = 168   # 宏观7d
+    SkillsResearch  = 24    # 研报24h
 }
 
 function Save-DataCache {
