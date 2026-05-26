@@ -34,7 +34,7 @@ param(
     [switch]$SkipHook
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $script:ProjectRoot = $PSScriptRoot | Split-Path -Parent | Split-Path -Parent
 $LogFile = Join-Path $script:ProjectRoot "临时报告\git_autocommit.log"
 $LogDir = Split-Path $LogFile -Parent
@@ -131,14 +131,25 @@ try {
 
     # Commit
     $commitMsg = "auto: $Module — $Message [$(Get-Date -Format 'yyyyMMdd')]"
-    $hookFlag = if ($SkipHook) { "--no-verify" } else { "" }
     if ($SkipHook) {
         Write-AutocommitLog -Status "WARNING" -CommitHash "" -FileCount 0 -ErrorMsg "SkipHook used"
     }
 
-    $commitResult = git commit -m $commitMsg $hookFlag 2>&1
+    $gitArgs = @('commit', '-m', $commitMsg)
+    if ($SkipHook) { $gitArgs += '--no-verify' }
+
+    $stderr = @()
+    $commitResult = & git $gitArgs 2>&1 | ForEach-Object {
+        if ($_ -is [System.Management.Automation.ErrorRecord]) {
+            $stderr += $_.Exception.Message
+            $_.Exception.Message
+        } else {
+            $_
+        }
+    }
     if ($LASTEXITCODE -ne 0) {
-        $err = ($commitResult -join '; ') -replace '"', "'"
+        $err = ($stderr -join '; ') -replace '"', "'"
+        if (-not $err) { $err = ($commitResult -join '; ') -replace '"', "'" }
         Write-AutocommitLog -Status "FAILED" -CommitHash "" -FileCount 0 -ErrorMsg $err
         Write-Output '{"success": false, "commit_hash": "", "files_count": 0, "error": "' + $err + '"}'
         Pop-Location
