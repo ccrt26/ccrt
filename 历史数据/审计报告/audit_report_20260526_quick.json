@@ -6,7 +6,7 @@
                    {
                        "status":  "PASS",
                        "section":  "F",
-                       "detail":  "216条日志, Phase: ",
+                       "detail":  "313条日志, Phase: ",
                        "id":  "1",
                        "desc":  "今日流水线执行"
                    },
@@ -81,9 +81,9 @@
                        "desc":  "紧急豁免记录"
                    },
                    {
-                       "status":  "PASS",
+                       "status":  "WARN",
                        "section":  "A",
-                       "detail":  "关键数据文件均在48h内更新",
+                       "detail":  "1 个文件过期",
                        "id":  "3",
                        "desc":  "数据新鲜度"
                    },
@@ -115,9 +115,9 @@
                                      },
                                      {
                                          "section":  "A",
-                                         "pass":  5,
+                                         "pass":  4,
                                          "fail":  0,
-                                         "warn":  0
+                                         "warn":  1
                                      },
                                      {
                                          "section":  "H",
@@ -127,18 +127,19 @@
                                      }
                                  ],
                     "fail":  1,
-                    "pass":  7,
+                    "pass":  6,
                     "total_checks":  13,
                     "overall_verdict":  "WARN",
-                    "warn":  5
+                    "warn":  6
                 },
     "audit":  {
                   "date":  "20260526",
-                  "timestamp":  "2026-05-26 20:06:34",
+                  "timestamp":  "2026-05-26 23:49:13",
                   "version":  "1.0",
                   "mode":  "quick"
               },
     "warnings":  [
+                     "[A-3] 数据新鲜度 — 1 个文件过期",
                      "[G-1] 红线合规检查 — check_redlines 有WARN项(exit=1)，无FAIL",
                      "[G-2] 版本一致性检查 — version_supervisor 有提醒项(exit=-1)",
                      "[H-1] 紧急豁免记录 — 改进日志.md 不存在",

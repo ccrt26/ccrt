@@ -320,13 +320,13 @@
                        "Source":  "core_stock"
                    }
                ],
-    "BuildTime":  "2026-05-26 20:00:09",
+    "BuildTime":  "2026-05-26 23:43:17",
     "CoreCount":  53,
     "TotalCount":  53,
     "HotSectors":  {
                        "SectorName":  "公路铁路运输",
                        "ChangePct":  -0.8,
                        "Turnover":  898.3,
-                       "TotalScore":  12
+                       "TotalScore":  17
                    }
 }

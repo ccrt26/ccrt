@@ -1,5 +1,5 @@
 {
-    "_generated_at":  "2026-05-26T20:06:26",
+    "_generated_at":  "2026-05-26T23:49:05",
     "Stocks":  [
                    {
                        "Rating":  "观察",
@@ -8,7 +8,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  89.61,
-                                         "StopLoss":  0,
+                                         "StopLoss":  74.88,
                                          "Resistance":  95.89
                                      },
                        "Name":  "中科曙光",
@@ -69,7 +69,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  65.34,
-                                         "StopLoss":  0,
+                                         "StopLoss":  59.54,
                                          "Resistance":  74.64
                                      },
                        "Name":  "拓普集团",
@@ -129,13 +129,13 @@
                        "Price":  39.26,
                        "Date":  "20260526",
                        "KeyLevels":  {
-                                         "Support":  34.28,
-                                         "StopLoss":  0,
+                                         "Support":  34.33,
+                                         "StopLoss":  31.39,
                                          "Resistance":  41.22
                                      },
                        "Name":  "东睦股份",
                        "Signals":  {
-                                       "ShortBull_Score":  4,
+                                       "ShortBull_Score":  3,
                                        "Bollinger_Position":  "触及上轨",
                                        "FundFlow_Trend":  "主力流出",
                                        "Research_Coverage":  "有(1篇)",
@@ -143,10 +143,10 @@
                                        "MA_Trend":  "多头排列",
                                        "MACD_Position":  "零轴上金叉",
                                        "MidBull_Score":  1,
-                                       "RSI_Value":  67.6,
-                                       "Volume_Relation":  "量能正常",
+                                       "RSI_Value":  68.9,
+                                       "Volume_Relation":  "缩量上涨",
                                        "LongBull_Score":  1,
-                                       "ADX_Value":  30.6,
+                                       "ADX_Value":  32.6,
                                        "RSI_Zone":  "中性偏强",
                                        "Debt_Level":  "低杠杆",
                                        "Wyckoff_Phase":  "拉升区 (Markup)",
@@ -160,7 +160,7 @@
                                           "Long":  "长期中性",
                                           "Mid":  "趋势看空",
                                           "Confidence":  "高(\u003e70%)",
-                                          "ShortBull":  4,
+                                          "ShortBull":  3,
                                           "LongBull":  1
                                       },
                        "Code":  "600114",
@@ -173,8 +173,8 @@
                                                     "AvgChg":  0.6
                                                 },
                                       "Capital":  42,
-                                      "Composite":  43,
-                                      "Technical":  75,
+                                      "Composite":  40,
+                                      "Technical":  64,
                                       "Sentiment":  23,
                                       "Fundamental":  20
                                   },
@@ -191,7 +191,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  72.56,
-                                         "StopLoss":  0,
+                                         "StopLoss":  51.58,
                                          "Resistance":  77.01
                                      },
                        "Name":  "多瑞医药",
@@ -252,7 +252,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  11.19,
-                                         "StopLoss":  0,
+                                         "StopLoss":  6.68,
                                          "Resistance":  13.89
                                      },
                        "Name":  "盈峰环境",
@@ -313,7 +313,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  8.51,
-                                         "StopLoss":  0,
+                                         "StopLoss":  7.96,
                                          "Resistance":  9.11
                                      },
                        "Name":  "上海电气",
@@ -374,7 +374,7 @@
                        "Date":  "20260526",
                        "KeyLevels":  {
                                          "Support":  55.23,
-                                         "StopLoss":  0,
+                                         "StopLoss":  41.99,
                                          "Resistance":  92.6
                                      },
                        "Name":  "长电科技",
@@ -430,7 +430,7 @@
                    }
                ],
     "_generated_by":  "run_keystock_analysis.ps1",
-    "GeneratedAt":  "2026-05-26 20:06:26",
+    "GeneratedAt":  "2026-05-26 23:49:05",
     "Date":  "20260526",
     "_schema_version":  "1.0"
 }
