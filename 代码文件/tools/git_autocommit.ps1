@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Git auto-commit shared module. Called at the end of each pipeline output stage.
 .DESCRIPTION

@@ -11,6 +11,9 @@ Desktop.ini
 .claude/agents/*.json
 .claude/settings.local.json
 
+# 预提交钩子日志（每次提交自动写入，非源码）
+.claude/hooks/pre-commit.log
+
 # 临时文件
 *.tmp
 *.temp
