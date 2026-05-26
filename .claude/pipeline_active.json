@@ -1,21 +1,25 @@
-{
-    "schema_version": "1.0",
-    "active": false,
-    "task": "",
-    "executor": "",
-    "stage": 0,
-    "stage_name": "",
-    "next_action": "done",
-    "gate_1": "PENDING",
-    "gate_2": "PENDING",
-    "gate_3": "PENDING",
-    "attempts": 0,
-    "max_attempts": 3,
-    "l3_triggered": false,
-    "l3_reason": "",
-    "files_scope": [],
-    "loop_context": "",
-    "stage_history": [],
-    "started": "2026-05-26T02:05:00",
-    "updated": "2026-05-26T02:05:00"
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PENDING",
+    "attempts":  0,
+    "loop_context":  "",
+    "updated":  "2026-05-26T01:05:49",
+    "started":  "2026-05-26T01:05:49",
+    "gate_2":  "PENDING",
+    "task":  "",
+    "stage":  0,
+    "next_action":  "none",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "stage_history":  [
+
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "",
+    "gate_3":  "PENDING",
+    "executor":  ""
 }
