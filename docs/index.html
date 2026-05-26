@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信鸽 · 消息面事件面板</title>
+<style>
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: #1f2b47;
+  --bg-card-hover: #253355;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0b8;
+  --text-muted: #6a6a80;
+  --accent-up: #e74c3c;
+  --accent-down: #27ae60;
+  --accent-neutral: #7f8c8d;
+  --accent-blue: #3498db;
+  --accent-orange: #e67e22;
+  --accent-purple: #8e44ad;
+  --border: #2a3550;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: "Microsoft YaHei", "微软雅黑", "Segoe UI", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+  border-bottom: 2px solid var(--accent-blue);
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.header h1 .icon { margin-right: 8px; }
+.header .meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.header .meta span { margin-left: 16px; }
+.status-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.status-dot.ok { background: var(--accent-down); }
+.status-dot.warn { background: var(--accent-orange); }
+
+/* Main container */
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+/* Summary cards */
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.summary-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 18px 20px;
+  border-left: 3px solid var(--accent-blue);
+  box-shadow: var(--shadow);
+}
+.summary-card:nth-child(1) { border-left-color: var(--accent-blue); }
+.summary-card:nth-child(2) { border-left-color: var(--accent-orange); }
+.summary-card:nth-child(3) { border-left-color: var(--accent-purple); }
+.summary-card:nth-child(4) { border-left-color: var(--accent-down); }
+.summary-card .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.summary-card .value {
+  font-size: 28px;
+  font-weight: 700;
+}
+.summary-card .sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Filter bar */
+.filter-bar {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.filter-bar label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-right: 4px;
+}
+.filter-bar select,
+.filter-bar input[type="text"] {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.filter-bar select:focus,
+.filter-bar input:focus {
+  border-color: var(--accent-blue);
+}
+.filter-bar select { min-width: 100px; cursor: pointer; }
+.filter-bar input[type="text"] { width: 160px; }
+
+.dir-btns { display: flex; gap: 0; border-radius: 4px; overflow: hidden; }
+.dir-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s;
+  margin: 0;
+  border-right: none;
+}
+.dir-btn:last-child { border-right: 1px solid var(--border); }
+.dir-btn:hover { background: var(--bg-card-hover); }
+.dir-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+}
+.dir-btn.reset-btn {
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+
+.loading { color: var(--text-muted); font-size: 13px; padding: 8px 0; }
+
+/* Stats panel */
+.stats-panel {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.stats-toggle {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.stats-toggle:hover { color: var(--text-primary); }
+.stats-toggle .arrow { transition: transform .2s; font-size: 11px; }
+.stats-toggle .arrow.open { transform: rotate(90deg); }
+.stats-content { display: none; margin-top: 16px; }
+.stats-content.show { display: block; }
+
+.stats-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.stats-table th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 12px;
+}
+.stats-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.bar-wrap {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 80px;
+}
+.bar { height: 100%; border-radius: 4px; transition: width .3s; }
+.bar.l1 { background: var(--accent-down); }
+.bar.l2 { background: var(--accent-orange); }
+.bar.l3 { background: var(--accent-purple); }
+.bar.l4 { background: var(--accent-blue); }
+
+/* Event cards */
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.events-header h2 { font-size: 16px; font-weight: 600; }
+.events-header .count { font-size: 13px; color: var(--text-secondary); }
+
+.event-list { display: flex; flex-direction: column; gap: 10px; }
+
+.event-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  border-left: 4px solid var(--accent-neutral);
+  transition: background .2s;
+  cursor: pointer;
+}
+.event-card:hover { background: var(--bg-card-hover); }
+.event-card.dir-up { border-left-color: var(--accent-up); }
+.event-card.dir-down { border-left-color: var(--accent-down); }
+.event-card.dir-neutral { border-left-color: var(--accent-neutral); }
+
+.event-detail {
+  display: none;
+  grid-column: 1 / -1;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.event-card.expanded .event-detail { display: block; }
+.event-detail .detail-title {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  white-space: normal;
+  line-height: 1.7;
+}
+.event-detail .detail-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.event-detail .detail-meta span { display: flex; align-items: center; gap: 4px; }
+
+/* PDF primary link button */
+.event-detail .detail-action-pdf { margin-bottom: 8px; }
+.event-detail .btn-pdf-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--accent-up), #c0392b);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 2px 8px rgba(231,76,60,0.3);
+}
+.event-detail .btn-pdf-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231,76,60,0.4);
+}
+
+/* cninfo secondary link */
+.event-detail .detail-action-cninfo { margin-top: 6px; }
+.event-detail .btn-cninfo-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-family: inherit;
+  transition: border-color .2s, color .2s;
+}
+.event-detail .btn-cninfo-secondary:hover {
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+}
+
+/* Content sections */
+.event-detail .detail-section { margin-bottom: 12px; }
+.event-detail .detail-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* Degraded state */
+.event-detail .detail-degraded {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-style: italic;
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.event-detail .detail-content {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.8;
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.event-detail .loading-content {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 24px;
+}
+.event-detail .fetch-error {
+  color: var(--accent-orange);
+  font-size: 12px;
+}
+.event-card .expand-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.event-main { min-width: 0; }
+.event-stock {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.event-stock .code { color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+.event-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.tag-category { background: rgba(52,152,219,.2); color: #5dade2; }
+.tag-subtype { background: rgba(230,126,34,.2); color: #f0b27a; }
+.tag-direction {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.tag-up { background: rgba(231,76,60,.2); color: var(--accent-up); }
+.tag-down { background: rgba(39,174,96,.2); color: var(--accent-down); }
+.tag-neutral { background: rgba(127,140,141,.2); color: var(--accent-neutral); }
+
+.event-title {
+  font-size: 13px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+.event-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.event-score {
+  text-align: center;
+  align-self: center;
+}
+.score-num {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+.score-bar-wrap {
+  width: 60px;
+  height: 6px;
+  background: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 6px auto 0;
+}
+.score-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent-blue);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .summary-row { grid-template-columns: repeat(2, 1fr); }
+  .filter-bar { flex-direction: column; align-items: flex-start; }
+  .container { padding: 12px; }
+}
+</style>
+<script>window.__PIGEON_DATA__ = {"events": [{"event_id": "PIGEON_20260526_603019_001", "code": "603019", "name": "中科曙光", "category": "经营事件", "subtype": "其他", "title": "中科曙光：北京市中伦律师事务所关于曙光信息产业股份有限公司差异化分红的法律意见书", "direction": 0, "impact_score": 7.0, "fetch_date": "2026-05-26", "actual_return_T1": null, "actual_return_T3": null, "actual_return_T5": null, "market_return_T1": null, "market_return_T3": null, "market_return_T5": null, "excess_return_T1": null, "excess_return_T3": null, "excess_return_T5": null, "verified": false, "verified_date": null, "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-26/1225329890.PDF", "content": "：曙光信息产业股份有限公司北京市中伦律师事务所（以下简称“本所”）接受曙光信息产业股份有限公司（以下简称", "announcement_id": "1225329890", "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=603019&announcementId=1225329890"}, {"event_id": "PIGEON_20260526_000967_001", "code": "000967", "name": "盈峰环境", "category": "股东行为", "subtype": "减持", "title": "盈峰环境：关于持股5%以上股东减持公司股份比例触及1%整数倍的公告（中联重科）", "direction": -1, "impact_score": 6.0, "fetch_date": "2026-05-26", "actual_return_T1": null, "actual_return_T3": null, "actual_return_T5": null, "market_return_T1": null, "market_return_T3": null, "market_return_T5": null, "excess_return_T1": null, "excess_return_T3": null, "excess_return_T5": null, "verified": false, "verified_date": null, "content": "证券代码：000967 公告编号：2026-072 号1盈峰环境科技集团股份有限公司关于持股 5%以上股东减持公司股份比例触及", "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-26/1225329453.PDF", "announcement_id": "1225329453", "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=000967&announcementId=1225329453"}, {"event_id": "PIGEON_20260526_000967_002", "code": "000967", "name": "盈峰环境", "category": "股东行为", "subtype": "减持", "title": "盈峰环境：关于控股股东宁波盈峰、实际控制人及其一致行动人减持公司股份比例触及1%整数倍的公告", "direction": -1, "impact_score": 6.0, "fetch_date": "2026-05-26", "actual_return_T1": null, "actual_return_T3": null, "actual_return_T5": null, "market_return_T1": null, "market_return_T3": null, "market_return_T5": null, "excess_return_T1": null, "excess_return_T3": null, "excess_return_T5": null, "verified": false, "verified_date": null, "content": "证券代码：000967 公告编号：2026-071 号1盈峰环境科技集团股份有限公司关于控股股东宁波盈峰", "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-26/1225329454.PDF", "announcement_id": "1225329454", "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=000967&announcementId=1225329454"}, {"event_id": "PIGEON_20260526_600114_001", "code": "600114", "name": "东睦股份", "category": "并购重组", "subtype": "并购进展", "title": "东睦股份：东睦股份关于实施2025年度利润分配后发行股份及支付现金购买资产并募集配套资金暨关联交易所涉发行股份购买资产的股份发行价格调整的公告", "direction": 1, "impact_score": 9.0, "fetch_date": "2026-05-26", "actual_return_T1": null, "actual_return_T3": null, "actual_return_T5": null, "market_return_T1": null, "market_return_T3": null, "market_return_T5": null, "excess_return_T1": null, "excess_return_T3": null, "excess_return_T5": null, "verified": false, "verified_date": null, "content": "证券代码：600114 股票简称：东睦股份 编号：2026-0411东睦新材料集团股份有限公司NBTM", "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-26/1225328517.PDF", "announcement_id": "1225328517", "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=600114&announcementId=1225328517"}, {"event_id": "PIGEON_20260526_601689_001", "code": "601689", "name": "拓普集团", "category": "业绩", "subtype": "正式财报", "title": "拓普集团：拓普集团关于举办2025年度暨2026年第一季度业绩说明会的公告", "direction": 0, "impact_score": 8.0, "fetch_date": "2026-05-26", "actual_return_T1": null, "actual_return_T3": null, "actual_return_T5": null, "market_return_T1": null, "market_return_T3": null, "market_return_T5": null, "excess_return_T1": null, "excess_return_T3": null, "excess_return_T5": null, "verified": false, "verified_date": null, "content": "证券代码：601689 证券简称：拓普集团 公告编号：2026-041宁波拓普集团股份有限公司2025", "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-26/1225328562.PDF", "announcement_id": "1225328562", "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=601689&announcementId=1225328562"}], "stocks": [{"code": "600114", "name": "东睦股份", "market": "sh"}, {"code": "603019", "name": "中科曙光", "market": "sh"}, {"code": "301075", "name": "多瑞医药", "market": "sz"}, {"code": "601689", "name": "拓普集团", "market": "sh"}, {"code": "000967", "name": "盈峰环境", "market": "sz"}, {"code": "601727", "name": "上海电气", "market": "sh"}, {"code": "600584", "name": "长电科技", "market": "sh"}], "daily_stats": [{"date": "2026-05-26", "fetch_time": "19:00:59", "total_raw": 11, "total_filtered": 0, "filter_stats": {"L1_dropped": 0, "L2_dropped": 6, "L3_dropped": 5, "L4_dropped": 0}}], "last_update": "2026-05-26 23:24:26"};</script>
+</head>
+<body>
+
+<div class="header">
+  <h1><span class="icon">&#128330;</span>信鸽 · 消息面事件面板</h1>
+  <div class="meta">
+    <span id="status-indicator"><span class="status-dot ok"></span>在线</span>
+    <span id="last-update">加载中...</span>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Summary cards -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="label">事件总数</div>
+      <div class="value" id="sum-total">--</div>
+      <div class="sub" id="sum-today">今日新增 --</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">覆盖股票</div>
+      <div class="value" id="sum-covered">--</div>
+      <div class="sub">共 7 只重点股票</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">平均影响分</div>
+      <div class="value" id="sum-impact">--</div>
+      <div class="sub">满分 10.0</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">方向分布</div>
+      <div class="value" id="sum-direction">--</div>
+      <div class="sub" id="sum-direction-label"></div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div>
+      <label>股票</label>
+      <select id="filter-stock"><option value="">全部股票</option></select>
+    </div>
+    <div>
+      <label>日期</label>
+      <select id="filter-date"><option value="">全部日期</option></select>
+    </div>
+    <div>
+      <label>类别</label>
+      <select id="filter-category">
+        <option value="">全部类别</option>
+        <option value="业绩">业绩</option>
+        <option value="并购重组">并购重组</option>
+        <option value="股东行为">股东行为</option>
+        <option value="经营事件">经营事件</option>
+        <option value="监管合规">监管合规</option>
+        <option value="行业政策">行业政策</option>
+      </select>
+    </div>
+    <div>
+      <label>方向</label>
+      <span class="dir-btns">
+        <button class="dir-btn active" data-dir="">全部</button>
+        <button class="dir-btn" data-dir="1">利好</button>
+        <button class="dir-btn" data-dir="-1">利空</button>
+        <button class="dir-btn" data-dir="0">中性</button>
+      </span>
+      <button class="dir-btn reset-btn" id="btn-reset">重置</button>
+    </div>
+    <div style="flex:1"></div>
+    <div>
+      <input type="text" id="filter-search" placeholder="搜索标题关键词...">
+    </div>
+  </div>
+
+  <!-- Filter stats panel -->
+  <div class="stats-panel">
+    <div class="stats-toggle" id="stats-toggle">
+      <span>过滤漏斗统计</span>
+      <span class="arrow" id="stats-arrow">&#9654;</span>
+    </div>
+    <div class="stats-content" id="stats-content">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>时间</th>
+            <th>原始</th>
+            <th>L1 黑名单</th>
+            <th>L2 关键词</th>
+            <th>L3 去重</th>
+            <th>L4 限流</th>
+            <th>入库</th>
+          </tr>
+        </thead>
+        <tbody id="stats-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Event list -->
+  <div class="events-header">
+    <h2>事件列表</h2>
+    <span class="count" id="event-count"></span>
+  </div>
+  <div id="event-list" class="event-list">
+    <div class="loading">加载中...</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    信鸽信息采集系统 v1.0 · 铁律量化 · 数据源: CNINFO + baostock + 东方财富
+  </div>
+</div>
+
+<script>
+(function() {
+  var state = { stock: "", date: "", category: "", direction: "", search: "" };
+  var dirBtns = document.querySelectorAll(".dir-btn[data-dir]");
+
+  function dirLabel(d) {
+    if (d > 0) return "利好";
+    if (d < 0) return "利空";
+    return "中性";
+  }
+
+  function dirTagClass(d) {
+    if (d > 0) return "tag-up";
+    if (d < 0) return "tag-down";
+    return "tag-neutral";
+  }
+
+  function dirCardClass(d) {
+    if (d > 0) return "dir-up";
+    if (d < 0) return "dir-down";
+    return "dir-neutral";
+  }
+
+  // Fetch helpers
+  function api(path) {
+    var D = window.__PIGEON_DATA__ || {};
+    D.events = D.events || [];
+    D.stocks = D.stocks || [];
+    D.daily_stats = D.daily_stats || [];
+
+    // /api/events — 筛选在 loadEvents 中使用 query string 传递
+    if (path.indexOf("/api/events") === 0) {
+      var qs = path.indexOf("?") >= 0 ? path.slice(path.indexOf("?")) : "";
+      var params = new URLSearchParams(qs);
+      var events = D.events.slice();
+
+      if (params.get("code")) {
+        var codes = params.get("code").split(",").map(function(c) { return c.trim(); });
+        events = events.filter(function(e) { return codes.indexOf(e.code) !== -1; });
+      }
+      if (params.get("date")) {
+        events = events.filter(function(e) { return e.fetch_date === params.get("date"); });
+      }
+      if (params.get("category")) {
+        var cats = params.get("category").split(",").map(function(c) { return c.trim(); });
+        events = events.filter(function(e) { return cats.indexOf(e.category) !== -1; });
+      }
+      if (params.get("direction")) {
+        var dirs = params.get("direction").split(",").map(function(d) { return parseInt(d.trim()); });
+        events = events.filter(function(e) { return dirs.indexOf(e.direction) !== -1; });
+      }
+      if (params.get("search")) {
+        var q = params.get("search").toLowerCase();
+        events = events.filter(function(e) { return e.title && e.title.toLowerCase().indexOf(q) !== -1; });
+      }
+
+      events.sort(function(a, b) { return (b.impact_score || 0) - (a.impact_score || 0); });
+      return Promise.resolve(events);
+    }
+
+    // /api/summary
+    if (path === "/api/summary") {
+      var stockCodes = D.stocks.map(function(s) { return s.code; });
+      var covered = {};
+      var todayDate = "";
+      var todayCount = 0;
+      var totalImpact = 0;
+      var byCat = {};
+      var byDir = { positive: 0, negative: 0, neutral: 0 };
+
+      D.events.forEach(function(e) {
+        var fd = e.fetch_date || "";
+        if (fd) {
+          covered[e.code] = true;
+          totalImpact += (e.impact_score || 0);
+          var cat = e.category || "其他";
+          byCat[cat] = (byCat[cat] || 0) + 1;
+          var d = e.direction || 0;
+          if (d > 0) byDir.positive++;
+          else if (d < 0) byDir.negative++;
+          else byDir.neutral++;
+          if (!todayDate || fd > todayDate) todayDate = fd;
+          if (fd === todayDate) todayCount++;
+        }
+      });
+
+      var avgImpact = D.events.length > 0 ? Math.round(totalImpact / D.events.length * 10) / 10 : 0;
+      var lastFetch = D.daily_stats.length > 0
+        ? D.daily_stats[0].date + " " + D.daily_stats[0].fetch_time
+        : "";
+
+      return Promise.resolve({
+        total_events: D.events.length,
+        today_events: todayCount,
+        today_date: todayDate,
+        stocks_covered: Object.keys(covered).length,
+        total_stocks: stockCodes.length,
+        avg_impact_score: avgImpact,
+        by_category: byCat,
+        by_direction: byDir,
+        last_fetch_time: lastFetch
+      });
+    }
+
+    // /api/stocks
+    if (path === "/api/stocks") return Promise.resolve(D.stocks);
+
+    // /api/daily_stats
+    if (path === "/api/daily_stats") return Promise.resolve(D.daily_stats);
+
+    // /api/event-content
+    if (path.indexOf("/api/event-content") === 0) {
+      var u = new URL(path, "http://localhost");
+      var evId = u.searchParams.get("event_id");
+      var ev = D.events.find(function(e) { return e.event_id === evId; });
+      if (ev && ev.content) return Promise.resolve({ event_id: evId, content: ev.content, cached: true });
+      return Promise.resolve(null);
+    }
+
+    return Promise.resolve(null);
+  }
+
+  // Render summary
+  function renderSummary() {
+    api("/api/summary").then(function(d) {
+      if (!d) return;
+      document.getElementById("sum-total").textContent = d.total_events;
+      document.getElementById("sum-today").textContent = "今日新增 " + d.today_events;
+      document.getElementById("sum-covered").textContent = d.stocks_covered + " / " + d.total_stocks;
+      document.getElementById("sum-impact").textContent = d.avg_impact_score;
+      var pos = d.by_direction ? d.by_direction.positive : 0;
+      var neg = d.by_direction ? d.by_direction.negative : 0;
+      var neu = d.by_direction ? d.by_direction.neutral : 0;
+      document.getElementById("sum-direction").textContent = pos + " / " + neg + " / " + neu;
+      document.getElementById("sum-direction-label").textContent = "利好 / 利空 / 中性";
+      document.getElementById("last-update").textContent = "最后采集: " + (d.last_fetch_time || "--");
+    });
+  }
+
+  // Populate filter dropdowns
+  function loadFilters() {
+    api("/api/stocks").then(function(stocks) {
+      var sel = document.getElementById("filter-stock");
+      sel.innerHTML = '<option value="">全部股票</option>';
+      if (stocks) {
+        stocks.forEach(function(s) {
+          sel.innerHTML += '<option value="' + s.code + '">' + s.name + ' (' + s.code + ')</option>';
+        });
+      }
+    });
+    api("/api/events").then(function(events) {
+      if (!events || !events.length) return;
+      var dates = {};
+      events.forEach(function(e) {
+        if (e.fetch_date) dates[e.fetch_date] = true;
+      });
+      var sel = document.getElementById("filter-date");
+      sel.innerHTML = '<option value="">全部日期</option>';
+      Object.keys(dates).sort().reverse().forEach(function(d) {
+        sel.innerHTML += '<option value="' + d + '">' + d + '</option>';
+      });
+    });
+  }
+
+  // Render events
+  function loadEvents() {
+    var params = [];
+    if (state.stock) params.push("code=" + encodeURIComponent(state.stock));
+    if (state.date) params.push("date=" + encodeURIComponent(state.date));
+    if (state.category) params.push("category=" + encodeURIComponent(state.category));
+    if (state.direction) params.push("direction=" + encodeURIComponent(state.direction));
+    if (state.search) params.push("search=" + encodeURIComponent(state.search));
+    var qs = params.length ? "?" + params.join("&") : "";
+
+    document.getElementById("event-list").innerHTML = '<div class="loading">加载中...</div>';
+
+    api("/api/events" + qs).then(function(events) {
+      var container = document.getElementById("event-list");
+      document.getElementById("event-count").textContent = events ? "共 " + events.length + " 条事件" : "";
+
+      if (!events || events.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">&#128236;</div><p>暂无符合条件的事件</p></div>';
+        return;
+      }
+
+      var html = "";
+      events.forEach(function(e) {
+        var score = e.impact_score || 0;
+        var scorePct = Math.min(100, score * 10);
+        var hasPdf = e.pdf_url && e.pdf_url.length > 0;
+        var hasContent = e.content && e.content.length > 10;
+        var hasCninfoUrl = e.cninfo_url && e.cninfo_url.length > 0;
+        var eventId = escAttr(e.event_id || "");
+
+        // Content loading area (populated on expand)
+        var contentArea = '';
+        if (hasPdf) {
+          contentArea =
+            '<div class="detail-section">' +
+              '<div class="detail-section-title">公告全文</div>' +
+              '<div class="detail-content loading-content" data-event-id="' + eventId + '">' +
+                '<div class="loading-spinner"></div> 加载原文中...' +
+              '</div>' +
+            '</div>';
+        } else if (hasContent) {
+          contentArea =
+            '<div class="detail-section">' +
+              '<div class="detail-section-title">公告摘要</div>' +
+              '<div class="detail-content">' + esc(e.content) + '</div>' +
+            '</div>';
+        }
+
+        // PDF direct link (always show when available)
+        var pdfBtn = '';
+        if (hasPdf) {
+          pdfBtn =
+            '<div class="detail-action-pdf">' +
+              '<a class="btn-pdf-primary" href="' + escAttr(e.pdf_url) + '" target="_blank" rel="noopener">' +
+                '&#128196; 查看PDF原文（直接下载）' +
+              '</a>' +
+            '</div>';
+        }
+
+        // cninfo detail link (secondary, may not work)
+        var cninfoBtn = '';
+        if (hasCninfoUrl) {
+          cninfoBtn =
+            '<div class="detail-action-cninfo">' +
+              '<a class="btn-cninfo-secondary" href="' + escAttr(e.cninfo_url) + '" target="_blank" rel="noopener">' +
+                '&#128279; 在巨潮资讯网查看' +
+              '</a>' +
+            '</div>';
+        }
+
+        // Degraded state
+        var degradedMsg = '';
+        if (!hasPdf && !hasContent && !hasCninfoUrl) {
+          degradedMsg = '<div class="detail-degraded">此事件暂无原文链接（来源: 研报/业绩预告/财新资讯）</div>';
+        }
+
+        var detailHtml =
+          '<div class="event-detail">' +
+            '<div class="detail-title">' + esc(e.title) + '</div>' +
+            '<div class="detail-meta">' +
+              '<span>采集日期: ' + esc(e.fetch_date || "") + '</span>' +
+              '<span>事件ID: ' + esc(e.event_id || "") + '</span>' +
+              '<span>影响分: ' + score.toFixed(1) + '</span>' +
+              (e.announcement_id ? '<span>公告ID: ' + esc(e.announcement_id) + '</span>' : '') +
+            '</div>' +
+            contentArea +
+            pdfBtn +
+            cninfoBtn +
+            degradedMsg +
+          '</div>';
+
+        html +=
+          '<div class="event-card ' + dirCardClass(e.direction) + '">' +
+            '<div class="event-main">' +
+              '<div class="event-stock">' +
+                esc(e.name) + '<span class="code">' + esc(e.code) + '</span>' +
+              '</div>' +
+              '<div class="event-tags">' +
+                '<span class="tag tag-category">' + esc(e.category || "") + '</span>' +
+                '<span class="tag tag-subtype">' + esc(e.subtype || "") + '</span>' +
+                '<span class="tag-direction ' + dirTagClass(e.direction) + '">' + dirLabel(e.direction) + '</span>' +
+              '</div>' +
+              '<div class="event-title" title="' + escAttr(e.title) + '">' + esc(e.title) + '</div>' +
+              '<div class="event-meta">' +
+                '<span>采集: ' + esc(e.fetch_date || "") + '</span>' +
+                '<span>ID: ' + esc(e.event_id || "") + '</span>' +
+              '</div>' +
+              '<div class="expand-hint">&#9654; 点击查看详情</div>' +
+            '</div>' +
+            '<div class="event-score">' +
+              '<div class="score-num">' + score.toFixed(1) + '</div>' +
+              '<div class="score-bar-wrap"><div class="score-bar" style="width:' + scorePct + '%"></div></div>' +
+            '</div>' +
+            detailHtml +
+          '</div>';
+      });
+      container.innerHTML = html;
+
+      // Bind click-to-expand: fetch full text from server on expand
+      var cards = container.querySelectorAll(".event-card");
+      cards.forEach(function(card) {
+        card.addEventListener("click", function(e) {
+          if (e.target.tagName === "A" || e.target.closest("a")) return;
+          var wasExpanded = card.classList.contains("expanded");
+          card.classList.toggle("expanded");
+
+          // Fetch full text on expand
+          if (!wasExpanded) {
+            var loadingEl = card.querySelector(".loading-content");
+            if (loadingEl) {
+              var evId = loadingEl.getAttribute("data-event-id");
+              if (evId) {
+                fetch("/api/event-content?event_id=" + encodeURIComponent(evId))
+                  .then(function(r) { return r.json(); })
+                  .then(function(d) {
+                    if (d && d.content) {
+                      loadingEl.innerHTML = esc(d.content);
+                      loadingEl.classList.remove("loading-content");
+                    } else {
+                      loadingEl.innerHTML = '<span class=\"fetch-error\">原文加载失败，请点击下方PDF按钮直接查看</span>';
+                      loadingEl.classList.remove("loading-content");
+                    }
+                  })
+                  .catch(function() {
+                    loadingEl.innerHTML = '<span class=\"fetch-error\">原文加载失败，请点击下方PDF按钮直接查看</span>';
+                    loadingEl.classList.remove("loading-content");
+                  });
+              }
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Stats panel
+  function loadStats() {
+    api("/api/daily_stats").then(function(stats) {
+      if (!stats || !stats.length) return;
+      var tbody = document.getElementById("stats-tbody");
+      var html = "";
+      stats.forEach(function(s) {
+        var fs = s.filter_stats || {};
+        var raw = s.total_raw || 0;
+        var l1 = fs.L1_dropped || 0;
+        var l2 = fs.L2_dropped || 0;
+        var l3 = fs.L3_dropped || 0;
+        var l4 = fs.L4_dropped || 0;
+        var out = s.total_filtered || 0;
+        var maxVal = Math.max(raw, l1, l2, l3, l4, 1);
+        html += "<tr>" +
+          "<td>" + esc(s.date) + "</td>" +
+          "<td>" + esc(s.fetch_time || "") + "</td>" +
+          "<td><b>" + raw + "</b></td>" +
+          "<td><div class='bar-wrap'><div class='bar l1' style='width:" + (l1/maxVal*100) + "%'></div></div> " + l1 + "</td>" +
+          "<td><div class='bar-wrap'><div class='bar l2' style='width:" + (l2/maxVal*100) + "%'></div></div> " + l2 + "</td>" +
+          "<td><div class='bar-wrap'><div class='bar l3' style='width:" + (l3/maxVal*100) + "%'></div></div> " + l3 + "</td>" +
+          "<td><div class='bar-wrap'><div class='bar l4' style='width:" + (l4/maxVal*100) + "%'></div></div> " + l4 + "</td>" +
+          "<td><b>" + out + "</b></td>" +
+        "</tr>";
+      });
+      tbody.innerHTML = html;
+    });
+  }
+
+  function esc(s) {
+    if (!s) return "";
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  function escAttr(s) {
+    if (!s) return "";
+    return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  // Filter change handlers
+  function onFilterChange() {
+    state.stock = document.getElementById("filter-stock").value;
+    state.date = document.getElementById("filter-date").value;
+    state.category = document.getElementById("filter-category").value;
+    loadEvents();
+  }
+
+  document.getElementById("filter-stock").addEventListener("change", onFilterChange);
+  document.getElementById("filter-date").addEventListener("change", onFilterChange);
+  document.getElementById("filter-category").addEventListener("change", onFilterChange);
+
+  dirBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      dirBtns.forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      state.direction = btn.getAttribute("data-dir");
+      loadEvents();
+    });
+  });
+
+  var searchTimer = null;
+  document.getElementById("filter-search").addEventListener("input", function() {
+    clearTimeout(searchTimer);
+    var self = this;
+    searchTimer = setTimeout(function() {
+      state.search = self.value;
+      loadEvents();
+    }, 300);
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", function() {
+    document.getElementById("filter-stock").value = "";
+    document.getElementById("filter-date").value = "";
+    document.getElementById("filter-category").value = "";
+    document.getElementById("filter-search").value = "";
+    dirBtns.forEach(function(b) { b.classList.remove("active"); });
+    dirBtns[0].classList.add("active");
+    state = { stock: "", date: "", category: "", direction: "", search: "" };
+    loadEvents();
+  });
+
+  // Stats toggle
+  document.getElementById("stats-toggle").addEventListener("click", function() {
+    var content = document.getElementById("stats-content");
+    var arrow = document.getElementById("stats-arrow");
+    content.classList.toggle("show");
+    arrow.classList.toggle("open");
+  });
+
+  // Init
+  renderSummary();
+  loadFilters();
+  loadEvents();
+  loadStats();
+})();
+</script>
+</body>
+</html>

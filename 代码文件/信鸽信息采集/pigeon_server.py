@@ -1,5 +1,6 @@
 # L0 — 信鸽消息面Web面板服务器
 # 设计文档: 审计报告/架构设计/design_pigeon_web_v1.0.md
+# 云部署: 支持 Render/Railway，PORT/DATA_DIR/AUTH_TOKEN 从环境变量读取
 
 import http.server
 import json
@@ -8,19 +9,30 @@ import glob
 import urllib.parse
 import urllib.request
 import sys
-import hashlib
+import io
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
-DATA_DIR = os.path.join(PROJECT_ROOT, "重点股票", "消息面数据")
+
+# 环境变量覆盖（云部署用），本地默认值向后兼容
+DATA_DIR = os.environ.get("DATA_DIR", os.path.join(PROJECT_ROOT, "重点股票", "消息面数据"))
 CONTENT_CACHE_DIR = os.path.join(DATA_DIR, "content_cache")
-CONFIG_PATH = os.path.join(SCRIPT_DIR, "pigeon_config.json")
+CONFIG_PATH = os.environ.get("CONFIG_PATH", os.path.join(SCRIPT_DIR, "pigeon_config.json"))
+AUTH_TOKEN = os.environ.get("AUTH_TOKEN", "")
+
 
 def load_json(path):
     if not os.path.exists(path):
         return None
     with open(path, "r", encoding="utf-8-sig") as f:
         return json.load(f)
+
+
+def save_json(path, data):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 
 def load_events_db():
     db_path = os.path.join(DATA_DIR, "events_db.json")
@@ -31,9 +43,11 @@ def load_events_db():
         return data
     return []
 
+
 def load_daily_stats():
     stats = []
-    for f in sorted(glob.glob(os.path.join(DATA_DIR, "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_events.json")), reverse=True):
+    pattern = os.path.join(DATA_DIR, "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_events.json")
+    for f in sorted(glob.glob(pattern), reverse=True):
         data = load_json(f)
         if data:
             stats.append({
@@ -45,14 +59,15 @@ def load_daily_stats():
             })
     return stats
 
+
 def load_stocks():
     config = load_json(CONFIG_PATH)
     if config:
         return config.get("target_stocks", [])
     return []
 
+
 def extract_pdf_text(pdf_url):
-    """Download PDF from cninfo and extract text with PyPDF2. Returns full text string or None."""
     try:
         from PyPDF2 import PdfReader
         req = urllib.request.Request(pdf_url, headers={
@@ -73,19 +88,17 @@ def extract_pdf_text(pdf_url):
         print(f"[pigeon-web] PDF extract error: {e}")
         return None
 
+
 def get_event_content(event_id):
-    """Get full text content for an event. Checks cache first, then downloads PDF."""
     os.makedirs(CONTENT_CACHE_DIR, exist_ok=True)
     cache_file = os.path.join(CONTENT_CACHE_DIR, f"{event_id}.txt")
 
-    # Check cache
     if os.path.exists(cache_file):
         with open(cache_file, "r", encoding="utf-8") as f:
             cached = f.read()
         if cached.strip():
             return {"content": cached, "cached": True}
 
-    # Find event in db and download PDF
     events = load_events_db()
     event = next((e for e in events if e.get("event_id") == event_id), None)
     if not event or not event.get("pdf_url"):
@@ -104,7 +117,6 @@ def get_event_content(event_id):
 
     return None
 
-import io
 
 class PigeonHandler(http.server.SimpleHTTPRequestHandler):
 
@@ -126,13 +138,28 @@ class PigeonHandler(http.server.SimpleHTTPRequestHandler):
     def send_error_json(self, status, message, detail=""):
         self.send_json({"error": message, "detail": detail}, status)
 
+    def check_auth(self):
+        """检查 Authorization Bearer token（仅当 AUTH_TOKEN 已配置时）"""
+        if not AUTH_TOKEN:
+            return True
+        auth = self.headers.get("Authorization", "")
+        expected = f"Bearer {AUTH_TOKEN}"
+        return auth == expected
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
 
-        # API routes
-        if path == "/api/events":
+        if path == "/api/health":
+            self.send_json({
+                "status": "ok",
+                "version": "1.1",
+                "data_dir": DATA_DIR,
+                "events_count": len(load_events_db()),
+                "auth_enabled": bool(AUTH_TOKEN)
+            })
+        elif path == "/api/events":
             self.handle_events(params)
         elif path == "/api/event-content":
             self.handle_event_content(params)
@@ -143,14 +170,61 @@ class PigeonHandler(http.server.SimpleHTTPRequestHandler):
         elif path == "/api/stocks":
             self.handle_stocks()
         elif path == "/" or path == "":
-            self.send_json({"error": "use /pigeon_dashboard.html"}, 400)
+            self.send_response(302)
+            self.send_header("Location", "/pigeon_dashboard.html")
+            self.end_headers()
         else:
             super().do_GET()
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path == "/api/sync":
+            self.handle_sync()
+        else:
+            self.send_error_json(404, "not found")
+
+    def handle_sync(self):
+        if not self.check_auth():
+            self.send_error_json(401, "unauthorized", "需要有效的 AUTH_TOKEN")
+            return
+
+        content_length = int(self.headers.get("Content-Length", 0))
+        if content_length == 0:
+            self.send_error_json(400, "empty body")
+            return
+
+        body = self.rfile.read(content_length)
+        try:
+            data = json.loads(body.decode("utf-8"))
+        except json.JSONDecodeError as e:
+            self.send_error_json(400, "invalid json", str(e))
+            return
+
+        saved = {}
+
+        if "events_db" in data:
+            db_path = os.path.join(DATA_DIR, "events_db.json")
+            save_json(db_path, data["events_db"])
+            saved["events_db"] = len(data["events_db"])
+
+        if "daily_stats" in data:
+            for stat in data["daily_stats"]:
+                date = stat.get("date", "")
+                if date:
+                    stat_path = os.path.join(DATA_DIR, f"{date}_events.json")
+                    save_json(stat_path, stat)
+            saved["daily_stats_files"] = len(data["daily_stats"])
+
+        if "config" in data:
+            save_json(CONFIG_PATH, data["config"])
+
+        self.send_json({"status": "ok", "saved": saved})
 
     def handle_summary(self):
         events = load_events_db()
         stocks = load_stocks()
-        stock_codes = {s["code"] for s in stocks}
         covered = set()
 
         total = len(events)
@@ -159,7 +233,6 @@ class PigeonHandler(http.server.SimpleHTTPRequestHandler):
         total_impact = 0
         by_category = {}
         by_direction = {"positive": 0, "negative": 0, "neutral": 0}
-        last_fetch = ""
 
         for e in events:
             fd = e.get("fetch_date", "")
@@ -179,10 +252,7 @@ class PigeonHandler(http.server.SimpleHTTPRequestHandler):
                     today_date = fd
                 if fd == today_date:
                     today_events += 1
-                if fd > last_fetch:
-                    last_fetch = fd
 
-        # Get last_fetch_time from daily stats
         daily = load_daily_stats()
         last_fetch_time = ""
         if daily:
@@ -258,15 +328,21 @@ class PigeonHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def main():
-    port = 8888
+    port = int(os.environ.get("PORT", 8888))
     for i, arg in enumerate(sys.argv):
         if arg == "--port" and i + 1 < len(sys.argv):
             port = int(sys.argv[i + 1])
 
-    server = http.server.HTTPServer(("127.0.0.1", port), PigeonHandler)
-    print(f"[pigeon-web] 信鸽消息面面板服务启动")
-    print(f"[pigeon-web] 地址: http://127.0.0.1:{port}/pigeon_dashboard.html")
+    host = "0.0.0.0" if os.environ.get("RENDER") or os.environ.get("RAILWAY_ENVIRONMENT") else "127.0.0.1"
+    # --public 参数强制监听 0.0.0.0（本地测试用）
+    if "--public" in sys.argv:
+        host = "0.0.0.0"
+
+    server = http.server.HTTPServer((host, port), PigeonHandler)
+    print(f"[pigeon-web] 信鸽消息面面板服务启动 v1.1")
+    print(f"[pigeon-web] 地址: http://{host}:{port}/pigeon_dashboard.html")
     print(f"[pigeon-web] 数据目录: {DATA_DIR}")
+    print(f"[pigeon-web] 认证: {'已启用' if AUTH_TOKEN else '未启用（sync API 开放）'}")
     print(f"[pigeon-web] 按 Ctrl+C 停止服务")
     try:
         server.serve_forever()
