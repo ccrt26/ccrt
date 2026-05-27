@@ -90,7 +90,7 @@ function Get-BiyingQuote {
         UpdateTime   = $data.t
     }
     $script:SourceUsed["Quote"] = "必盈[13]"
-    Save-DataCache -Key "Quote_$Code" -Data $result
+    Export-DataCache -Key "Quote_$Code" -Data $result
     return $result
 }
 
@@ -128,7 +128,7 @@ function Get-BiyingKLine {
         }
     }
     $script:SourceUsed["KLine"] = "必盈[13]"
-    Save-DataCache -Key "KLine_${Code}_${Scale}_${Count}" -Data $result
+    Export-DataCache -Key "KLine_${Code}_${Scale}_${Count}" -Data $result
     return $result
 }
 
@@ -167,6 +167,6 @@ function Get-BiyingFinancial {
         }
     }
     $script:SourceUsed["Financial"] = "必盈[13]"
-    Save-DataCache -Key "Financial_${Code}_${Quarters}" -Data $result
+    Export-DataCache -Key "Financial_${Code}_${Quarters}" -Data $result
     return $result
 }
