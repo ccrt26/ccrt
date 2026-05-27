@@ -87,7 +87,6 @@ hr{border:none;border-top:1px solid #e0e0e0;margin:20px 0}</style>
 <p>></p>
 <strong>四天走势连起来看</strong>：周五大涨→周一继续冲→周二开始跌→周三加速跌。典型的高位回落走势。周一高点96.45可能就是短期顶。<br>
 <p>></p>
-<strong>数据源</strong>：近4日数据从 `data_full.json` → `Recent4Days` 字段直接读取（Date/Close/ChangePct/High/Low/Volume/TurnoverRate）。成交量已标准化为万手。历史日换手率数据不可获取，仅当日有值。<br>
 </blockquote>
 <hr>
 <h2>二、信号变化 △</h2>
@@ -119,9 +118,8 @@ hr{border:none;border-top:1px solid #e0e0e0;margin:20px 0}</style>
 <tr><td><strong>主力净流入</strong></td><td>—</td><td><strong>-5.42亿</strong></td><td>—</td><td>今日主力净流出5.42亿，占成交额约10%，属实质流出（昨日数据不可获取）</td></tr>
 <tr><td><strong>融资余额</strong></td><td>92.69亿</td><td><strong>91.73亿</strong></td><td>-9558万</td><td>融资余额连续两日下降（昨日-8427万→今日-9558万），融资客在减仓</td></tr>
 </table>
-<blockquote>
-<strong>数据源</strong>：主力净流入从 `FundMainNet`(今日=-5.42亿)/`FundMainNet_Prev`(昨日) 读取。`FundMainNet_Prev` 为null → 昨日显示"—"。融资余额从 `MarginRZYE`(今日=91.73亿)/`MarginRZYE_Prev`(昨日=92.69亿) 读取。融资净买入从 `MarginRZJME`(今日=-9558万)/`MarginRZJME_Prev`(昨日=-8427万) 读取。<br>
 <p>></p>
+<blockquote>
 <strong>资金面告诉你什么</strong>：<br>
 <p>></p>
 <strong>好消息</strong>：没有好消息。主力在跑，融资在撤，短期资金面全面偏空。但反过来想——等这波抛压释放完，该跑的都跑了，剩下的筹码会更稳定。<br>

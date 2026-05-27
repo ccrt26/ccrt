@@ -71,7 +71,6 @@ hr{border:none;border-top:1px solid #e0e0e0;margin:20px 0}</style>
 </table>
 <blockquote>
 今日特征：窄幅回调。高开39.40→日内冲39.99→回落至38.20→尾盘回勾至38.67。上影线0.32元(短)+下影线0.47元(较长)=下面有人接但上面没力气攻。振幅4.56%偏大，但缩量至29.7万手(比昨天少23%)=回调不恐慌。<br>
-<strong>数据源</strong>：近4日数据从 `data_full.json` → `Recent4Days` 字段直接读取（Date/Close/ChangePct/High/Low/Volume/TurnoverRate）。成交量统一折算为万手。换手率仅当日有值。<br>
 </blockquote>
 <hr>
 <h2>二、信号变化 △</h2>
@@ -104,9 +103,6 @@ hr{border:none;border-top:1px solid #e0e0e0;margin:20px 0}</style>
 <tr><td><strong>主力净流入</strong></td><td>—</td><td><strong>+3971万</strong></td><td>—</td><td>主力今天净买入！占成交额(29.7万手×38.67≈1.15亿)约3.5%，不算大但方向是买的</td></tr>
 <tr><td><strong>融资余额</strong></td><td>15.87亿</td><td><strong>15.65亿</strong></td><td>-2178万</td><td>融资客小规模偿还。昨天还了2959万，今天又还2178万——短线杠杆客在获利了结，不是恐慌</td></tr>
 </table>
-<blockquote>
-<strong>数据源</strong>：主力净流入从 `FundMainNet`(今日)/`FundMainNet_Prev`(昨日) 读取，融资余额从 `MarginRZYE`(今日)/`MarginRZYE_Prev`(昨日) 读取。`FundMainNet_Prev` 为null时展示"—"。<br>
-</blockquote>
 <blockquote>
 <strong>资金面告诉你什么</strong>：<br>
 <p>></p>
@@ -219,30 +215,6 @@ hr{border:none;border-top:1px solid #e0e0e0;margin:20px 0}</style>
 方法论版本：v3.5 | 证据等级：L1(折叠屏MIM铰链)<br>
 </blockquote>
 <hr>
-<h2>输出后自检（v3.5 20条）</h2>
-<table>
-<tr><th>#</th><th>检查项</th><th>标准</th><th>判定</th></tr>
-<tr><td>1</td><td>每项数据配解读</td><td>表格有"解读"列或段落后有"这意味着什么"</td><td>✅</td></tr>
-<tr><td>2</td><td>基础行情齐全+多日对比</td><td>近4日收盘/涨跌幅/成交量/日内高低</td><td>✅</td></tr>
-<tr><td>3</td><td>技术信号四行齐全</td><td>ADX/RSI/MACD/量比 + 青山判断"你要做什么"</td><td>✅</td></tr>
-<tr><td>4</td><td>资金面有操作指引</td><td>好消息/坏消息/你要做什么 三段</td><td>✅</td></tr>
-<tr><td>5</td><td>关键价位四档</td><td>R1/S0/S1/S3 — 支撑位有"这意味着什么"</td><td>✅</td></tr>
-<tr><td>6</td><td>§三解读非核查</td><td>表头"说明什么"，每行有操作含义</td><td>✅</td></tr>
-<tr><td>7</td><td>基本面七行解读</td><td>PE/ROE/毛利率/经营现金流/PS/证据等级/评分 — 每行有操作含义</td><td>✅</td></tr>
-<tr><td>8</td><td>五红旗逐项判定</td><td>深度分析五红旗(2绿3黄)已在§零间接体现</td><td>✅</td></tr>
-<tr><td>9</td><td>不做清单因果链</td><td>§五硬性纪律含禁止项</td><td>✅</td></tr>
-<tr><td>10</td><td>趋势健康度六维评分</td><td>深度分析评分表：基本面7/技术5/资金5/行业7/估值7/风控6</td><td>✅</td></tr>
-<tr><td>11</td><td>§四策略触发检查</td><td>"意味着什么"列非空，每行有操作含义</td><td>✅</td></tr>
-<tr><td>12</td><td>情景应对四档+硬性纪律</td><td>四档具体价位+含义+操作 + 五条纪律</td><td>✅</td></tr>
-<tr><td>13</td><td>管线评分作废声明</td><td>§三开头标注"管线自动评分已作废"</td><td>✅</td></tr>
-<tr><td>14</td><td>数据源逐项标注</td><td>每维来源[编号]+状态+降级替代方案</td><td>✅</td></tr>
-<tr><td>15</td><td>PDF已生成</td><td>⬜ 待生成</td><td>⬜</td></tr>
-<tr><td><strong>16</strong></td><td><strong>"说人话"无术语</strong></td><td><strong>全文无"阈值确认""趋势强度衰减"黑话，技术指标有通俗解释，每段末尾有操作指引</strong></td><td>✅</td></tr>
-<tr><td><strong>17</strong></td><td><strong>§三解读非核查</strong></td><td><strong>表头"说明什么"，每行有"对持仓意味着什么"</strong></td><td>✅</td></tr>
-<tr><td><strong>18</strong></td><td><strong>§零人话版存在</strong></td><td><strong>有深度分析大白话转述+今日一句话总结</strong></td><td>✅</td></tr>
-<tr><td><strong>19</strong></td><td><strong>§四"意味着什么"</strong></td><td><strong>策略触发表最后一列为操作含义，每行回答"你要做什么"</strong></td><td>✅</td></tr>
-<tr><td><strong>20</strong></td><td><strong>核心结论行动导向</strong></td><td><strong>"你要做的三件事"格式，含四档操作简表+硬底线</strong></td><td>✅</td></tr>
-</table>
 <div class="disclaimer">
 <p><strong>⚠️ 风险提示</strong>：本报告由AI自动生成，基于公开数据源和量化分析框架，仅供参考，不构成投资建议。投资有风险，入市需谨慎。</p>
 </div>

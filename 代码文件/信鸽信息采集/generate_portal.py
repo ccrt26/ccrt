@@ -126,10 +126,11 @@ for entry in raw_entries:
         e['week_label'] = week_label
         week_groups[key] = e
 
-# Phase 2: copy deduped files & build index
+# Phase 2: copy deduped files & build index (output uses actual date_str, not week label)
 deep_index = []
-for (code, week_label), entry in sorted(week_groups.items()):
-    out_dir = os.path.join(DEEP_OUT, code, week_label)
+for (code, _), entry in sorted(week_groups.items()):
+    date_str = entry['date_str']
+    out_dir = os.path.join(DEEP_OUT, code, date_str)
     os.makedirs(out_dir, exist_ok=True)
 
     html_url = None
@@ -137,7 +138,7 @@ for (code, week_label), entry in sorted(week_groups.items()):
     if entry['html_file']:
         dest = os.path.join(out_dir, "report.html")
         shutil.copy2(entry['html_file'], dest)
-        html_url = f"deep_analysis/{code}/{week_label}/report.html"
+        html_url = f"deep_analysis/{code}/{date_str}/report.html"
         html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
 
     pdf_url = None
@@ -145,21 +146,20 @@ for (code, week_label), entry in sorted(week_groups.items()):
     if entry['pdf_file']:
         dest = os.path.join(out_dir, "report.pdf")
         shutil.copy2(entry['pdf_file'], dest)
-        pdf_url = f"deep_analysis/{code}/{week_label}/report.pdf"
+        pdf_url = f"deep_analysis/{code}/{date_str}/report.pdf"
         pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
 
     deep_index.append({
         "code": code,
         "name": entry['name'],
-        "date": week_label,
-        "report_date": entry['date_str'],
+        "date": date_str,
         "html_url": html_url,
         "html_size": html_size,
         "pdf_url": pdf_url,
         "pdf_size": pdf_size,
         "missing": []
     })
-    print(f"  {entry['name']}({code}): {week_label} (report {entry['date_str']})")
+    print(f"  {entry['name']}({code}): {date_str}")
 
 print(f"  Deep analysis: {len(deep_index)} entries ({len(set(e['code'] for e in deep_index))} stocks)")
 
