@@ -1,0 +1,45 @@
+{
+  "tasks": [
+    {
+      "id": "81aa9727",
+      "cron": "17 9 * * 1",
+      "prompt": "玉夜每周巡检提醒：运行 `python inspect_data_health.py` 对历史数据沉淀进行完整性+准确性+交易日覆盖核查。查看PASS/WARN/FAIL汇总，对有WARN/FAIL的日期深入调查。A类缺失自动修复（含熔断保护），B/C类记录并报告。巡检结果简要汇报用户。",
+      "createdAt": 1779724075539,
+      "recurring": true,
+      "createdBySessionId": "f65cbbb0-7889-4388-98c4-542b4cf5b224",
+      "createdByPid": 13868
+    },
+    {
+      "id": "ac1bf262",
+      "cron": "37 15 * * 1-5",
+      "prompt": "执行每日重点股票操作简报：对全部8只重点股票（东睦股份600114、上海电气601727、中科曙光603019、多瑞医药301075、拓普集团601689、盈峰环境000967、科大讯飞002230、德力佳603092）各生成今日日报。严格按4段式结构（盘面速读→信号变化→风控检查→情景应对），轻量全团咨询（各≤100字）。每只股票独立输出MD到 重点股票/股票报告/{名称}({代码})/{名称}({代码})分析日报_{YYYYMMDD}.md，然后各自转换为PDF。8份报告全部完成自检清单后确认。",
+      "createdAt": 1779726260785,
+      "lastFiredAt": 1779869220456,
+      "recurring": true,
+      "createdBySessionId": "72ffd818-1203-46b2-9e58-01f63db1dc60",
+      "createdByPid": 2652,
+      "createdByProcStart": "639153785801927330"
+    },
+    {
+      "id": "c5c3f354",
+      "cron": "30 20 * * 5",
+      "prompt": "执行周度深度分析：对全部8只重点股票（东睦股份600114、上海电气601727、中科曙光603019、多瑞医药301075、拓普集团601689、盈峰环境000967、科大讯飞002230、德力佳603092）进行周度深度分析，严格遵循白皮书v1.2六章框架和全团强制咨询流程。每只股票独立输出报告到 重点股票/深度分析/深度分析报告/{名称}({代码})/{名称}({代码})深度分析报告_{YYYYMMDD}.md。完成后触发深度分析后评估（Invoke-DeepEvalBatch.ps1）生成方法论综合PDF。完成自检清单全部通过后确认输出。",
+      "createdAt": 1779726260797,
+      "recurring": true,
+      "createdBySessionId": "72ffd818-1203-46b2-9e58-01f63db1dc60",
+      "createdByPid": 2652,
+      "createdByProcStart": "639153785801927330"
+    },
+    {
+      "id": "73cfe6cb",
+      "cron": "7 * * * *",
+      "prompt": "自动Git同步清扫：运行 `powershell -NoProfile -ExecutionPolicy Bypass -File \"代码文件/tools/git_autosweep.ps1\"` 扫描未提交文件，自动分类提交（数据/报告/配置→自动提交+推送，代码文件→检查管线令牌），完成后推送到GitHub（三级回退：直连→IP→API代理）。不询问用户，直接执行。如果无未提交文件则静默退出。",
+      "createdAt": 1779848092106,
+      "lastFiredAt": 1779888068116,
+      "recurring": true,
+      "createdBySessionId": "040080e4-e7ea-4650-adb4-2571e3c555bb",
+      "createdByPid": 14016,
+      "createdByProcStart": "639154728163798980"
+    }
+  ]
+}
