@@ -43,3 +43,9 @@
 {"timestamp":"2026-05-27 21:51:06","module":"deep_analysis","status":"PDF_BLOCKED","commit_hash":"","files_count":1,"dry_run":false,"skip_hook":false,"error":"PDF删除拦截(红线§1.7): 重点股票/股票报告/东睦股份(600114)/重点关注股票日报_20260527.pdf","message":"深度分析产出"}
 {"timestamp":"2026-05-27 21:51:07","module":"deep_analysis","status":"COMMITTED","commit_hash":"8c2d18e","files_count":39,"dry_run":false,"skip_hook":false,"error":"","message":"深度分析产出"}
 {"timestamp":"2026-05-27 22:20:46","module":"data_pipeline","status":"COMMITTED","commit_hash":"6fc89a4","files_count":1,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 22:33:44","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 22:41:07","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 22:46:25","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 23:00:33","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 23:06:07","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp":"2026-05-27 23:09:56","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}

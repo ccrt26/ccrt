@@ -594,6 +594,22 @@ foreach ($s in $stocks) {
         KOpen        = if ($k) { $k.KOpen } else { @() }
         KHigh        = if ($k) { $k.KHigh } else { @() }
         KLow         = if ($k) { $k.KLow } else { @() }
+        # 东方财富K线 → 日期→换手率映射（新浪K线不含换手率，东方财富[3]含f61字段）
+        $turnoverMap = @{}
+        try {
+            $emPrefix = if ($s.Code.StartsWith("6")) { "1" } else { "0" }
+            $emKlineUrl = "http://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${emPrefix}.$($s.Code)&fields1=f1,f2,f3&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&end=20500101&lmt=5"
+            $emResp = Invoke-WebRequest -Uri $emKlineUrl -UseBasicParsing -TimeoutSec 5 -Headers @{"User-Agent"="Mozilla/5.0"}
+            $emJson = $emResp.Content | ConvertFrom-Json
+            if ($emJson.data -and $emJson.data.klines) {
+                foreach ($kl in $emJson.data.klines) {
+                    $parts = $kl -split ','
+                    if ($parts.Count -ge 11 -and $parts[10] -and [double]::TryParse($parts[10], [ref]$null)) {
+                        $turnoverMap[$parts[0]] = [double]$parts[10]
+                    }
+                }
+            }
+        } catch { }
         # 预计算近4日数据（供日报1.2节直接读取，避免AI解析K线数组）
         Recent4Days  = if ($k -and $k.KDate -and $k.KDate.Count -gt 0) {
             $recent = @()
@@ -609,10 +625,10 @@ foreach ($s in $stocks) {
                     High         = $k.KHigh[$i]
                     Low          = $k.KLow[$i]
                     Volume       = $k.KVolume[$i]
-                    TurnoverRate = $null
+                    TurnoverRate = if ($turnoverMap.ContainsKey($k.KDate[$i])) { $turnoverMap[$k.KDate[$i]] } else { $null }
                 }
             }
-            # 追加今日快照（换手率仅当日有值）
+            # 追加今日快照
             $todayStr = (Get-Date).ToString("yyyy-MM-dd")
             if ($recent.Count -eq 0 -or $recent[-1].Date -ne $todayStr) {
                 $recent += @{

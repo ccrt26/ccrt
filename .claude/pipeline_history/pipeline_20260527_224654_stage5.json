@@ -1,0 +1,59 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 5/6: 灰度部署 | Executor: 红枫",
+    "updated":  "2026-05-27T14:46:54",
+    "started":  "2026-05-27T14:26:49",
+    "gate_2":  "PASS",
+    "task":  "fix_daily_report_data_gaps",
+    "stage":  5,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_fund_fundamental_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T14:28:33",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_fund_fundamental_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-27T14:28:40",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红结",
+                              "stage":  3,
+                              "entered":  "2026-05-27T14:28:41"
+                          },
+                          {
+                              "output":  "代码文件/数据/data_full.json",
+                              "gate":  "PASS",
+                              "executor":  "新安",
+                              "validated":  "2026-05-27T14:46:53",
+                              "stage":  4
+                          },
+                          {
+                              "output":  "代码文件/数据/data_full.json",
+                              "gate":  "PASS",
+                              "executor":  "红枫",
+                              "validated":  "2026-05-27T14:46:54",
+                              "stage":  5
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "灰度部署",
+    "gate_3":  "PASS",
+    "executor":  "红枫"
+}
