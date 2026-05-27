@@ -1,4 +1,4 @@
-﻿﻿# 铁律量化 · catchup_launcher 逻辑测试
+# 铁律量化 · catchup_launcher 逻辑测试
 # 新安 验证脚本 — 模拟5个场景，验证追赶决策正确性
 param([switch]$Verbose)
 . "$PSScriptRoot/../../lib/init_encoding.ps1"

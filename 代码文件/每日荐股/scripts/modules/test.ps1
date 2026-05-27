@@ -27,11 +27,11 @@ function Test-AllDataSources {
     Write-Output "--- [5] 技术指标 ---"
     $klines120 = Get-StockKLine -Code "600036" -Count 120
     if ($klines120) {
-        $ma5 = Calc-MovingAverage -Data $klines120 -Period 5
-        $ma20 = Calc-MovingAverage -Data $klines120 -Period 20
-        $rsi = Calc-RSI -Data $klines120 -Period 14
-        $macd = Calc-MACD -Data $klines120
-        $boll = Calc-Bollinger -Data $klines120
+        $ma5 = Measure-MovingAverage -Data $klines120 -Period 5
+        $ma20 = Measure-MovingAverage -Data $klines120 -Period 20
+        $rsi = Measure-RSI -Data $klines120 -Period 14
+        $macd = Measure-MACD -Data $klines120
+        $boll = Measure-Bollinger -Data $klines120
         Write-Output "  ✅ MA5:$($ma5[-1]) MA20:$($ma20[-1]) RSI14:$($rsi[-1])"
         Write-Output "  ✅ MACD DIF:$([math]::Round($macd.DIF[-1],2)) DEA:$([math]::Round($macd.DEA[-1],2))"
         Write-Output "  ✅ Bollinger 上轨:$($boll.Upper[-1]) 中轨:$($boll.MA[-1]) 下轨:$($boll.Lower[-1])"
@@ -90,7 +90,7 @@ function Test-AllDataSources {
     Write-Output "`n====== 测试完成 ======"
 }
 
-Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-SouthboundFlow, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Calc-ADX, Calc-OBV, Calc-ATR, Test-AllDataSources
+Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-SouthboundFlow, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Measure-MovingAverage, Measure-RSI, Measure-MACD, Measure-Bollinger, Measure-ADX, Measure-OBV, Measure-ATR, Test-AllDataSources
 
 # ============================================================
 # 加载 PDF 转换验证工具（被各报告脚本共享使用）

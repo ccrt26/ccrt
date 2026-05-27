@@ -6,7 +6,7 @@ from datetime import date, datetime, timedelta
 from collections import Counter, defaultdict
 
 from . import (
-    ROOT, DATA_FILE, OUTPUT_FILE, THEME_WHITELIST_FILE, HISTORY_FILE,
+    ROOT, DATA_FILE, OUTPUT_FILE, FINAL_FILE, THEME_WHITELIST_FILE, HISTORY_FILE,
     SPECIAL_STOCK_EXEMPTIONS, EASTMONEY_TO_BROAD_INDUSTRY, BROAD_TO_EASTMONEY,
     THEME_CLASSIFICATION, COMMODITY_TO_SECTOR, STABLE_VALUE_PE_RANGE,
     PE_ABSOLUTE_THRESHOLD, PE_COND_THRESHOLD,
@@ -593,6 +593,18 @@ def main(run_date=None, verbose=False):
 
     # v2.9 路线二 阶段A: 评分历史落库
     append_history(passed, sector_phase_map, run_date)
+
+    # 生成 data_final.json（从 scored 的 passed 股票中提取最终推荐列表）
+    FINAL_KEYS = ['PE', 'MktCap', 'Name', 'TurnoverRate', 'Amplitude', 'TotalScore',
+                  'S_News', 'S_Tech', 'Industry', 'S_Base', 'ChangePct', 'S_Fund',
+                  'Price', 'Volume', 'S_Risk', 'Code', 'S_Money']
+    final_stocks = []
+    for s in passed:
+        entry = {k: s[k] for k in FINAL_KEYS if k in s}
+        final_stocks.append(entry)
+    with open(FINAL_FILE, "w", encoding="utf-8") as f:
+        json.dump(final_stocks, f, ensure_ascii=False, indent=2)
+    print(f"输出: {FINAL_FILE} ({len(final_stocks)} 只)")
 
     print("Done")
 

@@ -205,6 +205,94 @@ if (Test-Path $snapshotSrc) {
     }
 }
 
+# ---------- 交易决策归档 (情墨新架构: 01_交易决策) ----------
+$decisionSrc = Join-Path $SourceDir "模拟交易\交易决策"
+if (Test-Path $decisionSrc) {
+    $decisionTarget = Join-Path $archiveRoot "01_交易决策"
+    if (-not (Test-Path $decisionTarget)) { New-Item -ItemType Directory -Path $decisionTarget -Force | Out-Null }
+    Get-ChildItem $decisionSrc -Filter "交易指令_*.json" | ForEach-Object {
+        Copy-Item $_.FullName (Join-Path $decisionTarget $_.Name) -Force
+        Write-Log -Msg "交易决策归档: $($_.Name)"
+    }
+}
+
+# ---------- 后评估记录归档 (情墨新架构: 02_评估数据) ----------
+$evalRecordSrc = Join-Path $SourceDir "每日荐股\评估报告"
+if (Test-Path $evalRecordSrc) {
+    $evalDataTarget = Join-Path $archiveRoot "02_评估数据"
+    if (-not (Test-Path $evalDataTarget)) { New-Item -ItemType Directory -Path $evalDataTarget -Force | Out-Null }
+    foreach ($csvName in @("records.csv", "summary.csv")) {
+        $csvPath = Join-Path $evalRecordSrc $csvName
+        if (Test-Path $csvPath) {
+            $archiveName = "${dateLabel}_${csvName}"
+            Copy-Item $csvPath (Join-Path $evalDataTarget $archiveName) -Force
+            Write-Log -Msg "后评估归档: $archiveName"
+        }
+    }
+}
+
+# ---------- 评估结果归档 (情墨新架构: 02_评估数据) ----------
+$evalResultSrc = Join-Path $SourceDir "重点股票\次日评估\评估结果"
+if (Test-Path $evalResultSrc) {
+    $evalDataTarget = Join-Path $archiveRoot "02_评估数据"
+    if (-not (Test-Path $evalDataTarget)) { New-Item -ItemType Directory -Path $evalDataTarget -Force | Out-Null }
+    Get-ChildItem $evalResultSrc -Filter "评估结果_*.json" | ForEach-Object {
+        Copy-Item $_.FullName (Join-Path $evalDataTarget $_.Name) -Force
+        Write-Log -Msg "评估结果归档: $($_.Name)"
+    }
+}
+
+# ---------- 预判记录归档 (情墨新架构: 02_评估数据) ----------
+$predictSrc = Join-Path $SourceDir "重点股票\预判记录\predictions.csv"
+if (Test-Path $predictSrc) {
+    $evalDataTarget = Join-Path $archiveRoot "02_评估数据"
+    if (-not (Test-Path $evalDataTarget)) { New-Item -ItemType Directory -Path $evalDataTarget -Force | Out-Null }
+    $archiveName = "${dateLabel}_predictions.csv"
+    Copy-Item $predictSrc (Join-Path $evalDataTarget $archiveName) -Force
+    Write-Log -Msg "预判记录归档: $archiveName"
+}
+
+# ---------- 评分历史归档 (情墨新架构: 04_原始数据) ----------
+$scoreHistSrc = Join-Path $SourceDir "代码文件\数据\score_history.jsonl"
+if (Test-Path $scoreHistSrc) {
+    $archiveName = "${dateLabel}_score_history.jsonl"
+    Copy-Item $scoreHistSrc (Join-Path $archiveRoot "04_原始数据\$archiveName") -Force
+    Write-Log -Msg "评分历史归档: $archiveName"
+}
+
+# ---------- 重点股票日报镜像 (情墨新架构: 03_分析报告/重点股票) ----------
+$dailyBriefSrc = Join-Path $SourceDir "重点股票\股票报告"
+if (Test-Path $dailyBriefSrc) {
+    $dailyBriefTarget = Join-Path $archiveRoot "03_分析报告\重点股票"
+    if (-not (Test-Path $dailyBriefTarget)) { New-Item -ItemType Directory -Path $dailyBriefTarget -Force | Out-Null }
+    # robocopy mirror: 只拷贝新增/变更文件，不删除目标已有文件
+    $null = & robocopy $dailyBriefSrc $dailyBriefTarget /E /XO /NJH /NJS /NDL /R:1 /W:1 2>&1
+    if ($LASTEXITCODE -le 7) { Write-Log -Msg "重点股票日报镜像完成" }
+    else { Write-Log -Msg "重点股票日报镜像异常(exit:$LASTEXITCODE)" -Level "WARN" }
+}
+
+# ---------- 深度分析报告镜像 (情墨新架构: 03_分析报告/深度分析) ----------
+$deepAnalysisSrc = Join-Path $SourceDir "重点股票\深度分析\深度分析报告"
+if (Test-Path $deepAnalysisSrc) {
+    $deepAnalysisTarget = Join-Path $archiveRoot "03_分析报告\深度分析"
+    if (-not (Test-Path $deepAnalysisTarget)) { New-Item -ItemType Directory -Path $deepAnalysisTarget -Force | Out-Null }
+    $null = & robocopy $deepAnalysisSrc $deepAnalysisTarget /E /XO /NJH /NJS /NDL /R:1 /W:1 2>&1
+    if ($LASTEXITCODE -le 7) { Write-Log -Msg "深度分析报告镜像完成" }
+    else { Write-Log -Msg "深度分析报告镜像异常(exit:$LASTEXITCODE)" -Level "WARN" }
+}
+
+# ---------- 消息面事件数据库周期备份 (每周一备份到 _backup) ----------
+if ((Get-Date).DayOfWeek -eq 'Monday') {
+    $eventsDbSrc = Join-Path $SourceDir "重点股票\消息面数据\events_db.json"
+    if (Test-Path $eventsDbSrc) {
+        $backupTarget = Join-Path $archiveRoot "_backup"
+        if (-not (Test-Path $backupTarget)) { New-Item -ItemType Directory -Path $backupTarget -Force | Out-Null }
+        $backupName = "events_db_${dateLabel}.json"
+        Copy-Item $eventsDbSrc (Join-Path $backupTarget $backupName) -Force
+        Write-Log -Msg "消息面事件库周期备份: $backupName"
+    }
+}
+
 # ---------- 月度归档 (情墨新架构: 06_月度归档) ----------
 $monthlyDir = Join-Path $SourceDir "临时报告"
 $monthlyTarget = Join-Path $archiveRoot "06_月度归档"
@@ -222,6 +310,8 @@ if (Test-Path $monthlyDir) {
 Trim-ToLatest -ArchiveSubDir "05_参考数据"
 Trim-ToLatest -ArchiveSubDir "04_原始数据"
 Trim-ToLatest -ArchiveSubDir "03_分析报告\每日荐股"
+Trim-ToLatest -ArchiveSubDir "02_评估数据"
+Trim-ToLatest -ArchiveSubDir "01_交易决策"
 
 # 保留90天清理
 Clean-OldArchives -ArchiveSubDir "05_参考数据"
@@ -229,6 +319,8 @@ Clean-OldArchives -ArchiveSubDir "04_原始数据"
 Clean-OldArchives -ArchiveSubDir "03_分析报告\每日荐股"
 Clean-OldArchives -ArchiveSubDir "03_分析报告\后评估"
 Clean-OldArchives -ArchiveSubDir "02_评估数据"
+Clean-OldArchives -ArchiveSubDir "01_交易决策"
+Clean-OldArchives -ArchiveSubDir "01_交易快照"
 
 # ---------- 缓存清理 (P2-3) ----------
 # 旧缓存路径 (实际491文件所在)

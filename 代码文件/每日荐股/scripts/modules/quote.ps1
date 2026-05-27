@@ -32,7 +32,7 @@ function Get-StockQuote {
                 Time       = $fields[30]
             }
             $script:SourceUsed["Quote"] = "腾讯"
-            Save-DataCache -Key "Quote_$Code" -Data $result
+            Export-DataCache -Key "Quote_$Code" -Data $result
             return $result
         }
     } catch {
@@ -67,7 +67,7 @@ function Get-StockQuote {
                     Time       = $fields[31]
                 }
                 $script:SourceUsed["Quote"] = "新浪"
-            Save-DataCache -Key "Quote_$Code" -Data $result
+            Export-DataCache -Key "Quote_$Code" -Data $result
             return $result
             }
         }
@@ -77,7 +77,7 @@ function Get-StockQuote {
 
     $script:SourceUsed["Quote"] = "失败"
     # 最后兜底：从缓存加载
-    $cached = Load-DataCache -Key "Quote_$Code" -TTLHours 1
+    $cached = Import-DataCache -Key "Quote_$Code" -TTLHours 1
     if ($cached) { Write-Warning "[行情] 使用缓存数据"; return $cached }
     return $null
 }
@@ -128,7 +128,7 @@ function Get-StockQuoteBatch {
         if ($results.Count -gt 0) {
             $script:SourceUsed["Quote"] = "腾讯(批量)"
             # 逐只缓存
-            foreach ($r2 in $results) { Save-DataCache -Key "Quote_$($r2.Code)" -Data $r2 }
+            foreach ($r2 in $results) { Export-DataCache -Key "Quote_$($r2.Code)" -Data $r2 }
             return $results
         }
     } catch {
@@ -154,7 +154,7 @@ function Get-StockKLine {
     $cacheKey = "KLine_${Code}_${Scale}"
 
     # --- 缓存优先（日线K线收盘后不可变，Tier 2）---
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Count) {
         $script:SourceUsed["KLine"] = "缓存"
         return $cached
@@ -178,7 +178,7 @@ function Get-StockKLine {
                 }
             }
             $script:SourceUsed["KLine"] = "新浪"
-            Save-DataCache -Key $cacheKey -Data $result
+            Export-DataCache -Key $cacheKey -Data $result
             return $result
         }
     } catch {
@@ -207,7 +207,7 @@ function Get-StockKLine {
                 }
             }
             $script:SourceUsed["KLine"] = "腾讯"
-            Save-DataCache -Key $cacheKey -Data $result
+            Export-DataCache -Key $cacheKey -Data $result
             return $result
         }
     } catch {
@@ -216,7 +216,7 @@ function Get-StockKLine {
 
     $script:SourceUsed["KLine"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key $cacheKey -TTLHours 720  # 30天，基本不过滤
+    $staleCache = Import-DataCache -Key $cacheKey -TTLHours 720  # 30天，基本不过滤
     if ($staleCache) { Write-Warning "[K线] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }

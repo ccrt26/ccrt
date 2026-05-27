@@ -78,7 +78,7 @@ $script:CacheTTL = @{
     SkillsResearch  = 24    # 研报24h
 }
 
-function Save-DataCache {
+function Export-DataCache {
     param([string]$Key, $Data)
     if (-not $Data) { return }
     $path = Join-Path $script:CacheDir "$Key.json"
@@ -88,7 +88,12 @@ function Save-DataCache {
     } catch { Write-Debug "Cache save failed for $Key : $_" }
 }
 
-function Load-DataCache {
+function Save-DataCache {
+    param([string]$Key, $Data)
+    Export-DataCache -Key $Key -Data $Data
+}
+
+function Import-DataCache {
     param([string]$Key, [int]$TTLHours = 24)
     $path = Join-Path $script:CacheDir "$Key.json"
     if (-not (Test-Path $path)) { return $null }
@@ -103,6 +108,11 @@ function Load-DataCache {
     } catch { return $null }
 }
 
+function Load-DataCache {
+    param([string]$Key, [int]$TTLHours = 24)
+    Import-DataCache -Key $Key -TTLHours $TTLHours
+}
+
 # 通用：获取数据（API优先 → 缓存兜底）
 function Invoke-DataWithCache {
     param(
@@ -113,7 +123,7 @@ function Invoke-DataWithCache {
     try {
         $result = & $ApiCall
         if ($null -ne $result) {
-            Save-DataCache -Key $DataName -Data $result
+            Export-DataCache -Key $DataName -Data $result
             return $result
         }
     } catch {
@@ -121,7 +131,7 @@ function Invoke-DataWithCache {
     }
     # API失败 → 尝试缓存
     $ttl = if ($script:CacheTTL.ContainsKey($DataName)) { $script:CacheTTL[$DataName] } else { 24 }
-    $cached = Load-DataCache -Key $DataName -TTLHours $ttl
+    $cached = Import-DataCache -Key $DataName -TTLHours $ttl
     if ($null -ne $cached) {
         Write-Warning "[$DataName] API失败，使用缓存（有效期${ttl}h内）"
         return $cached
@@ -288,7 +298,7 @@ function Invoke-DataSource {
            else { 24 }
 
     # === 步骤1: 检查新鲜缓存 ===
-    $cached = Load-DataCache -Key $CacheKey -TTLHours $ttl
+    $cached = Import-DataCache -Key $CacheKey -TTLHours $ttl
     if ($cached) {
         $script:SourceUsed[$Category] = "缓存[C]"
         return $cached
@@ -310,7 +320,7 @@ function Invoke-DataSource {
             if ($valid) {
                 $srcName = if ($PrimaryName) { $PrimaryName } else { "主源" }
                 $script:SourceUsed[$Category] = $srcName
-                Save-DataCache -Key $CacheKey -Data $primaryResult
+                Export-DataCache -Key $CacheKey -Data $primaryResult
                 return $primaryResult
             }
             Write-Warning "[$Category] 主源字段校验失败，降级到备源"
@@ -326,7 +336,7 @@ function Invoke-DataSource {
             if ($null -ne $backupResult) {
                 $srcName = if ($BackupName) { $BackupName } else { "备源" }
                 $script:SourceUsed[$Category] = $srcName
-                Save-DataCache -Key $CacheKey -Data $backupResult
+                Export-DataCache -Key $CacheKey -Data $backupResult
                 return $backupResult
             }
         } catch {
@@ -335,7 +345,7 @@ function Invoke-DataSource {
     }
 
     # === 步骤4: 过期缓存兜底 (720h=30天) ===
-    $staleCache = Load-DataCache -Key $CacheKey -TTLHours 720
+    $staleCache = Import-DataCache -Key $CacheKey -TTLHours 720
     if ($staleCache) {
         Write-Warning "[$Category] API双源失败，使用过期缓存兜底 (30天TTL)"
         # 标记过期数据，让下游风控模块可拒绝基于过期数据的决策

@@ -100,21 +100,21 @@ function Collect-StockFullData {
     $rsi14 = @(); $rsi9 = @(); $macd = $null; $boll = $null; $vol5 = @(); $vol20 = @()
     $adx = $null; $obv = @(); $atr = @()
     if ($klines.Count -ge 20) {
-        $ma5 = Calc-MovingAverage -Data $klines -Period 5
-        $ma10 = Calc-MovingAverage -Data $klines -Period 10
-        $ma20 = Calc-MovingAverage -Data $klines -Period 20
-        $rsi14 = Calc-RSI -Data $klines -Period 14
-        $rsi9 = Calc-RSI -Data $klines -Period 9
-        $macd = Calc-MACD -Data $klines
-        $boll = Calc-Bollinger -Data $klines
-        $vol5 = Calc-MovingAverage -Data $klines -Field "Volume" -Period 5
-        $vol20 = Calc-MovingAverage -Data $klines -Field "Volume" -Period 20
-        $obv = Calc-OBV -Data $klines
-        $atr = Calc-ATR -Data $klines -Period 14
-        if ($klines.Count -ge 30) { $adx = Calc-ADX -Data $klines -Period 14 }
-        if ($klines.Count -ge 50) { $ma50 = Calc-MovingAverage -Data $klines -Period 50 }
-        if ($klines.Count -ge 60) { $ma60 = Calc-MovingAverage -Data $klines -Period 60 }
-        if ($klines.Count -ge 120) { $ma120 = Calc-MovingAverage -Data $klines -Period 120 }
+        $ma5 = Measure-MovingAverage -Data $klines -Period 5
+        $ma10 = Measure-MovingAverage -Data $klines -Period 10
+        $ma20 = Measure-MovingAverage -Data $klines -Period 20
+        $rsi14 = Measure-RSI -Data $klines -Period 14
+        $rsi9 = Measure-RSI -Data $klines -Period 9
+        $macd = Measure-MACD -Data $klines
+        $boll = Measure-Bollinger -Data $klines
+        $vol5 = Measure-MovingAverage -Data $klines -Field "Volume" -Period 5
+        $vol20 = Measure-MovingAverage -Data $klines -Field "Volume" -Period 20
+        $obv = Measure-OBV -Data $klines
+        $atr = Measure-ATR -Data $klines -Period 14
+        if ($klines.Count -ge 30) { $adx = Measure-ADX -Data $klines -Period 14 }
+        if ($klines.Count -ge 50) { $ma50 = Measure-MovingAverage -Data $klines -Period 50 }
+        if ($klines.Count -ge 60) { $ma60 = Measure-MovingAverage -Data $klines -Period 60 }
+        if ($klines.Count -ge 120) { $ma120 = Measure-MovingAverage -Data $klines -Period 120 }
     }
 
     # [3] 财务数据

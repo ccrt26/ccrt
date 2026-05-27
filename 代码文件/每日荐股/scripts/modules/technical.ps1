@@ -1,6 +1,6 @@
 ﻿# 独立模块 — 纯计算函数，无外部依赖
 
-function Calc-MovingAverage {
+function Measure-MovingAverage {
     param([array]$Data, [string]$Field = "Close", [int]$Period = 5)
 . "$PSScriptRoot/../../../lib/init_encoding.ps1"
     $values = $Data | ForEach-Object { [double]$_.$Field }
@@ -14,7 +14,7 @@ function Calc-MovingAverage {
     return $result
 }
 
-function Calc-RSI {
+function Measure-RSI {
     param([array]$Data, [int]$Period = 14)
     $values = $Data | ForEach-Object { [double]$_.Close }
     $result = @()
@@ -32,7 +32,7 @@ function Calc-RSI {
     return $result
 }
 
-function Calc-MACD {
+function Measure-MACD {
     param([array]$Data, [int]$Fast = 12, [int]$Slow = 26, [int]$Signal = 9)
     $values = $Data | ForEach-Object { [double]$_.Close }
     # EMA calculation
@@ -52,9 +52,9 @@ function Calc-MACD {
     return [PSCustomObject]@{ DIF = $dif; DEA = $dea; MACD = $macd }
 }
 
-function Calc-Bollinger {
+function Measure-Bollinger {
     param([array]$Data, [int]$Period = 20, [double]$Multiplier = 2.0)
-    $ma = Calc-MovingAverage -Data $Data -Field "Close" -Period $Period
+    $ma = Measure-MovingAverage -Data $Data -Field "Close" -Period $Period
     $values = $Data | ForEach-Object { [double]$_.Close }
     $upper = @(); $lower = @()
     for ($i = 0; $i -lt $values.Count; $i++) {
@@ -71,7 +71,7 @@ function Calc-Bollinger {
 # ============================================================
 # [5b] ADX (14) — 趋势强度指标
 # ============================================================
-function Calc-ADX {
+function Measure-ADX {
     param([array]$Data, [int]$Period = 14)
     $highs = $Data | ForEach-Object { [double]$_.High }
     $lows  = $Data | ForEach-Object { [double]$_.Low }
@@ -131,7 +131,7 @@ function Calc-ADX {
 # ============================================================
 # [5c] OBV — 能量潮（累积量价指标）
 # ============================================================
-function Calc-OBV {
+function Measure-OBV {
     param([array]$Data)
     $obv = @(); $cum = 0
     for ($i = 0; $i -lt $Data.Count; $i++) {
@@ -147,7 +147,7 @@ function Calc-OBV {
 # ============================================================
 # [5d] ATR (14) — 平均真实波幅
 # ============================================================
-function Calc-ATR {
+function Measure-ATR {
     param([array]$Data, [int]$Period = 14)
     $trs = @()
     for ($i = 1; $i -lt $Data.Count; $i++) {
@@ -162,6 +162,17 @@ function Calc-ATR {
     }
     return $atr
 }
+
+# ============================================================
+# 向后兼容包装器（deprecated — Phase 3 移除）
+# ============================================================
+function Calc-MovingAverage { param([array]$Data, [string]$Field = "Close", [int]$Period = 5) Measure-MovingAverage -Data $Data -Field $Field -Period $Period }
+function Calc-RSI           { param([array]$Data, [int]$Period = 14) Measure-RSI -Data $Data -Period $Period }
+function Calc-MACD          { param([array]$Data, [int]$Fast = 12, [int]$Slow = 26, [int]$Signal = 9) Measure-MACD -Data $Data -Fast $Fast -Slow $Slow -Signal $Signal }
+function Calc-Bollinger     { param([array]$Data, [int]$Period = 20, [double]$Multiplier = 2.0) Measure-Bollinger -Data $Data -Period $Period -Multiplier $Multiplier }
+function Calc-ADX           { param([array]$Data, [int]$Period = 14) Measure-ADX -Data $Data -Period $Period }
+function Calc-OBV           { param([array]$Data) Measure-OBV -Data $Data }
+function Calc-ATR           { param([array]$Data, [int]$Period = 14) Measure-ATR -Data $Data -Period $Period }
 
 # ============================================================
 # [7] 东方财富板块行业数据（TOP N）

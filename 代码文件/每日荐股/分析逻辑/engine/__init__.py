@@ -7,6 +7,7 @@ from datetime import date
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 DATA_FILE = os.path.join(ROOT, '代码文件', '数据', 'data_full.json')
 OUTPUT_FILE = os.path.join(ROOT, '代码文件', '数据', 'data_scored.json')
+FINAL_FILE = os.path.join(ROOT, '代码文件', '数据', 'data_final.json')
 THEME_WHITELIST_FILE = os.path.join(ROOT, '每日荐股', '配置', 'industry_whitelist.json')
 HISTORY_FILE = os.path.join(ROOT, '代码文件', '数据', 'score_history.jsonl')
 

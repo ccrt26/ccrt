@@ -7,7 +7,7 @@ function Get-StockFundFlow {
 
     # 缓存优先 + 数量校验
     $cacheKey = "FundFlow_${Code}_${Days}"
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Days) {
         $script:SourceUsed["FundFlow"] = "缓存[C]"
         return $cached
@@ -100,7 +100,7 @@ function Get-PEPercentile {
         [Parameter(Mandatory=$true)][string]$Code,
         [int]$LookbackYears = 5
     )
-    $cached = Load-DataCache -Key "PEPercentile_$Code" -TTLHours 168
+    $cached = Import-DataCache -Key "PEPercentile_$Code" -TTLHours 168
     if ($cached) { $script:SourceUsed["PEPercentile"] = "缓存"; return $cached }
     # 获取历史K线
     $tradingDays = $LookbackYears * 252  # 约252交易日/年
@@ -143,7 +143,7 @@ function Get-PEPercentile {
         SampleCount = $peHistory.Count
         Valuation  = if ($percentile -lt 30) { "低估" } elseif ($percentile -gt 70) { "高估" } else { "合理" }
     }
-    Save-DataCache -Key "PEPercentile_$Code" -Data $result
+    Export-DataCache -Key "PEPercentile_$Code" -Data $result
     return $result
 }
 
@@ -155,7 +155,7 @@ function Get-PEPercentile {
 function Get-NorthboundDetail {
     param([Parameter(Mandatory=$true)][string]$Code)
 
-    $cached = Load-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 24
+    $cached = Import-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 24
     if ($cached) {
         $script:SourceUsed["NorthboundDetail"] = "缓存[C]"
         return $cached
@@ -182,13 +182,13 @@ function Get-NorthboundDetail {
             Source            = "东方财富"
         }
         $script:SourceUsed["NorthboundDetail"] = "东方财富"
-        Save-DataCache -Key "NorthboundDetail_${Code}" -Data $result
+        Export-DataCache -Key "NorthboundDetail_${Code}" -Data $result
         return $result
     } catch {
         Write-Warning "Get-NorthboundDetail failed for $Code : $_"
     }
     $script:SourceUsed["NorthboundDetail"] = "失败"
-    $staleCache = Load-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "NorthboundDetail_${Code}" -TTLHours 720
     if ($staleCache) { Write-Warning "[北向资金] API失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -204,7 +204,7 @@ function Get-BillboardDetail {
         [int]$Days = 20
     )
 
-    $cached = Load-DataCache -Key "Billboard_${Code}" -TTLHours 24
+    $cached = Import-DataCache -Key "Billboard_${Code}" -TTLHours 24
     if ($cached) {
         $script:SourceUsed["Billboard"] = "缓存[C]"
         return $cached
@@ -234,13 +234,13 @@ function Get-BillboardDetail {
             }
         }
         $script:SourceUsed["Billboard"] = "东方财富(仅供参考)"
-        Save-DataCache -Key "Billboard_${Code}" -Data $result
+        Export-DataCache -Key "Billboard_${Code}" -Data $result
         return $result
     } catch {
         Write-Warning "Get-BillboardDetail failed for $Code : $_"
     }
     $script:SourceUsed["Billboard"] = "失败"
-    $staleCache = Load-DataCache -Key "Billboard_${Code}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "Billboard_${Code}" -TTLHours 720
     if ($staleCache) { Write-Warning "[龙虎榜] API失败，使用过期缓存兜底"; return $staleCache }
     return @()
 }
@@ -256,7 +256,7 @@ function Get-InstitutionVisit {
         [int]$Count = 5
     )
 
-    $cached = Load-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 24
+    $cached = Import-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 24
     if ($cached) {
         $script:SourceUsed["InstitutionVisit"] = "缓存[C]"
         return $cached
@@ -283,13 +283,13 @@ function Get-InstitutionVisit {
             }
         }
         $script:SourceUsed["InstitutionVisit"] = "东方财富(仅供参考)"
-        Save-DataCache -Key "InstitutionVisit_${Code}" -Data $result
+        Export-DataCache -Key "InstitutionVisit_${Code}" -Data $result
         return $result
     } catch {
         Write-Warning "Get-InstitutionVisit failed for $Code : $_"
     }
     $script:SourceUsed["InstitutionVisit"] = "失败"
-    $staleCache = Load-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "InstitutionVisit_${Code}" -TTLHours 720
     if ($staleCache) { Write-Warning "[机构调研] API失败，使用过期缓存兜底"; return $staleCache }
     return @()
 }

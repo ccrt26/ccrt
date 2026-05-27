@@ -42,7 +42,7 @@ function Get-SouthboundFlow {
     param([int]$Days = 5)
 
     $cacheKey = "SouthboundFlow_${Days}"
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached) {
         $script:SourceUsed["SouthboundFlow"] = "缓存[C]"
         return $cached
@@ -61,7 +61,7 @@ function Get-SouthboundFlow {
         $data = $result | ConvertFrom-Json
         if ($data.data -and @($data.data).Count -gt 0) {
             $script:SourceUsed["SouthboundFlow"] = "AKShare[THS-SB]"
-            Save-DataCache -Key $cacheKey -Data $data
+            Export-DataCache -Key $cacheKey -Data $data
             return $data
         }
     } catch {
@@ -69,7 +69,7 @@ function Get-SouthboundFlow {
     }
 
     $script:SourceUsed["SouthboundFlow"] = "失败"
-    $staleCache = Load-DataCache -Key $cacheKey -TTLHours 168
+    $staleCache = Import-DataCache -Key $cacheKey -TTLHours 168
     if ($staleCache) { Write-Warning "[南向资金] 使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -82,7 +82,7 @@ function Get-StockResearch {
 
     # 缓存优先 + 数量校验（引擎标准缓存不检查Count，此处前置处理）
     $cacheKey = "Research_${Code}_${Count}_${DaysBack}"
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Count) {
         $script:SourceUsed["Research"] = "缓存[C]"
         return $cached
@@ -158,7 +158,7 @@ function Get-MarginData {
 
     # 缓存优先 + 数量校验
     $cacheKey = "Margin_${Code}_${Days}"
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Days) {
         $script:SourceUsed["Margin"] = "缓存[C]"
         return $cached

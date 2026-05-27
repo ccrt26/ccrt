@@ -41,7 +41,9 @@ $todayStr = Get-Date -Format "yyyyMMdd"
 
 # ATR(14) 计算 — 白皮书 §2.2.3
 # 输入：日K线数组（至少15条），输出：最新ATR值
-function Calc-ATR {
+function Calc-ATR { param([array]$Klines) Measure-ATR -Klines $Klines }
+
+function Measure-ATR {
     param([array]$Klines)
     if (-not $Klines -or $Klines.Count -lt 15) { return $null }
     $trValues = @()
@@ -230,7 +232,7 @@ foreach ($s in $topN) {
         # ---- §2.2.3 止损计算 ----
         # 获取K线数据[2]计算ATR(14)
         $klines = Get-StockKLine -Code $s.Code -Scale "240" -Count 20
-        $atr = Calc-ATR -Klines $klines
+        $atr = Measure-ATR -Klines $klines
         if ($null -eq $atr -or $atr -le 0) {
             # ATR计算失败，用股价的2%作为默认值
             $atr = [Math]::Round($buyPrice * 0.02, 2)

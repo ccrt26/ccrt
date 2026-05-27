@@ -54,7 +54,7 @@ $script:CacheTTL = @{
     PEPercentile = 168 # PE百分位变化慢，7天
 }
 
-function Save-DataCache {
+function Export-DataCache {
     param([string]$Key, $Data)
     if (-not $Data) { return }
     $path = Join-Path $script:CacheDir "$Key.json"
@@ -64,7 +64,12 @@ function Save-DataCache {
     } catch { Write-Debug "Cache save failed for $Key : $_" }
 }
 
-function Load-DataCache {
+function Save-DataCache {
+    param([string]$Key, $Data)
+    Export-DataCache -Key $Key -Data $Data
+}
+
+function Import-DataCache {
     param([string]$Key, [int]$TTLHours = 24)
     $path = Join-Path $script:CacheDir "$Key.json"
     if (-not (Test-Path $path)) { return $null }
@@ -79,6 +84,11 @@ function Load-DataCache {
     } catch { return $null }
 }
 
+function Load-DataCache {
+    param([string]$Key, [int]$TTLHours = 24)
+    Import-DataCache -Key $Key -TTLHours $TTLHours
+}
+
 # 通用：获取数据（API优先 → 缓存兜底）
 function Invoke-DataWithCache {
     param(
@@ -89,7 +99,7 @@ function Invoke-DataWithCache {
     try {
         $result = & $ApiCall
         if ($null -ne $result) {
-            Save-DataCache -Key $DataName -Data $result
+            Export-DataCache -Key $DataName -Data $result
             return $result
         }
     } catch {
@@ -97,7 +107,7 @@ function Invoke-DataWithCache {
     }
     # API失败 → 尝试缓存
     $ttl = if ($script:CacheTTL.ContainsKey($DataName)) { $script:CacheTTL[$DataName] } else { 24 }
-    $cached = Load-DataCache -Key $DataName -TTLHours $ttl
+    $cached = Import-DataCache -Key $DataName -TTLHours $ttl
     if ($null -ne $cached) {
         Write-Warning "[$DataName] API失败，使用缓存（有效期${ttl}h内）"
         return $cached
@@ -197,7 +207,7 @@ function Get-StockQuote {
                 Time       = $fields[30]
             }
             $script:SourceUsed["Quote"] = "腾讯"
-            Save-DataCache -Key "Quote_$Code" -Data $result
+            Export-DataCache -Key "Quote_$Code" -Data $result
             return $result
         }
     } catch {
@@ -232,7 +242,7 @@ function Get-StockQuote {
                     Time       = $fields[31]
                 }
                 $script:SourceUsed["Quote"] = "新浪"
-            Save-DataCache -Key "Quote_$Code" -Data $result
+            Export-DataCache -Key "Quote_$Code" -Data $result
             return $result
             }
         }
@@ -242,7 +252,7 @@ function Get-StockQuote {
 
     $script:SourceUsed["Quote"] = "失败"
     # 最后兜底：从缓存加载
-    $cached = Load-DataCache -Key "Quote_$Code" -TTLHours 1
+    $cached = Import-DataCache -Key "Quote_$Code" -TTLHours 1
     if ($cached) { Write-Warning "[行情] 使用缓存数据"; return $cached }
     return $null
 }
@@ -293,7 +303,7 @@ function Get-StockQuoteBatch {
         if ($results.Count -gt 0) {
             $script:SourceUsed["Quote"] = "腾讯(批量)"
             # 逐只缓存
-            foreach ($r2 in $results) { Save-DataCache -Key "Quote_$($r2.Code)" -Data $r2 }
+            foreach ($r2 in $results) { Export-DataCache -Key "Quote_$($r2.Code)" -Data $r2 }
             return $results
         }
     } catch {
@@ -319,7 +329,7 @@ function Get-StockKLine {
     $cacheKey = "KLine_${Code}_${Scale}"
 
     # --- 缓存优先（日线K线收盘后不可变，Tier 2）---
-    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    $cached = Import-DataCache -Key $cacheKey -TTLHours 24
     if ($cached -and @($cached).Count -ge $Count) {
         $script:SourceUsed["KLine"] = "缓存"
         return $cached
@@ -343,7 +353,7 @@ function Get-StockKLine {
                 }
             }
             $script:SourceUsed["KLine"] = "新浪"
-            Save-DataCache -Key $cacheKey -Data $result
+            Export-DataCache -Key $cacheKey -Data $result
             return $result
         }
     } catch {
@@ -372,7 +382,7 @@ function Get-StockKLine {
                 }
             }
             $script:SourceUsed["KLine"] = "腾讯"
-            Save-DataCache -Key $cacheKey -Data $result
+            Export-DataCache -Key $cacheKey -Data $result
             return $result
         }
     } catch {
@@ -381,7 +391,7 @@ function Get-StockKLine {
 
     $script:SourceUsed["KLine"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key $cacheKey -TTLHours 720  # 30天，基本不过滤
+    $staleCache = Import-DataCache -Key $cacheKey -TTLHours 720  # 30天，基本不过滤
     if ($staleCache) { Write-Warning "[K线] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -398,7 +408,7 @@ function Get-StockFinancial {
     )
 
     # --- 缓存优先（财务数据季度更新，Tier 3）---
-    $cached = Load-DataCache -Key "Financial_$Code" -TTLHours 168
+    $cached = Import-DataCache -Key "Financial_$Code" -TTLHours 168
     if ($cached) {
         $script:SourceUsed["Financial"] = "缓存"
         return $cached
@@ -413,7 +423,7 @@ function Get-StockFinancial {
         $json = $r.Content | ConvertFrom-Json
         if ($json.result -and $json.result.data) {
             $script:SourceUsed["Financial"] = "东方财富"
-            Save-DataCache -Key "Financial_$Code" -Data $json.result.data
+            Export-DataCache -Key "Financial_$Code" -Data $json.result.data
             return $json.result.data
         }
     } catch {
@@ -423,13 +433,13 @@ function Get-StockFinancial {
         $thsResult = Invoke-ThsFallback -Action "financial" -Params "--code $Code --quarters $Quarters"
         if ($thsResult) {
             $script:SourceUsed["Financial"] = "同花顺"
-            Save-DataCache -Key "Financial_$Code" -Data $thsResult
+            Export-DataCache -Key "Financial_$Code" -Data $thsResult
             return $thsResult
         }
     }
     $script:SourceUsed["Financial"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "Financial_$Code" -TTLHours 720
+    $staleCache = Import-DataCache -Key "Financial_$Code" -TTLHours 720
     if ($staleCache) { Write-Warning "[财务] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -437,7 +447,7 @@ function Get-StockFinancial {
 # ============================================================
 # [5] 技术指标计算
 # ============================================================
-function Calc-MovingAverage {
+function Measure-MovingAverage {
     param([array]$Data, [string]$Field = "Close", [int]$Period = 5)
     $values = $Data | ForEach-Object { [double]$_.$Field }
     $result = @()
@@ -450,7 +460,7 @@ function Calc-MovingAverage {
     return $result
 }
 
-function Calc-RSI {
+function Measure-RSI {
     param([array]$Data, [int]$Period = 14)
     $values = $Data | ForEach-Object { [double]$_.Close }
     $result = @()
@@ -468,7 +478,7 @@ function Calc-RSI {
     return $result
 }
 
-function Calc-MACD {
+function Measure-MACD {
     param([array]$Data, [int]$Fast = 12, [int]$Slow = 26, [int]$Signal = 9)
     $values = $Data | ForEach-Object { [double]$_.Close }
     # EMA calculation
@@ -488,9 +498,9 @@ function Calc-MACD {
     return [PSCustomObject]@{ DIF = $dif; DEA = $dea; MACD = $macd }
 }
 
-function Calc-Bollinger {
+function Measure-Bollinger {
     param([array]$Data, [int]$Period = 20, [double]$Multiplier = 2.0)
-    $ma = Calc-MovingAverage -Data $Data -Field "Close" -Period $Period
+    $ma = Measure-MovingAverage -Data $Data -Field "Close" -Period $Period
     $values = $Data | ForEach-Object { [double]$_.Close }
     $upper = @(); $lower = @()
     for ($i = 0; $i -lt $values.Count; $i++) {
@@ -507,7 +517,7 @@ function Calc-Bollinger {
 # ============================================================
 # [5b] ADX (14) — 趋势强度指标
 # ============================================================
-function Calc-ADX {
+function Measure-ADX {
     param([array]$Data, [int]$Period = 14)
     $highs = $Data | ForEach-Object { [double]$_.High }
     $lows  = $Data | ForEach-Object { [double]$_.Low }
@@ -567,7 +577,7 @@ function Calc-ADX {
 # ============================================================
 # [5c] OBV — 能量潮（累积量价指标）
 # ============================================================
-function Calc-OBV {
+function Measure-OBV {
     param([array]$Data)
     $obv = @(); $cum = 0
     for ($i = 0; $i -lt $Data.Count; $i++) {
@@ -583,7 +593,7 @@ function Calc-OBV {
 # ============================================================
 # [5d] ATR (14) — 平均真实波幅
 # ============================================================
-function Calc-ATR {
+function Measure-ATR {
     param([array]$Data, [int]$Period = 14)
     $trs = @()
     for ($i = 1; $i -lt $Data.Count; $i++) {
@@ -598,6 +608,17 @@ function Calc-ATR {
     }
     return $atr
 }
+
+# ============================================================
+# 向后兼容包装器（deprecated — Phase 3 移除）
+# ============================================================
+function Calc-MovingAverage { param([array]$Data, [string]$Field = "Close", [int]$Period = 5) Measure-MovingAverage -Data $Data -Field $Field -Period $Period }
+function Calc-RSI           { param([array]$Data, [int]$Period = 14) Measure-RSI -Data $Data -Period $Period }
+function Calc-MACD          { param([array]$Data, [int]$Fast = 12, [int]$Slow = 26, [int]$Signal = 9) Measure-MACD -Data $Data -Fast $Fast -Slow $Slow -Signal $Signal }
+function Calc-Bollinger     { param([array]$Data, [int]$Period = 20, [double]$Multiplier = 2.0) Measure-Bollinger -Data $Data -Period $Period -Multiplier $Multiplier }
+function Calc-ADX           { param([array]$Data, [int]$Period = 14) Measure-ADX -Data $Data -Period $Period }
+function Calc-OBV           { param([array]$Data) Measure-OBV -Data $Data }
+function Calc-ATR           { param([array]$Data, [int]$Period = 14) Measure-ATR -Data $Data -Period $Period }
 
 # ============================================================
 # [7] 东方财富板块行业数据（TOP N）
@@ -619,7 +640,7 @@ function Get-SectorData {
                 }
             }
             $script:SourceUsed["Sector"] = "东方财富"
-            Save-DataCache -Key "Sector_$Top" -Data $result
+            Export-DataCache -Key "Sector_$Top" -Data $result
             return $result
         }
     } catch {
@@ -630,12 +651,12 @@ function Get-SectorData {
         if ($thsResult) {
             $script:SourceUsed["Sector"] = "同花顺"
             # 字段对齐：SectorName, ChangePct, Turnover 已兼容
-            Save-DataCache -Key "Sector_$Top" -Data $thsResult
+            Export-DataCache -Key "Sector_$Top" -Data $thsResult
             return $thsResult
         }
     }
     $script:SourceUsed["Sector"] = "失败"
-    $cached = Load-DataCache -Key "Sector_$Top" -TTLHours 6
+    $cached = Import-DataCache -Key "Sector_$Top" -TTLHours 6
     if ($cached) { Write-Warning "[板块] API失败，使用缓存"; return $cached }
     return $null
 }
@@ -652,7 +673,7 @@ function Get-SectorConstituents {
     )
 
     # --- 缓存优先（成分股调整低频，Tier 3）---
-    $cached = Load-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 168
+    $cached = Import-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 168
     if ($cached -and @($cached).Count -ge $MaxCount) {
         $script:SourceUsed["SectorConstituents"] = "缓存"
         return $cached
@@ -677,7 +698,7 @@ function Get-SectorConstituents {
                 }
             }
             $script:SourceUsed["SectorConstituents"] = "东方财富"
-            Save-DataCache -Key "SectorConstituents_$SectorCode" -Data $result
+            Export-DataCache -Key "SectorConstituents_$SectorCode" -Data $result
             return $result
         }
     } catch {
@@ -685,7 +706,7 @@ function Get-SectorConstituents {
     }
     $script:SourceUsed["SectorConstituents"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 720
+    $staleCache = Import-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 720
     if ($staleCache) { Write-Warning "[板块成分股] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -697,7 +718,7 @@ function Get-StockFundFlow {
     param([Parameter(Mandatory=$true)][string]$Code, [int]$Days = 5)
 
     # --- 缓存优先（资金流向盘后固定，Tier 2）---
-    $cached = Load-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 24
+    $cached = Import-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 24
     if ($cached -and @($cached).Count -ge $Days) {
         $script:SourceUsed["FundFlow"] = "缓存"
         return $cached
@@ -721,7 +742,7 @@ function Get-StockFundFlow {
                 }
             }
             $script:SourceUsed["FundFlow"] = "东方财富"
-            Save-DataCache -Key "FundFlow_${Code}_${Days}" -Data $result
+            Export-DataCache -Key "FundFlow_${Code}_${Days}" -Data $result
             return $result
         }
     } catch {
@@ -729,7 +750,7 @@ function Get-StockFundFlow {
     }
     $script:SourceUsed["FundFlow"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "FundFlow_${Code}_${Days}" -TTLHours 720
     if ($staleCache) { Write-Warning "[资金流向] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -755,7 +776,7 @@ function Get-SectorFundFlow {
                 }
             }
             $script:SourceUsed["SectorFundFlow"] = "东方财富"
-            Save-DataCache -Key "SectorFundFlow_$Top" -Data $result
+            Export-DataCache -Key "SectorFundFlow_$Top" -Data $result
             return $result
         }
     } catch {
@@ -765,12 +786,12 @@ function Get-SectorFundFlow {
         $thsResult = Invoke-ThsFallback -Action "sector_fund_flow" -Params "--top $Top"
         if ($thsResult) {
             $script:SourceUsed["SectorFundFlow"] = "同花顺"
-            Save-DataCache -Key "SectorFundFlow_$Top" -Data $thsResult
+            Export-DataCache -Key "SectorFundFlow_$Top" -Data $thsResult
             return $thsResult
         }
     }
     $script:SourceUsed["SectorFundFlow"] = "失败"
-    $cached = Load-DataCache -Key "SectorFundFlow_$Top" -TTLHours 6
+    $cached = Import-DataCache -Key "SectorFundFlow_$Top" -TTLHours 6
     if ($cached) { Write-Warning "[行业资金] API失败，使用缓存"; return $cached }
     return $null
 }
@@ -783,7 +804,7 @@ function Get-PEPercentile {
         [Parameter(Mandatory=$true)][string]$Code,
         [int]$LookbackYears = 5
     )
-    $cached = Load-DataCache -Key "PEPercentile_$Code" -TTLHours 168
+    $cached = Import-DataCache -Key "PEPercentile_$Code" -TTLHours 168
     if ($cached) { $script:SourceUsed["PEPercentile"] = "缓存"; return $cached }
     # 获取历史K线
     $tradingDays = $LookbackYears * 252  # 约252交易日/年
@@ -826,7 +847,7 @@ function Get-PEPercentile {
         SampleCount = $peHistory.Count
         Valuation  = if ($percentile -lt 30) { "低估" } elseif ($percentile -gt 70) { "高估" } else { "合理" }
     }
-    Save-DataCache -Key "PEPercentile_$Code" -Data $result
+    Export-DataCache -Key "PEPercentile_$Code" -Data $result
     return $result
 }
 
@@ -841,7 +862,7 @@ function Get-NorthboundHold {
     )
 
     # --- 缓存优先（北向资金日频更新，Tier 2）---
-    $cached = Load-DataCache -Key "Northbound_$Code" -TTLHours 24
+    $cached = Import-DataCache -Key "Northbound_$Code" -TTLHours 24
     if ($cached) {
         $script:SourceUsed["Northbound"] = "缓存"
         return $cached
@@ -866,7 +887,7 @@ function Get-NorthboundHold {
                 FreeRatio     = [double]$d.FREE_SHARES_RATIO
             }
             $script:SourceUsed["Northbound"] = "东方财富"
-            Save-DataCache -Key "Northbound_$Code" -Data $result
+            Export-DataCache -Key "Northbound_$Code" -Data $result
             return $result
         }
     } catch {
@@ -874,7 +895,7 @@ function Get-NorthboundHold {
     }
     $script:SourceUsed["Northbound"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "Northbound_$Code" -TTLHours 720
+    $staleCache = Import-DataCache -Key "Northbound_$Code" -TTLHours 720
     if ($staleCache) { Write-Warning "[北向资金] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -891,7 +912,7 @@ function Get-StockResearch {
     )
 
     # --- 缓存优先（研报日频更新，Tier 2）---
-    $cached = Load-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 24
+    $cached = Import-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 24
     if ($cached -and @($cached).Count -ge $Count) {
         $script:SourceUsed["Research"] = "缓存"
         return $cached
@@ -920,7 +941,7 @@ function Get-StockResearch {
                 }
             }
             $script:SourceUsed["Research"] = "东方财富"
-            Save-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -Data $result
+            Export-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -Data $result
             return $result
         }
     } catch {
@@ -928,7 +949,7 @@ function Get-StockResearch {
     }
     $script:SourceUsed["Research"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "Research_${Code}_${Count}_${DaysBack}" -TTLHours 720
     if ($staleCache) { Write-Warning "[研报] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -944,7 +965,7 @@ function Get-MarginData {
     )
 
     # --- 缓存优先（融资融券日频更新，Tier 2）---
-    $cached = Load-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 24
+    $cached = Import-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 24
     if ($cached -and @($cached).Count -ge $Days) {
         $script:SourceUsed["Margin"] = "缓存"
         return $cached
@@ -970,7 +991,7 @@ function Get-MarginData {
                 }
             }
             $script:SourceUsed["Margin"] = "东方财富"
-            Save-DataCache -Key "Margin_${Code}_${Days}" -Data $result
+            Export-DataCache -Key "Margin_${Code}_${Days}" -Data $result
             return $result
         }
     } catch {
@@ -978,7 +999,7 @@ function Get-MarginData {
     }
     $script:SourceUsed["Margin"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 720
+    $staleCache = Import-DataCache -Key "Margin_${Code}_${Days}" -TTLHours 720
     if ($staleCache) { Write-Warning "[融资融券] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }
@@ -1012,11 +1033,11 @@ function Test-AllDataSources {
     Write-Output "--- [5] 技术指标 ---"
     $klines120 = Get-StockKLine -Code "600036" -Count 120
     if ($klines120) {
-        $ma5 = Calc-MovingAverage -Data $klines120 -Period 5
-        $ma20 = Calc-MovingAverage -Data $klines120 -Period 20
-        $rsi = Calc-RSI -Data $klines120 -Period 14
-        $macd = Calc-MACD -Data $klines120
-        $boll = Calc-Bollinger -Data $klines120
+        $ma5 = Measure-MovingAverage -Data $klines120 -Period 5
+        $ma20 = Measure-MovingAverage -Data $klines120 -Period 20
+        $rsi = Measure-RSI -Data $klines120 -Period 14
+        $macd = Measure-MACD -Data $klines120
+        $boll = Measure-Bollinger -Data $klines120
         Write-Output "  ✅ MA5:$($ma5[-1]) MA20:$($ma20[-1]) RSI14:$($rsi[-1])"
         Write-Output "  ✅ MACD DIF:$([math]::Round($macd.DIF[-1],2)) DEA:$([math]::Round($macd.DEA[-1],2))"
         Write-Output "  ✅ Bollinger 上轨:$($boll.Upper[-1]) 中轨:$($boll.MA[-1]) 下轨:$($boll.Lower[-1])"
@@ -1075,7 +1096,7 @@ function Test-AllDataSources {
     Write-Output "`n====== 测试完成 ======"
 }
 
-Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Calc-ADX, Calc-OBV, Calc-ATR, Test-AllDataSources
+Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Measure-MovingAverage, Measure-RSI, Measure-MACD, Measure-Bollinger, Measure-ADX, Measure-OBV, Measure-ATR, Test-AllDataSources
 
 # ============================================================
 # 加载 PDF 转换验证工具（被各报告脚本共享使用）

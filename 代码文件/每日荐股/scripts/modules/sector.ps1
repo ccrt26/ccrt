@@ -18,7 +18,7 @@ function Get-SectorData {
                 }
             }
             $script:SourceUsed["Sector"] = "东方财富"
-            Save-DataCache -Key "Sector_$Top" -Data $result
+            Export-DataCache -Key "Sector_$Top" -Data $result
             return $result
         }
     } catch {
@@ -29,12 +29,12 @@ function Get-SectorData {
         if ($thsResult) {
             $script:SourceUsed["Sector"] = "同花顺"
             # 字段对齐：SectorName, ChangePct, Turnover 已兼容
-            Save-DataCache -Key "Sector_$Top" -Data $thsResult
+            Export-DataCache -Key "Sector_$Top" -Data $thsResult
             return $thsResult
         }
     }
     $script:SourceUsed["Sector"] = "失败"
-    $cached = Load-DataCache -Key "Sector_$Top" -TTLHours 6
+    $cached = Import-DataCache -Key "Sector_$Top" -TTLHours 6
     if ($cached) { Write-Warning "[板块] API失败，使用缓存"; return $cached }
     return $null
 }
@@ -51,7 +51,7 @@ function Get-SectorConstituents {
     )
 
     # --- 缓存优先（成分股调整低频，Tier 3）---
-    $cached = Load-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 168
+    $cached = Import-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 168
     if ($cached -and @($cached).Count -ge $MaxCount) {
         $script:SourceUsed["SectorConstituents"] = "缓存"
         return $cached
@@ -76,7 +76,7 @@ function Get-SectorConstituents {
                 }
             }
             $script:SourceUsed["SectorConstituents"] = "东方财富"
-            Save-DataCache -Key "SectorConstituents_$SectorCode" -Data $result
+            Export-DataCache -Key "SectorConstituents_$SectorCode" -Data $result
             return $result
         }
     } catch {
@@ -84,7 +84,7 @@ function Get-SectorConstituents {
     }
     $script:SourceUsed["SectorConstituents"] = "失败"
     # 过期缓存兜底（API双源均失败时的最后手段）
-    $staleCache = Load-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 720
+    $staleCache = Import-DataCache -Key "SectorConstituents_$SectorCode" -TTLHours 720
     if ($staleCache) { Write-Warning "[板块成分股] API双源失败，使用过期缓存兜底"; return $staleCache }
     return $null
 }

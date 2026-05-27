@@ -100,7 +100,7 @@ function Get-FinancialRatios {
         [int]$Quarters = 1
     )
 
-    $cached = Load-DataCache -Key "FinancialRatios_${Code}" -TTLHours 168
+    $cached = Import-DataCache -Key "FinancialRatios_${Code}" -TTLHours 168
     if ($cached) {
         $script:SourceUsed["FinancialRatios"] = "缓存[C]"
         return $cached
@@ -175,7 +175,7 @@ function Get-FinancialRatios {
         DataDate               = $latest.NOTICE_DATE
     }
     $script:SourceUsed["FinancialRatios"] = $script:SourceUsed["Financial"]
-    Save-DataCache -Key "FinancialRatios_${Code}" -Data $result
+    Export-DataCache -Key "FinancialRatios_${Code}" -Data $result
     return $result
 }
 
@@ -191,7 +191,7 @@ function Get-ScenarioEPS {
         [double]$PessimisticMultiplier = 0.85
     )
 
-    $cached = Load-DataCache -Key "ScenarioEPS_${Code}" -TTLHours 168
+    $cached = Import-DataCache -Key "ScenarioEPS_${Code}" -TTLHours 168
     if ($cached) {
         $script:SourceUsed["ScenarioEPS"] = "缓存[C]"
         return $cached
@@ -246,7 +246,7 @@ function Get-ScenarioEPS {
         ScenarioNote           = "仅供参考，不替代AI判断。乘数: 乐观x${OptimisticMultiplier} / 悲观x${PessimisticMultiplier}"
     }
     $script:SourceUsed["ScenarioEPS"] = $script:SourceUsed["Financial"]
-    Save-DataCache -Key "ScenarioEPS_${Code}" -Data $result
+    Export-DataCache -Key "ScenarioEPS_${Code}" -Data $result
     return $result
 }
 
@@ -260,7 +260,7 @@ function Get-ComparableValuation {
         [int]$TopN = 5
     )
 
-    $cached = Load-DataCache -Key "ComparableValuation_${Code}" -TTLHours 24
+    $cached = Import-DataCache -Key "ComparableValuation_${Code}" -TTLHours 24
     if ($cached) {
         $script:SourceUsed["ComparableValuation"] = "缓存[C]"
         return $cached
@@ -309,7 +309,7 @@ function Get-ComparableValuation {
             $count++
         }
         $script:SourceUsed["ComparableValuation"] = "东方财富"
-        Save-DataCache -Key "ComparableValuation_${Code}" -Data $peers
+        Export-DataCache -Key "ComparableValuation_${Code}" -Data $peers
         return $peers
     } catch {
         Write-Warning "Get-ComparableValuation failed for $Code : $_"
