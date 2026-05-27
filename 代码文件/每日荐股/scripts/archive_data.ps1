@@ -125,8 +125,8 @@ Archive-File -FilePath (Join-Path $SourceDir "代码文件\数据\eastmoney_sect
 # ---------- 每日荐股报告 (情墨新架构: 03_分析报告/每日荐股) ----------
 $reportDir = Join-Path $dailyDir "股票报告"
 if (Test-Path $reportDir) {
-    $reports = Get-ChildItem $reportDir -Filter "daily_report_*.html"
-    $pdfReports = Get-ChildItem $reportDir -Filter "daily_report_*.pdf"
+    $reports = Get-ChildItem $reportDir -Filter "每日股票推荐_*.html"
+    $pdfReports = Get-ChildItem $reportDir -Filter "每日股票推荐_*.pdf"
     $allReports = $reports + $pdfReports
     foreach ($rpt in $allReports) {
         $targetDir = Join-Path $archiveRoot "03_分析报告\每日荐股"

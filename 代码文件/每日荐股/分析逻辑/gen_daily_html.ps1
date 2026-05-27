@@ -401,7 +401,7 @@ $html += "</div></body></html>"
 # ----- Write files -----
 if (-not (Test-Path $OutDir)) { New-Item -ItemType Directory -Path $OutDir -Force | Out-Null }
 $dc = $Date -replace '-',''
-$htmlFile = Join-Path $OutDir "daily_report_${dc}.html"
+$htmlFile = Join-Path $OutDir "每日股票推荐_${dc}.html"
 [System.IO.File]::WriteAllText($htmlFile, $html, [System.Text.Encoding]::UTF8)
 
 # Self-check: verify HTML was written

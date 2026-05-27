@@ -166,7 +166,7 @@ if ($Mode -eq "daily" -or $Mode -eq "daily_latest") {
     $versionLabel = "latest"
     if ($Mode -eq "daily") { $versionLabel = "current" }
     Write-Log -Msg ("===== Starting Daily Stock Analysis (" + $versionLabel + " version) =====")
-    $reportLabel = "daily_report_" + ($Date -replace '-','')
+    $reportLabel = "每日股票推荐_" + ($Date -replace '-','')
     $reportPath = Join-Path $reportDir ($reportLabel + ".html")
     $genScript = Join-Path $scriptsDir "..\分析逻辑\gen_daily_html.ps1"
     if ($LogOnly) {
