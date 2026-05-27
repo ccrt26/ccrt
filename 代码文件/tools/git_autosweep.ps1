@@ -150,6 +150,15 @@ try {
                 $results += [ordered]@{category="auto"; hash=""; files=$safeAutoFiles.Count}
             } else {
                 foreach ($f in $safeAutoFiles) { git add -- $f 2>$null }
+                # PDF deletion guard (红线§1.7) — unstage any deleted PDFs before commit
+                $deletedPdfs = git -c core.quotepath=false diff --cached --diff-filter=D --name-only 2>$null | ForEach-Object { $_ } | Where-Object { $_ -match '\.pdf$' }
+                if ($deletedPdfs) {
+                    $pdfList = ($deletedPdfs -join ', ')
+                    foreach ($pdf in $deletedPdfs) {
+                        git reset HEAD -- $pdf 2>$null
+                    }
+                    Write-SweepLog -Status "PDF_BLOCKED" -CommitHash "" -FileCount @($deletedPdfs).Count -Category "auto" -ErrorMsg "PDF删除拦截(红线§1.7): $pdfList"
+                }
                 $commitMsg = "auto: sweep — 数据/报告/配置自动同步 [$(Get-Date -Format 'yyyyMMdd-HHmm')]"
                 $commitResult = & git commit --no-verify -m $commitMsg 2>&1
                 if ($LASTEXITCODE -eq 0) {

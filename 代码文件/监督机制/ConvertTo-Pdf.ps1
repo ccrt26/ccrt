@@ -51,20 +51,20 @@ function ConvertTo-Pdf {
 
     $uri = "file:///$($HtmlFile.Replace('\','/'))"
 
-    # 3. 记录旧文件状态 + 删除（关键！防止 Test-Path 误判）
+    # 3. 安全覆盖写入：先写临时文件，验证通过后原子替换（红线§1.7 PDF保护）
+    # 不再先删后建——Edge失败不会导致旧PDF永久丢失
+    $tmpFile = "$PdfFile.tmp"
     $oldExists = $false
-    $oldTime = [DateTime]::MinValue
     if (Test-Path $PdfFile) {
         $oldExists = $true
-        try { $oldTime = (Get-Item $PdfFile).LastWriteTime } catch {}
-        Remove-Item $PdfFile -Force -ErrorAction SilentlyContinue
-        Start-Sleep -Milliseconds 200
     }
+    # 清理可能残留的临时文件（上次异常中断可能遗留）
+    if (Test-Path $tmpFile) { Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue }
 
     # 4. 调用 Edge headless
     $argsList = @(
         "--headless=new", "--disable-gpu", "--no-sandbox",
-        "--print-to-pdf=$PdfFile",
+        "--print-to-pdf=$tmpFile",
         "--no-pdf-header-footer",
         $uri
     )
@@ -86,8 +86,8 @@ function ConvertTo-Pdf {
 
     Start-Sleep -Seconds 3
 
-    # 5. 写入验证
-    if (-not (Test-Path $PdfFile)) {
+    # 5. 写入验证（对临时文件）
+    if (-not (Test-Path $tmpFile)) {
         if ($oldExists) {
             Write-Warning "[PDF] 写入失败（文件被锁定或路径不可写）: $PdfFile"
         } else {
@@ -96,24 +96,17 @@ function ConvertTo-Pdf {
         return $false
     }
 
-    $size = (Get-Item $PdfFile).Length
+    $size = (Get-Item $tmpFile).Length
 
-    # 5a. 旧文件曾存在 → 检查时间戳变化（确保是新写入的）
-    if ($oldExists) {
-        $newTime = (Get-Item $PdfFile).LastWriteTime
-        if ($newTime -le $oldTime) {
-            Write-Warning "[PDF] 文件时间戳未更新，判定为写入失败（文件被锁定）: $PdfFile"
-            Write-Warning "[PDF] 旧时间: $($oldTime.ToString('HH:mm:ss')), 新时间: $($newTime.ToString('HH:mm:ss'))"
-            return $false
-        }
-    }
-
-    # 5b. 大小检查
+    # 5a. 大小检查
     if ($size -le $MinSize) {
         Write-Warning "[PDF] 文件过小（$size bytes），可能内容异常: $PdfFile"
+        Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
         return $false
     }
 
+    # 5b. 验证通过 → 原子替换（Move-Item 保证旧PDF仅在Edge成功后替换）
+    Move-Item $tmpFile $PdfFile -Force -ErrorAction Stop
     Write-Verbose "[PDF] 验证通过: $PdfFile ($([Math]::Round($size/1KB,0)) KB)"
     return $true
 }

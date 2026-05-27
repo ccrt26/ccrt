@@ -129,6 +129,16 @@ try {
         git add -- $p 2>$null
     }
 
+    # PDF deletion guard (红线§1.7) — unstage any deleted PDFs before commit
+    $deletedPdfs = git -c core.quotepath=false diff --cached --diff-filter=D --name-only 2>$null | ForEach-Object { $_ } | Where-Object { $_ -match '\.pdf$' }
+    if ($deletedPdfs) {
+        $pdfList = ($deletedPdfs -join ', ')
+        foreach ($pdf in $deletedPdfs) {
+            git reset HEAD -- $pdf 2>$null
+        }
+        Write-AutocommitLog -Status "PDF_BLOCKED" -CommitHash "" -FileCount @($deletedPdfs).Count -ErrorMsg "PDF删除拦截(红线§1.7): $pdfList"
+    }
+
     # Commit
     $commitMsg = "auto: $Module — $Message [$(Get-Date -Format 'yyyyMMdd')]"
     if ($SkipHook) {

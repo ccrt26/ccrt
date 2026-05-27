@@ -312,6 +312,26 @@ try {
         Write-Log "PASS" "F1 PASS: No code files staged. Check F skipped."
     }
     Write-Log "PASS" "Check F complete"
+
+    # ========================================================================
+    # Check G: PDF Deletion Protection — 红线§1.7 绝对禁止删除PDF
+    # 任何commit包含PDF文件删除 → BLOCK
+    # ========================================================================
+    Write-Log "PASS" "===== Check G: PDF Deletion Protection (红线§1.7) ====="
+    $DeletedPdfs = git -c core.quotepath=false diff --cached --diff-filter=D --name-only 2>$null
+    if ($DeletedPdfs) {
+        $deletedPdfList = $DeletedPdfs -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -match '\.pdf$' }
+        if ($deletedPdfList.Count -gt 0) {
+            foreach ($pdf in $deletedPdfList) {
+                Write-Log "BLOCK" "G BLOCK: PDF删除禁止 (红线§1.7): $pdf"
+            }
+            $script:HasError = $true
+        } else {
+            Write-Log "PASS" "G PASS: No PDFs in deleted files"
+        }
+    } else {
+        Write-Log "PASS" "G PASS: No files deleted"
+    }
 }
 catch {
     Write-Log "ERROR" "Script exception: $_"
