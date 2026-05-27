@@ -13,7 +13,10 @@
     "files_scope": [
         ".claude/hooks/shared/pipeline-auth.ps1",
         ".claude/hooks/pre-commit-check.ps1",
-        "代码文件/tools/git_autosweep.ps1"
+        "代码文件/tools/git_autosweep.ps1",
+        "代码文件/每日荐股/",
+        "代码文件/信鸽信息采集/",
+        "代码文件/重点股票/"
     ],
     "stage_history": [
         {
