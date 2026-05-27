@@ -1,10 +1,131 @@
 {
-    "_generated_at":  "2026-05-27T20:50:59",
+    "_generated_at":  "2026-05-27T20:51:50",
     "Stocks":  [
-
+                   {
+                       "Rating":  "观察",
+                       "Industry":  "AI/软件",
+                       "Price":  50.25,
+                       "Date":  "20260527",
+                       "KeyLevels":  {
+                                         "Support":  48.81,
+                                         "StopLoss":  45.36,
+                                         "Resistance":  52.76
+                                     },
+                       "Name":  "科大讯飞",
+                       "Signals":  {
+                                       "ShortBull_Score":  4,
+                                       "Bollinger_Position":  "中轨上方",
+                                       "FundFlow_Trend":  "主力流入\u003e流出",
+                                       "Research_Coverage":  "有(1篇)",
+                                       "ADX_Trend":  "震荡市(ADX\u003c20)",
+                                       "MA_Trend":  "纠缠/不明",
+                                       "MACD_Position":  "零轴下金叉",
+                                       "MidBull_Score":  2,
+                                       "RSI_Value":  67.2,
+                                       "Volume_Relation":  "放量上涨",
+                                       "LongBull_Score":  0,
+                                       "ADX_Value":  11,
+                                       "RSI_Zone":  "中性偏强",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "疑似吸筹区",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同升",
+                                       "PE_Percentile_Zone":  "偏高(60-80%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "看多",
+                                          "MidBull":  2,
+                                          "Long":  "长期看空",
+                                          "Mid":  "区间震荡",
+                                          "Confidence":  "高(\u003e70%)",
+                                          "ShortBull":  4,
+                                          "LongBull":  0
+                                      },
+                       "Code":  "002230",
+                       "Scores":  {
+                                      "Sector":  69,
+                                      "Macro":  {
+                                                    "Score":  33,
+                                                    "Phase":  "偏弱调整",
+                                                    "PosRatio":  25,
+                                                    "AvgChg":  -0.1
+                                                },
+                                      "Capital":  68,
+                                      "Composite":  49,
+                                      "Technical":  65,
+                                      "Sentiment":  23,
+                                      "Fundamental":  32
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "预警关注",
+                                           "Score":  77
+                                       },
+                       "RatingFull":  "★★ 观察"
+                   },
+                   {
+                       "Rating":  "回避",
+                       "Industry":  "风电/机械",
+                       "Price":  68.69,
+                       "Date":  "20260527",
+                       "KeyLevels":  {
+                                         "Support":  65.26,
+                                         "StopLoss":  54.33,
+                                         "Resistance":  71.36
+                                     },
+                       "Name":  "德力佳",
+                       "Signals":  {
+                                       "ShortBull_Score":  0,
+                                       "Bollinger_Position":  "触及下轨",
+                                       "FundFlow_Trend":  "主力流出",
+                                       "Research_Coverage":  "有(1篇)",
+                                       "ADX_Trend":  "趋势形成中",
+                                       "MA_Trend":  "空头排列",
+                                       "MACD_Position":  "死叉",
+                                       "MidBull_Score":  1,
+                                       "RSI_Value":  37.2,
+                                       "Volume_Relation":  "缩量下跌",
+                                       "LongBull_Score":  1,
+                                       "ADX_Value":  25,
+                                       "RSI_Zone":  "中性偏弱",
+                                       "Debt_Level":  "低杠杆",
+                                       "Wyckoff_Phase":  "疑似拉升区",
+                                       "ROE_Level":  "较差(\u003c5%)",
+                                       "OBV_Trend":  "量价同跌",
+                                       "PE_Percentile_Zone":  "合理(40-60%)"
+                                   },
+                       "Prediction":  {
+                                          "Short":  "中性",
+                                          "MidBull":  1,
+                                          "Long":  "长期中性",
+                                          "Mid":  "趋势看空",
+                                          "Confidence":  "低(\u003c50%)",
+                                          "ShortBull":  0,
+                                          "LongBull":  1
+                                      },
+                       "Code":  "603092",
+                       "Scores":  {
+                                      "Sector":  37,
+                                      "Macro":  {
+                                                    "Score":  33,
+                                                    "Phase":  "偏弱调整",
+                                                    "PosRatio":  25,
+                                                    "AvgChg":  -0.1
+                                                },
+                                      "Capital":  22,
+                                      "Composite":  26,
+                                      "Technical":  26,
+                                      "Sentiment":  13,
+                                      "Fundamental":  26
+                                  },
+                       "TrendHealth":  {
+                                           "Label":  "警戒",
+                                           "Score":  40
+                                       },
+                       "RatingFull":  "☆ 回避"
+                   }
                ],
     "_generated_by":  "run_keystock_analysis.ps1",
-    "GeneratedAt":  "2026-05-27 20:50:59",
+    "GeneratedAt":  "2026-05-27 20:51:50",
     "Date":  "20260527",
     "_schema_version":  "1.0"
 }
