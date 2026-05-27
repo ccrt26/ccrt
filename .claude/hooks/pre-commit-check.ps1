@@ -273,6 +273,26 @@ try {
         Write-Log "PASS" "Code files staged ($($StagedCodeFiles.Count) files):"
         foreach ($cf in $StagedCodeFiles) { Write-Log "PASS" "  - $cf" }
 
+        # F0: AutoCommit exemption — if ALL code files match AutoCommit patterns, skip pipeline check
+        $allAutoCommit = $true
+        foreach ($cf in $StagedCodeFiles) {
+            $f = $cf -replace '\\', '/'
+            $isAuto = $false
+            foreach ($pat in $script:AutoCommitPaths) {
+                if ($f -match $pat) { $isAuto = $true; break }
+            }
+            if (-not $isAuto) {
+                foreach ($pat in $script:AutoCommitExtensions) {
+                    if ($f -match $pat) { $isAuto = $true; break }
+                }
+            }
+            if (-not $isAuto) { $allAutoCommit = $false; break }
+        }
+        if ($allAutoCommit) {
+            Write-Log "PASS" "F0 PASS: All staged code files are AutoCommit-exempt (data/report/config). Skipping pipeline check."
+            Write-Log "PASS" "Check F complete"
+            # All auto-commit files — skip pipeline authorization
+        } else {
         $anyBlocked = $false
         foreach ($cf in $StagedCodeFiles) {
             $auth = Test-PipelineAuthorization -FilePath $cf -ProjectRoot $ProjectRoot
@@ -287,6 +307,7 @@ try {
         if ($anyBlocked) {
             Write-Log "BLOCK" "Commit rejected. Start pipeline: .\pipeline_token.ps1 -Start -Task 'description'"
         }
+        }  # end else (allAutoCommit=false)
     } else {
         Write-Log "PASS" "F1 PASS: No code files staged. Check F skipped."
     }

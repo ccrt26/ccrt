@@ -24,16 +24,21 @@ REQUIRED_FILES = [
     ('04_原始数据', '{date}_data_full.json', '全量采集数据'),
     ('04_原始数据', '{date}_data_scored.json', '评分数据'),
     ('04_原始数据', '{date}_data_final.json', '终选数据'),
-    ('04_原始数据', '{date}_data_final_optimized.json', '优化终选'),
+    ('04_原始数据', '{date}_score_history.jsonl', '评分历史'),
     ('05_参考数据', '{date}_dynamic_pool.json', '动态股票池'),
     ('05_参考数据', '{date}_sector_data.json', '板块聚合数据'),
     ('02_评估数据', '评估数据_{date}.json', '评估数据'),
+    ('02_评估数据', '{date}_records.csv', '后评估明细'),
+    ('02_评估数据', '{date}_summary.csv', '后评估汇总'),
     ('01_交易快照', 'snapshot_{date}.json', '交易快照'),
 ]
 
 OPTIONAL_FILES = [
+    ('04_原始数据', '{date}_data_final_optimized.json', '优化终选'),
     ('05_参考数据', '{date}_eastmoney_sector_map.json', '东方财富板块映射'),
     ('05_参考数据', '{date}_industry_map.json', '行业映射'),
+    ('02_评估数据', '{date}_predictions.csv', '预判记录'),
+    ('02_评估数据', '评估结果_{date}.json', '评估结果'),
 ]
 
 # A类可自动修复: (源文件, 目标文件, 修复方式)
@@ -117,16 +122,50 @@ def enumerate_trading_days(scope_days):
 
 # === 文件检查 ===
 def check_file_exists(subdir, template, date_str):
-    """检查单个文件是否存在且JSON有效"""
+    """检查单个文件是否存在且有效（JSON/JSONL/CSV）"""
     fname = template.format(date=date_str)
     fpath = DATA_DIR / subdir / fname
     if not fpath.exists():
         return {'status': 'missing', 'path': str(fpath.relative_to(BASE))}
 
+    fsize = fpath.stat().st_size
+    if fsize == 0:
+        return {'status': 'empty', 'path': str(fpath.relative_to(BASE))}
+
+    ext = fpath.suffix.lower()
+
+    # CSV: 只检查存在+非空
+    if ext == '.csv':
+        return {
+            'status': 'ok',
+            'path': str(fpath.relative_to(BASE)),
+            'size': fsize,
+            'struct': 'csv',
+            'data': None
+        }
+
+    # JSONL: 检查每行是有效JSON
+    if ext == '.jsonl':
+        try:
+            with open(fpath, 'r', encoding='utf-8-sig') as f:
+                lines = [l.strip() for l in f if l.strip()]
+            if not lines:
+                return {'status': 'empty', 'path': str(fpath.relative_to(BASE))}
+            json.loads(lines[0])
+            return {
+                'status': 'ok',
+                'path': str(fpath.relative_to(BASE)),
+                'size': fsize,
+                'struct': f'jsonl[{len(lines)}]',
+                'data': None
+            }
+        except (json.JSONDecodeError, Exception) as e:
+            return {'status': 'corrupt', 'path': str(fpath.relative_to(BASE)), 'error': str(e)[:80]}
+
+    # JSON: 完整解析
     try:
         with open(fpath, 'r', encoding='utf-8-sig') as f:
             data = json.load(f)
-        fsize = fpath.stat().st_size
         had_bom = fpath.read_bytes().startswith(b'\xef\xbb\xbf')
 
         # 结构检查
@@ -161,9 +200,12 @@ def check_consistency(day_results):
     final = day_results.get('data_final', {})
     dpool = day_results.get('dynamic_pool', {})
 
-    # 1. scored股票数 = full股票数
+    # 1. scored处理总数 = full股票数（AllStocks仅含passed，应用Summary.Total）
     if scored.get('data') and full.get('data'):
-        scored_count = len(scored['data'].get('AllStocks', []))
+        summary = scored['data'].get('Summary', {})
+        scored_count = summary.get('Total', 0)
+        if not scored_count:
+            scored_count = len(scored['data'].get('AllStocks', [])) + len(scored['data'].get('VetoedStocks', []))
         full_count = len(full['data'].get('Stocks', []))
         if scored_count != full_count:
             issues.append(f'股票数不一致: scored={scored_count} vs full={full_count}')
@@ -287,10 +329,13 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
             elif '_data_scored' in template: key = 'data_scored'
             elif '_data_final_optimized' in template: key = 'data_final_optimized'
             elif '_data_final' in template: key = 'data_final'
+            elif 'score_history' in template: key = 'score_history'
             elif 'dynamic_pool' in template: key = 'dynamic_pool'
             elif 'sector_data' in template: key = 'sector_data'
             elif 'industry_map' in template: key = 'industry_map'
             elif 'eastmoney_sector_map' in template: key = 'eastmoney_sector_map'
+            elif 'records' in template: key = 'records'
+            elif 'summary' in template: key = 'summary'
             elif '评估数据' in template: key = 'eval_data'
             elif 'snapshot' in template: key = 'snapshot'
 
@@ -298,11 +343,21 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
             result['desc'] = desc
             result['type'] = key
             result['required'] = True
+            # snapshot当日未生成属正常（盘后管线产出），不标记为required
+            if key == 'snapshot' and td == date.today().strftime('%Y%m%d'):
+                result['required'] = False
+            # records/summary/predictionsCSV当日可能未生成
+            if key in ('records', 'summary') and td == date.today().strftime('%Y%m%d'):
+                result['required'] = False
             day_files[key] = result
 
         # Optional files
         for subdir, template, desc in OPTIONAL_FILES:
-            key = 'eastmoney_sector_map' if 'eastmoney' in template else 'industry_map'
+            key = template.replace('{date}_', '').replace('.json', '').replace('.csv', '')
+            if 'eastmoney' in template: key = 'eastmoney_sector_map'
+            elif 'industry_map' in template: key = 'industry_map'
+            elif 'predictions' in template: key = 'predictions'
+            elif '评估结果' in template: key = 'eval_result'
             result = check_file_exists(subdir, template, td)
             result['desc'] = desc
             result['type'] = key

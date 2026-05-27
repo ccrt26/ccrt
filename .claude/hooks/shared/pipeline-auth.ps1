@@ -3,6 +3,32 @@
 # Single source of truth: pre-commit hook + write_protection hook both dot-source this module
 # All protected paths, executor rules, gate checks, scope rules defined here once.
 
+# AutoCommit extensions — data/report/config files exempt from pipeline protection
+$script:AutoCommitExtensions = @(
+    '\.log$', '\.json$', '\.jsonl$', '\.csv$', '\.txt$', '\.md$', '\.pdf$', '\.docx$', '\.html$'
+)
+
+# AutoCommit path prefixes — entire directories exempt from pipeline protection
+$script:AutoCommitPaths = @(
+    '^.claude[\\/]',
+    '^临时报告[\\/]',
+    '^历史数据[\\/]',
+    '^审计报告[\\/]',
+    '^重点股票[\\/]股票报告[\\/]',
+    '^重点股票[\\/]深度分析[\\/]',
+    '^重点股票[\\/]次日评估[\\/]',
+    '^重点股票[\\/]预判记录[\\/]',
+    '^重点股票[\\/]消息面数据[\\/]',
+    '^每日荐股[\\/]股票报告[\\/]',
+    '^每日荐股[\\/]评估报告[\\/]',
+    '^模拟交易[\\/]持仓记录[\\/]',
+    '^模拟交易[\\/]每日快照[\\/]',
+    '^模拟交易[\\/]绩效报告[\\/]',
+    '^项目成员[\\/]',
+    '^CLAUDE\.md$',
+    '^inspect_data_health\.py$'
+)
+
 $script:ProtectedPaths = @(
     '^代码文件[\\/]',
     '^模拟交易[\\/]sim_orchestrator\.ps1$',
@@ -34,6 +60,18 @@ function Test-PipelineAuthorization {
     )
 
     $normalizedFile = $FilePath -replace '\\', '/'
+
+    # Step 0: AutoCommit exemption — data/report/config files never need pipeline
+    foreach ($pat in $script:AutoCommitPaths) {
+        if ($normalizedFile -match $pat) {
+            return [PSCustomObject]@{Authorized=$true; Reason="Auto-commit path: matches $pat"; Executor=""; Gate1=""; ScopeMatch=$true}
+        }
+    }
+    foreach ($pat in $script:AutoCommitExtensions) {
+        if ($normalizedFile -match $pat) {
+            return [PSCustomObject]@{Authorized=$true; Reason="Auto-commit extension: matches $pat"; Executor=""; Gate1=""; ScopeMatch=$true}
+        }
+    }
 
     # Step 1: Check if file is in any protected path
     $isProtected = $false
