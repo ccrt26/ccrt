@@ -538,6 +538,13 @@ body {
   text-align: center;
 }
 
+.event-detail .detail-no-content {
+  color: var(--text-muted);
+  font-size: var(--font-sm);
+  padding: 12px;
+  text-align: center;
+}
+
 .event-detail .detail-content {
   font-size: var(--font-sm);
   color: var(--text-primary);
@@ -1132,19 +1139,17 @@ body {
         var eventId = escAttr(e.event_id || "");
 
         var contentArea = '';
-        if (hasPdf) {
+        if (hasContent) {
+          contentArea =
+            '<div class="detail-section">' +
+              '<div class="detail-section-title">' + (hasPdf ? '公告摘要' : '公告全文') + '</div>' +
+              '<div class="detail-content">' + esc(e.content) + '</div>' +
+            '</div>';
+        } else if (hasPdf) {
           contentArea =
             '<div class="detail-section">' +
               '<div class="detail-section-title">公告全文</div>' +
-              '<div class="detail-content loading-content" data-event-id="' + eventId + '">' +
-                '加载原文中...' +
-              '</div>' +
-            '</div>';
-        } else if (hasContent) {
-          contentArea =
-            '<div class="detail-section">' +
-              '<div class="detail-section-title">公告摘要</div>' +
-              '<div class="detail-content">' + esc(e.content) + '</div>' +
+              '<div class="detail-content detail-no-content">暂无摘要，请通过下方PDF按钮查看原文</div>' +
             '</div>';
         }
 
@@ -1234,27 +1239,7 @@ body {
           card.classList.toggle("expanded");
 
           if (!wasExpanded) {
-            var loadingEl = card.querySelector(".loading-content");
-            if (loadingEl) {
-              var evId = loadingEl.getAttribute("data-event-id");
-              if (evId) {
-                fetch("/api/event-content?event_id=" + encodeURIComponent(evId))
-                  .then(function(r) { return r.json(); })
-                  .then(function(d) {
-                    if (d && d.content) {
-                      loadingEl.innerHTML = esc(d.content);
-                      loadingEl.classList.remove("loading-content");
-                    } else {
-                      loadingEl.innerHTML = '<span class="fetch-error">原文加载失败，请点击下方PDF按钮直接查看</span>';
-                      loadingEl.classList.remove("loading-content");
-                    }
-                  })
-                  .catch(function() {
-                    loadingEl.innerHTML = '<span class="fetch-error">原文加载失败，请点击下方PDF按钮直接查看</span>';
-                    loadingEl.classList.remove("loading-content");
-                  });
-              }
-            }
+            // Content is pre-rendered directly — no fetch needed
           }
         });
       });
