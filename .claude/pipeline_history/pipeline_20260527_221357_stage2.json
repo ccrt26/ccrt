@@ -1,0 +1,38 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 2/6: 架构审查 | Executor: 新安+旧影",
+    "updated":  "2026-05-27T14:13:57",
+    "started":  "2026-05-27T14:11:05",
+    "gate_2":  "PENDING",
+    "task":  "fix_daily_report_1_2_empty_fields",
+    "stage":  2,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_1_2_data_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T14:13:42",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_1_2_data_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-27T14:13:57",
+                              "stage":  2
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构审查",
+    "gate_3":  "PENDING",
+    "executor":  "新安+旧影"
+}

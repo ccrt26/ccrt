@@ -2127,20 +2127,8 @@ if ($schemaOk) {
     Write-Warning "v3.0字段完整性校验失败，请检查报告输出"
 }
 
-# v1.8: 生成机器可解析日报MD（含eval注释，供后评估Parser提取）
-$genDailyBrief = Join-Path $rootDir "代码文件\重点股票\gen_daily_brief.py"
-if (Test-Path $genDailyBrief) {
-    Write-Host "`n生成日报MD (gen_daily_brief)..." -ForegroundColor Cyan
-    $briefResult = & python $genDailyBrief $dateStr 2>&1
-    Write-Host $briefResult
-    if ($LASTEXITCODE -ne 0) {
-        Write-Warning "gen_daily_brief.py 执行异常，后评估信号提取可能受影响"
-    } else {
-        Write-Host "日报MD生成完成 — 后评估Parser可提取P0字段" -ForegroundColor Green
-    }
-} else {
-    Write-Warning "gen_daily_brief.py 未找到，跳过日报MD生成"
-}
+# v1.8 日报MD生成已废弃 — 统一使用 v3.5 七段式日报模板 (.claude/commands/日报.md)
+# gen_daily_brief.py 已删除 (2026-05-27)，旧格式不再产出
 
 # Auto-commit: deep_analysis outputs
 $gitAuto = Join-Path $rootDir "代码文件\tools\git_autocommit.ps1"

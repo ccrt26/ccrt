@@ -1,12 +1,12 @@
 ﻿{
     "fetch_date":  "2026-05-27",
-    "fetch_time":  "19:01:07",
-    "total_raw":  11,
+    "fetch_time":  "21:52:38",
+    "total_raw":  0,
     "total_filtered":  0,
     "filter_stats":  {
                          "L1_dropped":  0,
-                         "L2_dropped":  4,
-                         "L3_dropped":  7,
+                         "L2_dropped":  0,
+                         "L3_dropped":  0,
                          "L4_dropped":  0
                      },
     "events":  [

@@ -394,37 +394,8 @@ def main(run_date=None, verbose=False):
         # === 数据质量标签 (白皮书 §三十二) ===
         s["DataQuality"] = assess_data_quality(s)
 
-        # Phase A: 绝对否决
-        veto = check_absolute_vetoes(s, v5_threshold)
-        if veto:
-            s["VetoStatus"] = veto[0]
-            s["VetoReason"] = veto[1]
-            # 给默认低分（含板块动量加分）
-            bonus = sector_info["money_bonus"] if sector_info else 0
-            s["S_Base"] = s.get("S_Base", 5)
-            s["S_Fund"] = s.get("S_Fund", 10)
-            s["S_Tech"] = s.get("S_Tech", 13)
-            s["S_Money"] = max(1, min(20, (s.get("S_Money", 10) or 10) + bonus))
-            s["S_News"] = s.get("S_News", 10)
-            s["S_Risk"] = s.get("S_Risk", 3)
-            s["TotalScore"] = s["S_Base"] + s["S_Fund"] + s["S_Tech"] + s["S_Money"] + s["S_News"] + s["S_Risk"] + s.get("S_SectorTrend", 0)
-            if sector_info:
-                s["SectorPhase"] = sector_info["phase"]
-            # 补全技术指标默认值（否决股不走 compute_scores 但报告/评估需要这些字段）
-            price = s.get("Price", 0)
-            s["MA5"] = s.get("MA5") or round(price, 2)
-            s["MA10"] = s.get("MA10") or round(price, 2)
-            s["MA20"] = s.get("MA20") or round(price, 2)
-            s["RSI"] = s.get("RSI") or 50
-            s["VolRatio"] = s.get("VolRatio") or 1.0
-            s["MACD_Status"] = s.get("MACD_Status", "中性")
-            s["TechAnalysis"] = s.get("TechAnalysis", "")
-            s["VolumePercentile"] = s.get("VolumePercentile")
-            s["PathTag"] = s.get("PathTag") or "震荡"
-            vetoed.append(s)
-            continue
-
-        # Phase B: 评分（传入板块动量信息+板块趋势持续性v2.4）
+        # Phase B: 评分（所有股票先计算技术指标+子分数，再判断否决）
+        # v1.0 fix: 否决股也需要完整技术指标供日报/风控使用，compute_scores提前到否决前
         scores, tech_info = compute_scores(s, sector_info, sector_trend_info, evidence_info)
         s.update(scores)
 
@@ -432,6 +403,16 @@ def main(run_date=None, verbose=False):
         from .scores import classify_breakthrough_nature
         bt_type = classify_breakthrough_nature(s, scores)
         s["_BreakthroughType"] = bt_type
+
+        # Phase A: 绝对否决（在评分后判断——否决是标签，不截断技术指标）
+        veto = check_absolute_vetoes(s, v5_threshold)
+        if veto:
+            s["VetoStatus"] = veto[0]
+            s["VetoReason"] = veto[1]
+            if sector_info:
+                s["SectorPhase"] = sector_info["phase"]
+            vetoed.append(s)
+            continue
 
         # Phase C: 条件否决（v2.7: +D.1市场自适应参数 + C8突破性质）
         veto = check_conditional_vetoes(s, scores, sector_phases, sector_trends, market_state)
@@ -534,31 +515,7 @@ def main(run_date=None, verbose=False):
             "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
         } for s in passed[:25]],  # 限制推荐不超过25只
         "AllStocks": passed,  # 仅含通过股
-        "VetoedStocks": [{  # v2.4.1: VetoedStocks供内部审计用，不再在HTML报告中展示
-            "Code": s["Code"], "Name": s["Name"],
-            "Industry": s.get("Industry", ""),
-            "TotalScore": s["TotalScore"],
-            "VetoStatus": s.get("VetoStatus", ""),
-            "VetoReason": s.get("VetoReason", ""),
-            "ThemePath": s.get("_ThemePath", ""),
-            "C7_Purity": s.get("_C7_Purity", -1),
-            "S_Base": s["S_Base"], "S_Fund": s["S_Fund"],
-            "S_Tech": s["S_Tech"], "S_Money": s["S_Money"],
-            "S_News": s["S_News"], "S_Risk": s["S_Risk"],
-            "S_SectorTrend": s.get("S_SectorTrend", 0),
-            "DataQuality": s.get("DataQuality", ""),
-            "PoolSource": s.get("PoolSource", ""),
-            "Price": s.get("Price", 0),
-            "ChangePct": s.get("ChangePct", 0),
-            "PE": s.get("PE", 0),
-            "MA5": s.get("MA5"), "MA10": s.get("MA10"), "MA20": s.get("MA20"),
-            "RSI": s.get("RSI"), "MACD_Status": s.get("MACD_Status", ""),
-            "VolRatio": s.get("VolRatio"),
-            "VolumePercentile": s.get("VolumePercentile"),
-            "PathTag": s.get("PathTag", "震荡"),
-            "SectorPhase": s.get("SectorPhase", ""),
-            "ATR14": s.get("ATR14", 0),  # 流金 v2026-05-24
-        } for s in vetoed],
+        "VetoedStocks": vetoed,  # v1.0 fix: 输出完整对象，与AllStocks同构，供日报/风控使用全部技术指标
         "data_quality": {  # 玉夜 v2026-05-24
             "flag": "normal",
             "degraded_fields": [],

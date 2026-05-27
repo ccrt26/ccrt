@@ -452,6 +452,10 @@ foreach ($s in $stocks) {
         Volume       = $q.Volume
         TurnoverRate = $q.TurnoverRate
         Amplitude    = $q.Amplitude
+        Open         = $q.Open
+        High         = $q.High
+        Low          = $q.Low
+        PrevClose    = $q.PrevClose
         PE           = if ($q.PE -and $q.PE -gt 0) { $q.PE } else { 0 }
         MktCap       = $q.MktCap
         TotalScore   = 50
@@ -469,6 +473,39 @@ foreach ($s in $stocks) {
         KOpen        = if ($k) { $k.KOpen } else { @() }
         KHigh        = if ($k) { $k.KHigh } else { @() }
         KLow         = if ($k) { $k.KLow } else { @() }
+        # 预计算近4日数据（供日报1.2节直接读取，避免AI解析K线数组）
+        Recent4Days  = if ($k -and $k.KDate -and $k.KDate.Count -gt 0) {
+            $recent = @()
+            $n = $k.KDate.Count
+            $start = [Math]::Max(0, $n - 4)
+            for ($i = $start; $i -lt $n; $i++) {
+                $prevClose = if ($i -gt 0) { $k.KClose[$i-1] } else { $k.KClose[0] }
+                $chg = if ($prevClose -ne 0) { [math]::Round(($k.KClose[$i] - $prevClose) / $prevClose * 100, 2) } else { 0 }
+                $recent += @{
+                    Date         = $k.KDate[$i]
+                    Close        = $k.KClose[$i]
+                    ChangePct    = $chg
+                    High         = $k.KHigh[$i]
+                    Low          = $k.KLow[$i]
+                    Volume       = $k.KVolume[$i]
+                    TurnoverRate = $null
+                }
+            }
+            # 追加今日快照（换手率仅当日有值）
+            $todayStr = (Get-Date).ToString("yyyy-MM-dd")
+            if ($recent.Count -eq 0 -or $recent[-1].Date -ne $todayStr) {
+                $recent += @{
+                    Date         = $todayStr
+                    Close        = $q.Price
+                    ChangePct    = $q.ChangePct
+                    High         = $q.High
+                    Low          = $q.Low
+                    Volume       = $q.Volume
+                    TurnoverRate = $q.TurnoverRate
+                }
+            }
+            ,@($recent | Select-Object -Last 4)
+        } else { @() }
         # 财务数据
         EPS          = $eps
         EPS_Quarterly = $epsQuarterly  # 4个季度EPS序列
@@ -486,7 +523,7 @@ foreach ($s in $stocks) {
         NorthboundFreeRatio   = if ($nb -and $nb.FreeRatio) { [double]$nb.FreeRatio } else { 0 }
         NorthboundHoldMktCap  = if ($nb -and $nb.HoldMarketCap) { [double]$nb.HoldMarketCap } else { 0 }
         # 南向资金 [THS-SB] (v2026-05-27: 日频补位北向失效)
-        SouthboundNetFlow  = if ($southboundFlow -and $southboundFlow.data -and $southboundFlow.data.Count -gt 0) { [double]$southboundFlow.data[0].net_flow } else { 0 }
+        SouthboundNetFlow  = if ($southboundFlow -and $southboundFlow.data -and $southboundFlow.data.Count -gt 0) { [double]$southboundFlow.data[-1].net_flow } else { 0 }
         SouthboundFlow_5d  = if ($southboundFlow -and $southboundFlow.data) { ($southboundFlow.data | ForEach-Object { [double]$_.net_flow } | Measure-Object -Sum).Sum } else { 0 }
         SouthboundSignal   = if ($southboundFlow -and $southboundFlow.data) {
             $sbSignals = $southboundFlow.data | ForEach-Object { if ([double]$_.net_flow -gt 5) { 1 } elseif ([double]$_.net_flow -lt -5) { -1 } else { 0 } }
@@ -506,6 +543,23 @@ foreach ($s in $stocks) {
         ResearchReportCount = if ($research -and $research.ReportCount) { [int]$research.ReportCount } else { 0 }
     }
     $output += $obj
+}
+
+# 核查：重点股票数据完整性（日报1.2节依赖 High + Recent4Days）
+$keystockCodes = @("600114","601727","603019","301075","601689","000967","002230","603092")
+$missingHigh = @(); $missingRecent4 = @(); $missingLow = @()
+foreach ($stock in $output) {
+    if ($stock.Code -in $keystockCodes) {
+        if (-not $stock.High -or $stock.High -eq 0) { $missingHigh += $stock.Code }
+        if (-not $stock.Low -or $stock.Low -eq 0) { $missingLow += $stock.Code }
+        if (-not $stock.Recent4Days -or $stock.Recent4Days.Count -eq 0) { $missingRecent4 += $stock.Code }
+    }
+}
+if ($missingHigh.Count -gt 0) { Write-Warning "核查: 以下重点股票缺少当日High: $($missingHigh -join ', ')" }
+if ($missingLow.Count -gt 0) { Write-Warning "核查: 以下重点股票缺少当日Low: $($missingLow -join ', ')" }
+if ($missingRecent4.Count -gt 0) { Write-Warning "核查: 以下重点股票缺少Recent4Days: $($missingRecent4 -join ', ')" }
+if ($missingHigh.Count -eq 0 -and $missingLow.Count -eq 0 -and $missingRecent4.Count -eq 0) {
+    Write-Host "核查: 8只重点股票 High/Low/Recent4Days 全部OK"
 }
 
 # 构建结构化的输出（含个股数据 + 真实板块行情数据）

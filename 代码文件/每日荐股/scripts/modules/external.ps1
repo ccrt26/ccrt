@@ -57,7 +57,7 @@ function Get-SouthboundFlow {
     }
 
     try {
-        $result = & $pythonCmd $bridgeScript northbound_flow --direction south --days $Days 2>&1 | Out-String
+        $result = & $pythonCmd $bridgeScript northbound_flow --direction south --days $Days 2>$null | Out-String
         $data = $result | ConvertFrom-Json
         if ($data.data -and @($data.data).Count -gt 0) {
             $script:SourceUsed["SouthboundFlow"] = "AKShare[THS-SB]"
