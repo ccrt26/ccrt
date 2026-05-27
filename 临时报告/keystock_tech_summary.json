@@ -1,0 +1,474 @@
+{
+  "东睦股份": {
+    "latest_day": "2026-05-27",
+    "close": 38.67,
+    "open": 39.4,
+    "high": 39.99,
+    "low": 38.2,
+    "volume": 29702237.0,
+    "prev_close": 39.26,
+    "change_pct": -1.5,
+    "amplitude": 4.69,
+    "rsi": 65.1,
+    "adx": 46.7,
+    "atr": 1.87,
+    "dif": 1.148,
+    "macd_dir": "bullish",
+    "vol_ratio": 0.7,
+    "ma10": 35.55,
+    "ma20": 34.87,
+    "recent_low_20": 31.6,
+    "recent_high_20": 40.25,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 37.75,
+        "open": 35.15,
+        "high": 37.99,
+        "low": 35.15,
+        "volume": 48048135.0,
+        "change": 7.98
+      },
+      {
+        "day": "2026-05-25",
+        "close": 39.06,
+        "open": 37.7,
+        "high": 39.29,
+        "low": 36.36,
+        "volume": 48881171.0,
+        "change": 3.47
+      },
+      {
+        "day": "2026-05-26",
+        "close": 39.26,
+        "open": 38.8,
+        "high": 40.25,
+        "low": 38.59,
+        "volume": 38638300.0,
+        "change": 0.51
+      },
+      {
+        "day": "2026-05-27",
+        "close": 38.67,
+        "open": 39.4,
+        "high": 39.99,
+        "low": 38.2,
+        "volume": 29702237.0,
+        "change": 0
+      }
+    ]
+  },
+  "上海电气": {
+    "latest_day": "2026-05-27",
+    "close": 8.41,
+    "open": 8.61,
+    "high": 8.79,
+    "low": 8.38,
+    "volume": 188193862.0,
+    "prev_close": 8.68,
+    "change_pct": -3.11,
+    "amplitude": 4.89,
+    "rsi": 53.5,
+    "adx": 39.8,
+    "atr": 0.45,
+    "dif": 0.147,
+    "macd_dir": "bullish",
+    "vol_ratio": 0.78,
+    "ma10": 8.83,
+    "ma20": 8.56,
+    "recent_low_20": 7.85,
+    "recent_high_20": 9.33,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 8.94,
+        "open": 8.7,
+        "high": 9.05,
+        "low": 8.7,
+        "volume": 239472760.0,
+        "change": 3.0
+      },
+      {
+        "day": "2026-05-25",
+        "close": 8.93,
+        "open": 8.98,
+        "high": 9.15,
+        "low": 8.85,
+        "volume": 178639141.0,
+        "change": -0.11
+      },
+      {
+        "day": "2026-05-26",
+        "close": 8.68,
+        "open": 8.85,
+        "high": 8.85,
+        "low": 8.55,
+        "volume": 190847771.0,
+        "change": -2.8
+      },
+      {
+        "day": "2026-05-27",
+        "close": 8.41,
+        "open": 8.61,
+        "high": 8.79,
+        "low": 8.38,
+        "volume": 188193862.0,
+        "change": 0
+      }
+    ]
+  },
+  "中科曙光": {
+    "latest_day": "2026-05-27",
+    "close": 90.99,
+    "open": 94.09,
+    "high": 95.96,
+    "low": 90.29,
+    "volume": 59121026.0,
+    "prev_close": 94.33,
+    "change_pct": -3.54,
+    "amplitude": 6.28,
+    "rsi": 39.5,
+    "adx": 13.5,
+    "atr": 4.76,
+    "dif": -0.17,
+    "macd_dir": "bearish",
+    "vol_ratio": 0.9,
+    "ma10": 95.72,
+    "ma20": 95.94,
+    "recent_low_20": 88.95,
+    "recent_high_20": 105.0,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 94.8,
+        "open": 93.26,
+        "high": 95.44,
+        "low": 93.02,
+        "volume": 55590424.0,
+        "change": 1.66
+      },
+      {
+        "day": "2026-05-25",
+        "close": 96.45,
+        "open": 95.3,
+        "high": 96.45,
+        "low": 93.6,
+        "volume": 66580004.0,
+        "change": 1.74
+      },
+      {
+        "day": "2026-05-26",
+        "close": 94.33,
+        "open": 95.9,
+        "high": 95.98,
+        "low": 91.91,
+        "volume": 68746448.0,
+        "change": -2.2
+      },
+      {
+        "day": "2026-05-27",
+        "close": 90.99,
+        "open": 94.09,
+        "high": 95.96,
+        "low": 90.29,
+        "volume": 59121026.0,
+        "change": 0
+      }
+    ]
+  },
+  "多瑞医药": {
+    "latest_day": "2026-05-27",
+    "close": 76.24,
+    "open": 76.39,
+    "high": 78.88,
+    "low": 75.01,
+    "volume": 1804796.0,
+    "prev_close": 76.38,
+    "change_pct": -0.18,
+    "amplitude": 5.16,
+    "rsi": 43.8,
+    "adx": 3.1,
+    "atr": 6.19,
+    "dif": -0.247,
+    "macd_dir": "bearish",
+    "vol_ratio": 0.68,
+    "ma10": 83.7,
+    "ma20": 82.92,
+    "recent_low_20": 74.07,
+    "recent_high_20": 92.99,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 88.2,
+        "open": 85.95,
+        "high": 88.88,
+        "low": 83.0,
+        "volume": 2147300.0,
+        "change": 3.68
+      },
+      {
+        "day": "2026-05-25",
+        "close": 80.2,
+        "open": 88.29,
+        "high": 90.19,
+        "low": 79.18,
+        "volume": 3722370.0,
+        "change": -9.07
+      },
+      {
+        "day": "2026-05-26",
+        "close": 76.38,
+        "open": 78.95,
+        "high": 78.95,
+        "low": 74.07,
+        "volume": 2065000.0,
+        "change": -4.76
+      },
+      {
+        "day": "2026-05-27",
+        "close": 76.24,
+        "open": 76.39,
+        "high": 78.88,
+        "low": 75.01,
+        "volume": 1804796.0,
+        "change": 0
+      }
+    ]
+  },
+  "拓普集团": {
+    "latest_day": "2026-05-27",
+    "close": 67.45,
+    "open": 69.3,
+    "high": 69.88,
+    "low": 67.09,
+    "volume": 60949544.0,
+    "prev_close": 71.09,
+    "change_pct": -5.12,
+    "amplitude": 4.16,
+    "rsi": 57.5,
+    "adx": 52.3,
+    "atr": 3.34,
+    "dif": 2.426,
+    "macd_dir": "bullish",
+    "vol_ratio": 1.09,
+    "ma10": 70.29,
+    "ma20": 66.53,
+    "recent_low_20": 56.02,
+    "recent_high_20": 74.85,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 72.05,
+        "open": 72.0,
+        "high": 72.57,
+        "low": 70.4,
+        "volume": 52146624.0,
+        "change": -0.77
+      },
+      {
+        "day": "2026-05-25",
+        "close": 71.89,
+        "open": 73.0,
+        "high": 73.1,
+        "low": 71.2,
+        "volume": 43360045.0,
+        "change": -0.22
+      },
+      {
+        "day": "2026-05-26",
+        "close": 71.09,
+        "open": 71.88,
+        "high": 74.85,
+        "low": 69.83,
+        "volume": 59069754.0,
+        "change": -1.11
+      },
+      {
+        "day": "2026-05-27",
+        "close": 67.45,
+        "open": 69.3,
+        "high": 69.88,
+        "low": 67.09,
+        "volume": 60949544.0,
+        "change": 0
+      }
+    ]
+  },
+  "盈峰环境": {
+    "latest_day": "2026-05-27",
+    "close": 10.97,
+    "open": 11.64,
+    "high": 11.8,
+    "low": 10.85,
+    "volume": 199469765.0,
+    "prev_close": 11.78,
+    "change_pct": -6.88,
+    "amplitude": 8.76,
+    "rsi": 23.3,
+    "adx": 65.2,
+    "atr": 1.22,
+    "dif": -0.657,
+    "macd_dir": "bearish",
+    "vol_ratio": 1.11,
+    "ma10": 12.77,
+    "ma20": 13.69,
+    "recent_low_20": 10.85,
+    "recent_high_20": 17.09,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 12.98,
+        "open": 12.27,
+        "high": 13.08,
+        "low": 12.0,
+        "volume": 216303070.0,
+        "change": 7.72
+      },
+      {
+        "day": "2026-05-25",
+        "close": 12.92,
+        "open": 13.3,
+        "high": 13.45,
+        "low": 12.55,
+        "volume": 177676263.0,
+        "change": -0.46
+      },
+      {
+        "day": "2026-05-26",
+        "close": 11.78,
+        "open": 12.51,
+        "high": 12.66,
+        "low": 11.63,
+        "volume": 202174546.0,
+        "change": -8.82
+      },
+      {
+        "day": "2026-05-27",
+        "close": 10.97,
+        "open": 11.64,
+        "high": 11.8,
+        "low": 10.85,
+        "volume": 199469765.0,
+        "change": 0
+      }
+    ]
+  },
+  "科大讯飞": {
+    "latest_day": "2026-05-27",
+    "close": 50.25,
+    "open": 49.24,
+    "high": 50.99,
+    "low": 48.7,
+    "volume": 108408481.0,
+    "prev_close": 49.25,
+    "change_pct": 2.03,
+    "amplitude": 4.7,
+    "rsi": 51.2,
+    "adx": 20.3,
+    "atr": 1.67,
+    "dif": -0.081,
+    "macd_dir": "bearish",
+    "vol_ratio": 2.06,
+    "ma10": 48.34,
+    "ma20": 48.81,
+    "recent_low_20": 46.77,
+    "recent_high_20": 50.99,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 47.35,
+        "open": 47.58,
+        "high": 47.88,
+        "low": 46.77,
+        "volume": 41252913.0,
+        "change": 0.32
+      },
+      {
+        "day": "2026-05-25",
+        "close": 48.68,
+        "open": 47.7,
+        "high": 48.68,
+        "low": 47.41,
+        "volume": 53720367.0,
+        "change": 2.81
+      },
+      {
+        "day": "2026-05-26",
+        "close": 49.25,
+        "open": 48.34,
+        "high": 50.1,
+        "low": 47.73,
+        "volume": 68937637.0,
+        "change": 1.17
+      },
+      {
+        "day": "2026-05-27",
+        "close": 50.25,
+        "open": 49.24,
+        "high": 50.99,
+        "low": 48.7,
+        "volume": 108408481.0,
+        "change": 0
+      }
+    ]
+  },
+  "德力佳": {
+    "latest_day": "2026-05-27",
+    "close": 68.69,
+    "open": 69.98,
+    "high": 70.94,
+    "low": 68.2,
+    "volume": 1597743.0,
+    "prev_close": 70.0,
+    "change_pct": -1.87,
+    "amplitude": 4.02,
+    "rsi": 37.8,
+    "adx": 61.5,
+    "atr": 3.59,
+    "dif": -0.994,
+    "macd_dir": "bearish",
+    "vol_ratio": 0.56,
+    "ma10": 72.48,
+    "ma20": 73.63,
+    "recent_low_20": 66.69,
+    "recent_high_20": 78.31,
+    "prices_4d": [
+      {
+        "day": "2026-05-22",
+        "close": 71.67,
+        "open": 71.13,
+        "high": 72.39,
+        "low": 68.82,
+        "volume": 2862307.0,
+        "change": 0.9
+      },
+      {
+        "day": "2026-05-25",
+        "close": 69.46,
+        "open": 71.66,
+        "high": 72.4,
+        "low": 69.33,
+        "volume": 2271828.0,
+        "change": -3.08
+      },
+      {
+        "day": "2026-05-26",
+        "close": 70.0,
+        "open": 69.31,
+        "high": 71.5,
+        "low": 66.69,
+        "volume": 3470954.0,
+        "change": 0.78
+      },
+      {
+        "day": "2026-05-27",
+        "close": 68.69,
+        "open": 69.98,
+        "high": 70.94,
+        "low": 68.2,
+        "volume": 1597743.0,
+        "change": 0
+      }
+    ]
+  }
+}
