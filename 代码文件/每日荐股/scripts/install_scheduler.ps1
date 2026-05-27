@@ -22,7 +22,7 @@ $psPath = "powershell.exe"
 # === Uninstall mode ===
 if ($Uninstall) {
     Write-Output "===== 卸载 TieLv 定时任务 ====="
-    $tasks = @("$taskPrefix-DailyPipeline", "$taskPrefix-Evaluation")
+    $tasks = @("$taskPrefix-DailyPipeline", "$taskPrefix-DailyPipeline-Boot", "$taskPrefix-DailyStock", "$taskPrefix-Evaluation")
     foreach ($name in $tasks) {
         $existing = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
         if ($existing) {
@@ -63,17 +63,35 @@ Write-Output ""
 $taskDefs = @(
     @{
         Name        = "$taskPrefix-DailyPipeline"
-        Description = "铁律量化 · 每日数据管线（19:00 或 开机补跑）"
+        Description = "铁律量化 · 每日数据管线（19:00定时）"
         Time        = "19:00"
         ScriptPath  = $invokeScript
         ScriptArgs  = ""
+        DualTrigger = $false  # 仅定时触发，不开机补跑
+    },
+    @{
+        Name        = "$taskPrefix-DailyPipeline-Boot"
+        Description = "铁律量化 · 管线开机补跑（登录触发，invoke_daily内含20:00时间闸门）"
+        Time        = $null
+        ScriptPath  = $invokeScript
+        ScriptArgs  = ""
+        BootOnly    = $true  # 仅登录触发
+    },
+    @{
+        Name        = "$taskPrefix-DailyStock"
+        Description = "铁律量化 · 每日重点股票分析报告（20:00定时）"
+        Time        = "20:00"
+        ScriptPath  = $workflowScript
+        ScriptArgs  = "-Mode daily_latest"
+        DualTrigger = $false
     },
     @{
         Name        = "$taskPrefix-Evaluation"
-        Description = "铁律量化 · 每日后评估（19:30 或 开机补跑）"
+        Description = "铁律量化 · 每日后评估（19:30定时 或 开机补跑）"
         Time        = "19:30"
         ScriptPath  = $workflowScript
         ScriptArgs  = "-Mode eval"
+        DualTrigger = $true
     }
 )
 
@@ -96,9 +114,14 @@ foreach ($def in $taskDefs) {
     }
     $action = New-ScheduledTaskAction -Execute $psPath -Argument $argString
 
-    # Build dual triggers
-    $triggerDaily = New-ScheduledTaskTrigger -Daily -At $def.Time
-    $triggerLogon = New-ScheduledTaskTrigger -AtLogon -RandomDelay (New-TimeSpan -Seconds 120)
+    # Build triggers based on task config
+    $triggers = @()
+    if (-not $def.BootOnly) {
+        $triggers += New-ScheduledTaskTrigger -Daily -At $def.Time
+    }
+    if ($def.DualTrigger -or $def.BootOnly) {
+        $triggers += New-ScheduledTaskTrigger -AtLogon -RandomDelay (New-TimeSpan -Seconds 120)
+    }
 
     # Build settings
     $settings = New-ScheduledTaskSettingsSet `
@@ -116,13 +139,19 @@ foreach ($def in $taskDefs) {
         Register-ScheduledTask -TaskName $name `
             -Description $def.Description `
             -Action $action `
-            -Trigger @($triggerDaily, $triggerLogon) `
+            -Trigger $triggers `
             -Settings $settings `
             -Principal $principal `
             -Force `
             -ErrorAction Stop | Out-Null
         Write-Output "  [OK] $name"
-        Write-Output "       触发器: Daily $($def.Time) + AtLogon(120s)"
+        if ($def.BootOnly) {
+            Write-Output "       触发器: AtLogon(120s)"
+        } elseif ($def.DualTrigger) {
+            Write-Output "       触发器: Daily $($def.Time) + AtLogon(120s)"
+        } else {
+            Write-Output "       触发器: Daily $($def.Time)"
+        }
         Write-Output "       脚本: $(Split-Path $def.ScriptPath -Leaf)"
     } catch {
         Write-Output "  [FAIL] $name : $_"
