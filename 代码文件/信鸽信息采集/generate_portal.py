@@ -50,30 +50,41 @@ with open(CONFIG_PATH, "r", encoding="utf-8-sig") as f:
 stocks = config.get("target_stocks", [])
 print(f"  Stocks: {len(stocks)}")
 
-# [2/5] Scan & copy deep analysis reports (all historical dates)
+# [2/5] Scan & copy deep analysis reports (weekly dedup: per (stock, ISO week) keep latest only)
 print("[2/5] Scanning deep analysis reports...")
 os.makedirs(DEEP_OUT, exist_ok=True)
-deep_index = []
 
 import re as _re
 
-# Clean up old flat-path files from previous builds
+# R2: whitelist from pigeon_config.json target_stocks
+target_codes = {s['code'] for s in config.get('target_stocks', [])}
+
+# Clean up old files from previous builds (both flat and nested)
 for old_dir in glob.glob(os.path.join(DEEP_OUT, "*")):
     if os.path.isdir(old_dir):
         for old_file in glob.glob(os.path.join(old_dir, "report.*")):
             os.remove(old_file)
+        for old_sub in glob.glob(os.path.join(old_dir, "*/report.*")):
+            os.remove(old_sub)
+
+# Phase 1: collect all raw entries across all stock dirs
+raw_entries = []
 
 if os.path.isdir(DEEP_SRC):
     for stock_dir in sorted(os.listdir(DEEP_SRC)):
         stock_path = os.path.join(DEEP_SRC, stock_dir)
         if not os.path.isdir(stock_path):
             continue
-        # Parse code from directory name like "上海电气(601727)"
         code = ""
         name = stock_dir
         if "(" in stock_dir and ")" in stock_dir:
             code = stock_dir[stock_dir.index("(")+1:stock_dir.index(")")]
             name = stock_dir[:stock_dir.index("(")]
+
+        # R2: skip stocks not in config target_stocks whitelist
+        if code not in target_codes:
+            print(f"  {name}({code}): SKIP (不在重点股票清单)")
+            continue
 
         html_files = sorted(glob.glob(os.path.join(stock_path, "*深度分析报告_*.html")), reverse=True)
         pdf_files = sorted(glob.glob(os.path.join(stock_path, "*深度分析报告_*.pdf")), reverse=True)
@@ -81,7 +92,6 @@ if os.path.isdir(DEEP_SRC):
         if not html_files and not pdf_files:
             continue
 
-        # Build date→file mapping (first file wins per date, reverse sort = latest version first)
         date_html = {}
         for f in html_files:
             m = _re.search(r'(\d{8})', os.path.basename(f))
@@ -97,44 +107,63 @@ if os.path.isdir(DEEP_SRC):
         all_dates = sorted(set(list(date_html.keys()) + list(date_pdf.keys())), reverse=True)
 
         for date_str in all_dates:
-            html_file = date_html.get(date_str)
-            pdf_file = date_pdf.get(date_str)
-
-            out_dir = os.path.join(DEEP_OUT, code, date_str)
-            os.makedirs(out_dir, exist_ok=True)
-
-            html_url = None
-            html_size = None
-            if html_file:
-                dest = os.path.join(out_dir, "report.html")
-                shutil.copy2(html_file, dest)
-                html_url = f"deep_analysis/{code}/{date_str}/report.html"
-                html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
-
-            pdf_url = None
-            pdf_size = None
-            if pdf_file:
-                dest = os.path.join(out_dir, "report.pdf")
-                shutil.copy2(pdf_file, dest)
-                pdf_url = f"deep_analysis/{code}/{date_str}/report.pdf"
-                pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
-
-            deep_index.append({
-                "code": code,
-                "name": name,
-                "date": date_str,
-                "html_url": html_url,
-                "html_size": html_size,
-                "pdf_url": pdf_url,
-                "pdf_size": pdf_size,
-                "missing": []
+            raw_entries.append({
+                "code": code, "name": name, "date_str": date_str,
+                "html_file": date_html.get(date_str),
+                "pdf_file": date_pdf.get(date_str)
             })
 
-        print(f"  {name}({code}): {len(all_dates)} dates, HTML={len(date_html)} PDF={len(date_pdf)}")
+# R1: group by (code, ISO week), keep only latest date per week
+week_groups = {}
+for entry in raw_entries:
+    ds = entry['date_str']
+    d = datetime.strptime(ds, "%Y%m%d")
+    iso_year, iso_week, _ = d.isocalendar()
+    week_label = f"{iso_year}-W{iso_week:02d}"
+    key = (entry['code'], week_label)
+    if key not in week_groups or ds > week_groups[key]['date_str']:
+        e = entry.copy()
+        e['week_label'] = week_label
+        week_groups[key] = e
+
+# Phase 2: copy deduped files & build index
+deep_index = []
+for (code, week_label), entry in sorted(week_groups.items()):
+    out_dir = os.path.join(DEEP_OUT, code, week_label)
+    os.makedirs(out_dir, exist_ok=True)
+
+    html_url = None
+    html_size = None
+    if entry['html_file']:
+        dest = os.path.join(out_dir, "report.html")
+        shutil.copy2(entry['html_file'], dest)
+        html_url = f"deep_analysis/{code}/{week_label}/report.html"
+        html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+
+    pdf_url = None
+    pdf_size = None
+    if entry['pdf_file']:
+        dest = os.path.join(out_dir, "report.pdf")
+        shutil.copy2(entry['pdf_file'], dest)
+        pdf_url = f"deep_analysis/{code}/{week_label}/report.pdf"
+        pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+
+    deep_index.append({
+        "code": code,
+        "name": entry['name'],
+        "date": week_label,
+        "report_date": entry['date_str'],
+        "html_url": html_url,
+        "html_size": html_size,
+        "pdf_url": pdf_url,
+        "pdf_size": pdf_size,
+        "missing": []
+    })
+    print(f"  {entry['name']}({code}): {week_label} (report {entry['date_str']})")
 
 print(f"  Deep analysis: {len(deep_index)} entries ({len(set(e['code'] for e in deep_index))} stocks)")
 
-# [3/5] Scan & copy daily reports (all historical dates)
+# [3/5] Scan & copy daily reports (all historical dates, whitelist-filtered)
 print("[3/5] Scanning daily reports...")
 os.makedirs(DAILY_OUT, exist_ok=True)
 daily_index = []
@@ -144,6 +173,8 @@ for old_dir in glob.glob(os.path.join(DAILY_OUT, "*")):
     if os.path.isdir(old_dir):
         for old_file in glob.glob(os.path.join(old_dir, "report.*")):
             os.remove(old_file)
+        for old_sub in glob.glob(os.path.join(old_dir, "*/report.*")):
+            os.remove(old_sub)
 
 if os.path.isdir(DAILY_SRC):
     for stock_dir in sorted(os.listdir(DAILY_SRC)):
@@ -156,6 +187,11 @@ if os.path.isdir(DAILY_SRC):
         if "(" in stock_dir and ")" in stock_dir:
             code = stock_dir[stock_dir.index("(")+1:stock_dir.index(")")]
             name = stock_dir[:stock_dir.index("(")]
+
+        # R2: skip stocks not in config target_stocks whitelist
+        if code not in target_codes:
+            print(f"  {name}({code}): SKIP (不在重点股票清单)")
+            continue
 
         html_files = sorted(glob.glob(os.path.join(stock_path, "*日报_*.html")), reverse=True)
         # Daily PDF: prefer 日报_*.pdf, fallback to 分析日报_*.pdf
