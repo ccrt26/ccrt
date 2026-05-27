@@ -1,53 +1,32 @@
-{
-    "task": "git_autosync",
-    "started": "2026-05-27T09:00:00",
-    "updated": "2026-05-27T10:30:00",
-    "stage": 4,
-    "stage_name": "编码实现",
-    "executor": "红结",
-    "next_action": "invoke_role",
-    "active": true,
-    "gate_1": "PASS",
-    "gate_2": "PASS",
-    "gate_3": "PENDING",
-    "files_scope": [
-        ".claude/hooks/shared/pipeline-auth.ps1",
-        ".claude/hooks/pre-commit-check.ps1",
-        "代码文件/tools/git_autosweep.ps1",
-        "代码文件/每日荐股/",
-        "代码文件/信鸽信息采集/",
-        "代码文件/重点股票/"
-    ],
-    "stage_history": [
-        {
-            "stage": 1,
-            "executor": "情墨",
-            "output": "审计报告/架构设计/design_git_autosync_v1.0.md",
-            "gate": "PASS",
-            "validated": "2026-05-27T09:00:00"
-        },
-        {
-            "stage": 2,
-            "executor": "腰子",
-            "gate": "PASS",
-            "validated": "2026-05-27T09:05:00"
-        },
-        {
-            "stage": 3,
-            "executor": "新安+旧影",
-            "gate": "PASS",
-            "validated": "2026-05-27T09:10:00"
-        },
-        {
-            "stage": 4,
-            "executor": "红结",
-            "entered": "2026-05-27T10:30:00"
-        }
-    ],
-    "attempts": 0,
-    "max_attempts": 3,
-    "l3_triggered": false,
-    "l3_reason": "",
-    "loop_context": "",
-    "schema_version": "1.0"
+﻿{
+    "files_scope":  [
+                        "代码文件/重点股票/run_keystock_analysis.ps1",
+                        "代码文件/重点股票/gen_daily_brief.py"
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  1,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-27T12:42:33",
+    "started":  "2026-05-27T12:42:03",
+    "gate_2":  "PENDING",
+    "task":  "stock_pool_sync",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_stock_pool_sync_v1.0.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T12:42:33",
+                              "stage":  1
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
 }

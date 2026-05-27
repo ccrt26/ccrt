@@ -10,7 +10,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 STOCK_MAP = {
     '600114': '东睦股份', '601727': '上海电气', '603019': '中科曙光',
     '301075': '多瑞医药', '601689': '拓普集团', '000967': '盈峰环境',
-    '600584': '长电科技',
+    '002230': '科大讯飞', '603092': '德力佳',
 }
 
 def extract(text, pattern, group=1, default=None):
@@ -186,7 +186,7 @@ def main():
 
     stocks = []
     for code, name in STOCK_MAP.items():
-        report_path = os.path.join(report_dir, f'{name}({code})', f'重点关注股票日报_{date_str}.md')
+        report_path = os.path.join(report_dir, f'{name}({code})', f'{name}({code})分析日报_{date_str}.md')
         print(f"  解析: {name}({code})...", end=' ')
         stock = parse_daily_report(report_path, code, name)
         if stock:

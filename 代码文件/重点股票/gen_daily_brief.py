@@ -335,7 +335,7 @@ for s in stocks:
 
     out_dir = os.path.join(ROOT, '重点股票', '股票报告', f'{name}({code})')
     os.makedirs(out_dir, exist_ok=True)
-    md_path = os.path.join(out_dir, f'{name}({code})日报_{date_str}.md')
+    md_path = os.path.join(out_dir, f'{name}({code})分析日报_{date_str}.md')
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write(md)
 

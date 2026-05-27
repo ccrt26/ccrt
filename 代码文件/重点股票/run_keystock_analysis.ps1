@@ -1938,8 +1938,8 @@ foreach ($s in $stocks) {
     $code = $s.Code; $name = $s.Name
     $folderName = "${name}(${code})"
     $outDir = Join-Path $outRoot $folderName
-    $pdfFile = Join-Path $outDir "${folderName}跟踪日报_${dateStr}.pdf"
-    $htmlFile = Join-Path $outDir "${folderName}跟踪日报_${dateStr}.html"
+    $pdfFile = Join-Path $outDir "${folderName}分析日报_${dateStr}.pdf"
+    $htmlFile = Join-Path $outDir "${folderName}分析日报_${dateStr}.html"
 
     if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
 
