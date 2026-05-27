@@ -282,7 +282,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  align-items: center;
+  align-items: flex-end;
 }
 @supports not (backdrop-filter: blur(8px)) {
   .filter-bar { background: var(--bg-card); }
@@ -911,16 +911,13 @@ body {
         <option value="行业政策">行业政策</option>
       </select>
     </div>
-    <div>
-      <label>方向</label>
-      <span class="dir-btns">
-        <button class="dir-btn active" data-dir="">全部</button>
-        <button class="dir-btn" data-dir="1">利好</button>
-        <button class="dir-btn" data-dir="-1">利空</button>
-        <button class="dir-btn" data-dir="0">中性</button>
-        <button class="dir-btn reset-btn" id="btn-reset">重置</button>
-      </span>
-    </div>
+    <span class="dir-btns">
+      <button class="dir-btn active" data-dir="">全部</button>
+      <button class="dir-btn" data-dir="1">利好</button>
+      <button class="dir-btn" data-dir="-1">利空</button>
+      <button class="dir-btn" data-dir="0">中性</button>
+      <button class="dir-btn reset-btn" id="btn-reset">重置</button>
+    </span>
     <div style="flex:1"></div>
     <div>
       <input type="text" id="filter-search" placeholder="搜索标题关键词...">
