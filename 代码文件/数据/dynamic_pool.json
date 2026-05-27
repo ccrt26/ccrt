@@ -236,6 +236,12 @@
                        "Source":  "core_stock"
                    },
                    {
+                       "Code":  "603092",
+                       "Name":  "德力佳",
+                       "Industry":  "电力设备",
+                       "Source":  "core_stock"
+                   },
+                   {
                        "Code":  "600584",
                        "Name":  "长电科技",
                        "Industry":  "电子",
@@ -320,13 +326,13 @@
                        "Source":  "core_stock"
                    }
                ],
-    "BuildTime":  "2026-05-27 08:25:22",
-    "CoreCount":  53,
-    "TotalCount":  53,
+    "BuildTime":  "2026-05-27 20:00:12",
+    "CoreCount":  54,
+    "TotalCount":  54,
     "HotSectors":  {
-                       "SectorName":  "公路铁路运输",
-                       "ChangePct":  -0.8,
-                       "Turnover":  898.3,
-                       "TotalScore":  17
+                       "SectorName":  "造纸",
+                       "ChangePct":  -1.47,
+                       "Turnover":  672.02,
+                       "TotalScore":  12
                    }
 }

@@ -1,24 +1,24 @@
 ﻿================================================
      铁律量化 . 红线合规检查报告
-     生成时间: 2026-05-27 08:31
+     生成时间: 2026-05-27 20:06
 ================================================
 
 [§1 数据真实性]
-  ✅ data_final.json 存在 (15 KB)
-  ✅ data_full.json 存在 (1.8 MB)
-  ✅ data_scored.json 存在 (227 KB)
+  ✅ data_final.json 存在 (12 KB)
+  ✅ data_full.json 存在 (1.9 MB)
+  ✅ data_scored.json 存在 (314 KB)
   ✅ industry_map.json 存在 (1 KB)
   ✅ sector_data.json 存在 (3 KB)
 
 [§1 数据真实性 - 数据源字段标记]
   ⚠ data_final.json 中未找到 Source/来源 字段标记
-  ✅ data_full.json 包含 Source/来源 字段 (53/53 条目)
-  ✅ data_scored.json 包含 Source/来源 字段 (19/19 条目)
+  ✅ data_full.json 包含 Source/来源 字段 (54/54 条目)
+  ✅ data_scored.json 包含 Source/来源 字段 (31/31 条目)
 
 [§3 API 缓存]
   ✅ data_cache/ 目录存在，包含 500 个缓存文件
-  ✅ Financial (53) + KLine (57) 两类数据均存在
-  ⚠ 其他类型缓存文件: 390 个
+  ✅ Financial (54) + KLine (58) 两类数据均存在
+  ⚠ 其他类型缓存文件: 388 个
 
 [§4 执行检查清单]
   ✅ 规则红线 v1.16 -- 版本配对: .md + .docx 均存在
@@ -75,9 +75,9 @@
   重点股票次日后评估: v1.8
 
 [附加检查 - 核心文件]
-  ✅ data_final.json 存在 (15 KB)
-  ✅ data_full.json 存在 (1.8 MB)
-  ✅ data_scored.json 存在 (227 KB)
+  ✅ data_final.json 存在 (12 KB)
+  ✅ data_full.json 存在 (1.9 MB)
+  ✅ data_scored.json 存在 (314 KB)
   ✅ stock_data_raw.json 存在 (11 KB)
   ✅ gen_eval_doc.ps1 存在 (25 KB)
   ✅ gen_redlines_doc.ps1 存在 (28 KB)
