@@ -1,38 +1,38 @@
-{
-    "task": "git_autosync",
-    "started": "2026-05-27T09:00:00",
-    "updated": "2026-05-27T09:00:00",
-    "stage": 2,
-    "stage_name": "设计确认",
-    "executor": "腰子",
-    "next_action": "invoke_role",
-    "active": true,
-    "gate_1": "PASS",
-    "gate_2": "PENDING",
-    "gate_3": "PENDING",
-    "files_scope": [
-        ".claude/hooks/shared/pipeline-auth.ps1",
-        ".claude/hooks/pre-commit-check.ps1",
-        "代码文件/tools/git_autosweep.ps1"
-    ],
-    "stage_history": [
-        {
-            "stage": 1,
-            "executor": "情墨",
-            "output": "审计报告/架构设计/design_git_autosync_v1.0.md",
-            "gate": "PASS",
-            "validated": "2026-05-27T09:00:00"
-        },
-        {
-            "stage": 2,
-            "executor": "腰子",
-            "entered": "2026-05-27T09:00:00"
-        }
-    ],
-    "attempts": 0,
-    "max_attempts": 3,
-    "l3_triggered": false,
-    "l3_reason": "",
-    "loop_context": "Stage 2/6: 设计确认 | Executor: 腰子",
-    "schema_version": "1.0"
+﻿{
+    "task":  "git_autosync",
+    "started":  "2026-05-27T09:00:00",
+    "updated":  "2026-05-27T02:59:04",
+    "stage":  2,
+    "stage_name":  "架构审查",
+    "executor":  "腰子",
+    "next_action":  "advance",
+    "active":  true,
+    "gate_1":  "PASS",
+    "gate_2":  "PENDING",
+    "gate_3":  "PENDING",
+    "files_scope":  [
+                        ".claude/hooks/shared/pipeline-auth.ps1",
+                        ".claude/hooks/pre-commit-check.ps1",
+                        "代码文件/tools/git_autosweep.ps1"
+                    ],
+    "stage_history":  [
+                          {
+                              "stage":  1,
+                              "executor":  "情墨",
+                              "output":  "审计报告/架构设计/design_git_autosync_v1.0.md",
+                              "gate":  "PASS",
+                              "validated":  "2026-05-27T09:00:00"
+                          },
+                          {
+                              "stage":  2,
+                              "executor":  "腰子",
+                              "entered":  "2026-05-27T09:00:00"
+                          }
+                      ],
+    "attempts":  0,
+    "max_attempts":  3,
+    "l3_triggered":  false,
+    "l3_reason":  "",
+    "loop_context":  "Stage 2/6: 架构审查 | Executor: 新安+旧影",
+    "schema_version":  "1.0"
 }
