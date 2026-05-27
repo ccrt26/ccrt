@@ -68,7 +68,7 @@ if (Test-Path $thsScript) {
             } else {
                 Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
             }
-        } catch { }
+        } catch { Write-Warning "  CFPS采集失败(${code}): $_" }
     }
 }
 Write-Host "  CFPS(THS 重点8只): $($cfpsMap.Count)/8"
@@ -163,7 +163,7 @@ if ($sectorRanking -and $sectorRanking.Count -gt 0) {
                 $cached = Get-Content $cacheFile -Encoding UTF8 -Raw | ConvertFrom-Json
                 $age = [datetime]::Now - [datetime]::Parse($cached.Timestamp)
                 if ($age.TotalHours -le 24) { $cached = $cached.Data } else { $cached = $null }
-            } catch { $cached = $null }
+            } catch { Write-Warning "  板块K线缓存读取失败(${sc}): $_"; $cached = $null }
         }
         if ($cached) {
             # 兼容: 旧缓存格式含 SectorCode/ClosePrices 字段，新格式是 list[close,volume,date]
@@ -302,7 +302,7 @@ if (Test-Path $turnoverCacheFile) {
     try {
         $cached = Get-Content $turnoverCacheFile -Encoding UTF8 -Raw | ConvertFrom-Json
         $turnoverHistory = [System.Collections.Generic.List[double]]($cached.History)
-    } catch { $turnoverHistory = @() }
+    } catch { Write-Warning "  历史成交额缓存读取失败: $_"; $turnoverHistory = @() }
 }
 if ($marketTurnover) {
     [void]$turnoverHistory.Add($marketTurnover)
@@ -562,6 +562,23 @@ foreach ($s in $stocks) {
         $marginRZJME_Prev = [double]$mg[1].RZJME
     }
 
+    # 东方财富K线 → 日期→换手率映射（新浪K线不含换手率，东方财富[3]含f61字段）
+    $turnoverMap = @{}
+    try {
+        $emPrefix = if ($s.Code.StartsWith("6")) { "1" } else { "0" }
+        $emKlineUrl = "http://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${emPrefix}.$($s.Code)&fields1=f1,f2,f3&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&end=20500101&lmt=5"
+        $emResp = Invoke-WebRequest -Uri $emKlineUrl -UseBasicParsing -TimeoutSec 5 -Headers @{"User-Agent"="Mozilla/5.0"}
+        $emJson = $emResp.Content | ConvertFrom-Json
+        if ($emJson.data -and $emJson.data.klines) {
+            foreach ($kl in $emJson.data.klines) {
+                $parts = $kl -split ','
+                if ($parts.Count -ge 11 -and $parts[10] -and [double]::TryParse($parts[10], [ref]$null)) {
+                    $turnoverMap[$parts[0]] = [double]$parts[10]
+                }
+            }
+        }
+    } catch { Write-Warning "  东方财富K线换手率采集失败($($s.Code)): $_" }
+
 # 初始化各维度评分（由 scoring_engine_v2.py 重新计算）
     $obj = [PSCustomObject]@{
         Code         = $s.Code
@@ -594,22 +611,6 @@ foreach ($s in $stocks) {
         KOpen        = if ($k) { $k.KOpen } else { @() }
         KHigh        = if ($k) { $k.KHigh } else { @() }
         KLow         = if ($k) { $k.KLow } else { @() }
-        # 东方财富K线 → 日期→换手率映射（新浪K线不含换手率，东方财富[3]含f61字段）
-        $turnoverMap = @{}
-        try {
-            $emPrefix = if ($s.Code.StartsWith("6")) { "1" } else { "0" }
-            $emKlineUrl = "http://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${emPrefix}.$($s.Code)&fields1=f1,f2,f3&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=0&end=20500101&lmt=5"
-            $emResp = Invoke-WebRequest -Uri $emKlineUrl -UseBasicParsing -TimeoutSec 5 -Headers @{"User-Agent"="Mozilla/5.0"}
-            $emJson = $emResp.Content | ConvertFrom-Json
-            if ($emJson.data -and $emJson.data.klines) {
-                foreach ($kl in $emJson.data.klines) {
-                    $parts = $kl -split ','
-                    if ($parts.Count -ge 11 -and $parts[10] -and [double]::TryParse($parts[10], [ref]$null)) {
-                        $turnoverMap[$parts[0]] = [double]$parts[10]
-                    }
-                }
-            }
-        } catch { }
         # 预计算近4日数据（供日报1.2节直接读取，避免AI解析K线数组）
         Recent4Days  = if ($k -and $k.KDate -and $k.KDate.Count -gt 0) {
             $recent = @()
