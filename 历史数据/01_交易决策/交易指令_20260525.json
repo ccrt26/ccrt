@@ -1,0 +1,60 @@
+{
+  "date": "20260525",
+  "generated_by": "腰子",
+  "generated_at": "2026-05-25T19:10:00",
+  "decisions": [
+    {
+      "action": "SELL",
+      "code": "301075",
+      "name": "多瑞医药",
+      "shares": 1100,
+      "price_limit": "market_open",
+      "reason": "MACD死叉+OBV量价同跌+毛利率42%→8%崩溃+ROE负数+深度分析五红旗全红。清仓止损。",
+      "analysis_ref": {
+        "shanyao": "医药板块弱势",
+        "yuye": "FY2025毛利率8.2%,ROE-16.33%,数据无异常",
+        "liujin": "五红旗全红,基本面恶化不可逆,建议清仓",
+        "qingshan": "信号矛盾,Wyckoff拉升但MACD死叉,退出优先"
+      },
+      "priority": "P0_腰子",
+      "status": "pending",
+      "risk_override": false,
+      "risk_override_reason": ""
+    },
+    {
+      "action": "SELL_HALF",
+      "code": "600114",
+      "name": "东睦股份",
+      "shares": 1150,
+      "price_limit": "min(39.0, market_open)",
+      "reason": "+11%盈利,现价39.06接近R1=41.01阻力。减半仓锁利,留一半跟趋势。",
+      "analysis_ref": {
+        "shanyao": "电子/机械板块中性偏强",
+        "yuye": "MA多头+MACD金叉+ADX=30.7,数据完整",
+        "liujin": "ShortBull=4,趋势健康95,风险可控",
+        "qingshan": "评分52偏低但技术面最强,建议分批止盈"
+      },
+      "priority": "P1_腰子",
+      "status": "pending",
+      "risk_override": false,
+      "risk_override_reason": ""
+    },
+    {
+      "action": "HOLD",
+      "code": "601689",
+      "name": "拓普集团",
+      "shares": 1200,
+      "reason": "MA多头+MACD金叉完好,OBV顶背离仅预警级别,继续持有观察",
+      "analysis_ref": {
+        "shanyao": "汽车零部件板块中性",
+        "yuye": "数据完整,现价71.89,S1=65.34",
+        "liujin": "OBV顶背离+主力流出→预警,但非卖出信号",
+        "qingshan": "技术面尚可,建议设紧移动止损"
+      },
+      "priority": "P2_腰子",
+      "status": "pending",
+      "risk_override": false,
+      "risk_override_reason": ""
+    }
+  ]
+}

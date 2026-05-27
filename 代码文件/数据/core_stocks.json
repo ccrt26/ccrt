@@ -1,7 +1,7 @@
 {
   "Version": "2026Q2",
-  "LastUpdated": "2026-05-26",
-  "Description": "核心底仓股票 — 始终纳入动态池，覆盖AI/半导体/算力/存储/高端制造/环保/电力设备/医药 主线",
+  "LastUpdated": "2026-05-27",
+  "Description": "核心底仓股票 — 始终纳入动态池，覆盖AI/半导体/算力/存储/高端制造/环保/电力设备/风电/医药 主线",
   "CoreStocks": [
     {"Code": "688981", "Name": "中芯国际", "Industry": "电子"},
     {"Code": "688041", "Name": "海光信息", "Industry": "电子"},
@@ -55,6 +55,7 @@
     {"Code": "000977", "Name": "浪潮信息", "Industry": "计算机"},
     {"Code": "301075", "Name": "多瑞医药", "Industry": "医药"},
     {"Code": "000967", "Name": "盈峰环境", "Industry": "环保"},
-    {"Code": "601727", "Name": "上海电气", "Industry": "电力设备"}
+    {"Code": "601727", "Name": "上海电气", "Industry": "电力设备"},
+    {"Code": "603092", "Name": "德力佳", "Industry": "电力设备"}
   ]
 }

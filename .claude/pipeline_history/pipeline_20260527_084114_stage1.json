@@ -1,0 +1,43 @@
+﻿{
+    "files_scope":  [
+                        "代码文件/每日荐股/scripts/modules/core.ps1",
+                        "代码文件/每日荐股/scripts/modules/technical.ps1",
+                        "代码文件/每日荐股/scripts/stock_data_fetcher_legacy.ps1",
+                        "代码文件/每日荐股/scripts/stock_data_fetcher_legacy.psm1",
+                        "代码文件/每日荐股/scripts/modules/test.ps1",
+                        "代码文件/每日荐股/scripts/modules/biying.ps1",
+                        "代码文件/每日荐股/scripts/modules/external.ps1",
+                        "代码文件/每日荐股/scripts/modules/financial.ps1",
+                        "代码文件/每日荐股/scripts/modules/fundflow.ps1",
+                        "代码文件/每日荐股/scripts/modules/quote.ps1",
+                        "代码文件/每日荐股/scripts/modules/sector.ps1",
+                        "代码文件/每日荐股/scripts/run_daily_eval.ps1",
+                        "代码文件/重点股票/run_keystock_analysis.ps1"
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-27T00:41:14",
+    "started":  "2026-05-27T00:39:55",
+    "gate_2":  "PENDING",
+    "task":  "动词合规化Phase2: Calc-/Save-/Load- → Measure-/Export-/Import- 全量迁移",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_verb_compliance_phase2_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T00:41:14",
+                              "stage":  1
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
+}

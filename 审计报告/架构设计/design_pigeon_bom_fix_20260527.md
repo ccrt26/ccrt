@@ -1,6 +1,6 @@
 # 信鸽自动采集报错修复 — 架构设计
 
-> pipeline_stage: complete | finance_confirmed: false
+> pipeline_stage: complete | finance_confirmed: true
 > **日期**: 2026-05-27 | **设计**: 情墨 | **代码等级**: L0（工具/数据采集）
 > **触发**: 信鸽开机自检报错 + 模块导入动词警告
 

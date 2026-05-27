@@ -32,10 +32,15 @@
         {"name": "风电装备", "keywords": "风电|风机|海上风电|叶片|塔筒|变流器"},
         {"name": "储能系统", "keywords": "储能|电池|PCS|EMS|调频|削峰填谷"}
       ]},
-    {"code": "600584", "name": "长电科技", "market": "sh",
+    {"code": "002230", "name": "科大讯飞", "market": "sz",
       "concept_tracks": [
-        {"name": "先进封装", "keywords": "封装|Chiplet|2.5D|3D|SiP|Fan-Out|晶圆级"},
-        {"name": "半导体封测", "keywords": "封测|测试|晶圆|芯片|IC|集成电路"}
+        {"name": "星火大模型AI应用", "keywords": "星火|大模型|NLP|语音识别|AI|认知智能|多模态| chatbot"},
+        {"name": "AI+教育医疗", "keywords": "AI教育|智慧教育|AI医疗|智慧医疗|学习机|智医|政务AI"}
+      ]},
+    {"code": "603092", "name": "德力佳", "market": "sh",
+      "concept_tracks": [
+        {"name": "风电齿轮箱", "keywords": "风电|齿轮箱|变速箱|传动|风机|齿轮|增速箱"},
+        {"name": "新能源装备制造", "keywords": "新能源|装备|精密传动|三一重能|产能|扩产|定点"}
       ]}
   ],
   "blacklist_keywords": [

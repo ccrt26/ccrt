@@ -1,2 +1,3 @@
 ﻿period,start_date,end_date,total_recommendations,wins,losses,win_rate,total_profit,total_loss,profit_loss_ratio,portfolio_return,hs300_return,excess_return,tech_misjudge_rate,money_misjudge_rate,sector_misjudge_rate,news_misjudge_rate,veto_kill_rate,exemption_win_rate,recommended_win_rate,vetoed_win_rate,market_win_rate,veto_effectiveness,score_distinction
 single,20260526,20260526,8,4,3,57.1,3.8,-1.34,2.84,1.6,0,1.6,100,100,100,100,-,-,-,-,-,-,-57.1% (0% - 57.1%) — 不足
+single,20260527,20260527,8,1,7,12.5,3.62,-3.46,1.05,-2.58,0,-2.58,50,50,50,33.3,-,-,-,-,-,-,0% (0% - 0%) — 不足

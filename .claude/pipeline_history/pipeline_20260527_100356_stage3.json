@@ -1,0 +1,45 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 3/6: 编码实现 | Executor: 红结",
+    "updated":  "2026-05-27T02:03:56",
+    "started":  "2026-05-27T02:00:20",
+    "gate_2":  "PASS",
+    "task":  "archive_coverage_full",
+    "stage":  3,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_archive_coverage_full.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T02:00:53",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-27T02:00:59"
+                          },
+                          {
+                              "output":  "代码文件/每日荐股/scripts/archive_data.ps1",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-27T02:03:56",
+                              "stage":  3
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "编码实现",
+    "gate_3":  "PENDING",
+    "executor":  "红结"
+}

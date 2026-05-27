@@ -759,3 +759,58 @@
 [2026-05-27 10:03:19][ARCHIVE][INFO] 深度分析报告镜像完成
 [2026-05-27 10:03:19][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
 [2026-05-27 10:03:19][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-27 19:00:01][INFO] Checking market open for 2026-05-27...
+[2026-05-27 19:00:01][INFO] 2026-05-27 is a trading day, proceeding
+[2026-05-27 19:00:01][INFO] ===== Starting Post-Evaluation (白皮书 v1.7, 分析逻辑 v3.1) =====
+[2026-05-27 19:00:01][INFO] Eval target date: 2026-05-26 (most recent trading day)
+[2026-05-27 19:00:01][INFO] [Pre-eval] Backfilling historical returns...
+[2026-05-27 19:00:16][INFO] [Pre-eval] Backfill complete: [backfill] ���� 25 ����¼ (25 ֻ��Ʊ)... [backfill] ���: ���� 25/25 �� (�� 83 ���ܼ�¼, 0 ֻ��ƱK��ʧ��) [backfill] ������: ret_t1=66/83 (80%), ret_t3=0/83, ret_t5=0/83 [backfill] ����ȱ��: 1 ������ ret_t1 ������ (2026-05-27) [backfill] ret_t1 �ֲ�: n=66, mean=+0.96%, win_rate=42%, range=[-7.14%, +18.78%]
+[2026-05-27 19:00:16][INFO] Running evaluation: C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\run_daily_eval.ps1
+[2026-05-27 19:00:25][INFO] Evaluation completed successfully
+[2026-05-27 19:00:25][INFO] 情墨iving evaluation data...
+[2026-05-27 19:00:25][ARCHIVE][INFO] ===== 开始归档 (2026-05-27) =====
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\dynamic_pool.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\05_参考数据\20260527_dynamic_pool.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_full.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\04_原始数据\20260527_data_full.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_scored.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\04_原始数据\20260527_data_scored.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\data_final.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\04_原始数据\20260527_data_final.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\sector_data.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\05_参考数据\20260527_sector_data.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\industry_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\05_参考数据\20260527_industry_map.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\代码文件\数据\eastmoney_sector_map.json → C:\Users\34269\Documents\Claude\股票分析\历史数据\05_参考数据\20260527_eastmoney_sector_map.json
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260521.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260522.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260523.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260525.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260526.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260527.html
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260522.pdf
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档报告: 20260527_daily_report_20260522_v2.pdf
+[2026-05-27 19:00:25][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260521.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260522.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260523.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260525.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260526.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260526_parsed.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档: C:\Users\34269\Documents\Claude\股票分析\重点股票\次日评估\评估数据_20260527.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档评估报告: 20260527_后评估报告.pdf
+[2026-05-27 19:00:26][ARCHIVE][INFO] S级归档: transactions.csv → 00_核心交易 + _backup (SHA256校验通过)
+[2026-05-27 19:00:26][ARCHIVE][INFO] S级归档: positions.json → 00_核心交易 + _backup (SHA256校验通过)
+[2026-05-27 19:00:26][ARCHIVE][INFO] S级归档: perf_summary.json → 00_核心交易 + _backup (SHA256校验通过)
+[2026-05-27 19:00:26][ARCHIVE][INFO] 快照归档: snapshot_20260522.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 交易决策归档: 交易指令_20260525.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 交易决策归档: 交易指令_20260527.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 后评估归档: 20260527_records.csv
+[2026-05-27 19:00:26][ARCHIVE][INFO] 后评估归档: 20260527_summary.csv
+[2026-05-27 19:00:26][ARCHIVE][INFO] 评估结果归档: 评估结果_20260521.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 评估结果归档: 评估结果_20260525.json
+[2026-05-27 19:00:26][ARCHIVE][INFO] 预判记录归档: 20260527_predictions.csv
+[2026-05-27 19:00:26][ARCHIVE][INFO] 评分历史归档: 20260527_score_history.jsonl
+[2026-05-27 19:00:26][ARCHIVE][INFO] 重点股票日报镜像完成
+[2026-05-27 19:00:26][ARCHIVE][INFO] 深度分析报告镜像完成
+[2026-05-27 19:00:26][ARCHIVE][INFO] 归档完成。历史数据位置: C:\Users\34269\Documents\Claude\股票分析\历史数据
+[2026-05-27 19:00:26][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-27 19:00:26][INFO] Running keystock evaluation...
+[2026-05-27 19:00:34][INFO] Keystock evaluation completed
+[2026-05-27 19:00:34][INFO] [§6.8] Bridge detection integrated in run_keystock_evaluation.ps1 (v1.7)
+[2026-05-27 19:00:34][INFO] CHANGELOG updated: C:\Users\34269\Documents\Claude\股票分析\每日荐股\事后评估\次日后评估白皮书_CHANGELOG.md
+[2026-05-27 19:00:34][INFO] Evaluation completed (白皮书 v1.5)
+[2026-05-27 19:00:34][INFO] ===== Post-Evaluation Complete =====

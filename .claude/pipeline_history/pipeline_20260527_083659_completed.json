@@ -1,0 +1,70 @@
+﻿{
+    "files_scope":  [
+                        "代码文件/信鸽信息采集/pigeon_boot_check.ps1",
+                        "代码文件/每日荐股/scripts/test_catchup_logic.ps1",
+                        "代码文件/每日荐股/scripts/stock_data_fetcher_legacy.ps1",
+                        "代码文件/每日荐股/scripts/stock_data_fetcher_legacy.psm1"
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 6/6: 后评估 | Executor: PostEval",
+    "updated":  "2026-05-27T00:36:55",
+    "started":  "2026-05-27T00:30:19",
+    "gate_2":  "PASS",
+    "task":  "信鸽自动采集报错修复：双BOM编码+动词警告",
+    "stage":  6,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_pigeon_bom_fix_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-27T00:32:09",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/新安_审查_pigeon_bom_fix_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-27T00:32:42",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "代码文件/信鸽信息采集/pigeon_boot_check.ps1,代码文件/每日荐股/scripts/test_catchup_logic.ps1,代码文件/信鸽信息采集/pigeon_collector.ps1",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-27T00:35:24",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "审计报告/新安_验证_pigeon_bom_fix_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "新安",
+                              "validated":  "2026-05-27T00:36:17",
+                              "stage":  4
+                          },
+                          {
+                              "output":  "审计报告/部署_pigeon_bom_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "红枫",
+                              "validated":  "2026-05-27T00:36:40",
+                              "stage":  5
+                          },
+                          {
+                              "output":  "临时报告/posteval_pigeon_bom_fix_20260527.md",
+                              "gate":  "PASS",
+                              "executor":  "PostEval",
+                              "validated":  "2026-05-27T00:36:55",
+                              "stage":  6
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "后评估",
+    "gate_3":  "PASS",
+    "executor":  "PostEval",
+    "completed":  "2026-05-27T00:36:59"
+}
