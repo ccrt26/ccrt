@@ -1,25 +1,61 @@
 ﻿{
-    "files_scope":  [
-
-                    ],
-    "gate_1":  "PENDING",
-    "attempts":  0,
-    "loop_context":  "",
-    "updated":  "2026-05-27T14:21:40",
-    "started":  "2026-05-27T14:21:40",
-    "gate_2":  "PENDING",
-    "task":  "",
-    "stage":  0,
-    "next_action":  "none",
-    "l3_reason":  "",
-    "l3_triggered":  false,
-    "active":  false,
-    "stage_history":  [
-
-                      ],
-    "max_attempts":  3,
-    "schema_version":  "1.0",
-    "stage_name":  "",
-    "gate_3":  "PENDING",
-    "executor":  ""
+  "files_scope": [
+    "代码文件/每日荐股/scripts/modules/external.ps1",
+    "代码文件/每日荐股/scripts/batch_data_collector.ps1"
+  ],
+  "gate_1": "PASS",
+  "attempts": 0,
+  "loop_context": "",
+  "updated": "2026-05-27T22:53:54.942155",
+  "started": "2026-05-27T22:30:00",
+  "gate_2": "PENDING",
+  "task": "修复财务管线数据质量问题：EPS口径矛盾、多字段缺失(BPS/毛利率/现金流/商誉/RevenueTTM)",
+  "stage": 5,
+  "next_action": "invoke_role",
+  "l3_reason": "",
+  "l3_triggered": false,
+  "active": true,
+  "stage_history": [
+    {
+      "stage": 1,
+      "started": "2026-05-27T22:30:00",
+      "executor": "情墨"
+    },
+    {
+      "stage": 2,
+      "started": "2026-05-27T22:50:45.603148",
+      "executor": "腰子"
+    },
+    {
+      "stage": 3,
+      "started": "2026-05-27T22:51:09.626449",
+      "executor": "新安+旧影"
+    },
+    {
+      "stage": 4,
+      "started": "2026-05-27T22:51:39.805764",
+      "executor": "红结"
+    },
+    {
+      "stage": 5,
+      "started": "2026-05-27T22:53:54.942184",
+      "executor": "新安"
+    }
+  ],
+  "max_attempts": 3,
+  "schema_version": "1.0",
+  "stage_name": "新安四层验证(闸门2)",
+  "gate_3": "PENDING",
+  "executor": "新安",
+  "gate_1_audit": {
+    "finance_confirmed": true,
+    "design_doc": "审计报告/架构设计/design_financial_data_fix_20260527.md",
+    "腰子_extra_requirements": [
+      "PE_TTM标注数据源[3+自算]",
+      "商誉比率>30%黄牌告警/>50%红牌告警"
+    ],
+    "新安": "PASS",
+    "旧影": "PASS"
+  },
+  "gate_1b": "PASS"
 }

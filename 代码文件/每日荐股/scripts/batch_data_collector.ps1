@@ -38,6 +38,41 @@ foreach ($s in $stocks) {
 }
 Write-Host "  成功: $finCount/$($stocks.Count)"
 
+# --- 2b. 财务明细(毛利率/商誉/扣非EPS) — v2026-05-27 修复全线缺失 ---
+$finDetailMap = @{}
+$finDetailCount = 0
+foreach ($s in $stocks) {
+    $finDetail = Invoke-ThrottledApiCall { Get-FinancialDetail -Code $s.Code -Quarters 1 }
+    if ($finDetail) { $finDetailMap[$s.Code] = $finDetail; $finDetailCount++ }
+}
+Write-Host "  财务明细: $finDetailCount/$($stocks.Count)"
+
+# --- 2c. 每股经营现金流(CFPS) — 东方财富主源不含，THS financial_abstract 专有 ---
+$cfpsMap = @{}
+$keystockCodes = @("600114","601727","603019","301075","601689","000967","002230","603092")
+$thsScript = Join-Path $PSScriptRoot "stock_data_fetcher_ths.py"
+if (Test-Path $thsScript) {
+    foreach ($code in $keystockCodes) {
+        try {
+            $tmpFile = [System.IO.Path]::GetTempFileName()
+            cmd /c "python `"$thsScript`" financial --code $code --quarters 1 > `"$tmpFile`"" 2>$null
+            if ((Test-Path $tmpFile) -and ((Get-Item $tmpFile).Length -gt 0)) {
+                $raw = [System.IO.File]::ReadAllText($tmpFile, [System.Text.Encoding]::UTF8)
+                Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
+                if ($raw.Trim().Length -gt 0) {
+                    $parsed = $raw | ConvertFrom-Json
+                    if ($parsed -and $parsed.Count -gt 0 -and $parsed[0].CFPS) {
+                        $cfpsMap[$code] = [double]$parsed[0].CFPS
+                    }
+                }
+            } else {
+                Remove-Item $tmpFile -Force -ErrorAction SilentlyContinue
+            }
+        } catch { }
+    }
+}
+Write-Host "  CFPS(THS 重点8只): $($cfpsMap.Count)/8"
+
 # --- 3. 资金流向（缓存为主） ---
 Write-Host "[3/5] 资金流向..."
 $fundMap = @{}
@@ -392,21 +427,31 @@ foreach ($s in $stocks) {
     }
 
     # 财务数据（多季度）— BPS/营收/增长率 用于三路径PE评分
-    $eps = $null
+    $epsTTM = $null         # v2026-05-27: TTM EPS = SUM(最近4Q) → PE(TTM)计算
+    $epsAvgQ = $null        # v2026-05-27: 季度平均EPS（保持兼容）
     $epsQuarterly = @()
     $bps = $null           # 每股净资产 → PB估值(周期成长路径)
     $revenueTTM = $null    # 营业总收入TTM → PS估值(强成长路径)
     $revenueYoy = $null    # 营收同比增长率 → 成长验证
     $netProfitYoy = $null  # 净利润同比增长率 → PEG计算
     $grossMargin = $null   # 销售毛利率 → 质量参考
+    $goodwill = $null      # v2026-05-27: 商誉 → 减值风险评估(红线§三.4)
+    $goodwillToNA = $null  # v2026-05-27: 商誉/净资产比率(%)
+    $deductedEPS = $null   # v2026-05-27: 扣非EPS → 利润真实性验证
+    $debtRatio = $null     # v2026-05-27: 资产负债率 → 财务健康
     if ($fin -and $fin.Count -gt 0) {
         $epsVals = $fin | ForEach-Object { [double]$_.BASIC_EPS }
-        $eps = ($epsVals | Measure-Object -Average).Average
+        $epsTTM = ($epsVals | Measure-Object -Sum).Sum          # v2026-05-27: TTM求和(红线§1.2)
+        $epsAvgQ = ($epsVals | Measure-Object -Average).Average  # 季度均值(保持兼容)
         $epsQuarterly = $epsVals
 
         # 每股净资产 (BPS/NAPS — 东方财富用BPS，同花顺也用BPS)
+        # v2026-05-27: 增强备选字段名
         $bpsVal = $fin[0].BPS
         if (-not $bpsVal) { $bpsVal = $fin[0].NAPS }
+        if (-not $bpsVal) { $bpsVal = $fin[0].TOTAL_EQUITY }
+        if (-not $bpsVal) { $bpsVal = $fin[0].SHAREHOLDERS_EQUITY }
+        if (-not $bpsVal) { $bpsVal = $fin[0].TOTAL_SHAREHOLDER_EQUITY }
         if ($bpsVal) { $bps = [double]$bpsVal }
 
         # 营业总收入TTM (用最近4个季度累加)
@@ -430,16 +475,74 @@ foreach ($s in $stocks) {
         if (-not $npYoyVal) { $npYoyVal = $fin[0].DEDUCTED_YOY }
         if ($npYoyVal) { $netProfitYoy = [double]$npYoyVal }
 
-        # 毛利率
-        $gmVal = $fin[0].GROSS_MARGIN
-        if (-not $gmVal) { $gmVal = $fin[0].GROSS_PROFIT_MARGIN }
-        if (-not $gmVal) { $gmVal = $fin[0].SALE_GROSS_PROFIT_RATIO }
-        if ($gmVal) { $grossMargin = [double]$gmVal }
+        # 毛利率 — v2026-05-27: 优先从财务明细端点获取
+        $finDetail = $finDetailMap[$s.Code]
+        if ($finDetail -and $finDetail.GROSS_PROFIT_MARGIN) {
+            $grossMargin = [double]$finDetail.GROSS_PROFIT_MARGIN
+        } else {
+            # 回退到原有3字段fallback
+            $gmVal = $fin[0].GROSS_MARGIN
+            if (-not $gmVal) { $gmVal = $fin[0].GROSS_PROFIT_MARGIN }
+            if (-not $gmVal) { $gmVal = $fin[0].SALE_GROSS_PROFIT_RATIO }
+            if ($gmVal) { $grossMargin = [double]$gmVal }
+        }
+
+        # 商誉 — v2026-05-27: 从财务明细端点获取（红线§三.4 利润真实性验证）
+        if ($finDetail -and $finDetail.GOODWILL) {
+            $goodwill = [double]$finDetail.GOODWILL
+            if ($bps -and $bps -gt 0) {
+                $goodwillToNA = [math]::Round($goodwill / ($bps * 1e8) * 100, 2)
+                # 流金风控联动: 商誉/净资产比率告警
+                if ($goodwillToNA -gt 50) {
+                    Write-Warning "[风控] ${Code}: 商誉/净资产=${goodwillToNA}% → 红牌！(>50%)"
+                } elseif ($goodwillToNA -gt 30) {
+                    Write-Warning "[风控] ${Code}: 商誉/净资产=${goodwillToNA}% → 黄牌！(>30%)"
+                }
+            }
+        }
+
+        # 扣非EPS — v2026-05-27: 从财务明细端点获取（红线§三.4 利润真实性验证）
+        if ($finDetail -and $finDetail.DEDUCTED_EPS) {
+            $deductedEPS = [double]$finDetail.DEDUCTED_EPS
+        }
+
+        # 资产负债率 — v2026-05-27: 从已有财务数据提取
+        if ($fin[0].DEBT_ASSET_RATIO) { $debtRatio = [double]$fin[0].DEBT_ASSET_RATIO }
 
         # v2026-05-24 P1: 股息率 — 稳定价值蓝筹估值锚点
         $divYield = $null
         $zxgxlVal = $fin[0].ZXGXL
         if ($zxgxlVal) { $divYield = [double]$zxgxlVal }
+    }
+
+    # RevenueTTM 有效性校验 — v2026-05-27
+    if ($revenueTTM -and $revenueTTM -gt 0 -and $q.MktCap -and $q.MktCap -gt 0) {
+        $revYi = $revenueTTM / 1e8
+        $psCheck = [math]::Round([double]$q.MktCap / $revYi, 2)
+        if ($psCheck -lt 0.1) {
+            Write-Warning "[财务] ${Code}: RevenueTTM异常 — Rev=${revYi}亿 MktCap=$($q.MktCap)亿 PS=${psCheck}(<0.1 极端异常)"
+        }
+    }
+
+    # F1: PS(TTM) = 总市值 / 营业总收入TTM
+    $ps = $null
+    if ($revenueTTM -and $revenueTTM -gt 0 -and $q.MktCap -and $q.MktCap -gt 0) {
+        $revenueTTM_Yi = $revenueTTM / 1e8
+        if ($revenueTTM_Yi -gt 0) { $ps = [math]::Round([double]$q.MktCap / $revenueTTM_Yi, 2) }
+    }
+    # F2: 每股经营现金流 (THS financial_abstract 专有字段)
+    $cfps = $cfpsMap[$s.Code]
+    # F3: 主力净流入昨日基线 (FundFlow_History数组倒数第二个)
+    $fundMainNetPrev = $null
+    if ($fund) {
+        $fundArr = @($fund)
+        if ($fundArr.Count -ge 2) { $fundMainNetPrev = [double]$fundArr[1].MainNetInflow }
+    }
+    # F4: 融资余额/净买入昨日基线 ($mg日频数组取昨日)
+    $marginRZYE_Prev = $null; $marginRZJME_Prev = $null
+    if ($mg -and $mg.Count -ge 2) {
+        $marginRZYE_Prev = [double]$mg[1].RZYE
+        $marginRZJME_Prev = [double]$mg[1].RZJME
     }
 
 # 初始化各维度评分（由 scoring_engine_v2.py 重新计算）
@@ -456,7 +559,8 @@ foreach ($s in $stocks) {
         High         = $q.High
         Low          = $q.Low
         PrevClose    = $q.PrevClose
-        PE           = if ($q.PE -and $q.PE -gt 0) { $q.PE } else { 0 }
+        PE_Quote     = if ($q.PE -and $q.PE -gt 0) { $q.PE } else { 0 }    # v2026-05-27: 行情静态PE(来源不明，仅参考)
+        PE           = if ($epsTTM -gt 0) { [math]::Round($q.Price / $epsTTM, 2) } else { if ($q.PE -gt 0) { $q.PE } else { 0 } }  # v2026-05-27: PE(TTM)=Price/EPS_TTM [3+自算] 优先
         MktCap       = $q.MktCap
         TotalScore   = 50
         S_Base       = 5
@@ -507,17 +611,25 @@ foreach ($s in $stocks) {
             ,@($recent | Select-Object -Last 4)
         } else { @() }
         # 财务数据
-        EPS          = $eps
-        EPS_Quarterly = $epsQuarterly  # 4个季度EPS序列
+        EPS          = $epsAvgQ       # v2026-05-27: 季度平均EPS(保持兼容)
+        EPS_TTM      = $epsTTM        # v2026-05-27: TTM EPS = SUM(最近4Q) [3+自算]
+        EPS_Quarterly = $epsQuarterly # 4个季度EPS序列
         BPS          = $bps           # v2.6: 每股净资产 → PB估值
         RevenueTTM   = $revenueTTM    # v2.6: 营业总收入TTM → PS估值
         RevenueYOY   = $revenueYoy    # v2.6: 营收同比增长率
         NetProfitYOY = $netProfitYoy  # v2.6: 净利润同比增长率 → PEG
         GrossMargin  = $grossMargin   # v2.6: 销售毛利率
+        CFPS         = $cfps          # 每股经营现金流 (THS备源可用，主源可能null)
         DividendYield = $divYield     # v2026-05-24 P1: 股息率 [3]
+        PS           = $ps            # PS(TTM) = MktCap / RevenueTTM
+        Goodwill     = $goodwill      # v2026-05-27: 商誉(元) [3a]
+        GoodwillToNA = $goodwillToNA  # v2026-05-27: 商誉/净资产比率(%) [3a+自算]
+        DeductedEPS  = $deductedEPS   # v2026-05-27: 扣非基本EPS [3a]
+        AssetLiabilityRatio = $debtRatio  # v2026-05-27: 资产负债率(%) [3]
         # 资金流向(多日)
-        FundMainNet       = if ($fund -and $fund.Count -gt 0) { [double]$fund[0].MainNetInflow } else { 0 }
+        FundMainNet       = if ($fund) { $fundArr = @($fund); if ($fundArr.Count -gt 0) { [double]$fundArr[0].MainNetInflow } else { 0 } } else { 0 }
         FundFlow_History  = if ($fund) { $fund | ForEach-Object { [double]$_.MainNetInflow } } else { @() }
+        FundMainNet_Prev  = $fundMainNetPrev  # 昨日主力净流入(日报资金面基线)
         # 北向资金 [8] (v2.8: 接入评分链, 季度滞后~57天)
         NorthboundSharesRatio = if ($nb -and $nb.SharesRatio) { [double]$nb.SharesRatio } else { 0 }
         NorthboundFreeRatio   = if ($nb -and $nb.FreeRatio) { [double]$nb.FreeRatio } else { 0 }
@@ -538,6 +650,8 @@ foreach ($s in $stocks) {
         MarginRQYL   = if ($mg -and $mg.Count -gt 0) { [double]$mg[0].RQYL } else { 0 }
         # v2.8: 融资余额5日趋势 (day0 - day4 差值, 正数=杠杆资金流入)
         MarginRZYE_5dChange = if ($mg -and $mg.Count -ge 5) { [double]($mg[0].RZYE - $mg[4].RZYE) } else { 0 }
+        MarginRZYE_Prev  = $marginRZYE_Prev   # 昨日融资余额(日报资金面基线)
+        MarginRZJME_Prev = $marginRZJME_Prev  # 昨日融资净买入
         # 研报一致预期 [11] (v2.8: ConsensusGrowth → PEG评分第一条路径)
         ConsensusGrowth     = if ($research -and $research.ConsensusGrowth) { [double]$research.ConsensusGrowth } else { 0 }
         ResearchReportCount = if ($research -and $research.ReportCount) { [int]$research.ReportCount } else { 0 }

@@ -90,6 +90,58 @@ function Get-StockFinancial {
 }
 
 # ============================================================
+# [3b] 财务明细提取（毛利率 + 商誉 + 扣非EPS）
+# 从东方财富RPT_DMSK_FN_INCOME端点获取利润表详细字段
+# 依赖: 东方财富[3] 利润表端点
+# v2026-05-27: 修复毛利率/商誉/扣非EPS全线缺失问题(设计: design_financial_data_fix_20260527)
+# ============================================================
+function Get-FinancialDetail {
+    param(
+        [Parameter(Mandatory=$true)][string]$Code,
+        [int]$Quarters = 1
+    )
+
+    $cached = Import-DataCache -Key "FinancialDetail_${Code}" -TTLHours 168
+    if ($cached) {
+        $script:SourceUsed["FinancialDetail"] = "缓存[C]"
+        return $cached
+    }
+
+    try {
+        $secucode = if ($Code.StartsWith("6")) { "${Code}.SH" } else { "${Code}.SZ" }
+        $encoded = [System.Web.HttpUtility]::UrlEncode($secucode)
+        # 利润表详细端点 — 含GROSS_PROFIT_MARGIN / GOODWILL / DEDUCTED_EPS
+        $url = "http://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_DMSK_FN_INCOME&columns=ALL&filter=(SECUCODE=%22${encoded}%22)&pageSize=${Quarters}&sortColumns=NOTICE_DATE&sortTypes=-1"
+
+        $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 8 -Headers @{"User-Agent"="Mozilla/5.0"}
+        $json = $r.Content | ConvertFrom-Json
+        if ($json.result -and $json.result.data -and $json.result.data.Count -gt 0) {
+            $latest = $json.result.data[0]
+            $props = $latest.PSObject.Properties.Name
+
+            $result = [PSCustomObject]@{
+                GROSS_PROFIT_MARGIN = if ($props -contains 'GROSS_PROFIT_MARGIN') { [double]$latest.GROSS_PROFIT_MARGIN } else { $null }
+                GOODWILL           = if ($props -contains 'GOODWILL') { [double]$latest.GOODWILL } else { $null }
+                DEDUCTED_EPS       = if ($props -contains 'DEDUCTED_EPS') { [double]$latest.DEDUCTED_EPS } else { $null }
+                OPERATE_COST       = if ($props -contains 'OPERATE_COST') { [double]$latest.OPERATE_COST } else { $null }
+                TOTAL_OPERATE_INCOME = if ($props -contains 'TOTAL_OPERATE_INCOME') { [double]$latest.TOTAL_OPERATE_INCOME } else { $null }
+                NOTICE_DATE        = $latest.NOTICE_DATE
+                SOURCE             = "东方财富[3a]"
+            }
+            $script:SourceUsed["FinancialDetail"] = "东方财富[3a]"
+            Export-DataCache -Key "FinancialDetail_${Code}" -Data $result
+            return $result
+        }
+    } catch {
+        Write-Warning "[财务明细] ${Code}: 东方财富利润表端点失败 → $_"
+    }
+
+    # Fallback: 尝试从Get-StockFinancial全字段中提取（原逻辑已覆盖毛利率3字段fallback）
+    $script:SourceUsed["FinancialDetail"] = "失败→调用方降级"
+    return $null
+}
+
+# ============================================================
 # [3a] 财务比率提取（偿债能力 + 运营效率）
 # 从Get-StockFinancial已有全字段响应中提取
 # 依赖: Get-StockFinancial
