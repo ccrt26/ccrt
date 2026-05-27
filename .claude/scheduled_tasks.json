@@ -35,7 +35,7 @@
       "cron": "7 * * * *",
       "prompt": "自动Git同步清扫：运行 `powershell -NoProfile -ExecutionPolicy Bypass -File \"代码文件/tools/git_autosweep.ps1\"` 扫描未提交文件，自动分类提交（数据/报告/配置→自动提交+推送，代码文件→检查管线令牌），完成后推送到GitHub（三级回退：直连→IP→API代理）。不询问用户，直接执行。如果无未提交文件则静默退出。",
       "createdAt": 1779848092106,
-      "lastFiredAt": 1779888068116,
+      "lastFiredAt": 1779891634706,
       "recurring": true,
       "createdBySessionId": "040080e4-e7ea-4650-adb4-2571e3c555bb",
       "createdByPid": 14016,

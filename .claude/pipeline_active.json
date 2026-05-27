@@ -1,32 +1,52 @@
 ﻿{
     "files_scope":  [
-                        "代码文件/重点股票/run_keystock_analysis.ps1",
-                        "代码文件/重点股票/gen_daily_brief.py"
+
                     ],
     "gate_1":  "PASS",
-    "attempts":  1,
-    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
-    "updated":  "2026-05-27T12:42:33",
-    "started":  "2026-05-27T12:42:03",
-    "gate_2":  "PENDING",
-    "task":  "stock_pool_sync",
-    "stage":  1,
+    "attempts":  0,
+    "loop_context":  "Stage 4/6: 上线前验证 | Executor: 新安",
+    "updated":  "2026-05-27T14:14:17",
+    "started":  "2026-05-27T14:11:05",
+    "gate_2":  "PASS",
+    "task":  "fix_daily_report_1_2_empty_fields",
+    "stage":  4,
     "next_action":  "invoke_role",
     "l3_reason":  "",
     "l3_triggered":  false,
     "active":  true,
     "stage_history":  [
                           {
-                              "output":  "审计报告/架构设计/design_stock_pool_sync_v1.0.md",
+                              "output":  "审计报告/架构设计/design_daily_report_1_2_data_fix.md",
                               "gate":  "PASS",
                               "executor":  "情墨",
-                              "validated":  "2026-05-27T12:42:33",
+                              "validated":  "2026-05-27T14:13:42",
                               "stage":  1
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_1_2_data_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "新安+旧影",
+                              "validated":  "2026-05-27T14:13:57",
+                              "stage":  2
+                          },
+                          {
+                              "output":  "审计报告/架构设计/design_daily_report_1_2_data_fix.md",
+                              "gate":  "PASS",
+                              "executor":  "红结",
+                              "validated":  "2026-05-27T14:14:16",
+                              "stage":  3
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安",
+                              "stage":  4,
+                              "entered":  "2026-05-27T14:14:17"
                           }
                       ],
     "max_attempts":  3,
     "schema_version":  "1.0",
-    "stage_name":  "架构设计",
+    "stage_name":  "上线前验证",
     "gate_3":  "PENDING",
-    "executor":  "情墨"
+    "executor":  "新安"
 }
