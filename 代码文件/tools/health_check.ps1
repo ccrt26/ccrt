@@ -113,6 +113,28 @@ if ($result.Flag -eq "cached") {
 }
 
 # ============================================================
+# 1b. AKShare THS桥接连通性检测 (v2026-05-27: 南向资金)
+# ============================================================
+try {
+    $bridgeScript = Join-Path (Split-Path -Parent $PSScriptRoot) "每日荐股\scripts\stock_data_fetcher_ths.py"
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command python3 -ErrorAction SilentlyContinue).Source }
+    if ($pythonCmd -and (Test-Path $bridgeScript)) {
+        $thsTest = & $pythonCmd $bridgeScript northbound_flow --direction south --days 1 2>&1 | Out-String
+        $thsJson = $thsTest | ConvertFrom-Json
+        if ($thsJson.data -and @($thsJson.data).Count -gt 0) {
+            Add-Msg "AKShare THS桥接[THS-SB]南向可用 (${@($thsJson.data).Count}日)" "Green"
+        } else {
+            Add-Msg "AKShare THS桥接[THS-SB]南向无数据" "Yellow"
+        }
+    } else {
+        Add-Msg "AKShare THS桥接[THS-SB]未配置(Python/桥接缺失)" "Yellow"
+    }
+} catch {
+    Add-Msg "AKShare THS桥接[THS-SB]不可达: $_" "Yellow"
+}
+
+# ============================================================
 # 2. 数据文件检查 (boot模式跳过)
 # ============================================================
 if ($DataFile -and (Test-Path $DataFile)) {

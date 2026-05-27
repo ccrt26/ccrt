@@ -1,6 +1,7 @@
 ﻿# L0 — 结构化输出 + 缓存管理
 # 设计文档: 审计报告/架构设计/design_pigeon_info_collection_v1.0.md §三.2.4
 # 闸门1a S3: events_db.json预留T+N回测字段
+# v1.3 (2026-05-27): events_db schema扩展 — 新增evidence_level等4字段（深度分析方法论§零.7配套）
 
 function Export-PigeonEventJson {
     <#
@@ -96,6 +97,11 @@ function Export-PigeonEventJson {
             announcement_id = $event.announcement_id
             cninfo_url      = $event.cninfo_url
             fetch_date      = $fetchDate
+            # v1.3: 证据等级字段（深度分析方法论§零.7配套）
+            evidence_level      = if ($event.evidence_level) { $event.evidence_level } else { $null }
+            evidence_upgrade    = if ($event.evidence_upgrade) { $event.evidence_upgrade } else { $false }
+            evidence_upgrade_type = if ($event.evidence_upgrade_type) { $event.evidence_upgrade_type } else { $null }
+            concept_track       = if ($event.concept_track) { $event.concept_track } else { $null }
             # S3: T+N回测预留字段 (事后由青山回填)
             actual_return_T1  = $null
             actual_return_T3  = $null

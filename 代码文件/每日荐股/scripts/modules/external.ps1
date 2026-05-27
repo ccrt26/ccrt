@@ -34,9 +34,45 @@ function Get-NorthboundHold {
 }
 
 # ============================================================
-# [11] 个股研报/分析师评级
-# API: reportapi.eastmoney.com
+# [THS-SB] 南向资金日频流向 — 补位北向[8]失效
+# 主源: AKShare stock_hsgt_hist_em → 备源: stock_hsgt_fund_flow_summary_em
+# 南向净流出=资金去港股(A股偏空)，南向净流入=资金回A股(A股偏多)
 # ============================================================
+function Get-SouthboundFlow {
+    param([int]$Days = 5)
+
+    $cacheKey = "SouthboundFlow_${Days}"
+    $cached = Load-DataCache -Key $cacheKey -TTLHours 24
+    if ($cached) {
+        $script:SourceUsed["SouthboundFlow"] = "缓存[C]"
+        return $cached
+    }
+
+    $bridgeScript = Join-Path $PSScriptRoot "..\stock_data_fetcher_ths.py"
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command python3 -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonCmd) {
+        Write-Warning "[南向资金] Python不可用"
+        return $null
+    }
+
+    try {
+        $result = & $pythonCmd $bridgeScript northbound_flow --direction south --days $Days 2>&1 | Out-String
+        $data = $result | ConvertFrom-Json
+        if ($data.data -and @($data.data).Count -gt 0) {
+            $script:SourceUsed["SouthboundFlow"] = "AKShare[THS-SB]"
+            Save-DataCache -Key $cacheKey -Data $data
+            return $data
+        }
+    } catch {
+        Write-Warning "[南向资金] THS桥接失败: $_"
+    }
+
+    $script:SourceUsed["SouthboundFlow"] = "失败"
+    $staleCache = Load-DataCache -Key $cacheKey -TTLHours 168
+    if ($staleCache) { Write-Warning "[南向资金] 使用过期缓存兜底"; return $staleCache }
+    return $null
+}
 function Get-StockResearch {
     param(
         [Parameter(Mandatory=$true)][string]$Code,

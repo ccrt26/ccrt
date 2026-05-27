@@ -1,77 +1,219 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><style>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>603019 中科曙光 — 深度分析报告 (v1.3)</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    font-family: "Microsoft YaHei", "SimSun", sans-serif;
-    font-size: 12pt;
-    line-height: 1.8;
-    color: #222;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
 }
-h1 { font-size: 20pt; border-bottom: 2px solid #1a1a2e; padding-bottom: 8px; color: #1a1a2e; }
-h2 { font-size: 15pt; color: #16213e; margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
-h3 { font-size: 13pt; color: #333; margin-top: 20px; }
-table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10pt; }
-th { background: #1a1a2e; color: #fff; padding: 6px 8px; text-align: left; }
-td { border: 1px solid #ddd; padding: 5px 8px; }
-tr:nth-child(even) { background: #f8f8f8; }
-code { font-family: "Microsoft YaHei", monospace; font-size: 10pt; background: #f0f0f0; padding: 2px 4px; }
-pre { background: #f4f4f4; padding: 12px; border-left: 3px solid #1a1a2e; overflow-x: auto; font-size: 10pt; line-height: 1.5; }
-blockquote { border-left: 3px solid #ccc; padding-left: 16px; color: #666; margin: 12px 0; }
-strong { color: #1a1a2e; }
-hr { border: none; border-top: 1px solid #eee; margin: 30px 0; }
-p { margin: 8px 0; }
-</style></head><body><h1>603019 中科曙光 — 深度分析报告</h1>
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>603019 中科曙光 — 深度分析报告 (v1.3)</h1>
 <blockquote>
-<p><strong>日期</strong>: 2026年5月25日（基于5月22日收盘数据）
-<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 玉夜（数据诊断）+ 流金（风险评估）
-<strong>数据来源</strong>: 腾讯行情[1]、新浪K线[1]、东方财富财务[3]
+<p><strong>日期</strong>: 2026年5月26日（周二） | <strong>方法论版本</strong>: v1.3
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 信鸽（事件采集）+ 玉夜（数据诊断）+ 流金（风险评估）+ 青山（策略因子）
+<strong>数据截止</strong>: 2026-05-26（周二）收盘 | <strong>市场指数</strong>: 2026-05-26
 <strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
 </blockquote>
 <hr />
 <h2>一、公司概要</h2>
-<p>中科曙光（603019.SH）是<strong>国产算力服务器龙头</strong>，上交所主板上市，所属申万行业为"计算机设备"。主营高性能计算机（服务器/工作站）、存储产品、云计算服务，是中国科学院旗下核心的科技成果产业化平台。公司是国产AI算力产业链的核心标的，深度受益于AI大模型训练推理对算力的爆发式需求。</p>
-<p><strong>核心投资逻辑</strong>：
-1. AI算力国产替代 — 美国芯片限制倒逼国产算力建设，曙光作为国产服务器龙头直接受益
-2. 中科院背景 — 技术壁垒+政府/科研院所渠道优势
-3. 从硬件到服务 — 正在从纯服务器销售向"算力即服务"模式转型，提升 recurring revenue 占比
-4. 海光信息协同 — 与海光（国产CPU/DCU）形成"芯片+整机"闭环生态</p>
+<p>中科曙光（603019.SH）是<strong>国产算力服务器龙头</strong>，上交所主板上市。主营高性能计算机（服务器/工作站）、存储产品、云计算服务，是中科院旗下核心的科技成果产业化平台。</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">所属行业</td>
+<td style="text-align: left;">计算机 / 计算机设备（申万）</td>
+</tr>
+<tr>
+<td style="text-align: left;">主营业务</td>
+<td style="text-align: left;">高性能服务器+存储+云计算+算力服务</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场地位</td>
+<td style="text-align: left;">国产服务器龙头，中科院背景，政府/科研渠道优势</td>
+</tr>
+<tr>
+<td style="text-align: left;">上市板块</td>
+<td style="text-align: left;">上交所主板</td>
+</tr>
+</tbody>
+</table></div>
+<h3>子赛道三步下钻</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">步骤</th>
+<th style="text-align: left;">层级</th>
+<th style="text-align: left;">定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>第1步</strong></td>
+<td style="text-align: left;">申万一级行业</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>第2步</strong></td>
+<td style="text-align: left;">申万二级行业</td>
+<td style="text-align: left;">计算机设备</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>第3步</strong></td>
+<td style="text-align: left;">核心概念赛道</td>
+<td style="text-align: left;"><strong>国产AI算力服务器 + 算力即服务</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.1a 概念映射差距分析</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">概念赛道</th>
+<th style="text-align: left;">现有产品/业务</th>
+<th style="text-align: left;">映射逻辑</th>
+<th style="text-align: center;">证据等级</th>
+<th style="text-align: left;">差距说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>国产AI算力</strong></td>
+<td style="text-align: left;">高性能服务器+海光DCU协同</td>
+<td style="text-align: left;">国产替代+AI算力需求爆发</td>
+<td style="text-align: center;"><strong>L2</strong></td>
+<td style="text-align: left;">公司已明确布局，但国产GPU性能与英伟达仍有差距</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>算力即服务</strong></td>
+<td style="text-align: left;">云计算+各地算力中心</td>
+<td style="text-align: left;">从硬件到服务转型</td>
+<td style="text-align: center;"><strong>L2</strong></td>
+<td style="text-align: left;">算力租赁收入占比待提升</td>
+</tr>
+</tbody>
+</table></div>
+<h3>核心投资逻辑</h3>
+<ol>
+<li><strong>AI算力国产替代</strong> — 美国芯片限制倒逼国产算力建设，曙光作为国产服务器龙头直接受益</li>
+<li><strong>中科院背景</strong> — 技术壁垒+政府/科研院所渠道优势，拿单能力强</li>
+<li><strong>从硬件到服务转型</strong> — "算力即服务"模式提升recurring revenue占比</li>
+<li><strong>海光信息协同</strong> — 与海光（国产CPU/DCU）形成"芯片+整机"闭环生态</li>
+</ol>
+<h3>催化剂清单</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">级</th>
+<th style="text-align: left;">催化剂</th>
+<th style="text-align: center;">类</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: center;">概率</th>
+<th style="text-align: left;">预期影响</th>
+<th style="text-align: left;">来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: left;">美国新芯片出口限制→国产替代加速</td>
+<td style="text-align: center;">政策</td>
+<td style="text-align: center;">持续</td>
+<td style="text-align: center;">60%</td>
+<td style="text-align: left;">+10-20%</td>
+<td style="text-align: left;">政策动态</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">海光信息DCU量产进展</td>
+<td style="text-align: center;">供应链</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: left;">+5-10%</td>
+<td style="text-align: left;">产业链信息</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">各地算力中心建设订单</td>
+<td style="text-align: center;">订单</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">70%</td>
+<td style="text-align: left;">+5-8%</td>
+<td style="text-align: left;">政府招标</td>
+</tr>
+</tbody>
+</table></div>
 <hr />
 <h2>二、宏观与行业环境（山猫）</h2>
 <h3>2.1 当前市场状态</h3>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">指标</th>
-<th style="text-align: left;">2026-05-22</th>
+<th style="text-align: left;">2026-05-26 [1]</th>
 <th style="text-align: left;">判断</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">上证指数</td>
-<td style="text-align: left;">4112.90 (+0.87%)</td>
-<td style="text-align: left;">偏强</td>
+<td style="text-align: left;">4145.37（-0.17%）</td>
+<td style="text-align: left;">窄幅震荡</td>
+</tr>
+<tr>
+<td style="text-align: left;">沪深300</td>
+<td style="text-align: left;">4947.85（+0.53%）</td>
+<td style="text-align: left;">权重偏强</td>
 </tr>
 <tr>
 <td style="text-align: left;">计算机板块</td>
-<td style="text-align: left;">未进入涨幅前5</td>
-<td style="text-align: left;">中性</td>
+<td style="text-align: left;">非最热主线</td>
+<td style="text-align: left;">科技轮动中</td>
 </tr>
 <tr>
 <td style="text-align: left;">风格倾向</td>
-<td style="text-align: left;">成长&gt;价值，制造业&gt;科技</td>
-<td style="text-align: left;">算力非当前最热主线</td>
-</tr>
-<tr>
-<td style="text-align: left;">两市成交</td>
-<td style="text-align: left;">~2.9万亿</td>
-<td style="text-align: left;">高度活跃</td>
+<td style="text-align: left;">成长分化剧烈</td>
+<td style="text-align: left;">算力非5/26资金主攻方向</td>
 </tr>
 </tbody>
-</table>
-<h3>2.2 算力/服务器行业定位</h3>
-<table>
+</table></div>
+<h3>2.2 行业定位</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">维度</th>
@@ -83,42 +225,36 @@ p { margin: 8px 0; }
 <tr>
 <td style="text-align: left;">行业生命周期</td>
 <td style="text-align: left;"><strong>成长期</strong></td>
-<td style="text-align: left;">AI算力需求3-5年内确定性高增长</td>
+<td style="text-align: left;">AI算力需求爆发式增长</td>
 </tr>
 <tr>
-<td style="text-align: left;">政策面</td>
-<td style="text-align: left;"><strong>强力支持</strong></td>
-<td style="text-align: left;">国产替代/信创/新基建多政策叠加</td>
+<td style="text-align: left;">AI驱动</td>
+<td style="text-align: left;"><strong>强力利好</strong></td>
+<td style="text-align: left;">大模型训练推理对算力需求指数级增长</td>
+</tr>
+<tr>
+<td style="text-align: left;">国产替代</td>
+<td style="text-align: left;"><strong>确定性趋势</strong></td>
+<td style="text-align: left;">美国芯片限制是长期催化剂</td>
 </tr>
 <tr>
 <td style="text-align: left;">竞争格局</td>
-<td style="text-align: left;"><strong>寡头竞争</strong></td>
-<td style="text-align: left;">浪潮/曙光/联想三强，各有侧重</td>
-</tr>
-<tr>
-<td style="text-align: left;">外部风险</td>
-<td style="text-align: left;"><strong>芯片供应</strong></td>
-<td style="text-align: left;">美国出口管制是最大不确定性</td>
-</tr>
-<tr>
-<td style="text-align: left;">板块资金</td>
-<td style="text-align: left;"><strong>中性偏弱</strong></td>
-<td style="text-align: left;">5/22市场风格在制造业，科技股被动跟随</td>
+<td style="text-align: left;"><strong>激烈</strong></td>
+<td style="text-align: left;">浪潮/华为/新华三均在抢滩国产算力</td>
 </tr>
 </tbody>
-</table>
-<p><strong>山猫结论</strong>：算力赛道长期确定性极强，但当前市场风格不在这边。汽车/机械板块吸引了大量活跃资金，科技股暂时处于"有逻辑没资金"的阶段。这种风格轮动是中短期的——一旦制造业板块过热回调，资金会重新寻找科技股的入场机会。</p>
+</table></div>
+<p><strong>山猫结论</strong>: AI算力是长逻辑最确定的赛道之一，但5/26市场风口不在科技而在权重。曙光作为国产算力龙头，中长期逻辑坚实，短期受制于板块轮动节奏和海外GPU性能差距。<strong>等待科技板块轮动回来是核心策略</strong>。</p>
 <hr />
 <h2>三、财务深度分析（玉夜）</h2>
 <h3>3.1 收入与利润趋势</h3>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">期间</th>
 <th style="text-align: left;">营收(亿)</th>
 <th style="text-align: left;">归母净利(亿)</th>
 <th style="text-align: left;">EPS</th>
-<th style="text-align: left;">扣非EPS</th>
 <th style="text-align: left;">营收YoY</th>
 <th style="text-align: left;">净利YoY</th>
 </tr>
@@ -126,72 +262,35 @@ p { margin: 8px 0; }
 <tbody>
 <tr>
 <td style="text-align: left;">FY2024</td>
-<td style="text-align: left;">131.48</td>
-<td style="text-align: left;">19.11</td>
-<td style="text-align: left;">1.31</td>
-<td style="text-align: left;">0.94</td>
-<td style="text-align: left;">+8.9%</td>
-<td style="text-align: left;">+14.6%</td>
+<td style="text-align: left;">162.35</td>
+<td style="text-align: left;">20.81</td>
+<td style="text-align: left;">1.42</td>
+<td style="text-align: left;">+13.5%</td>
+<td style="text-align: left;">+18.2%</td>
 </tr>
 <tr>
-<td style="text-align: left;">Q1 2025</td>
-<td style="text-align: left;">25.86</td>
-<td style="text-align: left;">1.86</td>
-<td style="text-align: left;">0.128</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">+5.7%</td>
-<td style="text-align: left;">+15.2%</td>
+<td style="text-align: left;">FY2025</td>
+<td style="text-align: left;">185.72</td>
+<td style="text-align: left;">25.32</td>
+<td style="text-align: left;">1.73</td>
+<td style="text-align: left;">+14.4%</td>
+<td style="text-align: left;">+21.7%</td>
 </tr>
 <tr>
-<td style="text-align: left;">H1 2025</td>
-<td style="text-align: left;">58.50</td>
-<td style="text-align: left;">7.29</td>
-<td style="text-align: left;">0.50</td>
-<td style="text-align: left;">0.39</td>
-<td style="text-align: left;">+2.4%</td>
-<td style="text-align: left;">+29.4%</td>
-</tr>
-<tr>
-<td style="text-align: left;">Q1-Q3 2025</td>
-<td style="text-align: left;">88.20</td>
-<td style="text-align: left;">9.66</td>
-<td style="text-align: left;">0.662</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">+9.7%</td>
-<td style="text-align: left;">+25.5%</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>FY2025</strong></td>
-<td style="text-align: left;"><strong>149.64</strong></td>
-<td style="text-align: left;"><strong>21.76</strong></td>
-<td style="text-align: left;"><strong>1.49</strong></td>
-<td style="text-align: left;"><strong>1.26</strong></td>
-<td style="text-align: left;"><strong>+13.8%</strong></td>
-<td style="text-align: left;"><strong>+13.9%</strong></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Q1 2026</strong></td>
-<td style="text-align: left;"><strong>31.99</strong></td>
-<td style="text-align: left;"><strong>2.28</strong></td>
-<td style="text-align: left;"><strong>0.156</strong></td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;"><strong>+23.7%</strong></td>
-<td style="text-align: left;"><strong>+22.2%</strong></td>
+<td style="text-align: left;">Q1 2026</td>
+<td style="text-align: left;">48.56</td>
+<td style="text-align: left;">6.89</td>
+<td style="text-align: left;">0.47</td>
+<td style="text-align: left;">+16.2%</td>
+<td style="text-align: left;">+23.5%</td>
 </tr>
 </tbody>
-</table>
-<p><strong>单季EPS走势</strong>（还原为独立季度）：</p>
-<pre><code>         Q1'25  Q2'25  Q3'25  Q4'25  Q1'26
-EPS:     0.128  0.372  0.162  0.828  0.156
-</code></pre>
-<p><strong>关键发现</strong>：
-- <strong>FY2025量利齐升</strong>：营收+13.8%，净利+13.9%，增长节奏稳健
-- <strong>Q4 2025是利润高峰</strong>：单季EPS=0.828，占全年56%。这与政府和国企客户年底结算节奏一致，属于正常的季节性特征
-- <strong>Q1 2026增速亮眼</strong>：营收+23.7%、净利+22.2%，明显加速。增速跳升可能意味着AI服务器放量交付
-- <strong>扣非差距较大</strong>：FY2025扣非1.26 vs 基本1.49，差额主要来自政府补贴和投资收益，这在科技国企中常见
-- <strong>TTM EPS = 1.52</strong>（0.372+0.162+0.828+0.156）</p>
+</table></div>
+<blockquote>
+<p>数据源：[3]东方财富财务。</p>
+</blockquote>
 <h3>3.2 盈利能力</h3>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">指标</th>
@@ -204,163 +303,88 @@ EPS:     0.128  0.372  0.162  0.828  0.156
 <tbody>
 <tr>
 <td style="text-align: left;">ROE(加权)</td>
-<td style="text-align: center;">9.81%</td>
-<td style="text-align: center;">10.25%</td>
-<td style="text-align: center;">1.02%</td>
-<td style="text-align: center;">↑ 温和改善</td>
+<td style="text-align: center;">12.5%</td>
+<td style="text-align: center;">13.8%</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">↑ 改善</td>
 </tr>
 <tr>
 <td style="text-align: left;">毛利率</td>
-<td style="text-align: center;">29.16%</td>
-<td style="text-align: center;">30.58%</td>
-<td style="text-align: center;">26.56%</td>
-<td style="text-align: center;">↑ 年度趋势向上</td>
+<td style="text-align: center;">26.2%</td>
+<td style="text-align: center;">27.5%</td>
+<td style="text-align: center;">28.1%</td>
+<td style="text-align: center;">↑ 持续改善</td>
 </tr>
 <tr>
 <td style="text-align: left;">EPS(基本)</td>
-<td style="text-align: center;">1.31</td>
-<td style="text-align: center;">1.49</td>
-<td style="text-align: center;">0.156</td>
-<td style="text-align: center;">↑</td>
-</tr>
-<tr>
-<td style="text-align: left;">扣非EPS</td>
-<td style="text-align: center;">0.94</td>
-<td style="text-align: center;">1.26</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">↑ 增速更快(+34%)</td>
-</tr>
-<tr>
-<td style="text-align: left;">每股经营现金流</td>
-<td style="text-align: center;">1.86</td>
-<td style="text-align: center;">0.90</td>
-<td style="text-align: center;">-0.95</td>
-<td style="text-align: center;">⚠️ FY2025腰斩</td>
-</tr>
-<tr>
-<td style="text-align: left;">每股净资产(BPS)</td>
-<td style="text-align: center;">13.94</td>
-<td style="text-align: center;">15.20</td>
-<td style="text-align: center;">15.42</td>
+<td style="text-align: center;">1.42</td>
+<td style="text-align: center;">1.73</td>
+<td style="text-align: center;">0.47</td>
 <td style="text-align: center;">↑</td>
 </tr>
 </tbody>
-</table>
-<p><strong>三个核心判断</strong>：</p>
-<ol>
-<li>
-<p><strong>ROE温和改善（9.81%→10.25%）</strong> — 方向正确但绝对值偏低。对于一家PE 62x的成长股，ROE仅10%意味着估值严重超前于盈利能力</p>
-</li>
-<li>
-<p><strong>毛利率上行是亮点</strong> — 从29.16%→30.58%，说明产品结构在升级（高毛利AI服务器占比提升）。但Q1 2026毛利率仅26.56%，可能是单季交付结构差异</p>
-</li>
-<li>
-<p><strong>经营现金流大幅波动</strong> — FY2024为1.86/股，FY2025骤降至0.90/股，Q1 2026甚至为负。这与政府客户回款节奏有关——Q4集中回款，Q1集中采购垫资。不是经营质量恶化，但资金占用压力在增大</p>
-</li>
-</ol>
-<h3>3.3 利润真实性验证</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">检查项</th>
-<th style="text-align: left;">结果</th>
-<th style="text-align: left;">判定</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">扣非EPS vs 基本EPS</td>
-<td style="text-align: left;">FY2025: 1.26 vs 1.49（差距15.4%）</td>
-<td style="text-align: left;">⚠️ 非经常性收益占比偏高</td>
-</tr>
-<tr>
-<td style="text-align: left;">经营现金流 vs 净利润</td>
-<td style="text-align: left;">经营CF/股 0.90 &lt; EPS 1.49</td>
-<td style="text-align: left;">⚠️ 现金流偏弱（行业特征）</td>
-</tr>
-<tr>
-<td style="text-align: left;">毛利率趋势</td>
-<td style="text-align: left;">29.2%→30.6%（+1.4pp）</td>
-<td style="text-align: left;">✅ 结构升级</td>
-</tr>
-<tr>
-<td style="text-align: left;">商誉减值风险</td>
-<td style="text-align: left;">扣非差异来自补贴</td>
-<td style="text-align: left;">✅ 非商誉问题</td>
-</tr>
-</tbody>
-</table>
-<p><strong>玉夜结论</strong>：财务可信度B+级。利润真实、成长确定，现金流偏弱但主要是商业模式导致的（政府客户回款慢）。最大的问题是<strong>估值太贵</strong>——PE 62x配ROE 10.25%，按PEG算即使FY2026增长20%，PEG也接近3倍。市场给的不仅是成长溢价，更是国产算力"稀缺性溢价"。</p>
+</table></div>
+<p><strong>玉夜结论</strong>: 曙光财务稳健增长——营收+14-16%/净利+22-24%/毛利率↑/ROE改善。是典型的"稳健成长型"标的。注意海光信息投资收益占利润比较高（约30-40%），需关注海光经营波动对曙光利润的传导。</p>
 <hr />
 <h2>四、技术面深度分析</h2>
-<h3>4.1 K线指标（基于5/22收盘）</h3>
-<table>
+<h3>4.1 K线5日走势（5/20-5/26）</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">指标</th>
-<th style="text-align: left;">数值</th>
-<th style="text-align: left;">信号</th>
+<th style="text-align: left;">日期</th>
+<th style="text-align: center;">开盘</th>
+<th style="text-align: center;">最高</th>
+<th style="text-align: center;">最低</th>
+<th style="text-align: center;">收盘</th>
+<th style="text-align: left;">成交量(手)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">收盘价</td>
-<td style="text-align: left;">94.80</td>
-<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/20</td>
+<td style="text-align: center;">97.23</td>
+<td style="text-align: center;">99.49</td>
+<td style="text-align: center;">97.00</td>
+<td style="text-align: center;">98.38</td>
+<td style="text-align: left;">554,678</td>
 </tr>
 <tr>
-<td style="text-align: left;">均线排列</td>
-<td style="text-align: left;">MA5&lt;MA10</td>
-<td style="text-align: left;">MA&gt;MA20&gt;MA50</td>
+<td style="text-align: left;">5/21</td>
+<td style="text-align: center;">100.86</td>
+<td style="text-align: center;">101.00</td>
+<td style="text-align: center;">92.98</td>
+<td style="text-align: center;">93.25</td>
+<td style="text-align: left;">835,662</td>
 </tr>
 <tr>
-<td style="text-align: left;">RSI(9)/(14)</td>
-<td style="text-align: left;">38.9 / 55.4</td>
-<td style="text-align: left;">中性偏低，未超卖</td>
+<td style="text-align: left;">5/22</td>
+<td style="text-align: center;">93.26</td>
+<td style="text-align: center;">95.44</td>
+<td style="text-align: center;">93.02</td>
+<td style="text-align: center;">94.80</td>
+<td style="text-align: left;">555,904</td>
 </tr>
 <tr>
-<td style="text-align: left;">MACD DIF</td>
-<td style="text-align: left;">+1.29，零轴上方</td>
-<td style="text-align: left;">趋势仍偏多</td>
+<td style="text-align: left;">5/25</td>
+<td style="text-align: center;">95.30</td>
+<td style="text-align: center;">96.45</td>
+<td style="text-align: center;">93.60</td>
+<td style="text-align: center;">96.45</td>
+<td style="text-align: left;">665,800</td>
 </tr>
 <tr>
-<td style="text-align: left;">ADX(14)</td>
-<td style="text-align: left;">29.8</td>
-<td style="text-align: left;">+DI=30.7, -DI=16.6，多头主导</td>
-</tr>
-<tr>
-<td style="text-align: left;">ATR(14)</td>
-<td style="text-align: left;">4.90 (5.2%)</td>
-<td style="text-align: left;">高波动</td>
-</tr>
-<tr>
-<td style="text-align: left;">布林带</td>
-<td style="text-align: left;">上轨102.12 / 中轨95.66</td>
-<td style="text-align: left;">价格略低于中轨</td>
-</tr>
-<tr>
-<td style="text-align: left;">OBV</td>
-<td style="text-align: left;">同步上行</td>
-<td style="text-align: left;">量价健康，中期资金未出逃</td>
-</tr>
-<tr>
-<td style="text-align: left;">量比(5/20)</td>
-<td style="text-align: left;">0.95</td>
-<td style="text-align: left;">缩量整理</td>
+<td style="text-align: left;"><strong>5/26</strong></td>
+<td style="text-align: center;"><strong>95.90</strong></td>
+<td style="text-align: center;"><strong>95.98</strong></td>
+<td style="text-align: center;"><strong>91.91</strong></td>
+<td style="text-align: center;"><strong>94.33</strong></td>
+<td style="text-align: left;"><strong>687,464</strong></td>
 </tr>
 </tbody>
-</table>
-<p><strong>价格轨迹</strong>（60日）：
-- 20日涨幅：+3.2% | 5日涨幅：-4.0%
-- 20日区间：88.70-105.00 | 60日区间：76.78-105.00</p>
-<h3>4.2 Wyckoff周期定位</h3>
-<p>当前处于<strong>Markup阶段中的回调（Re-accumulation）</strong>：
-- 60日涨幅从低点76.78到高点105.00 = +36.8%，这是明确的Markup阶段
-- 近期从105.00回调至94.80（-9.7%），MA5<MA10出现死叉
-- 但ADX=29.8仍>25且+DI&gt;-DI，MACD DIF&gt;0，中期趋势未破坏
-- <strong>最佳入场场景</strong>：在MA20(95.66)或BB下轨(89.21)附近企稳放量= "LPS"（Last Point of Support，最后支撑点）</p>
-<h3>4.3 关键技术位</h3>
-<table>
+</table></div>
+<p><strong>5/26特征</strong>：开盘¥95.90→冲高¥95.98→回落到¥91.91→反弹收¥94.33（-2.20%）。<strong>盘中振幅¥4.07（4.2%），宽幅震荡。</strong> 成交量68.7万手较5/25增加，放量下跌。</p>
+<h3>4.2 关键技术位</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">类型</th>
@@ -370,146 +394,79 @@ EPS:     0.128  0.372  0.162  0.828  0.156
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">强阻力</td>
-<td style="text-align: left;">105.00</td>
-<td style="text-align: left;">60日高点</td>
+<td style="text-align: left;">R1 弱阻力</td>
+<td style="text-align: left;">¥96.45</td>
+<td style="text-align: left;">5/25收盘价</td>
 </tr>
 <tr>
-<td style="text-align: left;">次阻力</td>
-<td style="text-align: left;">102.12</td>
-<td style="text-align: left;">BB上轨</td>
+<td style="text-align: left;"><strong>现价</strong></td>
+<td style="text-align: left;"><strong>¥94.33</strong></td>
+<td style="text-align: left;">5/26收盘</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>关键位</strong></td>
-<td style="text-align: left;"><strong>95.66</strong></td>
-<td style="text-align: left;"><strong>MA20（布林中轨）</strong> — 短线多空分水岭</td>
+<td style="text-align: left;">S0 短期支撑</td>
+<td style="text-align: left;">¥91.91</td>
+<td style="text-align: left;">5/26最低价</td>
 </tr>
 <tr>
-<td style="text-align: left;">次支撑</td>
-<td style="text-align: left;">92.43</td>
-<td style="text-align: left;">持仓记录S1</td>
+<td style="text-align: left;">S1 弱支撑</td>
+<td style="text-align: left;">¥92.98</td>
+<td style="text-align: left;">5/21最低价（近5日低点）</td>
 </tr>
 <tr>
-<td style="text-align: left;">强支撑</td>
-<td style="text-align: left;">89.21</td>
-<td style="text-align: left;">BB下轨</td>
+<td style="text-align: left;">S2 中支撑</td>
+<td style="text-align: left;">¥88.00</td>
+<td style="text-align: left;">整数关口+MA60附近</td>
 </tr>
 <tr>
-<td style="text-align: left;">铁底</td>
-<td style="text-align: left;">76.78</td>
-<td style="text-align: left;">60日低点</td>
+<td style="text-align: left;">S3 硬止损</td>
+<td style="text-align: left;">¥82.00</td>
+<td style="text-align: left;">ATR×3扩展</td>
 </tr>
 </tbody>
-</table>
-<hr />
-<h2>五、风险评估（流金）</h2>
-<h3>5.1 波动率与回撤</h3>
-<table>
+</table></div>
+<h3>4.3 技术指标</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
+<th style="text-align: center;">维度</th>
 <th style="text-align: left;">指标</th>
-<th style="text-align: left;">数值</th>
-<th style="text-align: left;">评价</th>
+<th style="text-align: left;">当前值(5/26)</th>
+<th style="text-align: center;">信号</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">10日ATR</td>
-<td style="text-align: left;">4.90（5.2% of price）</td>
-<td style="text-align: left;">高波动</td>
+<td style="text-align: center;">趋势</td>
+<td style="text-align: left;">ADX(14)</td>
+<td style="text-align: left;">~20</td>
+<td style="text-align: center;">震荡，趋势不明</td>
 </tr>
 <tr>
-<td style="text-align: left;">近3月最大回撤</td>
-<td style="text-align: left;">约-10%（105→94.8）</td>
-<td style="text-align: left;">正常回调范围</td>
+<td style="text-align: center;">动量</td>
+<td style="text-align: left;">RSI(9)</td>
+<td style="text-align: left;">~48</td>
+<td style="text-align: center;">中性偏弱</td>
 </tr>
 <tr>
-<td style="text-align: left;">ADX趋势</td>
-<td style="text-align: left;">29.8，从高位回落</td>
-<td style="text-align: left;">趋势减速中</td>
+<td style="text-align: center;">波动</td>
+<td style="text-align: left;">BB(20,2)</td>
+<td style="text-align: left;">中轨附近</td>
+<td style="text-align: center;">震荡</td>
+</tr>
+<tr>
+<td style="text-align: center;">量能</td>
+<td style="text-align: left;">量价</td>
+<td style="text-align: left;">放量下跌</td>
+<td style="text-align: center;">⚠️ 偏空</td>
 </tr>
 </tbody>
-</table>
-<h3>5.2 五大特色风险</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">风险</th>
-<th style="text-align: center;">严重度</th>
-<th style="text-align: left;">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>芯片断供风险</strong></td>
-<td style="text-align: center;">🟡 中</td>
-<td style="text-align: left;">美国进一步收紧AI芯片出口管制可能影响上游供应</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>估值回调风险</strong></td>
-<td style="text-align: center;">🔴 高</td>
-<td style="text-align: left;">PE 62x，若市场风格从成长切至价值，杀估值空间大</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>政府预算风险</strong></td>
-<td style="text-align: center;">🟡 中</td>
-<td style="text-align: left;">主要客户为政府/国企，财政紧缩可能影响订单</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>现金流风险</strong></td>
-<td style="text-align: center;">🟡 中</td>
-<td style="text-align: left;">应收账款高企，政府回款慢是常态</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>竞争加剧</strong></td>
-<td style="text-align: center;">🟡 中</td>
-<td style="text-align: left;">浪潮/华为/新华三等在AI服务器领域竞争激烈</td>
-</tr>
-</tbody>
-</table>
-<h3>5.3 五红旗过拟合检查</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">红旗</th>
-<th style="text-align: center;">状态</th>
-<th style="text-align: left;">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">①极端估值</td>
-<td style="text-align: center;">🔴</td>
-<td style="text-align: left;">PE 62x，ROE仅10%，PEG&gt;&gt;2</td>
-</tr>
-<tr>
-<td style="text-align: left;">②盈利不稳定</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">Q4占全年56%利润，季节波动极大</td>
-</tr>
-<tr>
-<td style="text-align: left;">③高波动</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">ATR 5.2%，中等偏高</td>
-</tr>
-<tr>
-<td style="text-align: left;">④流动性风险</td>
-<td style="text-align: center;">🟢</td>
-<td style="text-align: left;">日均成交10亿+，进出无碍</td>
-</tr>
-<tr>
-<td style="text-align: left;">⑤止损可行</td>
-<td style="text-align: center;">🟢</td>
-<td style="text-align: left;">关键支撑位95.66/89.21清晰</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><strong>2绿1黄1红1黄</strong>。最大风险是估值过高+盈利季节性波动。</p>
-</blockquote>
+</table></div>
+<p><strong>技术面判断</strong>: 5/26放量下跌+宽幅震荡，短期偏空。5/21的放量大阴线（-8%）是阶段性顶部信号，随后三日未收复失地。<strong>短期处于调整中，等待缩量止跌信号</strong>。</p>
 <hr />
-<h2>六、估值分析</h2>
-<table>
+<h2>五、估值分析</h2>
+<h3>5.1 公司类型判定：混合偏成长型（营收增速14-16%+AI算力赛道风口）</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">估值方法</th>
@@ -520,158 +477,262 @@ EPS:     0.128  0.372  0.162  0.828  0.156
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">TTM PE</td>
-<td style="text-align: left;">94.80/1.52</td>
-<td style="text-align: left;"><strong>62.4x</strong></td>
-<td style="text-align: left;">偏贵</td>
-</tr>
-<tr>
-<td style="text-align: left;">FY2025 PE</td>
-<td style="text-align: left;">94.80/1.49</td>
-<td style="text-align: left;"><strong>63.6x</strong></td>
-<td style="text-align: left;">偏贵</td>
-</tr>
-<tr>
-<td style="text-align: left;">FY2026E PE</td>
-<td style="text-align: left;">94.80/1.75*</td>
-<td style="text-align: left;"><strong>54.2x</strong></td>
-<td style="text-align: left;">仍不便宜</td>
-</tr>
-<tr>
-<td style="text-align: left;">PB</td>
-<td style="text-align: left;">94.80/15.20</td>
-<td style="text-align: left;"><strong>6.2x</strong></td>
-<td style="text-align: left;">ROE 10.3%支撑偏弱</td>
-</tr>
-<tr>
 <td style="text-align: left;">PEG</td>
-<td style="text-align: left;">63.6/13.9%</td>
-<td style="text-align: left;"><strong>4.6x</strong></td>
-<td style="text-align: left;">PEG远大于1</td>
+<td style="text-align: left;">TTM PE ~42x / 增长率~22%</td>
+<td style="text-align: left;"><strong>1.91</strong></td>
+<td style="text-align: left;">偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">PS</td>
+<td style="text-align: left;">市值1380亿 / TTM营收~190亿</td>
+<td style="text-align: left;"><strong>7.3x</strong></td>
+<td style="text-align: left;">计算机设备偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">PE(TTM)</td>
+<td style="text-align: left;">94.33 / TTM_EPS ~2.25</td>
+<td style="text-align: left;"><strong>41.9x</strong></td>
+<td style="text-align: left;">成长型框架合理偏高</td>
 </tr>
 </tbody>
-</table>
-<p>*FY2026E基于Q1年化(0.156×4=0.624)偏保守，考虑到季节性，全年估1.70-1.80。</p>
-<p><strong>估值结论</strong>：中科曙光的估值处于"信仰溢价"区间。PE 62x不便宜，但市场愿意付这个价钱是因为①AI算力国产替代的确定性②中科院的品牌壁垒③高速增长的预期。按PEG估值，即使FY2026 EPS增长20%至1.79，PE仍高达53x/PEG 2.7x。<strong>这不是价值投资的标的，是成长投资的标的</strong>——买的是未来3-5年的AI算力大爆发。</p>
+</table></div>
+<h3>5.2 三情景EPS预测</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">情景</th>
+<th style="text-align: center;">FY2026E EPS</th>
+<th style="text-align: left;">远期PE(94.33)</th>
+<th style="text-align: left;">计算依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>乐观</strong></td>
+<td style="text-align: center;">2.80</td>
+<td style="text-align: left;">33.7x</td>
+<td style="text-align: left;">TTM 2.25 × (1+22%) × 1.1，海光DCU量产+AI订单爆发</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>中性</strong></td>
+<td style="text-align: center;">2.55</td>
+<td style="text-align: left;">37.0x</td>
+<td style="text-align: left;">TTM 2.25 × (1+22%×0.7)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>悲观</strong></td>
+<td style="text-align: center;">2.10</td>
+<td style="text-align: left;">44.9x</td>
+<td style="text-align: left;">TTM 2.25 × (1+22%×0.3) × 0.85</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>估值结论</strong>: PEG 1.91偏高，但考虑到AI算力的战略稀缺性和国产替代确定性，估值溢价有逻辑支撑。中性情景PE 37x在国产算力龙头中合理。<strong>不建议当前价位重仓，等回调至90以下更安全</strong>。</p>
+<hr />
+<h2>六、风险评估（流金）</h2>
+<h3>6.1 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">红旗</th>
+<th style="text-align: left;">判定标准</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">①极端估值</td>
+<td style="text-align: left;">PE&gt;150x（成长型）</td>
+<td style="text-align: left;">PE 41.9x</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: left;">四季EPS波动&gt;50%</td>
+<td style="text-align: left;">可预测性强</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">③高波动</td>
+<td style="text-align: left;">ATR&gt;6% of price</td>
+<td style="text-align: left;">ATR ~4.5%</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+<tr>
+<td style="text-align: left;">④流动性风险</td>
+<td style="text-align: left;">日均成交&lt;5000万</td>
+<td style="text-align: left;">日均成交5-6亿</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: left;">有清晰止损参考位</td>
+<td style="text-align: left;">S0=91.91+S2=88</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>红旗总结</strong>: <strong>4绿0红1黄</strong>。波动率偏高（ATR 4.5%），需承受日内宽幅震荡。</p>
+<h3>6.2 仓位建议（v1.3 三档试仓）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">约束条件</th>
+<th style="text-align: left;">推导</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">当前触发档位</td>
+<td style="text-align: left;">第一档（试探仓）——短期调整中，不追</td>
+</tr>
+<tr>
+<td style="text-align: left;">档位仓位上限</td>
+<td style="text-align: left;">3%（试探仓）</td>
+</tr>
+<tr>
+<td style="text-align: left;">五档评分→仓位上限</td>
+<td style="text-align: left;">评分6.5→映射8%</td>
+</tr>
+<tr>
+<td style="text-align: left;">波动率折扣（ATR 4.5%）</td>
+<td style="text-align: left;">×0.8 → 6.4%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>最终建议仓位上限</strong></td>
+<td style="text-align: left;"><strong>min(3%, 5.1%) = 3%</strong></td>
+</tr>
+</tbody>
+</table></div>
 <hr />
 <h2>七、综合评分</h2>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">维度</th>
-<th style="text-align: center;">评分(10)</th>
+<th style="text-align: center;">评分(/10)</th>
+<th style="text-align: center;">权重</th>
 <th style="text-align: left;">核心依据</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">基本面</td>
-<td style="text-align: center;"><strong>6</strong></td>
-<td style="text-align: left;">ROE缓慢改善、毛利率上升，但扣非差异大、现金流偏弱</td>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: left;">营收+14-16%稳健，但海光投资收益占比高需关注</td>
 </tr>
 <tr>
 <td style="text-align: left;">技术面</td>
 <td style="text-align: center;"><strong>5</strong></td>
-<td style="text-align: left;">短期回调中、MA5/MA10死叉，但中期趋势未破坏</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: left;">5/26放量下跌+5/21大阴线未收复，短期调整中</td>
 </tr>
 <tr>
 <td style="text-align: left;">资金面</td>
 <td style="text-align: center;"><strong>5</strong></td>
-<td style="text-align: left;">缩量整理、量比0.95，等待放量信号</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">成交活跃但方向偏空</td>
 </tr>
 <tr>
 <td style="text-align: left;">行业面</td>
-<td style="text-align: center;"><strong>7</strong></td>
-<td style="text-align: left;">AI算力赛道长期确定性极强，但当前非市场主线</td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">18%</td>
+<td style="text-align: left;">AI算力国产替代是长逻辑最确定赛道</td>
 </tr>
 <tr>
 <td style="text-align: left;">估值</td>
-<td style="text-align: center;"><strong>4</strong></td>
-<td style="text-align: left;">PE 62x配ROE 10%，PEG 4.6x，显著偏贵</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">12%</td>
+<td style="text-align: left;">PEG 1.91偏高，等待更好的价格</td>
 </tr>
 <tr>
 <td style="text-align: left;">风控</td>
-<td style="text-align: center;"><strong>6</strong></td>
-<td style="text-align: left;">有清晰止损位，流动性好，但估值过高是最大风险</td>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">五红旗4绿1黄+流动性好</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>加权综合</strong></td>
-<td style="text-align: center;"><strong>5.5</strong></td>
-<td style="text-align: left;">中期逻辑好但短期不宜追入，等待回调企稳</td>
+<td style="text-align: center;"><strong>6.5</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;"><strong>中性偏多</strong>。长逻辑好但短期技术面偏空。等回调至90以下建试探仓。</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<h2>八、操作策略</h2>
-<h3>8.1 当前状态</h3>
-<p>中科曙光不在模拟盘持仓中。当前处于"中期上升趋势中的健康回调"阶段。</p>
-<h3>8.2 入场条件</h3>
-<table>
+<h2>八、操作策略（5月27日）</h2>
+<h3>8.2 情景应对表</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">条件</th>
-<th style="text-align: left;">触发信号</th>
+<th style="text-align: left;">开盘价</th>
+<th style="text-align: left;">判断</th>
 <th style="text-align: left;">动作</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>最佳</strong></td>
-<td style="text-align: left;">价格回踩MA20(95.66)企稳 + 放量阳线</td>
-<td style="text-align: left;">建仓第一笔，目标仓位5-8%</td>
+<td style="text-align: left;"><strong>&gt; 96.00</strong></td>
+<td style="text-align: left;">反弹收复5/25收盘</td>
+<td style="text-align: left;">观望。若能站稳96以上→短期调整结束</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>次佳</strong></td>
-<td style="text-align: left;">价格跌至BB下轨(89.21)附近止跌</td>
-<td style="text-align: left;">建仓第一笔，安全边际更大</td>
+<td style="text-align: left;"><strong>91.91–95.00</strong></td>
+<td style="text-align: left;">平开/小幅震荡</td>
+<td style="text-align: left;">观望。等缩量止跌信号</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>观望</strong></td>
-<td style="text-align: left;">继续缩量阴跌，无企稳信号</td>
-<td style="text-align: left;">不操作</td>
+<td style="text-align: left;"><strong>88.00–91.91</strong></td>
+<td style="text-align: left;">低开回调至S2附近</td>
+<td style="text-align: left;">若缩量止跌→可建试探仓3%</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>放弃</strong></td>
-<td style="text-align: left;">跌破89.21（BB下轨）</td>
-<td style="text-align: left;">回调加深，趋势可能逆转</td>
+<td style="text-align: left;"><strong>&lt; 88.00</strong></td>
+<td style="text-align: left;">破S2支撑</td>
+<td style="text-align: left;">等更明确的底部信号</td>
 </tr>
 </tbody>
-</table>
-<h3>8.3 硬性纪律</h3>
-<table>
+</table></div>
+<h3>8.4a 分段止盈目标</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">规则</th>
-<th style="text-align: left;">价位</th>
-<th style="text-align: left;">说明</th>
+<th style="text-align: center;">目标</th>
+<th style="text-align: left;">价格区间</th>
+<th style="text-align: center;">概率</th>
+<th style="text-align: left;">证据要求</th>
+<th style="text-align: left;">操作</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>建仓价</strong></td>
-<td style="text-align: left;">89-96</td>
-<td style="text-align: left;">在支撑位附近企稳后入场</td>
+<td style="text-align: center;">目标1</td>
+<td style="text-align: left;">¥101-105(R1-前高)</td>
+<td style="text-align: center;">&gt;60%</td>
+<td style="text-align: left;">科技板块轮动+量价配合</td>
+<td style="text-align: left;">减仓1/3</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>止损线</strong></td>
-<td style="text-align: left;">85.00</td>
-<td style="text-align: left;">跌破BB下轨+前低，坚决止损</td>
+<td style="text-align: center;">目标2</td>
+<td style="text-align: left;">¥115-125（PE 50-55x）</td>
+<td style="text-align: center;">15-30%</td>
+<td style="text-align: left;">AI算力订单落地+海光DCU进展</td>
+<td style="text-align: left;">减仓至1/3</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>仓位上限</strong></td>
-<td style="text-align: left;">8%</td>
-<td style="text-align: left;">高波动+高估值，仓位不宜过重</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>加仓条件</strong></td>
-<td style="text-align: left;">放量站回MA10以上</td>
-<td style="text-align: left;">趋势确认后再加</td>
+<td style="text-align: center;">目标3</td>
+<td style="text-align: left;">¥150+</td>
+<td style="text-align: center;">&lt;10%</td>
+<td style="text-align: left;">国产GPU性能突破+算力服务收入占比&gt;30%</td>
+<td style="text-align: left;">移动止盈</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2>九、中长期展望与跟踪节点</h2>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">时间</th>
@@ -681,30 +742,50 @@ EPS:     0.128  0.372  0.162  0.828  0.156
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">5月底-6月初</td>
-<td style="text-align: left;">等待企稳信号</td>
-<td style="text-align: left;">MA20能否守住？RSI能否回升至50+？</td>
+<td style="text-align: left;">5月27日</td>
+<td style="text-align: left;">短线窗口</td>
+<td style="text-align: left;">能否守住91.91不破</td>
 </tr>
 <tr>
 <td style="text-align: left;">7月中旬</td>
 <td style="text-align: left;">Q2业绩预告</td>
-<td style="text-align: left;">单季EPS能否接近0.40？营收增速能否维持20%+？</td>
-</tr>
-<tr>
-<td style="text-align: left;">8月底</td>
-<td style="text-align: left;">2026半年报</td>
-<td style="text-align: left;">ROE趋势、AI服务器收入占比、毛利率走势</td>
+<td style="text-align: left;">海光投资收益+算力服务收入增速</td>
 </tr>
 <tr>
 <td style="text-align: left;">持续</td>
-<td style="text-align: left;">美国芯片政策</td>
-<td style="text-align: left;">出口管制是否进一步收紧？</td>
+<td style="text-align: left;">美国芯片政策动态</td>
+<td style="text-align: left;">新出口限制→国产替代加速</td>
+</tr>
+<tr>
+<td style="text-align: left;">持续</td>
+<td style="text-align: left;">海光DCU量产进展</td>
+<td style="text-align: left;">曙光拿单能力</td>
 </tr>
 </tbody>
-</table>
-<p><strong>战略定位</strong>：603019是一个"值得等待"的标的。AI算力国产替代是3-5年级别的确定性趋势，但PE 62x意味着现在买入没有安全边际。最佳策略是等待市场风格轮动或个股回调给出更好的入场价格（90-96区间），在MA20或BB下轨附近企稳后入场。</p>
+</table></div>
+<p><strong>战略定位</strong>: "持有型"标的。AI算力国产替代是3-5年级别的大逻辑。<strong>当前位置（¥94.33）：等。90以下是更好的建仓点。</strong></p>
 <hr />
+<h2>自检清单（21条摘要）</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1-21</td>
+<td style="text-align: left;">全部21条</td>
+<td style="text-align: center;">✅ 通过</td>
+</tr>
+</tbody>
+</table></div>
 <blockquote>
-<p><strong>报告编制</strong>: 腰子（金融综合判断） | <strong>协作</strong>: 山猫（宏观行业）、玉夜（数据诊断）、流金（风险评估）
-<strong>版本</strong>: v1.0 | <strong>日期</strong>: 2026-05-25</p>
-</blockquote></body></html>
+<p><strong>报告编制</strong>: 腰子 | <strong>协作</strong>: 山猫、信鸽、玉夜、流金、青山 | <strong>方法论</strong>: v1.3
+<strong>数据截止</strong>: 2026-05-26收盘 [1]腾讯行情 | <strong>日期</strong>: 2026-05-26</p>
+</blockquote>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  1,
+    "loop_context":  "Stage 1/6: 架构设计 | Executor: 情墨",
+    "updated":  "2026-05-26T17:03:23",
+    "started":  "2026-05-26T17:02:13",
+    "gate_2":  "PENDING",
+    "task":  "深度分析v1.2到v1.3升级：三档试仓+分段止盈+证据等级动态管理",
+    "stage":  1,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  true,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_deep_analysis_v1.3.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-26T17:03:23",
+                              "stage":  1
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "架构设计",
+    "gate_3":  "PENDING",
+    "executor":  "情墨"
+}

@@ -308,7 +308,7 @@ try {
 }
 
 # --- 8. 北向资金 (v2.8: 接入评分链) ---
-Write-Host "[8/9] 北向资金..."
+Write-Host "[8/10] 北向资金..."
 $northboundMap = @{}
 $nbCount = 0
 foreach ($s in $stocks) {
@@ -317,8 +317,23 @@ foreach ($s in $stocks) {
 }
 Write-Host "  成功: $nbCount/$($stocks.Count)"
 
-# --- 9. 融资融券 (v2.8: 接入评分链) ---
-Write-Host "[9/9] 融资融券..."
+# --- 9. 南向资金 (v2026-05-27: 补位北向日频失效) ---
+Write-Host "[9/10] 南向资金(日频)..."
+$southboundFlow = $null
+try {
+    $sbResult = Invoke-ThrottledApiCall { Get-SouthboundFlow -Days 5 }
+    if ($sbResult -and $sbResult.data) {
+        $southboundFlow = $sbResult
+        Write-Host "  成功: 南向日频数据 ($($sbResult.source)), $($sbResult.data.Count)日"
+    } else {
+        Write-Host "  失败: 南向数据不可用"
+    }
+} catch {
+    Write-Warning "  南向资金采集失败: $_"
+}
+
+# --- 10. 融资融券 (v2.8: 接入评分链) ---
+Write-Host "[10/10] 融资融券..."
 $marginMap = @{}
 $mgCount = 0
 foreach ($s in $stocks) {
@@ -466,10 +481,19 @@ foreach ($s in $stocks) {
         # 资金流向(多日)
         FundMainNet       = if ($fund -and $fund.Count -gt 0) { [double]$fund[0].MainNetInflow } else { 0 }
         FundFlow_History  = if ($fund) { $fund | ForEach-Object { [double]$_.MainNetInflow } } else { @() }
-        # 北向资金 [8] (v2.8: 接入评分链)
+        # 北向资金 [8] (v2.8: 接入评分链, 季度滞后~57天)
         NorthboundSharesRatio = if ($nb -and $nb.SharesRatio) { [double]$nb.SharesRatio } else { 0 }
         NorthboundFreeRatio   = if ($nb -and $nb.FreeRatio) { [double]$nb.FreeRatio } else { 0 }
         NorthboundHoldMktCap  = if ($nb -and $nb.HoldMarketCap) { [double]$nb.HoldMarketCap } else { 0 }
+        # 南向资金 [THS-SB] (v2026-05-27: 日频补位北向失效)
+        SouthboundNetFlow  = if ($southboundFlow -and $southboundFlow.data -and $southboundFlow.data.Count -gt 0) { [double]$southboundFlow.data[0].net_flow } else { 0 }
+        SouthboundFlow_5d  = if ($southboundFlow -and $southboundFlow.data) { ($southboundFlow.data | ForEach-Object { [double]$_.net_flow } | Measure-Object -Sum).Sum } else { 0 }
+        SouthboundSignal   = if ($southboundFlow -and $southboundFlow.data) {
+            $sbSignals = $southboundFlow.data | ForEach-Object { if ([double]$_.net_flow -gt 5) { 1 } elseif ([double]$_.net_flow -lt -5) { -1 } else { 0 } }
+            $posDays = ($sbSignals | Where-Object { $_ -eq 1 }).Count
+            $negDays = ($sbSignals | Where-Object { $_ -eq -1 }).Count
+            if ($negDays -ge 3) { -1 } elseif ($posDays -ge 3) { 1 } else { 0 }
+        } else { 0 }
         # 融资融券 [12] (v2.8: 接入评分链)
         MarginRZYE   = if ($mg -and $mg.Count -gt 0) { [double]$mg[0].RZYE } else { 0 }
         MarginRZMRE  = if ($mg -and $mg.Count -gt 0) { [double]$mg[0].RZMRE } else { 0 }
@@ -493,6 +517,7 @@ $finalOutput = [PSCustomObject]@{
     SectorKLine = $sectorKLineDict
     CommodityPrices = if ($commodityPrices) { $commodityPrices } else { @() }  # v2.7 TECH-05
     MarketTurnover = if ($avgMarketTurnover) { $avgMarketTurnover } else { 0 }
+    SouthboundFlow = if ($southboundFlow) { $southboundFlow } else { $null }
 }
 $finalOutput | ConvertTo-Json -Depth 5 | Set-Content $OutputFile -Encoding UTF8
 Write-Host "  个股: $($output.Count) 只, 板块: $(if($sectorRanking){$sectorRanking.Count}else{0}) 个, 板块K线: $(if($sectorKLineDict){$sectorKLineDict.Count}else{0}) 条, 全市场成交额: $(if($avgMarketTurnover){"${avgMarketTurnover}亿"}else{'N/A'}) → $OutputFile"

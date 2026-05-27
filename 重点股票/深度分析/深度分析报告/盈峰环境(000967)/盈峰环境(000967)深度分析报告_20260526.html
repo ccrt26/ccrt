@@ -1,43 +1,87 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><style>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>000967 盈峰环境 — 深度分析报告 (v1.3)</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    font-family: "Microsoft YaHei", "SimSun", sans-serif;
-    font-size: 12pt;
-    line-height: 1.8;
-    color: #222;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
 }
-h1 { font-size: 20pt; border-bottom: 2px solid #1a1a2e; padding-bottom: 8px; color: #1a1a2e; }
-h2 { font-size: 15pt; color: #16213e; margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
-h3 { font-size: 13pt; color: #333; margin-top: 20px; }
-table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10pt; }
-th { background: #1a1a2e; color: #fff; padding: 6px 8px; text-align: left; }
-td { border: 1px solid #ddd; padding: 5px 8px; }
-tr:nth-child(even) { background: #f8f8f8; }
-code { font-family: "Microsoft YaHei", monospace; font-size: 10pt; background: #f0f0f0; padding: 2px 4px; }
-pre { background: #f4f4f4; padding: 12px; border-left: 3px solid #1a1a2e; overflow-x: auto; font-size: 10pt; line-height: 1.5; }
-blockquote { border-left: 3px solid #ccc; padding-left: 16px; color: #666; margin: 12px 0; }
-strong { color: #1a1a2e; }
-hr { border: none; border-top: 1px solid #eee; margin: 30px 0; }
-p { margin: 8px 0; }
-</style></head><body><h1>000967 盈峰环境 — 深度分析报告</h1>
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>000967 盈峰环境 — 深度分析报告 (v1.3)</h1>
 <blockquote>
-<p><strong>日期</strong>: 2026年5月25日（基于5月22日收盘数据）
-<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 玉夜（数据诊断）+ 流金（风险评估）
-<strong>数据来源</strong>: 东方财富财务[3]、5月22日持仓记录
+<p><strong>日期</strong>: 2026年5月26日（周二） | <strong>方法论版本</strong>: v1.3
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 信鸽（事件采集）+ 玉夜（数据诊断）+ 流金（风险评估）+ 青山（策略因子）
+<strong>数据截止</strong>: 2026-05-26（周二）收盘 | <strong>市场指数</strong>: 2026-05-26
 <strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
 </blockquote>
 <hr />
 <h2>一、公司概要</h2>
-<p>盈峰环境（000967.SZ）是<strong>环保装备与环卫服务龙头</strong>，深交所主板上市。主营环卫装备（清扫车/垃圾车/除雪车等）和环卫服务（城市保洁/垃圾收转运），是国内环卫装备市场份额第一的企业。实控人为何剑锋（美的集团创始人何享健之子），背靠盈峰控股（美的系），具备制造业基因。</p>
-<p><strong>核心投资逻辑</strong>：
-1. 环卫装备电动化/智能化 — 新能源环卫车渗透率极低（&lt;5%），政策推动下增量空间大
-2. 环卫服务市场化 — 政府环卫外包持续推进，提供稳定的运营类现金流
-3. 美的系管理赋能 — 盈峰控股在精益制造和供应链管理上输出能力</p>
+<p>盈峰环境（000967.SZ）是<strong>环保装备与环卫服务龙头</strong>，深交所主板上市。主营环卫装备（清扫车/垃圾车等）和环卫服务（城市保洁/垃圾收转运），国内环卫装备市场份额第一。实控人为何剑锋（美的集团创始人何享健之子），背靠美的系。</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">所属行业</td>
+<td style="text-align: left;">环保 / 环保装备（申万）</td>
+</tr>
+<tr>
+<td style="text-align: left;">主营业务</td>
+<td style="text-align: left;">环卫装备制造 + 环卫服务运营</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场地位</td>
+<td style="text-align: left;">国内环卫装备市场份额第一</td>
+</tr>
+<tr>
+<td style="text-align: left;">上市板块</td>
+<td style="text-align: left;">深交所主板</td>
+</tr>
+</tbody>
+</table></div>
+<h3>核心投资逻辑</h3>
+<ol>
+<li><strong>环卫装备电动化/智能化</strong> — 新能源环卫车渗透率极低（&lt;5%），政策推动下增量空间大</li>
+<li><strong>环卫服务市场化</strong> — 政府环卫外包持续推进，提供稳定的运营类现金流</li>
+<li><strong>美的系管理赋能</strong> — 精益制造和供应链管理输出</li>
+</ol>
 <hr />
 <h2>二、宏观与行业环境（山猫）</h2>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">维度</th>
@@ -54,17 +98,12 @@ p { margin: 8px 0; }
 <tr>
 <td style="text-align: left;">新能源环卫车</td>
 <td style="text-align: left;"><strong>导入期</strong></td>
-<td style="text-align: left;">政策驱动，渗透率从2%→10%是3-5年趋势</td>
+<td style="text-align: left;">政策驱动，渗透率从2%→10%</td>
 </tr>
 <tr>
 <td style="text-align: left;">政策面</td>
 <td style="text-align: left;"><strong>温和利好</strong></td>
-<td style="text-align: left;">公共领域车辆电动化政策（2023-2025）延续</td>
-</tr>
-<tr>
-<td style="text-align: left;">地方政府预算</td>
-<td style="text-align: left;"><strong>偏紧</strong></td>
-<td style="text-align: left;">环卫服务收入依赖地方财政，经济下行期回款可能变慢</td>
+<td style="text-align: left;">公共领域车辆电动化政策延续</td>
 </tr>
 <tr>
 <td style="text-align: left;">板块资金</td>
@@ -72,84 +111,11 @@ p { margin: 8px 0; }
 <td style="text-align: left;">环保板块非当前市场主线</td>
 </tr>
 </tbody>
-</table>
-<p><strong>山猫结论</strong>：盈峰环境所处的环保/环卫行业是一个"稳健但不性感"的赛道。环卫服务提供稳定的运营现金流（类似公用事业），环卫装备的电动化转型提供增量但推进速度取决于政策力度。当前市场风格偏好高成长和高弹性，环卫行业不受活跃资金关注。缺乏短期催化。</p>
+</table></div>
+<p><strong>山猫结论</strong>: 盈峰是环保行业中质地最好的标的之一（龙头+美的系+新能源概念），但环保板块整体不在当前市场风口。5/26暴跌-8.82%可能是板块资金流出+个股流动性不足叠加导致。</p>
 <hr />
 <h2>三、财务深度分析（玉夜）</h2>
-<h3>3.1 收入与利润趋势</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">期间</th>
-<th style="text-align: left;">营收(亿)</th>
-<th style="text-align: left;">归母净利(亿)</th>
-<th style="text-align: left;">EPS</th>
-<th style="text-align: left;">扣非EPS</th>
-<th style="text-align: left;">ROE</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">FY2024</td>
-<td style="text-align: left;">131.18</td>
-<td style="text-align: left;">5.14</td>
-<td style="text-align: left;">0.16</td>
-<td style="text-align: left;">0.16</td>
-<td style="text-align: left;">2.94%</td>
-</tr>
-<tr>
-<td style="text-align: left;">Q1 2025</td>
-<td style="text-align: left;">31.82</td>
-<td style="text-align: left;">1.81</td>
-<td style="text-align: left;">0.06</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">1.03%</td>
-</tr>
-<tr>
-<td style="text-align: left;">H1 2025</td>
-<td style="text-align: left;">64.63</td>
-<td style="text-align: left;">3.82</td>
-<td style="text-align: left;">0.12</td>
-<td style="text-align: left;">0.11</td>
-<td style="text-align: left;">2.16%</td>
-</tr>
-<tr>
-<td style="text-align: left;">Q1-Q3 2025</td>
-<td style="text-align: left;">95.44</td>
-<td style="text-align: left;">4.71</td>
-<td style="text-align: left;">0.15</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">2.69%</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>FY2025</strong></td>
-<td style="text-align: left;"><strong>138.44</strong></td>
-<td style="text-align: left;"><strong>5.50</strong></td>
-<td style="text-align: left;"><strong>0.17</strong></td>
-<td style="text-align: left;"><strong>0.16</strong></td>
-<td style="text-align: left;"><strong>3.16%</strong></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Q1 2026</strong></td>
-<td style="text-align: left;"><strong>39.22</strong></td>
-<td style="text-align: left;"><strong>2.14</strong></td>
-<td style="text-align: left;"><strong>0.07</strong></td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;"><strong>1.24%</strong></td>
-</tr>
-</tbody>
-</table>
-<p><strong>单季EPS走势</strong>（还原为独立季度）：</p>
-<pre><code>         Q1'25  Q2'25  Q3'25  Q4'25  Q1'26
-EPS:      0.06   0.06   0.03   0.02   0.07
-</code></pre>
-<p><strong>关键发现</strong>：
-- <strong>极低ROE是核心问题</strong>：FY2025 ROE仅3.16%，FY2024为2.94%——连续两年在3%附近。这意味着每100元净资产一年只赚3元，放到任何投资标准下都是不合格的
-- <strong>利润季节性极强</strong>：Q4 2025 EPS仅0.02（全年0.17），说明Q4有大额费用集中确认或应收账款减值
-- <strong>增收不增利</strong>：营收从131.18亿→138.44亿（+5.5%），但ROE始终在3%附近徘徊
-- <strong>TTM EPS = 0.18</strong>（0.06+0.03+0.02+0.07）</p>
-<h3>3.2 盈利能力</h3>
-<table>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">指标</th>
@@ -161,220 +127,336 @@ EPS:      0.06   0.06   0.03   0.02   0.07
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">ROE(加权)</td>
-<td style="text-align: center;">2.94%</td>
-<td style="text-align: center;">3.16%</td>
-<td style="text-align: center;">1.24%</td>
-<td style="text-align: center;">→ 极低位徘徊</td>
-</tr>
-<tr>
-<td style="text-align: left;">毛利率</td>
-<td style="text-align: center;">21.77%</td>
-<td style="text-align: center;">21.88%</td>
-<td style="text-align: center;">22.38%</td>
-<td style="text-align: center;">→ 基本稳定</td>
-</tr>
-<tr>
-<td style="text-align: left;">EPS(基本)</td>
-<td style="text-align: center;">0.16</td>
-<td style="text-align: center;">0.17</td>
-<td style="text-align: center;">0.07</td>
-<td style="text-align: center;">→ 几乎无增长</td>
-</tr>
-<tr>
-<td style="text-align: left;">扣非EPS</td>
-<td style="text-align: center;">0.16</td>
-<td style="text-align: center;">0.16</td>
+<td style="text-align: left;">PE(TTM)</td>
 <td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">66.4x</td>
+<td style="text-align: center;">偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">营收</td>
+<td style="text-align: center;">稳健增长</td>
+<td style="text-align: center;">微增</td>
+<td style="text-align: center;">数据不可获取</td>
 <td style="text-align: center;">→</td>
 </tr>
 <tr>
-<td style="text-align: left;">每股经营现金流</td>
-<td style="text-align: center;">0.37</td>
-<td style="text-align: center;">0.30</td>
-<td style="text-align: center;">-0.39</td>
-<td style="text-align: center;">⚠️ 波动大</td>
-</tr>
-<tr>
-<td style="text-align: left;">每股净资产(BPS)</td>
-<td style="text-align: center;">5.45</td>
-<td style="text-align: center;">5.36</td>
-<td style="text-align: center;">5.43</td>
-<td style="text-align: center;">→</td>
+<td style="text-align: left;">ROE</td>
+<td style="text-align: center;">数据不可获取</td>
+<td style="text-align: center;">数据不可获取</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 </tr>
 </tbody>
-</table>
-<p><strong>玉夜结论</strong>：财务可信度C+级。利润真实但极其微薄。ROE仅3.16%意味着公司盈利能力低于银行定期存款利率（考虑风险调整后更是如此）。毛利率22%还算稳定，说明行业竞争格局尚可，但费用率太高（管理+销售+财务费用吃掉大部分毛利）。这是典型的重资产+高费用+低毛利商业模式——赚钱能力差。</p>
+</table></div>
+<blockquote>
+<p>数据源：[1]腾讯行情[3]东方财富财务（部分数据不可获取）。</p>
+</blockquote>
+<p><strong>玉夜结论</strong>: 盈峰财务数据获取不完整。PE 66x对于环保装备行业偏高，需要新能源环卫车放量来消化估值。财务数据缺失较多，评分受限。</p>
 <hr />
-<h2>四、估值分析</h2>
-<table>
+<h2>四、技术面深度分析</h2>
+<h3>4.1 K线5日走势（5/20-5/26）— ⛔ 暴跌</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">估值方法</th>
-<th style="text-align: left;">计算</th>
-<th style="text-align: left;">结果</th>
-<th style="text-align: left;">判断</th>
+<th style="text-align: left;">日期</th>
+<th style="text-align: center;">开盘</th>
+<th style="text-align: center;">最高</th>
+<th style="text-align: center;">最低</th>
+<th style="text-align: center;">收盘</th>
+<th style="text-align: left;">成交量(手)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">TTM PE</td>
-<td style="text-align: left;">现价/0.18</td>
-<td style="text-align: left;">取决于现价</td>
-<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/20</td>
+<td style="text-align: center;">13.13</td>
+<td style="text-align: center;">13.63</td>
+<td style="text-align: center;">12.92</td>
+<td style="text-align: center;">13.08</td>
+<td style="text-align: left;">1,245,051</td>
 </tr>
 <tr>
-<td style="text-align: left;">FY2025 PE</td>
-<td style="text-align: left;">现价/0.17</td>
-<td style="text-align: left;">取决于现价</td>
-<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/21</td>
+<td style="text-align: center;">13.15</td>
+<td style="text-align: center;">13.20</td>
+<td style="text-align: center;">11.93</td>
+<td style="text-align: center;">12.05</td>
+<td style="text-align: left;">1,803,055</td>
 </tr>
 <tr>
-<td style="text-align: left;">PB</td>
-<td style="text-align: left;">现价/5.36</td>
-<td style="text-align: left;">取决于现价</td>
-<td style="text-align: left;">ROE 3.2%支撑极弱</td>
+<td style="text-align: left;">5/22</td>
+<td style="text-align: center;">12.27</td>
+<td style="text-align: center;">13.08</td>
+<td style="text-align: center;">12.00</td>
+<td style="text-align: center;">12.98</td>
+<td style="text-align: left;">2,163,031</td>
 </tr>
 <tr>
-<td style="text-align: left;">股息率</td>
-<td style="text-align: left;">未知</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/25</td>
+<td style="text-align: center;">13.30</td>
+<td style="text-align: center;">13.45</td>
+<td style="text-align: center;">12.55</td>
+<td style="text-align: center;">12.92</td>
+<td style="text-align: left;">1,776,763</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5/26</strong></td>
+<td style="text-align: center;"><strong>12.51</strong></td>
+<td style="text-align: center;"><strong>12.66</strong></td>
+<td style="text-align: center;"><strong>11.63</strong></td>
+<td style="text-align: center;"><strong>11.78</strong></td>
+<td style="text-align: left;"><strong>2,021,745</strong></td>
 </tr>
 </tbody>
-</table>
-<p>由于5/22行情数据中盈峰环境不在72只跟踪池中，无法获取精确现价。但从板块估值水平推算，PE大概率在20-30x区间。</p>
-<hr />
-<h2>五、风险评估（流金）</h2>
-<table>
+</table></div>
+<p><strong>5日走势</strong>：13.08→11.78 = <strong>-9.9%</strong>。5/21暴跌-7.9%+5/26暴跌-8.82%。<strong>连续两次放量大跌，典型的恐慌+止损盘涌出</strong>。</p>
+<h3>4.2 关键技术位</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">风险</th>
-<th style="text-align: center;">严重度</th>
-<th style="text-align: left;">说明</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">价格</th>
+<th style="text-align: left;">依据</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>低ROE</strong></td>
-<td style="text-align: center;">🔴</td>
-<td style="text-align: left;">ROE 3.16%，长期持股回报率接近存款利率</td>
+<td style="text-align: left;">R1 阻力</td>
+<td style="text-align: left;">¥12.92</td>
+<td style="text-align: left;">5/25收盘价</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>地方政府回款</strong></td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">环卫服务应收款依赖地方财政，经济下行期回款慢</td>
+<td style="text-align: left;"><strong>现价</strong></td>
+<td style="text-align: left;"><strong>¥11.78</strong></td>
+<td style="text-align: left;">5/26收盘</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>缺乏催化</strong></td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">无短期业绩爆发点，无题材催化剂</td>
+<td style="text-align: left;">S0 支撑</td>
+<td style="text-align: left;">¥11.63</td>
+<td style="text-align: left;">5/26最低价</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>流动性</strong></td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">环保板块非主流，换手率可能偏低</td>
+<td style="text-align: left;">S1 支撑</td>
+<td style="text-align: left;">¥11.00</td>
+<td style="text-align: left;">整数关口</td>
+</tr>
+<tr>
+<td style="text-align: left;">S2 铁底</td>
+<td style="text-align: left;">¥10.50</td>
+<td style="text-align: left;">年度低位区域</td>
 </tr>
 </tbody>
-</table>
-<h3>五红旗过拟合检查</h3>
-<table>
+</table></div>
+<h3>4.3 技术指标</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">维度</th>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">当前值(5/26)</th>
+<th style="text-align: center;">信号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">趋势</td>
+<td style="text-align: left;">ADX(14)</td>
+<td style="text-align: left;">&gt;30</td>
+<td style="text-align: center;">下跌趋势强劲</td>
+</tr>
+<tr>
+<td style="text-align: center;">动量</td>
+<td style="text-align: left;">RSI(9)</td>
+<td style="text-align: left;">&lt;20</td>
+<td style="text-align: center;">⛔ 极度超卖</td>
+</tr>
+<tr>
+<td style="text-align: center;">量能</td>
+<td style="text-align: left;">放量下跌</td>
+<td style="text-align: left;">202万手</td>
+<td style="text-align: center;">⛔ 恐慌抛售</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>技术面判断</strong>: RSI&lt;20极度超卖+放量暴跌=恐慌性抛售（Selling Climax）。<strong>极端超卖后可能出现技术性反弹，但反弹是逃命机会而非抄底机会。</strong> 基本面没有支撑V型反转。</p>
+<hr />
+<h2>五、估值分析</h2>
+<p>PE(TTM) 66.4x对于环保装备行业明显偏高（行业龙头合理PE 20-30x）。新能源环卫车渗透率&lt;5%意味着潜在空间大，但当前业绩尚未体现此预期。<strong>估值面临"预期太高+业绩跟不上"的困境</strong>。</p>
+<hr />
+<h2>六、风险评估（流金）</h2>
+<h3>6.1 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">红旗</th>
-<th style="text-align: center;">状态</th>
-<th style="text-align: left;">说明</th>
+<th style="text-align: left;">判定标准</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: center;">判定</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">①极端估值</td>
-<td style="text-align: center;">🟢</td>
-<td style="text-align: left;">PE不高（如果20-30x），ROE太低才是问题</td>
+<td style="text-align: left;">PE&gt;50x（价值型）</td>
+<td style="text-align: left;">PE 66x</td>
+<td style="text-align: center;">🟡</td>
 </tr>
 <tr>
 <td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">数据不足</td>
 <td style="text-align: center;">🟡</td>
-<td style="text-align: left;">Q4利润极低（0.02），季节性波动大</td>
 </tr>
 <tr>
 <td style="text-align: left;">③高波动</td>
-<td style="text-align: center;">🟢</td>
-<td style="text-align: left;">非题材股，波动率不会太高</td>
+<td style="text-align: left;">ATR&gt;6% of price</td>
+<td style="text-align: left;">5日-10%，极高波动</td>
+<td style="text-align: center;">🔴</td>
 </tr>
 <tr>
 <td style="text-align: left;">④流动性风险</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">非主流板块，日均成交不确定</td>
+<td style="text-align: left;">日均成交&lt;5000万</td>
+<td style="text-align: left;">日均成交2亿+</td>
+<td style="text-align: center;">🟢</td>
 </tr>
 <tr>
 <td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: left;">有清晰止损参考位</td>
+<td style="text-align: left;">S0=11.63</td>
 <td style="text-align: center;">🟡</td>
-<td style="text-align: left;">数据不完整，无法评估</td>
 </tr>
 </tbody>
-</table>
-<blockquote>
-<p><strong>2绿3黄0红</strong>。最大问题是"不赚钱"。</p>
-</blockquote>
+</table></div>
+<p><strong>红旗总结</strong>: <strong>1绿1红3黄</strong>。高风险标的。<strong>不建议当前价位买入。</strong></p>
+<h3>6.2 仓位建议</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">约束条件</th>
+<th style="text-align: left;">推导</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>最终建议</strong></td>
+<td style="text-align: left;"><strong>0-2%（仅限深度研究+风险承受能力极强者）</strong></td>
+</tr>
+</tbody>
+</table></div>
 <hr />
-<h2>六、综合评分</h2>
-<table>
+<h2>七、综合评分</h2>
+<div style="overflow-x:auto;"><table>
 <thead>
 <tr>
 <th style="text-align: left;">维度</th>
-<th style="text-align: center;">评分(10)</th>
+<th style="text-align: center;">评分(/10)</th>
+<th style="text-align: center;">权重</th>
 <th style="text-align: left;">核心依据</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">基本面</td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: left;">ROE 3.16%极低，盈利微薄，成长性几乎为零</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: left;">环保装备龙头但数据不完整，PE偏高</td>
 </tr>
 <tr>
 <td style="text-align: left;">技术面</td>
-<td style="text-align: center;"><strong>3</strong></td>
-<td style="text-align: left;">数据不可获取，无法完整评估</td>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: left;">暴跌趋势中，RSI&lt;20极度超卖</td>
 </tr>
 <tr>
 <td style="text-align: left;">资金面</td>
-<td style="text-align: center;"><strong>2</strong></td>
-<td style="text-align: left;">非市场主线，缺乏资金关注</td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">恐慌抛售，资金流出</td>
 </tr>
 <tr>
 <td style="text-align: left;">行业面</td>
-<td style="text-align: center;"><strong>4</strong></td>
-<td style="text-align: left;">环卫服务稳定但无爆发力，电动化是唯一想象空间</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">18%</td>
+<td style="text-align: left;">新能源环卫车是长期趋势，但短期不在风口</td>
 </tr>
 <tr>
 <td style="text-align: left;">估值</td>
 <td style="text-align: center;"><strong>4</strong></td>
-<td style="text-align: left;">PE不贵但ROE太低，便宜有便宜的道理</td>
+<td style="text-align: center;">12%</td>
+<td style="text-align: left;">PE 66x偏高</td>
 </tr>
 <tr>
 <td style="text-align: left;">风控</td>
-<td style="text-align: center;"><strong>4</strong></td>
-<td style="text-align: left;">波动低但基本面风险（低ROE）是结构性的</td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">高波动+高估值+数据缺失</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>加权综合</strong></td>
-<td style="text-align: center;"><strong>3.3</strong></td>
-<td style="text-align: left;">🔴 不建议纳入持仓</td>
+<td style="text-align: center;"><strong>3.5</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">⛔ <strong>回避为主。</strong> 等待缩量止跌+基本面出现改善信号再重新评估。</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<h2>七、战略定位</h2>
-<p>000967是一个"便宜但有致命缺陷"的标的。ROE仅3.16%意味着公司几乎不创造超额回报——买入并长期持有的年化回报率接近ROE（不考虑估值变化），即3%左右。这还不如银行理财。</p>
-<p><strong>盈峰环境不适合作为持仓标的的理由</strong>：
-- ROE&lt;5% → 资本回报率低于机会成本
-- 环卫行业无短期催化 → 缺乏股价爆发力
-- 地方政府回款慢 → 现金流不稳定</p>
-<p>除非出现以下"困境反转"信号：①ROE回升至8%以上 ②新能源环卫装备放量 ③地方政府环卫支出回暖。在此之前，建议保持观望或不跟踪。</p>
+<h2>八、操作策略（5月27日）</h2>
+<h3>8.2 情景应对</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">开盘价</th>
+<th style="text-align: left;">判断</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>&gt; 12.00</strong></td>
+<td style="text-align: left;">技术性反弹</td>
+<td style="text-align: left;">已有持仓者：反弹至12-12.5区间减仓</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>11.00–11.78</strong></td>
+<td style="text-align: left;">继续探底</td>
+<td style="text-align: left;">⛔ 不抄底。等缩量止跌信号</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>&lt; 11.00</strong></td>
+<td style="text-align: left;">破整数关口</td>
+<td style="text-align: left;">已持有者：无条件止损</td>
+</tr>
+</tbody>
+</table></div>
 <hr />
+<h2>九、中长期展望</h2>
+<p><strong>战略定位</strong>: ⛔ <strong>当前以回避为主。</strong> 等待以下信号再重新评估：
+1. 缩量止跌（成交量萎缩至50万手以下+连续3日不创新低）
+2. 新能源环卫车订单/政策催化
+3. Q2业绩出现改善信号</p>
+<hr />
+<h2>自检清单（21条摘要）</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1-21</td>
+<td style="text-align: left;">全部21条（数据缺失已标注）</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table></div>
 <blockquote>
-<p><strong>报告编制</strong>: 腰子（金融综合判断） | <strong>协作</strong>: 山猫（宏观行业）、玉夜（数据诊断）、流金（风险评估）
-<strong>版本</strong>: v1.0 | <strong>日期</strong>: 2026-05-25</p>
-</blockquote></body></html>
+<p><strong>报告编制</strong>: 腰子 | <strong>协作</strong>: 山猫、信鸽、玉夜、流金、青山 | <strong>方法论</strong>: v1.3
+<strong>数据截止</strong>: 2026-05-26收盘 [1]腾讯行情 | <strong>日期</strong>: 2026-05-26</p>
+</blockquote>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

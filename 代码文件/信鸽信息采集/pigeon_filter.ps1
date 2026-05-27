@@ -1,6 +1,7 @@
 ﻿# L1 — 五层噪音过滤引擎
 # 设计文档: 审计报告/架构设计/design_pigeon_info_collection_v1.0.md §三.2.3
 # 闸门1a优化建议: S1(首次覆盖保留) + S2(去重阈值70%)
+# v1.3 (2026-05-27): 新增L4c步 — evidence_level自动检测+升级检测（深度分析方法论§零.7配套）
 
 function Invoke-PigeonFilter {
     <#
@@ -153,8 +154,29 @@ function Invoke-PigeonFilter {
             cninfo_url      = if ($msg.cninfo_url) { $msg.cninfo_url } else { $null }
             keywords        = $tag.Keywords
             is_p0        = $tag.IsP0
+            # v1.3: 证据等级字段（按方法论§零.7）
+            evidence_level = ""
+            evidence_upgrade = $false
+            evidence_upgrade_type = ""
+            concept_track = ""
         }
         $taggedEvents += $event
+    }
+
+    # ============================================================
+    # L4c: 证据等级自动检测 + 升级检测（v1.3 新增）
+    # 设计文档: audit_report/architecture_design/design_deep_analysis_v1.3.md §4.2
+    # ============================================================
+    foreach ($event in $taggedEvents) {
+        $elResult = Get-EvidenceLevel -Title $event.title -StockCode $StockCode -StockName $StockName -Config $config
+        $event.evidence_level = $elResult.level
+        $event.concept_track = $elResult.track_name
+
+        if ($elResult.level -and $elResult.level -ne "") {
+            $upgradeResult = Detect-EvidenceUpgrade -StockCode $StockCode -ConceptTrack $elResult.track_name -NewLevel $elResult.level -ExistingEvents $ExistingEvents
+            $event.evidence_upgrade = $upgradeResult.upgrade
+            $event.evidence_upgrade_type = $upgradeResult.upgrade_type
+        }
     }
 
     # L4a: 按 impact_score 排序，取前N条
@@ -343,4 +365,125 @@ function Get-TitleSimilarity {
     $union = ($words1 + $words2 | Select-Object -Unique).Count
     if ($union -eq 0) { return 0.0 }
     return [Math]::Round($common / $union, 2)
+}
+
+# ============================================================
+# v1.3 新增: 证据等级自动检测函数
+# 设计文档: 审计报告/架构设计/design_deep_analysis_v1.3.md §4.2
+# ============================================================
+
+function Get-EvidenceLevel {
+    <#
+    .SYNOPSIS
+      按L1→L2→L3→L4优先级匹配关键词，返回证据等级和对应的概念赛道
+    #>
+    param(
+        [Parameter(Mandatory=$true)][string]$Title,
+        [Parameter(Mandatory=$true)][string]$StockCode,
+        [Parameter(Mandatory=$true)][string]$StockName,
+        [Parameter(Mandatory=$true)]$Config
+    )
+
+    $result = @{ level = ""; track_name = "" }
+
+    # 检查配置中是否有evidence_level_rules（向后兼容旧配置）
+    if (-not $Config.evidence_level_rules) {
+        return $result
+    }
+
+    $rules = $Config.evidence_level_rules
+    $stockConfig = $Config.target_stocks | Where-Object { $_.code -eq $StockCode } | Select-Object -First 1
+
+    # 匹配概念赛道
+    $matchedTrack = $null
+    if ($stockConfig.concept_tracks) {
+        foreach ($track in $stockConfig.concept_tracks) {
+            if ($Title -match $track.keywords) {
+                $matchedTrack = $track
+                break
+            }
+        }
+    }
+
+    # 按优先级L1→L2→L3→L4匹配
+    # L1: 订单/定点/合同
+    if ($rules.L1_keywords.pattern -and $Title -match $rules.L1_keywords.pattern) {
+        if (-not $rules.L1_keywords.requires_company_name -or ($Title -match [regex]::Escape($StockName))) {
+            $result.level = "L1"
+            $result.track_name = if ($matchedTrack) { $matchedTrack.name } else { "" }
+            return $result
+        }
+    }
+
+    # L2: 公司业务方向
+    if ($rules.L2_keywords.pattern -and $Title -match $rules.L2_keywords.pattern) {
+        if (-not $rules.L2_keywords.requires_company_name -or ($Title -match [regex]::Escape($StockName))) {
+            $result.level = "L2"
+            $result.track_name = if ($matchedTrack) { $matchedTrack.name } else { "" }
+            return $result
+        }
+    }
+
+    # L3: 行业趋势/政策
+    if ($rules.L3_keywords.pattern -and $Title -match $rules.L3_keywords.pattern) {
+        $result.level = "L3"
+        $result.track_name = if ($matchedTrack) { $matchedTrack.name } else { "" }
+        return $result
+    }
+
+    # L4: 研报/分析类
+    if ($rules.L4_default.pattern -and $Title -match $rules.L4_default.pattern) {
+        $result.level = "L4"
+        $result.track_name = if ($matchedTrack) { $matchedTrack.name } else { "" }
+        return $result
+    }
+
+    return $result
+}
+
+function Detect-EvidenceUpgrade {
+    <#
+    .SYNOPSIS
+      对比新事件证据等级 vs 历史最高等级，检测升级
+    #>
+    param(
+        [Parameter(Mandatory=$true)][string]$StockCode,
+        [Parameter(Mandatory=$false)][string]$ConceptTrack,
+        [Parameter(Mandatory=$true)][string]$NewLevel,
+        [Parameter(Mandatory=$false)][array]$ExistingEvents
+    )
+
+    $result = @{ upgrade = $false; upgrade_type = "" }
+
+    if ([string]::IsNullOrEmpty($NewLevel) -or [string]::IsNullOrEmpty($ConceptTrack)) {
+        return $result
+    }
+
+    # 查找该股票该概念赛道的历史最高证据等级
+    $historyMaxLevel = "L4"
+    if ($ExistingEvents) {
+        foreach ($evt in $ExistingEvents) {
+            $evtLevel = if ($evt.evidence_level) { $evt.evidence_level } else { "" }
+            $evtTrack = if ($evt.concept_track) { $evt.concept_track } else { "" }
+
+            if ($evtLevel -and $evtTrack -eq $ConceptTrack) {
+                $levelOrder = @{ L4 = 0; L3 = 1; L2 = 2; L1 = 3 }
+                if ($levelOrder[$evtLevel] -gt $levelOrder[$historyMaxLevel]) {
+                    $historyMaxLevel = $evtLevel
+                }
+            }
+        }
+    }
+
+    # 判断升级
+    $levelOrder = @{ L4 = 0; L3 = 1; L2 = 2; L1 = 3 }
+    $newOrder = $levelOrder[$NewLevel]
+    $historyOrder = $levelOrder[$historyMaxLevel]
+
+    if ($newOrder -gt $historyOrder) {
+        $result.upgrade = $true
+        $result.upgrade_type = "${historyMaxLevel}_to_${NewLevel}"
+    }
+
+    return $result
 }

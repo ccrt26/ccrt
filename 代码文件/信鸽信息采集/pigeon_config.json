@@ -1,13 +1,42 @@
 {
-  "_comment": "信鸽信息采集系统配置 v1.0 | 2026-05-26",
+  "_comment": "信鸽信息采集系统配置 v1.1 | 2026-05-27 | v1.3方法论配套升级：新增evidence_level_rules+concept_tracks",
   "target_stocks": [
-    {"code": "600114", "name": "东睦股份", "market": "sh"},
-    {"code": "603019", "name": "中科曙光", "market": "sh"},
-    {"code": "301075", "name": "多瑞医药", "market": "sz"},
-    {"code": "601689", "name": "拓普集团", "market": "sh"},
-    {"code": "000967", "name": "盈峰环境", "market": "sz"},
-    {"code": "601727", "name": "上海电气", "market": "sh"},
-    {"code": "600584", "name": "长电科技", "market": "sh"}
+    {"code": "600114", "name": "东睦股份", "market": "sh",
+      "concept_tracks": [
+        {"name": "人形机器人关节零部件", "keywords": "机器人|人形|伺服|关节|执行器|传动|精密齿轮"},
+        {"name": "折叠屏铰链MIM", "keywords": "折叠屏|铰链|MIM|注射成型|精密结构件"},
+        {"name": "新能源车软磁材料", "keywords": "软磁|SMC|磁粉芯|800V|车载充电|DC-DC|电感"}
+      ]},
+    {"code": "603019", "name": "中科曙光", "market": "sh",
+      "concept_tracks": [
+        {"name": "AI算力服务器", "keywords": "算力|服务器|AI|人工智能|GPU|液冷|数据中心"},
+        {"name": "国产替代信创", "keywords": "信创|国产|自主可控|替代|安全|可控"}
+      ]},
+    {"code": "301075", "name": "多瑞医药", "market": "sz",
+      "concept_tracks": [
+        {"name": "创新药研发", "keywords": "创新药|研发|临床|IND|NDA|获批"},
+        {"name": "医药流通", "keywords": "集采|中标|配送|医药流通|GPO"}
+      ]},
+    {"code": "601689", "name": "拓普集团", "market": "sh",
+      "concept_tracks": [
+        {"name": "人形机器人执行器", "keywords": "机器人|执行器|线性|旋转|关节|电驱"},
+        {"name": "新能源车轻量化", "keywords": "轻量化|一体化|压铸|底盘|悬挂|副车架"}
+      ]},
+    {"code": "000967", "name": "盈峰环境", "market": "sz",
+      "concept_tracks": [
+        {"name": "环保装备", "keywords": "环卫|垃圾|焚烧|污水处理|环境|监测"},
+        {"name": "新能源环卫车", "keywords": "新能源|电动|环卫车|充电|电池"}
+      ]},
+    {"code": "601727", "name": "上海电气", "market": "sh",
+      "concept_tracks": [
+        {"name": "风电装备", "keywords": "风电|风机|海上风电|叶片|塔筒|变流器"},
+        {"name": "储能系统", "keywords": "储能|电池|PCS|EMS|调频|削峰填谷"}
+      ]},
+    {"code": "600584", "name": "长电科技", "market": "sh",
+      "concept_tracks": [
+        {"name": "先进封装", "keywords": "封装|Chiplet|2.5D|3D|SiP|Fan-Out|晶圆级"},
+        {"name": "半导体封测", "keywords": "封测|测试|晶圆|芯片|IC|集成电路"}
+      ]}
   ],
   "blacklist_keywords": [
     "行情点评", "原因何在", "技术分析", "MACD", "金叉", "死叉",
@@ -58,6 +87,47 @@
     "daily_trigger": "19:00",
     "skip_holidays": true,
     "holidays_file": "每日荐股/运营记录/holidays_2026.csv"
+  },
+  "evidence_level_rules": {
+    "_comment": "证据等级自动检测规则 v1.3 | 2026-05-27 | 深度分析方法论§零.7配套",
+    "L1_keywords": {
+      "_comment": "已公告订单/定点/供货合同 — 确定性最高",
+      "pattern": "中标.*合同|合同.*签署|订单.*确认|定点.*通知书|收到.*定点|获得.*项目|承接.*订单|拿下.*客户|批量供货|正式.*供货|获得.*定点|配套.*车型|宣布.*订单|获得.*合同|签署.*协议|项目.*中标|供货.*合同|取得.*订单|销售.*合同|批量.*交付|量产.*供货|正式.*订单|注册.*批复.*发行|核准.*发行",
+      "level": "L1",
+      "probability_floor": 0.8,
+      "requires_company_name": true
+    },
+    "L2_keywords": {
+      "_comment": "公司公告/季报明确提及业务方向 — 中等确定性",
+      "pattern": "布局.*业务|拓展.*领域|切入.*赛道|研发.*成功|技术.*突破|设立.*子公司|开展.*业务|进入.*领域|研发.*进展|取得.*认证|通过.*验证|送样|试样|投产|量产|产品.*发布|新.*业务|战略.*合作|签署.*备忘录|业务.*进展|项目.*投资|建设.*产线|产能.*规划|产业化|技术.*储备|研发.*投入|投资.*项目",
+      "level": "L2",
+      "probability_floor": 0.5,
+      "requires_company_name": true
+    },
+    "L3_keywords": {
+      "_comment": "行业趋势支撑+公司技术路线匹配 — 低确定性",
+      "pattern": "行业.*景气|国家.*政策|产业.*规划|行动方案|指导意见|专项.*支持|政策.*利好|技术.*路线|趋势.*向好|需求.*增长|市场.*空间.*亿|渗透率.*提升|下游.*需求|机器人.*政策|算力.*政策|新能源.*规划|半导体.*扶持|汽车.*智能化|折叠屏.*趋势|AI.*应用.*落地",
+      "level": "L3",
+      "probability_floor": 0.3,
+      "requires_company_name": false
+    },
+    "L4_default": {
+      "_comment": "匹配常规商业关键词但不满足L1-L3 → L4",
+      "pattern": "研报|研究报告|行业分析|公司.*点评|投资.*分析|深度.*报告",
+      "level": "L4",
+      "probability_floor": 0.1
+    },
+    "upgrade_detection": {
+      "_comment": "升级检测: 新事件证据等级高于该股票该赛道历史最高时触发",
+      "L3_to_L2": "当前事件evidence_level==L2 AND 该股票该概念赛道历史最高evidence_level<=L3 → P0双线上报(腰子+信鸽)",
+      "L2_to_L1": "当前事件evidence_level==L1 AND 该股票该概念赛道历史最高evidence_level<=L2 → P0双线上报(腰子+信鸽)",
+      "L4_to_L3": "近7日同一赛道L3事件>=2条 AND 该股票在行业中技术路线可对标 → P0上报(信鸽→山猫确认)"
+    },
+    "downgrade_detection": {
+      "L1_negative": "title匹配(取消.*订单|终止.*合同|客户.*流失|退订|撤回.*申请) → 评估L1→L2降级",
+      "staleness_check": "该股票任何赛道evidence_level>=L2 AND 最近一条>=L2事件距今>180天 → 标记'冻结风险'"
+    },
+    "p0_upgrade_output": "重点股票/消息面数据/p0_upgrade_YYYYMMDD.json"
   },
   "output": {
     "base_dir": "重点股票/消息面数据",

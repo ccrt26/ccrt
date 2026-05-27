@@ -1,0 +1,67 @@
+﻿{
+    "files_scope":  [
+
+                    ],
+    "gate_1":  "PASS",
+    "attempts":  0,
+    "loop_context":  "Stage 6/6: 后评估 | Executor: PostEval",
+    "updated":  "2026-05-27T00:29:34",
+    "started":  "2026-05-26T17:02:13",
+    "gate_2":  "PENDING",
+    "task":  "深度分析v1.2到v1.3升级：三档试仓+分段止盈+证据等级动态管理",
+    "stage":  6,
+    "next_action":  "invoke_role",
+    "l3_reason":  "",
+    "l3_triggered":  false,
+    "active":  false,
+    "stage_history":  [
+                          {
+                              "output":  "审计报告/架构设计/design_deep_analysis_v1.3.md",
+                              "gate":  "PASS",
+                              "executor":  "情墨",
+                              "validated":  "2026-05-26T17:09:00",
+                              "stage":  1
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安+旧影",
+                              "stage":  2,
+                              "entered":  "2026-05-26T17:09:08"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红结",
+                              "stage":  3,
+                              "entered":  "2026-05-26T17:09:09"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "新安",
+                              "stage":  4,
+                              "entered":  "2026-05-26T17:09:33"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "红枫",
+                              "stage":  5,
+                              "entered":  "2026-05-26T17:09:33"
+                          },
+                          {
+                              "output":  "",
+                              "gate":  "PENDING",
+                              "executor":  "PostEval",
+                              "stage":  6,
+                              "entered":  "2026-05-26T17:09:34"
+                          }
+                      ],
+    "max_attempts":  3,
+    "schema_version":  "1.0",
+    "stage_name":  "后评估",
+    "gate_3":  "PENDING",
+    "executor":  "PostEval",
+    "completed":  "2026-05-27T00:30:13"
+}

@@ -1,0 +1,45 @@
+﻿{
+    "fetch_date":  "2026-05-27",
+    "fetch_time":  "08:25:35",
+    "total_raw":  13,
+    "total_filtered":  1,
+    "filter_stats":  {
+                         "L1_dropped":  0,
+                         "L2_dropped":  6,
+                         "L3_dropped":  6,
+                         "L4_dropped":  0
+                     },
+    "events":  [
+                   {
+                       "event_id":  "PIGEON_20260527_601727_001",
+                       "code":  "601727",
+                       "name":  "上海电气",
+                       "category":  "经营事件",
+                       "subtype":  "其他",
+                       "title":  "上海电气：出售附属公司股权暨关连交易进展公告",
+                       "source":  "cninfo",
+                       "source_type":  "primary",
+                       "reliability":  "verified",
+                       "quantifiable":  true,
+                       "direction":  0,
+                       "impact_score":  7.0,
+                       "probability":  1,
+                       "structured_fields":  {
+                                                 "event_type":  "其他",
+                                                 "status":  "announced"
+                                             },
+                       "raw_summary":  "上海电气：出售附属公司股权暨关连交易进展公告",
+                       "publish_time":  1779793089000,
+                       "pdf_url":  "http://static.cninfo.com.cn/finalpage/2026-05-26/1225331643.PDF",
+                       "content":  "",
+                       "announcement_id":  "1225331643",
+                       "cninfo_url":  "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=02727\u0026announcementId=1225331643",
+                       "keywords":  "Q2_ownership",
+                       "is_p0":  false,
+                       "evidence_level":  "",
+                       "evidence_upgrade":  false,
+                       "evidence_upgrade_type":  "",
+                       "concept_track":  ""
+                   }
+               ]
+}

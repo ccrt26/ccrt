@@ -20,6 +20,10 @@ from .subscores import (_score_ma_system, _score_ma_converge, _score_volume_pric
     _score_bottom_support, _score_rsi, _score_macd,
     _score_breakout_confirmation, _score_trend_momentum)
 
+# v1.3: 证据等级→乘数/加分映射 (深度分析方法论§零.7)
+EVIDENCE_SECTOR_MULT = {"L1": 1.0, "L2": 0.9, "L3": 0.75, "L4": 0.6}
+EVIDENCE_NEWS_BONUS = {"L1": 3, "L2": 1, "L3": 0, "L4": 0}
+
 def calc_percentile(values, target):
     """计算 target 在 values 序列中的百分位 (0-100)"""
     valid = [v for v in values if v > 0]
@@ -79,7 +83,7 @@ def _calc_ttm_pe(stock):
     return 0, "不可得"
 
 
-def compute_scores(s, sector_info=None, sector_trend_info=None):
+def compute_scores(s, sector_info=None, sector_trend_info=None, evidence_info=None):
     """计算六维评分, 返回 (scores_dict, tech_detail)"""
     closes = s.get("KClose", [])
     volumes = s.get("KVolume", [])
@@ -95,6 +99,12 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
     # v2.8: 北向资金 + 融资融券
     nb_shares_ratio = s.get("NorthboundSharesRatio", 0) or 0
     nb_free_ratio = s.get("NorthboundFreeRatio", 0) or 0
+    # v2026-05-27: 南向资金(日频) [THS-SB] — 补位北向失效
+    sb_net_flow = s.get("SouthboundNetFlow", 0) or 0
+    sb_flow_5d = s.get("SouthboundFlow_5d", 0) or 0
+    sb_signal = s.get("SouthboundSignal", 0) or 0
+    # AH同步暴跌检测: 沪深300日跌>2%且恒指日跌>2% → 暂停南向信号
+    ah_crash_guard = s.get("AH_CrashGuard", False) or False
     nb_hold_mktcap = s.get("NorthboundHoldMktCap", 0) or 0
     mg_rzye = s.get("MarginRZYE", 0) or 0
     mg_rzjme = s.get("MarginRZJME", 0) or 0
@@ -349,10 +359,16 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         money += 2
     elif fund_days_pos <= 1 and fund_net_5d < 0:
         money -= 2
-    # v2.8: 北向资金 [8] — 外资持仓信号
-    if nb_shares_ratio > 5: money += 3      # 外资重仓(>5%)
-    elif nb_shares_ratio > 2: money += 2     # 外资关注(>2%)
-    elif nb_shares_ratio > 0.5: money += 1   # 外资轻仓(>0.5%)
+    # v2.8→v2026-05-27: 北向资金 [8] — 外资持仓结构(季度滞后,仅定性参考)
+    if nb_shares_ratio > 5: money += 1      # 外资重仓(>5%, 降权: 3→1)
+    elif nb_shares_ratio > 2: money += 1     # 外资关注(>2%, 降权: 2→1)
+    elif nb_shares_ratio > 0.5: money += 1   # 外资轻仓(>0.5%, 保留)
+    # v2026-05-27: 南向资金 [THS-SB] — 日频资金态度(反向指标)
+    if not ah_crash_guard:
+        if sb_signal == -1 and abs(sb_flow_5d) > 50:
+            money -= 2   # 连续南下>50亿，A股资金偏紧
+        elif sb_signal == 1 and sb_flow_5d > 30:
+            money += 2   # 连续北上>30亿，资金回流A股
     # v2.8: 融资融券 [12] — 杠杆资金信号
     if mg_rzjme > 0: money += 1              # 当日融资净买入
     if mg_rzye_5d > 0: money += 1            # 融资余额5日趋势向上
@@ -380,6 +396,9 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
         else: news += 0
     if sector_info:
         news += sector_info["news_bonus"]
+    # v1.3: 证据等级事件加分
+    if evidence_info and evidence_info.get("max_level"):
+        news += EVIDENCE_NEWS_BONUS.get(evidence_info["max_level"], 0)
     news = max(1, min(15, news))  # v2.4 消息面降权至15分
     # v2.9: 消息面同样受板块相位折扣（CAR5包含当日暴涨 → 去水分）
     news = max(1, round(news * phase_mult))
@@ -394,7 +413,11 @@ def compute_scores(s, sector_info=None, sector_trend_info=None):
     sector_trend_score = 0
     if sector_trend_info:
         raw_trend = sector_trend_info.get("trend_score", 0)
-        sector_trend_score = max(0, min(20, raw_trend * 2))  # v2.8: 五因子0-10分→升权至0-20分
+        # v1.3: 证据等级折扣
+        evidence_mult = 1.0
+        if evidence_info and evidence_info.get("max_level"):
+            evidence_mult = EVIDENCE_SECTOR_MULT.get(evidence_info["max_level"], 1.0)
+        sector_trend_score = max(0, min(20, raw_trend * 2 * evidence_mult))  # v2.8: 五因子0-10分→升权至0-20分
 
     total = base + fund + tech + money + news + risk + sector_trend_score
     total = max(0, min(100, total))

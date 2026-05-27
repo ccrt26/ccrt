@@ -47,6 +47,39 @@ def assess_data_quality(s):
     return "部分缺失"
 
 
+# ----- v1.3 证据等级加载 (深度分析方法论§零.7) -----
+def load_evidence_levels(db_path):
+    """从 events_db.json 加载每只股票的最高证据等级 (近90天MAX聚合)
+    返回: dict {code: {"max_level": str, "track": str, "upgrade": bool}}
+    """
+    if not os.path.exists(db_path):
+        return {}
+    try:
+        with open(db_path, "r", encoding="utf-8") as f:
+            events = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+    level_order = {"L4": 0, "L3": 1, "L2": 2, "L1": 3}
+    cutoff = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d")
+
+    result = {}
+    for e in events:
+        code = e.get("code", "")
+        level = e.get("evidence_level")
+        if not level or level not in level_order:
+            continue
+        if e.get("fetch_date", "") < cutoff:
+            continue
+        if code not in result or level_order[level] > level_order[result[code]["max_level"]]:
+            result[code] = {
+                "max_level": level,
+                "track": e.get("concept_track", ""),
+                "upgrade": e.get("evidence_upgrade", False),
+            }
+    return result
+
+
 # ----- v2.9 路线二 阶段A: 评分历史落库 -----
 def append_history(stocks, sector_phase_map, run_date=None):
     """每日评分完成后，将分项得分追加到 score_history.jsonl。
@@ -291,6 +324,14 @@ def main(run_date=None, verbose=False):
     if verbose:
         print(f"全市场5日涨幅中位数: {market_5d_median:.2f}% (CAR5基准)")
 
+    # v1.3: 加载证据等级→评分联动数据
+    events_db = os.path.join(ROOT, "重点股票", "消息面数据", "events_db.json")
+    evidence_map = load_evidence_levels(events_db)
+    if evidence_map:
+        print(f"证据等级映射: {len(evidence_map)} 只股票有有效证据数据")
+    else:
+        print("证据等级映射: 无有效证据数据 (events_db不存在/空/无有效事件)")
+
     # v2.7 D.1: 市场环境自适应 — 检测全市场状态(强势/弱势/震荡)
     market_state, market_pe_mult, market_exempt_delta = detect_market_state(stocks)
     print(f"\n市场环境: {market_state} | PE阈值×{market_pe_mult} | 豁免分Δ={market_exempt_delta:+d}")
@@ -347,6 +388,9 @@ def main(run_date=None, verbose=False):
         sector_info = get_sector_info(s.get("Industry", ""))
         sector_trend_info = get_sector_trend_info(s.get("Industry", ""))  # v2.4
 
+        # v1.3: 证据等级→评分联动 (深度分析方法论§零.7)
+        evidence_info = evidence_map.get(code, None) if evidence_map else None
+
         # === 数据质量标签 (白皮书 §三十二) ===
         s["DataQuality"] = assess_data_quality(s)
 
@@ -381,7 +425,7 @@ def main(run_date=None, verbose=False):
             continue
 
         # Phase B: 评分（传入板块动量信息+板块趋势持续性v2.4）
-        scores, tech_info = compute_scores(s, sector_info, sector_trend_info)
+        scores, tech_info = compute_scores(s, sector_info, sector_trend_info, evidence_info)
         s.update(scores)
 
         # Phase B2: 突破性质分类 (2026-05-26 P0b) [L2实验性]

@@ -90,7 +90,7 @@ function Test-AllDataSources {
     Write-Output "`n====== 测试完成 ======"
 }
 
-Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Calc-ADX, Calc-OBV, Calc-ATR, Test-AllDataSources
+Export-ModuleMember -Function Get-StockQuote, Get-StockQuoteBatch, Get-StockKLine, Get-StockFinancial, Get-SectorData, Get-SectorConstituents, Get-StockFundFlow, Get-SectorFundFlow, Get-PEPercentile, Get-NorthboundHold, Get-SouthboundFlow, Get-StockResearch, Get-MarginData, Get-LastUsedSource, Invoke-ThrottledApiCall, Invoke-ThsFallback, Calc-MovingAverage, Calc-RSI, Calc-MACD, Calc-Bollinger, Calc-ADX, Calc-OBV, Calc-ATR, Test-AllDataSources
 
 # ============================================================
 # 加载 PDF 转换验证工具（被各报告脚本共享使用）

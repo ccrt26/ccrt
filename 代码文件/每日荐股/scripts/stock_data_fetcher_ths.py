@@ -544,13 +544,76 @@ def do_commodity_price(days=20):
     safe_json(results)
 
 
+def do_northbound_flow(direction="south", days=5):
+    """
+    南向/北向资金流向 — AKShare stock_hsgt_hist_em
+    主源: stock_hsgt_hist_em (沪深港通历史)
+    备源交叉验证: stock_hsgt_fund_flow_summary_em (当日汇总)
+
+    direction: "south"(南向,港股通) / "north"(北向,沪/深股通)
+    返回: [{date, net_flow(亿), buy_amount(亿), sell_amount(亿), cumulative(亿)}]
+    """
+    import akshare as ak
+
+    symbol_map = {"south": "南向资金", "north": "北向资金"}
+    symbol = symbol_map.get(direction, "南向资金")
+
+    results = []
+    source_used = "akshare_hist_em"
+
+    # 主源: stock_hsgt_hist_em
+    try:
+        df = ak.stock_hsgt_hist_em(symbol=symbol)
+        if df is not None and not df.empty:
+            valid = df[df["当日成交净买额"].notna()].tail(days + 2)
+            for _, row in valid.iterrows():
+                results.append({
+                    "date": str(row["日期"]),
+                    "net_flow": round(float(row["当日成交净买额"]), 4) if pd.notna(row["当日成交净买额"]) else 0,
+                    "buy_amount": round(float(row["买入成交额"]), 4) if pd.notna(row["买入成交额"]) else 0,
+                    "sell_amount": round(float(row["卖出成交额"]), 4) if pd.notna(row["卖出成交额"]) else 0,
+                    "cumulative": round(float(row["历史累计净买额"]), 4) if pd.notna(row["历史累计净买额"]) else 0,
+                })
+    except Exception as e:
+        source_used = "fallback"
+
+    # 备源交叉验证: stock_hsgt_fund_flow_summary_em (当日汇总)
+    if not results or source_used == "fallback":
+        try:
+            df2 = ak.stock_hsgt_fund_flow_summary_em()
+            if df2 is not None and not df2.empty:
+                direction_filter = "南向" if direction == "south" else "北向"
+                rows = df2[df2["资金方向"] == direction_filter]
+                total_net = round(float(rows["成交净买额"].sum()), 4) if not rows.empty else 0
+                results.append({
+                    "date": str(rows.iloc[0]["交易日"]) if not rows.empty else "",
+                    "net_flow": total_net,
+                    "buy_amount": 0,
+                    "sell_amount": 0,
+                    "cumulative": 0,
+                })
+                source_used = "akshare_summary"
+        except Exception:
+            pass
+
+    result = {
+        "direction": direction,
+        "source": source_used,
+        "stale": (direction == "north"),
+        "stale_note": "北向个股日频数据自2024-08-19起不可得" if direction == "north" else "",
+        "data": results[-days:] if len(results) > days else results,
+    }
+    safe_json(result)
+
+
 def main():
     parser = argparse.ArgumentParser(description="同花顺(THS)数据桥接")
     parser.add_argument("action", choices=[
         "sector_ranking", "sector_kline", "sector_fund_flow",
         "stock_fund_flow",
         "sector_list", "financial", "commodity_price",
-        "margin_detail", "institute_recommend", "profit_forecast"
+        "margin_detail", "institute_recommend", "profit_forecast",
+        "northbound_flow"
     ], help="操作类型")
     parser.add_argument("--top", type=int, default=30, help="返回条数（默认30）")
     parser.add_argument("--name", type=str, default="", help="行业名称（sector_kline 用）")
@@ -558,6 +621,7 @@ def main():
     parser.add_argument("--days", type=int, default=60, help="K线天数（默认60）")
     parser.add_argument("--quarters", type=int, default=4, help="财务季度数（默认4）")
     parser.add_argument("--period", type=str, default="即时", help="资金流周期 默认即时")
+    parser.add_argument("--direction", type=str, default="south", help="北向/南向 (south/north)")
 
     args = parser.parse_args()
 
@@ -602,6 +666,8 @@ def main():
                 print(json.dumps({"error": "--code is required for profit_forecast"}))
                 sys.exit(1)
             do_profit_forecast(code=args.code)
+        elif args.action == "northbound_flow":
+            do_northbound_flow(direction=args.direction, days=args.days)
     except Exception as e:
         print(json.dumps({"error": f"THS bridge error: {str(e)}"}))
         sys.exit(1)

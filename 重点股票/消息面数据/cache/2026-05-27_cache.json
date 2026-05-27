@@ -1,0 +1,10 @@
+﻿{
+    "cached_at":  "2026-05-27 08:25:35",
+    "ttl_hours":  24,
+    "expires_at":  "2026-05-28 08:25:35",
+    "data":  {
+                 "date_file":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\重点股票\\消息面数据\\2026-05-27_events.json",
+                 "db_file":  "C:\\Users\\34269\\Documents\\Claude\\股票分析\\重点股票\\消息面数据\\events_db.json",
+                 "count":  1
+             }
+}

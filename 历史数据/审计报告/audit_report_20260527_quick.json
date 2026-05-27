@@ -1,0 +1,149 @@
+﻿{
+    "metrics":  {
+
+                },
+    "checks":  [
+                   {
+                       "status":  "PASS",
+                       "section":  "F",
+                       "detail":  "70条日志, Phase: ",
+                       "id":  "1",
+                       "desc":  "今日流水线执行"
+                   },
+                   {
+                       "status":  "FAIL",
+                       "section":  "G",
+                       "detail":  "check_report_style 未通过",
+                       "id":  "3",
+                       "desc":  "报告样式检查"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "G",
+                       "detail":  "check_redlines 有WARN项(exit=1)，无FAIL",
+                       "id":  "1",
+                       "desc":  "红线合规检查"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "交易记录与持仓3只股票一致",
+                       "id":  "1",
+                       "desc":  "跨文件交易一致性"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "降级率 0%",
+                       "id":  "7",
+                       "desc":  "API降级频率"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "G",
+                       "detail":  "verify_report_output 不可用",
+                       "id":  "4",
+                       "desc":  "报告路径合规"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "H",
+                       "detail":  "无法检查",
+                       "id":  "2",
+                       "desc":  "豁免补齐期限"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "daily_report_20260527.html 含免责声明",
+                       "id":  "8",
+                       "desc":  "报告免责声明"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "A",
+                       "detail":  "无重复行",
+                       "id":  "5",
+                       "desc":  "交易记录幂等性"
+                   },
+                   {
+                       "status":  "PASS",
+                       "section":  "F",
+                       "detail":  "今日无ERROR",
+                       "id":  "4",
+                       "desc":  "错误日志扫描"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "H",
+                       "detail":  "改进日志.md 不存在",
+                       "id":  "1",
+                       "desc":  "紧急豁免记录"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "A",
+                       "detail":  "1 个文件过期",
+                       "id":  "3",
+                       "desc":  "数据新鲜度"
+                   },
+                   {
+                       "status":  "WARN",
+                       "section":  "G",
+                       "detail":  "version_supervisor 有提醒项(exit=-1)",
+                       "id":  "2",
+                       "desc":  "版本一致性检查"
+                   }
+               ],
+    "failures":  [
+                     "[G-3] 报告样式检查 — check_report_style 未通过"
+                 ],
+    "summary":  {
+                    "audit_status":  "open",
+                    "sections":  [
+                                     {
+                                         "section":  "G",
+                                         "pass":  0,
+                                         "fail":  1,
+                                         "warn":  3
+                                     },
+                                     {
+                                         "section":  "F",
+                                         "pass":  2,
+                                         "fail":  0,
+                                         "warn":  0
+                                     },
+                                     {
+                                         "section":  "A",
+                                         "pass":  4,
+                                         "fail":  0,
+                                         "warn":  1
+                                     },
+                                     {
+                                         "section":  "H",
+                                         "pass":  0,
+                                         "fail":  0,
+                                         "warn":  2
+                                     }
+                                 ],
+                    "fail":  1,
+                    "pass":  6,
+                    "total_checks":  13,
+                    "overall_verdict":  "WARN",
+                    "warn":  6
+                },
+    "audit":  {
+                  "date":  "20260527",
+                  "timestamp":  "2026-05-27 08:31:53",
+                  "version":  "1.0",
+                  "mode":  "quick"
+              },
+    "warnings":  [
+                     "[A-3] 数据新鲜度 — 1 个文件过期",
+                     "[G-1] 红线合规检查 — check_redlines 有WARN项(exit=1)，无FAIL",
+                     "[G-2] 版本一致性检查 — version_supervisor 有提醒项(exit=-1)",
+                     "[H-1] 紧急豁免记录 — 改进日志.md 不存在",
+                     "[H-2] 豁免补齐期限 — 无法检查",
+                     "[G-4] 报告路径合规 — verify_report_output 不可用"
+                 ]
+}

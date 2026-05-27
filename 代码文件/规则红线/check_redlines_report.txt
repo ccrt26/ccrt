@@ -1,12 +1,12 @@
 ﻿================================================
      铁律量化 . 红线合规检查报告
-     生成时间: 2026-05-26 23:49
+     生成时间: 2026-05-27 08:31
 ================================================
 
 [§1 数据真实性]
   ✅ data_final.json 存在 (15 KB)
-  ✅ data_full.json 存在 (3.4 MB)
-  ✅ data_scored.json 存在 (283 KB)
+  ✅ data_full.json 存在 (1.8 MB)
+  ✅ data_scored.json 存在 (227 KB)
   ✅ industry_map.json 存在 (1 KB)
   ✅ sector_data.json 存在 (3 KB)
 
@@ -76,8 +76,8 @@
 
 [附加检查 - 核心文件]
   ✅ data_final.json 存在 (15 KB)
-  ✅ data_full.json 存在 (3.4 MB)
-  ✅ data_scored.json 存在 (283 KB)
+  ✅ data_full.json 存在 (1.8 MB)
+  ✅ data_scored.json 存在 (227 KB)
   ✅ stock_data_raw.json 存在 (11 KB)
   ✅ gen_eval_doc.ps1 存在 (25 KB)
   ✅ gen_redlines_doc.ps1 存在 (28 KB)
