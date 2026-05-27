@@ -970,6 +970,17 @@ body {
     <h2>&#128214; 重点股票深度分析报告（周报）</h2>
     <div class="subtitle">每周深度分析 · 宏观/行业/基本面/估值 · 点击在新标签页打开完整报告</div>
   </div>
+  <div class="filter-bar">
+    <div>
+      <label>股票</label>
+      <select id="filter-deep-stock"><option value="">全部股票</option></select>
+    </div>
+    <div>
+      <label>日期</label>
+      <select id="filter-deep-date"><option value="">全部日期</option></select>
+    </div>
+    <button class="dir-btn reset-btn" id="btn-deep-reset">重置</button>
+  </div>
   <div class="report-grid" id="deep-report-grid">
     <div class="loading">加载中...</div>
   </div>
@@ -982,6 +993,17 @@ body {
   <div class="section-header">
     <h2>&#128196; 重点股票分析日报</h2>
     <div class="subtitle">每日跟踪分析 · 从深度分析到每日信号 · 点击在新标签页打开完整报告</div>
+  </div>
+  <div class="filter-bar">
+    <div>
+      <label>股票</label>
+      <select id="filter-daily-stock"><option value="">全部股票</option></select>
+    </div>
+    <div>
+      <label>日期</label>
+      <select id="filter-daily-date"><option value="">全部日期</option></select>
+    </div>
+    <button class="dir-btn reset-btn" id="btn-daily-reset">重置</button>
   </div>
   <div class="report-grid" id="daily-report-grid">
     <div class="loading">加载中...</div>
@@ -1336,13 +1358,87 @@ body {
     arrow.classList.toggle("open");
   });
 
-  // ===== Tab 2 & 3: Report Rendering =====
+  // ===== Tab 2 & 3: Report Rendering with Filters =====
+  var reportFilters = { deep: { stock: "", date: "" }, daily: { stock: "", date: "" } };
+
+  function populateReportFilters(tabId, reports) {
+    var stockSel = document.getElementById("filter-" + tabId + "-stock");
+    var dateSel = document.getElementById("filter-" + tabId + "-date");
+    if (!stockSel || !dateSel) return;
+
+    var stocks = {};
+    var dates = {};
+    reports.forEach(function(r) {
+      if (r.code) stocks[r.code] = r.name;
+      if (r.date) dates[r.date] = true;
+    });
+
+    var codes = Object.keys(stocks).sort();
+    stockSel.innerHTML = '<option value="">全部股票</option>';
+    codes.forEach(function(c) {
+      stockSel.innerHTML += '<option value="' + c + '">' + esc(stocks[c]) + ' (' + c + ')</option>';
+    });
+
+    var dateList = Object.keys(dates).sort().reverse();
+    dateSel.innerHTML = '<option value="">全部日期</option>';
+    dateList.forEach(function(d) {
+      dateSel.innerHTML += '<option value="' + d + '">' + d + '</option>';
+    });
+  }
+
+  function filterReports(tabId, reports) {
+    var f = reportFilters[tabId];
+    return reports.filter(function(r) {
+      if (f.stock && r.code !== f.stock) return false;
+      if (f.date && r.date !== f.date) return false;
+      return true;
+    });
+  }
+
+  function filterAndRender(tabId) {
+    var D = window.__PORTAL_DATA__ || {};
+    var key = tabId === "deep" ? "deep_analysis" : "daily_reports";
+    var gridId = tabId === "deep" ? "deep-report-grid" : "daily-report-grid";
+    var badgeId = tabId === "deep" ? "badge-deep" : "badge-daily";
+    var reports = D[key] || [];
+    var filtered = filterReports(tabId, reports);
+    renderReportCards(gridId, filtered, badgeId);
+  }
+
+  function resetReportFilters(tabId) {
+    document.getElementById("filter-" + tabId + "-stock").value = "";
+    document.getElementById("filter-" + tabId + "-date").value = "";
+    reportFilters[tabId] = { stock: "", date: "" };
+    filterAndRender(tabId);
+  }
+
+  function bindReportFilterEvents(tabId) {
+    var stockSel = document.getElementById("filter-" + tabId + "-stock");
+    var dateSel = document.getElementById("filter-" + tabId + "-date");
+    if (stockSel) {
+      stockSel.addEventListener("change", function() {
+        reportFilters[tabId].stock = this.value;
+        filterAndRender(tabId);
+      });
+    }
+    if (dateSel) {
+      dateSel.addEventListener("change", function() {
+        reportFilters[tabId].date = this.value;
+        filterAndRender(tabId);
+      });
+    }
+    var resetBtn = document.getElementById("btn-" + tabId + "-reset");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function() { resetReportFilters(tabId); });
+    }
+  }
+
   function renderReportCards(containerId, reports, badgeId) {
     var container = document.getElementById(containerId);
     document.getElementById(badgeId).textContent = reports.length;
 
     if (!reports || reports.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="icon">&#128214;</div><p>暂无报告数据</p></div>';
+      container.innerHTML = '<div class="empty-state"><div class="icon">&#128214;</div><p>暂无符合条件的报告</p></div>';
       return;
     }
 
@@ -1392,11 +1488,15 @@ body {
     var D = window.__PORTAL_DATA__ || {};
     // Deep analysis reports
     if (D.deep_analysis) {
-      renderReportCards("deep-report-grid", D.deep_analysis, "badge-deep");
+      populateReportFilters("deep", D.deep_analysis);
+      bindReportFilterEvents("deep");
+      filterAndRender("deep");
     }
     // Daily reports
     if (D.daily_reports) {
-      renderReportCards("daily-report-grid", D.daily_reports, "badge-daily");
+      populateReportFilters("daily", D.daily_reports);
+      bindReportFilterEvents("daily");
+      filterAndRender("daily");
     }
   }
 

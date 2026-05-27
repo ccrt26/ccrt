@@ -50,10 +50,18 @@ with open(CONFIG_PATH, "r", encoding="utf-8-sig") as f:
 stocks = config.get("target_stocks", [])
 print(f"  Stocks: {len(stocks)}")
 
-# [2/5] Scan & copy deep analysis reports
+# [2/5] Scan & copy deep analysis reports (all historical dates)
 print("[2/5] Scanning deep analysis reports...")
 os.makedirs(DEEP_OUT, exist_ok=True)
 deep_index = []
+
+import re as _re
+
+# Clean up old flat-path files from previous builds
+for old_dir in glob.glob(os.path.join(DEEP_OUT, "*")):
+    if os.path.isdir(old_dir):
+        for old_file in glob.glob(os.path.join(old_dir, "report.*")):
+            os.remove(old_file)
 
 if os.path.isdir(DEEP_SRC):
     for stock_dir in sorted(os.listdir(DEEP_SRC)):
@@ -73,56 +81,69 @@ if os.path.isdir(DEEP_SRC):
         if not html_files and not pdf_files:
             continue
 
-        latest_html = html_files[0] if html_files else None
-        latest_pdf = pdf_files[0] if pdf_files else None
+        # Build date→file mapping (first file wins per date, reverse sort = latest version first)
+        date_html = {}
+        for f in html_files:
+            m = _re.search(r'(\d{8})', os.path.basename(f))
+            if m and m.group(1) not in date_html:
+                date_html[m.group(1)] = f
 
-        # Extract 8-digit date from filename using regex
-        date_str = ""
-        import re as _re
-        src_file = latest_html or latest_pdf
-        if src_file:
-            m = _re.search(r'(\d{8})', os.path.basename(src_file))
-            if m:
-                date_str = m.group(1)
+        date_pdf = {}
+        for f in pdf_files:
+            m = _re.search(r'(\d{8})', os.path.basename(f))
+            if m and m.group(1) not in date_pdf:
+                date_pdf[m.group(1)] = f
 
-        # Copy files to deep_analysis/{code}/
-        out_dir = os.path.join(DEEP_OUT, code)
-        os.makedirs(out_dir, exist_ok=True)
+        all_dates = sorted(set(list(date_html.keys()) + list(date_pdf.keys())), reverse=True)
 
-        html_url = None
-        html_size = None
-        if latest_html:
-            dest = os.path.join(out_dir, "report.html")
-            shutil.copy2(latest_html, dest)
-            html_url = "deep_analysis/" + code + "/report.html"
-            html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+        for date_str in all_dates:
+            html_file = date_html.get(date_str)
+            pdf_file = date_pdf.get(date_str)
 
-        pdf_url = None
-        pdf_size = None
-        if latest_pdf:
-            dest = os.path.join(out_dir, "report.pdf")
-            shutil.copy2(latest_pdf, dest)
-            pdf_url = "deep_analysis/" + code + "/report.pdf"
-            pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+            out_dir = os.path.join(DEEP_OUT, code, date_str)
+            os.makedirs(out_dir, exist_ok=True)
 
-        deep_index.append({
-            "code": code,
-            "name": name,
-            "date": date_str,
-            "html_url": html_url,
-            "html_size": html_size,
-            "pdf_url": pdf_url,
-            "pdf_size": pdf_size,
-            "missing": []
-        })
-        print(f"  {name}({code}): HTML={html_size or 'N/A'} PDF={pdf_size or 'N/A'}")
+            html_url = None
+            html_size = None
+            if html_file:
+                dest = os.path.join(out_dir, "report.html")
+                shutil.copy2(html_file, dest)
+                html_url = f"deep_analysis/{code}/{date_str}/report.html"
+                html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
 
-print(f"  Deep analysis: {len(deep_index)} stocks")
+            pdf_url = None
+            pdf_size = None
+            if pdf_file:
+                dest = os.path.join(out_dir, "report.pdf")
+                shutil.copy2(pdf_file, dest)
+                pdf_url = f"deep_analysis/{code}/{date_str}/report.pdf"
+                pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
 
-# [3/5] Scan & copy daily reports
+            deep_index.append({
+                "code": code,
+                "name": name,
+                "date": date_str,
+                "html_url": html_url,
+                "html_size": html_size,
+                "pdf_url": pdf_url,
+                "pdf_size": pdf_size,
+                "missing": []
+            })
+
+        print(f"  {name}({code}): {len(all_dates)} dates, HTML={len(date_html)} PDF={len(date_pdf)}")
+
+print(f"  Deep analysis: {len(deep_index)} entries ({len(set(e['code'] for e in deep_index))} stocks)")
+
+# [3/5] Scan & copy daily reports (all historical dates)
 print("[3/5] Scanning daily reports...")
 os.makedirs(DAILY_OUT, exist_ok=True)
 daily_index = []
+
+# Clean up old flat-path files from previous builds
+for old_dir in glob.glob(os.path.join(DAILY_OUT, "*")):
+    if os.path.isdir(old_dir):
+        for old_file in glob.glob(os.path.join(old_dir, "report.*")):
+            os.remove(old_file)
 
 if os.path.isdir(DAILY_SRC):
     for stock_dir in sorted(os.listdir(DAILY_SRC)):
@@ -141,59 +162,70 @@ if os.path.isdir(DAILY_SRC):
         pdf_files_main = sorted(glob.glob(os.path.join(stock_path, "*日报_*.pdf")), reverse=True)
         pdf_files_analysis = sorted(glob.glob(os.path.join(stock_path, "*分析日报_*.pdf")), reverse=True)
 
-        latest_html = html_files[0] if html_files else None
-        # Prefer 日报 PDF over 分析日报 PDF
-        latest_pdf = pdf_files_main[0] if pdf_files_main else (pdf_files_analysis[0] if pdf_files_analysis else None)
+        # Build date→file mapping
+        date_html = {}
+        for f in html_files:
+            m = _re.search(r'(\d{8})', os.path.basename(f))
+            if m and m.group(1) not in date_html:
+                date_html[m.group(1)] = f
 
-        missing = []
-        if not latest_html:
-            missing.append("html")
-        if not latest_pdf:
-            missing.append("pdf")
-
-        # Extract 8-digit date from filename using regex
-        date_str = ""
-        src_file = latest_html or latest_pdf
-        if src_file:
-            m = _re.search(r'(\d{8})', os.path.basename(src_file))
+        date_pdf = {}
+        # Prefer 日报 PDF over 分析日报 PDF for the same date
+        for f in pdf_files_analysis:
+            m = _re.search(r'(\d{8})', os.path.basename(f))
+            if m and m.group(1) not in date_pdf:
+                date_pdf[m.group(1)] = f
+        for f in pdf_files_main:
+            m = _re.search(r'(\d{8})', os.path.basename(f))
             if m:
-                date_str = m.group(1)
+                date_pdf[m.group(1)] = f  # 日报 PDF overrides 分析日报
 
-        out_dir = os.path.join(DAILY_OUT, code)
-        os.makedirs(out_dir, exist_ok=True)
+        all_dates = sorted(set(list(date_html.keys()) + list(date_pdf.keys())), reverse=True)
 
-        html_url = None
-        html_size = None
-        if latest_html:
-            dest = os.path.join(out_dir, "report.html")
-            shutil.copy2(latest_html, dest)
-            html_url = "daily_reports/" + code + "/report.html"
-            html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+        for date_str in all_dates:
+            html_file = date_html.get(date_str)
+            pdf_file = date_pdf.get(date_str)
 
-        pdf_url = None
-        pdf_size = None
-        if latest_pdf:
-            dest = os.path.join(out_dir, "report.pdf")
-            shutil.copy2(latest_pdf, dest)
-            pdf_url = "daily_reports/" + code + "/report.pdf"
-            pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+            missing = []
+            if not html_file:
+                missing.append("html")
+            if not pdf_file:
+                missing.append("pdf")
 
-        daily_index.append({
-            "code": code,
-            "name": name,
-            "date": date_str,
-            "html_url": html_url,
-            "html_size": html_size,
-            "pdf_url": pdf_url,
-            "pdf_size": pdf_size,
-            "missing": missing
-        })
+            out_dir = os.path.join(DAILY_OUT, code, date_str)
+            os.makedirs(out_dir, exist_ok=True)
+
+            html_url = None
+            html_size = None
+            if html_file:
+                dest = os.path.join(out_dir, "report.html")
+                shutil.copy2(html_file, dest)
+                html_url = f"daily_reports/{code}/{date_str}/report.html"
+                html_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+
+            pdf_url = None
+            pdf_size = None
+            if pdf_file:
+                dest = os.path.join(out_dir, "report.pdf")
+                shutil.copy2(pdf_file, dest)
+                pdf_url = f"daily_reports/{code}/{date_str}/report.pdf"
+                pdf_size = f"{os.path.getsize(dest)/1024:.0f}KB"
+
+            daily_index.append({
+                "code": code,
+                "name": name,
+                "date": date_str,
+                "html_url": html_url,
+                "html_size": html_size,
+                "pdf_url": pdf_url,
+                "pdf_size": pdf_size,
+                "missing": missing
+            })
+
         status = "OK"
-        if missing:
-            status = "missing: " + ", ".join(missing)
-        print(f"  {name}({code}): HTML={html_size or 'N/A'} PDF={pdf_size or 'N/A'} [{status}]")
+        print(f"  {name}({code}): {len(all_dates)} dates, HTML={len(date_html)} PDF={len(date_pdf)}")
 
-print(f"  Daily reports: {len(daily_index)} stocks")
+print(f"  Daily reports: {len(daily_index)} entries ({len(set(e['code'] for e in daily_index))} stocks)")
 
 # [4/5] Build embedded data & inject into template
 print("[4/5] Building embedded data...")
