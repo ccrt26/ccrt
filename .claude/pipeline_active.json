@@ -6,15 +6,15 @@
   "gate_1": "PASS",
   "attempts": 0,
   "loop_context": "",
-  "updated": "2026-05-27T22:53:54.942155",
+  "updated": "2026-05-27T22:55:04.964591",
   "started": "2026-05-27T22:30:00",
-  "gate_2": "PENDING",
+  "gate_2": "PASS",
   "task": "修复财务管线数据质量问题：EPS口径矛盾、多字段缺失(BPS/毛利率/现金流/商誉/RevenueTTM)",
-  "stage": 5,
+  "stage": 7,
   "next_action": "invoke_role",
   "l3_reason": "",
   "l3_triggered": false,
-  "active": true,
+  "active": false,
   "stage_history": [
     {
       "stage": 1,
@@ -40,13 +40,24 @@
       "stage": 5,
       "started": "2026-05-27T22:53:54.942184",
       "executor": "新安"
+    },
+    {
+      "stage": 6,
+      "started": "2026-05-27T22:55:04.964622",
+      "executor": "红枫",
+      "deploy_commit": "4ad7ef4"
+    },
+    {
+      "stage": 7,
+      "started": "2026-05-27T22:55:04.964625",
+      "executor": "腰子+青山"
     }
   ],
   "max_attempts": 3,
   "schema_version": "1.0",
-  "stage_name": "新安四层验证(闸门2)",
-  "gate_3": "PENDING",
-  "executor": "新安",
+  "stage_name": "腰子+青山后评估",
+  "gate_3": "PASS",
+  "executor": "腰子+青山",
   "gate_1_audit": {
     "finance_confirmed": true,
     "design_doc": "审计报告/架构设计/design_financial_data_fix_20260527.md",
@@ -57,5 +68,13 @@
     "新安": "PASS",
     "旧影": "PASS"
   },
-  "gate_1b": "PASS"
+  "gate_1b": "PASS",
+  "deployment": {
+    "commit": "4ad7ef4",
+    "files": [
+      "代码文件/每日荐股/scripts/modules/financial.ps1",
+      "代码文件/每日荐股/scripts/batch_data_collector.ps1"
+    ],
+    "rollback": "git revert 4ad7ef4"
+  }
 }

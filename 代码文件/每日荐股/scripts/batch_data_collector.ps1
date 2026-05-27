@@ -446,12 +446,15 @@ foreach ($s in $stocks) {
         $epsQuarterly = $epsVals
 
         # 每股净资产 (BPS/NAPS — 东方财富用BPS，同花顺也用BPS)
-        # v2026-05-27: 增强备选字段名
-        $bpsVal = $fin[0].BPS
-        if (-not $bpsVal) { $bpsVal = $fin[0].NAPS }
-        if (-not $bpsVal) { $bpsVal = $fin[0].TOTAL_EQUITY }
-        if (-not $bpsVal) { $bpsVal = $fin[0].SHAREHOLDERS_EQUITY }
-        if (-not $bpsVal) { $bpsVal = $fin[0].TOTAL_SHAREHOLDER_EQUITY }
+        # v2026-05-27: 增强备选字段名 + 遍历记录(部分新股首条BPS=null)
+        $bpsVal = $null
+        foreach ($r in $fin) {
+            if ($r.BPS) { $bpsVal = $r.BPS; break }
+            if ($r.NAPS) { $bpsVal = $r.NAPS; break }
+            if ($r.TOTAL_EQUITY) { $bpsVal = $r.TOTAL_EQUITY; break }
+            if ($r.SHAREHOLDERS_EQUITY) { $bpsVal = $r.SHAREHOLDERS_EQUITY; break }
+            if ($r.TOTAL_SHAREHOLDER_EQUITY) { $bpsVal = $r.TOTAL_SHAREHOLDER_EQUITY; break }
+        }
         if ($bpsVal) { $bps = [double]$bpsVal }
 
         # 营业总收入TTM (用最近4个季度累加)
@@ -475,17 +478,22 @@ foreach ($s in $stocks) {
         if (-not $npYoyVal) { $npYoyVal = $fin[0].DEDUCTED_YOY }
         if ($npYoyVal) { $netProfitYoy = [double]$npYoyVal }
 
-        # 毛利率 — v2026-05-27: 优先从财务明细端点获取
+        # 毛利率 — v2026-05-27: XSMLL(销售毛利率)来自RPT_LICO_FN_CPD, 遍历记录取有效值
         $finDetail = $finDetailMap[$s.Code]
-        if ($finDetail -and $finDetail.GROSS_PROFIT_MARGIN) {
-            $grossMargin = [double]$finDetail.GROSS_PROFIT_MARGIN
-        } else {
-            # 回退到原有3字段fallback
-            $gmVal = $fin[0].GROSS_MARGIN
-            if (-not $gmVal) { $gmVal = $fin[0].GROSS_PROFIT_MARGIN }
-            if (-not $gmVal) { $gmVal = $fin[0].SALE_GROSS_PROFIT_RATIO }
-            if ($gmVal) { $grossMargin = [double]$gmVal }
+        $gmVal = $null
+        foreach ($r in $fin) {
+            if ($r.XSMLL) { $gmVal = $r.XSMLL; break }
+            if ($r.GROSS_MARGIN) { $gmVal = $r.GROSS_MARGIN; break }
+            if ($r.GROSS_PROFIT_MARGIN) { $gmVal = $r.GROSS_PROFIT_MARGIN; break }
+            if ($r.SALE_GROSS_PROFIT_RATIO) { $gmVal = $r.SALE_GROSS_PROFIT_RATIO; break }
         }
+        if (-not $gmVal -and $finDetail -and $finDetail.OPERATE_COST -and $finDetail.TOTAL_OPERATE_INCOME) {
+            # 从利润表详细端点自算: (营收-营业成本)/营收
+            $rev = [double]$finDetail.TOTAL_OPERATE_INCOME
+            $cost = [double]$finDetail.OPERATE_COST
+            if ($rev -gt 0) { $gmVal = [math]::Round(($rev - $cost) / $rev * 100, 2) }
+        }
+        if ($gmVal) { $grossMargin = [double]$gmVal }
 
         # 商誉 — v2026-05-27: 从财务明细端点获取（红线§三.4 利润真实性验证）
         if ($finDetail -and $finDetail.GOODWILL) {
@@ -501,10 +509,15 @@ foreach ($s in $stocks) {
             }
         }
 
-        # 扣非EPS — v2026-05-27: 从财务明细端点获取（红线§三.4 利润真实性验证）
-        if ($finDetail -and $finDetail.DEDUCTED_EPS) {
-            $deductedEPS = [double]$finDetail.DEDUCTED_EPS
+        # 扣非EPS — v2026-05-27: DEDUCT_BASIC_EPS来自RPT_LICO_FN_CPD, 遍历记录
+        $deVal = $null
+        foreach ($r in $fin) {
+            if ($r.DEDUCT_BASIC_EPS) { $deVal = $r.DEDUCT_BASIC_EPS; break }
         }
+        if (-not $deVal -and $finDetail -and $finDetail.DEDUCT_PARENT_NETPROFIT) {
+            $deVal = $finDetail.DEDUCT_PARENT_NETPROFIT  # 仅作标记(非每股)
+        }
+        if ($deVal) { $deductedEPS = [double]$deVal }
 
         # 资产负债率 — v2026-05-27: 从已有财务数据提取
         if ($fin[0].DEBT_ASSET_RATIO) { $debtRatio = [double]$fin[0].DEBT_ASSET_RATIO }
@@ -530,8 +543,12 @@ foreach ($s in $stocks) {
         $revenueTTM_Yi = $revenueTTM / 1e8
         if ($revenueTTM_Yi -gt 0) { $ps = [math]::Round([double]$q.MktCap / $revenueTTM_Yi, 2) }
     }
-    # F2: 每股经营现金流 (THS financial_abstract 专有字段)
-    $cfps = $cfpsMap[$s.Code]
+    # F2: 每股经营现金流 — 主源MGJYXJJE(RPT_LICO_FN_CPD,遍历记录) + 备源THS
+    $cfps = $null
+    foreach ($r in $fin) {
+        if ($r.MGJYXJJE) { $cfps = [double]$r.MGJYXJJE; break }
+    }
+    if (-not $cfps) { $cfps = $cfpsMap[$s.Code] }
     # F3: 主力净流入昨日基线 (FundFlow_History数组倒数第二个)
     $fundMainNetPrev = $null
     if ($fund) {
