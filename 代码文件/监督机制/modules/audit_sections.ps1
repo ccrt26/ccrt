@@ -336,7 +336,7 @@ Write-Host "── Section F: 流水线健康 ──" -ForegroundColor Cyan
 if (Test-Path $workflowLog) {
     $todayEntries = Select-String -Path $workflowLog -Pattern $Date -SimpleMatch -ErrorAction SilentlyContinue
     if ($todayEntries.Count -gt 0) {
-        $phases = ($todayEntries | Select-String -Pattern "\[(\d+)/" | ForEach-Object { $_.Matches.Groups[1].Value } | Sort-Object -Unique) -join ','
+        $phases = ($todayEntries | Select-String -Pattern "\[(\d+)/" | ForEach-Object { if ($_.Matches) { $_.Matches.Groups[1].Value } } | Sort-Object -Unique) -join ','
         Add-Check 'F' '1' '今日流水线执行' 'PASS' "$($todayEntries.Count)条日志, Phase: $phases"
     } else {
         Add-Check 'F' '1' '今日流水线执行' 'WARN' "今日无执行记录（可能非交易日）"

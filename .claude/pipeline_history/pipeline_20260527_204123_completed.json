@@ -1,0 +1,54 @@
+﻿{
+    "task":  "git_autosync",
+    "started":  "2026-05-27T09:00:00",
+    "updated":  "2026-05-27T12:39:31",
+    "stage":  4,
+    "stage_name":  "上线前验证",
+    "executor":  "红结",
+    "next_action":  "advance",
+    "active":  false,
+    "gate_1":  "PASS",
+    "gate_2":  "PASS",
+    "gate_3":  "PENDING",
+    "files_scope":  [
+                        ".claude/hooks/shared/pipeline-auth.ps1",
+                        ".claude/hooks/pre-commit-check.ps1",
+                        "代码文件/tools/git_autosweep.ps1",
+                        "代码文件/每日荐股/",
+                        "代码文件/信鸽信息采集/",
+                        "代码文件/重点股票/"
+                    ],
+    "stage_history":  [
+                          {
+                              "stage":  1,
+                              "executor":  "情墨",
+                              "output":  "审计报告/架构设计/design_git_autosync_v1.0.md",
+                              "gate":  "PASS",
+                              "validated":  "2026-05-27T09:00:00"
+                          },
+                          {
+                              "stage":  2,
+                              "executor":  "腰子",
+                              "gate":  "PASS",
+                              "validated":  "2026-05-27T09:05:00"
+                          },
+                          {
+                              "stage":  3,
+                              "executor":  "新安+旧影",
+                              "gate":  "PASS",
+                              "validated":  "2026-05-27T09:10:00"
+                          },
+                          {
+                              "stage":  4,
+                              "executor":  "红结",
+                              "entered":  "2026-05-27T10:30:00"
+                          }
+                      ],
+    "attempts":  0,
+    "max_attempts":  3,
+    "l3_triggered":  false,
+    "l3_reason":  "",
+    "loop_context":  "Stage 4/6: 上线前验证 | Executor: 新安",
+    "schema_version":  "1.0",
+    "completed":  "2026-05-27T12:41:23"
+}

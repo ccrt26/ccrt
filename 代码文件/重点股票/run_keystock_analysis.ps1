@@ -41,15 +41,16 @@ if (Test-Path $marketCheckScript) {
     Write-Host "交易日确认: $dateLabel" -ForegroundColor Green
 }
 
-# 全部6只股票
+# 全部8只股票（2026-05-27更新：+科大讯飞+德力佳，-长电科技-招商银行）
 $allStocks = @(
-    @{ Code = "603019"; Name = "中科曙光"; Industry = "计算机" },
-    @{ Code = "601689"; Name = "拓普集团"; Industry = "汽车零部件" },
-    @{ Code = "600114"; Name = "东睦股份"; Industry = "电子/机械" },
+    @{ Code = "600114"; Name = "东睦股份"; Industry = "汽车/机械" },
+    @{ Code = "601727"; Name = "上海电气"; Industry = "电气设备" },
+    @{ Code = "603019"; Name = "中科曙光"; Industry = "计算机/服务器" },
     @{ Code = "301075"; Name = "多瑞医药"; Industry = "医药" },
+    @{ Code = "601689"; Name = "拓普集团"; Industry = "汽车零部件" },
     @{ Code = "000967"; Name = "盈峰环境"; Industry = "环保" },
-    @{ Code = "601727"; Name = "上海电气"; Industry = "电力设备" },
-    @{ Code = "600584"; Name = "长电科技"; Industry = "半导体" }
+    @{ Code = "002230"; Name = "科大讯飞"; Industry = "AI/软件" },
+    @{ Code = "603092"; Name = "德力佳"; Industry = "风电/机械" }
 )
 if ($TargetStocks.Count -gt 0) {
     $stocks = $allStocks | Where-Object { $_.Code -in $TargetStocks }
@@ -2124,6 +2125,21 @@ if ($schemaOk) {
     Write-Host "v3.0字段完整性校验通过 ($($script:evalStocks.Count)只股票 x $($requiredV30Fields.Count)字段)" -ForegroundColor Green
 } else {
     Write-Warning "v3.0字段完整性校验失败，请检查报告输出"
+}
+
+# v1.8: 生成机器可解析日报MD（含eval注释，供后评估Parser提取）
+$genDailyBrief = Join-Path $rootDir "代码文件\重点股票\gen_daily_brief.py"
+if (Test-Path $genDailyBrief) {
+    Write-Host "`n生成日报MD (gen_daily_brief)..." -ForegroundColor Cyan
+    $briefResult = & python $genDailyBrief $dateStr 2>&1
+    Write-Host $briefResult
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "gen_daily_brief.py 执行异常，后评估信号提取可能受影响"
+    } else {
+        Write-Host "日报MD生成完成 — 后评估Parser可提取P0字段" -ForegroundColor Green
+    }
+} else {
+    Write-Warning "gen_daily_brief.py 未找到，跳过日报MD生成"
 }
 
 # Auto-commit: deep_analysis outputs

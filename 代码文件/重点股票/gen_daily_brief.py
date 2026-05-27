@@ -1,10 +1,24 @@
 """Generate daily brief MD files from eval data - v2 format with interpretations."""
 import json, os, sys, subprocess
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+sys.path.insert(0, os.path.join(ROOT, '代码文件', '重点股票'))
 from daily_brief_interpreters import (adx_read, rsi_read, bb_read, obv_read,
     fund_read, wyckoff_read, sector_read, conflict_analysis,
     t5_outlook, market_regime_read)
 
-with open('重点股票/次日评估/评估数据_20260526.json', 'r', encoding='utf-8') as f:
+date_arg = sys.argv[1] if len(sys.argv) > 1 else None
+if not date_arg:
+    from datetime import date
+    date_arg = date.today().strftime('%Y%m%d')
+
+eval_path = os.path.join(ROOT, '重点股票', '次日评估', f'评估数据_{date_arg}.json')
+if not os.path.exists(eval_path):
+    print(f"[FATAL] 评估数据文件不存在: {eval_path}")
+    sys.exit(1)
+
+with open(eval_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 date_str = data['Date']
@@ -17,7 +31,8 @@ stock_info = {
     '301075': ('多瑞医药', '医药'),
     '601689': ('拓普集团', '汽车零部件'),
     '000967': ('盈峰环境', '环保'),
-    '600584': ('长电科技', '半导体封测'),
+    '002230': ('科大讯飞', 'AI/软件'),
+    '603092': ('德力佳', '风电/机械'),  # 2024上市，K线<120日时需降级
 }
 
 def rating_label(score):
@@ -318,9 +333,9 @@ for s in stocks:
 > 参考引擎报告：{name}({code})分析报告__{date_str}.pdf
 """
 
-    out_dir = f'重点股票/股票报告/{name}({code})'
+    out_dir = os.path.join(ROOT, '重点股票', '股票报告', f'{name}({code})')
     os.makedirs(out_dir, exist_ok=True)
-    md_path = f'{out_dir}/重点关注股票日报_{date_str}.md'
+    md_path = os.path.join(out_dir, f'{name}({code})日报_{date_str}.md')
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write(md)
 
@@ -329,12 +344,14 @@ for s in stocks:
     generated += 1
 
 # Auto-commit: daily_brief outputs
-subprocess.run([
-    'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass',
-    '-File', '代码文件/tools/git_autocommit.ps1',
-    '-Module', 'daily_brief',
-    '-Paths', '重点股票/股票报告/',
-    '-Message', '日报产出'
-], capture_output=True)
+git_auto = os.path.join(ROOT, '代码文件', 'tools', 'git_autocommit.ps1')
+if os.path.exists(git_auto):
+    subprocess.run([
+        'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+        '-File', git_auto,
+        '-Module', 'daily_brief',
+        '-Paths', os.path.join(ROOT, '重点股票', '股票报告'),
+        '-Message', '日报产出'
+    ], capture_output=True)
 
 print(f'\nDone: {generated} daily briefs in v2 format')
