@@ -41,6 +41,16 @@
       "concept_tracks": [
         {"name": "风电齿轮箱", "keywords": "风电|齿轮箱|变速箱|传动|风机|齿轮|增速箱"},
         {"name": "新能源装备制造", "keywords": "新能源|装备|精密传动|三一重能|产能|扩产|定点"}
+      ]},
+    {"code": "300736", "name": "百邦科技", "market": "sz",
+      "concept_tracks": [
+        {"name": "消费电子售后服务", "keywords": "苹果|授权|售后|维修|服务|Apple|iPhone|以旧换新|回收"},
+        {"name": "二手手机回收与翻新", "keywords": "二手|翻新|回收|循环|置换|寄售|检测|认证"}
+      ]},
+    {"code": "300450", "name": "先导智能", "market": "sz",
+      "concept_tracks": [
+        {"name": "锂电设备制造", "keywords": "锂电|电池|设备|卷绕|叠片|化成分容|宁德时代|电芯|模组|PACK"},
+        {"name": "光伏与氢能设备", "keywords": "光伏|太阳能|电池片|组件|氢能|电解槽|燃料电池|TOPCon|HJT"}
       ]}
   ],
   "blacklist_keywords": [

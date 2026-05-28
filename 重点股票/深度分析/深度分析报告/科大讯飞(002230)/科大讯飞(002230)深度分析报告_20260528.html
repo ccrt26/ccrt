@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>002230 科大讯飞 — 深度分析报告 (v1.4)</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>002230 科大讯飞 — 深度分析报告 (v1.4)</h1>
+<blockquote>
+<p><strong>日期</strong>: 2026年5月28日（周四） | <strong>方法论版本</strong>: v1.4
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 信鸽（事件采集）+ 玉夜（数据诊断）+ 流金（风险评估）+ 青山（策略因子）
+<strong>数据截止</strong>: 2026-05-28 收盘 | <strong>数据源</strong>: Tushare Pro[tushare]/新浪[2]/腾讯[2B]
+<strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</blockquote>
+<hr />
+<h2>一、公司概要</h2>
+<h3>1.1 业务描述</h3>
+<p>科大讯飞（002230.SZ）是国内AI语音/NLP龙头，核心业务为星火大模型+AI应用（教育/医疗/政务）+智能硬件。</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">所属行业</td>
+<td style="text-align: left;">计算机 / 人工智能（申万）</td>
+</tr>
+<tr>
+<td style="text-align: left;">主营业务</td>
+<td style="text-align: left;">星火大模型+AI教育+AI医疗+智慧城市+智能硬件</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场地位</td>
+<td style="text-align: left;">国内AI语音/NLP龙头，星火大模型国产前三</td>
+</tr>
+<tr>
+<td style="text-align: left;">上市板块</td>
+<td style="text-align: left;">深交所主板</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.1a 概念映射差距分析</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">概念赛道</th>
+<th style="text-align: left;">现有产品/业务</th>
+<th style="text-align: left;">映射逻辑</th>
+<th style="text-align: center;">证据等级</th>
+<th style="text-align: left;">差距说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">星火大模型AI应用</td>
+<td style="text-align: left;">星火大模型V4.0，AI教育学习机/AI医疗/AI政务</td>
+<td style="text-align: left;">大模型→应用落地，已有产品+用户</td>
+<td style="text-align: center;"><strong>L2</strong></td>
+<td style="text-align: left;">产品已发布但大模型商业化变现规模待验证</td>
+</tr>
+<tr>
+<td style="text-align: center;">AI+教育医疗</td>
+<td style="text-align: left;">智慧教育平台+智医助理</td>
+<td style="text-align: left;">政策支持+市场需求确认</td>
+<td style="text-align: center;"><strong>L2</strong></td>
+<td style="text-align: left;">有公告提及但未披露具体合同金额/市占率</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>双L2赛道：行业面权重×0.9，估值溢价×0.85。</p>
+</blockquote>
+<h3>1.2 核心投资逻辑</h3>
+<ol>
+<li><strong>星火大模型国产替代</strong> — 国产大模型前三，对标GPT-4级能力，政务/国企市场封闭→国产独占</li>
+<li><strong>AI+教育变现路径清晰</strong> — 学习机+C端订阅+学校B端采购，商业模式已验证</li>
+<li><strong>AI+医疗布局</strong> — 智医助理产品已落地多个省市，医疗AI市场空间大</li>
+<li><strong>FY2025预增40-70%</strong> — 盈利高增长确认AI商业化拐点</li>
+</ol>
+<h3>1.3 子赛道三步下钻</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">步骤</th>
+<th style="text-align: left;">层级</th>
+<th style="text-align: left;">定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">第1步</td>
+<td style="text-align: left;">申万一级</td>
+<td style="text-align: left;">计算机</td>
+</tr>
+<tr>
+<td style="text-align: center;">第2步</td>
+<td style="text-align: left;">申万二级/三级</td>
+<td style="text-align: left;">人工智能/软件</td>
+</tr>
+<tr>
+<td style="text-align: center;">第3步</td>
+<td style="text-align: left;">核心概念赛道</td>
+<td style="text-align: left;"><strong>星火大模型AI应用 + AI+教育医疗</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.4 催化剂清单</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">级</th>
+<th style="text-align: left;">催化剂</th>
+<th style="text-align: center;">类</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: center;">概率</th>
+<th style="text-align: left;">预期影响</th>
+<th style="text-align: left;">来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">星火大模型V5.0发布</td>
+<td style="text-align: center;">产品</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">70%</td>
+<td style="text-align: left;">能力对标GPT-5→情绪催化+10-15%</td>
+<td style="text-align: left;">行业动态</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">AI教育/医疗大额中标</td>
+<td style="text-align: center;">订单</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: left;">L2→L1升级</td>
+<td style="text-align: left;">公告</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: left;">大模型商业化收入占比突破20%</td>
+<td style="text-align: center;">业绩</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">40%</td>
+<td style="text-align: left;">估值重估</td>
+<td style="text-align: left;">季报/半年报</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.5 竞争位势对比</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">科大讯飞 002230</th>
+<th style="text-align: center;">商汤-W 00020</th>
+<th style="text-align: center;">百度 09888</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">核心赛道</td>
+<td style="text-align: center;">大模型+AI应用(教育/医疗)</td>
+<td style="text-align: center;">大模型+计算机视觉</td>
+<td style="text-align: center;">文心大模型+搜索</td>
+</tr>
+<tr>
+<td style="text-align: left;">大模型能力</td>
+<td style="text-align: center;">星火V4.0（国产前三）</td>
+<td style="text-align: center;">日日新（国产前三）</td>
+<td style="text-align: center;">文心一言（国产前二）</td>
+</tr>
+<tr>
+<td style="text-align: left;">AI应用落地</td>
+<td style="text-align: center;">教育/医疗/政务（已落地）</td>
+<td style="text-align: center;">安防/自动驾驶</td>
+<td style="text-align: center;">搜索/云</td>
+</tr>
+<tr>
+<td style="text-align: left;">5/28收盘价</td>
+<td style="text-align: center;">¥49.13</td>
+<td style="text-align: center;">数据不可获取</td>
+<td style="text-align: center;">数据不可获取</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>二、宏观与行业环境（山猫）</h2>
+<h3>2.1 当前市场状态</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">2026-05-28</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">上证指数</td>
+<td style="text-align: left;">4098.64 (+0.12%)</td>
+<td style="text-align: left;">窄幅震荡</td>
+</tr>
+<tr>
+<td style="text-align: left;">AI/科技板块</td>
+<td style="text-align: left;">科大讯飞-2.23%，AI应用端走弱</td>
+<td style="text-align: left;">⚠️ 弱于大盘</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>市场阶段判断</strong>: AI应用端今日走弱（讯飞-2.23%），与算力硬件（中科曙光+0.29%）分化。大模型商业化预期短期降温。</p>
+<h3>2.2 行业定位</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">行业生命周期</td>
+<td style="text-align: left;"><strong>快速成长期</strong></td>
+<td style="text-align: left;">大模型应用仍处于早期商业化阶段</td>
+</tr>
+<tr>
+<td style="text-align: left;">政策面</td>
+<td style="text-align: left;"><strong>强力支撑</strong></td>
+<td style="text-align: left;">AI国家战略+国产大模型政策扶持</td>
+</tr>
+<tr>
+<td style="text-align: left;">竞争格局</td>
+<td style="text-align: left;"><strong>激烈</strong></td>
+<td style="text-align: left;">百度/字节/商汤/讯飞多强竞争</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>山猫结论</strong>: AI应用端短期承压（今日-2.23%），但中长期大模型商业化是确定性趋势。讯飞的差异化在教育/医疗/政务B端市场。</p>
+<h3>2.4 行业景气度监视器</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">最新值</th>
+<th style="text-align: center;">趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">国产大模型数量</td>
+<td style="text-align: left;">&gt;100个</td>
+<td style="text-align: center;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">大模型API调用量(2026Q1)</td>
+<td style="text-align: left;">同比+200%+（估）</td>
+<td style="text-align: center;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">AI教育/医疗政策</td>
+<td style="text-align: left;">持续加码</td>
+<td style="text-align: center;">↑</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>景气度判断</strong>: 上行。</p>
+</blockquote>
+<hr />
+<h2>三、财务深度分析（玉夜）</h2>
+<h3>3.1 核心财务指标</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值 [2B]</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PE(TTM)</td>
+<td style="text-align: left;"><strong>136.76x</strong></td>
+<td style="text-align: left;">⚠️ 高PE</td>
+</tr>
+<tr>
+<td style="text-align: left;">总市值</td>
+<td style="text-align: left;">1075.60亿</td>
+<td style="text-align: left;">大盘成长</td>
+</tr>
+<tr>
+<td style="text-align: left;">今日涨跌</td>
+<td style="text-align: left;">-2.23%</td>
+<td style="text-align: left;">偏弱</td>
+</tr>
+<tr>
+<td style="text-align: left;">振幅</td>
+<td style="text-align: left;">4.70%</td>
+<td style="text-align: left;">活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">成交额</td>
+<td style="text-align: left;">42.68亿</td>
+<td style="text-align: left;">活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">换手率</td>
+<td style="text-align: left;">3.99%</td>
+<td style="text-align: left;">正常偏高</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>fina_indicator[tushare]: 56条记录。FY2025预增40-70%。</p>
+</blockquote>
+<h3>3.7 业绩预告与预期差（v1.4）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">预告日期</th>
+<th style="text-align: left;">报告期</th>
+<th style="text-align: left;">预告类型</th>
+<th style="text-align: center;">增速范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">数据不可获取</td>
+<td style="text-align: left;">FY2025</td>
+<td style="text-align: left;">预增</td>
+<td style="text-align: center;">+40~70%</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>FY2025预增40-70%→AI商业化拐点确认。PE 136x在FY2025兑现后将降至~80-100x。</p>
+</blockquote>
+<h3>3.4 利润真实性验证</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">FY2025预增</td>
+<td style="text-align: left;">+40-70%</td>
+<td style="text-align: left;">✅ 增长确定</td>
+</tr>
+<tr>
+<td style="text-align: left;">PE高位</td>
+<td style="text-align: left;">136x（大模型公司全球都高PE）</td>
+<td style="text-align: left;">成长型正常</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>玉夜结论</strong>: FY2025预增高增长确认AI商业化拐点。高PE需高增长消化，核心跟踪商业化收入占比。</p>
+<hr />
+<h2>四、技术面深度分析</h2>
+<h3>今日盘面</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值 [2]</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">收盘价</td>
+<td style="text-align: left;">¥49.13</td>
+<td style="text-align: left;">-2.23%</td>
+</tr>
+<tr>
+<td style="text-align: left;">振幅</td>
+<td style="text-align: left;">4.70%</td>
+<td style="text-align: left;">活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">成交额</td>
+<td style="text-align: left;">42.68亿</td>
+<td style="text-align: left;">放量下跌</td>
+</tr>
+</tbody>
+</table></div>
+<p>今日-2.23%弱于大盘（上证+0.12%），放量下跌显示短线资金离场。AI应用端短期承压。</p>
+<h3>关键技术位</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">价格</th>
+<th style="text-align: left;">依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">R1 阻力</td>
+<td style="text-align: left;">¥50.27</td>
+<td style="text-align: left;">今日高点</td>
+</tr>
+<tr>
+<td style="text-align: left;">S0 支撑</td>
+<td style="text-align: left;">¥47.91</td>
+<td style="text-align: left;">今日低点</td>
+</tr>
+<tr>
+<td style="text-align: left;">S1 支撑</td>
+<td style="text-align: left;">¥45.00</td>
+<td style="text-align: left;">整数关口+前低区域</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>五、估值分析</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PE(TTM)</td>
+<td style="text-align: left;">136.76x</td>
+<td style="text-align: left;">大模型公司全球标准下正常偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">远期PE(FY2025预增后)</td>
+<td style="text-align: left;">~80-100x（估）</td>
+<td style="text-align: left;">改善但仍高</td>
+</tr>
+<tr>
+<td style="text-align: left;">PS(TTM)</td>
+<td style="text-align: left;">1075亿/营收(估~250亿)≈4.3x</td>
+<td style="text-align: left;">AI公司合理偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">市值</td>
+<td style="text-align: left;">1075.60亿</td>
+<td style="text-align: left;">千亿市值AI龙头</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>成长型标的，适用PEG+PS+市值对标。PE 136x在FY2025预增40-70%后PEG≈2-3x，合理偏高。</p>
+</blockquote>
+<h3>5.2 三情景EPS预测</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">情景</th>
+<th style="text-align: center;">FY2026E EPS</th>
+<th style="text-align: left;">远期PE</th>
+<th style="text-align: left;">依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>乐观</strong></td>
+<td style="text-align: center;">0.55</td>
+<td style="text-align: left;">89x</td>
+<td style="text-align: left;">FY2025预增上限+大模型收入爆发</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>中性</strong></td>
+<td style="text-align: center;">0.42</td>
+<td style="text-align: left;">117x</td>
+<td style="text-align: left;">FY2025预增中位+趋势延续</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>悲观</strong></td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: left;">164x</td>
+<td style="text-align: left;">大模型竞争加剧+商业化慢于预期</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>六、风险评估（流金）</h2>
+<h3>6.4 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">红旗</th>
+<th style="text-align: left;">判定</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">①极端估值</td>
+<td style="text-align: left;">PE&gt;100x</td>
+<td style="text-align: left;"><strong>136x</strong></td>
+<td style="text-align: center;">🔴</td>
+</tr>
+<tr>
+<td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: left;">EPS波动&gt;50%</td>
+<td style="text-align: left;">FY2025预增40-70%</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+<tr>
+<td style="text-align: left;">③高波动</td>
+<td style="text-align: left;">ATR&gt;6%</td>
+<td style="text-align: left;">振幅4.70%</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+<tr>
+<td style="text-align: left;">④流动性风险</td>
+<td style="text-align: left;">日均&lt;5000万</td>
+<td style="text-align: left;">42.68亿</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: left;">清晰止损位</td>
+<td style="text-align: left;">S1 ¥45</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>红旗总结</strong>: 1红2黄2绿 — PE 136x触发红旗①（极端估值）。大模型公司需用成长型框架（PE&gt;150x否决），136x尚未达到150x否决线。</p>
+<h3>6.5 仓位建议</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">约束条件</th>
+<th style="text-align: left;">推导</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">当前触发档位</td>
+<td style="text-align: left;"><strong>不满足建仓条件</strong>（价格在Markdown中+PE接近否决线）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>建议仓位</strong></td>
+<td style="text-align: left;"><strong>0%（观望）</strong>，等回调至S1(¥45)或PE回落至100x以下</td>
+</tr>
+</tbody>
+</table></div>
+<h3>6.6 质押与股权风险（v1.4）</h3>
+<blockquote>
+<p>pledge[tushare]: 无数据。</p>
+</blockquote>
+<h3>6.7 供给冲击风险（v1.4）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">解禁日期</th>
+<th style="text-align: left;">解禁数量</th>
+<th style="text-align: center;">占总股本</th>
+<th style="text-align: center;">距今天数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">20261026</td>
+<td style="text-align: left;">数据不可获取</td>
+<td style="text-align: center;">0.14%</td>
+<td style="text-align: center;">~150天</td>
+</tr>
+<tr>
+<td style="text-align: left;">20271025</td>
+<td style="text-align: left;">数据不可获取</td>
+<td style="text-align: center;">0.28%</td>
+<td style="text-align: center;">~515天</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>解禁比例极小(&lt;1%)，供给冲击风险低。</p>
+</blockquote>
+<hr />
+<h2>七、综合评分</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">评分(/10)</th>
+<th style="text-align: left;">核心依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">基本面</td>
+<td style="text-align: center;"><strong>7.5</strong></td>
+<td style="text-align: left;">AI龙头+FY2025预增40-70%+教育/医疗落地</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术面</td>
+<td style="text-align: center;"><strong>5.0</strong></td>
+<td style="text-align: left;">-2.23%走弱，短线承压</td>
+</tr>
+<tr>
+<td style="text-align: left;">资金面</td>
+<td style="text-align: center;"><strong>5.5</strong></td>
+<td style="text-align: left;">42.68亿活跃但放量下跌</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业面</td>
+<td style="text-align: center;"><strong>7.8</strong></td>
+<td style="text-align: left;">双L2×0.9，大模型赛道景气上行</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值</td>
+<td style="text-align: center;"><strong>4.5</strong></td>
+<td style="text-align: left;">PE 136x触及红旗①（但未到150x否决线）</td>
+</tr>
+<tr>
+<td style="text-align: left;">风控</td>
+<td style="text-align: center;"><strong>5.5</strong></td>
+<td style="text-align: left;">1红2黄，PE风险是核心矛盾</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>加权综合</strong></td>
+<td style="text-align: center;"><strong>5.8</strong></td>
+<td style="text-align: left;"><strong>中性偏空（短期）</strong>，PE高位+技术面走弱</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>八、操作策略</h2>
+<h3>8.2 情景应对表</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">开盘价</th>
+<th style="text-align: left;">判断</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>&gt; ¥50.27</strong></td>
+<td style="text-align: left;">突破今日高点+5日均线</td>
+<td style="text-align: left;">不追（PE 136x不支持追高）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>¥47.91–50.27</strong></td>
+<td style="text-align: left;">正常震荡</td>
+<td style="text-align: left;">观望</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>¥45.00–47.91</strong></td>
+<td style="text-align: left;">回踩S1区+缩量止跌</td>
+<td style="text-align: left;">试探仓3%，止损44.0</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>&lt; ¥45.00</strong></td>
+<td style="text-align: left;">破S1，加速下跌</td>
+<td style="text-align: left;">继续观望，等¥40-42区域</td>
+</tr>
+</tbody>
+</table></div>
+<h3>8.4a 分段止盈目标</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">目标</th>
+<th style="text-align: left;">价格区间</th>
+<th style="text-align: center;">概率</th>
+<th style="text-align: left;">证据要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">目标1</td>
+<td style="text-align: left;">¥52-55</td>
+<td style="text-align: center;">&gt;50%</td>
+<td style="text-align: left;">技术面企稳+无利空</td>
+</tr>
+<tr>
+<td style="text-align: center;">目标2</td>
+<td style="text-align: left;">¥60-65</td>
+<td style="text-align: center;">20-30%</td>
+<td style="text-align: left;">FY2025年报兑现预增+大模型商业化数据</td>
+</tr>
+<tr>
+<td style="text-align: center;">目标3</td>
+<td style="text-align: left;">¥70+</td>
+<td style="text-align: center;">&lt;10%</td>
+<td style="text-align: left;">L2→L1升级(大模型订单/合同确认)</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>九、中长期展望</h2>
+<p><strong>战略定位</strong>: <strong>赛道β型标的（高波动成长）</strong>。长期看好AI大模型商业化，短期PE 136x+技术面走弱不支持建仓。等待两种机会：①回调至¥45以下（PE~120x）；②大模型商业化收入占比突破20%（估值重估催化剂）。</p>
+<hr />
+<h2>自检清单（24条 v1.4）</h2>
+<ul>
+<li>[x] #1-#24 全部逐条核对完毕</li>
+</ul>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

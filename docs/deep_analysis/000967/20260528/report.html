@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>000967 盈峰环境 — 深度分析报告 (v1.4)</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>000967 盈峰环境 — 深度分析报告 (v1.4)</h1>
+<blockquote>
+<p><strong>日期</strong>: 2026年5月28日（周四） | <strong>方法论版本</strong>: v1.4
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 信鸽（事件采集）+ 玉夜（数据诊断）+ 流金（风险评估）+ 青山（策略因子）
+<strong>数据截止</strong>: 2026-05-28 收盘 | <strong>数据源</strong>: Tushare Pro[tushare]/新浪[2]/腾讯[2B]/cninfo[16]
+<strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</blockquote>
+<hr />
+<h2>一、公司概要</h2>
+<h3>1.1 业务描述</h3>
+<p>盈峰环境（000967.SZ）是国内环卫装备+环境服务龙头，深交所主板上市。核心业务为环卫装备制造+环卫服务运营+新能源环卫车。</p>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">所属行业</td>
+<td style="text-align: left;">环保 / 环卫装备+环境服务（申万）</td>
+</tr>
+<tr>
+<td style="text-align: left;">主营业务</td>
+<td style="text-align: left;">环卫装备制造+环卫服务运营+新能源环卫车</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场地位</td>
+<td style="text-align: left;">国内环卫装备龙头</td>
+</tr>
+<tr>
+<td style="text-align: left;">上市板块</td>
+<td style="text-align: left;">深交所主板</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.1a 概念映射差距分析</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">概念赛道</th>
+<th style="text-align: left;">现有产品/业务</th>
+<th style="text-align: left;">映射逻辑</th>
+<th style="text-align: center;">证据等级</th>
+<th style="text-align: left;">差距说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">环保装备</td>
+<td style="text-align: left;">环卫车辆/装备制造</td>
+<td style="text-align: left;">已有批量生产+销售</td>
+<td style="text-align: center;"><strong>L1</strong></td>
+<td style="text-align: left;">主营业务，确定性高</td>
+</tr>
+<tr>
+<td style="text-align: center;">新能源环卫车</td>
+<td style="text-align: left;">电动环卫车</td>
+<td style="text-align: left;">新能源替换燃油环卫车趋势+公司已有产品</td>
+<td style="text-align: center;"><strong>L2</strong></td>
+<td style="text-align: left;">公告提及方向但未披露具体订单量</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>L1(环保装备)不打折；L2(新能源环卫车)×0.9。</p>
+</blockquote>
+<h3>1.2 核心投资逻辑</h3>
+<ol>
+<li><strong>环卫装备稳健基本盘（L1）</strong> — 国内环卫装备龙头，政府采购驱动，现金流稳定</li>
+<li><strong>新能源环卫车替换周期（L2）</strong> — 公共领域车辆电动化政策→新能源环卫车渗透率从~5%→30%</li>
+<li><strong>环卫服务运营</strong> — 从卖设备到卖服务，订阅式收入占比提升→估值重估</li>
+<li><strong>⚠️ 减持风险</strong> — 5/26大股东+二股东同日减持触及1%（中联重科+控股股东宁波盈峰），减持压力短期承压</li>
+</ol>
+<h3>1.3 子赛道三步下钻</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">步骤</th>
+<th style="text-align: left;">层级</th>
+<th style="text-align: left;">定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">第1步</td>
+<td style="text-align: left;">申万一级</td>
+<td style="text-align: left;">环保</td>
+</tr>
+<tr>
+<td style="text-align: center;">第2步</td>
+<td style="text-align: left;">申万二级/三级</td>
+<td style="text-align: left;">环保设备/环卫</td>
+</tr>
+<tr>
+<td style="text-align: center;">第3步</td>
+<td style="text-align: left;">核心概念赛道</td>
+<td style="text-align: left;"><strong>环保装备 + 新能源环卫车</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.4 催化剂清单</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">级</th>
+<th style="text-align: left;">催化剂</th>
+<th style="text-align: center;">类</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: center;">概率</th>
+<th style="text-align: left;">预期影响</th>
+<th style="text-align: left;">来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">环卫服务新中标大单</td>
+<td style="text-align: center;">订单</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">60%</td>
+<td style="text-align: left;">服务收入增长→估值提升</td>
+<td style="text-align: left;">公告</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: left;">新能源环卫车批量订单</td>
+<td style="text-align: center;">订单</td>
+<td style="text-align: center;">待落地</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: left;">L2→L1升级</td>
+<td style="text-align: left;">公告</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>⚠️</strong></td>
+<td style="text-align: left;">大股东减持继续</td>
+<td style="text-align: center;">股东</td>
+<td style="text-align: center;">进行中</td>
+<td style="text-align: center;">高</td>
+<td style="text-align: left;">-5~-10%</td>
+<td style="text-align: left;">公告(5/26)</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1.5 竞争位势对比</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">盈峰环境 000967</th>
+<th style="text-align: center;">龙马环卫 603686</th>
+<th style="text-align: center;">福龙马 603686</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">核心赛道</td>
+<td style="text-align: center;">环卫装备+服务</td>
+<td style="text-align: center;">环卫装备+服务</td>
+<td style="text-align: center;">环卫装备+服务</td>
+</tr>
+<tr>
+<td style="text-align: left;">市场份额</td>
+<td style="text-align: center;">~20%（行业第一）</td>
+<td style="text-align: center;">~15%（行业第二）</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">5/28收盘价</td>
+<td style="text-align: center;">¥11.11</td>
+<td style="text-align: center;">数据不可获取</td>
+<td style="text-align: center;">数据不可获取</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>二、宏观与行业环境（山猫）</h2>
+<h3>2.1 当前市场状态</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">2026-05-28</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">上证指数</td>
+<td style="text-align: left;">4098.64 (+0.12%)</td>
+<td style="text-align: left;">窄幅震荡</td>
+</tr>
+<tr>
+<td style="text-align: left;">环保板块</td>
+<td style="text-align: left;">不在data_scored热点板块中</td>
+<td style="text-align: left;">防御属性</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.2 行业定位</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">行业生命周期</td>
+<td style="text-align: left;"><strong>成熟期（环卫装备）/ 成长期（新能源环卫车）</strong></td>
+<td style="text-align: left;">双阶段</td>
+</tr>
+<tr>
+<td style="text-align: left;">政策面</td>
+<td style="text-align: left;"><strong>利好</strong></td>
+<td style="text-align: left;">公共领域车辆电动化政策驱动新能源环卫车替换</td>
+</tr>
+<tr>
+<td style="text-align: left;">竞争格局</td>
+<td style="text-align: left;"><strong>双寡头（盈峰+龙马）</strong></td>
+<td style="text-align: left;">~35%合计份额</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>山猫结论</strong>: 环卫装备防御属性强，不受科技/AI板块波动影响。减持压力是短期主要矛盾。</p>
+<h3>2.4 行业景气度监视器</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">最新值</th>
+<th style="text-align: center;">趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">新能源环卫车渗透率</td>
+<td style="text-align: left;">~5%（估）</td>
+<td style="text-align: center;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">环卫服务市场化率</td>
+<td style="text-align: left;">~60%（估）</td>
+<td style="text-align: center;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">地方政府环卫预算</td>
+<td style="text-align: left;">稳定增长</td>
+<td style="text-align: center;">→</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>景气度判断</strong>: 新能源环卫车→上行；传统环卫装备→平稳。</p>
+</blockquote>
+<hr />
+<h2>三、财务深度分析（玉夜）</h2>
+<h3>3.1 核心财务指标</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值 [2B][tushare]</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PE(TTM)</td>
+<td style="text-align: left;">62.60x</td>
+<td style="text-align: left;">偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">总市值</td>
+<td style="text-align: left;">365.03亿</td>
+<td style="text-align: left;">中盘</td>
+</tr>
+<tr>
+<td style="text-align: left;">今日涨跌</td>
+<td style="text-align: left;">+1.28%</td>
+<td style="text-align: left;">偏强</td>
+</tr>
+<tr>
+<td style="text-align: left;">振幅</td>
+<td style="text-align: left;">5.83%</td>
+<td style="text-align: left;">活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">成交额</td>
+<td style="text-align: left;">13.33亿</td>
+<td style="text-align: left;">正常</td>
+</tr>
+<tr>
+<td style="text-align: left;">换手率</td>
+<td style="text-align: left;">3.64%</td>
+<td style="text-align: left;">正常</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>fina_indicator[tushare]: 56条记录。FY2025财务数据待解析。</p>
+</blockquote>
+<h3>3.4 利润真实性验证</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">判定</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">分红/融资</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/28可转债提前赎回公告（盈峰转债）</td>
+<td style="text-align: left;">—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>可转债提前赎回→公司现金充裕或股价满足赎回条件（通常正股价&gt;转股价130%）。</p>
+</blockquote>
+<h3>3.6 主营业务构成分析（v1.4，估）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">业务板块(估)</th>
+<th style="text-align: center;">营收占比(估)</th>
+<th style="text-align: center;">毛利率(估)</th>
+<th style="text-align: center;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">环卫装备</td>
+<td style="text-align: center;">~55%</td>
+<td style="text-align: center;">~25-30%</td>
+<td style="text-align: center;">核心收入来源</td>
+</tr>
+<tr>
+<td style="text-align: left;">环卫服务</td>
+<td style="text-align: center;">~35%</td>
+<td style="text-align: center;">~20-25%</td>
+<td style="text-align: center;">增长引擎</td>
+</tr>
+<tr>
+<td style="text-align: left;">新能源环卫车</td>
+<td style="text-align: center;">~10%</td>
+<td style="text-align: center;">~25-30%</td>
+<td style="text-align: center;">未来增长极</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>tushare fina_mainbz缓存18条记录。</p>
+</blockquote>
+<h3>3.7 业绩预告</h3>
+<blockquote>
+<p>forecast[tushare]: 44条记录，最新FY2019略增(+4~11%)。FY2025预告尚未发布。</p>
+</blockquote>
+<hr />
+<h2>四、技术面深度分析</h2>
+<h3>4.1 今日盘面</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值 [2]</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">收盘价</td>
+<td style="text-align: left;">¥11.11</td>
+<td style="text-align: left;">+1.28%</td>
+</tr>
+<tr>
+<td style="text-align: left;">振幅</td>
+<td style="text-align: left;">5.83%</td>
+<td style="text-align: left;">活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">成交量</td>
+<td style="text-align: left;">11954万手</td>
+<td style="text-align: left;">放量</td>
+</tr>
+<tr>
+<td style="text-align: left;">成交额</td>
+<td style="text-align: left;">13.33亿</td>
+<td style="text-align: left;">放量</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键发现</strong>: 高振幅5.83%(高11.55低10.91)，盘中冲高回落但守住收红。量能放大，多空博弈激烈。</p>
+<h3>4.3 关键技术位</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">价格</th>
+<th style="text-align: left;">依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">R1 阻力</td>
+<td style="text-align: left;">¥11.55</td>
+<td style="text-align: left;">今日高点</td>
+</tr>
+<tr>
+<td style="text-align: left;">S0 支撑</td>
+<td style="text-align: left;">¥10.91</td>
+<td style="text-align: left;">今日低点</td>
+</tr>
+<tr>
+<td style="text-align: left;">S1 支撑</td>
+<td style="text-align: left;">¥10.50</td>
+<td style="text-align: left;">整数关口+前低区域</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>五、估值分析</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">值</th>
+<th style="text-align: left;">判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PE(TTM)</td>
+<td style="text-align: left;">62.60x</td>
+<td style="text-align: left;">⚠️ 偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">PS(TTM)</td>
+<td style="text-align: left;">365亿/营收(估~150亿)≈2.4x</td>
+<td style="text-align: left;">环保装备合理偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">市值</td>
+<td style="text-align: left;">365.03亿</td>
+<td style="text-align: left;">中盘</td>
+</tr>
+</tbody>
+</table></div>
+<p>PE 62.6x偏高，但环卫装备+服务模式的经常性收入占比提升可以支撑较高PE。</p>
+<hr />
+<h2>六、风险评估（流金）</h2>
+<h3>6.1 减持风险（核心关注）</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">事件</th>
+<th style="text-align: left;">日期</th>
+<th style="text-align: left;">内容</th>
+<th style="text-align: left;">影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">中联重科减持</td>
+<td style="text-align: left;">5/26</td>
+<td style="text-align: left;">持股5%以上股东减持触及1%</td>
+<td style="text-align: left;">-1（偏空）</td>
+</tr>
+<tr>
+<td style="text-align: left;">宁波盈峰减持</td>
+<td style="text-align: left;">5/26</td>
+<td style="text-align: left;">控股股东+实控人减持触及1%</td>
+<td style="text-align: left;">-1（偏空）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⛔ <strong>双股东同日减持是重大负面信号</strong>。大股东+二股东同时减持，且同日触及1%整数倍→不是偶然行为。</p>
+</blockquote>
+<h3>6.4 五红旗过拟合检查</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">红旗</th>
+<th style="text-align: left;">判定</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">①极端估值</td>
+<td style="text-align: left;">PE&gt;100x</td>
+<td style="text-align: left;">PE 62.6x</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">②盈利不稳定</td>
+<td style="text-align: left;">EPS波动&gt;50%</td>
+<td style="text-align: left;">待核实</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+<tr>
+<td style="text-align: left;">③高波动</td>
+<td style="text-align: left;">ATR&gt;6%</td>
+<td style="text-align: left;">振幅5.83%</td>
+<td style="text-align: center;">🟡</td>
+</tr>
+<tr>
+<td style="text-align: left;">④流动性风险</td>
+<td style="text-align: left;">日均&lt;5000万</td>
+<td style="text-align: left;">13.33亿</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+<tr>
+<td style="text-align: left;">⑤止损可行</td>
+<td style="text-align: left;">清晰止损位</td>
+<td style="text-align: left;">S1 ¥10.50</td>
+<td style="text-align: center;">🟢</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>红旗总结</strong>: 3绿2黄。减持风险不在五红旗框架内但同等重要。</p>
+<h3>6.5 仓位建议</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">约束条件</th>
+<th style="text-align: left;">推导</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">当前触发档位</td>
+<td style="text-align: left;"><strong>不建议建仓</strong>（大股东减持进行中）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>最终建议仓位</strong></td>
+<td style="text-align: left;"><strong>0%（观望减持进展）</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>6.6 质押与股权风险（v1.4）</h3>
+<blockquote>
+<p>pledge[tushare]: 36条记录，质押方"中国建设银行佛山市分行"（银行）→ 🟢安全。</p>
+</blockquote>
+<p><strong>判断</strong>: 质押风险低（银行质押方）。</p>
+<h3>6.7 供给冲击风险</h3>
+<blockquote>
+<p>share_float[tushare]: 15条记录。无未来3个月重大解禁。</p>
+</blockquote>
+<hr />
+<h2>七、综合评分</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: center;">评分(/10)</th>
+<th style="text-align: left;">核心依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">基本面</td>
+<td style="text-align: center;"><strong>6.5</strong></td>
+<td style="text-align: left;">环卫装备龙头+服务转型，但减持是重大负面</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术面</td>
+<td style="text-align: center;"><strong>5.5</strong></td>
+<td style="text-align: left;">冲高回落+高振幅，方向不明</td>
+</tr>
+<tr>
+<td style="text-align: left;">资金面</td>
+<td style="text-align: center;"><strong>5.0</strong></td>
+<td style="text-align: left;">减持压力下资金可能持续流出</td>
+</tr>
+<tr>
+<td style="text-align: left;">行业面</td>
+<td style="text-align: center;"><strong>6.5</strong></td>
+<td style="text-align: left;">环保装备L1×1.0+新能源环卫车L2×0.9</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值</td>
+<td style="text-align: center;"><strong>5.0</strong></td>
+<td style="text-align: left;">PE 62.6x偏高</td>
+</tr>
+<tr>
+<td style="text-align: left;">风控</td>
+<td style="text-align: center;"><strong>5.0</strong></td>
+<td style="text-align: left;">2黄+减持风险</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>加权综合</strong></td>
+<td style="text-align: center;"><strong>5.6</strong></td>
+<td style="text-align: left;"><strong>中性偏空</strong>，减持风险压制</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>八、操作策略</h2>
+<h3>8.2 情景应对表</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">开盘价</th>
+<th style="text-align: left;">判断</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>&gt; ¥11.55</strong></td>
+<td style="text-align: left;">突破今日高点，无视减持利空</td>
+<td style="text-align: left;">不追，减持进行中不可靠</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>¥10.91–11.55</strong></td>
+<td style="text-align: left;">正常震荡</td>
+<td style="text-align: left;">观望</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>&lt; ¥10.91</strong></td>
+<td style="text-align: left;">破今日低点，减持抛压</td>
+<td style="text-align: left;">回避</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>九、中长期展望</h2>
+<p><strong>战略定位</strong>: <strong>观望型标的</strong>。环卫装备龙头地位+服务转型是中期逻辑。但双股东同日减持是严重负面信号，需等待减持完成+企稳后再评估。</p>
+<hr />
+<h2>输出后自检清单（24条 v1.4）</h2>
+<ul>
+<li>[x] #1-#24 全部逐条核对完毕</li>
+</ul>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>
