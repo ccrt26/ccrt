@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "active": true,
+  "task": "重点股票CODE_MAP同步——统一股票名单配置消除多源不一致",
+  "stage": 1,
+  "stage_name": "架构设计",
+  "executor": "情墨",
+  "gate_1": "PENDING",
+  "gate_2": "PENDING",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [],
+  "started": "2026-05-28T16:29:28",
+  "updated": "2026-05-28T16:29:28",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "started",
+      "time": "2026-05-28T16:29:28"
+    }
+  ]
+}

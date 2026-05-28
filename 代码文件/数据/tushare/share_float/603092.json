@@ -1,0 +1,29 @@
+[
+  {
+    "ts_code": "603092.SH",
+    "ann_date": "20260415",
+    "float_date": "20281107",
+    "float_share": 109923664.0,
+    "float_ratio": 27.4809,
+    "holder_name": "南京晨瑞管理咨询有限公司",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "603092.SH",
+    "ann_date": "20260415",
+    "float_date": "20261109",
+    "float_share": 687023.0,
+    "float_ratio": 0.1717,
+    "holder_name": "无锡云林产业发展投资基金(有限合伙)",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "603092.SH",
+    "ann_date": "20251030",
+    "float_date": "20260507",
+    "float_share": 45.0,
+    "float_ratio": 0.0,
+    "holder_name": "富国基金量化l号集合资产管理计划",
+    "share_type": "首发股"
+  }
+]

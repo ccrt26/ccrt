@@ -90,6 +90,18 @@
             "retry": 2,
             "rate_limit_per_min": 10,
             "encoding": "utf-8"
+        },
+        "tushare": {
+            "name": "Tushare Pro",
+            "base_url": "https://api.tushare.pro",
+            "type": "multi",
+            "timeout_ms": 10000,
+            "retry": 2,
+            "rate_limit_per_min": 200,
+            "encoding": "utf-8",
+            "token_env": "TUSHARE_TOKEN",
+            "points_min": 2000,
+            "note": "2000积分档: 200次/分, 100,000次/天/API"
         }
     },
     "global": {

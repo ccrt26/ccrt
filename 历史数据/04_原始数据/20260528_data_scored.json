@@ -1,0 +1,5290 @@
+﻿{
+  "BuildTime": "2026-05-28 22:47:12",
+  "TradeDate": "2026-05-28",
+  "Summary": {
+    "Total": 54,
+    "Passed": 45,
+    "Vetoed": 9,
+    "PassRate": "83.3%"
+  },
+  "SectorPhaseMap": {
+    "电子": {
+      "phase": "主升调整",
+      "avg_chg": 0.13,
+      "avg_turn": 5.1,
+      "count": 21,
+      "momentum_score": 5.17,
+      "money_bonus": 2,
+      "news_bonus": 1,
+      "sector_code": "",
+      "diffusion_ratio": 19.0,
+      "surge_count": 4
+    },
+    "通信": {
+      "phase": "主升调整",
+      "avg_chg": 5.19,
+      "avg_turn": 4.23,
+      "count": 3,
+      "momentum_score": 6.83,
+      "money_bonus": 3,
+      "news_bonus": 1,
+      "sector_code": "",
+      "diffusion_ratio": 100.0,
+      "surge_count": 3
+    },
+    "汽车": {
+      "phase": "潜伏期",
+      "avg_chg": -0.86,
+      "avg_turn": 1.81,
+      "count": 2,
+      "momentum_score": 1.38,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "食品饮料": {
+      "phase": "潜伏期",
+      "avg_chg": -2.46,
+      "avg_turn": 0.65,
+      "count": 2,
+      "momentum_score": -0.58,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "电力设备": {
+      "phase": "潜伏期",
+      "avg_chg": 0.91,
+      "avg_turn": 2.78,
+      "count": 4,
+      "momentum_score": 3.24,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 25.0,
+      "surge_count": 1
+    },
+    "银行": {
+      "phase": "潜伏期",
+      "avg_chg": 0.32,
+      "avg_turn": 0.48,
+      "count": 1,
+      "momentum_score": 0.64,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "非银金融": {
+      "phase": "潜伏期",
+      "avg_chg": -1.5,
+      "avg_turn": 0.82,
+      "count": 1,
+      "momentum_score": 0.07,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "家用电器": {
+      "phase": "潜伏期",
+      "avg_chg": -1.35,
+      "avg_turn": 0.35,
+      "count": 1,
+      "momentum_score": -0.33,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "机械设备": {
+      "phase": "主升调整",
+      "avg_chg": 0.4,
+      "avg_turn": 3.25,
+      "count": 2,
+      "momentum_score": 3.45,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "医药生物": {
+      "phase": "潜伏期",
+      "avg_chg": -4.71,
+      "avg_turn": 1.53,
+      "count": 1,
+      "momentum_score": -0.82,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "计算机": {
+      "phase": "潜伏期",
+      "avg_chg": -0.87,
+      "avg_turn": 2.49,
+      "count": 11,
+      "momentum_score": 2.06,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "传媒": {
+      "phase": "衰退期",
+      "avg_chg": -3.3,
+      "avg_turn": 6.78,
+      "count": 1,
+      "momentum_score": 5.13,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "有色金属": {
+      "phase": "主升调整",
+      "avg_chg": -2.72,
+      "avg_turn": 2.39,
+      "count": 2,
+      "momentum_score": 1.03,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "医药": {
+      "phase": "主升调整",
+      "avg_chg": 1.18,
+      "avg_turn": 3.02,
+      "count": 1,
+      "momentum_score": 3.61,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    },
+    "环保": {
+      "phase": "主升调整",
+      "avg_chg": 1.28,
+      "avg_turn": 3.64,
+      "count": 1,
+      "momentum_score": 4.28,
+      "money_bonus": 1,
+      "news_bonus": 0,
+      "sector_code": "",
+      "diffusion_ratio": 0.0,
+      "surge_count": 0
+    }
+  },
+  "SectorTrendMap": {},
+  "FieldSources": {
+    "Price": "[1]",
+    "ChangePct": "[1]",
+    "Volume": "[2]",
+    "TurnoverRate": "[1]",
+    "PE": "[3]",
+    "MktCap": "[1]",
+    "EPS": "[3]",
+    "MA5": "[5]",
+    "MA10": "[5]",
+    "MA20": "[5]",
+    "RSI": "[5]",
+    "VolRatio": "[5]",
+    "VolumePercentile": "[5]",
+    "FundMainNet": "[9]",
+    "SectorPhase": "[7]",
+    "SectorTrend": "[7]",
+    "BPS": "[3]",
+    "RevenueTTM": "[3]",
+    "RevenueYOY": "[3]",
+    "NetProfitYOY": "[3]",
+    "GrossMargin": "[3]",
+    "NorthboundSharesRatio": "[8]",
+    "NorthboundFreeRatio": "[8]",
+    "NorthboundHoldMktCap": "[8]",
+    "MarginRZYE": "[12]",
+    "MarginRZJME": "[12]",
+    "MarginRZYE_5dChange": "[12]",
+    "ConsensusGrowth": "[11]",
+    "ResearchReportCount": "[11]",
+    "PE_TTM": "[5]",
+    "PE_Source": "[5]",
+    "PEG": "[5]",
+    "PB": "[5]",
+    "PS": "[5]",
+    "CAR5": "[5]",
+    "EPS_Growth": "[5]",
+    "GrowthSource": "[5]",
+    "ADX14": "[5]",
+    "BB_Upper": "[5]",
+    "BB_Lower": "[5]",
+    "OBV": "[5]",
+    "PhaseMultiplier": "[5]",
+    "ThemePath": "[5]",
+    "VetoStatus": "[5]",
+    "DividendYield": "[3]"
+  },
+  "Recommendations": [
+    {
+      "Code": "601689",
+      "Name": "拓普集团",
+      "Industry": "汽车",
+      "TotalScore": 63,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 11,
+      "S_Money": 18,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 3,
+        "S2_MA_Converge": 2,
+        "S3_Volume_Price": 3,
+        "S4_Support": 3,
+        "S5_RSI": 3,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 1,
+        "raw_tech": 15,
+        "tech_normalized": 11
+      },
+      "DataQuality": "部分缺失",
+      "PoolSource": "",
+      "Price": 65.82,
+      "ChangePct": -2.42,
+      "TurnoverRate": 2.72,
+      "PE": 41.36,
+      "ThemePath": "周期成长",
+      "ThemeDetails": {
+        "themes": [
+          "周期成长",
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": 16.1
+            }
+          ],
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": 69.66,
+      "MA10": 70.37,
+      "MA20": 66.88,
+      "RSI": 47.2,
+      "MACD_Status": "死叉",
+      "VolRatio": 0.9,
+      "VolumePercentile": 81.7,
+      "PathTag": "震荡",
+      "TechAnalysis": "MA10(70.4)>MA5(69.7)>MA20(66.9) 短期整理 | 量能正常(量比0.9) | RSI(47.18)中性",
+      "SectorPhase": "潜伏期",
+      "ATR14": 3.04
+    },
+    {
+      "Code": "600276",
+      "Name": "恒瑞医药",
+      "Industry": "医药生物",
+      "TotalScore": 61,
+      "S_Base": 7,
+      "S_Fund": 15,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 48.0,
+      "ChangePct": -4.71,
+      "TurnoverRate": 1.53,
+      "PE": 39.24,
+      "ThemePath": "稳定价值",
+      "ThemeDetails": {
+        "themes": [
+          "强成长",
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ],
+          [
+            "稳定价值",
+            15,
+            {
+              "method": "PE区间",
+              "range": [
+                22,
+                50
+              ],
+              "PE": 39.2
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "潜伏期",
+      "ATR14": 0
+    },
+    {
+      "Code": "601020",
+      "Name": "华钰矿业",
+      "Industry": "有色金属",
+      "TotalScore": 61,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 25.03,
+      "ChangePct": -2.57,
+      "TurnoverRate": 3.27,
+      "PE": 23.99,
+      "ThemePath": "周期成长",
+      "ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": -1,
+      "C7_PurityDetails": {},
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "603501",
+      "Name": "豪威集团",
+      "Industry": "电子",
+      "TotalScore": 59,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 101.9,
+      "ChangePct": -2.92,
+      "TurnoverRate": 3.03,
+      "PE": 34.9,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "002475",
+      "Name": "立讯精密",
+      "Industry": "电子",
+      "TotalScore": 59,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 72.8,
+      "ChangePct": 1.69,
+      "TurnoverRate": 2.2,
+      "PE": 30.84,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "002236",
+      "Name": "大华股份",
+      "Industry": "电子",
+      "TotalScore": 59,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 17.31,
+      "ChangePct": -2.26,
+      "TurnoverRate": 2.4,
+      "PE": 14.5,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "601899",
+      "Name": "紫金矿业",
+      "Industry": "有色金属",
+      "TotalScore": 59,
+      "S_Base": 7,
+      "S_Fund": 13,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 30.71,
+      "ChangePct": -2.88,
+      "TurnoverRate": 1.51,
+      "PE": 13.24,
+      "ThemePath": "周期成长",
+      "ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            13,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": -1,
+      "C7_PurityDetails": {},
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688256",
+      "Name": "寒武纪",
+      "Industry": "电子",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 1391.5,
+      "ChangePct": 3.84,
+      "TurnoverRate": 2.02,
+      "PE": 321.78,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688012",
+      "Name": "中微公司",
+      "Industry": "电子",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 453.12,
+      "ChangePct": -0.42,
+      "TurnoverRate": 3.34,
+      "PE": 104.42,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688120",
+      "Name": "华海清科",
+      "Industry": "电子",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 274.5,
+      "ChangePct": -2.65,
+      "TurnoverRate": 3.66,
+      "PE": 88.44,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "002916",
+      "Name": "深南电路",
+      "Industry": "电子",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 398.28,
+      "ChangePct": 0.56,
+      "TurnoverRate": 2.16,
+      "PE": 74.64,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "600114",
+      "Name": "东睦股份",
+      "Industry": "机械设备",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 6,
+        "S2_MA_Converge": 0,
+        "S3_Volume_Price": 3,
+        "S4_Support": 4,
+        "S5_RSI": 2,
+        "S6_MACD": 1,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 3,
+        "raw_tech": 19,
+        "tech_normalized": 10
+      },
+      "DataQuality": "部分缺失",
+      "PoolSource": "",
+      "Price": 39.55,
+      "ChangePct": 2.28,
+      "TurnoverRate": 4.77,
+      "PE": 45.41,
+      "ThemePath": "周期成长",
+      "ThemeDetails": {
+        "themes": [
+          "周期成长",
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": 21.3
+            }
+          ],
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": 38.86,
+      "MA10": 36.17,
+      "MA20": 35.16,
+      "RSI": 67.4,
+      "MACD_Status": "多头",
+      "VolRatio": 0.76,
+      "VolumePercentile": 90.0,
+      "PathTag": "震荡",
+      "TechAnalysis": "MA5(38.9)>MA10(36.2)>MA20(35.2) 多头排列 | 量能正常(量比0.8) | RSI(67.44)中性 | MACD多头",
+      "SectorPhase": "主升调整",
+      "ATR14": 1.76
+    },
+    {
+      "Code": "300661",
+      "Name": "圣邦股份",
+      "Industry": "电子",
+      "TotalScore": 58,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 121.5,
+      "ChangePct": 1.77,
+      "TurnoverRate": 3.59,
+      "PE": 123.43,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "300274",
+      "Name": "阳光电源",
+      "Industry": "电力设备",
+      "TotalScore": 57,
+      "S_Base": 7,
+      "S_Fund": 9,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 190.09,
+      "ChangePct": 3.26,
+      "TurnoverRate": 5.25,
+      "PE": 33.04,
+      "ThemePath": "周期成长",
+      "ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            9,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": -1,
+      "C7_PurityDetails": {},
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "潜伏期",
+      "ATR14": 0
+    },
+    {
+      "Code": "600570",
+      "Name": "恒生电子",
+      "Industry": "计算机",
+      "TotalScore": 57,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 24.82,
+      "ChangePct": -2.01,
+      "TurnoverRate": 2.43,
+      "PE": 35.11,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "潜伏期",
+      "ATR14": 0
+    },
+    {
+      "Code": "300033",
+      "Name": "同花顺",
+      "Industry": "计算机",
+      "TotalScore": 57,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 236.52,
+      "ChangePct": -1.03,
+      "TurnoverRate": 4.34,
+      "PE": 53.29,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "潜伏期",
+      "ATR14": 0
+    },
+    {
+      "Code": "000977",
+      "Name": "浪潮信息",
+      "Industry": "计算机",
+      "TotalScore": 57,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 66.41,
+      "ChangePct": 2.93,
+      "TurnoverRate": 4.22,
+      "PE": 38.17,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "潜伏期",
+      "ATR14": 0
+    },
+    {
+      "Code": "300604",
+      "Name": "长川科技",
+      "Industry": "电子",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 219.03,
+      "ChangePct": -0.53,
+      "TurnoverRate": 5.54,
+      "PE": 88.34,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688008",
+      "Name": "澜起科技",
+      "Industry": "电子",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 260.98,
+      "ChangePct": -1.7,
+      "TurnoverRate": 5.44,
+      "PE": 124.71,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "600703",
+      "Name": "三安光电",
+      "Industry": "电子",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 16.85,
+      "ChangePct": 1.44,
+      "TurnoverRate": 5.63,
+      "PE": -168.93,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "002463",
+      "Name": "沪电股份",
+      "Industry": "电子",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 133.06,
+      "ChangePct": 3.72,
+      "TurnoverRate": 4.78,
+      "PE": 59.52,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "300502",
+      "Name": "新易盛",
+      "Industry": "通信",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 718.34,
+      "ChangePct": 3.36,
+      "TurnoverRate": 3.83,
+      "PE": 66.61,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "300782",
+      "Name": "卓胜微",
+      "Industry": "电子",
+      "TotalScore": 56,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 117.09,
+      "ChangePct": 0.1,
+      "TurnoverRate": 5.9,
+      "PE": -172.38,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688521",
+      "Name": "芯原股份",
+      "Industry": "电子",
+      "TotalScore": 55,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 264.95,
+      "ChangePct": 4.95,
+      "TurnoverRate": 4.65,
+      "PE": -214.93,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 0,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    },
+    {
+      "Code": "688072",
+      "Name": "拓荆科技",
+      "Industry": "电子",
+      "TotalScore": 55,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "DataQuality": "严重缺失",
+      "PoolSource": "",
+      "Price": 672.61,
+      "ChangePct": 0.84,
+      "TurnoverRate": 4.14,
+      "PE": 115.64,
+      "ThemePath": "强成长",
+      "ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "C7_Purity": 1,
+      "C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "MA5": null,
+      "MA10": null,
+      "MA20": null,
+      "RSI": null,
+      "MACD_Status": "",
+      "VolRatio": null,
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "TechAnalysis": "",
+      "SectorPhase": "主升调整",
+      "ATR14": 0
+    }
+  ],
+  "AllStocks": [
+    {
+      "Code": "601689",
+      "Name": "拓普集团",
+      "Industry": "汽车",
+      "Price": 65.82,
+      "PrevClose": 67.45,
+      "Open": 67.98,
+      "Volume": 472125,
+      "ChangePct": -2.42,
+      "TurnoverRate": 2.72,
+      "Amplitude": 5.57,
+      "PE": 41.36,
+      "MktCap": 1143.84,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 41.36,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长",
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": 16.1
+            }
+          ],
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 1.0,
+      "MA5": 69.66,
+      "MA10": 70.37,
+      "MA20": 66.88,
+      "RSI": 47.2,
+      "VolRatio": 0.9,
+      "ATR14": 3.04,
+      "ADX14": 37.9,
+      "BB_Upper": 76.18,
+      "BB_Mid": 66.882,
+      "BB_Lower": 57.58,
+      "OBV": -25090722.0,
+      "VolumePercentile": 81.7,
+      "MACD_Status": "死叉",
+      "TechAnalysis": "MA10(70.4)>MA5(69.7)>MA20(66.9) 短期整理 | 量能正常(量比0.9) | RSI(47.18)中性",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 11,
+      "S_Money": 18,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 3,
+        "S2_MA_Converge": 2,
+        "S3_Volume_Price": 3,
+        "S4_Support": 3,
+        "S5_RSI": 3,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 1,
+        "raw_tech": 15,
+        "tech_normalized": 11
+      },
+      "TotalScore": 63,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": -4.31,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600276",
+      "Name": "恒瑞医药",
+      "Industry": "医药生物",
+      "Price": 48.0,
+      "PrevClose": 50.37,
+      "Open": 50.06,
+      "Volume": 978697,
+      "ChangePct": -4.71,
+      "TurnoverRate": 1.53,
+      "Amplitude": 5.42,
+      "PE": 39.24,
+      "MktCap": 3185.86,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 39.24,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长",
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ],
+          [
+            "稳定价值",
+            15,
+            {
+              "method": "PE区间",
+              "range": [
+                22,
+                50
+              ],
+              "PE": 39.2
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.0,
+      "S_Base": 7,
+      "S_Fund": 15,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 61,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "601020",
+      "Name": "华钰矿业",
+      "Industry": "有色金属",
+      "Price": 25.03,
+      "PrevClose": 25.69,
+      "Open": 25.53,
+      "Volume": 268202,
+      "ChangePct": -2.57,
+      "TurnoverRate": 3.27,
+      "Amplitude": 4.01,
+      "PE": 23.99,
+      "MktCap": 205.24,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 23.99,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 61,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "603501",
+      "Name": "豪威集团",
+      "Industry": "电子",
+      "Price": 101.9,
+      "PrevClose": 104.96,
+      "Open": 103.75,
+      "Volume": 366533,
+      "ChangePct": -2.92,
+      "TurnoverRate": 3.03,
+      "Amplitude": 3.53,
+      "PE": 34.9,
+      "MktCap": 1285.29,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 34.9,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 59,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002475",
+      "Name": "立讯精密",
+      "Industry": "电子",
+      "Price": 72.8,
+      "PrevClose": 71.59,
+      "Open": 71.23,
+      "Volume": 1597158,
+      "ChangePct": 1.69,
+      "TurnoverRate": 2.2,
+      "Amplitude": 5.63,
+      "PE": 30.84,
+      "MktCap": 5309.06,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 30.84,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 59,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002236",
+      "Name": "大华股份",
+      "Industry": "电子",
+      "Price": 17.31,
+      "PrevClose": 17.71,
+      "Open": 17.6,
+      "Volume": 573274,
+      "ChangePct": -2.26,
+      "TurnoverRate": 2.4,
+      "Amplitude": 4.57,
+      "PE": 14.5,
+      "MktCap": 565.91,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 14.5,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 59,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "601899",
+      "Name": "紫金矿业",
+      "Industry": "有色金属",
+      "Price": 30.71,
+      "PrevClose": 31.62,
+      "Open": 31.0,
+      "Volume": 3109909,
+      "ChangePct": -2.88,
+      "TurnoverRate": 1.51,
+      "Amplitude": 3.54,
+      "PE": 13.24,
+      "MktCap": 8166.01,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 13.24,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            13,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 13,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 59,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688256",
+      "Name": "寒武纪",
+      "Industry": "电子",
+      "Price": 1391.5,
+      "PrevClose": 1340.0,
+      "Open": 1361.0,
+      "Volume": 12671712,
+      "ChangePct": 3.84,
+      "TurnoverRate": 2.02,
+      "Amplitude": 4.18,
+      "PE": 321.78,
+      "MktCap": 8742.7,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 321.78,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688012",
+      "Name": "中微公司",
+      "Industry": "电子",
+      "Price": 453.12,
+      "PrevClose": 455.05,
+      "Open": 453.9,
+      "Volume": 20992926,
+      "ChangePct": -0.42,
+      "TurnoverRate": 3.34,
+      "Amplitude": 3.92,
+      "PE": 104.42,
+      "MktCap": 2849.4,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 104.42,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688120",
+      "Name": "华海清科",
+      "Industry": "电子",
+      "Price": 274.5,
+      "PrevClose": 281.98,
+      "Open": 280.66,
+      "Volume": 12942127,
+      "ChangePct": -2.65,
+      "TurnoverRate": 3.66,
+      "Amplitude": 4.54,
+      "PE": 88.44,
+      "MktCap": 970.77,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 88.44,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002916",
+      "Name": "深南电路",
+      "Industry": "电子",
+      "Price": 398.28,
+      "PrevClose": 396.05,
+      "Open": 390.81,
+      "Volume": 143521,
+      "ChangePct": 0.56,
+      "TurnoverRate": 2.16,
+      "Amplitude": 4.66,
+      "PE": 74.64,
+      "MktCap": 2712.95,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 74.64,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "600114",
+      "Name": "东睦股份",
+      "Industry": "机械设备",
+      "Price": 39.55,
+      "PrevClose": 38.67,
+      "Open": 38.68,
+      "Volume": 294309,
+      "ChangePct": 2.28,
+      "TurnoverRate": 4.77,
+      "Amplitude": 5.15,
+      "PE": 45.41,
+      "MktCap": 249.71,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 45.41,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长",
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": 21.3
+            }
+          ],
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 0.75,
+      "MA5": 38.86,
+      "MA10": 36.17,
+      "MA20": 35.16,
+      "RSI": 67.4,
+      "VolRatio": 0.76,
+      "ATR14": 1.76,
+      "ADX14": 33.3,
+      "BB_Upper": 39.8,
+      "BB_Mid": 35.163,
+      "BB_Lower": 30.53,
+      "OBV": 198204575.0,
+      "VolumePercentile": 90.0,
+      "MACD_Status": "多头",
+      "TechAnalysis": "MA5(38.9)>MA10(36.2)>MA20(35.2) 多头排列 | 量能正常(量比0.8) | RSI(67.44)中性 | MACD多头",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 6,
+        "S2_MA_Converge": 0,
+        "S3_Volume_Price": 3,
+        "S4_Support": 4,
+        "S5_RSI": 2,
+        "S6_MACD": 1,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 3,
+        "raw_tech": 19,
+        "tech_normalized": 10
+      },
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": 9.11,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300661",
+      "Name": "圣邦股份",
+      "Industry": "电子",
+      "Price": 121.5,
+      "PrevClose": 119.39,
+      "Open": 119.34,
+      "Volume": 215039,
+      "ChangePct": 1.77,
+      "TurnoverRate": 3.59,
+      "Amplitude": 6.49,
+      "PE": 123.43,
+      "MktCap": 754.12,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 123.43,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 19,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300274",
+      "Name": "阳光电源",
+      "Industry": "电力设备",
+      "Price": 190.09,
+      "PrevClose": 184.09,
+      "Open": 182.89,
+      "Volume": 834248,
+      "ChangePct": 3.26,
+      "TurnoverRate": 5.25,
+      "Amplitude": 6.5,
+      "PE": 33.04,
+      "MktCap": 3940.97,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 33.04,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            9,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.0,
+      "S_Base": 7,
+      "S_Fund": 9,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 57,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600570",
+      "Name": "恒生电子",
+      "Industry": "计算机",
+      "Price": 24.82,
+      "PrevClose": 25.33,
+      "Open": 25.36,
+      "Volume": 460475,
+      "ChangePct": -2.01,
+      "TurnoverRate": 2.43,
+      "Amplitude": 5.61,
+      "PE": 35.11,
+      "MktCap": 470.0,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 35.11,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 57,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300033",
+      "Name": "同花顺",
+      "Industry": "计算机",
+      "Price": 236.52,
+      "PrevClose": 238.99,
+      "Open": 237.99,
+      "Volume": 190409,
+      "ChangePct": -1.03,
+      "TurnoverRate": 4.34,
+      "Amplitude": 4.78,
+      "PE": 53.29,
+      "MktCap": 1780.14,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 53.29,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 57,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "000977",
+      "Name": "浪潮信息",
+      "Industry": "计算机",
+      "Price": 66.41,
+      "PrevClose": 64.52,
+      "Open": 64.3,
+      "Volume": 618809,
+      "ChangePct": 2.93,
+      "TurnoverRate": 4.22,
+      "Amplitude": 5.56,
+      "PE": 38.17,
+      "MktCap": 975.22,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 38.17,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 57,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300604",
+      "Name": "长川科技",
+      "Industry": "电子",
+      "Price": 219.03,
+      "PrevClose": 220.2,
+      "Open": 221.4,
+      "Volume": 270932,
+      "ChangePct": -0.53,
+      "TurnoverRate": 5.54,
+      "Amplitude": 4.08,
+      "PE": 88.34,
+      "MktCap": 1389.57,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 88.34,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688008",
+      "Name": "澜起科技",
+      "Industry": "电子",
+      "Price": 260.98,
+      "PrevClose": 265.5,
+      "Open": 260.0,
+      "Volume": 62409077,
+      "ChangePct": -1.7,
+      "TurnoverRate": 5.44,
+      "Amplitude": 4.0,
+      "PE": 124.71,
+      "MktCap": 3189.7,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 124.71,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "600703",
+      "Name": "三安光电",
+      "Industry": "电子",
+      "Price": 16.85,
+      "PrevClose": 16.61,
+      "Open": 16.3,
+      "Volume": 2809017,
+      "ChangePct": 1.44,
+      "TurnoverRate": 5.63,
+      "Amplitude": 5.66,
+      "PE": -168.93,
+      "MktCap": 840.65,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002463",
+      "Name": "沪电股份",
+      "Industry": "电子",
+      "Price": 133.06,
+      "PrevClose": 128.29,
+      "Open": 126.1,
+      "Volume": 918255,
+      "ChangePct": 3.72,
+      "TurnoverRate": 4.78,
+      "Amplitude": 7.79,
+      "PE": 59.52,
+      "MktCap": 2560.56,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 59.52,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300502",
+      "Name": "新易盛",
+      "Industry": "通信",
+      "Price": 718.34,
+      "PrevClose": 695.0,
+      "Open": 695.0,
+      "Volume": 339478,
+      "ChangePct": 3.36,
+      "TurnoverRate": 3.83,
+      "Amplitude": 7.95,
+      "PE": 66.61,
+      "MktCap": 7153.93,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 66.61,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300782",
+      "Name": "卓胜微",
+      "Industry": "电子",
+      "Price": 117.09,
+      "PrevClose": 116.97,
+      "Open": 116.96,
+      "Volume": 264417,
+      "ChangePct": 0.1,
+      "TurnoverRate": 5.9,
+      "Amplitude": 5.53,
+      "PE": -172.38,
+      "MktCap": 673.25,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 17,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688521",
+      "Name": "芯原股份",
+      "Industry": "电子",
+      "Price": 264.95,
+      "PrevClose": 252.45,
+      "Open": 250.0,
+      "Volume": 24473081,
+      "ChangePct": 4.95,
+      "TurnoverRate": 4.65,
+      "Amplitude": 9.09,
+      "PE": -214.93,
+      "MktCap": 1393.41,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688072",
+      "Name": "拓荆科技",
+      "Industry": "电子",
+      "Price": 672.61,
+      "PrevClose": 667.0,
+      "Open": 664.97,
+      "Volume": 11712568,
+      "ChangePct": 0.84,
+      "TurnoverRate": 4.14,
+      "Amplitude": 8.83,
+      "PE": 115.64,
+      "MktCap": 1901.42,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 115.64,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "000858",
+      "Name": "五粮液",
+      "Industry": "食品饮料",
+      "Price": 81.49,
+      "PrevClose": 83.89,
+      "Open": 82.56,
+      "Volume": 362379,
+      "ChangePct": -2.86,
+      "TurnoverRate": 0.93,
+      "Amplitude": 1.82,
+      "PE": 25.1,
+      "MktCap": 3163.12,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 25.1,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            15,
+            {
+              "method": "PE区间",
+              "range": [
+                20,
+                45
+              ],
+              "PE": 25.1
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 7.0,
+      "S_Base": 7,
+      "S_Fund": 15,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600036",
+      "Name": "招商银行",
+      "Industry": "银行",
+      "Price": 37.12,
+      "PrevClose": 37.0,
+      "Open": 37.05,
+      "Volume": 995791,
+      "ChangePct": 0.32,
+      "TurnoverRate": 0.48,
+      "Amplitude": 1.24,
+      "PE": 6.21,
+      "MktCap": 9361.61,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 6.21,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            15,
+            {
+              "method": "PE区间",
+              "range": [
+                4,
+                10
+              ],
+              "PE": 6.2
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 4.0,
+      "S_Base": 7,
+      "S_Fund": 15,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "000333",
+      "Name": "美的集团",
+      "Industry": "家用电器",
+      "Price": 78.95,
+      "PrevClose": 80.03,
+      "Open": 79.6,
+      "Volume": 241998,
+      "ChangePct": -1.35,
+      "TurnoverRate": 0.35,
+      "Amplitude": 1.46,
+      "PE": 13.6,
+      "MktCap": 6009.51,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 13.6,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            15,
+            {
+              "method": "PE区间",
+              "range": [
+                10,
+                22
+              ],
+              "PE": 13.6
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 15,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300124",
+      "Name": "汇川技术",
+      "Industry": "机械设备",
+      "Price": 76.95,
+      "PrevClose": 78.1,
+      "Open": 78.0,
+      "Volume": 416910,
+      "ChangePct": -1.47,
+      "TurnoverRate": 1.73,
+      "Amplitude": 3.61,
+      "PE": 43.95,
+      "MktCap": 2083.5,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 43.95,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长",
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            9,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ],
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 9,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 55,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "688041",
+      "Name": "海光信息",
+      "Industry": "电子",
+      "Price": 314.36,
+      "PrevClose": 316.79,
+      "Open": 311.13,
+      "Volume": 36421095,
+      "ChangePct": -0.77,
+      "TurnoverRate": 1.57,
+      "Amplitude": 4.06,
+      "PE": 268.03,
+      "MktCap": 7306.79,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 268.03,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 15,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002371",
+      "Name": "北方华创",
+      "Industry": "电子",
+      "Price": 659.0,
+      "PrevClose": 654.77,
+      "Open": 650.0,
+      "Volume": 112600,
+      "ChangePct": 0.65,
+      "TurnoverRate": 1.55,
+      "Amplitude": 3.33,
+      "PE": 85.66,
+      "MktCap": 4776.65,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 85.66,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 15,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300750",
+      "Name": "宁德时代",
+      "Industry": "电力设备",
+      "Price": 415.68,
+      "PrevClose": 414.8,
+      "Open": 420.0,
+      "Volume": 327771,
+      "ChangePct": 0.21,
+      "TurnoverRate": 0.77,
+      "Amplitude": 3.47,
+      "PE": 24.35,
+      "MktCap": 19231.47,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 24.35,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            11,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.0,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 12,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300418",
+      "Name": "昆仑万维",
+      "Industry": "传媒",
+      "Price": 44.29,
+      "PrevClose": 45.8,
+      "Open": 43.86,
+      "Volume": 784051,
+      "ChangePct": -3.3,
+      "TurnoverRate": 6.78,
+      "Amplitude": 5.68,
+      "PE": -32.79,
+      "MktCap": 561.0,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 4.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 16,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "衰退期"
+    },
+    {
+      "Code": "688111",
+      "Name": "金山办公",
+      "Industry": "计算机",
+      "Price": 236.38,
+      "PrevClose": 236.52,
+      "Open": 236.0,
+      "Volume": 7998406,
+      "ChangePct": -0.06,
+      "TurnoverRate": 1.73,
+      "Amplitude": 3.55,
+      "PE": 30.18,
+      "MktCap": 1095.32,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 30.18,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 53,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "688188",
+      "Name": "柏楚电子",
+      "Industry": "计算机",
+      "Price": 162.54,
+      "PrevClose": 163.4,
+      "Open": 162.97,
+      "Volume": 3131031,
+      "ChangePct": -0.53,
+      "TurnoverRate": 1.08,
+      "Amplitude": 3.37,
+      "PE": 40.12,
+      "MktCap": 470.85,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 40.12,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 53,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600519",
+      "Name": "贵州茅台",
+      "Industry": "食品饮料",
+      "Price": 1275.98,
+      "PrevClose": 1303.0,
+      "Open": 1290.0,
+      "Volume": 45890,
+      "ChangePct": -2.07,
+      "TurnoverRate": 0.37,
+      "Amplitude": 2.53,
+      "PE": 19.28,
+      "MktCap": 15950.79,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 19.28,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            12,
+            {
+              "method": "PE区间",
+              "range": [
+                20,
+                45
+              ],
+              "PE": 19.3
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 7.0,
+      "S_Base": 7,
+      "S_Fund": 12,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 52,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "688561",
+      "Name": "奇安信",
+      "Industry": "计算机",
+      "Price": 28.01,
+      "PrevClose": 29.1,
+      "Open": 28.86,
+      "Volume": 10031881,
+      "ChangePct": -3.75,
+      "TurnoverRate": 1.47,
+      "Amplitude": 5.77,
+      "PE": -15.19,
+      "MktCap": 191.1,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 14,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 52,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "603986",
+      "Name": "兆易创新",
+      "Industry": "电子",
+      "Price": 483.0,
+      "PrevClose": 514.18,
+      "Open": 495.0,
+      "Volume": 623792,
+      "ChangePct": -6.06,
+      "TurnoverRate": 9.34,
+      "Amplitude": 5.74,
+      "PE": 117.8,
+      "MktCap": 3386.32,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 117.8,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 13,
+      "S_News": 11,
+      "S_Risk": 3,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 51,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "002156",
+      "Name": "通富微电",
+      "Industry": "电子",
+      "Price": 69.3,
+      "PrevClose": 71.44,
+      "Open": 69.5,
+      "Volume": 1960697,
+      "ChangePct": -3.0,
+      "TurnoverRate": 12.92,
+      "Amplitude": 4.59,
+      "PE": 72.71,
+      "MktCap": 1051.69,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 72.71,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 13,
+      "S_News": 11,
+      "S_Risk": 3,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 51,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "601318",
+      "Name": "中国平安",
+      "Industry": "非银金融",
+      "Price": 52.47,
+      "PrevClose": 53.27,
+      "Open": 53.26,
+      "Volume": 875600,
+      "ChangePct": -1.5,
+      "TurnoverRate": 0.82,
+      "Amplitude": 2.35,
+      "PE": 7.16,
+      "MktCap": 9501.08,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 7.16,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            11,
+            {
+              "method": "PE区间",
+              "range": [
+                8,
+                20
+              ],
+              "PE": 7.2
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 11,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 51,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "002415",
+      "Name": "海康威视",
+      "Industry": "计算机",
+      "Price": 30.76,
+      "PrevClose": 31.65,
+      "Open": 31.41,
+      "Volume": 889979,
+      "ChangePct": -2.81,
+      "TurnoverRate": 0.98,
+      "Amplitude": 3.85,
+      "PE": 18.87,
+      "MktCap": 2819.11,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 18.87,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 12,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 50,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600845",
+      "Name": "宝信软件",
+      "Industry": "计算机",
+      "Price": 20.96,
+      "PrevClose": 20.83,
+      "Open": 20.8,
+      "Volume": 178179,
+      "ChangePct": 0.62,
+      "TurnoverRate": 0.83,
+      "Amplitude": 3.22,
+      "PE": 48.46,
+      "MktCap": 601.72,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 48.46,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 12,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 50,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "002594",
+      "Name": "比亚迪",
+      "Industry": "汽车",
+      "Price": 95.88,
+      "PrevClose": 95.22,
+      "Open": 95.22,
+      "Volume": 314590,
+      "ChangePct": 0.69,
+      "TurnoverRate": 0.9,
+      "Amplitude": 2.06,
+      "PE": 31.73,
+      "MktCap": 8741.57,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 31.73,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            9,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 9,
+      "S_Tech": 10,
+      "S_Money": 9,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 49,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "688981",
+      "Name": "中芯国际",
+      "Industry": "电子",
+      "Price": 153.7,
+      "PrevClose": 146.22,
+      "Open": 146.0,
+      "Volume": 160823175,
+      "ChangePct": 5.12,
+      "TurnoverRate": 8.04,
+      "Amplitude": 8.92,
+      "PE": 244.1,
+      "MktCap": 12316.24,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 244.1,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 10,
+      "S_News": 11,
+      "S_Risk": 3,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 48,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "000967",
+      "Name": "盈峰环境",
+      "Industry": "环保",
+      "Price": 11.11,
+      "PrevClose": 10.97,
+      "Open": 11.11,
+      "Volume": 1195442,
+      "ChangePct": 1.28,
+      "TurnoverRate": 3.64,
+      "Amplitude": 5.83,
+      "PE": 62.6,
+      "MktCap": 365.2,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 62.6,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            2,
+            {
+              "method": "PE区间",
+              "range": [
+                10,
+                28
+              ],
+              "PE": 62.6
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 0.75,
+      "MA5": 11.95,
+      "MA10": 12.46,
+      "MA20": 13.6,
+      "RSI": 24.6,
+      "VolRatio": 0.65,
+      "ATR14": 1.06,
+      "ADX14": 26.6,
+      "BB_Upper": 16.51,
+      "BB_Mid": 13.603,
+      "BB_Lower": 10.7,
+      "OBV": 679940638.0,
+      "VolumePercentile": 43.3,
+      "MACD_Status": "空头",
+      "TechAnalysis": "MA10(12.5)≤MA20(13.6) 均线死叉 | 缩量整理(量比0.7) | RSI(24.63)超卖",
+      "PathTag": "抄底",
+      "IndustryBenchmark": 4.0,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 4,
+      "S_Money": 14,
+      "S_News": 8,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 1,
+        "S2_MA_Converge": 0,
+        "S3_Volume_Price": 3,
+        "S4_Support": 2,
+        "S5_RSI": 1,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 0,
+        "raw_tech": 7,
+        "tech_normalized": 4
+      },
+      "TotalScore": 44,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": -10.07,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "passed",
+      "VetoReason": "",
+      "SectorPhase": "主升调整"
+    }
+  ],
+  "VetoedStocks": [
+    {
+      "Code": "002230",
+      "Name": "科大讯飞",
+      "Industry": "计算机",
+      "Price": 49.13,
+      "PrevClose": 50.25,
+      "Open": 50.27,
+      "Volume": 873094,
+      "ChangePct": -2.23,
+      "TurnoverRate": 3.99,
+      "Amplitude": 4.7,
+      "PE": 136.76,
+      "MktCap": 1180.14,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 136.76,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 1.0,
+      "MA5": 48.93,
+      "MA10": 48.48,
+      "MA20": 48.77,
+      "RSI": 46.9,
+      "VolRatio": 1.21,
+      "ATR14": 1.63,
+      "ADX14": 12.9,
+      "BB_Upper": 50.73,
+      "BB_Mid": 48.7715,
+      "BB_Lower": 46.81,
+      "OBV": 249171643.0,
+      "VolumePercentile": 96.7,
+      "MACD_Status": "中性",
+      "TechAnalysis": "MA10(48.5)≤MA20(48.8) 价格站上均线，待确认 | 量能正常(量比1.2) | RSI(46.94)中性 | MACD中性",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 13,
+      "S_Money": 18,
+      "S_News": 15,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 4,
+        "S2_MA_Converge": 2,
+        "S3_Volume_Price": 3,
+        "S4_Support": 3,
+        "S5_RSI": 3,
+        "S6_MACD": 1,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 1,
+        "raw_tech": 17,
+        "tech_normalized": 13
+      },
+      "TotalScore": 64,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": 8.1,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "vetoed_cond_1",
+      "VetoReason": "科技PE过高: 137 > 120 (豁免需总分≥85)",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "603019",
+      "Name": "中科曙光",
+      "Industry": "计算机",
+      "Price": 91.25,
+      "PrevClose": 90.99,
+      "Open": 90.92,
+      "Volume": 481327,
+      "ChangePct": 0.29,
+      "TurnoverRate": 3.29,
+      "Amplitude": 3.47,
+      "PE": 60.2,
+      "MktCap": 1335.09,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 60.2,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 1.0,
+      "MA5": 93.56,
+      "MA10": 95.09,
+      "MA20": 95.79,
+      "RSI": 42.7,
+      "VolRatio": 0.81,
+      "ATR14": 4.24,
+      "ADX14": 25.5,
+      "BB_Upper": 102.28,
+      "BB_Mid": 95.78849999999998,
+      "BB_Lower": 89.3,
+      "OBV": 137118959.0,
+      "VolumePercentile": 51.7,
+      "MACD_Status": "空头",
+      "TechAnalysis": "MA10(95.1)≤MA20(95.8) 均线死叉 | 量能正常(量比0.8) | RSI(42.74)中性",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 12,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 1,
+        "S2_MA_Converge": 3,
+        "S3_Volume_Price": 3,
+        "S4_Support": 2,
+        "S5_RSI": 3,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 2,
+        "raw_tech": 14,
+        "tech_normalized": 10
+      },
+      "TotalScore": 58,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": 0.59,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 1,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": true
+      },
+      "VetoStatus": "vetoed_cond_5",
+      "VetoReason": "均线死叉: MA10(95.09)≤MA20(95.79) (v2.7 D.1 豁免需总分≥75)",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300454",
+      "Name": "深信服",
+      "Industry": "计算机",
+      "Price": 108.28,
+      "PrevClose": 109.31,
+      "Open": 109.0,
+      "Volume": 88316,
+      "ChangePct": -0.94,
+      "TurnoverRate": 3.07,
+      "Amplitude": 3.85,
+      "PE": 80.86,
+      "MktCap": 467.29,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 80.86,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 18,
+      "S_News": 10,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 56,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "vetoed_cond_2",
+      "VetoReason": "PE过高: 81 > 80 (豁免需总分≥85)",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "300308",
+      "Name": "中际旭创",
+      "Industry": "通信",
+      "Price": 1197.99,
+      "PrevClose": 1111.37,
+      "Open": 1100.0,
+      "Volume": 287465,
+      "ChangePct": 7.79,
+      "TurnoverRate": 2.59,
+      "Amplitude": 10.28,
+      "PE": 89.24,
+      "MktCap": 13340.82,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 89.24,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 15,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "vetoed_cond_2",
+      "VetoReason": "PE过高: 89 > 80 (短期脉冲豁免需总分≥70)",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "300394",
+      "Name": "天孚通信",
+      "Industry": "通信",
+      "Price": 447.56,
+      "PrevClose": 428.61,
+      "Open": 427.6,
+      "Volume": 488237,
+      "ChangePct": 4.42,
+      "TurnoverRate": 6.28,
+      "Amplitude": 9.6,
+      "PE": 160.56,
+      "MktCap": 3487.21,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 160.56,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 15,
+      "S_News": 11,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "vetoed_cond_1",
+      "VetoReason": "科技PE过高: 161 > 120 (短期脉冲豁免需总分≥70)",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "601727",
+      "Name": "上海电气",
+      "Industry": "电力设备",
+      "Price": 8.44,
+      "PrevClose": 8.41,
+      "Open": 8.36,
+      "Volume": 1432070,
+      "ChangePct": 0.36,
+      "TurnoverRate": 1.14,
+      "Amplitude": 2.97,
+      "PE": 101.33,
+      "MktCap": 1311.59,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 101.33,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            8,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": 7.0
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 1.0,
+      "MA5": 8.68,
+      "MA10": 8.8,
+      "MA20": 8.58,
+      "RSI": 54.2,
+      "VolRatio": 0.76,
+      "ATR14": 0.33,
+      "ADX14": 31.6,
+      "BB_Upper": 9.38,
+      "BB_Mid": 8.582,
+      "BB_Lower": 7.79,
+      "OBV": -96279571.0,
+      "VolumePercentile": 46.7,
+      "MACD_Status": "空头",
+      "TechAnalysis": "MA10(8.8)>MA5(8.7)>MA20(8.6) 短期整理 | 量能正常(量比0.8) | RSI(54.16)中性",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.0,
+      "S_Base": 7,
+      "S_Fund": 8,
+      "S_Tech": 12,
+      "S_Money": 11,
+      "S_News": 12,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 3,
+        "S2_MA_Converge": 3,
+        "S3_Volume_Price": 3,
+        "S4_Support": 3,
+        "S5_RSI": 3,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 1,
+        "raw_tech": 16,
+        "tech_normalized": 12
+      },
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": -1.25,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "vetoed_cond_2",
+      "VetoReason": "PE过高: 101 > 80 (豁免需总分≥85)",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "603092",
+      "Name": "德力佳",
+      "Industry": "电力设备",
+      "Price": 68.56,
+      "PrevClose": 68.69,
+      "Open": 68.61,
+      "Volume": 13764,
+      "ChangePct": -0.19,
+      "TurnoverRate": 3.98,
+      "Amplitude": 2.15,
+      "PE": 30.57,
+      "MktCap": 274.24,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 30.57,
+      "_ThemePath": "周期成长",
+      "_ThemeDetails": {
+        "themes": [
+          "周期成长"
+        ],
+        "all_paths": [
+          [
+            "周期成长",
+            9,
+            {
+              "method": "PE近似(无BPS)",
+              "PB": null,
+              "trend_20d": -5.2
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 1.0,
+      "MA5": 69.68,
+      "MA10": 72.11,
+      "MA20": 73.28,
+      "RSI": 32.8,
+      "VolRatio": 0.59,
+      "ATR14": 3.3,
+      "ADX14": 24.0,
+      "BB_Upper": 78.49,
+      "BB_Mid": 73.28400000000002,
+      "BB_Lower": 68.08,
+      "OBV": 27555918.0,
+      "VolumePercentile": 6.7,
+      "MACD_Status": "空头",
+      "TechAnalysis": "MA10(72.1)≤MA20(73.3) 均线死叉 | 缩量整理(量比0.6) | RSI(32.79)中性",
+      "PathTag": "抄底",
+      "IndustryBenchmark": 6.0,
+      "S_Base": 6,
+      "S_Fund": 9,
+      "S_Tech": 7,
+      "S_Money": 15,
+      "S_News": 12,
+      "S_Risk": 5,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 1,
+        "S2_MA_Converge": 2,
+        "S3_Volume_Price": 3,
+        "S4_Support": 2,
+        "S5_RSI": 2,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 0,
+        "raw_tech": 10,
+        "tech_normalized": 7
+      },
+      "TotalScore": 54,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": 0.0,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "周期成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": -1,
+      "_C7_PurityDetails": {},
+      "VetoStatus": "vetoed_cond_5",
+      "VetoReason": "均线死叉: MA10(72.11)≤MA20(73.28) (v2.7 D.1 豁免需总分≥75)",
+      "SectorPhase": "潜伏期"
+    },
+    {
+      "Code": "600584",
+      "Name": "长电科技",
+      "Industry": "电子",
+      "Price": 84.74,
+      "PrevClose": 86.16,
+      "Open": 83.01,
+      "Volume": 2722646,
+      "ChangePct": -1.65,
+      "TurnoverRate": 15.22,
+      "Amplitude": 7.54,
+      "PE": 91.78,
+      "MktCap": 1516.35,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "严重缺失",
+      "PE_Source": "[3]东财PE(兜底,非TTM)",
+      "PE_TTM": 91.78,
+      "_ThemePath": "强成长",
+      "_ThemeDetails": {
+        "themes": [
+          "强成长"
+        ],
+        "all_paths": [
+          [
+            "强成长",
+            5,
+            {
+              "method": "PS(数据不足)",
+              "PS": null
+            }
+          ]
+        ]
+      },
+      "VolumePercentile": null,
+      "PathTag": "震荡",
+      "IndustryBenchmark": 6.5,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 10,
+      "S_Money": 10,
+      "S_News": 11,
+      "S_Risk": 3,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {},
+      "TotalScore": 48,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": null,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "强成长",
+      "_BreakthroughType": null,
+      "_C7_Purity": 0,
+      "_C7_PurityDetails": {
+        "revenue_purity": false,
+        "rd_credibility": false,
+        "whitelist_match": false
+      },
+      "VetoStatus": "vetoed_cond_2",
+      "VetoReason": "PE过高: 92 > 80 (短期脉冲豁免需总分≥70)",
+      "SectorPhase": "主升调整"
+    },
+    {
+      "Code": "301075",
+      "Name": "多瑞医药",
+      "Industry": "医药",
+      "Price": 77.14,
+      "PrevClose": 76.24,
+      "Open": 76.22,
+      "Volume": 24151,
+      "ChangePct": 1.18,
+      "TurnoverRate": 3.02,
+      "Amplitude": 7.67,
+      "PE": -61.38,
+      "MktCap": 61.71,
+      "_CommodityPrices": null,
+      "_Market5DMedian": -4.339333054276544,
+      "DataQuality": "部分缺失",
+      "PE_Source": "不可得",
+      "PE_TTM": 0,
+      "_ThemePath": "稳定价值",
+      "_ThemeDetails": {
+        "themes": [
+          "稳定价值"
+        ],
+        "all_paths": [
+          [
+            "稳定价值",
+            5,
+            {
+              "method": "PE区间(PE无效)",
+              "range": [
+                10,
+                25
+              ]
+            }
+          ]
+        ]
+      },
+      "PhaseMultiplier": 0.75,
+      "MA5": 79.63,
+      "MA10": 82.7,
+      "MA20": 82.74,
+      "RSI": 40.3,
+      "VolRatio": 0.99,
+      "ATR14": 5.8,
+      "ADX14": 23.0,
+      "BB_Upper": 89.93,
+      "BB_Mid": 82.7365,
+      "BB_Lower": 75.55,
+      "OBV": 5049434.0,
+      "VolumePercentile": 58.3,
+      "MACD_Status": "空头",
+      "TechAnalysis": "MA10(82.7)≤MA20(82.7) 均线死叉 | 量能正常(量比1.0) | RSI(40.26)中性",
+      "PathTag": "震荡",
+      "IndustryBenchmark": 5.0,
+      "S_Base": 7,
+      "S_Fund": 7,
+      "S_Tech": 8,
+      "S_Money": 11,
+      "S_News": 8,
+      "S_Risk": 4,
+      "S_SectorTrend": 0,
+      "S_Tech_Details": {
+        "S1_MA_System": 1,
+        "S2_MA_Converge": 3,
+        "S3_Volume_Price": 3,
+        "S4_Support": 2,
+        "S5_RSI": 3,
+        "S6_MACD": 0,
+        "S7_Breakout": 0,
+        "S8_Trend_Momentum": 1,
+        "raw_tech": 13,
+        "tech_normalized": 8
+      },
+      "TotalScore": 45,
+      "PEG": null,
+      "PB": null,
+      "PS": null,
+      "CAR5": -8.2,
+      "EPS_Growth": null,
+      "GrowthSource": null,
+      "ThemePath": "稳定价值",
+      "_BreakthroughType": null,
+      "VetoStatus": "vetoed_abs_4",
+      "VetoReason": "财务数据异常: EPS≤0且PE无法计算",
+      "SectorPhase": "主升调整"
+    }
+  ],
+  "data_quality": {
+    "flag": "normal",
+    "degraded_fields": [],
+    "cached_fields": [],
+    "api_latency_ms": 0,
+    "checked_at": "2026-05-28"
+  }
+}

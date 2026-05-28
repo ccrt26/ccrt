@@ -1,4 +1,10 @@
-﻿{
-    "LastCheck":  "2026-05-27T20:00:05.2312098+08:00",
-    "ConsecutiveFails":  0
+{
+  "Source": "sina",
+  "SourceId": "[2]",
+  "LastCheck": "2026-05-28T22:54:06.826336+08:00",
+  "LatencyMs": 0,
+  "Status": "down",
+  "ConsecutiveFails": 1,
+  "LastSuccess": null,
+  "TTL": 3600
 }

@@ -1,0 +1,74 @@
+[
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20240130",
+    "float_date": "20240729",
+    "float_share": 8379405.0,
+    "float_ratio": 0.7206,
+    "holder_name": "J.P. Morgan Securities plc",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20240130",
+    "float_date": "20240726",
+    "float_share": 12150137.0,
+    "float_ratio": 0.7206,
+    "holder_name": "J.P. Morgan Securities plc",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20210225",
+    "float_date": "20210823",
+    "float_share": 1529411.0,
+    "float_ratio": 0.1388,
+    "holder_name": "Goldman Sachs & Co.LLC",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20170526",
+    "float_date": "20200525",
+    "float_share": 4521626.0,
+    "float_ratio": 0.4286,
+    "holder_name": "邬建树",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20150318",
+    "float_date": "20190319",
+    "float_share": 478400000.0,
+    "float_ratio": 65.7524,
+    "holder_name": "迈科国际控股(香港)有限公司",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20170526",
+    "float_date": "20180524",
+    "float_share": 3805452.0,
+    "float_ratio": 0.523,
+    "holder_name": "广东温氏投资有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20160315",
+    "float_date": "20160321",
+    "float_share": 1015040.0,
+    "float_ratio": 0.1564,
+    "holder_name": "宁波金润股权投资合伙企业(有限合伙)",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "601689.SH",
+    "ann_date": "20150313",
+    "float_date": "20150319",
+    "float_share": 352090.0,
+    "float_ratio": 0.0542,
+    "holder_name": "中国太平洋人寿保险股份有限公司-分红-个人分红",
+    "share_type": "首发股"
+  }
+]

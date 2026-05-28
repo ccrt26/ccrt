@@ -1,0 +1,62 @@
+[
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20251231",
+    "bz_item": "东北",
+    "bz_code": "D",
+    "bz_sales": 501556775.82,
+    "bz_profit": NaN,
+    "bz_cost": NaN,
+    "curr_type": "CNY"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20250630",
+    "bz_item": "东北",
+    "bz_code": "D",
+    "bz_sales": 129530497.15,
+    "bz_profit": NaN,
+    "bz_cost": NaN,
+    "curr_type": "CNY"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20241231",
+    "bz_item": "东北",
+    "bz_code": "D",
+    "bz_sales": 478689129.96,
+    "bz_profit": NaN,
+    "bz_cost": NaN,
+    "curr_type": "CNY"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20240630",
+    "bz_item": "东北",
+    "bz_code": "D",
+    "bz_sales": 153326680.18,
+    "bz_profit": NaN,
+    "bz_cost": NaN,
+    "curr_type": "CNY"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20231231",
+    "bz_item": "东北",
+    "bz_code": "D",
+    "bz_sales": 431351250.33,
+    "bz_profit": 215750808.66,
+    "bz_cost": 215600441.67,
+    "curr_type": "CNY"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "end_date": "20230630",
+    "bz_item": "国外",
+    "bz_code": "D",
+    "bz_sales": 36049827.28,
+    "bz_profit": NaN,
+    "bz_cost": NaN,
+    "curr_type": "CNY"
+  }
+]

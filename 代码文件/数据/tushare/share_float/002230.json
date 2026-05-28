@@ -1,0 +1,119 @@
+[
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20260421",
+    "float_date": "20271025",
+    "float_share": 6767426.0,
+    "float_ratio": 0.2817,
+    "holder_name": "安徽言知科技有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20260421",
+    "float_date": "20261026",
+    "float_share": 3383713.0,
+    "float_ratio": 0.1409,
+    "holder_name": "合肥市创业投资引导基金有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20210716",
+    "float_date": "20230119",
+    "float_share": 70401437.0,
+    "float_ratio": 3.0296,
+    "holder_name": "刘庆峰",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20190717",
+    "float_date": "20200720",
+    "float_share": 10811808.0,
+    "float_ratio": 0.4919,
+    "holder_name": "国新央企运营投资基金管理(广州)有限公司-国新央企运营(广州)投资基金(有限合伙)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20170316",
+    "float_date": "20200317",
+    "float_share": 8253850.0,
+    "float_ratio": 0.3944,
+    "holder_name": "宁波赛特股权投资合伙企业(有限合伙)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20161207",
+    "float_date": "20191209",
+    "float_share": 407676.0,
+    "float_ratio": 0.0185,
+    "holder_name": "王彬彬",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20161207",
+    "float_date": "20181210",
+    "float_share": 232956.0,
+    "float_ratio": 0.0111,
+    "holder_name": "王彬彬",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20161207",
+    "float_date": "20171211",
+    "float_share": 1941306.0,
+    "float_ratio": 0.1398,
+    "holder_name": "杨军",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20160817",
+    "float_date": "20160822",
+    "float_share": 1271456.0,
+    "float_ratio": 0.0982,
+    "holder_name": "中国银行股份有限公司-国投瑞银瑞利灵活配置混合型证券投资基金",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20130423",
+    "float_date": "20160425",
+    "float_share": 179198533.0,
+    "float_ratio": 13.8709,
+    "holder_name": "中国移动通信有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20110509",
+    "float_date": "20120510",
+    "float_share": 1500000.0,
+    "float_ratio": 0.5951,
+    "holder_name": "泰康人寿保险股份有限公司-万能-个险万能",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20110512",
+    "float_date": "20110516",
+    "float_share": 12558612.0,
+    "float_ratio": 4.982,
+    "holder_name": "刘庆峰等16名自然人股东",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "002230.SZ",
+    "ann_date": "20090508",
+    "float_date": "20090512",
+    "float_share": 550000.0,
+    "float_ratio": 0.51,
+    "holder_name": "季擎",
+    "share_type": "首发原始股"
+  }
+]

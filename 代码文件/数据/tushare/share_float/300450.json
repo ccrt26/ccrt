@@ -1,0 +1,101 @@
+[
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20210702",
+    "float_date": "20240709",
+    "float_share": 111856823.0,
+    "float_ratio": 7.1421,
+    "holder_name": "宁德时代新能源科技股份有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20210702",
+    "float_date": "20240708",
+    "float_share": 111856823.0,
+    "float_ratio": 7.1421,
+    "holder_name": "宁德时代新能源科技股份有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20170906",
+    "float_date": "20200624",
+    "float_share": 21024579.0,
+    "float_ratio": 2.3852,
+    "holder_name": "王德女",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": null,
+    "float_date": "20200430",
+    "float_share": 21024579.0,
+    "float_ratio": 2.3852,
+    "holder_name": "王德女",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20190516",
+    "float_date": "20190520",
+    "float_share": 77495162.0,
+    "float_ratio": 8.7897,
+    "holder_name": "石河子市嘉鼎股权投资合伙企业(有限合伙)",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20170906",
+    "float_date": "20190430",
+    "float_share": 2628072.0,
+    "float_ratio": 0.2981,
+    "holder_name": "王德女",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20171018",
+    "float_date": "20181022",
+    "float_share": 6823519.0,
+    "float_ratio": 0.7739,
+    "holder_name": "无锡金投领航产业升级并购投资企业(有限合伙)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20170906",
+    "float_date": "20180912",
+    "float_share": 4380119.0,
+    "float_ratio": 0.4968,
+    "holder_name": "珠海泰坦电力电子集团有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20180530",
+    "float_date": "20180601",
+    "float_share": 10845962.0,
+    "float_ratio": 1.2302,
+    "holder_name": "无锡先导电容器设备厂",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20160812",
+    "float_date": "20160815",
+    "float_share": 3519000.0,
+    "float_ratio": 0.8625,
+    "holder_name": "上海熠美股权投资管理合伙企业(有限合伙)",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "300450.SZ",
+    "ann_date": "20150508",
+    "float_date": "20150518",
+    "float_share": 10424.0,
+    "float_ratio": 0.0153,
+    "holder_name": "中国太平洋人寿保险股份有限公司-万能-团体万能",
+    "share_type": "首发股"
+  }
+]

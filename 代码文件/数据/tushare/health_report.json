@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-05-28T23:26:03.437575",
+  "summary": {
+    "total": 5,
+    "pass": 5,
+    "fail": 0,
+    "warn": 0
+  },
+  "overall": "PASS",
+  "details": [
+    {
+      "check": "Token配置",
+      "status": "PASS",
+      "detail": "已设置(56字符)"
+    },
+    {
+      "check": "API连通性",
+      "status": "PASS",
+      "detail": "600114日线返回7条"
+    },
+    {
+      "check": "数据完整性",
+      "status": "PASS",
+      "detail": "8只重点股票数据完整"
+    },
+    {
+      "check": "缓存新鲜度",
+      "status": "PASS",
+      "detail": "最近更新0.0小时前"
+    },
+    {
+      "check": "存储空间",
+      "status": "PASS",
+      "detail": "6.9MB"
+    }
+  ]
+}

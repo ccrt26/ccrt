@@ -1,4 +1,4 @@
-date,code,name,action,price,shares,amount,commission,stamp_tax,total_cost,reason,entry_prediction,data_source
+date,code,name,action,price,shares,amount,commission,stamp_tax,total_cost,reason,entry_prediction,data_source,source,analysis_summary
 20260522,301075,多瑞医药,BUY,86.04,1100,-94644.00,23.66,0,-94667.66,开仓_看多_预警关注,看多,[1]
 20260522,601689,拓普集团,BUY,72.07,1200,-86484.00,21.62,0,-86505.62,开仓_看多_健康,看多,[1]
 20260522,600114,东睦股份,BUY,35.19,2300,-80937.00,20.23,0,-80957.23,开仓_看多_健康,看多,[1]

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "active": true,
+  "task": "Tushare全量API接入(三梯队15个API)",
+  "stage": 4,
+  "stage_name": "上线前验证",
+  "executor": "新安",
+  "gate_1": "PASS",
+  "gate_2": "PENDING",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [],
+  "started": "2026-05-28T15:14:36",
+  "updated": "2026-05-28T15:16:07",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "started",
+      "time": "2026-05-28T15:14:36"
+    },
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "complete",
+      "time": "2026-05-28T15:15:00"
+    },
+    {
+      "stage": 2,
+      "name": "架构审查",
+      "status": "started",
+      "time": "2026-05-28T15:15:00"
+    },
+    {
+      "stage": 2,
+      "name": "架构审查",
+      "status": "complete",
+      "time": "2026-05-28T15:15:00"
+    },
+    {
+      "stage": 3,
+      "name": "编码实现",
+      "status": "started",
+      "time": "2026-05-28T15:15:00"
+    },
+    {
+      "stage": 3,
+      "name": "编码实现",
+      "status": "complete",
+      "time": "2026-05-28T15:16:07"
+    },
+    {
+      "stage": 4,
+      "name": "上线前验证",
+      "status": "started",
+      "time": "2026-05-28T15:16:07"
+    }
+  ]
+}

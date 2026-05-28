@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "date": "2026-05-28",
+    "generated_by": "manual_extraction",
+    "source": "重点股票/股票报告/",
+    "stock_count": 11,
+    "note": "T+1数据(5/29收盘)待补充"
+  },
+  "stocks": [
+    {
+      "code": "601727",
+      "name": "上海电气",
+      "daily_report_path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260528.md",
+      "close_m28": 8.44,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 8.44,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {
+        "technical": "2",
+        "fund_flow": "9"
+      },
+      "scenarios": [
+        {
+          "price": 8.52,
+          "condition": "突破今日高点",
+          "action": "不追。低换手股票追高没意义——涨了也会回来"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "600114",
+      "name": "东睦股份",
+      "daily_report_path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260528.md",
+      "close_m28": 39.55,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": 45.0,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 39.55,
+        "R1": 40.19,
+        "S1": 36.0,
+        "S3": 32.0
+      },
+      "health_labels": {
+        "technical": "2",
+        "fund_flow": "9"
+      },
+      "scenarios": [
+        {
+          "price": 40.19,
+          "condition": "突破今日高点+40关口",
+          "action": "若放量站稳40以上30分钟→试探2%。冲高回落→假突破，等回踩38.5"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "daily_report_path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260528.md",
+      "close_m28": 91.25,
+      "scores": {},
+      "composite": null,
+      "signals": {
+        "S05": true,
+        "S29": true
+      },
+      "technical_values": {
+        "rsi": 202603.0,
+        "adx": null,
+        "wyckoff_stage": "Markdown",
+        "fund_flow_direction": null,
+        "market_regime": null
+      },
+      "price_levels": {
+        "close": 91.25,
+        "R1": 92.16,
+        "S1": 85.0,
+        "S3": null
+      },
+      "health_labels": {},
+      "scenarios": [
+        {
+          "price": 93.0,
+          "condition": "强力反弹",
+          "action": "不追。Markdown中的反弹=假突破概率高。放量站稳93以上2天再考虑"
+        }
+      ],
+      "core_contradiction": "AI算力β确定性强（Q1营收+23.7%爆发），但技术面在下跌趋势中"
+    },
+    {
+      "code": "300450",
+      "name": "先导智能",
+      "daily_report_path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260528.md",
+      "close_m28": null,
+      "scores": {},
+      "composite": null,
+      "signals": {
+        "S07": true,
+        "S27": true
+      },
+      "technical_values": {
+        "rsi": 60.0,
+        "adx": null,
+        "wyckoff_stage": "Markup",
+        "fund_flow_direction": null,
+        "market_regime": null
+      },
+      "price_levels": {
+        "close": null,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {},
+      "scenarios": [
+        {
+          "price": 52.0,
+          "condition": "突破整数关+持续强势",
+          "action": "若放量站稳52以上30分钟→试探仓3%，止损49.5"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "301075",
+      "name": "多瑞医药",
+      "daily_report_path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260528.md",
+      "close_m28": 77.14,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": null
+      },
+      "price_levels": {
+        "close": 77.14,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {},
+      "scenarios": [],
+      "core_contradiction": null
+    },
+    {
+      "code": "603092",
+      "name": "德力佳",
+      "daily_report_path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_20260528.md",
+      "close_m28": 68.56,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 68.56,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {
+        "technical": "2",
+        "fund_flow": "9"
+      },
+      "scenarios": [
+        {
+          "price": 70.0,
+          "condition": "突破整数关",
+          "action": "若放量(>2万手)站稳70以上→可加1-2%。无量突破→假突破，不追"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "601689",
+      "name": "拓普集团",
+      "daily_report_path": "重点股票/股票报告/拓普集团(601689)/拓普集团(601689)日报_20260528.md",
+      "close_m28": 65.82,
+      "scores": {},
+      "composite": null,
+      "signals": {
+        "S07": true,
+        "S29": true
+      },
+      "technical_values": {
+        "rsi": 61.0,
+        "adx": null,
+        "wyckoff_stage": "Markdown",
+        "fund_flow_direction": null,
+        "market_regime": null
+      },
+      "price_levels": {
+        "close": 65.82,
+        "R1": 68.2,
+        "S1": 60.0,
+        "S3": 58.0
+      },
+      "health_labels": {},
+      "scenarios": [
+        {
+          "price": 68.2,
+          "condition": "反弹突破今日高点",
+          "action": "不追。Markdown中的单日反弹多为诱多。观察能否连续2日站稳68以上+缩量"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "daily_report_path": "重点股票/股票报告/招商银行(600036)/招商银行(600036)日报_20260528.md",
+      "close_m28": 37.12,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 37.12,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {},
+      "scenarios": [],
+      "core_contradiction": null
+    },
+    {
+      "code": "300736",
+      "name": "百邦科技",
+      "daily_report_path": "重点股票/股票报告/百邦科技(300736)/百邦科技(300736)日报_20260528.md",
+      "close_m28": null,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": null,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {},
+      "scenarios": [],
+      "core_contradiction": null
+    },
+    {
+      "code": "000967",
+      "name": "盈峰环境",
+      "daily_report_path": "重点股票/股票报告/盈峰环境(000967)/盈峰环境(000967)日报_20260528.md",
+      "close_m28": 11.11,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 11.11,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {
+        "technical": "2",
+        "fund_flow": "9"
+      },
+      "scenarios": [
+        {
+          "price": 11.55,
+          "condition": "突破今日高点",
+          "action": "不追。减持方可能在更高位置出货。假突破概率高"
+        }
+      ],
+      "core_contradiction": null
+    },
+    {
+      "code": "002230",
+      "name": "科大讯飞",
+      "daily_report_path": "重点股票/股票报告/科大讯飞(002230)/科大讯飞(002230)日报_20260528.md",
+      "close_m28": 49.13,
+      "scores": {},
+      "composite": null,
+      "signals": {},
+      "technical_values": {
+        "rsi": null,
+        "adx": null,
+        "wyckoff_stage": null,
+        "fund_flow_direction": null,
+        "market_regime": "震荡"
+      },
+      "price_levels": {
+        "close": 49.13,
+        "R1": null,
+        "S1": null,
+        "S3": null
+      },
+      "health_labels": {
+        "technical": "2",
+        "fund_flow": "9"
+      },
+      "scenarios": [
+        {
+          "price": 50.27,
+          "condition": "强力反弹突破今日高点",
+          "action": "不追。放量下跌后的反弹=大概率假突破。需放量站稳50以上2天确认"
+        }
+      ],
+      "core_contradiction": null
+    }
+  ]
+}

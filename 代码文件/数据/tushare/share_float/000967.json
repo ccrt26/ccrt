@@ -1,0 +1,137 @@
+[
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20190102",
+    "float_date": "20220704",
+    "float_share": 1017997382.0,
+    "float_ratio": 32.1839,
+    "holder_name": "宁波盈峰资产管理有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20190102",
+    "float_date": "20220104",
+    "float_share": 38709849.0,
+    "float_ratio": 1.2175,
+    "holder_name": "宁波联太投资合伙企业(有限合伙)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20180102",
+    "float_date": "20210108",
+    "float_share": 11723329.0,
+    "float_ratio": 0.3706,
+    "holder_name": "何剑锋",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20180102",
+    "float_date": "20210104",
+    "float_share": 7033997.0,
+    "float_ratio": 0.2224,
+    "holder_name": "佘常光",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20190102",
+    "float_date": "20200114",
+    "float_share": 68830113.0,
+    "float_ratio": 2.1761,
+    "holder_name": "上海绿联君和产业并购股权投资基金合伙企业(有限合伙)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20190102",
+    "float_date": "20200106",
+    "float_share": 399214659.0,
+    "float_ratio": 12.6211,
+    "holder_name": "中联重科股份有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20180102",
+    "float_date": "20190103",
+    "float_share": 703403.0,
+    "float_ratio": 0.0222,
+    "holder_name": "中融基金管理有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20151106",
+    "float_date": "20181109",
+    "float_share": 6006408.0,
+    "float_ratio": 0.5147,
+    "holder_name": "深圳市安雅管理咨询有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20140722",
+    "float_date": "20170726",
+    "float_share": 46831044.0,
+    "float_ratio": 4.2841,
+    "holder_name": "盈峰投资控股集团有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20151106",
+    "float_date": "20161109",
+    "float_share": 8435581.0,
+    "float_ratio": 1.1597,
+    "holder_name": "江阴福奥特国际贸易有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20140722",
+    "float_date": "20150723",
+    "float_share": 5274100.0,
+    "float_ratio": 1.7198,
+    "holder_name": "申万菱信基金-工商银行-申万菱信定增2号资产管理计划",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20090926",
+    "float_date": "20090929",
+    "float_share": 82505836.0,
+    "float_ratio": 40.2116,
+    "holder_name": "广东盈峰投资控股集团有限公司",
+    "share_type": "股权分置限售股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20080918",
+    "float_date": "20080922",
+    "float_share": 1864425.0,
+    "float_ratio": 0.9087,
+    "holder_name": "赵荣坚",
+    "share_type": "股权分置限售股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20080327",
+    "float_date": "20080328",
+    "float_share": 16283.0,
+    "float_ratio": 0.01,
+    "holder_name": "王慧",
+    "share_type": "股权分置限售股份"
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20070921",
+    "float_date": "20070924",
+    "float_share": 814153.0,
+    "float_ratio": 0.59,
+    "holder_name": "台州翔鑫水暖器材有限公司",
+    "share_type": "股权分置限售股份"
+  }
+]

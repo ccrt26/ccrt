@@ -2,19 +2,20 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash(*.ps1) || Bash(*.py) || Bash(python *)",
-        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\监督机制\\PreToolUse_hook.ps1\""
+        "matcher": "Bash(*.py) || Bash(python *)",
+        "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/PreToolUse_hook.py\""
       },
       {
         "matcher": "Edit(*) || Write(*)",
-        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\监督机制\\write_protection_hook.ps1\""
+        "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/write_protection_hook.py\""
       }
     ]
   },
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [
-      "PowerShell(*)",
+      "Bash(*.py)",
+      "Bash(python3 *)",
       "Skill(update-config)",
       "Skill(fewer-permission-prompts)",
       "WebSearch",
@@ -28,8 +29,8 @@
   },
   "mcpServers": {
     "tielv-financial": {
-      "command": "python",
-      "args": ["c:\\Users\\34269\\Documents\\Claude\\股票分析\\代码文件\\tools\\financial_mcp_server.py"]
+      "command": "python3",
+      "args": ["/Users/ccrt/ccrt/代码文件/tools/financial_mcp_server.py"]
     }
   }
 }

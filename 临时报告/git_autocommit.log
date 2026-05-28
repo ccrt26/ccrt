@@ -49,3 +49,5 @@
 {"timestamp":"2026-05-27 23:00:33","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
 {"timestamp":"2026-05-27 23:06:07","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
 {"timestamp":"2026-05-27 23:09:56","module":"data_pipeline","status":"CLEAN","commit_hash":"","files_count":0,"dry_run":false,"skip_hook":false,"error":"","message":"批量数据采集产出"}
+{"timestamp": "2026-05-29 01:05:22", "module": "sweep", "status": "SKIPPED", "commit_hash": "", "files_count": 139, "category": "pipeline", "error": "No active pipeline token"}
+{"timestamp": "2026-05-29 01:05:35", "module": "sweep", "status": "SKIPPED", "commit_hash": "", "files_count": 139, "category": "pipeline", "error": "No active pipeline token"}

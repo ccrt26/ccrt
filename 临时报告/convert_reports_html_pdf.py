@@ -116,7 +116,7 @@ for name, code in stocks:
         abs_html = os.path.abspath(html_path)
         abs_pdf = os.path.abspath(pdf_path)
         result = subprocess.run([
-            'msedge', '--headless', '--disable-gpu',
+            'google-chrome', '--headless', '--disable-gpu',
             f'--print-to-pdf={abs_pdf}',
             abs_html
         ], capture_output=True, text=True, timeout=30)

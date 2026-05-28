@@ -1,0 +1,10 @@
+{
+  "Source": "eastmoney",
+  "SourceId": "[3]",
+  "LastCheck": "2026-05-28T22:54:06.948079+08:00",
+  "LatencyMs": 120,
+  "Status": "ok",
+  "ConsecutiveFails": 0,
+  "LastSuccess": "2026-05-28T22:54:06.948079+08:00",
+  "TTL": 3600
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20161209",
+    "float_date": "20171207",
+    "float_share": 7204610.0,
+    "float_ratio": 1.6511,
+    "holder_name": "创金合信基金管理有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20160217",
+    "float_date": "20160222",
+    "float_share": 33963000.0,
+    "float_ratio": 8.6914,
+    "holder_name": "宁波金广投资股份有限公司",
+    "share_type": "股权分置限售股份"
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20140315",
+    "float_date": "20150313",
+    "float_share": 18390804.0,
+    "float_ratio": 4.8754,
+    "holder_name": "华夏资本-工商银行-华夏资本定向增发-远策2号资产管理计划",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20070228",
+    "float_date": "20070302",
+    "float_share": 8782200.0,
+    "float_ratio": 4.49,
+    "holder_name": "宁波友利投资有限公司",
+    "share_type": "股权分置限售股份"
+  }
+]

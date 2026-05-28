@@ -57,8 +57,8 @@ print(f"HTML written: {html_path} ({len(full_html)} chars)")
 
 # Edge headless PDF
 edge_options = [
-    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-    r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\google-chrome.exe",
+    r"C:\Program Files\Microsoft\Edge\Application\google-chrome.exe",
 ]
 edge = None
 for p in edge_options:

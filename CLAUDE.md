@@ -2,7 +2,7 @@
 
 > ⛔ **最高优先级指令**：红线规则已在本文档§一至§四中摘要。仅在需核对具体条款编号或详细条文时才读取完整文件。
 > 完整规则：`规则红线/分析的规则红线--Claude_v1.16.md`
-> ⚡ **Token纪律**：能用代码完成的绝不消耗Token；禁止把原始数据喂给AI阅读；禁止重复调用。详见红线§2。Token审计责任人：旧影（检查标准见 `.claude/commands/旧影.md` §Token效率专项），自动化工具：`代码文件/监督机制/check_token_efficiency.ps1`。
+> ⚡ **Token纪律**：能用代码完成的绝不消耗Token；禁止把原始数据喂给AI阅读；禁止重复调用。详见红线§2。Token审计责任人：旧影（检查标准见 `.claude/commands/旧影.md` §Token效率专项），自动化工具：`代码文件/监督机制/check_token_efficiency.py`。
 
 ---
 
@@ -24,10 +24,10 @@
 
 ## 二、文档同步红线（详见红线§5.4 + §1.6）
 
-- 修改.md → 同步生成.docx（工具: `md_to_docx.py` 或对应 `build_docx.ps1`）
+- 修改.md → 同步生成.docx（工具: `md_to_docx.py` 或对应 `build_tools.py`）
 - 文件名版本号 = 文档内部声明 = CHANGELOG = 文档版本索引
 - CHANGELOG只记已完成改动，"已修复"须带文件路径+行号
-- 提交前运行 `version_supervisor.ps1 -CrossCheck`
+- 提交前运行 `version_supervisor.py --cross-check`
 - 每个版本独立文件，旧版本保留不删
 
 ---
@@ -43,8 +43,8 @@
 
 | 任务 | 白皮书 | 版本 |
 |:-----|:------|:----:|
-| 评分/选股/每日荐股报告 | 每日荐股分析逻辑白皮书 | v2.9 |
-| 重点股票深度分析 | 深度分析白皮书 | v1.2 |
+| 评分/选股/每日荐股报告 | 每日荐股分析逻辑白皮书 | v3.0 |
+| 重点股票深度分析 | 深度分析白皮书 | v1.4 |
 | 重点股票跟踪分析 | 重点股票跟踪分析逻辑白皮书 | v3.5 |
 | 每日荐股后评估 | 次日后评估白皮书 | v1.6 |
 | 深度分析后评估 | 深度分析后评估逻辑白皮书 | v1.0 |
@@ -64,10 +64,17 @@
 
 | 工具 | 用途 | 用法 |
 |:-----|:------|:-----|
-| `代码文件/规则红线/check_redlines.ps1` | 自动化红线合规检查 | `powershell -File ...` |
-| `代码文件/规则红线/build_docx.ps1` | 规则红线 .md→.docx | `.\build_docx.ps1` |
-| `代码文件/tools/md_to_docx.py` | 通用 MD→DOCX 转换 | `python md_to_docx.py input.md output.docx` |
-| `代码文件/监督机制/version_supervisor.ps1` | 白皮书版本一致性自动检查 | `.\version_supervisor.ps1` |
+| `代码文件/规则红线/check_redlines.py` | 自动化红线合规检查 | `python3 代码文件/规则红线/check_redlines.py` |
+| `代码文件/tools/build_tools.py` | 统一文档构建(docx/pdf) | `python3 代码文件/tools/build_tools.py docx input.md` |
+| `代码文件/tools/md_to_docx.py` | 通用 MD→DOCX 转换 | `python3 md_to_docx.py input.md output.docx` |
+| `代码文件/监督机制/version_supervisor.py` | 白皮书版本一致性自动检查 | `python3 代码文件/监督机制/version_supervisor.py --cross-check` |
+| `代码文件/监督机制/pipeline_engine.py` | 流程引擎状态管理 | `python3 代码文件/监督机制/pipeline_engine.py --status` |
+| `代码文件/监督机制/run_full_audit.py` | 全量审计入口 | `python3 代码文件/监督机制/run_full_audit.py` |
+| `代码文件/tools/git_autocommit.py` | Git 自动提交(安全检查) | `python3 代码文件/tools/git_autocommit.py --module daily_pick --paths ...` |
+| `代码文件/tools/health_check.py` | 数据健康检测 | `python3 代码文件/tools/health_check.py --mode daily_sim` |
+| `代码文件/tools/tushare_history_sync.py` | Tushare历史数据沉淀 | `python3 代码文件/tools/tushare_history_sync.py --all` |
+| `代码文件/tools/tushare_health_check.py` | Tushare API巡检 | `python3 代码文件/tools/tushare_health_check.py --report` |
+| `代码文件/tools/check_data_quality.py` | 数据质量QC闸门 | `python3 代码文件/tools/check_data_quality.py --data-file ...` |
 | `.claude/commands/红线检查.md` | Claude Code 红线审查命令 | `/红线检查` |
 | `.claude/knowledge/` | 共享知识库 | 角色边界宪章/红线摘要/数据字典/常见错误——所有角色优先查此处 |
 
@@ -169,13 +176,13 @@
 ### 7.1 阿黑流程执行循环（唯一操作协议）
 
 ```
-1. status = pipeline_engine.ps1 -Status
+1. status = pipeline_engine.py --status
 2. 若 next_action=="done": 输出摘要，结束
 3. 若 next_action=="stop_l3": 呈现 l3_reason，等用户
 4. 若 next_action=="invoke_role":
    a. 读 .claude/commands/<executor>.md
    b. 以该角色产出交付物
-   c. pipeline_engine.ps1 -Validate -OutputPath "交付物路径"
+   c. pipeline_engine.py --validate -OutputPath "交付物路径"
 5. 若 next_action=="retry": 静默打回，重新执行步骤4
 6. 上下文>70%: ScheduleWakeup(60s, loop_context)
 7. goto 1
@@ -189,11 +196,11 @@
 | ② | 腰子（设计确认） | → 闸门1a: 全团咨询(山猫→玉夜→流金→青山) + finance_confirmed |
 | ③ | 新安+旧影（架构审查） | → 闸门1b: 技术合规审查 + **旧影Token设计审查(模板体积/输出模式/API调用)** |
 | ④ | 红结（编码实现） | → 闸门2: 代码 + 四层验证 |
-| ⑤ | 新安（四层验证） | → 闸门2 PASS: 旧影运行 `check_token_efficiency.ps1 -Quiet`，**overall=FAIL则退回红结** |
+| ⑤ | 新安（四层验证） | → 闸门2 PASS: 旧影运行 `check_token_efficiency.py --quiet`，**overall=FAIL则退回红结** |
 | ⑥ | 红枫（灰度部署） | → 闸门3: 前置全PASS + 部署记录 + 回滚方案 |
 | ⑦ | 腰子+青山（后评估） | → 完成 |
 
-> **Token双闸门**：③设计时预防（情墨设计文档必含Token影响评估）→ ⑤编码后验证（check_token_efficiency.ps1自动扫描）。Token预算唯一责任人：旧影。详见 `.claude/commands/旧影.md` §Token效率专项。
+> **Token双闸门**：③设计时预防（情墨设计文档必含Token影响评估）→ ⑤编码后验证（check_token_efficiency.py自动扫描）。Token预算唯一责任人：旧影。详见 `.claude/commands/旧影.md` §Token效率专项。
 
 ### 7.3 违规处理
 
@@ -202,7 +209,7 @@
 - **无日志上线**：违规上线，红枫补充发布记录
 - **连续违规**：旧影升级为P0
 
-> 详细逻辑见 `pipeline_engine.ps1`。流程令牌：`pipeline_token.ps1 -Start/-Advance/-Complete/-Status`。
+> 详细逻辑见 `pipeline_engine.py`。流程令牌：`pipeline_engine.py --start/-Advance/-Complete/-Status`。
 
 ---
 

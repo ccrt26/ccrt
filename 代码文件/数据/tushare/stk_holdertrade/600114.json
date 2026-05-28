@@ -1,0 +1,93 @@
+[
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20210915",
+    "holder_name": "湖州国赞投资管理合伙企业(有限合伙)-国赞价值6号私募证券投资基金",
+    "holder_type": "C",
+    "in_de": "DE",
+    "change_vol": 207500.0,
+    "change_ratio": 0.0337,
+    "after_share": 30792500.0,
+    "after_ratio": 4.9957,
+    "avg_price": NaN,
+    "total_share": 30792500.0
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20181105",
+    "holder_name": "陈伊珍",
+    "holder_type": "G",
+    "in_de": "IN",
+    "change_vol": 72900.0,
+    "change_ratio": 0.0115,
+    "after_share": NaN,
+    "after_ratio": NaN,
+    "avg_price": NaN,
+    "total_share": NaN
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20171104",
+    "holder_name": "宁波旭弘投资管理合伙企业(有限合伙)-旭弘铭远一号私募证券投资基金",
+    "holder_type": "C",
+    "in_de": "DE",
+    "change_vol": 4300000.0,
+    "change_ratio": 1.112,
+    "after_share": 18000000.0,
+    "after_ratio": 4.6548,
+    "avg_price": 19.4,
+    "total_share": 18000000.0
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20160301",
+    "holder_name": "宁波新金广投资管理有限公司",
+    "holder_type": "C",
+    "in_de": "IN",
+    "change_vol": 1000000.0,
+    "change_ratio": 0.2694,
+    "after_share": 9000000.0,
+    "after_ratio": 2.4245,
+    "avg_price": 10.0,
+    "total_share": 9000000.0
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20150711",
+    "holder_name": "芦德宝",
+    "holder_type": "G",
+    "in_de": "IN",
+    "change_vol": 10000.0,
+    "change_ratio": 0.0042,
+    "after_share": NaN,
+    "after_ratio": NaN,
+    "avg_price": 11.59,
+    "total_share": 797576.0
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20150320",
+    "holder_name": "宁波新金广投资管理有限公司",
+    "holder_type": "C",
+    "in_de": "DE",
+    "change_vol": 1052634.0,
+    "change_ratio": 0.448,
+    "after_share": 0.0,
+    "after_ratio": NaN,
+    "avg_price": 16.99,
+    "total_share": 0.0
+  },
+  {
+    "ts_code": "600114.SH",
+    "ann_date": "20131225",
+    "holder_name": "宁波新金广投资管理有限公司",
+    "holder_type": "C",
+    "in_de": "IN",
+    "change_vol": 701756.0,
+    "change_ratio": 0.6517,
+    "after_share": 701756.0,
+    "after_ratio": 0.6517,
+    "avg_price": 12.27,
+    "total_share": 701756.0
+  }
+]

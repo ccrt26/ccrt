@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "last_updated": "",
+  "description": "重点股票核心观察池——由 sync_key_stocks.py 从 pigeon_config.json 自动生成，请勿手动编辑",
+  "stocks": [
+    {
+      "code": "000967",
+      "name": "盈峰环境",
+      "market": "sz",
+      "board": "main"
+    },
+    {
+      "code": "002230",
+      "name": "科大讯飞",
+      "market": "sz",
+      "board": "main"
+    },
+    {
+      "code": "300450",
+      "name": "先导智能",
+      "market": "sz",
+      "board": "chiNext"
+    },
+    {
+      "code": "300736",
+      "name": "百邦科技",
+      "market": "sz",
+      "board": "chiNext"
+    },
+    {
+      "code": "301075",
+      "name": "多瑞医药",
+      "market": "sz",
+      "board": "chiNext"
+    },
+    {
+      "code": "600114",
+      "name": "东睦股份",
+      "market": "sh",
+      "board": "main"
+    },
+    {
+      "code": "601689",
+      "name": "拓普集团",
+      "market": "sh",
+      "board": "main"
+    },
+    {
+      "code": "601727",
+      "name": "上海电气",
+      "market": "sh",
+      "board": "main"
+    },
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "market": "sh",
+      "board": "main"
+    },
+    {
+      "code": "603092",
+      "name": "德力佳",
+      "market": "sh",
+      "board": "main"
+    }
+  ]
+}

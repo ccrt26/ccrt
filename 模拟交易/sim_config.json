@@ -1,4 +1,4 @@
-﻿{
+{
   "InitialCapital": 1000000,
   "MaxPositions": 3,
   "SingleStockLimitPct": 30,
@@ -24,11 +24,26 @@
   },
   "PositionSizing": {
     "Tiers": [
-      { "MinScore": 80, "Ratio": 25 },
-      { "MinScore": 65, "Ratio": 20 },
-      { "MinScore": 45, "Ratio": 10 },
-      { "MinScore": 30, "Ratio": 5 },
-      { "MinScore": 0, "Ratio": 0 }
+      {
+        "MinScore": 80,
+        "Ratio": 25
+      },
+      {
+        "MinScore": 65,
+        "Ratio": 20
+      },
+      {
+        "MinScore": 45,
+        "Ratio": 10
+      },
+      {
+        "MinScore": 30,
+        "Ratio": 5
+      },
+      {
+        "MinScore": 0,
+        "Ratio": 0
+      }
     ]
   },
   "Benchmark": {

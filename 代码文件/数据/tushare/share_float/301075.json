@@ -1,0 +1,20 @@
+[
+  {
+    "ts_code": "301075.SZ",
+    "ann_date": "20210928",
+    "float_date": "20240930",
+    "float_share": 5898305.0,
+    "float_ratio": 7.3729,
+    "holder_name": "西藏清畅企业管理合伙企业(有限合伙)",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "301075.SZ",
+    "ann_date": "20210928",
+    "float_date": "20220929",
+    "float_share": 6406780.0,
+    "float_ratio": 8.0085,
+    "holder_name": "嘉兴秋昱投资合伙企业(有限合伙)",
+    "share_type": "首发原始股"
+  }
+]

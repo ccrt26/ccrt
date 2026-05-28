@@ -1,56 +1,33 @@
-﻿{
-    "TotalValue":  1008174.49,
-    "LastUpdated":  "20260522",
-    "Cash":  737869.49,
-    "Cooldowns":  {},
-    "Positions":  {
-                      "601689":  {
-                                     "Code":  "601689",
-                                     "Name":  "拓普集团",
-                                     "Shares":  1200,
-                                     "AvgCost":  72.09,
-                                     "CurrentPrice":  72.05,
-                                     "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
-                                     "LastStopLossDate":  null,
-                                     "LastFullTakeProfitDate":  null,
-                                     "Support":  64.73,
-                                     "Resistance":  75.65,
-                                     "StopLoss":  60.2,
-                                     "UnrealizedPnL":  -48.00,
-                                     "UnrealizedPnLPct":  -0.06
-                                 },
-                      "600114":  {
-                                     "Code":  "600114",
-                                     "Name":  "东睦股份",
-                                     "Shares":  2300,
-                                     "AvgCost":  35.20,
-                                     "CurrentPrice":  37.75,
-                                     "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
-                                     "LastStopLossDate":  null,
-                                     "LastFullTakeProfitDate":  null,
-                                     "Support":  33.97,
-                                     "Resistance":  39.64,
-                                     "StopLoss":  31.59,
-                                     "UnrealizedPnL":  5865.00,
-                                     "UnrealizedPnLPct":  7.24
-                                 },
-                      "301075":  {
-                                     "Code":  "301075",
-                                     "Name":  "多瑞医药",
-                                     "Shares":  1100,
-                                     "AvgCost":  86.06,
-                                     "CurrentPrice":  88.2,
-                                     "EntryDate":  "20260522",
-                                     "EntryShortPrediction":  "看多",
-                                     "LastStopLossDate":  null,
-                                     "LastFullTakeProfitDate":  null,
-                                     "Support":  82.82,
-                                     "Resistance":  92.61,
-                                     "StopLoss":  77.02,
-                                     "UnrealizedPnL":  2354.00,
-                                     "UnrealizedPnLPct":  2.49
-                                 }
-                  }
+{
+  "TotalValue": 991923.72,
+  "LastUpdated": "20260528",
+  "Cash": 912939.72,
+  "Cooldowns": {
+    "600114": {
+      "Code": "600114",
+      "Name": "东睦股份",
+      "LastFullTakeProfitDate": "20260526"
+    },
+    "301075": {
+      "Code": "301075",
+      "Name": "多瑞医药",
+      "LastStopLossDate": "20260525"
+    }
+  },
+  "Positions": {
+    "601689": {
+      "Code": "601689",
+      "Name": "拓普集团",
+      "Shares": 1200,
+      "AvgCost": 72.09,
+      "CurrentPrice": 65.82,
+      "EntryDate": "20260522",
+      "EntryShortPrediction": "看多",
+      "StopLoss": 64.0,
+      "Support": 64.44,
+      "Resistance": 68.2,
+      "UnrealizedPnL": -7524.0,
+      "UnrealizedPnLPct": -8.7
+    }
+  }
 }

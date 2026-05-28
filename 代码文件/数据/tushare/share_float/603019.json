@@ -1,0 +1,56 @@
+[
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20201106",
+    "float_date": "20210506",
+    "float_share": 604675.0,
+    "float_ratio": 0.0417,
+    "holder_name": "中国国际金融股份有限公司(资产管理)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20201106",
+    "float_date": "20210504",
+    "float_share": 604675.0,
+    "float_ratio": 0.0417,
+    "holder_name": "中国国际金融股份有限公司(资产管理)",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20171031",
+    "float_date": "20171106",
+    "float_share": 15000000.0,
+    "float_ratio": 2.3327,
+    "holder_name": "全国社会保障基金理事会转持二户",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20160630",
+    "float_date": "20170628",
+    "float_share": 3073140.0,
+    "float_ratio": 0.4779,
+    "holder_name": "上海证大投资管理有限公司",
+    "share_type": "定增股份"
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20151031",
+    "float_date": "20151106",
+    "float_share": 48424768.0,
+    "float_ratio": 16.1416,
+    "holder_name": "其他156名自然人股东",
+    "share_type": "首发原始股"
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20141028",
+    "float_date": "20141106",
+    "float_share": 30619.0,
+    "float_ratio": 0.0102,
+    "holder_name": "中远财务有限责任公司自营账户",
+    "share_type": "首发股"
+  }
+]

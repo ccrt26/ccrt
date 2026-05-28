@@ -40,8 +40,8 @@ p { margin: 8px 0; }
 """
 
 edge_options = [
-    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-    r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\google-chrome.exe",
+    r"C:\Program Files\Microsoft\Edge\Application\google-chrome.exe",
 ]
 edge = None
 for p in edge_options:

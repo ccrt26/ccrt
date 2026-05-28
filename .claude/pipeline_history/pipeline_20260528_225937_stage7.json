@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "active": false,
+  "task": "macOS Migration — Windows → macOS 全量迁移",
+  "stage": 7,
+  "stage_name": "完成",
+  "executor": "腰子",
+  "gate_1": "PASS",
+  "gate_1_detail": "情墨设计完成+签署 | 腰子全团咨询通过(附3条件) | 2026-05-28",
+  "gate_2": "PASS",
+  "gate_2_detail": "新安四层验证通过 | 旧影Token审计PASS | 2026-05-28",
+  "gate_3": "PASS",
+  "gate_3_detail": "红枫灰度部署完成 | 附环境待办(Chrome+pip) | deploy_macos_migration_v1.0.md | 2026-05-28",
+  "next_action": "done",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [
+    "审计报告/架构设计/design_macos_migration_v1.0.md",
+    "审计报告/架构设计/deploy_macos_migration_v1.0.md",
+    "代码文件/lib/config_loader.py",
+    "代码文件/tools/convert_md_to_pdf.py",
+    "代码文件/tools/gen_keystock_pdf.py",
+    "代码文件/tools/batch_convert_pdf.py",
+    "代码文件/tools/batch_gen_daily_pdfs.py",
+    "代码文件/tools/generate_roster_xlsx.py",
+    "代码文件/tools/weekly_factor_attribution.py",
+    "代码文件/每日荐股/分析逻辑/gen_daily_html.py",
+    ".claude/settings.json",
+    ".claude/scheduled_tasks.json",
+    ".editorconfig",
+    ".claude/hooks/fixbom.py",
+    ".claude/hooks/pre-commit-check.py",
+    ".claude/hooks/shared/pipeline-auth.py",
+    "代码文件/监督机制/write_protection_hook.py",
+    "代码文件/监督机制/PreToolUse_hook.py",
+    "代码文件/每日荐股/scripts/is_market_open.py",
+    "代码文件/每日荐股/scripts/generate_launchd.py"
+  ],
+  "started": "2026-05-28T21:16:00",
+  "updated": "2026-05-28T14:59:37",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "情墨架构设计",
+      "status": "complete",
+      "time": "2026-05-28T21:16:00"
+    },
+    {
+      "stage": 2,
+      "name": "腰子设计确认+全团咨询",
+      "status": "complete",
+      "time": "2026-05-28T21:20:00"
+    },
+    {
+      "stage": 3,
+      "name": "新安+旧影架构审查",
+      "status": "complete",
+      "time": "2026-05-28T21:30:00"
+    },
+    {
+      "stage": 4,
+      "name": "红结编码实现 (Phase 1-4)",
+      "status": "complete",
+      "time": "2026-05-28T21:55:00"
+    },
+    {
+      "stage": 5,
+      "name": "新安四层验证+旧影Token审计",
+      "status": "complete",
+      "time": "2026-05-28T21:58:00"
+    },
+    {
+      "stage": 6,
+      "name": "红枫灰度部署",
+      "status": "complete",
+      "time": "2026-05-28T22:00:00"
+    },
+    {
+      "stage": 7,
+      "name": "腰子+青山后评估",
+      "status": "complete",
+      "time": "2026-05-28T22:00:00"
+    },
+    {
+      "stage": 7,
+      "name": "完成",
+      "status": "complete",
+      "time": "2026-05-28T14:59:37"
+    }
+  ]
+}

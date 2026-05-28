@@ -1,338 +1,397 @@
-﻿{
-    "SectorCount":  null,
-    "Stocks":  [
-                   {
-                       "Code":  "300782",
-                       "Name":  "卓胜微",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688981",
-                       "Name":  "中芯国际",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002156",
-                       "Name":  "通富微电",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300661",
-                       "Name":  "圣邦股份",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688072",
-                       "Name":  "拓荆科技",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300750",
-                       "Name":  "宁德时代",
-                       "Industry":  "电力设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002236",
-                       "Name":  "大华股份",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688521",
-                       "Name":  "芯原股份",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688012",
-                       "Name":  "中微公司",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688256",
-                       "Name":  "寒武纪",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688188",
-                       "Name":  "柏楚电子",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002415",
-                       "Name":  "海康威视",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300394",
-                       "Name":  "天孚通信",
-                       "Industry":  "通信",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300124",
-                       "Name":  "汇川技术",
-                       "Industry":  "机械设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002594",
-                       "Name":  "比亚迪",
-                       "Industry":  "汽车",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600519",
-                       "Name":  "贵州茅台",
-                       "Industry":  "食品饮料",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002475",
-                       "Name":  "立讯精密",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002230",
-                       "Name":  "科大讯飞",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688561",
-                       "Name":  "奇安信",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300604",
-                       "Name":  "长川科技",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688120",
-                       "Name":  "华海清科",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600845",
-                       "Name":  "宝信软件",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688008",
-                       "Name":  "澜起科技",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "601899",
-                       "Name":  "紫金矿业",
-                       "Industry":  "有色金属",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "000977",
-                       "Name":  "浪潮信息",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "603986",
-                       "Name":  "兆易创新",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688111",
-                       "Name":  "金山办公",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "000967",
-                       "Name":  "盈峰环境",
-                       "Industry":  "环保",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600036",
-                       "Name":  "招商银行",
-                       "Industry":  "银行",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600276",
-                       "Name":  "恒瑞医药",
-                       "Industry":  "医药生物",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300033",
-                       "Name":  "同花顺",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "000858",
-                       "Name":  "五粮液",
-                       "Industry":  "食品饮料",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300502",
-                       "Name":  "新易盛",
-                       "Industry":  "通信",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "601318",
-                       "Name":  "中国平安",
-                       "Industry":  "非银金融",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600703",
-                       "Name":  "三安光电",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002463",
-                       "Name":  "沪电股份",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "601020",
-                       "Name":  "华钰矿业",
-                       "Industry":  "有色金属",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002371",
-                       "Name":  "北方华创",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "301075",
-                       "Name":  "多瑞医药",
-                       "Industry":  "医药",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "603092",
-                       "Name":  "德力佳",
-                       "Industry":  "电力设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600584",
-                       "Name":  "长电科技",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "688041",
-                       "Name":  "海光信息",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600570",
-                       "Name":  "恒生电子",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300274",
-                       "Name":  "阳光电源",
-                       "Industry":  "电力设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "002916",
-                       "Name":  "深南电路",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300308",
-                       "Name":  "中际旭创",
-                       "Industry":  "通信",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "601727",
-                       "Name":  "上海电气",
-                       "Industry":  "电力设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "601689",
-                       "Name":  "拓普集团",
-                       "Industry":  "汽车",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300418",
-                       "Name":  "昆仑万维",
-                       "Industry":  "传媒",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "000333",
-                       "Name":  "美的集团",
-                       "Industry":  "家用电器",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "600114",
-                       "Name":  "东睦股份",
-                       "Industry":  "机械设备",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "603501",
-                       "Name":  "豪威集团",
-                       "Industry":  "电子",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "603019",
-                       "Name":  "中科曙光",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   },
-                   {
-                       "Code":  "300454",
-                       "Name":  "深信服",
-                       "Industry":  "计算机",
-                       "Source":  "core_stock"
-                   }
-               ],
-    "BuildTime":  "2026-05-27 20:00:12",
-    "CoreCount":  54,
-    "TotalCount":  54,
-    "HotSectors":  {
-                       "SectorName":  "造纸",
-                       "ChangePct":  -1.47,
-                       "Turnover":  672.02,
-                       "TotalScore":  12
-                   }
+{
+  "BuildTime": "2026-05-29 00:14:16",
+  "TotalCount": 55,
+  "SectorCount": 0,
+  "HotSectors": [],
+  "CoreCount": 55,
+  "AnchorCount": 10,
+  "BlackFiltered": 0,
+  "GreyFiltered": 0,
+  "Stocks": [
+    {
+      "Code": "688041",
+      "Name": "海光信息",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688256",
+      "Name": "寒武纪",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688521",
+      "Name": "芯原股份",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "603986",
+      "Name": "兆易创新",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688012",
+      "Name": "中微公司",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688072",
+      "Name": "拓荆科技",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688120",
+      "Name": "华海清科",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300604",
+      "Name": "长川科技",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002371",
+      "Name": "北方华创",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "603501",
+      "Name": "豪威集团",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688008",
+      "Name": "澜起科技",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600703",
+      "Name": "三安光电",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002475",
+      "Name": "立讯精密",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002236",
+      "Name": "大华股份",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600584",
+      "Name": "长电科技",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002156",
+      "Name": "通富微电",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002463",
+      "Name": "沪电股份",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002916",
+      "Name": "深南电路",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300661",
+      "Name": "圣邦股份",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300782",
+      "Name": "卓胜微",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300308",
+      "Name": "中际旭创",
+      "Industry": "通信",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300394",
+      "Name": "天孚通信",
+      "Industry": "通信",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300502",
+      "Name": "新易盛",
+      "Industry": "通信",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "601689",
+      "Name": "拓普集团",
+      "Industry": "汽车",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300274",
+      "Name": "阳光电源",
+      "Industry": "电力设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "601727",
+      "Name": "上海电气",
+      "Industry": "电力设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "603092",
+      "Name": "德力佳",
+      "Industry": "电力设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300124",
+      "Name": "汇川技术",
+      "Industry": "机械设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600114",
+      "Name": "东睦股份",
+      "Industry": "机械设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "603019",
+      "Name": "中科曙光",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688111",
+      "Name": "金山办公",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002230",
+      "Name": "科大讯飞",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600570",
+      "Name": "恒生电子",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300033",
+      "Name": "同花顺",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300418",
+      "Name": "昆仑万维",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688188",
+      "Name": "柏楚电子",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "688561",
+      "Name": "奇安信",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300454",
+      "Name": "深信服",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600845",
+      "Name": "宝信软件",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "000977",
+      "Name": "浪潮信息",
+      "Industry": "计算机",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "601899",
+      "Name": "紫金矿业",
+      "Industry": "有色金属",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "601020",
+      "Name": "华钰矿业",
+      "Industry": "有色金属",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "301075",
+      "Name": "多瑞医药",
+      "Industry": "医药",
+      "Source": "core_stock",
+      "risk": "watch"
+    },
+    {
+      "Code": "000967",
+      "Name": "盈峰环境",
+      "Industry": "环保",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300736",
+      "Name": "百邦科技",
+      "Industry": "电子",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300450",
+      "Name": "先导智能",
+      "Industry": "电力设备",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600132",
+      "Name": "重庆啤酒",
+      "Industry": "食品饮料",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "603345",
+      "Name": "安井食品",
+      "Industry": "食品饮料",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002304",
+      "Name": "洋河股份",
+      "Industry": "食品饮料",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "600690",
+      "Name": "海尔智家",
+      "Industry": "家用电器",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300759",
+      "Name": "康龙化成",
+      "Industry": "医药生物",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300347",
+      "Name": "泰格医药",
+      "Industry": "医药生物",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "300015",
+      "Name": "爱尔眼科",
+      "Industry": "医药生物",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002142",
+      "Name": "宁波银行",
+      "Industry": "银行",
+      "Source": "core_stock",
+      "risk": "normal"
+    },
+    {
+      "Code": "002736",
+      "Name": "国信证券",
+      "Industry": "非银金融",
+      "Source": "core_stock",
+      "risk": "normal"
+    }
+  ]
 }

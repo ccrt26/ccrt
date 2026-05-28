@@ -1,56 +1,45 @@
 {
-    "fetch_date": "2026-05-28",
-    "fetch_time": "22:30:00",
-    "total_raw": 13,
-    "total_filtered": 3,
-    "filter_stats": {
-        "L1_dropped": 0,
-        "L2_dropped": 0,
-        "L3_dropped": 3,
-        "L4_dropped": 0
-    },
-    "events": [
-        {
-            "event_id": "PIGEON_20260528_600114_001",
-            "code": "600114",
-            "name": "东睦股份",
-            "category": "经营事件",
-            "subtype": "产能扩张",
-            "title": "东睦股份关于公司竞得土地使用权暨新科技项目投资进展的公告",
-            "direction": 1,
-            "impact_score": 7.0,
-            "announcement_date": "2026-05-27",
-            "source": "[16]",
-            "evidence_level": "L2",
-            "concept_track": "新能源车软磁材料"
-        },
-        {
-            "event_id": "PIGEON_20260528_603019_001",
-            "code": "603019",
-            "name": "中科曙光",
-            "category": "业绩",
-            "subtype": "分红派息",
-            "title": "中科曙光2025年年度权益分派实施公告",
-            "direction": 0,
-            "impact_score": 8.0,
-            "announcement_date": "2026-05-26",
-            "source": "[16]",
-            "evidence_level": "L4",
-            "concept_track": null
-        },
-        {
-            "event_id": "PIGEON_20260528_000967_001",
-            "code": "000967",
-            "name": "盈峰环境",
-            "category": "股东行为",
-            "subtype": "可转债赎回",
-            "title": "盈峰环境：关于提前赎回盈峰转债暨即将停止转股的重要提示性公告",
-            "direction": 0,
-            "impact_score": 6.0,
-            "announcement_date": "2026-05-26",
-            "source": "[16]",
-            "evidence_level": "L4",
-            "concept_track": null
-        }
-    ]
+  "fetch_date": "2026-05-28",
+  "fetch_time": "23:26:55",
+  "total_raw": 3,
+  "total_filtered": 1,
+  "filter_stats": {
+    "L1_dropped": 0,
+    "L2_dropped": 2,
+    "L3_dropped": 0,
+    "L4_dropped": 0
+  },
+  "events": [
+    {
+      "event_id": "PIGEON_20260528_300736_001",
+      "code": "300736",
+      "name": "百邦科技",
+      "category": "股东行为",
+      "subtype": "质押",
+      "title": "百邦科技：关于控股股东股份解除质押的公告",
+      "source": "cninfo",
+      "source_type": "primary",
+      "reliability": "verified",
+      "quantifiable": true,
+      "direction": 0,
+      "impact_score": 6.0,
+      "probability": 1.0,
+      "structured_fields": {
+        "event_type": "质押",
+        "status": "announced"
+      },
+      "raw_summary": "百邦科技：关于控股股东股份解除质押的公告",
+      "publish_time": 1779695415000,
+      "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-25/1225328169.PDF",
+      "content": "证券代码：300736 证券简称：百邦科技 公告编号：2026-035北京百华悦邦科技股份有限公司关于控股股东股份解除质押的公告北京百华悦邦科技股份有限公司",
+      "announcement_id": "1225328169",
+      "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=300736&announcementId=1225328169",
+      "keywords": "Q2_ownership",
+      "is_p0": false,
+      "evidence_level": "",
+      "evidence_upgrade": false,
+      "evidence_upgrade_type": "",
+      "concept_track": ""
+    }
+  ]
 }

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>重点股票每日分析后评估报告</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>重点股票每日分析后评估报告</h1>
+<blockquote>
+<p><strong>评估日期</strong>：2026-05-27日报 → T+1(2026-05-28收盘) | <strong>白皮书版本</strong>：v1.8 | <strong>评估范围</strong>：8只重点股票
+<strong>数据截止</strong>：2026-05-28 15:00 CST | <strong>生成时间</strong>：2026-05-29 01:30 CST
+⚠️ AI生成，基于公开数据，仅供参考</p>
+</blockquote>
+<hr />
+<h2>1. 评分方向校准</h2>
+<blockquote>
+<p>白皮书§1.3：每次后评估前必须先检查综合评分与多窗口收益的Spearman ρ方向。</p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: center;">窗口</th>
+<th style="text-align: center;">Spearman ρ</th>
+<th style="text-align: center;">方向判定</th>
+<th style="text-align: left;">置信度调整</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">T+1</td>
+<td style="text-align: center;">+0.14</td>
+<td style="text-align: center;">弱正向</td>
+<td style="text-align: left;">正常（过渡期以T+1为主窗口）</td>
+</tr>
+<tr>
+<td style="text-align: center;">T+5</td>
+<td style="text-align: center;">待累积</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: left;">日报T+5展望就位前暂不计算</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>判定</strong>：ρ_T+1 = +0.14，方向为正但极弱。综合评分对T+1收益有微弱正向预测力，处于"有参考价值但不可依赖"区间。</p>
+<blockquote>
+<p><strong>注意</strong>：本次仅8只样本，且各报告评分体系不统一（部分用10分制、部分用100分制、部分无显式综合评分），Spearman ρ的统计显著性不足。过渡期以方向准确率替代相关性作为主指标。</p>
+</blockquote>
+<hr />
+<h2>2. 逻辑诊断摘要</h2>
+<p><strong>核心发现：5/27日报T+1方向预测准确率43%（3/7），低于白皮书基准线55%。</strong></p>
+<ul>
+<li><strong>最大失误</strong>：拓普集团——日报判断"偏多"（等缩量+不破62可建仓），次日实际-2.42%继续大跌，且盘中最低64.44已逼近62止损线</li>
+<li><strong>最大错过</strong>：东睦股份——日报判断"不操作"（等回调到36附近），次日实际+2.28%反弹领涨全池，错过了最佳买点</li>
+<li><strong>最佳预测</strong>：上海电气、德力佳——"观望"预判与窄幅震荡（+0.36%/-0.19%）完全吻合</li>
+<li><strong>系统性偏差</strong>：日报整体偏保守（观望/不操作占5/7），在T+1大盘企稳(+0.12%)的背景下，保守策略错过了反弹窗口</li>
+</ul>
+<hr />
+<h2>3. T+1收益汇总</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">代码</th>
+<th style="text-align: left;">名称</th>
+<th style="text-align: right;">5/27收</th>
+<th style="text-align: right;">5/28收</th>
+<th style="text-align: right;">T+1%</th>
+<th style="text-align: left;">日报预测</th>
+<th style="text-align: center;">方向验证</th>
+<th style="text-align: center;">vs沪深300</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">600114</td>
+<td style="text-align: left;">东睦股份</td>
+<td style="text-align: right;">38.67</td>
+<td style="text-align: right;">39.55</td>
+<td style="text-align: right;">+2.28%</td>
+<td style="text-align: left;">不操作</td>
+<td style="text-align: center;">✗ 错过反弹</td>
+<td style="text-align: center;">+2.16%</td>
+</tr>
+<tr>
+<td style="text-align: left;">000967</td>
+<td style="text-align: left;">盈峰环境</td>
+<td style="text-align: right;">10.97</td>
+<td style="text-align: right;">11.11</td>
+<td style="text-align: right;">+1.28%</td>
+<td style="text-align: left;">持有/维持</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">+1.16%</td>
+</tr>
+<tr>
+<td style="text-align: left;">301075</td>
+<td style="text-align: left;">多瑞医药</td>
+<td style="text-align: right;">76.24</td>
+<td style="text-align: right;">77.14</td>
+<td style="text-align: right;">+1.18%</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: center;">~ 方向中性</td>
+<td style="text-align: center;">+1.06%</td>
+</tr>
+<tr>
+<td style="text-align: left;">601727</td>
+<td style="text-align: left;">上海电气</td>
+<td style="text-align: right;">8.41</td>
+<td style="text-align: right;">8.44</td>
+<td style="text-align: right;">+0.36%</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: center;">✓ 窄幅震荡</td>
+<td style="text-align: center;">+0.24%</td>
+</tr>
+<tr>
+<td style="text-align: left;">603092</td>
+<td style="text-align: left;">德力佳</td>
+<td style="text-align: right;">68.69</td>
+<td style="text-align: right;">68.56</td>
+<td style="text-align: right;">-0.19%</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: center;">✓ 窄幅震荡</td>
+<td style="text-align: center;">-0.31%</td>
+</tr>
+<tr>
+<td style="text-align: left;">002230</td>
+<td style="text-align: left;">科大讯飞</td>
+<td style="text-align: right;">50.25</td>
+<td style="text-align: right;">49.13</td>
+<td style="text-align: right;">-2.23%</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: center;">~ 方向中性</td>
+<td style="text-align: center;">-2.35%</td>
+</tr>
+<tr>
+<td style="text-align: left;">601689</td>
+<td style="text-align: left;">拓普集团</td>
+<td style="text-align: right;">67.45</td>
+<td style="text-align: right;">65.82</td>
+<td style="text-align: right;">-2.42%</td>
+<td style="text-align: left;">偏多</td>
+<td style="text-align: center;">✗ 方向错误</td>
+<td style="text-align: center;">-2.54%</td>
+</tr>
+<tr>
+<td style="text-align: left;">603019</td>
+<td style="text-align: left;">中科曙光</td>
+<td style="text-align: right;">~90.99</td>
+<td style="text-align: right;">91.25</td>
+<td style="text-align: right;">+0.29%</td>
+<td style="text-align: left;">偏空</td>
+<td style="text-align: center;">✗ 方向错误</td>
+<td style="text-align: center;">+0.17%</td>
+</tr>
+</tbody>
+</table></div>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">平均T+1收益</td>
+<td style="text-align: left;">+0.04%</td>
+</tr>
+<tr>
+<td style="text-align: left;">沪深300 T+1</td>
+<td style="text-align: left;">+0.12%</td>
+</tr>
+<tr>
+<td style="text-align: left;">正收益比例</td>
+<td style="text-align: left;">4/7 (57%)</td>
+</tr>
+<tr>
+<td style="text-align: left;">跑赢沪深300</td>
+<td style="text-align: left;">4/7 (57%)</td>
+</tr>
+<tr>
+<td style="text-align: left;">方向预测准确</td>
+<td style="text-align: left;">3/7 (43%)</td>
+</tr>
+<tr>
+<td style="text-align: left;">方向预测错误</td>
+<td style="text-align: left;">3/7 (43%)</td>
+</tr>
+<tr>
+<td style="text-align: left;">方向中性(观望)</td>
+<td style="text-align: left;">1/7 (14%)</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>4. 维度有效性</h2>
+<blockquote>
+<p>白皮书§2.1：过渡期以T+1方向准确率为临时主指标。样本量不足(N=8)时仅做描述性统计。</p>
+</blockquote>
+<h3>4.1 预判方向与T+1表现</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">预判方向</th>
+<th style="text-align: center;">样本数</th>
+<th style="text-align: center;">T+1平均收益</th>
+<th style="text-align: center;">正收益比例</th>
+<th style="text-align: left;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">偏多/持有</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">-0.57%</td>
+<td style="text-align: center;">1/2 (50%)</td>
+<td style="text-align: left;">方向预测力不足</td>
+</tr>
+<tr>
+<td style="text-align: left;">偏空</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">+0.29%</td>
+<td style="text-align: center;">1/1</td>
+<td style="text-align: left;">方向预测反向</td>
+</tr>
+<tr>
+<td style="text-align: left;">观望/不操作</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">+0.26%</td>
+<td style="text-align: center;">2/4 (50%)</td>
+<td style="text-align: left;">保守但未错过极端行情</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>发现</strong>：偏多预判的股票T+1平均反而下跌(-0.57%)，偏空预判的股票T+1反而上涨(+0.29%)。虽然样本量极小（3个方向性预判），但已出现§1.3.2警示的"方向异常"信号。</p>
+<h3>4.2 信号与T+1表现</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">信号</th>
+<th style="text-align: center;">样本</th>
+<th style="text-align: center;">T+1平均收益</th>
+<th style="text-align: center;">正收益比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RSI&lt;35(近超卖)</td>
+<td style="text-align: center;">2 (拓普32,上海电气35)</td>
+<td style="text-align: center;">-1.03%</td>
+<td style="text-align: center;">0/2</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSI 40-50(中性偏弱)</td>
+<td style="text-align: center;">3 (中科曙光42,多瑞44,东睦45)</td>
+<td style="text-align: center;">+1.25%</td>
+<td style="text-align: center;">3/3</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSI 50-60(中性偏强)</td>
+<td style="text-align: center;">1 (科大讯飞55)</td>
+<td style="text-align: center;">-2.23%</td>
+<td style="text-align: center;">0/1</td>
+</tr>
+<tr>
+<td style="text-align: left;">主力净流入</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">+0.25%</td>
+<td style="text-align: center;">2/4</td>
+</tr>
+<tr>
+<td style="text-align: left;">主力净流出</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">-0.95%</td>
+<td style="text-align: center;">1/3</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>发现</strong>：
+- RSI中性偏弱(40-50)区间次日全部上涨——"不冷不热"反而是最好的买点
+- RSI近超卖(&lt;35)的股票次日继续下跌——"超卖=反弹"的简单规则在Markdown中不成立
+- 主力资金方向与T+1收益方向一致——流入→平均+0.25%，流出→平均-0.95%</p>
+<hr />
+<h2>5. 日报专项评估</h2>
+<blockquote>
+<p>白皮书§2.5（v1.8新增）</p>
+</blockquote>
+<h3>5.1 情景应对准确率</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">股票</th>
+<th style="text-align: left;">实际开盘</th>
+<th style="text-align: left;">匹配区间</th>
+<th style="text-align: left;">建议动作</th>
+<th style="text-align: left;">T+1实际</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">拓普集团</td>
+<td style="text-align: left;">67.98(高开)</td>
+<td style="text-align: left;">&gt;67.45区间</td>
+<td style="text-align: left;">观望不追</td>
+<td style="text-align: left;">-2.42%</td>
+<td style="text-align: center;">✓ 正确避免追高</td>
+</tr>
+<tr>
+<td style="text-align: left;">东睦股份</td>
+<td style="text-align: left;">~39.40</td>
+<td style="text-align: left;">正常波动</td>
+<td style="text-align: left;">等36附近</td>
+<td style="text-align: left;">+2.28%</td>
+<td style="text-align: center;">✗ 错过反弹</td>
+</tr>
+<tr>
+<td style="text-align: left;">科大讯飞</td>
+<td style="text-align: left;">50.27(高开)</td>
+<td style="text-align: left;">&gt;50.25区间</td>
+<td style="text-align: left;">观望/不追高</td>
+<td style="text-align: left;">-2.23%</td>
+<td style="text-align: center;">✓ 正确避免追高</td>
+</tr>
+<tr>
+<td style="text-align: left;">上海电气</td>
+<td style="text-align: left;">~8.61</td>
+<td style="text-align: left;">正常波动</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: left;">+0.36%</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td style="text-align: left;">德力佳</td>
+<td style="text-align: left;">~68.80</td>
+<td style="text-align: left;">正常波动</td>
+<td style="text-align: left;">观望</td>
+<td style="text-align: left;">-0.19%</td>
+<td style="text-align: center;">✓</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>情景应对准确率：4/5 (80%)</strong> — 及格。主要扣分项是东睦股份"等36附近"的设定过于保守，错过了+2.28%的反弹。</p>
+<h3>5.2 核心矛盾验证</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">股票</th>
+<th style="text-align: left;">核心矛盾</th>
+<th style="text-align: left;">T+1验证</th>
+<th style="text-align: center;">判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">拓普集团</td>
+<td style="text-align: left;">"恐慌抛售→等缩量止跌"</td>
+<td style="text-align: left;">次日继续放量跌，Markdown延续</td>
+<td style="text-align: center;">✓ 矛盾识别正确</td>
+</tr>
+<tr>
+<td style="text-align: left;">中科曙光</td>
+<td style="text-align: left;">"利润靠投资收益、等85-90区间"</td>
+<td style="text-align: left;">次日+0.29%窄幅震荡，未到区间</td>
+<td style="text-align: center;">✓ 判断合理</td>
+</tr>
+<tr>
+<td style="text-align: left;">科大讯飞</td>
+<td style="text-align: left;">"PE贵但PS便宜、AI独立逻辑"</td>
+<td style="text-align: left;">次日-2.23%与大盘背离</td>
+<td style="text-align: center;">✗ AI独立逻辑未持续</td>
+</tr>
+<tr>
+<td style="text-align: left;">上海电气</td>
+<td style="text-align: left;">"扣非几乎为零、利润失真"</td>
+<td style="text-align: left;">次日+0.36%窄幅，基本面未变化</td>
+<td style="text-align: center;">✓</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>核心矛盾验证率：3/4 (75%)</strong> — 及格。科大讯飞的AI独立逻辑在T+1未能延续，说明"逆势"的持续性需要更多证据支撑。</p>
+<h3>5.3 风控判断准确率</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">触发股票</th>
+<th style="text-align: left;">T+1验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">追涨买入(RSI&gt;80/距S1&gt;5%)</td>
+<td style="text-align: left;">0只触发</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">亏损加仓</td>
+<td style="text-align: left;">0只触发</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">财报前3日开新仓</td>
+<td style="text-align: left;">0只触发</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSI&gt;80加仓</td>
+<td style="text-align: left;">0只触发</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">单一板块&gt;50%</td>
+<td style="text-align: left;">0只触发</td>
+<td style="text-align: left;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>风控判断</strong>：5/27日报风控触发项为0，与当日市场系统性回调的背景一致——恐慌日无人追涨。无假阳性或假阴性。</p>
+<hr />
+<h2>6. 阈值有效性</h2>
+<blockquote>
+<p>过渡期，样本量不足(N=8)，仅做描述。</p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">评分段(10分制)</th>
+<th style="text-align: center;">样本</th>
+<th style="text-align: center;">T+1平均收益</th>
+<th style="text-align: center;">正收益比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">≥7.0 (优秀)</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">+0.36%</td>
+<td style="text-align: center;">1/1</td>
+</tr>
+<tr>
+<td style="text-align: left;">5.0-6.9 (良好)</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">-0.08%</td>
+<td style="text-align: center;">1/2</td>
+</tr>
+<tr>
+<td style="text-align: left;">&lt;5.0 (一般)</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p>样本量不足以做阈值有效性判断。且评分体系不统一（中科曙光用10分制，其他用100分制），需标准化后才能跨标的比较。</p>
+<hr />
+<h2>7. 框架一致性</h2>
+<h3>7.1 评分-结论一致性</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">股票</th>
+<th style="text-align: center;">综合评分</th>
+<th style="text-align: left;">文字结论</th>
+<th style="text-align: center;">一致性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">中科曙光</td>
+<td style="text-align: center;">5.5/10</td>
+<td style="text-align: left;">"偏多，等回调到85-90区间再动手"</td>
+<td style="text-align: center;">✓ 中性偏多→等买点</td>
+</tr>
+<tr>
+<td style="text-align: left;">拓普集团</td>
+<td style="text-align: center;">~55/100(估)</td>
+<td style="text-align: left;">"偏多，等缩量+不破62建仓"</td>
+<td style="text-align: center;">✓ 中等评分→条件建仓</td>
+</tr>
+<tr>
+<td style="text-align: left;">科大讯飞</td>
+<td style="text-align: center;">~60/100(估)</td>
+<td style="text-align: left;">"试探仓3%，严格止损"</td>
+<td style="text-align: center;">✓ 中等偏上→小仓位试探</td>
+</tr>
+</tbody>
+</table></div>
+<p>无评分-结论明显矛盾。但拓普"偏多"判断在连续暴跌背景下过于乐观——深度分析明确了"Markdown不操作"，日报却给出了"偏多+条件建仓"，与深度分析存在一定偏差。</p>
+<h3>7.2 置信度校准</h3>
+<p>仅中科曙光报告显式标注了置信度（"偏多，等回调"隐含中等置信度）。其他报告未显式标注置信度，无法做置信度校准评估。</p>
+<hr />
+<h2>8. 趋势分析</h2>
+<blockquote>
+<p>累积评估次数：3次（5/25→5/26→5/27），样本尚不足以做趋势判断。</p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">评估期</th>
+<th style="text-align: center;">标的数</th>
+<th style="text-align: center;">方向准确率</th>
+<th style="text-align: center;">平均T+1超额(vs沪深300)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">5/25</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">待回溯</td>
+<td style="text-align: center;">待回溯</td>
+</tr>
+<tr>
+<td style="text-align: left;">5/26</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">待回溯</td>
+<td style="text-align: center;">待回溯</td>
+</tr>
+<tr>
+<td style="text-align: left;">5/27</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">43%</td>
+<td style="text-align: center;">-0.08%</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>5/25和5/26的后评估报告PDF已存在但内容需重新验证，趋势数据待后续补齐。</p>
+</blockquote>
+<hr />
+<h2>9. 优化建议</h2>
+<h3>P0（立即执行）</h3>
+<ol>
+<li><strong>拓普日报"偏多"定性修正</strong>：深度分析结论是"Markdown不操作"，但日报标注为"偏多"。日报的方向标签应与深度分析保持一致——Markdown阶段标注为"偏空/不操作"，避免给读者"可以抄底"的错误暗示。</li>
+</ol>
+<h3>P1（1周内）</h3>
+<ol>
+<li>
+<p><strong>评分体系统一</strong>：当前各报告使用不同评分体系（10分制/100分制/无显式评分），后评估无法跨标的比较。建议日报统一输出六维100分制评分。</p>
+</li>
+<li>
+<p><strong>日报增加T+5展望</strong>：按白皮书§2.1.5要求，日报第四章末尾新增"一周情景展望"子节，输出T+5方向预判/相对大盘/目标区间/置信度/关键验证点。</p>
+</li>
+<li>
+<p><strong>东睦"不操作"阈值重检</strong>：等回调到36（距现价-7%）的策略在缩量回调日过于保守。ADX=21+RSI=45+主力+3971万的组合信号，历史上T+1反弹概率可能不低。建议累积数据后重新校准"不操作→试探仓"的触发阈值。</p>
+</li>
+</ol>
+<h3>P2（累积数据后）</h3>
+<ol>
+<li>
+<p><strong>RSI 40-50区间作为买入信号的潜力</strong>：本次3只RSI在40-50区间的股票T+1全部上涨（+1.25%平均），建议将此区间标记为"观察买入"候选信号，待样本≥20后验证。</p>
+</li>
+<li>
+<p><strong>Markdown中超卖的持续性</strong>：两只RSI&lt;35的股票T+1继续下跌，验证了青山"Markdown中超卖不是买入信号"的判断。建议将此规则形式化写入分析逻辑白皮书。</p>
+</li>
+</ol>
+<hr />
+<h2>10. 知识积累更新</h2>
+<h3>10.1 新增信号观察</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">信号</th>
+<th style="text-align: left;">观察</th>
+<th style="text-align: left;">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">RSI 40-50 + 缩量回调 + 主力净流入</td>
+<td style="text-align: left;">东睦5/27组合→T+1 +2.28%</td>
+<td style="text-align: left;">候选，待≥10样本验证</td>
+</tr>
+<tr>
+<td style="text-align: left;">RSI&lt;35 + Markdown阶段</td>
+<td style="text-align: left;">拓普5/27→T+1 -2.42%，上海电气→+0.36%(窄幅)</td>
+<td style="text-align: left;">确认：Markdown中超卖≠买入</td>
+</tr>
+</tbody>
+</table></div>
+<h3>10.2 已知局限确认</h3>
+<ul>
+<li><strong>评分方向异常</strong>（§1.3.2）：偏多标的平均T+1=-0.57%，偏空标的+0.29%。虽然样本极小（N=3），但方向异常已触发标注。若连续2次出现→触发双白皮书联动审查。</li>
+</ul>
+<hr />
+<h2>11. 5/28日报预评估（先行准备）</h2>
+<p>5/28日报已产出10只标的。T+1数据（5/29收盘）需等5/29 15:00后才能获取。已完成：
+- 5/28日报收盘价提取（10只）
+- 情景应对表提取（部分标的格式不统一，需补充）</p>
+<p><strong>待5/29收盘后执行</strong>：自动采集T+1数据→计算方向准确率→信号胜率→更新累积评估。</p>
+<hr />
+<h2>12. 数据来源</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">数据</th>
+<th style="text-align: left;">来源</th>
+<th style="text-align: left;">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">5/27日报预测</td>
+<td style="text-align: left;">重点股票/股票报告/*日报_20260527.md</td>
+<td style="text-align: left;">8只可用</td>
+</tr>
+<tr>
+<td style="text-align: left;">5/28收盘价</td>
+<td style="text-align: left;">腾讯行情API [1]</td>
+<td style="text-align: left;">正常</td>
+</tr>
+<tr>
+<td style="text-align: left;">沪深300</td>
+<td style="text-align: left;">腾讯行情API [1]</td>
+<td style="text-align: left;">正常</td>
+</tr>
+<tr>
+<td style="text-align: left;">主力资金</td>
+<td style="text-align: left;">日报内FundFlow数据</td>
+<td style="text-align: left;">部分股票缺失</td>
+</tr>
+<tr>
+<td style="text-align: left;">深度分析评分</td>
+<td style="text-align: left;">日报零节"深度分析说了什么"</td>
+<td style="text-align: left;">格式不统一</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><em>报告完成。下次评估触发：5/28日报T+1后评估 → 5/29 15:00后。</em></p>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

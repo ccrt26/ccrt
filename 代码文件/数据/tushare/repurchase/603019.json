@@ -1,0 +1,222 @@
+[
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20250618",
+    "end_date": "20250620",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 88000.0,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20250401",
+    "end_date": null,
+    "proc": "股东大会通过",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20250305",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20241205",
+    "end_date": "20241209",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 60100.0,
+    "amount": NaN,
+    "high_limit": 13.88,
+    "low_limit": 12.98
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240928",
+    "end_date": null,
+    "proc": "股东大会通过",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": 13.88,
+    "low_limit": 12.98
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240823",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": 13.88,
+    "low_limit": 12.98
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240709",
+    "end_date": "20240711",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 315090.0,
+    "amount": 4089868.2,
+    "high_limit": 13.88,
+    "low_limit": 12.98
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240528",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": 13.88,
+    "low_limit": 12.98
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240511",
+    "end_date": null,
+    "proc": "股东大会通过",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240418",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20240104",
+    "end_date": "20240103",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 784041.0,
+    "amount": 29996466.63,
+    "high_limit": 38.73,
+    "low_limit": 37.27
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20231221",
+    "end_date": "20231220",
+    "proc": "实施",
+    "exp_date": null,
+    "vol": 200000.0,
+    "amount": 7719511.0,
+    "high_limit": 38.73,
+    "low_limit": 38.47
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20231207",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": 30000000.0,
+    "high_limit": 45.0,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20230725",
+    "end_date": "20230727",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 435000.0,
+    "amount": NaN,
+    "high_limit": 14.13,
+    "low_limit": 13.23
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20230619",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": 14.13,
+    "low_limit": 13.23
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20230526",
+    "end_date": null,
+    "proc": "股东大会通过",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20230418",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": NaN,
+    "high_limit": NaN,
+    "low_limit": NaN
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20220715",
+    "end_date": "20220719",
+    "proc": "完成",
+    "exp_date": null,
+    "vol": 445000.0,
+    "amount": 6385750.0,
+    "high_limit": 14.35,
+    "low_limit": 14.35
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20220507",
+    "end_date": null,
+    "proc": "股东大会通过",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": 6385750.0,
+    "high_limit": 14.35,
+    "low_limit": 14.35
+  },
+  {
+    "ts_code": "603019.SH",
+    "ann_date": "20220415",
+    "end_date": null,
+    "proc": "预案",
+    "exp_date": null,
+    "vol": NaN,
+    "amount": 6385750.0,
+    "high_limit": 14.35,
+    "low_limit": 14.35
+  }
+]

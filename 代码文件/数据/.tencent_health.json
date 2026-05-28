@@ -1,0 +1,10 @@
+{
+  "Source": "tencent",
+  "SourceId": "[1]",
+  "LastCheck": "2026-05-28T22:54:03.784867+08:00",
+  "LatencyMs": 105,
+  "Status": "ok",
+  "ConsecutiveFails": 0,
+  "LastSuccess": "2026-05-28T22:54:03.784867+08:00",
+  "TTL": 3600
+}
