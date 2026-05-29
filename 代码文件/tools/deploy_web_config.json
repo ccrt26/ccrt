@@ -1,0 +1,23 @@
+{
+  "cloudflare": {
+    "project_name": "tl-quant-reports",
+    "_account_id_note": "Set via CF_ACCOUNT_ID env var, not here"
+  },
+  "source_dirs": [
+    {"path": "临时报告", "include": "*.html", "recursive": false},
+    {"path": "docs", "include": "*", "recursive": true},
+    {"path": "模拟交易/展示", "include": "*.html", "recursive": false}
+  ],
+  "root_index": "docs/index.html",
+  "deploy_branch": "main",
+  "_setup_instructions": [
+    "1. Create Cloudflare account at https://dash.cloudflare.com/sign-up",
+    "2. Run: npx wrangler pages project create tl-quant-reports --production-branch main",
+    "3. Create API token at https://dash.cloudflare.com/profile/api-tokens",
+    "   Template: 'Edit Cloudflare Pages' — Account:Pages:Edit permission",
+    "4. Set env vars:",
+    "   export CF_API_TOKEN=<your-token>",
+    "   export CF_ACCOUNT_ID=<account-id-from-dashboard-overview>",
+    "5. Test: python3 代码文件/tools/deploy_web.py --dry-run"
+  ]
+}

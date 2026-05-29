@@ -52,3 +52,15 @@
 [2026-05-29 12:03:31][INFO] [PASS] events_db_freshness: events_db updated 3h ago
 [2026-05-29 12:03:31][INFO] [PASS] signal_stale: No stale signals
 [2026-05-29 12:03:31][OK] Health check: PASS
+[2026-05-29 12:33:00][INFO] Health check started at 12:33:00
+[2026-05-29 12:33:00][INFO] [PASS] disk_space: Disk: 411.6GB free
+[2026-05-29 12:33:00][INFO] [PASS] data_cache_freshness: 30 cache files updated in last 24h
+[2026-05-29 12:33:00][INFO] [PASS] events_db_freshness: events_db updated 3h ago
+[2026-05-29 12:33:00][INFO] [PASS] signal_stale: No stale signals
+[2026-05-29 12:33:00][OK] Health check: PASS
+[2026-05-29 13:03:01][INFO] Health check started at 13:03:01
+[2026-05-29 13:03:01][INFO] [PASS] disk_space: Disk: 411.6GB free
+[2026-05-29 13:03:01][INFO] [PASS] data_cache_freshness: 30 cache files updated in last 24h
+[2026-05-29 13:03:01][INFO] [PASS] events_db_freshness: events_db updated 4h ago
+[2026-05-29 13:03:01][INFO] [PASS] signal_stale: No stale signals
+[2026-05-29 13:03:01][OK] Health check: PASS

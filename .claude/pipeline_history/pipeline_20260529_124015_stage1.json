@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
-  "active": false,
+  "active": true,
   "task": "git_autosweep集成web自动部署：push后触发deploy_web.py",
-  "stage": 7,
-  "stage_name": "完成",
+  "stage": 1,
+  "stage_name": "架构设计",
   "executor": "情墨",
-  "gate_1": "PASS",
+  "gate_1": "PENDING",
   "gate_2": "PENDING",
   "gate_3": "PENDING",
-  "next_action": "done",
+  "next_action": "invoke_role",
   "attempts": 0,
   "max_attempts": 3,
   "l3_triggered": false,
@@ -16,19 +16,13 @@
   "loop_context": "",
   "files_scope": [],
   "started": "2026-05-29T04:40:15",
-  "updated": "2026-05-29T04:41:31",
+  "updated": "2026-05-29T04:40:15",
   "stage_history": [
     {
       "stage": 1,
       "name": "架构设计",
       "status": "started",
       "time": "2026-05-29T04:40:15"
-    },
-    {
-      "stage": 7,
-      "name": "完成",
-      "status": "complete",
-      "time": "2026-05-29T04:41:31"
     }
   ]
 }
