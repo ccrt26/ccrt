@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>模拟交易统一视图 · 20260529</title>
+<style>
+:root{
+  --bg-primary:#1a1a2e;--bg-secondary:#16213e;--bg-card:#1f2b47;
+  --text-primary:#e0e0e0;--text-secondary:#a0a0b8;--text-muted:#6a6a80;
+  --accent-up:#e74c3c;--accent-down:#27ae60;--accent-warn:#f1c40f;
+  --border:#2a3550;--radius-sm:8px;--radius-md:12px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.2);--shadow-md:0 4px 16px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:24px 16px}
+h1{font-size:1.5em;color:#fff;margin-bottom:4px}
+.subtitle{color:var(--text-muted);font-size:.85em;margin-bottom:24px}
+
+/* Dashboard */
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.dash-card{background:var(--bg-secondary);border-radius:8px;padding:16px;text-align:center}
+.dash-label{font-size:.75em;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px}
+.dash-value{font-size:1.3em;font-weight:700;color:#fff}
+.dash-value.positive{color:#e74c3c}
+.dash-value.negative{color:#27ae60}
+
+/* Chart */
+.chart-container{background:var(--bg-secondary);border-radius:8px;padding:20px;margin-bottom:24px}
+.chart-container h3{font-size:.85em;color:var(--text-muted);margin-bottom:12px;font-weight:400}
+canvas{width:100%;height:200px;display:block}
+
+/* Filter bar */
+.filter-bar{background:var(--bg-secondary);border-radius:8px;padding:12px 16px;margin-bottom:16px}
+.filter-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-label{font-size:.75em;color:var(--text-muted)}
+.filter-select{font-size:.8em;padding:4px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:#1a1a2e;color:#ccc;cursor:pointer;min-width:100px}
+.filter-select:focus{outline:none;border-color:#e74c3c}
+.filter-count{font-size:.75em;color:#666;margin-left:auto}
+
+/* Day cards */
+.day-card{background:var(--bg-secondary);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.day-card.hidden{display:none}
+.day-card summary{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;list-style:none}
+.day-card summary::-webkit-details-marker{display:none}
+.day-card summary:hover{background:rgba(255,255,255,.03)}
+.card-date{font-weight:700;color:#fff;min-width:80px}
+.card-type{font-size:.75em;padding:2px 8px;border-radius:4px;font-weight:600}
+.type-建仓{background:rgba(231,76,60,.2);color:#e74c3c}
+.type-平仓{background:rgba(39,174,96,.2);color:#27ae60}
+.type-调仓{background:rgba(241,196,15,.2);color:#f1c40f}
+.type-观察{background:rgba(255,255,255,.06);color:var(--text-muted)}
+.card-value{margin-left:auto;color:#ccc;font-size:.9em}
+.card-return{font-size:.9em;font-weight:600}
+.card-body{padding:0 16px 16px}
+.card-section{margin-top:12px}
+.card-section h4{font-size:.8em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:4px}
+
+/* Op rows */
+.op-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.85em;border-left:3px solid transparent;padding-left:8px;margin:2px 0}
+.op-row.buy{border-left-color:#e74c3c}
+.op-row.sell{border-left-color:#27ae60}
+.op-action{font-weight:700;min-width:80px}
+.op-desc{flex:1}
+.op-cost{font-weight:600;min-width:100px;text-align:right}
+.op-reason{color:var(--text-muted);font-size:.8em;min-width:120px;text-align:right}
+
+/* Pos rows */
+.pos-row{display:flex;gap:12px;font-size:.85em;padding:2px 0}
+.pos-row span{min-width:80px}
+.pos-row span:first-child{flex:1}
+.pos-row.positive{color:#e74c3c}
+.pos-row.negative{color:#27ae60}
+
+.thinking p{font-size:.85em;color:#bbb;margin-top:4px}
+.review{background:rgba(241,196,15,.05);border-radius:6px;padding:12px;margin-top:12px;border-left:3px solid #f1c40f}
+.review h4{color:#f1c40f!important}
+.review p{font-size:.85em;color:#ddd;margin-top:4px;line-height:1.7}
+.macro-note,.event-note{font-size:.8em;color:#666;margin-top:2px}
+
+/* Footer */
+.footer{text-align:center;color:#555;font-size:.75em;margin-top:32px;padding:16px 0;border-top:1px solid rgba(255,255,255,.05)}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>模拟交易统一视图</h1>
+<p class="subtitle">初始资金 ¥1,000,000 | 系统自动模拟每日开盘决策，基于评分信号执行买卖，仅供策略验证</p>
+
+<div class="dashboard">
+    <div class="dash-card">
+        <div class="dash-label">当前净值</div>
+        <div class="dash-value">¥990,784</div>
+    </div>
+    <div class="dash-card">
+        <div class="dash-label">累计收益率</div>
+        <div class="dash-value negative">-0.92%</div>
+    </div>
+    <div class="dash-card">
+        <div class="dash-label">超额收益(vs沪深300)</div>
+        <div class="dash-value negative">-0.92%</div>
+    </div>
+    <div class="dash-card">
+        <div class="dash-label">最大回撤</div>
+        <div class="dash-value negative">-0.71%</div>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3>净值曲线</h3>
+    <canvas id="nvChart"></canvas>
+</div>
+
+<div class="filter-bar">
+    <div class="filter-row">
+        <span class="filter-label">日期</span>
+        <select class="filter-select" id="filterDate">
+            <option value="all">全部日期</option>
+            <option value="20260521">2026-05-21</option>
+<option value="20260522">2026-05-22</option>
+<option value="20260525">2026-05-25</option>
+<option value="20260526">2026-05-26</option>
+<option value="20260529">2026-05-29</option>
+        </select>
+        <span class="filter-label">股票</span>
+        <select class="filter-select" id="filterStock">
+            <option value="all">全部股票</option>
+            <option value="301075">多瑞医药 (301075)</option>
+<option value="601689">拓普集团 (601689)</option>
+<option value="600114">东睦股份 (600114)</option>
+        </select>
+        <span class="filter-label">类型</span>
+        <select class="filter-select" id="filterType">
+            <option value="all">全部类型</option>
+            <option value="建仓">建仓</option>
+            <option value="平仓">平仓</option>
+            <option value="调仓">调仓</option>
+            <option value="观察">观察</option>
+        </select>
+        <span class="filter-count" id="filterCount">显示 5/5 天</span>
+    </div>
+</div>
+
+<h2 style="font-size:1em;color:#fff;margin-bottom:12px">交易日操作</h2>
+
+        <details class="day-card" data-date="20260521" data-stocks="" data-type="观察">
+            <summary>
+                <span class="card-date">20260521</span>
+                <span class="card-type type-观察">观察</span>
+                <span class="card-value">净值 ¥1,000,000</span>
+                <span class="card-return">0%</span>
+            </summary>
+            <div class="card-body">
+                <div class="card-section">
+                    <h4>操作</h4>
+                    <div class="op-row" style="color:#666;font-size:.85em;border-left-color:transparent;padding-left:8px">当日无操作（仅执行风控检查）</div>
+                </div>
+                <div class="card-section">
+                    <h4>持仓</h4>
+                    
+                </div>
+                <div class="card-section thinking">
+                    <h4>策略思路</h4>
+                    <p><em>待复盘填充</em></p>
+                    
+                    
+                </div>
+                
+            </div>
+        </details>
+        <details class="day-card" data-date="20260522" data-stocks="601689,301075,600114" data-type="建仓">
+            <summary>
+                <span class="card-date">20260522</span>
+                <span class="card-type type-建仓">建仓</span>
+                <span class="card-value">净值 ¥1,008,174</span>
+                <span class="card-return">0%</span>
+            </summary>
+            <div class="card-body">
+                <div class="card-section">
+                    <h4>操作</h4>
+                    
+                <div class="op-row buy">
+                    <span class="op-action">BUY</span>
+                    <span class="op-desc">买入 多瑞医药(301075) 1100股 @ 86.04</span>
+                    <span class="op-cost">-94,667.66</span>
+                    <span class="op-reason">开仓_看多_预警关注</span>
+                </div>
+                <div class="op-row buy">
+                    <span class="op-action">BUY</span>
+                    <span class="op-desc">买入 拓普集团(601689) 1200股 @ 72.07</span>
+                    <span class="op-cost">-86,505.62</span>
+                    <span class="op-reason">开仓_看多_健康</span>
+                </div>
+                <div class="op-row buy">
+                    <span class="op-action">BUY</span>
+                    <span class="op-desc">买入 东睦股份(600114) 2300股 @ 35.19</span>
+                    <span class="op-cost">-80,957.23</span>
+                    <span class="op-reason">开仓_看多_健康</span>
+                </div>
+                </div>
+                <div class="card-section">
+                    <h4>持仓</h4>
+                    
+                <div class="pos-row negative">
+                    <span>拓普集团(601689)</span>
+                    <span>1200股</span>
+                    <span>-48.00</span>
+                    <span>-0.06%</span>
+                </div>
+                <div class="pos-row positive">
+                    <span>东睦股份(600114)</span>
+                    <span>2300股</span>
+                    <span>+5,865.00</span>
+                    <span>+7.24%</span>
+                </div>
+                <div class="pos-row positive">
+                    <span>多瑞医药(301075)</span>
+                    <span>1100股</span>
+                    <span>+2,354.00</span>
+                    <span>+2.49%</span>
+                </div>
+                </div>
+                <div class="card-section thinking">
+                    <h4>策略思路</h4>
+                    <p>腰子综合评分选出3只：东睦(复合材料高景气+评分最高)、拓普(汽车零部件+新能源)、多瑞(医药+防守)。Short方向全部看多，TrendHealth健康，首次建仓选择满仓3只。25%仓位给东睦(评分>80)，20%给拓普和多瑞(评分>65)。</p>
+                    <p class="macro-note">宏观: 大盘震荡偏强，沪深300在4845附近</p>
+                    
+                </div>
+                
+                <div class="card-section review">
+                    <h4>结果点评</h4>
+                    <p>建仓方向正确——3只全部看多，首日全部浮盈(+0.82%)。但仓位偏激进：满仓3只耗尽了开仓额度，后续出现更好机会时无余地加仓。东睦评分最高(>80)，仓位给到25%合理；多瑞评分仅46却给了20%仓位，与规则不符(46分应在45-65档=10%仓位)。</p>
+                </div>
+            </div>
+        </details>
+        <details class="day-card" data-date="20260525" data-stocks="600114" data-type="平仓">
+            <summary>
+                <span class="card-date">20260525</span>
+                <span class="card-type type-平仓">平仓</span>
+                <span class="card-value">净值 ¥1,008,123</span>
+                <span class="card-return">0%</span>
+            </summary>
+            <div class="card-body">
+                <div class="card-section">
+                    <h4>操作</h4>
+                    
+                <div class="op-row sell">
+                    <span class="op-action">SELL_HALF</span>
+                    <span class="op-desc">减仓50% 东睦股份(600114) 1100股 @ 37.75</span>
+                    <span class="op-cost">+41,473.10</span>
+                    <span class="op-reason">止盈减仓_R2</span>
+                </div>
+                </div>
+                <div class="card-section">
+                    <h4>持仓</h4>
+                    
+                <div class="pos-row negative">
+                    <span>拓普集团(601689)</span>
+                    <span>1200股</span>
+                    <span>-48.00</span>
+                    <span>-0.06%</span>
+                </div>
+                <div class="pos-row positive">
+                    <span>东睦股份(600114)</span>
+                    <span>1200股</span>
+                    <span>+3,060.00</span>
+                    <span>+7.24%</span>
+                </div>
+                <div class="pos-row positive">
+                    <span>多瑞医药(301075)</span>
+                    <span>1100股</span>
+                    <span>+2,354.00</span>
+                    <span>+2.49%</span>
+                </div>
+                </div>
+                <div class="card-section thinking">
+                    <h4>策略思路</h4>
+                    <p>东睦触及R2(36.96)，P5减仓50%锁定利润。剩余1200股继续持有，博R3(38.72)全部止盈。拓普和多瑞价格平稳，继续持有。</p>
+                    
+                    
+                </div>
+                
+                <div class="card-section review">
+                    <h4>结果点评</h4>
+                    <p>P5止盈减仓执行正确，锁定东睦一半利润(+7.2%)。但此时拓普评分已降至54、Trend变为预警关注——信号在恶化却未触发任何出场检查，暴露出P3滞后问题(Short仍是'偏多')。多瑞同样评分降至46、Trend预警关注，距止损不到10%。此时应考虑主动减仓而非被动等待。</p>
+                </div>
+            </div>
+        </details>
+        <details class="day-card" data-date="20260526" data-stocks="301075,600114" data-type="平仓">
+            <summary>
+                <span class="card-date">20260526</span>
+                <span class="card-type type-平仓">平仓</span>
+                <span class="card-value">净值 ¥996,747</span>
+                <span class="card-return">-1.13%</span>
+            </summary>
+            <div class="card-body">
+                <div class="card-section">
+                    <h4>操作</h4>
+                    
+                <div class="op-row sell">
+                    <span class="op-action">SELL</span>
+                    <span class="op-desc">卖出 东睦股份(600114) 1200股 @ 39.26</span>
+                    <span class="op-cost">+47,053.11</span>
+                    <span class="op-reason">全部止盈_R3</span>
+                </div>
+                <div class="op-row sell">
+                    <span class="op-action">SELL</span>
+                    <span class="op-desc">卖出 多瑞医药(301075) 1100股 @ 76.38</span>
+                    <span class="op-cost">+83,912.98</span>
+                    <span class="op-reason">止损_StopLoss</span>
+                </div>
+                </div>
+                <div class="card-section">
+                    <h4>持仓</h4>
+                    
+                <div class="pos-row negative">
+                    <span>中科曙光(603019)</span>
+                    <span>900股</span>
+                    <span>-18.00</span>
+                    <span>-0.02%</span>
+                </div>
+                <div class="pos-row negative">
+                    <span>鎷撴櫘闆嗗洟(601689)</span>
+                    <span>1200股</span>
+                    <span>-48.00</span>
+                    <span>-0.06%</span>
+                </div>
+                </div>
+                <div class="card-section thinking">
+                    <h4>策略思路</h4>
+                    <p>东睦R3全部止盈(+14.3%，最佳单笔)。多瑞触发P1止损(-11.1%)，冷却期5日到6/1。中科曙光接替入场(评分58, 偏多)，维持3只持仓。</p>
+                    
+                    
+                </div>
+                
+                <div class="card-section review">
+                    <h4>结果点评</h4>
+                    <p>东睦是本轮唯一盈利标的(+11,552元, +14.3%)，完整验证了P5→P4的分批止盈策略。多瑞止损(-10,755元, -11.1%)，一进一出打平。中科曙光接替入场评分58偏低，且Short仅'偏多'——信号质量不如5/22建仓的东睦(评分>80, 看多, 高置信度)。整体组合净值从+0.82%降至-0.33%，首次转负。</p>
+                </div>
+            </div>
+        </details>
+        <details class="day-card" data-date="20260529" data-stocks="" data-type="观察">
+            <summary>
+                <span class="card-date">20260529</span>
+                <span class="card-type type-观察">观察</span>
+                <span class="card-value">净值 ¥990,784</span>
+                <span class="card-return">0%</span>
+            </summary>
+            <div class="card-body">
+                <div class="card-section">
+                    <h4>操作</h4>
+                    <div class="op-row" style="color:#666;font-size:.85em;border-left-color:transparent;padding-left:8px">当日无操作（仅执行风控检查）</div>
+                </div>
+                <div class="card-section">
+                    <h4>持仓</h4>
+                    
+                <div class="pos-row negative">
+                    <span>拓普集团(601689)</span>
+                    <span>1200股</span>
+                    <span>-8,664.00</span>
+                    <span>-10.02%</span>
+                </div>
+                </div>
+                <div class="card-section thinking">
+                    <h4>策略思路</h4>
+                    <p>评估数据Format B不兼容导致风控大面积离线(已修复)。拓普集团评分从54降至49，Short从看多退至偏多，Trend持续预警关注，股价从72跌至64.87(-10%)。P3预判转空存在1日滞后：信号三维恶化但Short未跨过'中性'门槛，出场未触发。当前距止损64.0仅0.87元，明日大概率止损。候选标的中仅科大讯飞(看多, 评分49)有一定吸引力，止损后不急于补仓。</p>
+                    <p class="macro-note">宏观: 沪深300震荡偏强(+1.83%)，但个股资金面偏弱，8只中5只主力流出</p>
+                    
+                </div>
+                
+                <div class="card-section review">
+                    <h4>结果点评</h4>
+                    <p>本周最大教训：拓普集团从72跌到64，评分54→49，Trend健康→预警关注，Short看多→偏多——三维同步恶化但无一出场规则触发。P1(止损64.0)未到、P2(危险)未到、P3(短期变中性/看空)未到。这暴露了出场规则的一个空白带：渐进式恶化没有对应的出场机制。建议考虑增加'评分连续3日下降≥5分+Trend非健康→强制减仓50%'。另外，数据事故(Format B→风控离线)说明引擎对输入格式缺乏防御，已通过格式检测+回退机制修复。</p>
+                </div>
+            </div>
+        </details>
+
+<div class="footer">
+    铁律量化 · 模拟交易系统 · 仅供策略验证和研究参考，不构成投资建议
+</div>
+</div>
+
+<script>
+(function(){
+    // --- Filter logic ---
+    var cards = document.querySelectorAll('.day-card');
+    var selDate = document.getElementById('filterDate');
+    var selStock = document.getElementById('filterStock');
+    var selType = document.getElementById('filterType');
+
+    function applyFilters() {
+        var activeDate = selDate.value;
+        var activeStock = selStock.value;
+        var activeType = selType.value;
+        var visible = 0;
+        var total = cards.length;
+        cards.forEach(function(card) {
+            var date = card.getAttribute('data-date');
+            var stocks = card.getAttribute('data-stocks').split(',');
+            var type = card.getAttribute('data-type');
+            var dateMatch = activeDate === 'all' || date === activeDate;
+            var stockMatch = activeStock === 'all' || stocks.indexOf(activeStock) !== -1;
+            var typeMatch = activeType === 'all' || type === activeType;
+            if (dateMatch && stockMatch && typeMatch) {
+                card.classList.remove('hidden');
+                visible++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+        document.getElementById('filterCount').textContent = '显示 ' + visible + '/' + total + ' 天';
+    }
+
+    selDate.addEventListener('change', applyFilters);
+    selStock.addEventListener('change', applyFilters);
+    selType.addEventListener('change', applyFilters);
+
+    // --- Chart ---
+    var canvas = document.getElementById('nvChart');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var rect = canvas.parentElement.getBoundingClientRect();
+    var W = rect.width, H = 200;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+
+    var points = [{x:0,y:1000000},{x:1,y:1008174},{x:2,y:1008123},{x:3,y:996747},{x:4,y:990784}];
+    if (points.length < 2) {
+        ctx.fillStyle = '#888';
+        ctx.font = '14px -apple-system,sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('数据不足，至少需要2个交易日', W/2, H/2);
+        return;
+    }
+
+    var pad = {top:20, right:80, bottom:24, left:55};
+    var pw = W - pad.left - pad.right;
+    var ph = H - pad.top - pad.bottom;
+
+    var minV = points[0].y, maxV = points[0].y;
+    for (var i = 1; i < points.length; i++) {
+        if (points[i].y < minV) minV = points[i].y;
+        if (points[i].y > maxV) maxV = points[i].y;
+    }
+    var baseLine = 1000000;
+    var range = maxV - minV || 1000;
+    minV = Math.min(minV, baseLine) - range * 0.15;
+    maxV = Math.max(maxV, baseLine) + range * 0.15;
+    range = maxV - minV;
+
+    function x(i) { return pad.left + (i / (points.length - 1)) * pw; }
+    function y(v) { return pad.top + ph - ((v - minV) / range) * ph; }
+
+    // Background gradient
+    var bgGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ph);
+    bgGrad.addColorStop(0, 'rgba(22,33,62,.6)');
+    bgGrad.addColorStop(1, 'rgba(22,33,62,.2)');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(pad.left, pad.top, pw, ph);
+
+    // Grid lines + Y labels
+    var gridLines = 4;
+    for (var g = 0; g <= gridLines; g++) {
+        var gy = pad.top + (ph / gridLines) * g;
+        var gv = maxV - (range / gridLines) * g;
+        ctx.strokeStyle = 'rgba(255,255,255,.06)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left + pw, gy); ctx.stroke();
+        ctx.fillStyle = '#666';
+        ctx.font = '10px -apple-system,sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('¥' + (gv / 10000).toFixed(1) + '万', pad.left - 6, gy + 3);
+    }
+
+    // Baseline (¥1,000,000)
+    var by = y(baseLine);
+    ctx.strokeStyle = 'rgba(255,255,255,.18)';
+    ctx.setLineDash([6, 4]);
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, by); ctx.lineTo(pad.left + pw, by); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#888';
+    ctx.font = '10px -apple-system,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('基准 ¥100万', pad.left + pw + 6, by + 3);
+
+    // Area fill under line
+    var areaGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ph);
+    areaGrad.addColorStop(0, 'rgba(231,76,60,.15)');
+    areaGrad.addColorStop(1, 'rgba(231,76,60,.0)');
+    ctx.fillStyle = areaGrad;
+    ctx.beginPath();
+    ctx.moveTo(x(0), pad.top + ph);
+    for (var i = 0; i < points.length; i++) ctx.lineTo(x(i), y(points[i].y));
+    ctx.lineTo(x(points.length - 1), pad.top + ph);
+    ctx.closePath();
+    ctx.fill();
+
+    // Line
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 2.2;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    for (var i = 0; i < points.length; i++) {
+        var px = x(i), py = y(points[i].y);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+
+    // Dots + value labels + date labels
+    for (var i = 0; i < points.length; i++) {
+        var px = x(i), py = y(points[i].y);
+        // Outer glow
+        ctx.fillStyle = 'rgba(231,76,60,.3)';
+        ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
+        // Inner dot
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath(); ctx.arc(px, py, 3.5, 0, Math.PI * 2); ctx.fill();
+        // White center
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(px, py, 1.5, 0, Math.PI * 2); ctx.fill();
+        // Value label
+        var labelY = py - 12;
+        var valText = '¥' + (points[i].y / 10000).toFixed(1) + '万';
+        ctx.fillStyle = '#e0e0e0';
+        ctx.font = 'bold 11px -apple-system,sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(valText, px, labelY);
+        // Date label
+        var d = points[i].date;
+        var dateText = d.slice(4, 6) + '/' + d.slice(6);
+        ctx.fillStyle = '#888';
+        ctx.font = '10px -apple-system,sans-serif';
+        ctx.fillText(dateText, px, pad.top + ph + 16);
+    }
+
+    // Title
+    ctx.fillStyle = '#888';
+    ctx.font = '11px -apple-system,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('净值', pad.left + pw, pad.top - 6);
+})();
+</script>
+</body>
+</html>
