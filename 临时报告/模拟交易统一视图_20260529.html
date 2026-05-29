@@ -20,9 +20,9 @@ h1{font-size:1.5em;color:#fff;margin-bottom:4px}
 .dash-value.negative{color:#27ae60}
 
 /* Chart */
-.chart-container{background:#16213e;border-radius:8px;padding:16px;margin-bottom:24px}
-.chart-container h3{font-size:.85em;color:#888;margin-bottom:8px}
-canvas{width:100%;height:180px}
+.chart-container{background:#16213e;border-radius:8px;padding:20px;margin-bottom:24px}
+.chart-container h3{font-size:.85em;color:#888;margin-bottom:12px;font-weight:400}
+canvas{width:100%;height:200px;display:block}
 
 /* Filter bar */
 .filter-bar{background:#16213e;border-radius:8px;padding:12px 16px;margin-bottom:16px}
@@ -79,7 +79,7 @@ canvas{width:100%;height:180px}
 <body>
 <div class="container">
 <h1>模拟交易统一视图</h1>
-<p class="subtitle">生成于 20260529 | 初始资金 ¥1,000,000 | 数据来源: transactions.csv, snapshot_*.json, perf_summary.json, sim_*.log</p>
+<p class="subtitle">初始资金 ¥1,000,000 | 系统自动模拟每日开盘决策，基于评分信号执行买卖，仅供策略验证</p>
 
 <div class="dashboard">
     <div class="dash-card">
@@ -137,7 +137,7 @@ canvas{width:100%;height:180px}
 
 <h2 style="font-size:1em;color:#fff;margin-bottom:12px">交易日操作</h2>
 
-        <details  class="day-card" data-date="20260521" data-stocks="" data-type="观察">
+        <details class="day-card" data-date="20260521" data-stocks="" data-type="观察">
             <summary>
                 <span class="card-date">20260521</span>
                 <span class="card-type type-观察">观察</span>
@@ -162,7 +162,7 @@ canvas{width:100%;height:180px}
                 
             </div>
         </details>
-        <details  class="day-card" data-date="20260522" data-stocks="600114,301075,601689" data-type="建仓">
+        <details class="day-card" data-date="20260522" data-stocks="301075,601689,600114" data-type="建仓">
             <summary>
                 <span class="card-date">20260522</span>
                 <span class="card-type type-建仓">建仓</span>
@@ -227,7 +227,7 @@ canvas{width:100%;height:180px}
                 </div>
             </div>
         </details>
-        <details open class="day-card" data-date="20260525" data-stocks="600114" data-type="平仓">
+        <details class="day-card" data-date="20260525" data-stocks="600114" data-type="平仓">
             <summary>
                 <span class="card-date">20260525</span>
                 <span class="card-type type-平仓">平仓</span>
@@ -280,7 +280,7 @@ canvas{width:100%;height:180px}
                 </div>
             </div>
         </details>
-        <details open class="day-card" data-date="20260526" data-stocks="600114,301075" data-type="平仓">
+        <details class="day-card" data-date="20260526" data-stocks="600114,301075" data-type="平仓">
             <summary>
                 <span class="card-date">20260526</span>
                 <span class="card-type type-平仓">平仓</span>
@@ -333,7 +333,7 @@ canvas{width:100%;height:180px}
                 </div>
             </div>
         </details>
-        <details open class="day-card" data-date="20260529" data-stocks="" data-type="观察">
+        <details class="day-card" data-date="20260529" data-stocks="" data-type="观察">
             <summary>
                 <span class="card-date">20260529</span>
                 <span class="card-type type-观察">观察</span>
@@ -410,62 +410,94 @@ canvas{width:100%;height:180px}
     selType.addEventListener('change', applyFilters);
 
     // --- Chart ---
+    var canvas = document.getElementById('nvChart');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var dpr = window.devicePixelRatio || 1;
     var rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = 180 * dpr;
-    canvas.style.width = rect.width + 'px';
-    canvas.style.height = '180px';
+    var W = rect.width, H = 200;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
     ctx.scale(dpr, dpr);
 
     var points = [{x:0,y:1000000},{x:1,y:1008174},{x:2,y:1008123},{x:3,y:996747},{x:4,y:990784}];
     if (points.length < 2) {
         ctx.fillStyle = '#888';
-        ctx.font = '14px sans-serif';
+        ctx.font = '14px -apple-system,sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('数据不足，至少需要2个交易日', rect.width/2, 90);
+        ctx.fillText('数据不足，至少需要2个交易日', W/2, H/2);
         return;
     }
 
-    var w = rect.width - 60;
-    var h = 140;
-    var ox = 40, oy = 20;
+    var pad = {top:20, right:80, bottom:24, left:55};
+    var pw = W - pad.left - pad.right;
+    var ph = H - pad.top - pad.bottom;
+
     var minV = points[0].y, maxV = points[0].y;
     for (var i = 1; i < points.length; i++) {
         if (points[i].y < minV) minV = points[i].y;
         if (points[i].y > maxV) maxV = points[i].y;
     }
-    var range = maxV - minV || 1;
     var baseLine = 1000000;
-    minV = Math.min(minV, baseLine) - range * 0.1;
-    maxV = Math.max(maxV, baseLine) + range * 0.1;
+    var range = maxV - minV || 1000;
+    minV = Math.min(minV, baseLine) - range * 0.15;
+    maxV = Math.max(maxV, baseLine) + range * 0.15;
     range = maxV - minV;
 
-    function x(i) { return ox + (i / (points.length - 1)) * w; }
-    function y(v) { return oy + h - ((v - minV) / range) * h; }
+    function x(i) { return pad.left + (i / (points.length - 1)) * pw; }
+    function y(v) { return pad.top + ph - ((v - minV) / range) * ph; }
 
-    // Grid
-    ctx.strokeStyle = 'rgba(255,255,255,.05)';
-    ctx.lineWidth = 1;
-    for (var gy = oy; gy <= oy + h; gy += h/4) {
-        ctx.beginPath(); ctx.moveTo(ox, gy); ctx.lineTo(ox + w, gy); ctx.stroke();
+    // Background gradient
+    var bgGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ph);
+    bgGrad.addColorStop(0, 'rgba(22,33,62,.6)');
+    bgGrad.addColorStop(1, 'rgba(22,33,62,.2)');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(pad.left, pad.top, pw, ph);
+
+    // Grid lines + Y labels
+    var gridLines = 4;
+    for (var g = 0; g <= gridLines; g++) {
+        var gy = pad.top + (ph / gridLines) * g;
+        var gv = maxV - (range / gridLines) * g;
+        ctx.strokeStyle = 'rgba(255,255,255,.06)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left + pw, gy); ctx.stroke();
+        ctx.fillStyle = '#666';
+        ctx.font = '10px -apple-system,sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('¥' + (gv / 10000).toFixed(1) + '万', pad.left - 6, gy + 3);
     }
 
-    // Baseline
+    // Baseline (¥1,000,000)
     var by = y(baseLine);
-    ctx.strokeStyle = 'rgba(255,255,255,.15)';
-    ctx.setLineDash([5,5]);
-    ctx.beginPath(); ctx.moveTo(ox, by); ctx.lineTo(ox + w, by); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,.18)';
+    ctx.setLineDash([6, 4]);
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, by); ctx.lineTo(pad.left + pw, by); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#666';
-    ctx.font = '10px sans-serif';
-    ctx.fillText('¥1,000,000', ox + w + 4, by + 3);
+    ctx.fillStyle = '#888';
+    ctx.font = '10px -apple-system,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('基准 ¥100万', pad.left + pw + 6, by + 3);
+
+    // Area fill under line
+    var areaGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ph);
+    areaGrad.addColorStop(0, 'rgba(231,76,60,.15)');
+    areaGrad.addColorStop(1, 'rgba(231,76,60,.0)');
+    ctx.fillStyle = areaGrad;
+    ctx.beginPath();
+    ctx.moveTo(x(0), pad.top + ph);
+    for (var i = 0; i < points.length; i++) ctx.lineTo(x(i), y(points[i].y));
+    ctx.lineTo(x(points.length - 1), pad.top + ph);
+    ctx.closePath();
+    ctx.fill();
 
     // Line
     ctx.strokeStyle = '#e74c3c';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.2;
+    ctx.lineJoin = 'round';
     ctx.beginPath();
     for (var i = 0; i < points.length; i++) {
         var px = x(i), py = y(points[i].y);
@@ -474,18 +506,38 @@ canvas{width:100%;height:180px}
     }
     ctx.stroke();
 
-    // Dots and labels
+    // Dots + value labels + date labels
     for (var i = 0; i < points.length; i++) {
         var px = x(i), py = y(points[i].y);
+        // Outer glow
+        ctx.fillStyle = 'rgba(231,76,60,.3)';
+        ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
+        // Inner dot
         ctx.fillStyle = '#e74c3c';
-        ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#ccc';
-        ctx.font = '9px sans-serif';
+        ctx.beginPath(); ctx.arc(px, py, 3.5, 0, Math.PI * 2); ctx.fill();
+        // White center
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(px, py, 1.5, 0, Math.PI * 2); ctx.fill();
+        // Value label
+        var labelY = py - 12;
+        var valText = '¥' + (points[i].y / 10000).toFixed(1) + '万';
+        ctx.fillStyle = '#e0e0e0';
+        ctx.font = 'bold 11px -apple-system,sans-serif';
         ctx.textAlign = 'center';
-        var d = points[i].date.slice(4);
-        ctx.fillText(d.slice(0,2)+'/'+d.slice(2), px, oy + h + 14);
-        ctx.fillText('¥'+(points[i].y/10000).toFixed(1)+'万', px, py - 8);
+        ctx.fillText(valText, px, labelY);
+        // Date label
+        var d = points[i].date;
+        var dateText = d.slice(4, 6) + '/' + d.slice(6);
+        ctx.fillStyle = '#888';
+        ctx.font = '10px -apple-system,sans-serif';
+        ctx.fillText(dateText, px, pad.top + ph + 16);
     }
+
+    // Title
+    ctx.fillStyle = '#888';
+    ctx.font = '11px -apple-system,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('净值', pad.left + pw, pad.top - 6);
 })();
 </script>
 </body>
