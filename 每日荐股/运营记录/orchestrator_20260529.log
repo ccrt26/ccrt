@@ -41,3 +41,5 @@
 [2026-05-29 16:22:01][INFO] Signal written: /Users/ccrt/ccrt/.claude/signal_daily_report.json
 [2026-05-29 16:22:01][WARN] Data not ready after max retries, signal sent with degraded flag
 [2026-05-29 16:22:01][INFO] Orchestrator finished: mode=daily exit=1
+[2026-05-29 19:07:00][INFO] Orchestrator started: mode=pigeon date=today
+[2026-05-29 19:07:00][INFO] Triggering pigeon collection: /Users/ccrt/ccrt/代码文件/信鸽信息采集/pigeon_collector.py
