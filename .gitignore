@@ -26,3 +26,6 @@ __pycache__/
 # 数据缓存（运行时生成）
 data_cache/
 _data_audit.md
+
+# 保护机制 — 敏感个人数据
+保护机制/持仓账本.json

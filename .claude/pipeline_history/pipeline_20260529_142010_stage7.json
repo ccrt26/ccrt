@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "active": false,
-  "task": "飞书桥接文件重组：deploy目录+启停脚本+plist集中管理",
+  "task": "飞书即时通信桥接：个人接入+轮询模式+零入站",
   "stage": 7,
   "stage_name": "完成",
   "executor": "腰子+青山",
-  "gate_1": "PENDING",
-  "gate_2": "PENDING",
-  "gate_3": "PENDING",
+  "gate_1": "PASS",
+  "gate_2": "PASS",
+  "gate_3": "PASS",
   "next_action": "done",
   "attempts": 0,
   "max_attempts": 3,
@@ -15,80 +15,80 @@
   "l3_reason": "",
   "loop_context": "",
   "files_scope": [],
-  "started": "2026-05-29T06:56:00",
-  "updated": "2026-05-29T06:57:20",
+  "started": "2026-05-29T06:12:35",
+  "updated": "2026-05-29T06:20:10",
   "stage_history": [
     {
       "stage": 1,
       "name": "架构设计",
       "status": "started",
-      "time": "2026-05-29T06:56:00"
+      "time": "2026-05-29T06:12:35"
     },
     {
       "stage": 1,
       "name": "架构设计",
       "status": "complete",
-      "time": "2026-05-29T06:56:15"
+      "time": "2026-05-29T06:12:59"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "started",
-      "time": "2026-05-29T06:56:15"
+      "time": "2026-05-29T06:12:59"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "complete",
-      "time": "2026-05-29T06:56:15"
+      "time": "2026-05-29T06:13:48"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "started",
-      "time": "2026-05-29T06:56:15"
+      "time": "2026-05-29T06:13:48"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "complete",
-      "time": "2026-05-29T06:56:56"
+      "time": "2026-05-29T06:18:36"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "started",
-      "time": "2026-05-29T06:56:56"
+      "time": "2026-05-29T06:18:36"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "complete",
-      "time": "2026-05-29T06:56:56"
+      "time": "2026-05-29T06:19:22"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "started",
-      "time": "2026-05-29T06:56:56"
+      "time": "2026-05-29T06:19:22"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "complete",
-      "time": "2026-05-29T06:57:20"
+      "time": "2026-05-29T06:19:56"
     },
     {
       "stage": 6,
       "name": "后评估",
       "status": "started",
-      "time": "2026-05-29T06:57:20"
+      "time": "2026-05-29T06:19:56"
     },
     {
       "stage": 7,
       "name": "完成",
       "status": "complete",
-      "time": "2026-05-29T06:57:20"
+      "time": "2026-05-29T06:20:10"
     }
   ]
 }

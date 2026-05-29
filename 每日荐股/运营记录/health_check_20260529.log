@@ -76,3 +76,15 @@
 [2026-05-29 14:03:00][INFO] [PASS] events_db_freshness: events_db updated 5h ago
 [2026-05-29 14:03:00][INFO] [WARN] signal_stale: Stale signals: signal_daily_report.json (5h)
 [2026-05-29 14:03:00][INFO] Health check: WARN
+[2026-05-29 14:33:00][INFO] Health check started at 14:33:00
+[2026-05-29 14:33:00][INFO] [PASS] disk_space: Disk: 408.4GB free
+[2026-05-29 14:33:00][INFO] [PASS] data_cache_freshness: 30 cache files updated in last 24h
+[2026-05-29 14:33:00][INFO] [PASS] events_db_freshness: events_db updated 5h ago
+[2026-05-29 14:33:00][INFO] [WARN] signal_stale: Stale signals: signal_daily_report.json (5h), signal_alert.json (4h)
+[2026-05-29 14:33:00][INFO] Health check: WARN
+[2026-05-29 15:03:00][INFO] Health check started at 15:03:00
+[2026-05-29 15:03:00][INFO] [PASS] disk_space: Disk: 408.4GB free
+[2026-05-29 15:03:00][INFO] [PASS] data_cache_freshness: 30 cache files updated in last 24h
+[2026-05-29 15:03:00][INFO] [PASS] events_db_freshness: events_db updated 6h ago
+[2026-05-29 15:03:00][INFO] [WARN] signal_stale: Stale signals: signal_daily_report.json (6h), signal_alert.json (5h)
+[2026-05-29 15:03:00][INFO] Health check: WARN

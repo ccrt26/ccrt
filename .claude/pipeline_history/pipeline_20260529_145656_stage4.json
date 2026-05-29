@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
-  "active": false,
+  "active": true,
   "task": "飞书桥接文件重组：deploy目录+启停脚本+plist集中管理",
-  "stage": 7,
-  "stage_name": "完成",
-  "executor": "腰子+青山",
+  "stage": 4,
+  "stage_name": "上线前验证",
+  "executor": "新安",
   "gate_1": "PENDING",
   "gate_2": "PENDING",
   "gate_3": "PENDING",
-  "next_action": "done",
+  "next_action": "invoke_role",
   "attempts": 0,
   "max_attempts": 3,
   "l3_triggered": false,
@@ -16,7 +16,7 @@
   "loop_context": "",
   "files_scope": [],
   "started": "2026-05-29T06:56:00",
-  "updated": "2026-05-29T06:57:20",
+  "updated": "2026-05-29T06:56:56",
   "stage_history": [
     {
       "stage": 1,
@@ -59,36 +59,6 @@
       "name": "上线前验证",
       "status": "started",
       "time": "2026-05-29T06:56:56"
-    },
-    {
-      "stage": 4,
-      "name": "上线前验证",
-      "status": "complete",
-      "time": "2026-05-29T06:56:56"
-    },
-    {
-      "stage": 5,
-      "name": "灰度部署",
-      "status": "started",
-      "time": "2026-05-29T06:56:56"
-    },
-    {
-      "stage": 5,
-      "name": "灰度部署",
-      "status": "complete",
-      "time": "2026-05-29T06:57:20"
-    },
-    {
-      "stage": 6,
-      "name": "后评估",
-      "status": "started",
-      "time": "2026-05-29T06:57:20"
-    },
-    {
-      "stage": 7,
-      "name": "完成",
-      "status": "complete",
-      "time": "2026-05-29T06:57:20"
     }
   ]
 }

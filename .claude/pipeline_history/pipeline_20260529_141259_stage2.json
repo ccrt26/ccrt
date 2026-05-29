@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "active": true,
+  "task": "飞书即时通信桥接：个人接入+轮询模式+零入站",
+  "stage": 2,
+  "stage_name": "架构审查",
+  "executor": "新安+旧影",
+  "gate_1": "PASS",
+  "gate_2": "PENDING",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [],
+  "started": "2026-05-29T06:12:35",
+  "updated": "2026-05-29T06:12:59",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "started",
+      "time": "2026-05-29T06:12:35"
+    },
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "complete",
+      "time": "2026-05-29T06:12:59"
+    },
+    {
+      "stage": 2,
+      "name": "架构审查",
+      "status": "started",
+      "time": "2026-05-29T06:12:59"
+    }
+  ]
+}

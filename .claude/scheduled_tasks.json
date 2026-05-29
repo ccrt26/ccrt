@@ -51,7 +51,26 @@
       "createdBySessionId": "pipeline-fix-sim-engine",
       "createdByPid": 0,
       "createdByProcStart": "pipeline-fix-20260528"
+    },
+    {
+      "id": "c77610cf",
+      "cron": "57 8 * * 1-5",
+      "prompt": "/保护 盘前 8:50阶段。读取保护机制/持仓账本.json，读取保护机制/知识库/*.md，读取holidays_2026.csv判断是否交易日。若节假日或无持仓则跳过。按Skill定义执行山猫→信鸽→玉夜→流金→青山→腰子顺序，产出飞书格式纪律卡片，写入保护机制/盘前简报/YYYY-MM-DD.md。不写代码文件/路径，不触发pipeline_engine。",
+      "createdAt": 1780038333774,
+      "recurring": true,
+      "createdBySessionId": "bb9af0ae-f551-4202-b870-e4406760ed76",
+      "createdByPid": 29511,
+      "createdByProcStart": "Fri May 29 04:09:59 2026"
+    },
+    {
+      "id": "f898d24a",
+      "cron": "23 9 * * 1-5",
+      "prompt": "/保护 盘前 9:23竞价阶段。读取保护机制/盘前简报/YYYY-MM-DD.md获取8:50定调内容。读取今日竞价数据。执行山猫竞价分析+腰子修正判断，产出飞书格式竞价校准，追加到保护机制/盘前简报/YYYY-MM-DD.md。不写代码文件/路径，不触发pipeline_engine。",
+      "createdAt": 1780038333779,
+      "recurring": true,
+      "createdBySessionId": "bb9af0ae-f551-4202-b870-e4406760ed76",
+      "createdByPid": 29511,
+      "createdByProcStart": "Fri May 29 04:09:59 2026"
     }
-  ],
-  "_migration_note": "2026-05-29: crontab install pending. scheduled_tasks kept for shadow run. After 1-week parallel verification, remove ac1bf262/c5c3f354/73cfe6cb/sim_trading_daily."
+  ]
 }

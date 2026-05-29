@@ -1,6 +1,6 @@
 # 飞书即时通信 → Claude Code 指令通道 — 架构设计
 
-> 版本 v1.0 | 2026-05-29 | 情墨 | pipeline_stage: complete
+> 版本 v1.0 | 2026-05-29 | 情墨 | ⛔ SUPERSEDED by v1.1 — 本版本有6项设计缺陷，请使用 v1.1
 > 关联：CLAUDE.md §六 角色协作协议 / CLAUDE.md §七 工程项目标准交付流程
 
 ---

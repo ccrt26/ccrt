@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tielv.im-consumer</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/ccrt/ccrt/代码文件/tools/im_consumer.py</string>
+        <string>--once</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>30</integer>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/ccrt</string>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/ccrt/ccrt/临时报告/对话日志/im_consumer_stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ccrt/ccrt/临时报告/对话日志/im_consumer_stderr.log</string>
+</dict>
+</plist>

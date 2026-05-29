@@ -70,6 +70,9 @@
 | `代码文件/监督机制/version_supervisor.py` | 白皮书版本一致性自动检查 | `python3 代码文件/监督机制/version_supervisor.py --cross-check` |
 | `代码文件/监督机制/pipeline_engine.py` | 流程引擎状态管理 | `python3 代码文件/监督机制/pipeline_engine.py --status` |
 | `代码文件/监督机制/run_full_audit.py` | 全量审计入口 | `python3 代码文件/监督机制/run_full_audit.py` |
+| `代码文件/监督机制/check_checklist.py` | 四印三鉴-G1: 清单结构+双签校验 | `python3 代码文件/监督机制/check_checklist.py design.md` |
+| `代码文件/监督机制/trace_requirements.py` | 四印三鉴-G2: 需求→代码追溯验证 | `python3 代码文件/监督机制/trace_requirements.py design.md` |
+| `代码文件/监督机制/verify_deployment.py` | 四印三鉴-G3: 部署闸门验证 | `python3 代码文件/监督机制/verify_deployment.py design.md` |
 | `代码文件/tools/git_autocommit.py` | Git 自动提交(安全检查) | `python3 代码文件/tools/git_autocommit.py --module daily_pick --paths ...` |
 | `代码文件/tools/health_check.py` | 数据健康检测 | `python3 代码文件/tools/health_check.py --mode daily_sim` |
 | `代码文件/tools/tushare_history_sync.py` | Tushare历史数据沉淀 | `python3 代码文件/tools/tushare_history_sync.py --all` |
@@ -167,11 +170,20 @@
 
 ---
 
-## 七、工程项目标准交付流程（强制流程）
+## 七、股票分析系统功能开发标准流程（四印三鉴）
 
 > ⛔ **任何工程改动，必须严格按此流程串行推进，禁止跳过或并行任何环节。**
 > 🤖 **全自动推进**：阿黑收到任务后自动驱程①→⑦，不到闸门阻断或L3升级不打断用户。
 > ⛔ **阿黑不写代码、不改文件**：阿黑是路由者，不是执行者。
+
+### 7.0 四印三鉴总览
+
+**四印**（四角色分阶段签章）：情墨印（设计侧）→ 腰子印（金融侧）→ 红结印（回填code_ref）→ 红枫印（回填部署）
+**三鉴**（三个核查工具）：check_checklist（鉴结构+双签）→ trace_requirements（鉴代码追溯）→ verify_deployment（鉴部署落实）
+
+每个签字后面跟一个核查，签字是声明，核查是验证声明是否属实。
+
+核对清单以 JSON 格式嵌入设计文档末尾的 ````json` 代码块中，四角色分阶段填充和签章。详细规范见 `.claude/knowledge/需求代码核对清单.md`。
 
 ### 7.1 阿黑流程执行循环（唯一操作协议）
 
@@ -188,19 +200,19 @@
 7. goto 1
 ```
 
-### 7.2 流程阶段速查
+### 7.2 流程阶段速查（四印三鉴）
 
-| 阶段 | 执行者 | 闸门 |
-|:----:|:------|:----:|
-| ① | 情墨（架构设计） | → 产出设计文档(pipeline_stage: complete)，**含Token影响评估** |
-| ② | 腰子（设计确认） | → 闸门1a: 全团咨询(山猫→玉夜→流金→青山) + finance_confirmed |
-| ③ | 新安+旧影（架构审查） | → 闸门1b: 技术合规审查 + **旧影Token设计审查(模板体积/输出模式/API调用)** |
-| ④ | 红结（编码实现） | → 闸门2: 代码 + 四层验证 |
-| ⑤ | 新安（四层验证） | → 闸门2 PASS: 旧影运行 `check_token_efficiency.py --quiet`，**overall=FAIL则退回红结** |
-| ⑥ | 红枫（灰度部署） | → 闸门3: 前置全PASS + 部署记录 + 回滚方案 |
-| ⑦ | 腰子+青山（后评估） | → 完成 |
+| 阶段 | 执行者 | 四印 | 三鉴 | 闸门 |
+|:----:|:------|:----:|:----:|:----:|
+| ① | 情墨（架构设计） | 情墨印：A-F设计侧+G段预期 | — | 输出设计文档+嵌入清单JSON |
+| ①a | 腰子（设计确认） | 腰子印：A-F金融侧核对 | — | 全团咨询 + finance_confirmed |
+| ①b | 新安+旧影（架构审查） | — | 鉴1: check_checklist.py | gate_1: 结构+双签 |
+| ④ | 红结（编码实现） | 红结印：回填code_ref | — | 代码+回填清单 |
+| ⑤ | 新安（五层验证） | — | 鉴2: trace_requirements.py | gate_2: 自动全量+人工抽查 |
+| ⑥ | 红枫（灰度部署） | 红枫印：回填G段 | 鉴3: verify_deployment.py | gate_3: 部署闸门验证 |
+| ⑦ | 腰子+青山（后评估） | — | — | 完成 |
 
-> **Token双闸门**：③设计时预防（情墨设计文档必含Token影响评估）→ ⑤编码后验证（check_token_efficiency.py自动扫描）。Token预算唯一责任人：旧影。详见 `.claude/commands/旧影.md` §Token效率专项。
+> **四印三鉴铁律**：每个签字后跟一个核查工具。签字=声明，核查=验证声明属实。任一项FAIL→打回对应角色。
 
 ### 7.3 违规处理
 
@@ -288,4 +300,4 @@
 - 红结提交前逐项打勾自查清单（语法/路径/异常/日志/行数），未勾满新安退回
 - 引擎变更后Golden Master diff验证，评分/排序/否决/相位 四项完全一致，不一致=FAIL
 - 缺陷台账即时登记，旧影每周审计闭环率≥80%
-- 情墨设计文档末尾附需求→代码核对清单，情墨+腰子勾签后放行
+- 情墨设计文档末尾附需求→代码核对清单（JSON格式），四角色分阶段签章+三工具验证后放行
