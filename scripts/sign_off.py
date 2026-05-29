@@ -84,6 +84,21 @@ def sign_off(role, run_id, checklist_path, comment=""):
         "new_hash": checklist_hash
     })
 
+    # 10. 记录AI操作日志
+    append_log("ai_ops", {
+        "run_id": run_id,
+        "stage": get_current_stage(data),
+        "role": role,
+        "task_type": "sign_off",
+        "input_context_hash": checklist_hash,
+        "output_summary": f"{role}完成签名",
+        "token_used": 0,
+        "model": "local_script",
+        "duration_ms": 0,
+        "result": "success",
+        "error_msg": ""
+    })
+
     print(f"  ✓ 日志已记录")
 
 
