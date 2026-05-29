@@ -1,0 +1,13 @@
+{
+  "check_time": "2026-05-30T01:50:58.023510",
+  "overall": "PASS",
+  "metrics": {
+    "quote_coverage": 100.0,
+    "kline_completeness": 100.0,
+    "cache_hit_rate": 12.1,
+    "financial_coverage": 100.0,
+    "fundflow_coverage": 100.0
+  },
+  "issues": [],
+  "blocked": false
+}

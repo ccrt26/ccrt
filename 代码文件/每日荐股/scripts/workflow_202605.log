@@ -962,3 +962,7 @@
 [2026-05-30 00:16:46][ARCHIVE][INFO] 归档完成: 8个文件 → /Users/ccrt/ccrt/历史数据
 [2026-05-30 00:16:46][ARCHIVE][INFO] ===== 归档结束 =====
 [2026-05-30 00:16:46][INFO] ===== Daily Stock Analysis Complete =====
+[2026-05-30 01:41:48][INFO] ===== Starting Daily Stock Analysis (daily) =====
+[2026-05-30 01:41:48][INFO] [1/7] Building dynamic pool...
+[2026-05-30 01:41:48][INFO] Dynamic pool built
+[2026-05-30 01:41:48][INFO] [2/7] Collecting batch data...
