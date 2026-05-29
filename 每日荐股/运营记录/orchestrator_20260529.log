@@ -35,3 +35,9 @@
 [2026-05-29 15:37:01][INFO] Waiting 900s before retry...
 [2026-05-29 15:52:01][INFO] Data readiness check (attempt 2/4): Only 0 cache files updated today (need >=3)
 [2026-05-29 15:52:01][INFO] Waiting 900s before retry...
+[2026-05-29 16:07:01][INFO] Data readiness check (attempt 3/4): Only 0 cache files updated today (need >=3)
+[2026-05-29 16:07:01][INFO] Waiting 900s before retry...
+[2026-05-29 16:22:01][INFO] Data readiness check (attempt 4/4): Only 0 cache files updated today (need >=3)
+[2026-05-29 16:22:01][INFO] Signal written: /Users/ccrt/ccrt/.claude/signal_daily_report.json
+[2026-05-29 16:22:01][WARN] Data not ready after max retries, signal sent with degraded flag
+[2026-05-29 16:22:01][INFO] Orchestrator finished: mode=daily exit=1
