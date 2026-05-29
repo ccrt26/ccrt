@@ -23,7 +23,7 @@
 |:-----|:-----|
 | `engine/scores.py` | 不改变评分公式 |
 | `engine/veto.py` | 不改变否决逻辑 |
-| `代码文件/重点股票/run_keystock_analysis.ps1` | 报告增强不涉及管线 |
+| `代码文件/重点股票/run_keystock_analysis.py` | 报告增强不涉及管线 |
 
 ---
 

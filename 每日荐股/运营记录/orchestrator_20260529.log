@@ -30,3 +30,8 @@
 [2026-05-29 10:16:59][INFO] Alert signal written: /Users/ccrt/ccrt/.claude/signal_alert.json
 [2026-05-29 10:16:59][WARN] Health check: Market not yet closed (current: 10:16) | API: DOWN: sina
 [2026-05-29 10:16:59][INFO] Orchestrator finished: mode=health exit=1
+[2026-05-29 15:37:01][INFO] Orchestrator started: mode=daily date=today
+[2026-05-29 15:37:01][INFO] Data readiness check (attempt 1/4): Only 0 cache files updated today (need >=3)
+[2026-05-29 15:37:01][INFO] Waiting 900s before retry...
+[2026-05-29 15:52:01][INFO] Data readiness check (attempt 2/4): Only 0 cache files updated today (need >=3)
+[2026-05-29 15:52:01][INFO] Waiting 900s before retry...

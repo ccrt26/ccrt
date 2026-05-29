@@ -27,7 +27,7 @@
 
 | 文件 | 等级 | 变更 |
 |:-----|:----:|:-----|
-| `代码文件/每日荐股/scripts/batch_data_collector.ps1` | L0 | 新增5个预计算字段 + 从$fin提取CFPS |
+| `代码文件/每日荐股/scripts/batch_data_collector.py` | L0 | 新增5个预计算字段 + 从$fin提取CFPS |
 | `.claude/commands/日报.md` | M类 | §二资金面/§三基本面数据源说明更新 |
 
 ### 2.2 batch_data_collector.ps1 变更

@@ -127,7 +127,7 @@ api_connectivity:
 
 ### 改造B：1+2降级路径嵌入故障打点
 
-**变更文件**: `代码文件/每日荐股/scripts/batch_data_collector.ps1` + 其他数据获取函数(3-5文件)
+**变更文件**: `代码文件/每日荐股/scripts/batch_data_collector.py` + 其他数据获取函数(3-5文件)
 **代码分级**: L0
 **改动量**: 约40行（分散）
 

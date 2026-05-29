@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "active": false,
-  "task": "保护机制Cron自动续期：每6天重建shield任务+自续",
+  "task": "全项目设计→部署对齐修复：保护机制Cron+飞书配置+设计文档腐化+白皮书版本",
   "stage": 7,
   "stage_name": "完成",
   "executor": "腰子+青山",
@@ -15,83 +15,86 @@
   "l3_reason": "",
   "loop_context": "",
   "files_scope": [
-    ".claude/scheduled_tasks.json"
+    "保护机制/",
+    "审计报告/架构设计/",
+    "规则红线/",
+    "白皮书/"
   ],
-  "started": "2026-05-29T07:32:26",
-  "updated": "2026-05-29T07:33:12",
+  "started": "2026-05-29T07:19:34",
+  "updated": "2026-05-29T07:25:49",
   "stage_history": [
     {
       "stage": 1,
       "name": "架构设计",
       "status": "started",
-      "time": "2026-05-29T07:32:26"
+      "time": "2026-05-29T07:19:34"
     },
     {
       "stage": 1,
       "name": "架构设计",
       "status": "complete",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "started",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "complete",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "started",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "complete",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "started",
-      "time": "2026-05-29T07:32:43"
+      "time": "2026-05-29T07:19:57"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "complete",
-      "time": "2026-05-29T07:33:12"
+      "time": "2026-05-29T07:25:49"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "started",
-      "time": "2026-05-29T07:33:12"
+      "time": "2026-05-29T07:25:49"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "complete",
-      "time": "2026-05-29T07:33:12"
+      "time": "2026-05-29T07:25:49"
     },
     {
       "stage": 6,
       "name": "后评估",
       "status": "started",
-      "time": "2026-05-29T07:33:12"
+      "time": "2026-05-29T07:25:49"
     },
     {
       "stage": 7,
       "name": "完成",
       "status": "complete",
-      "time": "2026-05-29T07:33:12"
+      "time": "2026-05-29T07:25:49"
     }
   ],
-  "design_doc": "审计报告/架构设计/design_cron_autorenew_v1.0.md"
+  "design_doc": "审计报告/架构设计/design_full_project_fix_v1.0.md"
 }

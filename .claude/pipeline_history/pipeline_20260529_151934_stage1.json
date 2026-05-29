@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "active": true,
+  "task": "全项目设计→部署对齐修复：保护机制Cron+飞书配置+设计文档腐化+白皮书版本",
+  "stage": 1,
+  "stage_name": "架构设计",
+  "executor": "情墨",
+  "gate_1": "PENDING",
+  "gate_2": "PENDING",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [
+    "保护机制/",
+    "审计报告/架构设计/",
+    "规则红线/",
+    "白皮书/"
+  ],
+  "started": "2026-05-29T07:19:34",
+  "updated": "2026-05-29T07:19:34",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "started",
+      "time": "2026-05-29T07:19:34"
+    }
+  ]
+}

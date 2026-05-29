@@ -26,8 +26,8 @@
 | # | 根因 | 位置 | 性质 |
 |:--|:-----|:-----|:-----|
 | R1 | ConvertTo-Pdf 先删后建的破坏性覆盖 | `代码文件/监督机制/ConvertTo-Pdf.ps1:54-61` | 设计缺陷 |
-| R2 | 预提交钩子无PDF删除检测 | `.claude/hooks/pre-commit-check.ps1` (Check A-F完备但缺G) | 防护缺口 |
-| R3 | git add -- . 盲扫所有变更（含删除） | `代码文件/tools/git_autocommit.ps1:129`, `git_sweep.ps1:42` | 盲区 |
+| R2 | 预提交钩子无PDF删除检测 | `.claude/hooks/pre-commit-check.py` (Check A-F完备但缺G) | 防护缺口 |
+| R3 | git add -- . 盲扫所有变更（含删除） | `代码文件/tools/git_autocommit.py:129`, `git_sweep.ps1:42` | 盲区 |
 
 ---
 
@@ -73,7 +73,7 @@ if (Edge成功 且 写入验证通过) {
 
 ### 2.3 防线二：pre-commit Check G — PDF删除阻断
 
-**文件**: `.claude/hooks/pre-commit-check.ps1`
+**文件**: `.claude/hooks/pre-commit-check.py`
 **等级**: L1
 **改动**: 在Check F后新增Check G
 
@@ -94,7 +94,7 @@ if ($DeletedPdfs.Count -gt 0) {
 
 ### 2.4 防线三：git_autocommit 提交前PDF删除自检
 
-**文件**: `代码文件/tools/git_autocommit.ps1`
+**文件**: `代码文件/tools/git_autocommit.py`
 **等级**: L1
 **改动**: 在 `git add` 之后、`git commit` 之前插入PDF删除检测
 
@@ -123,9 +123,9 @@ if ($deletedPdfs) {
 | 文件 | 等级 | 变更行数 | 风险 |
 |:-----|:----:|:------:|:----:|
 | `代码文件/监督机制/ConvertTo-Pdf.ps1` | L1 | ~20行 | 中：所有PDF生成依赖此函数 |
-| `.claude/hooks/pre-commit-check.ps1` | L1 | ~15行 | 低：新增Check，不影响现有A-F |
-| `代码文件/tools/git_autocommit.ps1` | L1 | ~10行 | 低：新增检测，不影响正常提交流程 |
-| `代码文件/tools/git_autosweep.ps1` | L1 | ~10行 | 低：新增检测，`--no-verify`绕过钩子需独立防护 |
+| `.claude/hooks/pre-commit-check.py` | L1 | ~15行 | 低：新增Check，不影响现有A-F |
+| `代码文件/tools/git_autocommit.py` | L1 | ~10行 | 低：新增检测，不影响正常提交流程 |
+| `代码文件/tools/git_autosweep.py` | L1 | ~10行 | 低：新增检测，`--no-verify`绕过钩子需独立防护 |
 
 ### 3.2 下游影响
 

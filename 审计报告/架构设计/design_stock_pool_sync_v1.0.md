@@ -11,7 +11,7 @@
 
 | 文件 | 等级 | 硬编码位置 | 当前值 | 目标值 |
 |:---|:----|:---|:---|:---|
-| `代码文件/重点股票/run_keystock_analysis.ps1` | L1 | L45-53 `$allStocks` | 7只(旧池，含长电科技) | 8只(新池) |
+| `代码文件/重点股票/run_keystock_analysis.py` | L1 | L45-53 `$allStocks` | 7只(旧池，含长电科技) | 8只(新池) |
 | `代码文件/重点股票/gen_daily_brief.py` | L1 | L27-35 `stock_info` | 7只(旧池，含长电科技) | 8只(新池) |
 | `代码文件/重点股票/gen_daily_brief.py` | L1 | L337 文件名模板 | `重点关注股票日报_{date}.md` | `{name}({code})日报_{date}.md` |
 

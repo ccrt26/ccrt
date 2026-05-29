@@ -118,7 +118,7 @@ function Get-FinancialDetail {
 }
 ```
 
-#### 修改文件2: `代码文件/每日荐股/scripts/batch_data_collector.ps1`
+#### 修改文件2: `代码文件/每日荐股/scripts/batch_data_collector.py`
 
 **变更1** (line 430): EPS改为TTM求和
 ```powershell
@@ -204,7 +204,7 @@ AssetLiabilityRatio = $debtRatio   # 新增(从财务比率已有数据)
 | 文件 | 操作 | 等级 | 预估行数变化 |
 |:-----|:----:|:---:|:--------:|
 | `代码文件/每日荐股/scripts/modules/financial.ps1` | 新增函数 | L0 | +30行 |
-| `代码文件/每日荐股/scripts/batch_data_collector.ps1` | 修改6处 | L1 | ~40行 |
+| `代码文件/每日荐股/scripts/batch_data_collector.py` | 修改6处 | L1 | ~40行 |
 | `代码文件/每日荐股/评分逻辑/scoring_engine_v2.py` | 适配EPS_TTM | L1 | ~5行 |
 
 ---

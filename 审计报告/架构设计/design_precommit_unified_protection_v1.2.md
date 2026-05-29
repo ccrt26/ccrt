@@ -64,10 +64,10 @@ Round 4 (工作区): 补 gate_1 检查 — Round 1-3 都漏了根因
 
 ### 3.1 核心决策：共享验证模块
 
-创建 `.claude/hooks/shared/pipeline-auth.ps1` 作为**单一真相源**，两个 hook 均 dot-source 此模块。
+创建 `.claude/hooks/shared/pipeline-auth.py` 作为**单一真相源**，两个 hook 均 dot-source 此模块。
 
 ```
-.claude/hooks/shared/pipeline-auth.ps1  ← 单一真相源 (M类, ~60行)
+.claude/hooks/shared/pipeline-auth.py  ← 单一真相源 (M类, ~60行)
     ↑ dot-source                    ↑ dot-source
     │                               │
 pre-commit-check.ps1          write_protection_hook.ps1
@@ -86,7 +86,7 @@ pre-commit-check.ps1          write_protection_hook.ps1
 ### 3.2 共享模块接口设计
 
 ```powershell
-# .claude/hooks/shared/pipeline-auth.ps1
+# .claude/hooks/shared/pipeline-auth.py
 # 返回 PSCustomObject: { Authorized, Reason, Executor, Gate1, ScopeMatch }
 
 function Test-PipelineAuthorization {
@@ -162,9 +162,9 @@ $script:ProtectedPaths = @(
 
 | 文件 | 变更类型 | 等级 | 行数 |
 |:-----|:--------|:----:|:---:|
-| `.claude/hooks/shared/pipeline-auth.ps1` | **新增** — 共享验证模块 | L1 | ~60 |
-| `.claude/hooks/pre-commit-check.ps1` | 修改 — 抽离F2/F3至共享模块 | L1 | 367→~290 |
-| `代码文件/监督机制/write_protection_hook.ps1` | 修改 — 同步升级至统一规则 | L1 | 99→~60 |
+| `.claude/hooks/shared/pipeline-auth.py` | **新增** — 共享验证模块 | L1 | ~60 |
+| `.claude/hooks/pre-commit-check.py` | 修改 — 抽离F2/F3至共享模块 | L1 | 367→~290 |
+| `代码文件/监督机制/write_protection_hook.py` | 修改 — 同步升级至统一规则 | L1 | 99→~60 |
 
 总计: 3文件, 净减少 ~116行（新增60 + 修改-77 + 修改-39 = -56行 + 新增60 = 净+4行）。
 
@@ -211,7 +211,7 @@ $script:ProtectedPaths = @(
 
 ## 八、需求→代码核对清单
 
-- [ ] 创建 `.claude/hooks/shared/pipeline-auth.ps1` (~60行)
+- [ ] 创建 `.claude/hooks/shared/pipeline-auth.py` (~60行)
 - [ ] 共享模块包含完整 CodeFilePatterns (9条路径)
 - [ ] 共享模块验证逻辑: active + executor + gate_1 + files_scope
 - [ ] pre-commit-check.ps1 dot-source 共享模块

@@ -21,7 +21,7 @@
 | G3 | Pipeline与commit无关联校验 | 即使有token，也不验证staged文件是否属于当前pipeline声明的范围 |
 
 ### 1.3 影响评估
-- **已受影响**：`模拟交易/交易引擎/sim_trading.ps1`、`sim_orchestrator.ps1`、`sim_trading_daily.ps1` 等核心交易引擎代码被绕过pipeline提交
+- **已受影响**：`模拟交易/交易引擎/sim_trading.py`、`sim_orchestrator.ps1`、`sim_trading_daily.ps1` 等核心交易引擎代码被绕过pipeline提交
 - **潜在风险**：`模拟交易/否决审查/`、`模拟交易/分析/`、`模拟交易/共享模块/` 等同样不受保护
 - **严重程度**：L2（涉及交易引擎代码，属于风控敏感路径）
 
@@ -81,7 +81,7 @@ $StagedCodeFiles = $StagedFiles | Where-Object {
 {
   "files_scope": [
     "模拟交易/交易引擎/",
-    "模拟交易/sim_orchestrator.ps1",
+    "模拟交易/sim_orchestrator.py",
     ".github/workflows/sim_trading.yml"
   ]
 }
@@ -132,8 +132,8 @@ if ($PipelineValid -and $token.files_scope) {
 
 | 文件 | 变更类型 | 等级 | 行数估算 |
 |:-----|:--------|:----:|:-------|
-| `.claude/hooks/pre-commit-check.ps1` | 修改 — Check F扩展+G3校验 | L1 | +40行 |
-| `代码文件/监督机制/pipeline_engine.ps1` | 修改 — token schema + Scope参数 | L1 | +25行 |
+| `.claude/hooks/pre-commit-check.py` | 修改 — Check F扩展+G3校验 | L1 | +40行 |
+| `代码文件/监督机制/pipeline_engine.py` | 修改 — token schema + Scope参数 | L1 | +25行 |
 | `代码文件/监督机制/pipeline_token.ps1` | 修改 — -Start增加-Scope参数透传 | L1 | +10行 |
 
 总计: 3文件, ~75行新增。

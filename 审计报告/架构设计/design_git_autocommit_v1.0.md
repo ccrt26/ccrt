@@ -23,7 +23,7 @@
 | B. 脚本内嵌git命令 | 零依赖 | 消息格式不一致/无法统一管控 | 否决 |
 | C. 定时cron批量提交 | 零侵入 | 丢失上下文/commit message无意义/可能提交半成品 | 否决 |
 
-**决策**：方案A。新建 `代码文件/tools/git_autocommit.ps1` 作为共享模块，各产出节点末尾调用。
+**决策**：方案A。新建 `代码文件/tools/git_autocommit.py` 作为共享模块，各产出节点末尾调用。
 
 ---
 
@@ -31,7 +31,7 @@
 
 ### 3.1 核心模块 [L0]
 
-**文件**：`代码文件/tools/git_autocommit.ps1`
+**文件**：`代码文件/tools/git_autocommit.py`
 
 **接口契约**：
 
@@ -124,7 +124,7 @@ git_autocommit.ps1 -Module "deep_analysis" `
 
 | # | 需求 | 实现位置 | 情墨 | 腰子 |
 |:--|:-----|:--------|:----:|:----:|
-| 1 | 共享git提交模块 | `代码文件/tools/git_autocommit.ps1` | ☐ | ☐ |
+| 1 | 共享git提交模块 | `代码文件/tools/git_autocommit.py` | ☐ | ☐ |
 | 2 | 统一commit message格式 | §3.1 -Message参数 + auto:前缀 | ☐ | ☐ |
 | 3 | 6个集成点接入 | §4.1 各节点调用 | ☐ | ☐ |
 | 4 | 安全路径校验 | §3.1 路径白名单+防穿越 | ☐ | ☐ |

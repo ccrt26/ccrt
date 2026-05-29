@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "active": true,
+  "task": "保护机制Cron自动续期：每6天重建shield任务+自续",
+  "stage": 2,
+  "stage_name": "架构审查",
+  "executor": "新安+旧影",
+  "gate_1": "PASS",
+  "gate_2": "PENDING",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
+  "attempts": 0,
+  "max_attempts": 3,
+  "l3_triggered": false,
+  "l3_reason": "",
+  "loop_context": "",
+  "files_scope": [
+    ".claude/scheduled_tasks.json"
+  ],
+  "started": "2026-05-29T07:32:26",
+  "updated": "2026-05-29T07:32:43",
+  "stage_history": [
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "started",
+      "time": "2026-05-29T07:32:26"
+    },
+    {
+      "stage": 1,
+      "name": "架构设计",
+      "status": "complete",
+      "time": "2026-05-29T07:32:43"
+    },
+    {
+      "stage": 2,
+      "name": "架构审查",
+      "status": "started",
+      "time": "2026-05-29T07:32:43"
+    }
+  ],
+  "design_doc": "审计报告/架构设计/design_cron_autorenew_v1.0.md"
+}

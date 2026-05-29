@@ -46,9 +46,9 @@
 |:-----|:----|:---:|:---:|
 | `代码文件/每日荐股/scripts/stock_data_fetcher_ths.py` | 新增 `northbound_flow` action，查询南向+北向资金流 | ~40行 | L0 |
 | `代码文件/每日荐股/scripts/modules/external.ps1` | 新增 `Get-SouthboundFlow` 函数，1+2降级路径 | ~35行 | L0 |
-| `代码文件/每日荐股/scripts/batch_data_collector.ps1` | 新增南向采集步骤，写入 `data_full.json` | ~15行 | L0 |
+| `代码文件/每日荐股/scripts/batch_data_collector.py` | 新增南向采集步骤，写入 `data_full.json` | ~15行 | L0 |
 | `代码文件/每日荐股/分析逻辑/engine/scores.py` | 北向因子权重[0,+3]→[0,+1]；新增南向信号[0,±2] | ~10行 | **L1** |
-| `代码文件/tools/health_check.ps1` | 新增THS桥接连通性检查 | ~15行 | L0 |
+| `代码文件/tools/health_check.py` | 新增THS桥接连通性检查 | ~15行 | L0 |
 | `.claude/agents/玉夜-知识库/01-数据源全景.md` | 更新北向降级链 + 新增南向条目 | ~40行 | M类 |
 | `.claude/knowledge/数据字典.md` | 新增[THS-SB]南向资金条目 | ~8行 | M类 |
 

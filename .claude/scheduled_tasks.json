@@ -53,24 +53,34 @@
       "createdByProcStart": "pipeline-fix-20260528"
     },
     {
-      "id": "c77610cf",
+      "id": "a9292669",
       "cron": "57 8 * * 1-5",
-      "prompt": "/保护 盘前 8:50阶段。读取保护机制/持仓账本.json，读取保护机制/知识库/*.md，读取holidays_2026.csv判断是否交易日。若节假日或无持仓则跳过。按Skill定义执行山猫→信鸽→玉夜→流金→青山→腰子顺序，产出飞书格式纪律卡片，写入保护机制/盘前简报/YYYY-MM-DD.md。不写代码文件/路径，不触发pipeline_engine。",
-      "createdAt": 1780038333774,
+      "prompt": "/保护 盘前 — 8:50 盘前简报：六角色纪律卡片，飞书发送。先读持仓账本→知识库四文件→holidays_2026.csv→飞书配置。节假日跳过，无持仓跳过。",
+      "createdAt": 1780039839519,
       "recurring": true,
-      "createdBySessionId": "bb9af0ae-f551-4202-b870-e4406760ed76",
-      "createdByPid": 29511,
-      "createdByProcStart": "Fri May 29 04:09:59 2026"
+      "createdBySessionId": "5ce1a2e7-e1f1-4465-8531-e5102e1af521",
+      "createdByPid": 33872,
+      "createdByProcStart": "Fri May 29 06:13:02 2026"
     },
     {
-      "id": "f898d24a",
+      "id": "f97c3fe2",
       "cron": "23 9 * * 1-5",
-      "prompt": "/保护 盘前 9:23竞价阶段。读取保护机制/盘前简报/YYYY-MM-DD.md获取8:50定调内容。读取今日竞价数据。执行山猫竞价分析+腰子修正判断，产出飞书格式竞价校准，追加到保护机制/盘前简报/YYYY-MM-DD.md。不写代码文件/路径，不触发pipeline_engine。",
-      "createdAt": 1780038333779,
+      "prompt": "/保护 盘前 — 9:23 竞价校准：检查竞价数据，对比8:50定调，有修正则飞书发送。",
+      "createdAt": 1780039839523,
       "recurring": true,
-      "createdBySessionId": "bb9af0ae-f551-4202-b870-e4406760ed76",
-      "createdByPid": 29511,
-      "createdByProcStart": "Fri May 29 04:09:59 2026"
+      "createdBySessionId": "5ce1a2e7-e1f1-4465-8531-e5102e1af521",
+      "createdByPid": 33872,
+      "createdByProcStart": "Fri May 29 06:13:02 2026"
+    },
+    {
+      "id": "02401721",
+      "cron": "0 10 */6 * *",
+      "prompt": "保护机制Cron自动续期：执行以下步骤——\n1. CronDelete a9292669 (shield-pre-850, 若存在)\n2. CronDelete f97c3fe2 (shield-pre-925, 若存在)\n3. CronCreate: cron=\"57 8 * * 1-5\" durable=true recurring=true, prompt=\"/保护 盘前 — 8:50 盘前简报：六角色纪律卡片，飞书发送。先读持仓账本→知识库四文件→holidays_2026.csv→飞书配置。节假日跳过，无持仓跳过。\"\n4. CronCreate: cron=\"23 9 * * 1-5\" durable=true recurring=true, prompt=\"/保护 盘前 — 9:23 竞价校准：检查竞价数据，对比8:50定调，有修正则飞书发送。\"\n5. CronDelete 当前任务自身\n6. CronCreate: cron=\"0 10 */6 * *\" durable=true recurring=true, prompt=\"(与本条相同，实现自续)\"",
+      "createdAt": 1780039971821,
+      "recurring": true,
+      "createdBySessionId": "5ce1a2e7-e1f1-4465-8531-e5102e1af521",
+      "createdByPid": 33872,
+      "createdByProcStart": "Fri May 29 06:13:02 2026"
     }
   ]
 }

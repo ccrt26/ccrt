@@ -88,7 +88,7 @@ PIPELINE-REQUIRED (必须走§七流程):
 
 #### A. `git_autosweep.ps1` — 自动清扫脚本（新建）
 
-- **位置**: `代码文件/tools/git_autosweep.ps1`
+- **位置**: `代码文件/tools/git_autosweep.py`
 - **等级**: L0（工具/数据层）
 - **逻辑**:
   1. `git status --porcelain` 获取所有变更
@@ -127,9 +127,9 @@ PIPELINE-REQUIRED (必须走§七流程):
 
 | 文件 | 变更类型 | 影响范围 | 风险 |
 |:-----|:---------|:--------|:----:|
-| `.claude/hooks/shared/pipeline-auth.ps1` | 修改 | Check F + write_protection_hook | 中：安全基础设施 |
-| `.claude/hooks/pre-commit-check.ps1` | 修改 | 所有 git commit | 中：git hook |
-| `代码文件/tools/git_autosweep.ps1` | 新建 | 无现有文件 | 低：独立新文件 |
+| `.claude/hooks/shared/pipeline-auth.py` | 修改 | Check F + write_protection_hook | 中：安全基础设施 |
+| `.claude/hooks/pre-commit-check.py` | 修改 | 所有 git commit | 中：git hook |
+| `代码文件/tools/git_autosweep.py` | 新建 | 无现有文件 | 低：独立新文件 |
 | `.claude/scheduled_tasks.json` | CronCreate 写入 | 定时任务 | 低 |
 
 ---

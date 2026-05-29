@@ -139,7 +139,7 @@ Cron prompt:
 
 - `重点股票/分析逻辑/重点股票跟踪分析逻辑白皮书_v3.3.md` — 分析框架已完备
 - `规则红线/报告样式基线_v1.2.md` — 样式已冻结
-- `代码文件/重点股票/run_keystock_analysis.ps1` — CSS引擎已锁定
+- `代码文件/重点股票/run_keystock_analysis.py` — CSS引擎已锁定
 
 ---
 

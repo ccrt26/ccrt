@@ -30,9 +30,9 @@
 | 配置层 | `代码文件/lib/config_loader.py` | `\\` 反斜杠 | `os.path.join` | L0 | 🟢 |
 | 配置层 | `.claude/settings.json` | Windows hooks + MCP path | macOS hooks + MCP path | L0 | 🟡 |
 | 配置层 | `.claude/scheduled_tasks.json` | Windows 路径 | macOS 路径 | L0 | 🟡 |
-| 钩子层 | `.claude/hooks/fixbom.ps1` | PS | Python | L2 | 🟡 |
-| 钩子层 | `.claude/hooks/pre-commit-check.ps1` | PS | Python | L2 | 🟠 |
-| 钩子层 | `.claude/hooks/shared/pipeline-auth.ps1` | PS | Python | L2 | 🟡 |
+| 钩子层 | `.claude/hooks/fixbom.py` | PS | Python | L2 | 🟡 |
+| 钩子层 | `.claude/hooks/pre-commit-check.py` | PS | Python | L2 | 🟠 |
+| 钩子层 | `.claude/hooks/shared/pipeline-auth.py` | PS | Python | L2 | 🟡 |
 | 工具层 | `代码文件/tools/gen_keystock_pdf.py` | 硬编码路径 | 动态 ROOT | L1 | 🟡 |
 | 工具层 | `代码文件/tools/batch_convert_pdf.py` | 硬编码路径 | 动态 ROOT | L1 | 🟡 |
 | 工具层 | `代码文件/tools/batch_gen_daily_pdfs.py` | 硬编码路径 | 动态 ROOT | L1 | 🟡 |
@@ -208,21 +208,21 @@ def detect_root():
 
 | 文件 | 变更 | 代码分级 |
 |:-----|:-----|:-------:|
-| `.claude/hooks/fixbom.ps1` → `.py` | 重写为 Python | L2 |
-| `.claude/hooks/pre-commit-check.ps1` → `.py` | 重写为 Python | L2 |
-| `.claude/hooks/shared/pipeline-auth.ps1` → `.py` | 重写为 Python | L2 |
-| `代码文件/规则红线/check_redlines.ps1` → `.py` | 重写为 Python | L1 |
+| `.claude/hooks/fixbom.py` → `.py` | 重写为 Python | L2 |
+| `.claude/hooks/pre-commit-check.py` → `.py` | 重写为 Python | L2 |
+| `.claude/hooks/shared/pipeline-auth.py` → `.py` | 重写为 Python | L2 |
+| `代码文件/规则红线/check_redlines.py` → `.py` | 重写为 Python | L1 |
 | `代码文件/规则红线/build_docx.ps1` → `.py` | 重写为 Python | L1 |
-| `代码文件/监督机制/version_supervisor.ps1` → `.py` | 重写为 Python | L1 |
+| `代码文件/监督机制/version_supervisor.py` → `.py` | 重写为 Python | L1 |
 
 ### Phase 4: 调度（P1 — 让自动化跑起来）
 
 | 文件 | 变更 | 代码分级 |
 |:-----|:-----|:-------:|
-| `代码文件/每日荐股/scripts/daily_workflow.ps1` → `.py` | 重写为 Python | L1 |
-| `代码文件/每日荐股/scripts/batch_data_collector.ps1` → `.py` | 重写为 Python | L1 |
+| `代码文件/每日荐股/scripts/daily_workflow.py` → `.py` | 重写为 Python | L1 |
+| `代码文件/每日荐股/scripts/batch_data_collector.py` → `.py` | 重写为 Python | L1 |
 | 调度注册 → `generate_launchd.py` | 新建 | L1 |
-| `代码文件/每日荐股/scripts/is_market_open.ps1` → `.py` | 重写为 Python | L1 |
+| `代码文件/每日荐股/scripts/is_market_open.py` → `.py` | 重写为 Python | L1 |
 
 ### Phase 5: 数据采集（P1 — 让数据管道完整）
 
@@ -235,7 +235,7 @@ def detect_root():
 
 | 文件 | 变更 | 代码分级 |
 |:-----|:-----|:-------:|
-| `模拟交易/交易引擎/sim_trading.ps1` → `.py` | 重写为 Python | L2 |
+| `模拟交易/交易引擎/sim_trading.py` → `.py` | 重写为 Python | L2 |
 | 其余 10+ .ps1 交易脚本 | 重写为 Python | L2 |
 
 ### Phase 7: 归档（P3 — 删除废弃文件）

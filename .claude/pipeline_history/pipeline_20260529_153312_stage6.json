@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
-  "active": false,
+  "active": true,
   "task": "保护机制Cron自动续期：每6天重建shield任务+自续",
-  "stage": 7,
-  "stage_name": "完成",
+  "stage": 6,
+  "stage_name": "后评估",
   "executor": "腰子+青山",
   "gate_1": "PASS",
   "gate_2": "PASS",
-  "gate_3": "PASS",
-  "next_action": "done",
+  "gate_3": "PENDING",
+  "next_action": "invoke_role",
   "attempts": 0,
   "max_attempts": 3,
   "l3_triggered": false,
@@ -84,12 +84,6 @@
       "stage": 6,
       "name": "后评估",
       "status": "started",
-      "time": "2026-05-29T07:33:12"
-    },
-    {
-      "stage": 7,
-      "name": "完成",
-      "status": "complete",
       "time": "2026-05-29T07:33:12"
     }
   ],

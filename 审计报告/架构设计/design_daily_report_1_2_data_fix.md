@@ -28,7 +28,7 @@
 
 | 文件 | 等级 | 变更 | 行数 |
 |:-----|:----:|:-----|:----:|
-| `代码文件/每日荐股/scripts/batch_data_collector.ps1` | L0 | ① 组装输出增加 High/Low/Open/PrevClose 顶层字段；② 新增 Recent4Days 预计算数组 | +35行 |
+| `代码文件/每日荐股/scripts/batch_data_collector.py` | L0 | ① 组装输出增加 High/Low/Open/PrevClose 顶层字段；② 新增 Recent4Days 预计算数组 | +35行 |
 | `.claude/commands/日报.md` | M类 | 1.2节数据源说明更新：标注读取 Recent4Days 字段 | +3行 |
 
 ### 2.2 batch_data_collector.ps1 变更

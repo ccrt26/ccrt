@@ -26,8 +26,8 @@
 
 | 文件 | 变更 | L级 | 说明 |
 |:-----|:----:|:----:|:-----|
-| `代码文件/tools/git_autocommit.ps1` | 改1行 | L0 | ValidateSet新增`engineering` |
-| `代码文件/每日荐股/scripts/daily_workflow.ps1` | 改2行 | L1 | 末尾调用git_sweep |
+| `代码文件/tools/git_autocommit.py` | 改1行 | L0 | ValidateSet新增`engineering` |
+| `代码文件/每日荐股/scripts/daily_workflow.py` | 改2行 | L1 | 末尾调用git_sweep |
 
 ### 1.2 新增文件
 
@@ -39,7 +39,7 @@
 
 | 文件 | 原因 |
 |:-----|:-----|
-| `代码文件/监督机制/pipeline_engine.ps1` | git_sweep通过daily_workflow调用，不直接改pipeline_engine |
+| `代码文件/监督机制/pipeline_engine.py` | git_sweep通过daily_workflow调用，不直接改pipeline_engine |
 | 其他管线产出脚本 | 已有git_autocommit调用点不变 |
 
 ---
@@ -155,9 +155,9 @@ git_sweep在最后执行，此时：
 
 | # | 需求 | 实现位置 | 情墨 | 腰子 |
 |:--|:-----|:--------|:----:|:----:|
-| 1 | git_autocommit新增engineering模块 | `代码文件/tools/git_autocommit.ps1` ValidateSet行 | ☐ | ☐ |
+| 1 | git_autocommit新增engineering模块 | `代码文件/tools/git_autocommit.py` ValidateSet行 | ☐ | ☐ |
 | 2 | git_sweep日终安全网脚本 | `代码文件/tools/git_sweep.ps1` (新增) | ☐ | ☐ |
-| 3 | daily_workflow末尾调用git_sweep | `代码文件/每日荐股/scripts/daily_workflow.ps1` 末尾 | ☐ | ☐ |
+| 3 | daily_workflow末尾调用git_sweep | `代码文件/每日荐股/scripts/daily_workflow.py` 末尾 | ☐ | ☐ |
 | 4 | engineering模块日志写入 | 复用git_autocommit.log | ☐ | ☐ |
 | 5 | E5安全检查复用 | git_sweep→git_autocommit内置E5 | ☐ | ☐ |
 

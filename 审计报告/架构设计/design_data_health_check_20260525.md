@@ -71,7 +71,7 @@ invoke_daily.ps1 (幂等守卫，已有)
 
 | 文件 | 行数 | 等级 | 用途 |
 |:-----|:---:|:---:|:-----|
-| `代码文件/tools/health_check.ps1` | ~180 | **L1** | 健康检测主脚本（开机+流水线前置共用） |
+| `代码文件/tools/health_check.py` | ~180 | **L1** | 健康检测主脚本（开机+流水线前置共用） |
 | `代码文件/tools/health_report_template.html` | ~60 | L0 | HTML告警报告模板 |
 
 ### 2.5 修改文件（4个）
@@ -79,8 +79,8 @@ invoke_daily.ps1 (幂等守卫，已有)
 | 文件 | 等级 | 改动 |
 |:-----|:---:|:-----|
 | `代码文件/每日荐股/scripts/backfill_returns.py` | **L0** | 第28行ROOT路径修复：`os.path.dirname(__file__)`×3 |
-| `代码文件/tools/check_data_quality.ps1` | **L1** | ①第99行兼容`Stocks`/`Recommendations`双字段名 ②加入T0/T1/T2分级检查逻辑 |
-| `代码文件/每日荐股/scripts/daily_workflow.ps1` | **L1** | ①Step 0新增health_check前置调用 ②QC失败时最大重试3次+熔断 |
+| `代码文件/tools/check_data_quality.py` | **L1** | ①第99行兼容`Stocks`/`Recommendations`双字段名 ②加入T0/T1/T2分级检查逻辑 |
+| `代码文件/每日荐股/scripts/daily_workflow.py` | **L1** | ①Step 0新增health_check前置调用 ②QC失败时最大重试3次+熔断 |
 | `代码文件/每日荐股/scripts/invoke_daily.ps1` | L1 | 幂等检查前先调health_check（开机即检测） |
 
 ---

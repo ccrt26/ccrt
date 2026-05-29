@@ -50,7 +50,7 @@ Phase 5 调用 `run_keystock_analysis.ps1` 时不传 `-Mode daily_latest`，确�
 
 - `代码文件/每日荐股/scripts/invoke_daily.ps1` — 6行新增
 - `代码文件/每日荐股/scripts/install_scheduler.ps1` — 注册TieLv-DailyStock任务
-- `代码文件/每日荐股/scripts/daily_workflow.ps1` — Phase 5传参确保日报模板
+- `代码文件/每日荐股/scripts/daily_workflow.py` — Phase 5传参确保日报模板
 
 ## 需求→代码核对清单
 
