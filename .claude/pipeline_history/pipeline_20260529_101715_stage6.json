@@ -1,94 +1,88 @@
 {
   "schema_version": "1.0",
-  "active": false,
-  "task": "模拟交易统一视图：融合全部交易日操作+策略+结果的HTML仪表盘",
+  "active": true,
+  "task": "数据调用故障闭环方案：设计预防(三道防线)→运行检测(API连通性+降级打点)→通知响应(告警信号)→审计闭环(交叉比对)",
   "stage": 6,
   "stage_name": "后评估",
   "executor": "腰子+青山",
-  "gate_1": "PENDING",
+  "gate_1": "PASS",
   "gate_2": "PENDING",
   "gate_3": "PENDING",
-  "next_action": "done",
+  "next_action": "invoke_role",
   "attempts": 0,
   "max_attempts": 3,
   "l3_triggered": false,
   "l3_reason": "",
   "loop_context": "",
   "files_scope": [],
-  "started": "2026-05-29T02:34:53",
-  "updated": "2026-05-29T02:38:14",
+  "started": "2026-05-29T02:10:10",
+  "updated": "2026-05-29T02:17:15",
   "stage_history": [
     {
       "stage": 1,
       "name": "架构设计",
       "status": "started",
-      "time": "2026-05-29T02:34:53"
+      "time": "2026-05-29T02:10:10"
     },
     {
       "stage": 1,
       "name": "架构设计",
       "status": "complete",
-      "time": "2026-05-29T02:35:42"
+      "time": "2026-05-29T02:11:22"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "started",
-      "time": "2026-05-29T02:35:42"
+      "time": "2026-05-29T02:11:22"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "complete",
-      "time": "2026-05-29T02:35:50"
+      "time": "2026-05-29T02:11:57"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "started",
-      "time": "2026-05-29T02:35:50"
+      "time": "2026-05-29T02:11:57"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "complete",
-      "time": "2026-05-29T02:38:06"
+      "time": "2026-05-29T02:16:45"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "started",
-      "time": "2026-05-29T02:38:06"
+      "time": "2026-05-29T02:16:45"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "complete",
-      "time": "2026-05-29T02:38:06"
+      "time": "2026-05-29T02:16:47"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "started",
-      "time": "2026-05-29T02:38:06"
+      "time": "2026-05-29T02:16:47"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "complete",
-      "time": "2026-05-29T02:38:06"
+      "time": "2026-05-29T02:17:15"
     },
     {
       "stage": 6,
       "name": "后评估",
       "status": "started",
-      "time": "2026-05-29T02:38:06"
-    },
-    {
-      "stage": 6,
-      "name": "后评估",
-      "status": "complete",
-      "time": "2026-05-29T02:38:14"
+      "time": "2026-05-29T02:17:15"
     }
   ]
 }

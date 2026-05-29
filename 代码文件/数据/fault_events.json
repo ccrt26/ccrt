@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "EventID": "P2-01",
+      "Timestamp": "2026-05-29T10:21:31.414696+08:00",
+      "Level": "P2",
+      "Source": "新浪[2]-hq.sinajs.cn",
+      "Description": "新浪实时行情API(http://hq.sinajs.cn)不可达: HTTP 000, 5s超时。影响: 腾讯行情[1]的备源失效，如腾讯故障则实时行情无备源可用。K线端点(money.finance.sina.com.cn/quotes.sina.cn)正常。",
+      "ConsecutiveCount": 1,
+      "Resolved": false
+    }
+  ]
+}

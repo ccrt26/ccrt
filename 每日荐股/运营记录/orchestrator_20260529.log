@@ -22,3 +22,11 @@
 [2026-05-29 09:15:53][INFO] Signal written: /Users/ccrt/ccrt/.claude/signal_daily_report.json
 [2026-05-29 09:15:53][OK] Daily report signal sent (check skipped)
 [2026-05-29 09:15:53][INFO] Orchestrator finished: mode=daily exit=0
+[2026-05-29 10:15:48][INFO] Orchestrator started: mode=health date=today
+[2026-05-29 10:15:48][INFO] Alert signal written: /Users/ccrt/ccrt/.claude/signal_alert.json
+[2026-05-29 10:15:48][WARN] Health check: Market not yet closed (current: 10:15) | API: DOWN: sina
+[2026-05-29 10:15:48][INFO] Orchestrator finished: mode=health exit=1
+[2026-05-29 10:16:59][INFO] Orchestrator started: mode=health date=today
+[2026-05-29 10:16:59][INFO] Alert signal written: /Users/ccrt/ccrt/.claude/signal_alert.json
+[2026-05-29 10:16:59][WARN] Health check: Market not yet closed (current: 10:16) | API: DOWN: sina
+[2026-05-29 10:16:59][INFO] Orchestrator finished: mode=health exit=1

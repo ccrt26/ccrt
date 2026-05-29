@@ -1,0 +1,16 @@
+{
+  "alert": "api_degraded",
+  "timestamp": "2026-05-29T10:16:59.586377+08:00",
+  "severity": "WARN",
+  "sources": [
+    {
+      "source": "sina",
+      "source_id": "[2]",
+      "status": "down",
+      "consecutive_fails": 1,
+      "last_success": null
+    }
+  ],
+  "summary": "DOWN: sina",
+  "recommend": "玉夜检查故障历史表，红枫排查网络/API状态"
+}
