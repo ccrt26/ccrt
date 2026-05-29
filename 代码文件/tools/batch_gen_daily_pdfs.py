@@ -1,4 +1,4 @@
-"""Batch convert v3.5 daily report MD files to PDF via HTML + Edge headless.
+"""Batch convert v3.5 daily report MD files to PDF via HTML + Chrome headless.
 Usage: python batch_gen_daily_pdfs.py
 Code level: L0 (tool/data)
 """
@@ -13,16 +13,19 @@ STOCK_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path
                           '重点股票', '股票报告')
 
 STOCKS = [
-    ('上海电气', '601727'),
+    ('东睦股份', '600114'),
     ('中科曙光', '603019'),
     ('多瑞医药', '301075'),
     ('拓普集团', '601689'),
-    ('招商银行', '600036'),
     ('盈峰环境', '000967'),
-    ('长电科技', '600584'),
+    ('上海电气', '601727'),
+    ('科大讯飞', '002230'),
+    ('德力佳', '603092'),
+    ('百邦科技', '300736'),
+    ('先导智能', '300450'),
 ]
 
-DATE = '20260526'
+DATE = '20260529'
 
 # ── v3.5 Daily Report CSS (matches 东睦股份 template) ──
 CSS = """
@@ -58,14 +61,22 @@ a{color:#2980b9;text-decoration:none}
 """
 
 
-def find_edge():
+def find_chrome():
     candidates = [
-        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+        "/usr/bin/chromium",
     ]
     for p in candidates:
         if os.path.exists(p):
             return p
+    for name in ["google-chrome", "chromium"]:
+        try:
+            result = subprocess.run(["which", name], capture_output=True, text=True, timeout=5)
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.strip()
+        except Exception:
+            pass
     return None
 
 
@@ -163,9 +174,9 @@ def convert_one(md_path, pdf_path):
         print(f'  SKIP: MD not found: {md_path}')
         return False
 
-    edge = find_edge()
+    edge = find_chrome()
     if not edge:
-        print('  ERROR: Edge not found')
+        print('  ERROR: Chrome not found')
         return False
 
     with open(md_path, 'r', encoding='utf-8') as f:
