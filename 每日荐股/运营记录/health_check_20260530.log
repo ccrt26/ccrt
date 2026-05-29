@@ -64,3 +64,15 @@
 [2026-05-30 05:03:00][INFO] [SKIP] events_db_freshness: Weekend, skipping events DB check
 [2026-05-30 05:03:00][INFO] [WARN] signal_stale: Stale signals: signal_deep_analysis.json (9h), signal_daily_report.json (13h), signal_alert.json (19h)
 [2026-05-30 05:03:00][INFO] Health check: WARN
+[2026-05-30 05:33:00][INFO] Health check started at 05:33:00
+[2026-05-30 05:33:00][INFO] [PASS] disk_space: Disk: 405.8GB free
+[2026-05-30 05:33:00][INFO] [SKIP] data_cache_freshness: Weekend, skipping cache freshness check
+[2026-05-30 05:33:00][INFO] [SKIP] events_db_freshness: Weekend, skipping events DB check
+[2026-05-30 05:33:00][INFO] [WARN] signal_stale: Stale signals: signal_deep_analysis.json (9h), signal_daily_report.json (13h), signal_alert.json (19h)
+[2026-05-30 05:33:00][INFO] Health check: WARN
+[2026-05-30 06:03:00][INFO] Health check started at 06:03:00
+[2026-05-30 06:03:00][INFO] [PASS] disk_space: Disk: 405.8GB free
+[2026-05-30 06:03:00][INFO] [SKIP] data_cache_freshness: Weekend, skipping cache freshness check
+[2026-05-30 06:03:00][INFO] [SKIP] events_db_freshness: Weekend, skipping events DB check
+[2026-05-30 06:03:00][INFO] [WARN] signal_stale: Stale signals: signal_deep_analysis.json (10h), signal_daily_report.json (14h), signal_alert.json (20h)
+[2026-05-30 06:03:00][INFO] Health check: WARN
