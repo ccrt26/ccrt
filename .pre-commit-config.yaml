@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check-E
+        name: Token & Size Gate (Check E)
+        entry: python check_E.py
+        language: system
+        files: '\.(py|md)$'
+        stages: [commit]

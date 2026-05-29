@@ -1,0 +1,30 @@
+{
+  "gate_check": {
+    "file": "logs/gates/gate_check.jsonl",
+    "fields": ["timestamp","run_id","gate","script","trigger","commit_sha","checks","overall_result","fail_reasons","duration_ms"]
+  },
+  "signature_events": {
+    "file": "logs/signatures/signature_events.jsonl",
+    "fields": ["timestamp","run_id","stage","role","action","checklist_version","signature","comment"]
+  },
+  "checklist_changelog": {
+    "file": "logs/checklist/checklist_changelog.jsonl",
+    "fields": ["timestamp","run_id","modified_by","operation","diff_summary","previous_hash","new_hash"]
+  },
+  "ai_ops": {
+    "file": "logs/ai_ops/ai_ops.jsonl",
+    "fields": ["timestamp","run_id","stage","role","task_type","input_context_hash","output_summary","token_used","model","duration_ms","result","error_msg"]
+  },
+  "engine_events": {
+    "file": "logs/engine/engine_events.jsonl",
+    "fields": ["timestamp","run_id","event_type","from_stage","to_stage","target_role","package_files","override_reason"]
+  },
+  "deploy_verify": {
+    "file": "logs/deployments/verify_deploy.jsonl",
+    "fields": ["timestamp","run_id","deploy_item","check_type","expected","actual","result"]
+  },
+  "audit_findings": {
+    "file": "logs/audit/audit_findings.jsonl",
+    "fields": ["timestamp","finding_id","severity","category","related_run_id","description","evidence_log_paths","recommended_action","status"]
+  }
+}

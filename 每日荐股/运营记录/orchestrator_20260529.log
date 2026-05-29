@@ -45,3 +45,8 @@
 [2026-05-29 19:07:00][INFO] Triggering pigeon collection: /Users/ccrt/ccrt/代码文件/信鸽信息采集/pigeon_collector.py
 [2026-05-29 19:07:23][ERROR] Pigeon collection failed (exit=1)
 [2026-05-29 19:07:23][INFO] Orchestrator finished: mode=pigeon exit=0
+[2026-05-29 20:30:00][INFO] Orchestrator started: mode=deep date=today
+[2026-05-29 20:30:00][INFO] Pigeon freshness check: events_db updated today at 19:07
+[2026-05-29 20:30:00][INFO] Signal written: /Users/ccrt/ccrt/.claude/signal_deep_analysis.json
+[2026-05-29 20:30:00][OK] Deep analysis signal sent
+[2026-05-29 20:30:00][INFO] Orchestrator finished: mode=deep exit=0
