@@ -860,6 +860,7 @@ body {
   <button class="tab-btn active" data-tab="events">&#128330; 事件面板<span class="tab-badge" id="badge-events">--</span></button>
   <button class="tab-btn" data-tab="deep">&#128214; 深度分析报告<span class="tab-badge" id="badge-deep">--</span></button>
   <button class="tab-btn" data-tab="daily">&#128196; 分析日报<span class="tab-badge" id="badge-daily">--</span></button>
+  <button class="tab-btn" data-tab="sim">&#128200; 模拟交易</button>
 </nav>
 
 <!-- Tab 1: Events Panel -->
@@ -1008,6 +1009,12 @@ body {
 </div>
 </div>
 
+<div class="tab-panel" id="tab-sim">
+  <div class="container" style="padding:0;max-width:none">
+    <iframe id="simFrame" style="width:100%;min-height:100vh;border:none;background:var(--bg-primary)" allow="clipboard-write"></iframe>
+  </div>
+</div>
+
 <!-- Footer -->
 <div class="footer">
   铁律量化 · 信鸽信息采集系统 v2.0 · 数据源: CNINFO + baostock + 东方财富
@@ -1019,6 +1026,7 @@ body {
   var tabBtns = document.querySelectorAll(".tab-btn");
   var tabPanels = document.querySelectorAll(".tab-panel");
 
+  var simLoaded = false;
   function switchTab(tabName) {
     tabBtns.forEach(function(b) { b.classList.remove("active"); });
     tabPanels.forEach(function(p) { p.classList.remove("active"); });
@@ -1028,6 +1036,10 @@ body {
     if (targetPanel) targetPanel.classList.add("active");
     if (history.replaceState) {
       history.replaceState(null, "", "#" + tabName);
+    }
+    if (tabName === "sim" && !simLoaded) {
+      var frame = document.getElementById("simFrame");
+      if (frame) { frame.src = "sim_trading/模拟交易统一视图.html"; simLoaded = true; }
     }
   }
 
