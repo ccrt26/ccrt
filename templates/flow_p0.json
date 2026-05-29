@@ -1,0 +1,37 @@
+{
+  "flow_type": "P0_EMERGENCY",
+  "description": "绿色通道。跳过设计和咨询，先上线后补审计",
+  "stages": [
+    {
+      "stage": "decide",
+      "role": "腰子",
+      "task": "快速评估影响，直接决策",
+      "mandatory": true
+    },
+    {
+      "stage": "coding",
+      "role": "红结",
+      "task": "紧急编码",
+      "mandatory": true
+    },
+    {
+      "stage": "verify_critical",
+      "role": "新安",
+      "task": "仅关键测试（红线+GoldenMaster如涉及）",
+      "mandatory": true
+    },
+    {
+      "stage": "deploy",
+      "role": "红枫",
+      "task": "急速部署",
+      "mandatory": true
+    },
+    {
+      "stage": "post_audit",
+      "role": "旧影",
+      "task": "事后48小时内补全审计，出具专项报告",
+      "mandatory": true,
+      "deadline_hours": 48
+    }
+  ]
+}

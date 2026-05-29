@@ -2,12 +2,12 @@
 """
 check_checklist.py - 档案合规审查 (闸门1b 旧影侧)
 检查清单JSON的格式合法性、签名完整性、A-F项非空。
+新增：金融全团签章检查（涉及L1/L2变更时强制要求山猫/信鸽/玉夜/流金/青山签名）
 任一FAIL → 打回阶段①
 """
 import sys
 import json
 import os
-from datetime import datetime, timezone
 from log_utils import append_log
 
 def check_checklist(checklist_path):
@@ -53,6 +53,18 @@ def check_checklist(checklist_path):
     if not signoffs.get("腰子", {}).get("signed"):
         errors.append("signoffs.腰子.signed != true: 腰子未签名")
 
+    # 5.5 金融全团签章检查（若涉及金融参数变更）
+    has_financial_change = any(
+        item.get("code_level") in ["L1", "L2"]
+        for item in items
+    )
+
+    if has_financial_change:
+        required_finance_roles = ["山猫", "信鸽", "玉夜", "流金", "青山"]
+        for role in required_finance_roles:
+            if not signoffs.get(role, {}).get("signed"):
+                errors.append(f"signoffs.{role}.signed != true: 涉及金融参数变更，{role}未参与咨询签名")
+
     # 6. 判定结果
     if errors:
         record_fail(run_id=run_id, fail_reasons=errors)
@@ -62,7 +74,7 @@ def check_checklist(checklist_path):
         sys.exit(1)
     else:
         record_pass(run_id=run_id)
-        print("PASS: 清单格式合法，签名完整，所有项非空")
+        print("PASS: 清单格式合法，签名完整，所有项非空，金融全团签章齐全")
         sys.exit(0)
 
 

@@ -1,0 +1,40 @@
+# 事件规则定义：什么事件触发什么流程
+# 所有流程模板中的 consult 阶段均为 mandatory: true，不可跳过
+
+events:
+  - name: NEW_REQUIREMENT
+    keywords: ["新功能", "新增", "开发", "新需求"]
+    flow_template: templates/flow_new_requirement.json
+    starter: 情墨
+    description: 全流程，所有闸门都要过
+
+  - name: FIX
+    keywords: ["修复", "修bug", "改问题"]
+    flow_template: templates/flow_bugfix.json
+    starter: 情墨
+    description: 精简流程，跳过全团咨询（非金融变更），金融变更仍需咨询
+
+  - name: EMERGENCY
+    keywords: ["紧急", "P0", "立刻"]
+    flow_template: templates/flow_p0.json
+    starter: 腰子
+    description: 绿色通道，事后补审计
+
+  - name: USER_REQUEST
+    keywords: ["*"]
+    flow_template: templates/flow_new_requirement.json
+    starter: 情墨
+    description: 兜底规则，任何未匹配的用户请求默认走全流程
+
+# 领域→角色映射
+domains:
+  financial: ["腰子", "山猫", "信鸽", "玉夜", "流金", "青山"]
+  data: ["玉夜", "千光", "红枫"]
+  architecture: ["情墨", "新安", "千光"]
+  all: ["情墨", "腰子", "山猫", "信鸽", "玉夜", "流金", "青山", "千光", "红枫", "红结", "新安", "旧影"]
+
+# 关键词→领域识别
+domain_keywords:
+  financial: ["金融", "策略", "风控", "评分", "选股", "交易", "因子", "MACD", "KDJ", "RSI"]
+  data: ["数据", "API", "采集", "缓存", "管道", "爬虫", "数据源"]
+  architecture: ["架构", "重构", "性能", "部署", "配置", "模块", "样式", "报告"]

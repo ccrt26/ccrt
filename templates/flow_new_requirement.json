@@ -1,0 +1,62 @@
+{
+  "flow_type": "NEW_REQUIREMENT",
+  "description": "新功能全流程，含强制全团咨询",
+  "stages": [
+    {
+      "stage": "design",
+      "role": "情墨",
+      "task": "产出设计文档和清单，标注code_level/token_budget/file_budget",
+      "mandatory": true
+    },
+    {
+      "stage": "review_1a",
+      "role": "腰子",
+      "task": "核对金融参数并双签，生成决策简报",
+      "mandatory": true
+    },
+    {
+      "stage": "consult",
+      "roles": ["山猫", "信鸽", "玉夜", "流金", "青山"],
+      "sequential": true,
+      "mandatory": true,
+      "description": "金融全团强制咨询。腰子必须收齐全部5人意见后方可签名。任一角色REJECT则打回情墨。超10分钟未回复标记为超时默认同意。"
+    },
+    {
+      "stage": "review_1b",
+      "roles": ["旧影", "新安"],
+      "parallel": true,
+      "mandatory": true,
+      "description": "旧影运行check_checklist.py（含全团签章检查），新安架构审查+Token门禁"
+    },
+    {
+      "stage": "coding",
+      "role": "红结",
+      "task": "编码并回填code_ref/coder_ok，提交前逐项自查",
+      "mandatory": true
+    },
+    {
+      "stage": "verify",
+      "role": "新安",
+      "task": "五层验证（变更影响/回归/红线/GoldenMaster/追溯）",
+      "mandatory": true
+    },
+    {
+      "stage": "deploy",
+      "role": "红枫",
+      "task": "读取G段执行部署，回填deployed/deployer_ok",
+      "mandatory": true
+    },
+    {
+      "stage": "deploy_verify",
+      "role": "旧影",
+      "task": "运行verify_deployment.py核查G1-G4",
+      "mandatory": true
+    },
+    {
+      "stage": "audit",
+      "role": "旧影",
+      "task": "四级+审计，出具独立审计报告",
+      "mandatory": true
+    }
+  ]
+}

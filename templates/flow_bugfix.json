@@ -1,0 +1,42 @@
+{
+  "flow_type": "BUGFIX",
+  "description": "修复流程。非金融变更跳过全团咨询，金融变更（L1/L2）仍需咨询",
+  "stages": [
+    {
+      "stage": "design",
+      "role": "情墨",
+      "task": "分析影响范围，产出修复清单",
+      "mandatory": true
+    },
+    {
+      "stage": "review_1a",
+      "role": "腰子",
+      "task": "确认金融影响。若涉及L1/L2变更，必须启动全团咨询",
+      "mandatory": true
+    },
+    {
+      "stage": "coding",
+      "role": "红结",
+      "task": "编码修复，回填code_ref",
+      "mandatory": true
+    },
+    {
+      "stage": "verify",
+      "role": "新安",
+      "task": "重点测试+追溯，若涉及L1/L2则加GoldenMaster和红线检查",
+      "mandatory": true
+    },
+    {
+      "stage": "deploy",
+      "role": "红枫",
+      "task": "部署修复",
+      "mandatory": true
+    },
+    {
+      "stage": "audit",
+      "role": "旧影",
+      "task": "审计修复流程合规性",
+      "mandatory": true
+    }
+  ]
+}
