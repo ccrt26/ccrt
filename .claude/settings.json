@@ -27,6 +27,9 @@
       "Grep"
     ]
   },
+  "env": {
+    "BIYING_LICENCE": "8025D388-5DEB-42C0-9084-E4EEB378654F"
+  },
   "mcpServers": {
     "tielv-financial": {
       "command": "python3",

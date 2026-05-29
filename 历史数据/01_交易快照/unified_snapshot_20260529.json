@@ -1,0 +1,25 @@
+{
+  "Date": "20260529",
+  "GeneratedAt": "2026-05-29T09:45:01",
+  "TotalValue": 990783.72,
+  "Cash": 912939.72,
+  "StockValue": 77844.0,
+  "PositionCount": 1,
+  "Tracks": {
+    "KeyStock": 1,
+    "DailyRec": 0
+  },
+  "Positions": [
+    {
+      "Code": "601689",
+      "Name": "拓普集团",
+      "Shares": 1200,
+      "AvgCost": 72.09,
+      "CurrentPrice": 64.87,
+      "UnrealizedPnL": -8664.0,
+      "UnrealizedPnLPct": -10.02,
+      "Track": "重点股票",
+      "EntryScore": null
+    }
+  ]
+}

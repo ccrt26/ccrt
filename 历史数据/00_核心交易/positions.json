@@ -1,6 +1,6 @@
 {
-  "TotalValue": 991923.72,
-  "LastUpdated": "20260528",
+  "TotalValue": 990783.72,
+  "LastUpdated": "20260529",
   "Cash": 912939.72,
   "Cooldowns": {
     "600114": {
@@ -20,14 +20,16 @@
       "Name": "拓普集团",
       "Shares": 1200,
       "AvgCost": 72.09,
-      "CurrentPrice": 65.82,
+      "CurrentPrice": 64.87,
       "EntryDate": "20260522",
       "EntryShortPrediction": "看多",
       "StopLoss": 64.0,
       "Support": 64.44,
       "Resistance": 68.2,
-      "UnrealizedPnL": -7524.0,
-      "UnrealizedPnLPct": -8.7
+      "UnrealizedPnL": -8664.0,
+      "UnrealizedPnLPct": -10.02,
+      "ShadowUnrealizedPnL": null
     }
-  }
+  },
+  "Watchlist": {}
 }

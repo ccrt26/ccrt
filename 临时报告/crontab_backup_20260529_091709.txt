@@ -1,0 +1,1 @@
+45 9 * * 1-5 /bin/bash /Users/ccrt/ccrt/模拟交易/工具/cron_runner.sh

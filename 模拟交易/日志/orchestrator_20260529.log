@@ -1,0 +1,21 @@
+[ORCH][INFO] ===== 模拟交易统一调度器 v1.1 | Date 20260529 =====
+[ORCH][INFO] 无腰子指令，使用纯自动模式
+[ORCH][INFO] 统一资金池: 1000000 (Key Stock: 0.6 | Daily Rec: 0.4)
+[ORCH][INFO] 
+[ORCH][INFO] === 赛道1: 重点股票 ===
+[ORCH][INFO] 重点股票引擎完成
+[ORCH][INFO] 
+[ORCH][INFO] === 赛道2: 每日荐股 ===
+[ORCH][WARN] 每日荐股交易引擎脚本不存在，跳过
+[ORCH][INFO] 
+[ORCH][INFO] === 合并持仓视图 ===
+[ORCH][INFO] 合并快照已写入: /Users/ccrt/ccrt/历史数据/01_交易快照/unified_snapshot_20260529.json
+[ORCH][INFO] 
+[ORCH][INFO] ===== 统一调度器 日报 20260529 =====
+[ORCH][INFO] 合并净值: 990,783.72
+[ORCH][INFO] 现金: 912,939.72 | 持仓市值: 77,844.00
+[ORCH][INFO] 持仓数: 1 只 (重点: 1 | 荐股: 0)
+[ORCH][INFO] 仓位: 7.9%
+[ORCH][INFO] 
+[ORCH][INFO]   [K] 拓普集团 1200股 成本72.09 现价64.87 浮动-10.02%
+[ORCH][INFO] ===== END =====

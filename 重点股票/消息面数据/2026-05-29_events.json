@@ -1,0 +1,45 @@
+{
+  "fetch_date": "2026-05-29",
+  "fetch_time": "09:15:47",
+  "total_raw": 26,
+  "total_filtered": 1,
+  "filter_stats": {
+    "L1_dropped": 0,
+    "L2_dropped": 18,
+    "L3_dropped": 7,
+    "L4_dropped": 0
+  },
+  "events": [
+    {
+      "event_id": "PIGEON_20260529_603019_001",
+      "code": "603019",
+      "name": "中科曙光",
+      "category": "经营事件",
+      "subtype": "其他",
+      "title": "中科曙光：中科曙光关于向不特定对象发行可转换公司债券申请获得上海证券交易所上市审核委员会审核通过的公告",
+      "source": "cninfo",
+      "source_type": "primary",
+      "reliability": "verified",
+      "quantifiable": true,
+      "direction": 1,
+      "impact_score": 7.0,
+      "probability": 1.0,
+      "structured_fields": {
+        "event_type": "其他",
+        "status": "confirmed"
+      },
+      "raw_summary": "中科曙光：中科曙光关于向不特定对象发行可转换公司债券申请获得上海证券交易所上市审核委员会审核通过的公告",
+      "publish_time": 1779984000000,
+      "pdf_url": "http://static.cninfo.com.cn/finalpage/2026-05-29/1225336192.PDF",
+      "content": "1证券代码：603019 证券简称：中科曙光 公告编号：2026-037曙光信息产业股份有限公司关于向不特定对象发行可转换公司债券申请获得上海证券交易所上市审核委员会审核通过的公告本公司董事会及全体董事保证本公告内容不存在任何虚假记载",
+      "announcement_id": "1225336192",
+      "cninfo_url": "http://www.cninfo.com.cn/new/disclosure/detail?stockCode=603019&announcementId=1225336192",
+      "keywords": "Q3_regulatory",
+      "is_p0": false,
+      "evidence_level": "",
+      "evidence_upgrade": false,
+      "evidence_upgrade_type": "",
+      "concept_track": ""
+    }
+  ]
+}

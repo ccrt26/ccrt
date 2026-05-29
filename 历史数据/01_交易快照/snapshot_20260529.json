@@ -1,37 +1,28 @@
 {
   "Date": "20260529",
-  "TotalValue": 991868.83,
-  "Cash": 869379.83,
-  "StockValue": 122488.99999999999,
+  "TotalValue": 990783.72,
+  "Cash": 912939.72,
+  "StockValue": 77844.0,
   "Positions": {
     "601689": {
       "Code": "601689",
       "Name": "拓普集团",
       "Shares": 1200,
       "AvgCost": 72.09,
-      "CurrentPrice": 65.82,
+      "CurrentPrice": 64.87,
       "EntryDate": "20260522",
       "EntryShortPrediction": "看多",
       "StopLoss": 64.0,
       "Support": 64.44,
       "Resistance": 68.2,
-      "UnrealizedPnL": -7524.0,
-      "UnrealizedPnLPct": -8.7
-    },
-    "600114": {
-      "Code": "600114",
-      "Name": "东睦股份",
-      "Shares": 1100,
-      "AvgCost": 39.6,
-      "CurrentPrice": 39.55,
-      "EntryDate": "20260529",
-      "EntryScore": 39,
-      "EntryShortPrediction": "看多",
-      "StopLoss": 31.54,
-      "Support": 34.6,
-      "Resistance": 40.6,
-      "UnrealizedPnL": -55.0,
-      "UnrealizedPnLPct": -0.13
+      "UnrealizedPnL": -8664.0,
+      "UnrealizedPnLPct": -10.02,
+      "ShadowUnrealizedPnL": null
     }
+  },
+  "ShadowBenchmark": {
+    "TotalRealUnrealizedPnL": -8664.0,
+    "TotalShadowUnrealizedPnL": 0,
+    "DeltaNote": ""
   }
 }

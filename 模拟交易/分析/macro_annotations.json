@@ -1,0 +1,11 @@
+{
+  "_schema": "macro_annotations v1.0 — 山猫手动标注每个交易日的宏观情绪状态",
+  "_usage": "山猫在交易日收盘后回填当日 market_sentiment 和 csi300_direction 字段",
+  "_fields": {
+    "market_sentiment": "恐惧 | 偏空 | 中性 | 偏多 | 贪婪",
+    "csi300_direction": "下跌趋势 | 震荡偏弱 | 震荡 | 震荡偏强 | 上涨趋势",
+    "annotated_by": "山猫",
+    "annotated_at": "ISO timestamp"
+  },
+  "annotations": {}
+}

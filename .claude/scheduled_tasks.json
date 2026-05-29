@@ -52,5 +52,6 @@
       "createdByPid": 0,
       "createdByProcStart": "pipeline-fix-20260528"
     }
-  ]
+  ],
+  "_migration_note": "2026-05-29: crontab install pending. scheduled_tasks kept for shadow run. After 1-week parallel verification, remove ac1bf262/c5c3f354/73cfe6cb/sim_trading_daily."
 }

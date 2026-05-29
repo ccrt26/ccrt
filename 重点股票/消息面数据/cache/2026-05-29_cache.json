@@ -1,0 +1,10 @@
+{
+  "cached_at": "2026-05-29 09:15:47",
+  "ttl_hours": 24,
+  "expires_at": "2026-05-30 09:15:47",
+  "data": {
+    "date_file": "/Users/ccrt/ccrt/重点股票/消息面数据/2026-05-29_events.json",
+    "db_file": "/Users/ccrt/ccrt/重点股票/消息面数据/events_db.json",
+    "count": 1
+  }
+}

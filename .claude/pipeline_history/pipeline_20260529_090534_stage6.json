@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "active": false,
-  "task": "每日荐股后评估系统重建：对齐v1.6白皮书，修复代码过期/硬编码/评估-优化断裂",
-  "stage": 7,
-  "stage_name": "完成",
+  "task": "模拟交易引擎优化：开盘价重试+影子基准+跨角色数据联动",
+  "stage": 6,
+  "stage_name": "后评估",
   "executor": "腰子+青山",
   "gate_1": "PENDING",
   "gate_2": "PENDING",
@@ -15,80 +15,80 @@
   "l3_reason": "",
   "loop_context": "",
   "files_scope": [],
-  "started": "2026-05-29T01:39:45",
-  "updated": "2026-05-29T01:55:25",
+  "started": "2026-05-29T00:59:48",
+  "updated": "2026-05-29T01:05:34",
   "stage_history": [
     {
       "stage": 1,
       "name": "架构设计",
       "status": "started",
-      "time": "2026-05-29T01:39:45"
+      "time": "2026-05-29T00:59:48"
     },
     {
       "stage": 1,
       "name": "架构设计",
       "status": "complete",
-      "time": "2026-05-29T01:42:41"
+      "time": "2026-05-29T01:01:16"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "started",
-      "time": "2026-05-29T01:42:41"
+      "time": "2026-05-29T01:01:16"
     },
     {
       "stage": 2,
       "name": "架构审查",
       "status": "complete",
-      "time": "2026-05-29T01:43:43"
+      "time": "2026-05-29T01:01:45"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "started",
-      "time": "2026-05-29T01:43:43"
+      "time": "2026-05-29T01:01:45"
     },
     {
       "stage": 3,
       "name": "编码实现",
       "status": "complete",
-      "time": "2026-05-29T01:55:01"
+      "time": "2026-05-29T01:04:45"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "started",
-      "time": "2026-05-29T01:55:01"
+      "time": "2026-05-29T01:04:45"
     },
     {
       "stage": 4,
       "name": "上线前验证",
       "status": "complete",
-      "time": "2026-05-29T01:55:17"
+      "time": "2026-05-29T01:05:08"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "started",
-      "time": "2026-05-29T01:55:17"
+      "time": "2026-05-29T01:05:08"
     },
     {
       "stage": 5,
       "name": "灰度部署",
       "status": "complete",
-      "time": "2026-05-29T01:55:17"
+      "time": "2026-05-29T01:05:26"
     },
     {
       "stage": 6,
       "name": "后评估",
       "status": "started",
-      "time": "2026-05-29T01:55:17"
+      "time": "2026-05-29T01:05:26"
     },
     {
-      "stage": 7,
-      "name": "完成",
+      "stage": 6,
+      "name": "后评估",
       "status": "complete",
-      "time": "2026-05-29T01:55:25"
+      "time": "2026-05-29T01:05:34"
     }
   ]
 }
