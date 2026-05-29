@@ -927,3 +927,38 @@
 [2026-05-27 20:06:05][INFO]   Date:   2026-05-27
 [2026-05-27 20:06:05][INFO]   Log:    C:\Users\34269\Documents\Claude\股票分析\代码文件\每日荐股\scripts\workflow_202605.log
 [2026-05-27 20:06:05][INFO]   Record: C:\Users\34269\Documents\Claude\股票分析\每日荐股\运营记录\workflow_records.csv
+[2026-05-30 00:12:09][ARCHIVE][INFO] ===== 开始归档 (2026-05-30) =====
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: data_full.json → 04_原始数据/20260530_data_full.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: data_scored.json → 04_原始数据/20260530_data_scored.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: data_final.json → 04_原始数据/20260530_data_final.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: score_history.jsonl → 04_原始数据/20260530_score_history.jsonl
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: dynamic_pool.json → 05_参考数据/20260530_dynamic_pool.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: sector_data.json → 05_参考数据/20260530_sector_data.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: industry_map.json → 05_参考数据/20260530_industry_map.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档: eastmoney_sector_map.json → 05_参考数据/20260530_eastmoney_sector_map.json
+[2026-05-30 00:12:09][ARCHIVE][INFO] 裁剪 05_参考数据: 保留最新3个，删除21个
+[2026-05-30 00:12:09][ARCHIVE][INFO] 裁剪 04_原始数据: 保留最新3个，删除33个
+[2026-05-30 00:12:09][ARCHIVE][INFO] 归档完成: 8个文件 → /Users/ccrt/ccrt/历史数据
+[2026-05-30 00:12:09][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-30 00:13:54][INFO] ===== Starting Daily Stock Analysis (daily_latest) =====
+[2026-05-30 00:13:54][INFO] [1/7] Building dynamic pool...
+[2026-05-30 00:13:54][INFO] Dynamic pool built
+[2026-05-30 00:13:54][INFO] [2/7] Collecting batch data...
+[2026-05-30 00:16:16][INFO] [3/7] Running scoring engine...
+[2026-05-30 00:16:16][INFO] Scoring completed
+[2026-05-30 00:16:44][INFO] [4/7] Generating report...
+[2026-05-30 00:16:46][INFO] Report generated
+[2026-05-30 00:16:46][INFO] [5/7] Key stock analysis — delegated to 腰子
+[2026-05-30 00:16:46][INFO] [6/7] Archiving data...
+[2026-05-30 00:16:46][ARCHIVE][INFO] ===== 开始归档 (2026-05-29) =====
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: data_full.json → 04_原始数据/20260529_data_full.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: data_scored.json → 04_原始数据/20260529_data_scored.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: data_final.json → 04_原始数据/20260529_data_final.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: score_history.jsonl → 04_原始数据/20260529_score_history.jsonl
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: dynamic_pool.json → 05_参考数据/20260529_dynamic_pool.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: sector_data.json → 05_参考数据/20260529_sector_data.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: industry_map.json → 05_参考数据/20260529_industry_map.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档: eastmoney_sector_map.json → 05_参考数据/20260529_eastmoney_sector_map.json
+[2026-05-30 00:16:46][ARCHIVE][INFO] 归档完成: 8个文件 → /Users/ccrt/ccrt/历史数据
+[2026-05-30 00:16:46][ARCHIVE][INFO] ===== 归档结束 =====
+[2026-05-30 00:16:46][INFO] ===== Daily Stock Analysis Complete =====

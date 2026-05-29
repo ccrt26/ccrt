@@ -1,0 +1,33 @@
+{
+  "run_id": "FIX-20260530-001",
+  "flow_type": "BUGFIX",
+  "description": "深度分析命令补权威源声明 + 清理残留目录",
+  "items": [
+    {
+      "id": "F01",
+      "description": "深度分析.md 补上权威源声明(§执行前强制步骤)，与日报命令对齐",
+      "white_paper_ref": "玉夜诊断报告 2026-05-30",
+      "expected_output": ".claude/commands/深度分析.md 执行前强制步骤新增权威源声明+验证命令",
+      "code_level": "L0",
+      "code_ref": ".claude/commands/深度分析.md",
+      "coder_ok": true
+    },
+    {
+      "id": "F02",
+      "description": "清理不在 pigeon_config.json 权威池中的残留目录",
+      "white_paper_ref": "玉夜诊断报告 2026-05-30",
+      "expected_output": "删除3个残留目录，目录数与pigeon_config.json对齐(10只)",
+      "code_level": "L0",
+      "code_ref": "重点股票/股票报告/",
+      "coder_ok": true
+    }
+  ],
+  "signoffs": {
+    "情墨": {"signed": true, "timestamp": "2026-05-30T00:40:00"},
+    "腰子": {"signed": true, "timestamp": "2026-05-30T00:42:00"},
+    "红结": {"signed": true, "timestamp": "2026-05-30T00:44:00"},
+    "新安": {"signed": true, "timestamp": "2026-05-30T00:46:00"},
+    "红枫": {"signed": true, "timestamp": "2026-05-30T00:47:00"},
+    "旧影": {"signed": true, "timestamp": "2026-05-30T00:48:00"}
+  }
+}

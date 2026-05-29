@@ -1,0 +1,42 @@
+{
+  "run_id": "REQ-20260530-001",
+  "flow_type": "NEW_REQUIREMENT",
+  "items": [
+    {
+      "id": "R01",
+      "description": "archive_data.py: 从PS1移植到Python，归档6类数据到历史数据/",
+      "white_paper_ref": "design_pipeline_cron_archive_20260530.md §3.1",
+      "expected_output": "代码文件/每日荐股/scripts/archive_data.py, ≤150行, L0",
+      "code_level": "L0",
+      "code_ref": "代码文件/每日荐股/scripts/archive_data.py",
+      "coder_ok": true
+    },
+    {
+      "id": "R02",
+      "description": "crontab: 新增 daily_workflow.py 15:35触发, orchestrator daily移至16:05",
+      "white_paper_ref": "design_pipeline_cron_archive_20260530.md §3.2",
+      "expected_output": "crontab新增1条+修改1条",
+      "code_level": "L0",
+      "code_ref": "临时报告/crontab_backup_20260529_091709.txt",
+      "coder_ok": true
+    },
+    {
+      "id": "R03",
+      "description": "金融铁律§1.2: 缓存路径更新为实际路径",
+      "white_paper_ref": "design_pipeline_cron_archive_20260530.md §3.3",
+      "expected_output": "金融铁律_v1.17.md §1.2追加缓存实际位置说明",
+      "code_level": "L0",
+      "code_ref": "金融铁律/金融铁律_v1.17.md",
+      "coder_ok": true
+    }
+  ],
+  "signoffs": {
+    "情墨": {"signed": true, "timestamp": "2026-05-30T10:00:00"},
+    "腰子": {"signed": true, "timestamp": "2026-05-30T10:05:00"},
+    "玉夜": {"signed": true, "timestamp": "2026-05-30T10:10:00"},
+    "旧影": {"signed": false},
+    "新安": {"signed": false},
+    "红结": {"signed": false},
+    "红枫": {"signed": false}
+  }
+}

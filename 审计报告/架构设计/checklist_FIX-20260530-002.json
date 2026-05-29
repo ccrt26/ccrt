@@ -1,0 +1,22 @@
+{
+  "run_id": "FIX-20260530-002",
+  "flow_type": "BUGFIX",
+  "description": "信鸽采集exit=1误报为ERROR → 改为INFO(无新增事件属正常)",
+  "items": [
+    {
+      "id": "F01",
+      "description": "daily_orchestrator.py: pigeon exit=1 → INFO(非ERROR)，因无新增事件=过滤器正常工作",
+      "code_level": "L0",
+      "code_ref": "代码文件/tools/daily_orchestrator.py",
+      "coder_ok": true
+    }
+  ],
+  "signoffs": {
+    "情墨": {"signed": true},
+    "腰子": {"signed": true},
+    "红结": {"signed": true},
+    "新安": {"signed": true},
+    "红枫": {"signed": true},
+    "旧影": {"signed": true}
+  }
+}
