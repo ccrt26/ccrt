@@ -3,6 +3,7 @@
 > 情墨 | 2026-05-25 | L1级
 > pipeline_stage: complete
 > finance_confirmed: true (腰子确认：本变更为纯工程基础设施，不涉及金融分析/策略/交易逻辑变更)
+> ⚠️ **平台标注 (2026-05-29)**：本文档描述 Windows Task Scheduler 架构。macOS 实际采用 `daily_orchestrator.py` + crontab 方案（支持 daily/deep/pigeon/health 四种模式，文件锁幂等，数据就绪检查+故障分级告警）。详见代码注释。
 
 ---
 
@@ -91,3 +92,33 @@ Layer 3: daily_workflow.ps1 (现有管线，不改动)
 - [ ] schtasks /query 确认任务存在
 - [ ] 重复触发不重复执行
 - [ ] 非交易日自动跳过
+
+---
+
+## macOS 实际架构（2026-05-29 补充，代码已实现但原设计未记录）
+
+### daily_orchestrator.py 四模式调度
+
+`daily_orchestrator.py:L473` 支持四种运行模式，通过 crontab 触发：
+- `daily` — 每日荐股全流程（采集→评分→报告→PDF）
+- `deep` — 深度分析触发
+- `pigeon` — 信鸽信息采集
+- `health` — 健康巡检
+
+### 数据就绪检查 (`daily_orchestrator.py:L47-48,216-241`)
+
+- 检查数据缓存目录中 ≥3 个文件在当日15:00后更新
+- 未就绪时最多重试4次，每次间隔15分钟(MAX_RETRIES=4, RETRY_DELAY=900)
+- 超时仍未就绪→WARN退出
+
+### 故障分级告警 (`daily_orchestrator.py:L410-459`)
+
+三级故障分类，自动通知对应角色：
+- P0: 核心数据源全故障 → 通知玉夜+腰子
+- P1: 单数据源降级 → 通知玉夜
+- P2: 缓存过期/配置异常 → 通知玉夜+红枫
+- P3: 仅记录，连续3次升级为P2
+
+### 幂等锁机制 (`daily_orchestrator.py:L71-97`)
+
+使用文件锁(`.locks/`目录)替代设计中的workflow_records.csv，1小时自动过期。

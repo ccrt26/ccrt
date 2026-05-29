@@ -1,0 +1,6 @@
+[2026-05-30 00:03:00][INFO] Health check started at 00:03:00
+[2026-05-30 00:03:00][INFO] [PASS] disk_space: Disk: 404.4GB free
+[2026-05-30 00:03:00][INFO] [SKIP] data_cache_freshness: Weekend, skipping cache freshness check
+[2026-05-30 00:03:00][INFO] [SKIP] events_db_freshness: Weekend, skipping events DB check
+[2026-05-30 00:03:00][INFO] [WARN] signal_stale: Stale signals: signal_daily_report.json (8h), signal_alert.json (14h)
+[2026-05-30 00:03:00][INFO] Health check: WARN

@@ -63,7 +63,7 @@ python3 代码文件/tools/git_autosweep.py [--dry-run] [--skip-push]
 3. 分类器:
    ├─ auto: .json/.jsonl/.csv/.txt/.log/.md/.pdf/.docx/.html
    │        或路径匹配 AutoCommitPaths（.claude/、临时报告/、历史数据/等）
-   └─ pipeline: .py/.ps1/.psm1 且在代码文件/或模拟交易/核心目录下
+   └─ pipeline: .py/.ps1/.psm1/.bat 且在代码文件/或模拟交易/核心目录下
 4. E5敏感文件检查 → 拦截 .env/credentials/等
 5. PDF删除拦截 → unstage 被删除的 .pdf 文件（红线§1.7）
 6. auto 文件 → git add + git commit --no-verify
@@ -90,7 +90,7 @@ python3 代码文件/tools/git_autosweep.py [--dry-run] [--skip-push]
 模拟交易/共享模块/、模拟交易/展示/、模拟交易/工具/
 ```
 
-**分类逻辑**: 先判断是否在 pipeline 目录 + 代码扩展名(.py/.ps1/.psm1) → 是=pipeline，否=auto
+**分类逻辑**: 先判断是否在 pipeline 目录 + 代码扩展名(.py/.ps1/.psm1/.bat) → 是=pipeline，否=auto
 
 ### 2.4 与原 PS1 的差异
 

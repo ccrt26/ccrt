@@ -50,18 +50,18 @@
                               │
 ┌─────────────────────────────▼────────────────────────────────────┐
 │                    信鸽采集管线 (主控脚本)                          │
-│                   pigeon_collector.ps1                             │
+│                   pigeon_collector.py                             │
 │                                                                   │
-│  Step 1: baostock[14] 业绩预告/快报 (6股×2类, 串行, 0.5s间隔)      │
-│  Step 2: cninfo API 公司公告 (6股×关键词搜索, 串行, 1s间隔)         │
-│  Step 3: 东财[11] 研报 (已有封装, 1+2架构)                         │
-│  Step 4: china-stock-mcp 备源补充 (仅主源失败时触发)                │
-│  Step 5: WebFetch 行业政策 (仅周二/周五, Phase 2)                   │
+│  Step 1: baostock[14] 业绩预告/快报 (10股×2类, 串行, 0.5s间隔)      │
+│  Step 2: cninfo API 公司公告 (10股×关键词搜索, 串行, 500ms间隔)       │
+│  Step 3: 东财[11] 研报 (Phase 2, 未实现)                             │
+│  Step 4: china-stock-mcp 备源补充 (仅主源失败时触发, stub)            │
+│  Step 5: WebFetch 行业政策 (Phase 2, 未实现)                          │
 └─────────────────────────────┬────────────────────────────────────┘
                               │ 原始消息 (~50条/股)
 ┌─────────────────────────────▼────────────────────────────────────┐
 │                    五层噪音过滤漏斗                                 │
-│                   pigeon_filter.ps1                                │
+│                   pigeon_filter.py                                │
 │                                                                   │
 │  L1: 黑名单关键词丢弃 (~40%)                                       │
 │  L2: 腰子五问法 (Q1-Q5至少YES一个) (~50%)                          │
@@ -90,11 +90,11 @@
 
 | 决策点 | 选择 | 理由 |
 |:------|:-----|:-----|
-| 采集脚本语言 | PowerShell (.ps1) | 与现有管线一致，复用限速器/日志/缓存模块 |
-| cninfo API封装 | PowerShell `Invoke-RestMethod` | 无需新增Python依赖 |
+| 采集脚本语言 | Python (.py) | macOS适配，使用urllib.request + json标准库 |
+| cninfo API封装 | Python `urllib.request` | 复用标准库，零外部依赖 |
 | baostock桥接 | 已有 `Invoke-BaostockFallback` | 复用[14]现有封装 |
 | china-stock-mcp | MCP协议调用 | Claude Code原生支持，零封装 |
-| 过滤引擎 | PowerShell | 规则型过滤，无需ML推理 |
+| 过滤引擎 | Python | 规则型过滤，无需ML推理 |
 | 输出格式 | JSON (腰子知识库/18 Schema) | 与现有事件驱动框架对齐 |
 | 调度 | 千光 Task Scheduler | 复用现有每日管线调度框架 |
 
@@ -106,16 +106,16 @@
 
 | 模块 | 文件 | 等级 | 职责 | 行数上限 |
 |:-----|:-----|:----:|:-----|:------:|
-| 主控脚本 | `pigeon_collector.ps1` | L1 | 采集流程编排、Step 1-5调度 | ≤300 |
-| cninfo API | `pigeon_cninfo.ps1` | L0 | cninfo JSON API封装、重试、错误处理 | ≤150 |
-| 五层过滤 | `pigeon_filter.ps1` | L1 | L1-L4过滤规则引擎 | ≤250 |
-| 结构化输出 | `pigeon_output.ps1` | L0 | JSON序列化、缓存写入、去重检查 | ≤100 |
+| 主控脚本 | `pigeon_collector.py` | L1 | 采集流程编排、Step 1-5调度 | ≤300 |
+| cninfo API | `pigeon_cninfo.py` | L0 | cninfo JSON API封装、重试、错误处理 | ≤150 |
+| 五层过滤 | `pigeon_filter.py` | L1 | L1-L4过滤规则引擎 | ≤250 |
+| 结构化输出 | `pigeon_output.py` | L0 | JSON序列化、缓存写入、去重检查 | ≤100 |
 | 配置文件 | `pigeon_config.json` | L0 | 重点股票列表、关键词黑/白名单、Q1-Q5规则 | — |
 | 事件数据库 | `消息面数据/events_db.json` | L1 | 历史事件归档、事后IC验证数据源 | — |
 
 ### 3.2 模块详细设计
 
-#### 3.2.1 主控脚本 `pigeon_collector.ps1`
+#### 3.2.1 主控脚本 `pigeon_collector.py`
 
 ```
 参数:
@@ -143,7 +143,7 @@
   3 - 配置错误
 ```
 
-#### 3.2.2 cninfo API封装 `pigeon_cninfo.ps1`
+#### 3.2.2 cninfo API封装 `pigeon_cninfo.py`
 
 ```
 函数: Invoke-CninfoAnnouncement
@@ -170,11 +170,11 @@ API端点:
     }
   ]
 
-重试策略: 间隔≥1s, 最多重试2次, 指数退避(1s→2s→4s)
+重试策略: 间隔500ms, 最多重试3次, 指数退避(2s→4s→8s)
 降级路径: cninfo API失败 → china-stock-mcp[备] → 缓存[C]
 ```
 
-#### 3.2.3 五层过滤引擎 `pigeon_filter.ps1`
+#### 3.2.3 五层过滤引擎 `pigeon_filter.py`
 
 ```
 函数: Invoke-PigeonFilter
@@ -210,7 +210,7 @@ Q5_竞争格局: 标题/摘要包含 "破产|退出|禁令|制裁|反倾销|补�
 
 === L3: 山猫增量性检查 ===
 规则:
-  - 与近3日已入库消息标题相似度>80% → 标记为"重复" → 丢弃
+  - 与近3日已入库消息标题相似度>70% → 标记为"重复" → 丢弃
   - 行业政策类: 检查是否与已知政策口径重复 → 重复则丢弃
   - 研报类: 无评级调整+无盈利预测修正 → 丢弃
 
@@ -226,7 +226,27 @@ Q5_竞争格局: 标题/摘要包含 "破产|退出|禁令|制裁|反倾销|补�
 写入日志: 每日采集完成后输出 "L1: 50→30 | L2: 30→15 | L3: 15→10 | L4: 10→5"
 ```
 
-#### 3.2.4 结构化输出 `pigeon_output.ps1`
+#### 3.2.3b 证据等级与概念跟踪（代码扩展，2026-05-29 补充文档）
+
+以下功能已在代码中实现但原设计文档未记录：
+
+**证据等级 L1-L4** (`pigeon_filter.py:L122-168`):
+- L1: 订单/合同/批文 — 可直接量化的硬证据
+- L2: 公司业务方向调整/产能扩张 — 半结构化经营事件
+- L3: 行业趋势/政策方向 — 宏观背景
+- L4: 研报/媒体观点 — 最低权重参考
+- 规则配置: `pigeon_config.json:L106-146` evidence_level_rules
+
+**概念跟踪+升级检测** (`pigeon_filter.py:L171-193`):
+- 每只标的配置2-3个概念追踪轨道(concept_tracks)
+- 新事件证据等级超过历史最高等级时触发升级检测
+- 升级/降级规则: L3→L2(行业→公司级), L2→L1(经营→订单级), staleness_check(过期降级)
+
+**P0关键词+proof等级** (`pigeon_config.json:L74`):
+- P0事件: 立案调查/ST风险/全部质押/重组失败 — 不设上限，优先输出
+- proof等级: rumor(0.5概率)/forecast(0.7)/confirmed(1.0)
+
+#### 3.2.4 结构化输出 `pigeon_output.py`
 
 ```
 函数: Export-PigeonEventJson
@@ -281,11 +301,15 @@ JSON Schema (对齐腰子知识库/18 §五):
 {
   "target_stocks": [
     {"code": "600114", "name": "东睦股份", "market": "sh"},
-    {"code": "600519", "name": "贵州茅台", "market": "sh"},
-    {"code": "000858", "name": "五粮液", "market": "sz"},
-    {"code": "300750", "name": "宁德时代", "market": "sz"},
-    {"code": "300308", "name": "中际旭创", "market": "sz"},
-    {"code": "300418", "name": "昆仑万维", "market": "sz"}
+    {"code": "603019", "name": "中科曙光", "market": "sh"},
+    {"code": "301075", "name": "多瑞医药", "market": "sz"},
+    {"code": "601689", "name": "拓普集团", "market": "sh"},
+    {"code": "000967", "name": "盈峰环境", "market": "sz"},
+    {"code": "601727", "name": "上海电气", "market": "sh"},
+    {"code": "002230", "name": "科大讯飞", "market": "sz"},
+    {"code": "603092", "name": "德力佳", "market": "sh"},
+    {"code": "300736", "name": "百邦科技", "market": "sz"},
+    {"code": "300450", "name": "先导智能", "market": "sz"}
   ],
   "blacklist_keywords": [
     "行情点评","原因何在","技术分析","MACD","金叉","死叉",
@@ -312,7 +336,7 @@ JSON Schema (对齐腰子知识库/18 §五):
     "baostock_interval_ms": 500
   },
   "schedule": {
-    "daily_trigger": "15:30",
+    "daily_trigger": "19:00",
     "skip_holidays": true,
     "holidays_file": "每日荐股/运营记录/holidays_2026.csv"
   }
@@ -374,10 +398,10 @@ JSON Schema (对齐腰子知识库/18 §五):
 
 | 文件 | 等级 | 理由 | 审查要求 |
 |:-----|:----:|:-----|:--------|
-| pigeon_collector.ps1 | **L1** | 策略输入编排，涉及评分数据上游 | 情墨复审+新安全量+Golden Master |
-| pigeon_cninfo.ps1 | **L0** | 纯数据API封装，无业务逻辑 | 红结自查+新安常规 |
-| pigeon_filter.ps1 | **L1** | 过滤规则影响评分输入，策略相关 | 情墨复审+新安全量 |
-| pigeon_output.ps1 | **L0** | JSON序列化+缓存写入 | 红结自查+新安常规 |
+| pigeon_collector.py | **L1** | 策略输入编排，涉及评分数据上游 | 情墨复审+新安全量+Golden Master |
+| pigeon_cninfo.py | **L0** | 纯数据API封装，无业务逻辑 | 红结自查+新安常规 |
+| pigeon_filter.py | **L1** | 过滤规则影响评分输入，策略相关 | 情墨复审+新安全量 |
+| pigeon_output.py | **L0** | JSON序列化+缓存写入 | 红结自查+新安常规 |
 | pigeon_config.json | **L0** | 配置文件，无逻辑 | 红结自查 |
 
 ---
@@ -396,7 +420,7 @@ JSON Schema (对齐腰子知识库/18 §五):
 | baostock[14]桥接 | 复用Invoke-BaostockFallback, 新增action参数 | L0变更 |
 | 东财[11]研报 | 复用现有封装, 无修改 | 无影响 |
 | 缓存层[C] | 新增缓存目录 消息面数据/cache/ | 无影响 |
-| 版本管理 | version_supervisor.ps1 新增信鸽模块 | L0变更 |
+| 版本管理 | version_supervisor.py 新增信鸽模块 | L0变更 |
 
 ### 6.3 数据源编号扩展
 
@@ -433,8 +457,8 @@ JSON Schema (对齐腰子知识库/18 §五):
 ## 八、部署计划
 
 ### Phase 1 (本周): 核心采集 + L1-L2过滤
-- 红结编写 pigeon_cninfo.ps1 + pigeon_collector.ps1(Step 1-3)
-- 红结编写 pigeon_filter.ps1 (L1黑名单 + L2五问法)
+- 红结编写 pigeon_cninfo.py + pigeon_collector.py(Step 1-3)
+- 红结编写 pigeon_filter.py (L1黑名单 + L2五问法)
 - 新安验证: 采集成功率≥80%, L1+L2过滤率≥60%
 - 平行观察: 不入评分, 仅输出JSON供腰子人工校验
 

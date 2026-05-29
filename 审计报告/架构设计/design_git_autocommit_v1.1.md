@@ -16,7 +16,7 @@
 | 项目配置变更 | `CLAUDE.md`, `.claude/agents/`, `.claude/commands/`, `.claude/knowledge/` | ❌ 无覆盖 |
 | 管线配置变更 | `.claude/pipeline_active.json`, `.claude/scheduled_tasks.lock` | ❌ 无覆盖 |
 
-**v1.1方案**：新增`engineering`模块值 + `git_sweep.ps1`日终安全网，确保任何未提交变更在每日工作流结束时自动入库。
+**v1.1方案**：新增`engineering`模块值 + 日终安全网（功能已整合到 `git_autosweep.py`，不再使用独立 `git_sweep.ps1`），确保任何未提交变更在每日工作流结束时自动入库。
 
 ---
 
@@ -33,7 +33,7 @@
 
 | 文件 | L级 | 说明 |
 |:-----|:----:|:-----|
-| `代码文件/tools/git_sweep.ps1` | L0 | 日终安全网脚本，≤40行 |
+| `代码文件/tools/git_autosweep.py` | L1 | 日终安全网+自动清扫(已整合原git_sweep.ps1功能)，325行 |
 
 ### 1.3 受影响但无需修改
 
@@ -126,7 +126,7 @@ git_sweep在最后执行，此时：
 |:-----|:-----|
 | `.claude/` 运行时文件（sessions/projects/telemetry） | .gitignore已排除 |
 | E5敏感文件（.env, credentials.*等） | git_autocommit内置拦截 |
-| pre-commit hook校验失败 | hook阻断=不应强行提交 |
+| pre-commit hook校验失败 | hook阻断=不应强行提交（autosweep后台清扫使用--no-verify跳过hook，因其处理的是非代码数据文件） |
 
 ---
 

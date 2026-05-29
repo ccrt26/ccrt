@@ -1,0 +1,1 @@
+{"timestamp": "2026-05-29T15:18:16.565731+00:00", "finding_id": "AUDIT-20260529231816-signature_chain", "severity": "HIGH", "category": "signature_chain", "related_run_id": "UNKNOWN", "description": "签名日志文件缺失，无法验证签名链", "evidence_log_paths": ["logs/signatures/signature_events.jsonl"], "recommended_action": "请相关角色确认并修复", "status": "open"}

@@ -3,6 +3,7 @@
 > pipeline_stage: complete
 > finance_confirmed: true
 > 设计日期：2026-05-25
+> ⚠️ **平台标注 (2026-05-29)**：`init_encoding.ps1` 未创建，80个.ps1 dot-source迁移未执行。macOS Python环境不需要这些PowerShell编码初始化器。§2.2(encoding layer 3)和§3 Phase1(step 1.2-1.3)标注为"macOS已废弃"。
 > 设计人：情墨（系统架构师）
 > 代码分级：L0（基础设施层，不涉及评分/交易/风控逻辑）
 > 关联需求：编码问题根治 + 脚本去重 + PS→PY迁移 + 配置中心化
