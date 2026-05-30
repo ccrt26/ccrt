@@ -1,0 +1,13 @@
+{
+  "signal": "regen_deep_analysis",
+  "code": "301075",
+  "name": "多瑞医药",
+  "date": "20260529",
+  "retry_count": 1,
+  "max_retries": 3,
+  "meltdown": false,
+  "fail_reasons": [
+    "MD size 24906 < 25000 threshold"
+  ],
+  "timestamp": "2026-05-30T10:17:10.664881"
+}

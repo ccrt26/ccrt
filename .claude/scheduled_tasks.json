@@ -109,15 +109,6 @@
       "createdBySessionId": "10d61213-b809-424d-9e84-492ab1c5fe7a",
       "createdByPid": 79672,
       "createdByProcStart": "Sat May 30 00:40:25 2026"
-    },
-    {
-      "id": "7bed540b",
-      "cron": "9 10 30 5 *",
-      "prompt": "/深度分析 300736 百邦科技 — 产出完整九章v1.4深度分析报告到 重点股票/深度分析/深度分析报告/百邦科技(300736)/百邦科技(300736)深度分析报告_20260529.md。完成后运行 python3 代码文件/深度分析/parse_deep_analysis_report.py --validate 验证。PASS后转HTML+PDF。FAIL则修复至PASS。全部6只完成后运行 python3 代码文件/信鸽信息采集/generate_portal.py 重建门户。",
-      "createdAt": 1780104468782,
-      "createdBySessionId": "10d61213-b809-424d-9e84-492ab1c5fe7a",
-      "createdByPid": 79672,
-      "createdByProcStart": "Sat May 30 00:40:25 2026"
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "signal": "regen_deep_analysis",
+  "code": "000967",
+  "name": "盈峰环境",
+  "date": "20260529",
+  "retry_count": 1,
+  "max_retries": 3,
+  "meltdown": false,
+  "fail_reasons": [
+    "MD size 24957 < 25000 threshold"
+  ],
+  "timestamp": "2026-05-30T10:11:19.445760"
+}
