@@ -1,0 +1,13 @@
+{
+  "signal": "regen_deep_analysis",
+  "code": "002230",
+  "name": "科大讯飞",
+  "date": "20260529",
+  "retry_count": 9,
+  "max_retries": 3,
+  "meltdown": true,
+  "fail_reasons": [
+    "灌水: 连续3段无数据"
+  ],
+  "timestamp": "2026-05-30T17:30:58.664127"
+}

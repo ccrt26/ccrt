@@ -3,11 +3,11 @@
   "code": "300736",
   "name": "百邦科技",
   "date": "20260529",
-  "retry_count": 1,
+  "retry_count": 10,
   "max_retries": 3,
-  "meltdown": false,
+  "meltdown": true,
   "fail_reasons": [
-    "MD size 24988 < 25000 threshold"
+    "P1缺失3项(>2): 三情景EPS, 可比估值对标, Volume Profile"
   ],
-  "timestamp": "2026-05-30T10:30:06.201816"
+  "timestamp": "2026-05-30T17:30:58.660577"
 }

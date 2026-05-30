@@ -1,13 +1,13 @@
 {
   "signal": "regen_deep_analysis",
-  "code": "603092",
-  "name": "德力佳",
+  "code": "601727",
+  "name": "上海电气",
   "date": "20260529",
-  "retry_count": 5,
+  "retry_count": 4,
   "max_retries": 3,
   "meltdown": true,
   "fail_reasons": [
     "P0缺失: 全团独立段落"
   ],
-  "timestamp": "2026-05-30T17:24:51.050472"
+  "timestamp": "2026-05-30T17:24:51.041764"
 }
