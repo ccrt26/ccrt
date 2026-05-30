@@ -23,12 +23,22 @@
     {
       "id": "c5c3f354",
       "cron": "30 20 * * 5",
-      "prompt": "执行周度深度分析：对全部10只重点股票（东睦股份600114、上海电气601727、中科曙光603019、多瑞医药301075、拓普集团601689、盈峰环境000967、科大讯飞002230、德力佳603092、百邦科技300736、先导智能300450）进行周度深度分析，严格遵循白皮书v1.2六章框架和全团强制咨询流程。每只股票独立输出报告到 重点股票/深度分析/深度分析报告/{名称}({代码})/{名称}({代码})深度分析报告_{YYYYMMDD}.md。完成后触发深度分析后评估（python3 代码文件/重点股票/次日评估/deep_eval_batch.py）生成方法论综合PDF。完成自检清单全部通过后确认输出。",
+      "prompt": "执行周度深度分析批量启动：运行 bash 代码文件/tools/launch_deep_analysis.sh。等待脚本完成全部10路独立会话+质量闸门扫描。汇报各股票质量闸门 PASS/FAIL 结果。如有 FAIL，regen 信号已自动写入 .claude/regen/，由 regen 消费者逐只处理。",
       "createdAt": 1779726260797,
       "recurring": true,
       "createdBySessionId": "72ffd818-1203-46b2-9e58-01f63db1dc60",
       "createdByPid": 2652,
       "createdByProcStart": "639153785801927330"
+    },
+    {
+      "id": "regen_consumer",
+      "cron": "*/10 * * * *",
+      "prompt": "深度分析regen消费者：扫描 .claude/regen/ 目录下的 regen_*.json 文件。对每个 retry_count < 3 且 meltdown=false 的信号，读取 code 和 name，执行 /深度分析 {code} {name} 重生成报告。生成完成后运行 python3 代码文件/深度分析/parse_deep_analysis_report.py --validate <报告路径> 验证。PASS 则删除对应的 regen 信号文件。FAIL 则信号文件的 retry_count 已由闸门自动递增（≥3 时自动熔断并写 signal_alert.json）。无 regen 信号文件则静默退出。",
+      "createdAt": 1780123456789,
+      "recurring": true,
+      "createdBySessionId": "deep-analysis-fix-20260530",
+      "createdByPid": 0,
+      "createdByProcStart": "deep-analysis-fix-20260530"
     },
     {
       "id": "73cfe6cb",
