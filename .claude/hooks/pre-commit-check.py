@@ -378,6 +378,33 @@ def check_h_config_consistency():
     staged = set(get_staged_files())
     if pigeon_config not in staged and key_stocks not in staged:
         log("PASS", "H SKIP: 配置文件未变更")
+        return
+
+    if not os.path.exists(pigeon_config):
+        log("WARN", "H WARN: pigeon_config.json 不存在，跳过")
+        return
+    if not os.path.exists(key_stocks):
+        log("BLOCK", "H BLOCK: key_stocks.json 不存在。请运行 sync_key_stocks.py")
+        return
+
+    try:
+        import json as _json
+        with open(pigeon_config, "r", encoding="utf-8") as f:
+            pc = _json.load(f)
+        with open(key_stocks, "r", encoding="utf-8") as f:
+            ks = _json.load(f)
+        pigeon_codes = {s["code"] for s in pc.get("target_stocks", [])}
+        key_codes = {s["code"] for s in ks.get("stocks", [])}
+        only_pigeon = pigeon_codes - key_codes
+        only_key = key_codes - pigeon_codes
+        if only_pigeon:
+            log("BLOCK", f"H BLOCK: key_stocks.json 缺少标的: {only_pigeon}")
+        if only_key:
+            log("BLOCK", f"H BLOCK: key_stocks.json 多余标的: {only_key}")
+        if not only_pigeon and not only_key:
+            log("PASS", f"H PASS: 重点股票名单一致 ({len(pigeon_codes)}只)")
+    except Exception as e:
+        log("BLOCK", f"H BLOCK: 配置一致性检查失败: {e}")
 
 
 # ── Check I: Dispatcher Authority Boundary ─────────────
@@ -404,34 +431,73 @@ def check_i_dispatcher_boundary():
 
     violations = []
 
-    # Scan runs for 阿黑 violations
+    # Cutoff: violations before this date are historical (WARN); after are BLOCK
+    from datetime import timezone as _tz
+    CUTOFF = "2026-06-01T07:30:00+00:00"
+
+    # Scan engine_events for 阿黑 advance/complete actions
+    eng_file = os.path.join(PROJECT_ROOT, "logs", "engine", "engine_events.jsonl")
+    if os.path.exists(eng_file):
+        try:
+            with open(eng_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line.strip())
+                    except Exception:
+                        continue
+                    if rec.get("actor") != "阿黑":
+                        continue
+                    action = rec.get("event_type", rec.get("action", ""))
+                    if action in ("advance", "complete"):
+                        ts = rec.get("timestamp", "")
+                        sev = "WARN" if ts < CUTOFF else "BLOCK"
+                        violations.append((sev, f"阿黑越权执行{action}: {rec.get('run_id', '?')}"))
+        except Exception:
+            pass
+
+    # Scan signature_events for 阿黑代签
+    sig_file = os.path.join(PROJECT_ROOT, "logs", "signatures", "signature_events.jsonl")
+    if os.path.exists(sig_file):
+        try:
+            with open(sig_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line.strip())
+                    except Exception:
+                        continue
+                    if rec.get("actor") != "阿黑":
+                        continue
+                    role = rec.get("role", "")
+                    if role != "阿黑":
+                        ts = rec.get("timestamp", "")
+                        sev = "WARN" if ts < CUTOFF else "BLOCK"
+                        violations.append((sev, f"阿黑代签{role}: {rec.get('run_id', '?')}"))
+        except Exception:
+            pass
+
+    # Scan runs for 阿黑 completed flows
+    # Use run's updated_at to separate historical (WARN) from new (BLOCK)
     runs = token.get("runs", {})
     for rid, run in runs.items():
         if not isinstance(run, dict):
             continue
-        # Check if 阿黑 completed the run — WARN only (flow completion can be exceptional)
         if run.get("status") == "completed":
             stages = run.get("stages", [])
             last_stage = stages[-1] if stages else {}
             if last_stage.get("stage") == "audit" and last_stage.get("status") == "completed":
-                violations.append(("WARN", f"阿黑可能越权完成流程: {rid}"))
+                run_ts = run.get("updated_at", run.get("completed_at", ""))
+                sev = "WARN" if (not run_ts or run_ts < CUTOFF) else "BLOCK"
+                violations.append((sev, f"阿黑越权完成流程: {rid}"))
 
-        # Check for 阿黑代签 patterns — BLOCK (clear impersonation)
-        override = run.get("override_reason")
-        if override and "阿黑" in str(override) and "override" in str(override).lower():
-            violations.append(("BLOCK", f"阿黑override: {rid}"))
-
-    has_block = any(sev == "BLOCK" for sev, _ in violations)
+    # Report violations — BLOCK on new violations, WARN on historical
     if violations:
+        has_block = any(sev == "BLOCK" for sev, _ in violations)
         for sev, msg in violations:
-            if sev == "BLOCK":
-                log("BLOCK", f"I BLOCK: {msg}")
-            else:
-                log("WARN", f"I WARN: {msg}")
+            log(sev, f"I {sev}: {msg}")
         if has_block:
-            log("BLOCK", "阿黑越权操作(代签)被阻断。请合并到正式流程或升级L3。")
+            log("BLOCK", "阿黑越权操作被阻断。阿黑只能建run+分派责任人+阻断不合规。")
         else:
-            log("PASS", "I PASS: 阿黑权限边界正常 (完成/推进已记录WARN)")
+            log("PASS", "I PASS: 阿黑权限边界正常 (历史违规已记录WARN)")
     else:
         log("PASS", "I PASS: 阿黑权限边界正常")
 
@@ -471,33 +537,6 @@ def check_j_formal_report_protection(staged_files):
             log("BLOCK", f"J BLOCK: release_gate未批准 (status={gate.get('gate_status', 'unknown')})")
     except Exception:
         log("BLOCK", "J BLOCK: release_gate批准文件损坏")
-        return
-
-    if not os.path.exists(pigeon_config):
-        log("WARN", "H WARN: pigeon_config.json 不存在，跳过")
-        return
-    if not os.path.exists(key_stocks):
-        log("BLOCK", "H BLOCK: key_stocks.json 不存在。请运行 sync_key_stocks.py")
-        return
-
-    try:
-        import json as _json
-        with open(pigeon_config, "r", encoding="utf-8") as f:
-            pc = _json.load(f)
-        with open(key_stocks, "r", encoding="utf-8") as f:
-            ks = _json.load(f)
-        pigeon_codes = {s["code"] for s in pc.get("target_stocks", [])}
-        key_codes = {s["code"] for s in ks.get("stocks", [])}
-        only_pigeon = pigeon_codes - key_codes
-        only_key = key_codes - pigeon_codes
-        if only_pigeon:
-            log("BLOCK", f"H BLOCK: key_stocks.json 缺少标的: {only_pigeon}")
-        if only_key:
-            log("BLOCK", f"H BLOCK: key_stocks.json 多余标的: {only_key}")
-        if not only_pigeon and not only_key:
-            log("PASS", f"H PASS: 重点股票名单一致 ({len(pigeon_codes)}只)")
-    except Exception as e:
-        log("BLOCK", f"H BLOCK: 配置一致性检查失败: {e}")
 
 
 # ── Main ──────────────────────────────────────────────
