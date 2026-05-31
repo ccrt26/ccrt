@@ -519,6 +519,110 @@ def test_t38_t40():
 
 
 # ============================================================================
+# T41-T48: 用户短指令默认流程入口
+# ============================================================================
+def test_t41_t48():
+    print("\n📋 T41-T48: --route 用户短句自动分类路由")
+    env = IsolatedEnv()
+    try:
+        # T41: "有个bug，修一下" → FIX → BUGFIX run 创建成功
+        rc41, so41, _ = env.run(ENGINE, "--route", "有个bug，修一下")
+        rid41 = [l.split(":")[1].strip() for l in so41.split("\n") if "run_id:" in l][0]
+        with open(env.state_file) as f:
+            ft41 = json.load(f)["runs"][rid41]["flow_type"]
+        ok41 = ft41 == "BUGFIX" and rc41 == 0
+        res["p" if ok41 else "f"] += 1
+        print(f"  {G if ok41 else R}{'PASS' if ok41 else 'FAIL'}{Z}  T41: bug→FIX→BUGFIX run创建成功")
+
+        # T42: "修复选股评分逻辑" → 金融关键词检测 → 拒绝工程流程 (exit 0, no run)
+        with open(env.state_file) as f:
+            runs_before = len(json.load(f)["runs"])
+        rc42, so42, _ = env.run(ENGINE, "--route", "修复选股评分逻辑")
+        with open(env.state_file) as f:
+            runs_after = len(json.load(f)["runs"])
+        ok42 = rc42 == 0 and runs_after == runs_before and "金融" in so42
+        res["p" if ok42 else "f"] += 1
+        print(f"  {G if ok42 else R}{'PASS' if ok42 else 'FAIL'}{Z}  T42: 选股评分→金融关键词→拒绝工程流程")
+
+        # T43: "紧急修复线上挂了" → EMERGENCY 判定 → 提示P0参数 (exit 0, no run)
+        with open(env.state_file) as f:
+            runs_before = len(json.load(f)["runs"])
+        rc43, so43, _ = env.run(ENGINE, "--route", "紧急修复线上挂了")
+        with open(env.state_file) as f:
+            runs_after = len(json.load(f)["runs"])
+        ok43 = rc43 == 0 and runs_after == runs_before and "EMERGENCY" in so43 and "P0参数" in so43
+        res["p" if ok43 else "f"] += 1
+        print(f"  {G if ok43 else R}{'PASS' if ok43 else 'FAIL'}{Z}  T43: 紧急→EMERGENCY→提示P0参数")
+
+        # T44: "新增一个功能" → NEW_REQUIREMENT → run 创建成功
+        rc44, so44, _ = env.run(ENGINE, "--route", "新增一个功能")
+        rid44 = [l.split(":")[1].strip() for l in so44.split("\n") if "run_id:" in l][0]
+        with open(env.state_file) as f:
+            ft44 = json.load(f)["runs"][rid44]["flow_type"]
+        ok44 = ft44 == "NEW_REQUIREMENT" and rc44 == 0
+        res["p" if ok44 else "f"] += 1
+        print(f"  {G if ok44 else R}{'PASS' if ok44 else 'FAIL'}{Z}  T44: 新增功能→NEW_REQUIREMENT run创建成功")
+
+        # T45: "检查一下这个问题" → READONLY_CHECK → exit 0, 不创建 run
+        with open(env.state_file) as f:
+            runs_before = len(json.load(f)["runs"])
+        rc45, so45, _ = env.run(ENGINE, "--route", "检查一下这个问题")
+        with open(env.state_file) as f:
+            runs_after = len(json.load(f)["runs"])
+        ok45 = rc45 == 0 and runs_after == runs_before and "READONLY_CHECK" in so45
+        res["p" if ok45 else "f"] += 1
+        print(f"  {G if ok45 else R}{'PASS' if ok45 else 'FAIL'}{Z}  T45: 检查→READONLY_CHECK exit 0 不创建run")
+
+        # T46: "随便看看" → USER_REQUEST 兜底 → NEW_REQUIREMENT run
+        rc46, so46, _ = env.run(ENGINE, "--route", "随便看看")
+        rid46 = [l.split(":")[1].strip() for l in so46.split("\n") if "run_id:" in l][0]
+        with open(env.state_file) as f:
+            ft46 = json.load(f)["runs"][rid46]["flow_type"]
+        ok46 = ft46 == "NEW_REQUIREMENT" and rc46 == 0
+        res["p" if ok46 else "f"] += 1
+        print(f"  {G if ok46 else R}{'PASS' if ok46 else 'FAIL'}{Z}  T46: 随便看看→USER_REQUEST兜底→NEW_REQUIREMENT")
+
+        # T47: "优化一下界面文案" → NEW_REQUIREMENT → run 创建成功
+        rc47, so47, _ = env.run(ENGINE, "--route", "优化一下界面文案")
+        rid47 = [l.split(":")[1].strip() for l in so47.split("\n") if "run_id:" in l][0]
+        with open(env.state_file) as f:
+            ft47 = json.load(f)["runs"][rid47]["flow_type"]
+        ok47 = ft47 == "NEW_REQUIREMENT" and rc47 == 0
+        res["p" if ok47 else "f"] += 1
+        print(f"  {G if ok47 else R}{'PASS' if ok47 else 'FAIL'}{Z}  T47: 优化→NEW_REQUIREMENT run创建成功")
+
+        # T48: "帮我改一下" → FIX → BUGFIX run 创建成功
+        rc48, so48, _ = env.run(ENGINE, "--route", "帮我改一下")
+        rid48 = [l.split(":")[1].strip() for l in so48.split("\n") if "run_id:" in l][0]
+        with open(env.state_file) as f:
+            ft48 = json.load(f)["runs"][rid48]["flow_type"]
+        ok48 = ft48 == "BUGFIX" and rc48 == 0
+        res["p" if ok48 else "f"] += 1
+        print(f"  {G if ok48 else R}{'PASS' if ok48 else 'FAIL'}{Z}  T48: 改→FIX→BUGFIX run创建成功")
+
+        # T49: overdue P0 blocks --route FIX
+        past = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
+        env.run(ENGINE, "--start", "EMERGENCY", "--task", "T49-overdue",
+                "--incident-id", "I49", "--p0-reason", "评分/报告/交易链路中断",
+                "--impact-scope", "x", "--risk-level", "P0", "--temp-fix", "x",
+                "--rollback-point", "x", "--post-audit-deadline", past)
+        before_count = len(env.get_rid())
+        rc, so, _ = env.run(ENGINE, "--route", "有个bug，修一下")
+        after_count = len(env.get_rid())
+        ok = rc != 0 and before_count == after_count
+        res["p" if ok else "f"] += 1
+        print(f"  {G if ok else R}{'PASS' if ok else 'FAIL'}{Z}  T49: overdue P0 blocks --route FIX")
+
+        # T50: overdue P0 blocks --route NEW_REQUIREMENT
+        rc2, so2, _ = env.run(ENGINE, "--route", "优化一下界面文案")
+        ok2 = rc2 != 0
+        res["p" if ok2 else "f"] += 1
+        print(f"  {G if ok2 else R}{'PASS' if ok2 else 'FAIL'}{Z}  T50: overdue P0 blocks --route NEW_REQUIREMENT")
+    finally:
+        env.cleanup()
+
+
+# ============================================================================
 def main():
     print("=" * 60)
     print(f"流程加固 fix4 完全隔离测试套件")
@@ -544,6 +648,7 @@ def main():
     test_t31_t34()
     test_t35_t37()
     test_t38_t40()
+    test_t41_t48()
 
     tot = res["p"] + res["f"]
     print(f"\n{'='*60}")

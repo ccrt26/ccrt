@@ -317,6 +317,57 @@ def validate_p0_fields(args):
 
 
 # ---------------------------------------------------------------------------
+# --start (核心，被 cmd_start 和 cmd_route 共用)
+# ---------------------------------------------------------------------------
+def cmd_start_internal(event_type, task_description, p0_data=None):
+    """核心启动逻辑：查规则→加载模板→创建run→保存状态。"""
+    rules_path = os.path.join(PROJECT_ROOT, EVENT_RULES_FILE)
+    rules = parse_event_rules(rules_path)
+    matched = next((e for e in rules.get("events", []) if e.get("name") == event_type), None)
+    if not matched:
+        print(f"错误: 未知事件类型 '{event_type}'")
+        sys.exit(1)
+    ft = load_flow_template(matched["flow_template"])
+    stages = ft.get("stages", [])
+    if not stages:
+        print("错误: 流程模板无阶段")
+        sys.exit(1)
+    rid = gen_run_id(ft.get("flow_type", event_type), task_description)
+    now = datetime.now(timezone.utc).isoformat()
+    ss = [{"stage": s.get("stage"), "status": "pending", "started_at": None, "completed_at": None} for s in stages]
+    ss[0]["status"], ss[0]["started_at"] = "in_progress", now
+    run = {
+        "run_id": rid, "flow_type": ft.get("flow_type", event_type),
+        "flow_template": matched["flow_template"],
+        "task_description": task_description, "current_stage": stages[0]["stage"],
+        "checklist_path": None, "stages": ss,
+        "created_at": now, "updated_at": now,
+        "blocked": False, "block_reason": None, "override_reason": None,
+        "financial_impact": None, "status": "active",
+        "incident_id": None, "p0_reason": None, "impact_scope": None,
+        "risk_level": None, "temp_fix": None, "rollback_point": None,
+        "post_audit_deadline": None, "user_confirmed_p0": False,
+        "audit_report_hash": None,
+    }
+    if p0_data:
+        for k, v in p0_data.items():
+            run[k] = v
+        run["user_confirmed_p0"] = p0_data.get("user_confirmed_p0", False)
+        if p0_data.get("user_confirmed_p0"):
+            run["override_reason"] = "用户明确指定P0"
+    state = load_state()
+    state.setdefault("runs", {})[rid] = run
+    save_state(state)
+    append_log("engine", {"run_id": rid, "event_type": "start", "from_stage": None,
+               "to_stage": stages[0]["stage"], "target_role": stages[0].get("role", ""),
+               "package_files": [], "override_reason": run.get("override_reason") or ""})
+    print(f"✓ 流程已创建\n  run_id: {rid}\n  事件: {event_type}\n  阶段: {stages[0]['stage']}\n  任务: {task_description}")
+    if p0_data:
+        print(f"  incident_id: {p0_data.get('incident_id')}")
+    return rid
+
+
+# ---------------------------------------------------------------------------
 # --start
 # ---------------------------------------------------------------------------
 def cmd_start(args):
@@ -330,55 +381,69 @@ def cmd_start(args):
             for e in errs:
                 print(f"  - {e}")
             sys.exit(1)
+        if p0d is not None:
+            p0d["user_confirmed_p0"] = args.user_confirmed_p0
     if et in ("NEW_REQUIREMENT", "FIX"):
         overdue = check_overdue_p0()
         if overdue:
             print(f"错误: 存在超期未完成审计的 P0，禁止启动非P0发布: {overdue}")
             sys.exit(1)
-    rules_path = os.path.join(PROJECT_ROOT, EVENT_RULES_FILE)
-    rules = parse_event_rules(rules_path)
-    matched = next((e for e in rules.get("events", []) if e.get("name") == et), None)
-    if not matched:
-        print(f"错误: 未知事件类型 '{et}'")
-        sys.exit(1)
-    ft = load_flow_template(matched["flow_template"])
-    stages = ft.get("stages", [])
-    if not stages:
-        print("错误: 流程模板无阶段")
-        sys.exit(1)
-    rid = gen_run_id(ft.get("flow_type", et), td)
-    now = datetime.now(timezone.utc).isoformat()
-    ss = [{"stage": s.get("stage"), "status": "pending", "started_at": None, "completed_at": None} for s in stages]
-    ss[0]["status"], ss[0]["started_at"] = "in_progress", now
-    run = {
-        "run_id": rid, "flow_type": ft.get("flow_type", et),
-        "flow_template": matched["flow_template"],
-        "task_description": td, "current_stage": stages[0]["stage"],
-        "checklist_path": None, "stages": ss,
-        "created_at": now, "updated_at": now,
-        "blocked": False, "block_reason": None, "override_reason": None,
-        "financial_impact": None, "status": "active",
-        "incident_id": None, "p0_reason": None, "impact_scope": None,
-        "risk_level": None, "temp_fix": None, "rollback_point": None,
-        "post_audit_deadline": None, "user_confirmed_p0": False,
-        "audit_report_hash": None,
-    }
-    if p0d:
-        for k, v in p0d.items():
-            run[k] = v
-        run["user_confirmed_p0"] = args.user_confirmed_p0
-        if args.user_confirmed_p0:
-            run["override_reason"] = "用户明确指定P0"
-    state = load_state()
-    state.setdefault("runs", {})[rid] = run
-    save_state(state)
-    append_log("engine", {"run_id": rid, "event_type": "start", "from_stage": None,
-               "to_stage": stages[0]["stage"], "target_role": stages[0].get("role", ""),
-               "package_files": [], "override_reason": run.get("override_reason") or ""})
-    print(f"✓ 流程已创建\n  run_id: {rid}\n  事件: {et}\n  阶段: {stages[0]['stage']}\n  任务: {td}")
-    if p0d:
-        print(f"  incident_id: {p0d['incident_id']}")
-    return rid
+    return cmd_start_internal(et, td, p0d)
+
+
+# ---------------------------------------------------------------------------
+# --route
+# ---------------------------------------------------------------------------
+def cmd_route(user_text):
+    """从用户自然语言判定事件类型并创建流程。"""
+    # 1. 金融关键词 → 拒绝工程流程，转腰子
+    financial_kw = ["评分","选股","交易","买入","卖出","仓位","止损","因子","风控",
+                    "PE","MACD","RSI","KDJ","资金流","推荐","报告结论"]
+    if any(kw in user_text for kw in financial_kw):
+        print("[金融线] 含金融关键词，转腰子全团咨询。不启动工程流程。")
+        sys.exit(0)
+
+    # 2. EMERGENCY → 提示需要完整P0参数
+    emergency_kw = ["紧急","P0","立刻","线上挂了","马上"]
+    if any(kw in user_text for kw in emergency_kw):
+        print("判定: EMERGENCY")
+        print("EMERGENCY需要完整P0参数，请使用 --start EMERGENCY 并提供:")
+        print("  --incident-id --p0-reason --impact-scope --risk-level")
+        print("  --temp-fix --rollback-point --post-audit-deadline")
+        sys.exit(0)
+
+    # 3. READONLY_CHECK（优先级高于 FIX/NEW_REQ，避免"检查这个问题"被"问题"误匹配为 FIX）
+    readonly_kw = ["检查","查一下","确认","验证","审查","诊断","排查"]
+    if any(kw in user_text for kw in readonly_kw):
+        print("判定: READONLY_CHECK — 只读检查，不启动流程，不修改文件。")
+        sys.exit(0)
+
+    # 4. FIX
+    fix_kw = ["修复","bug","修","问题","改","坏了","异常"]
+    # 5. NEW_REQUIREMENT
+    req_kw = ["新增","新功能","开发","优化","改版","改进","添加","加一个"]
+
+    if any(kw in user_text for kw in fix_kw):
+        event = "FIX"
+    elif any(kw in user_text for kw in req_kw):
+        event = "NEW_REQUIREMENT"
+    # 6. USER_REQUEST 兜底
+    else:
+        event = "NEW_REQUIREMENT"
+
+    # 超期 P0 阻断检查（与 cmd_start 一致）
+    if event in ("NEW_REQUIREMENT", "FIX"):
+        overdue = check_overdue_p0()
+        if overdue:
+            print(f"错误: 存在超期未完成审计的 P0 流程，禁止启动非P0发布:")
+            for rid in overdue:
+                print(f"  - {rid}")
+            print("请先完成 P0 post_audit 后再启动新流程。")
+            sys.exit(1)
+
+    # 启动流程
+    print(f"判定: {event}")
+    return cmd_start_internal(event, user_text)
 
 
 # ---------------------------------------------------------------------------
@@ -684,7 +749,8 @@ def cmd_validate(args):
 # ---------------------------------------------------------------------------
 def main():
     p = argparse.ArgumentParser(description="铁律量化 - 流程状态机 (fix3)")
-    p.add_argument("--start", metavar="EVENT"); p.add_argument("--task", metavar="DESC")
+    p.add_argument("--start", metavar="EVENT"); p.add_argument("--route", metavar="TEXT")
+    p.add_argument("--task", metavar="DESC")
     p.add_argument("--status", action="store_true"); p.add_argument("--all", action="store_true")
     p.add_argument("--run-id"); p.add_argument("--advance", metavar="RUN_ID")
     p.add_argument("--complete", metavar="RUN_ID"); p.add_argument("--actor"); p.add_argument("--role")
@@ -701,6 +767,8 @@ def main():
         if not args.task:
             print("错误: --start 需要 --task"); sys.exit(1)
         cmd_start(args)
+    elif args.route:
+        cmd_route(args.route)
     elif args.status:
         cmd_status(args.run_id, args.all)
     elif args.advance:

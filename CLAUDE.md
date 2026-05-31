@@ -77,7 +77,47 @@
 
 ---
 
-## 六、关键工具
+## 六、用户短指令默认流程入口机制
+
+> ⛔ **阿黑为唯一入口。** 任何用户短指令必须经阿黑判定后路由到标准流程，禁止任意角色直接开干。
+
+### 6.1 阿黑短指令判定流程
+
+阿黑收到用户短指令后，按以下优先级顺序判定：
+
+1. 含金融关键词（复用 flow_bugfix.json desc_keywords + path_keywords 全集）→ 输出"[金融线] 转腰子全团咨询" + 停止
+2. 含 EMERGENCY_KW（紧急/P0/立刻/线上挂了/马上）→ event=EMERGENCY, starter=腰子
+3. 含 FIX_KW（修复/bug/修/问题/改/坏了/异常）→ event=FIX, starter=情墨
+4. 含 NEW_KW（新增/新功能/开发/优化/改版/改进/添加/加一个）→ event=NEW_REQUIREMENT, starter=情墨
+5. 含 CHECK_KW（检查/查一下/看看/确认/验证/审查/诊断/排查）→ event=READONLY_CHECK, starter=阿黑→路由检查角色
+6. 其他 → event=USER_REQUEST(兜底), starter=情墨
+
+阿黑动作：输出判定结果 → pipeline_engine --start → 交接 starter，自身退出执行链路。
+
+### 6.2 事件类型关键词匹配表
+
+| 事件类型 | 模板 | 关键词 | starter |
+|:---------|:-----|:-------|:--------|
+| EMERGENCY | flow_p0.json | 紧急, P0, 立刻, 线上挂了, 马上 | 腰子 |
+| FIX | flow_bugfix.json | 修复, bug, 修, 问题, 改, 坏了, 异常 | 情墨 |
+| NEW_REQUIREMENT | flow_new_requirement.json | 新增, 新功能, 开发, 优化, 改版, 改进, 添加, 加一个 | 情墨 |
+| READONLY_CHECK | (无模板，不启流程) | 检查, 查一下, 看看, 确认, 验证, 审查, 诊断, 排查 | 阿黑→路由旧影/新安/玉夜 |
+| USER_REQUEST | flow_new_requirement.json | * (通配兜底) | 情墨 |
+
+> READONLY_CHECK 不启动 pipeline，不修改任何文件。检查角色发现问题 → 回给阿黑 → 升级。
+
+### 6.3 金融关键词自动升级规则
+
+> 引用 flow_bugfix.json financial_impact_rules.desc_keywords 全集：
+> 评分, 选股, 交易, 买入, 卖出, 仓位, 止损, 因子, 风控, PE, MACD, RSI, KDJ, 资金流, 推荐, 报告结论
+> 引用 path_keywords 全集：
+> 评分, 选股, 交易, 因子, 风控, 报告, 白皮书, 分析逻辑, 每日荐股, 重点股票
+> 
+> financial_impact=true 即强制触发 consult。移除了原 flow_bugfix.json 中"且影响结论"的主观条件。
+
+---
+
+## 七、关键工具
 
 | 工具 | 用途 |
 |:-----|:-----|
@@ -99,7 +139,7 @@
 
 ---
 
-## 七、文件索引
+## 八、文件索引
 
 | 类别 | 路径 | 用途 |
 |:-----|:-----|:-----|
@@ -113,7 +153,7 @@
 
 ---
 
-## 八、版本信息
+## 九、版本信息
 
 | 项目 | 内容 |
 |:-----|:-----|

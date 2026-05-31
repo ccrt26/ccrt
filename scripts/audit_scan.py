@@ -38,6 +38,18 @@ def scan_all(mode="daily"):
     # 扫描7: financial_impact 绕过检查
     findings.extend(check_financial_impact_bypass())
 
+    # 扫描7a: 短指令绕过检查
+    findings.extend(check_short_command_bypass())
+
+    # 扫描7b: 金融升级完整性
+    findings.extend(check_financial_escalation_integrity())
+
+    # 扫描7c: 阿黑越界检查
+    findings.extend(check_dispatcher_action_boundary())
+
+    # 扫描7d: READONLY 滥用检查
+    findings.extend(check_readonly_abuse())
+
     # 扫描8: 优化方案合规 (daily)
     findings.extend(check_optimization_compliance_daily())
 
@@ -453,6 +465,235 @@ def check_financial_impact_bypass():
                     [checklist_path, pipeline_file],
                     "请情墨/腰子复核 code_level 是否准确",
                 ))
+
+    return findings
+
+
+def check_short_command_bypass():
+    """检查短指令绕过：ai_ops.jsonl 中高 token 操作无对应活跃 run"""
+    findings = []
+    ops_file = os.path.join(LOG_DIR, "ai_ops", "ai_ops.jsonl")
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+
+    if not os.path.exists(ops_file):
+        return findings
+
+    try:
+        with open(ops_file, 'r') as f:
+            ops = [json.loads(l) for l in f if l.strip()]
+    except Exception:
+        return findings
+
+    # 加载活跃 run 时间窗口
+    run_windows = []
+    if os.path.exists(pipeline_file):
+        try:
+            with open(pipeline_file, 'r', encoding='utf-8') as f:
+                state = json.load(f)
+            for rid, run in state.get("runs", {}).items():
+                started = run.get("started", "")
+                completed = run.get("completed", "")
+                if started:
+                    try:
+                        s = datetime.fromisoformat(started)
+                        e = datetime.fromisoformat(completed) if completed else datetime.now(timezone.utc)
+                        run_windows.append((s, e, rid))
+                    except ValueError:
+                        pass
+        except Exception:
+            pass
+
+    bypass_threshold = 5000
+    for op in ops:
+        token_used = op.get("token_used", 0)
+        if token_used <= bypass_threshold:
+            continue
+        try:
+            op_ts = datetime.fromisoformat(op.get("timestamp", ""))
+        except ValueError:
+            continue
+        in_window = any(s <= op_ts <= e for s, e, _ in run_windows)
+        if not in_window:
+            findings.append(make_finding(
+                "HIGH", "short_command_bypass",
+                op.get("run_id", "UNKNOWN"),
+                f"高Token操作({token_used})不在任何活跃run时间窗口内，可能绕过标准流程",
+                [ops_file, pipeline_file],
+                "请阿黑确认是否需要补建run并走标准流程",
+            ))
+
+    return findings
+
+
+def check_financial_escalation_integrity():
+    """检查金融升级完整性：(a) BUGFIX run 含金融关键词但 fi!=True; (b) fi=True 但 consult 被跳过"""
+    findings = []
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+    if not os.path.exists(pipeline_file):
+        return findings
+
+    desc_keywords = ["评分", "选股", "交易", "买入", "卖出", "仓位", "止损", "因子",
+                     "风控", "PE", "MACD", "RSI", "KDJ", "资金流", "推荐", "报告结论"]
+
+    try:
+        with open(pipeline_file, 'r', encoding='utf-8') as f:
+            state = json.load(f)
+    except Exception:
+        return findings
+
+    for rid, run in state.get("runs", {}).items():
+        if run.get("flow_type") != "BUGFIX":
+            continue
+
+        task_desc = run.get("task_description", "")
+        fi = run.get("financial_impact", False)
+
+        # (a) task_description 含金融关键词但 financial_impact != True
+        has_financial_kw = any(kw in task_desc for kw in desc_keywords)
+        if has_financial_kw and not fi:
+            findings.append(make_finding(
+                "HIGH", "financial_escalation_integrity",
+                rid,
+                f"BUGFIX run 任务描述含金融关键词但 financial_impact != True: {task_desc[:60]}",
+                [pipeline_file],
+                "请情墨/腰子复核 financial_impact 判定",
+            ))
+
+        # (b) fi=True 但 consult 阶段 status=skipped
+        if fi:
+            for stage in run.get("stages", []):
+                if stage.get("stage") == "consult" and stage.get("status") == "skipped":
+                    findings.append(make_finding(
+                        "HIGH", "financial_escalation_integrity",
+                        rid,
+                        f"financial_impact=True 但 consult 阶段被跳过",
+                        [pipeline_file],
+                        "请腰子启动全团咨询或说明跳过理由",
+                    ))
+
+    return findings
+
+
+def check_dispatcher_action_boundary():
+    """检查阿黑越界：engine_events/signature_events 中阿黑做非调度动作"""
+    findings = []
+
+    # 检查 engine_events.jsonl
+    eng_file = os.path.join(LOG_DIR, "engine", "engine_events.jsonl")
+    if os.path.exists(eng_file):
+        try:
+            with open(eng_file, 'r') as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line.strip())
+                    except json.JSONDecodeError:
+                        continue
+                    actor = rec.get("actor", "")
+                    if actor != "阿黑":
+                        continue
+                    action = rec.get("event_type", rec.get("action", ""))
+                    if action in ("advance", "complete"):
+                        findings.append(make_finding(
+                            "HIGH", "dispatcher_action_boundary",
+                            rec.get("run_id", "?"),
+                            f"阿黑执行了非调度动作: {action}",
+                            [eng_file],
+                            "阿黑只能调度和阻断，不能推进或完成流程",
+                        ))
+        except Exception:
+            pass
+
+    # 检查 signature_events.jsonl
+    sig_file = os.path.join(LOG_DIR, "signatures", "signature_events.jsonl")
+    if os.path.exists(sig_file):
+        try:
+            with open(sig_file, 'r') as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line.strip())
+                    except json.JSONDecodeError:
+                        continue
+                    actor = rec.get("actor", "")
+                    if actor != "阿黑":
+                        continue
+                    role = rec.get("role", "")
+                    if role != "阿黑":
+                        findings.append(make_finding(
+                            "HIGH", "dispatcher_action_boundary",
+                            rec.get("run_id", "?"),
+                            f"阿黑以 {role} 身份签名，越权操作",
+                            [sig_file],
+                            "阿黑只能以自身身份操作，不得代签其他角色",
+                        ))
+        except Exception:
+            pass
+
+    return findings
+
+
+def check_readonly_abuse():
+    """检查 READONLY 滥用：无活跃 run 时段内的文件变更"""
+    findings = []
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+
+    # 获取所有活跃 run 的时间窗口
+    run_windows = []
+    if os.path.exists(pipeline_file):
+        try:
+            with open(pipeline_file, 'r', encoding='utf-8') as f:
+                state = json.load(f)
+            for rid, run in state.get("runs", {}).items():
+                started = run.get("started", "")
+                completed = run.get("completed", "")
+                if started:
+                    try:
+                        s = datetime.fromisoformat(started)
+                        e = datetime.fromisoformat(completed) if completed else datetime.now(timezone.utc)
+                        run_windows.append((s, e))
+                    except ValueError:
+                        pass
+        except Exception:
+            pass
+
+    # 检查最近24小时内 .py/.json/.md 文件的 git 变更
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["git", "log", "--since=24.hours", "--name-only", "--diff-filter=M",
+             "--pretty=format:%H %aI", "--", "*.py", "*.json", "*.md",
+             ":!logs/", ":!.claude/"],
+            capture_output=True, text=True, timeout=15, cwd=PROJECT_ROOT
+        )
+        if result.returncode != 0:
+            return findings
+
+        lines = result.stdout.strip().split("\n")
+        current_commit_ts = None
+        for line in lines:
+            if not line.strip():
+                continue
+            parts = line.split()
+            if len(parts) >= 2 and parts[1].startswith("202"):
+                # commit line: hash timestamp
+                current_commit_ts = parts[1]
+            elif current_commit_ts and line.strip():
+                # file line
+                try:
+                    file_ts = datetime.fromisoformat(current_commit_ts)
+                except ValueError:
+                    continue
+                in_window = any(s <= file_ts <= e for s, e in run_windows)
+                if not in_window and run_windows:
+                    findings.append(make_finding(
+                        "HIGH", "readonly_abuse",
+                        "UNKNOWN",
+                        f"无活跃run时段内文件变更: {line.strip()} (at {current_commit_ts})",
+                        [pipeline_file],
+                        "请阿黑确认是否漏建run或存在绕过行为",
+                    ))
+                    break  # 只报告第一个，避免大量重复发现
+    except Exception:
+        pass
 
     return findings
 

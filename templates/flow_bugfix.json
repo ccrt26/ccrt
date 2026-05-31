@@ -26,7 +26,7 @@
       "roles": ["山猫", "信鸽", "玉夜", "流金", "青山"],
       "sequential": true,
       "mandatory": false,
-      "condition": "仅在 financial_impact=true 且影响结论时触发",
+      "condition": "financial_impact=true 即强制触发，由五角色自身判断是否影响结论",
       "description": "金融全团咨询。仅在修复影响金融结论（评分/选股/交易/风控/因子/报告结论）时强制。超10分钟未回复标记为NO_RESPONSE，阻断金融结论类流程；非金融任务由腰子或阿黑显式说明不适用原因后继续。"
     },
     {
