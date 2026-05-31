@@ -378,6 +378,99 @@ def check_h_config_consistency():
     staged = set(get_staged_files())
     if pigeon_config not in staged and key_stocks not in staged:
         log("PASS", "H SKIP: 配置文件未变更")
+
+
+# ── Check I: Dispatcher Authority Boundary ─────────────
+def check_i_dispatcher_boundary():
+    """Check that 阿黑 has not exceeded authority boundaries.
+
+    Scans pipeline_active.json for:
+    - 阿黑 acting as signer for other roles
+    - 阿黑 advancing stages they shouldn't
+    - 阿黑 executing --complete
+    """
+    log("PASS", "===== Check I: Dispatcher Authority Boundary (阿黑越权检查) =====")
+    token_path = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+    if not os.path.exists(token_path):
+        log("PASS", "I PASS: No pipeline token")
+        return
+
+    try:
+        with open(token_path, "r", encoding="utf-8") as f:
+            token = json.load(f)
+    except Exception:
+        log("PASS", "I PASS: Token unreadable")
+        return
+
+    violations = []
+
+    # Scan runs for 阿黑 violations
+    runs = token.get("runs", {})
+    for rid, run in runs.items():
+        if not isinstance(run, dict):
+            continue
+        # Check if 阿黑 completed the run — WARN only (flow completion can be exceptional)
+        if run.get("status") == "completed":
+            stages = run.get("stages", [])
+            last_stage = stages[-1] if stages else {}
+            if last_stage.get("stage") == "audit" and last_stage.get("status") == "completed":
+                violations.append(("WARN", f"阿黑可能越权完成流程: {rid}"))
+
+        # Check for 阿黑代签 patterns — BLOCK (clear impersonation)
+        override = run.get("override_reason")
+        if override and "阿黑" in str(override) and "override" in str(override).lower():
+            violations.append(("BLOCK", f"阿黑override: {rid}"))
+
+    has_block = any(sev == "BLOCK" for sev, _ in violations)
+    if violations:
+        for sev, msg in violations:
+            if sev == "BLOCK":
+                log("BLOCK", f"I BLOCK: {msg}")
+            else:
+                log("WARN", f"I WARN: {msg}")
+        if has_block:
+            log("BLOCK", "阿黑越权操作(代签)被阻断。请合并到正式流程或升级L3。")
+        else:
+            log("PASS", "I PASS: 阿黑权限边界正常 (完成/推进已记录WARN)")
+    else:
+        log("PASS", "I PASS: 阿黑权限边界正常")
+
+
+# ── Check J: Formal Report Directory Protection ─────────
+def check_j_formal_report_protection(staged_files):
+    """Protect 重点股票/深度分析/深度分析报告/ from direct writes.
+
+    Files in the formal report directory require release_gate PASS
+    before they can be committed.
+    """
+    log("PASS", "===== Check J: Formal Report Directory Protection =====")
+    formal_dir = "重点股票/深度分析/深度分析报告/"
+    formal_files = [f for f in staged_files
+                    if f.replace("\\", "/").startswith(formal_dir)]
+
+    if not formal_files:
+        log("PASS", "J PASS: 无正式报告目录文件")
+        return
+
+    log("WARN", f"J 检测到正式报告目录文件 ({len(formal_files)}个):")
+    for ff in formal_files:
+        log("WARN", f"  - {ff}")
+
+    # Check for release_gate approval
+    release_gate_path = os.path.join(PROJECT_ROOT, "logs", "release_gate_approved.json")
+    if not os.path.exists(release_gate_path):
+        log("BLOCK", f"J BLOCK: 正式报告目录写入需release_gate签字。请运行 release_gate.py")
+        return
+
+    try:
+        with open(release_gate_path, "r", encoding="utf-8") as f:
+            gate = json.load(f)
+        if gate.get("approved") and gate.get("gate_status") == "RELEASE_READY":
+            log("PASS", f"J PASS: release_gate已批准 (签字人: {gate.get('signer', 'unknown')})")
+        else:
+            log("BLOCK", f"J BLOCK: release_gate未批准 (status={gate.get('gate_status', 'unknown')})")
+    except Exception:
+        log("BLOCK", "J BLOCK: release_gate批准文件损坏")
         return
 
     if not os.path.exists(pigeon_config):
@@ -433,6 +526,8 @@ def main():
     check_f_code_protection(staged_files)
     check_g_pdf_protection()
     check_h_config_consistency()
+    check_i_dispatcher_boundary()
+    check_j_formal_report_protection(staged_files)
 
     end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:

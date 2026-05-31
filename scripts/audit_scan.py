@@ -14,6 +14,7 @@ import os
 import json
 import glob
 import re
+import subprocess
 from datetime import datetime, timezone, timedelta
 from log_utils import append_log
 
@@ -49,6 +50,9 @@ def scan_all(mode="daily"):
 
     # 扫描7d: READONLY 滥用检查
     findings.extend(check_readonly_abuse())
+
+    # 扫描7e: 高Token操作无run记录
+    findings.extend(check_high_token_no_run())
 
     # 扫描8: 优化方案合规 (daily)
     findings.extend(check_optimization_compliance_daily())
@@ -692,6 +696,46 @@ def check_readonly_abuse():
                         "请阿黑确认是否漏建run或存在绕过行为",
                     ))
                     break  # 只报告第一个，避免大量重复发现
+    except Exception:
+        pass
+
+    return findings
+
+
+def check_high_token_no_run():
+    """检查高Token操作无run记录：大文件修改/大量文件变更无对应run_id"""
+    findings = []
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+
+    active_runs = set()
+    if os.path.exists(pipeline_file):
+        try:
+            with open(pipeline_file, 'r', encoding='utf-8') as f:
+                state = json.load(f)
+            for rid, run in state.get("runs", {}).items():
+                if isinstance(run, dict) and run.get("status") not in ("completed",):
+                    active_runs.add(rid)
+        except Exception:
+            pass
+
+    # Check git log for recent large commits without run references
+    try:
+        result = subprocess.run(
+            ["git", "log", "--oneline", "--since=2.days", "--", "代码文件/"],
+            capture_output=True, text=True, cwd=PROJECT_ROOT
+        )
+        for line in result.stdout.strip().split("\n"):
+            if not line.strip():
+                continue
+            commit_hash = line.split()[0] if line.split() else ""
+            if not any(kw in line.lower() for kw in ["run-", "pipeline", "fix"]):
+                findings.append(make_finding(
+                    "MEDIUM", "high_token_no_run",
+                    commit_hash,
+                    f"代码变更commit可能无run记录: {line[:80]}",
+                    [f"git log: {commit_hash}"],
+                    "高Token操作应通过正式流程创建run记录",
+                ))
     except Exception:
         pass
 
