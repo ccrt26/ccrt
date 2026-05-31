@@ -1,29 +1,44 @@
 {
   "flow_type": "BUGFIX",
-  "description": "修复流程。非金融变更跳过全团咨询，金融变更（L1/L2）仍需咨询",
+  "description": "修复流程。非金融变更跳过全团咨询，金融变更（L1/L2 或 financial_impact=true）仍需咨询",
+  "financial_impact_rules": {
+    "description": "二次判定规则——以下任一命中，默认 financial_impact=true，不可降级",
+    "path_keywords": ["评分", "选股", "交易", "因子", "风控", "报告", "白皮书", "分析逻辑", "每日荐股", "重点股票"],
+    "desc_keywords": ["评分", "选股", "交易", "买入", "卖出", "仓位", "止损", "因子", "风控", "PE", "MACD", "RSI", "KDJ", "资金流", "推荐", "报告结论"],
+    "escalation_rule": "financial_impact=true 且影响结论的变更 → 必须启动五角色咨询",
+    "code_level_authority": "code_level 只能由情墨标注，新安复核，红结不得自行变更或降级"
+  },
   "stages": [
     {
       "stage": "design",
       "role": "情墨",
-      "task": "分析影响范围，产出修复清单",
+      "task": "分析影响范围，判定 financial_impact 和 code_level，产出修复清单",
       "mandatory": true
     },
     {
       "stage": "review_1a",
       "role": "腰子",
-      "task": "确认金融影响。若涉及L1/L2变更，必须启动全团咨询",
+      "task": "确认金融影响。若 financial_impact=true 或涉及L1/L2变更，必须启动全团咨询",
       "mandatory": true
+    },
+    {
+      "stage": "consult",
+      "roles": ["山猫", "信鸽", "玉夜", "流金", "青山"],
+      "sequential": true,
+      "mandatory": false,
+      "condition": "仅在 financial_impact=true 且影响结论时触发",
+      "description": "金融全团咨询。仅在修复影响金融结论（评分/选股/交易/风控/因子/报告结论）时强制。超10分钟未回复标记为NO_RESPONSE，阻断金融结论类流程；非金融任务由腰子或阿黑显式说明不适用原因后继续。"
     },
     {
       "stage": "coding",
       "role": "红结",
-      "task": "编码修复，回填code_ref",
+      "task": "编码修复，回填code_ref。禁止自行修改code_level",
       "mandatory": true
     },
     {
       "stage": "verify",
       "role": "新安",
-      "task": "重点测试+追溯，若涉及L1/L2则加GoldenMaster和红线检查",
+      "task": "重点测试+追溯。若涉及L1/L2则加GoldenMaster和红线检查。复核code_level",
       "mandatory": true
     },
     {
@@ -35,7 +50,7 @@
     {
       "stage": "audit",
       "role": "旧影",
-      "task": "审计修复流程合规性",
+      "task": "审计修复流程合规性，检查 financial_impact 与 code_level 一致性",
       "mandatory": true
     }
   ]

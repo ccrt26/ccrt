@@ -1,17 +1,43 @@
 {
   "flow_type": "P0_EMERGENCY",
-  "description": "绿色通道。跳过设计和咨询，先上线后补审计",
+  "description": "绿色通道。仅限紧急情况，跳过设计和咨询，先上线后补审计。不得用于普通优化、样式调整、非阻断性bug。",
+  "p0_eligibility": {
+    "description": "P0仅允许以下5类情况，需提供 incident_id",
+    "allowed_reasons": [
+      "数据源全挂导致核心流程不可用",
+      "评分/报告/交易链路中断",
+      "错误金融结论可能对用户决策造成直接影响",
+      "安全/权限/凭证泄露风险",
+      "用户明确指定P0"
+    ],
+    "excluded": ["普通优化", "样式调整", "非阻断性bug", "实验性功能", "性能微调"],
+    "required_fields": [
+      "incident_id",
+      "p0_reason",
+      "impact_scope",
+      "risk_level",
+      "temp_fix",
+      "rollback_point",
+      "post_audit_deadline"
+    ],
+    "post_audit_enforcement": {
+      "deadline_hours": 48,
+      "overdue_action": "禁止启动新非P0发布，audit_scan.py报HIGH",
+      "completion_criteria": "旧影出具专项审计报告，验证所有闸门补全"
+    }
+  },
   "stages": [
     {
       "stage": "decide",
       "role": "腰子",
-      "task": "快速评估影响，直接决策",
-      "mandatory": true
+      "task": "快速评估影响，填写P0必填字段（incident_id/p0_reason/impact_scope/risk_level/temp_fix/rollback_point/post_audit_deadline），直接决策",
+      "mandatory": true,
+      "p0_gate": "无 incident_id 不能启动 P0"
     },
     {
       "stage": "coding",
       "role": "红结",
-      "task": "紧急编码",
+      "task": "紧急编码，仅修复阻断性问题",
       "mandatory": true
     },
     {
@@ -23,15 +49,16 @@
     {
       "stage": "deploy",
       "role": "红枫",
-      "task": "急速部署",
+      "task": "急速部署，保留回滚点",
       "mandatory": true
     },
     {
       "stage": "post_audit",
       "role": "旧影",
-      "task": "事后48小时内补全审计，出具专项报告",
+      "task": "48小时内补全审计，出具专项报告。超期禁止启动新非P0发布。",
       "mandatory": true,
-      "deadline_hours": 48
+      "deadline_hours": 48,
+      "overdue_severity": "HIGH"
     }
   ]
 }

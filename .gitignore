@@ -29,3 +29,6 @@ _data_audit.md
 
 # 保护机制 — 敏感个人数据
 保护机制/持仓账本.json
+
+# Actor secrets
+.claude/actor_secrets.json

@@ -19,7 +19,7 @@
       "roles": ["山猫", "信鸽", "玉夜", "流金", "青山"],
       "sequential": true,
       "mandatory": true,
-      "description": "金融全团强制咨询。腰子必须收齐全部5人意见后方可签名。任一角色REJECT则打回情墨。超10分钟未回复标记为超时默认同意。"
+      "description": "金融全团强制咨询。腰子必须收齐全部5人意见后方可签名。任一角色REJECT则打回情墨。超10分钟未回复标记为NO_RESPONSE。涉及金融结论/评分/交易/风控/因子/报告结论时，NO_RESPONSE阻断流程；非金融任务需由腰子或阿黑显式说明不适用原因，并写入override_reason后方可继续，旧影后续审计。"
     },
     {
       "stage": "review_1b",

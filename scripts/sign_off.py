@@ -1,25 +1,63 @@
 #!/usr/bin/env python3
 """
-sign_off.py - 角色签名工具
-用法: python sign_off.py --role <角色名> --run-id <需求ID> --checklist <清单JSON路径> [--comment "备注"]
+sign_off.py — HMAC 签名工具 (fix3)
+
+用法: python3 sign_off.py --actor <操作者> --role <角色> --run-id <ID> --checklist <路径> [--comment "..."] [--audit-report <路径>]
+
+安全机制:
+- actor→role 白名单强制校验
+- 阿黑 actor 只能扮演 阿黑 role, 且不得对业务阶段产生有效签名
+- HMAC-SHA256 签名, 密钥不在 repo
 """
-import sys
-import json
-import os
-import hashlib
+import sys, json, os, argparse
 from datetime import datetime, timezone
-from log_utils import append_log, sha256_file
+from log_utils import (
+    append_log, checklist_content_hash, hmac_sign, get_actor_secret,
+    ACTOR_TO_ALLOWED_ROLES, VALID_ACTORS, VALID_ROLES, sha256_file,
+)
+
+STATE_FILE = os.environ.get("PIPELINE_STATE_FILE", ".claude/pipeline_active.json")
 
 
-def sign_off(role, run_id, checklist_path, comment=""):
-    """执行签名操作"""
+def load_state():
+    if not os.path.exists(STATE_FILE):
+        return {"runs": {}}
+    try:
+        with open(STATE_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return {"runs": {}}
 
-    # 1. 验证清单文件存在
+
+def sign_off(actor, role, run_id, checklist_path, comment="", audit_report_path=None):
+    # 1. actor 白名单
+    if actor not in VALID_ACTORS:
+        print(f"错误: 非法 actor '{actor}'")
+        sys.exit(1)
+
+    # 2. actor→role 映射校验
+    allowed = ACTOR_TO_ALLOWED_ROLES.get(actor, [])
+    if role not in allowed:
+        print(f"错误: actor '{actor}' 无权扮演 role '{role}'")
+        print(f"  允许扮演: {allowed}")
+        sys.exit(1)
+
+    # 3. 阿黑 role 不能签任何业务阶段
+    if role == "阿黑":
+        print(f"错误: 阿黑不得对任何业务阶段产生有效签名")
+        sys.exit(1)
+
+    # 4. 检查 HMAC 密钥
+    secret = get_actor_secret(actor)
+    if not secret:
+        print(f"错误: actor '{actor}' 无有效 HMAC 密钥。请设置 ACTOR_SECRET_{actor} 环境变量或 {os.environ.get('PIPELINE_SECRETS_FILE', '.claude/actor_secrets.json')}")
+        sys.exit(1)
+
+    # 5. checklist 存在性
     if not os.path.exists(checklist_path):
         print(f"错误: 清单文件不存在: {checklist_path}")
         sys.exit(1)
 
-    # 2. 读取清单
     try:
         with open(checklist_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -27,102 +65,90 @@ def sign_off(role, run_id, checklist_path, comment=""):
         print(f"错误: JSON格式非法: {e}")
         sys.exit(1)
 
-    # 3. 验证 run_id 一致
-    if data.get("run_id") != run_id:
-        print(f"错误: run_id不匹配。清单中是: {data.get('run_id')}, 你提供的是: {run_id}")
+    c_run_id = data.get("run_id")
+    if c_run_id != run_id:
+        print(f"错误: run_id不匹配。清单:{c_run_id}, 提供:{run_id}")
         sys.exit(1)
 
-    # 4. 生成清单版本指纹
-    checklist_hash = sha256_file(checklist_path)
+    # 6. 审计报告 hash（如有）
+    audit_report_hash = ""
+    if audit_report_path:
+        if not os.path.exists(audit_report_path):
+            print(f"错误: 审计报告文件不存在: {audit_report_path}")
+            sys.exit(1)
+        audit_report_hash = sha256_file(audit_report_path)
 
-    # 5. 生成签名（简化版：用角色名+run_id+清单指纹做哈希）
-    sign_content = f"{role}|{run_id}|{checklist_hash}"
-    signature = hashlib.sha256(sign_content.encode()).hexdigest()
+    # 7. 阶段校验
+    state = load_state()
+    run = state.get("runs", {}).get(run_id)
+    current_stage = run.get("current_stage", "unknown") if run else "unknown"
 
-    # 6. 更新清单中的签名字段
+    # 8. 生成 HMAC 签名
+    content_hash = checklist_content_hash(checklist_path)
+    now_ts = datetime.now(timezone.utc).isoformat()
+    git_sha = os.environ.get("GIT_COMMIT_SHA", "")
+
+    signature = hmac_sign(
+        actor, role, run_id, current_stage,
+        content_hash, audit_report_hash, now_ts, git_sha, secret,
+    )
+
+    if not signature:
+        print("错误: HMAC 签名生成失败")
+        sys.exit(1)
+
+    # 9. 写入 checklist
     if "signoffs" not in data:
         data["signoffs"] = {}
 
     data["signoffs"][role] = {
         "signed": True,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "checklist_version": checklist_hash,
+        "timestamp": now_ts,
+        "stage": current_stage,
+        "checklist_version": content_hash,
         "signature": signature,
-        "comment": comment
+        "sig_type": "HMAC-SHA256",
+        "actor": actor,
+        "git_sha": git_sha,
+        "audit_report_hash": audit_report_hash,
+        "comment": comment,
     }
 
-    # 7. 写回清单文件
     try:
         with open(checklist_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"✓ {role} 签名成功")
+        print(f"✓ {actor}→{role} HMAC签名成功")
         print(f"  需求: {run_id}")
-        print(f"  清单版本: {checklist_hash[:16]}...")
-        print(f"  签名: {signature[:16]}...")
+        print(f"  阶段: {current_stage}")
+        print(f"  清单指纹: {content_hash[:16]}...")
+        print(f"  HMAC: {signature[:16]}...")
     except Exception as e:
-        print(f"错误: 无法写入清单文件: {e}")
+        print(f"错误: 无法写入: {e}")
         sys.exit(1)
 
-    # 8. 记录签名事件日志
+    # 10. 日志
     append_log("signature", {
-        "run_id": run_id,
-        "stage": get_current_stage(data),
-        "role": role,
-        "action": "sign",
-        "checklist_version": checklist_hash,
-        "signature": signature,
-        "comment": comment
+        "run_id": run_id, "stage": current_stage, "role": role,
+        "action": "sign", "checklist_version": content_hash,
+        "signature": signature, "comment": f"[{actor}] {comment}",
     })
-
-    # 9. 记录清单变更日志
     append_log("checklist_chg", {
-        "run_id": run_id,
-        "modified_by": role,
+        "run_id": run_id, "modified_by": f"{actor}→{role}",
         "operation": "updated",
-        "diff_summary": f"{role}签名已添加",
-        "previous_hash": "see log",
-        "new_hash": checklist_hash
-    })
-
-    # 10. 记录AI操作日志
-    append_log("ai_ops", {
-        "run_id": run_id,
-        "stage": get_current_stage(data),
-        "role": role,
-        "task_type": "sign_off",
-        "input_context_hash": checklist_hash,
-        "output_summary": f"{role}完成签名",
-        "token_used": 0,
-        "model": "local_script",
-        "duration_ms": 0,
-        "result": "success",
-        "error_msg": ""
+        "diff_summary": f"{actor}→{role}在{current_stage}HMAC签名",
+        "previous_hash": "see log", "new_hash": content_hash,
     })
 
     print(f"  ✓ 日志已记录")
 
 
-def get_current_stage(data):
-    """根据已有签名推断当前阶段"""
-    signoffs = data.get("signoffs", {})
-    if not signoffs.get("情墨", {}).get("signed"):
-        return "stage1_design"
-    if not signoffs.get("腰子", {}).get("signed"):
-        return "stage1a_review"
-    if not signoffs.get("红结", {}).get("signed"):
-        return "stage4_coding"
-    if not signoffs.get("红枫", {}).get("signed"):
-        return "stage6_deploy"
-    return "stage7_done"
-
-
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="铁律量化项目 - 角色签名工具")
-    parser.add_argument("--role", required=True, help="签名角色名")
-    parser.add_argument("--run-id", required=True, help="需求ID")
-    parser.add_argument("--checklist", required=True, help="清单JSON文件路径")
-    parser.add_argument("--comment", default="", help="签名备注")
-
-    args = parser.parse_args()
-    sign_off(args.role, args.run_id, args.checklist, args.comment)
+    p = argparse.ArgumentParser(description="铁律量化 - HMAC签名工具 (fix3)")
+    p.add_argument("--actor", required=True, help="实际操作者")
+    p.add_argument("--role", required=True, help="业务角色")
+    p.add_argument("--run-id", required=True, help="需求ID")
+    p.add_argument("--checklist", required=True, help="清单JSON路径")
+    p.add_argument("--comment", default="", help="备注")
+    p.add_argument("--audit-report", default=None, help="审计报告路径(P0 post_audit)")
+    args = p.parse_args()
+    sign_off(args.actor, args.role, args.run_id, args.checklist, args.comment, args.audit_report)

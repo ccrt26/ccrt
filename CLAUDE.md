@@ -81,13 +81,18 @@
 
 | 工具 | 用途 |
 |:-----|:-----|
-| `scripts/pipeline_engine.py --status` | 流程引擎状态管理 |
-| `scripts/sign_off.py` | 角色签章 |
-| `scripts/check_checklist.py design.md` | 清单结构+双签校验 |
-| `scripts/trace_requirements.py design.md` | 需求→代码追溯验证 |
-| `scripts/verify_deployment.py design.md` | 部署闸门验证 |
-| `scripts/audit_scan.py` | 每日自动巡检 |
-| `scripts/golden_master_diff.py` | Golden Master 比对 |
+| `scripts/pipeline_engine.py --start <event> --task "<desc>"` | 创建流程 (NEW_REQUIREMENT\|FIX\|EMERGENCY)；EMERGENCY须含7个P0必填字段 |
+| `scripts/pipeline_engine.py --status [--run-id <id>] [--all]` | 查看流程状态 |
+| `scripts/pipeline_engine.py --advance <run_id> --role <角色>` | 推进流程（强校验：签名真伪+阶段匹配+角色授权） |
+| `scripts/pipeline_engine.py --complete <run_id> --role <角色>` | 完成最后阶段并标记流程completed |
+| `scripts/pipeline_engine.py --block <run_id> --reason "<原因>"` | 阻断流程 |
+| `scripts/pipeline_engine.py --validate <清单路径>` | 校验清单并注册到流程（含financial_impact检测） |
+| `scripts/sign_off.py --role <角色> --run-id <id> --checklist <路径>` | 角色签章（白名单+阶段校验+签名绑定） |
+| `scripts/check_checklist.py <清单路径>` | 清单合规审查（签名防伪+hash验证） |
+| `scripts/trace_requirements.py <清单路径>` | 需求→代码追溯验证 |
+| `scripts/verify_deployment.py <清单路径>` | 部署闸门验证 (G1-G4) |
+| `scripts/audit_scan.py [--weekly]` | 每日自动巡检 (含P0超期/金融绕过) |
+| `scripts/golden_master_diff.py [run_id]` | Golden Master 比对 |
 | `代码文件/tools/build_tools.py docx input.md` | MD→DOCX 构建 |
 | `代码文件/监督机制/version_supervisor.py --cross-check` | 版本一致性检查 |
 | `代码文件/规则红线/check_redlines.py` | 自动化红线合规检查 |
@@ -100,11 +105,11 @@
 |:-----|:-----|:-----|
 | 金融规则 | `金融铁律/金融铁律_v1.17.md` | 数据真实性、API纪律、报告样式 |
 | 项目宪法 | `docs/constitution.md` | 代码化闸门、Token分层、文件规模 |
-| 事件规则 | `events/event_rules.yaml` | 意图→流程模板映射 |
-| 流程模板 | `templates/flow_*.json` | NEW_REQUIREMENT / FIX / EMERGENCY 三种流程 |
-| 角色命令 | `.claude/commands/` | 13个角色职责和前置规则 |
+| 流程权威源 | `templates/flow_*.json` | NEW_REQUIREMENT / FIX / EMERGENCY 三种流程的唯一定义 |
+| 入口路由源 | `events/event_rules.yaml` | 意图→流程模板映射 |
+| 角色职责源 | `.claude/agents/*.md` | 13个角色职责和前置规则 |
 | 共享知识 | `.claude/knowledge/` | 角色边界宪章/红线摘要/数据字典/常见错误 |
-| 审计脚本 | `scripts/` | 9个闸门+签名+审计脚本 |
+| 审计脚本 | `scripts/` | 流程引擎+签名+闸门+审计脚本 |
 
 ---
 
@@ -112,7 +117,7 @@
 
 | 项目 | 内容 |
 |:-----|:-----|
-| 当前版本 | v2.1 |
-| 最后更新 | 2026-05-29 |
+| 当前版本 | v2.3 |
+| 最后更新 | 2026-05-31 |
 | 更新人 | 阿黑 |
-| 变更摘要 | 精简重构：删除已被新事件体系替代的M/L/E三级分类、情墨设计令牌前置条件、四印三鉴详细流程；保留全部关键行为约束内联。~310行→~145行 |
+| 变更摘要 | fix2: 统一签名验证(pipeline/checklist共用)、P0启动强制7字段CLI参数+allowed/excluded代码门禁、--complete命令、BUGFIX consult条件真实执行、角色强制、超期P0阻断新发布 |

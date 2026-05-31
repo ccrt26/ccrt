@@ -32,7 +32,13 @@ def scan_all(mode="daily"):
     findings.extend(check_process_bypass())
     findings.extend(check_file_oversize())
 
-    # 扫描6: 优化方案合规 (daily)
+    # 扫描6: P0 post-audit 超期检查
+    findings.extend(check_p0_post_audit_overdue())
+
+    # 扫描7: financial_impact 绕过检查
+    findings.extend(check_financial_impact_bypass())
+
+    # 扫描8: 优化方案合规 (daily)
     findings.extend(check_optimization_compliance_daily())
 
     # 扫描7: 优化方案合规 (weekly)
@@ -326,6 +332,127 @@ def check_optimization_compliance_weekly():
             [wp_v36],
             "请腰子+情墨完成白皮书升版",
         ))
+
+    return findings
+
+
+def check_p0_post_audit_overdue():
+    """P0 post-audit 超期检查：48小时内未完成审计则报 HIGH"""
+    findings = []
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+    if not os.path.exists(pipeline_file):
+        return findings
+
+    try:
+        with open(pipeline_file, 'r', encoding='utf-8') as f:
+            state = json.load(f)
+    except Exception:
+        return findings
+
+    now = datetime.now(timezone.utc)
+    for run_id, run in state.get("runs", {}).items():
+        if run.get("flow_type") != "P0_EMERGENCY":
+            continue
+
+        # 已完成流程不再检查
+        if run.get("status") == "completed":
+            continue
+
+        # 检查 post_audit_deadline
+        deadline_str = run.get("post_audit_deadline")
+        if not deadline_str:
+            findings.append(make_finding(
+                "HIGH", "p0_post_audit",
+                run_id,
+                f"P0流程 {run_id} 缺少 post_audit_deadline",
+                [pipeline_file],
+                "请腰子补充 post_audit_deadline 字段",
+            ))
+            continue
+
+        try:
+            deadline = datetime.fromisoformat(deadline_str)
+        except ValueError:
+            findings.append(make_finding(
+                "HIGH", "p0_post_audit",
+                run_id,
+                f"P0流程 {run_id} post_audit_deadline 格式非法: {deadline_str}",
+                [pipeline_file],
+            ))
+            continue
+
+        if now > deadline:
+            # 检查阶段级别和运行级别完成状态
+            post_audit_done_stage = any(
+                s.get("stage") == "post_audit" and s.get("status") == "completed"
+                for s in run.get("stages", [])
+            )
+            if not post_audit_done_stage:
+                overdue_hours = (now - deadline).total_seconds() / 3600
+                findings.append(make_finding(
+                    "HIGH", "p0_post_audit",
+                    run_id,
+                    f"P0流程 {run_id} post-audit 超期 {overdue_hours:.1f} 小时未完成。"
+                    f"根据铁律，禁止启动新非P0发布。",
+                    [pipeline_file],
+                    "请旧影立即补全审计，或升级至情墨/腰子决策",
+                ))
+
+    return findings
+
+
+def check_financial_impact_bypass():
+    """检查金融影响是否被绕过（路径/描述含金融关键词但标L0）"""
+    findings = []
+    pipeline_file = os.path.join(PROJECT_ROOT, ".claude", "pipeline_active.json")
+    if not os.path.exists(pipeline_file):
+        return findings
+
+    # 金融关键词
+    path_keywords = ["评分", "选股", "交易", "因子", "风控", "报告", "白皮书",
+                     "分析逻辑", "每日荐股", "重点股票"]
+    desc_keywords = ["评分", "选股", "交易", "买入", "卖出", "仓位", "止损", "因子",
+                     "风控", "PE", "MACD", "RSI", "KDJ", "资金流", "推荐", "报告结论"]
+
+    try:
+        with open(pipeline_file, 'r', encoding='utf-8') as f:
+            state = json.load(f)
+    except Exception:
+        return findings
+
+    for run_id, run in state.get("runs", {}).items():
+        checklist_path = run.get("checklist_path")
+        if not checklist_path or not os.path.exists(checklist_path):
+            continue
+
+        try:
+            with open(checklist_path, 'r', encoding='utf-8') as f:
+                cdata = json.load(f)
+        except Exception:
+            continue
+
+        items = cdata.get("items", [])
+        file_budgets = cdata.get("file_budgets", [])
+
+        # 检测金融关键词
+        has_financial_path = any(
+            kw in fb.get("path", "") for fb in file_budgets for kw in path_keywords
+        )
+        has_financial_desc = any(
+            kw in item.get("description", "") for item in items for kw in desc_keywords
+        )
+
+        if has_financial_path or has_financial_desc:
+            # 检查是否全部为L0（可能存在绕过）
+            all_l0 = all(item.get("code_level") == "L0" for item in items)
+            if all_l0:
+                findings.append(make_finding(
+                    "MEDIUM", "financial_impact_bypass",
+                    run_id,
+                    f"流程 {run_id} 检测到金融关键词但全部标记为L0，可能绕过金融审查",
+                    [checklist_path, pipeline_file],
+                    "请情墨/腰子复核 code_level 是否准确",
+                ))
 
     return findings
 
