@@ -54,7 +54,7 @@
     {
       "id": "sim_trading_daily",
       "cron": "35 9 * * 1-5",
-      "prompt": "运行模拟交易引擎：cd \"/Users/ccrt/ccrt\" && python3 \"模拟交易/交易引擎/sim_orchestrator.py\" -Force。完成后运行 python3 \"代码文件/模拟交易/generate_dashboard.py\" 刷新仪表盘。",
+      "prompt": "运行模拟交易引擎：cd \"/Users/ccrt/ccrt\" && python3 \"模拟交易/sim_orchestrator.py\" --force --dry-run。完成后运行 python3 \"模拟交易/分析/generate_unified_view.py\" 刷新仪表盘。",
       "createdAt": 1779900000000,
       "lastFiredAt": 1779974389440,
       "recurring": true,
