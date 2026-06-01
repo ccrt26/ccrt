@@ -61,7 +61,7 @@ li { margin: 2px 0; }
 </tr>
 <tr>
 <td style="text-align: left;"><strong>条件触发后仓位</strong></td>
-<td style="text-align: left;">待深度分析baseline确认关键价位后设定</td>
+<td style="text-align: left;">待深度分析baseline确认关键价位</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>禁止动作</strong></td>
@@ -69,7 +69,7 @@ li { margin: 2px 0; }
 </tr>
 <tr>
 <td style="text-align: left;"><strong>置信度</strong></td>
-<td style="text-align: left;">中——K线量能完整，四档资金API暂不可用</td>
+<td style="text-align: left;">中——K线量能+Tushare四档资金完整</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>一句话结论</strong></td>
@@ -80,47 +80,19 @@ li { margin: 2px 0; }
 <hr />
 <h2>一、今天发生了什么</h2>
 <p>6月1日德力佳收盘65.81元，下跌2.42%。开盘67.5，最高68.38，最低65.6，振幅4.1%。成交量171万手（较前日量平2%）。跑输深证成指（-2.42% vs -1.51%）。</p>
-<p>大盘偏弱：上证指数4057.74（-0.27%），深证成指15340.36（-1.51%）。</p>
-<p>action_change = unchanged（无新baseline引用，维持观望）。</p>
+<p>大盘偏弱：上证4057.74（-0.27%），深证15340.36（-1.51%）。</p>
+<p>action_change = unchanged。</p>
 <hr />
 <h2>二、资金与情绪</h2>
-<div style="overflow-x:auto;"><table>
-<thead>
-<tr>
-<th style="text-align: left;">指标</th>
-<th style="text-align: left;">数值</th>
-<th style="text-align: center;">方向</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">收盘价</td>
-<td style="text-align: left;">65.81</td>
-<td style="text-align: center;">下跌</td>
-</tr>
-<tr>
-<td style="text-align: left;">涨跌幅</td>
-<td style="text-align: left;">-2.42%</td>
-<td style="text-align: center;">vs 前日67.44</td>
-</tr>
-<tr>
-<td style="text-align: left;">成交量</td>
-<td style="text-align: left;">171万手</td>
-<td style="text-align: center;">量平（+2%）</td>
-</tr>
-<tr>
-<td style="text-align: left;">振幅</td>
-<td style="text-align: left;">4.1%</td>
-<td style="text-align: center;">—</td>
-</tr>
-</tbody>
-</table></div>
-<blockquote>
-<p>四档资金（超大单/大单/中小单）数据：Eastmoney API当前不可用，本次日报仅含行情快照。API恢复后补入完整资金结构分析。</p>
-</blockquote>
+<p>四档资金（Tushare moneyflow，6月1日收盘数据）：</p>
+<p>| 超大单 | -22万 | — |
+| 大单 | -1万 | — |
+| 中单 | +689万 | — |
+| 小单 | -666万 | — |
+| <strong>主力合计</strong> | <strong>-23万</strong> | — |</p>
 <hr />
 <h2>三、板块与大盘</h2>
-<p>上证-0.27%，深证-1.51%，市场偏弱。德力佳跑输深证成指。板块相位判断需结合申万行业指数数据。</p>
+<p>上证-0.27%，深证-1.51%，市场偏弱。德力佳跑输深证成指。</p>
 <hr />
 <h2>四、风控红黄绿灯</h2>
 <div style="overflow-x:auto;"><table>
@@ -135,21 +107,16 @@ li { margin: 2px 0; }
 <tr>
 <td style="text-align: left;">技术面</td>
 <td style="text-align: center;">🟢</td>
-<td style="text-align: left;">连续回调</td>
+<td style="text-align: left;">回调中</td>
 </tr>
 <tr>
 <td style="text-align: left;">大盘</td>
 <td style="text-align: center;">🟡</td>
 <td style="text-align: left;">深证-1.51%</td>
 </tr>
-<tr>
-<td style="text-align: left;">估值/质押/解禁</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">待深度分析baseline引用</td>
-</tr>
 </tbody>
 </table></div>
-<p><strong>综合风控灯</strong>：🟡。仓位折扣：当前0%（观望），无折扣应用。</p>
+<p><strong>综合风控灯</strong>：🟡。仓位折扣：当前0%（观望），无折扣。</p>
 <hr />
 <h2>五、明日情景应对（6月2日 周二）</h2>
 <p>基于收盘价65.81元，仓位上限0%。</p>
@@ -157,16 +124,15 @@ li { margin: 2px 0; }
 <li><strong>继续下跌</strong>：保持观望，等企稳</li>
 <li><strong>缩量震荡</strong>：观察，不操作</li>
 <li><strong>放量反弹</strong>：不追，等回踩确认</li>
-<li><strong>跌幅超5%</strong>：标记关注</li>
 </ul>
-<p><strong>不做清单</strong>：放量日不建仓；无baseline关键价位参考不建仓；无明确止跌信号不建仓。</p>
+<p><strong>不做清单</strong>：放量日不建仓；无baseline参考不建仓；无明确止跌信号不建仓。</p>
 <hr />
 <h2>六、T+5 展望</h2>
-<p>一周方向需结合深度分析baseline判断。当前行情快照显示大盘偏弱，个股走势分化。</p>
-<p><strong>关键验证点</strong>：6月2日量能变化、大盘方向。</p>
+<p>一周方向需结合深度分析baseline判断。关键验证点：6月2日量能、资金方向。</p>
 <hr />
 <blockquote>
-<p>⚠️ 风险提示：本报告由AI自动生成，基于公开数据，仅供参考，不构成投资建议。</p>
+<p><strong>数据覆盖</strong>: K线✅ 量能✅ 四档资金(Tushare)✅ 大盘✅ 板块⚠️待补 北向⚠️待补 质押⚠️待baseline 解禁⚠️待baseline 股东人数⚠️待baseline 财务⚠️待baseline 事件⚠️待补 信号胜率✅(db可用) baseline⚠️待引用</p>
+<p>⚠️ 风险提示：AI生成，基于公开数据，仅供参考。</p>
 </blockquote>
 <p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
 </body>
