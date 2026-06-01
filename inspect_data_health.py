@@ -121,7 +121,96 @@ def enumerate_trading_days(scope_days):
 
 
 # === 文件检查 ===
+
+# === 已知一次性例外 ===
+KNOWN_ONE_TIME_SKIPS = {
+    "20260527": {"snapshot": "known_one_time_skip: 当日快照脚本未执行, 5/29起已恢复"},
+}
+
+
+def check_eval_data(date_str):
+    """后评估数据双路径检查: 旧路径 + 新路径。返回(status, detail_dict)。"""
+    old_eval = DATA_DIR / '02_评估数据' / f'评估数据_{date_str}.json'
+    new_eval = BASE / '每日荐股' / '事后评估' / f'eval_result_{date_str}.json'
+
+    if old_eval.exists() and old_eval.stat().st_size > 0:
+        return 'ok', {'path': str(old_eval.relative_to(BASE)), 'source': 'old'}
+    if new_eval.exists() and new_eval.stat().st_size > 0:
+        return 'ok', {'path': str(new_eval.relative_to(BASE)), 'source': 'new'}
+    return 'missing', {'old': str(old_eval), 'new': str(new_eval)}
+
+
+def check_records_summary(date_str):
+    """records/summary 双路径检查。返回(records_status, summary_status, details)。"""
+    # Old path
+    old_records = DATA_DIR / '02_评估数据' / f'{date_str}_records.csv'
+    old_summary = DATA_DIR / '02_评估数据' / f'{date_str}_summary.csv'
+    # New path (aggregate)
+    new_records = BASE / '每日荐股' / '事后评估' / 'records.csv'
+    new_summary = BASE / '每日荐股' / '事后评估' / 'summary.csv'
+
+    rec_ok = old_records.exists()
+    sum_ok = old_summary.exists()
+
+    # Check new aggregate CSV for this date
+    date_dash = f'{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}'
+    if not rec_ok and new_records.exists():
+        try:
+            import csv
+            with open(new_records, 'r', encoding='utf-8') as f:
+                for row in csv.DictReader(f):
+                    rd = row.get('report_date', row.get('eval_date', ''))
+                    if rd and (rd == date_str or rd == date_dash or rd.replace('-','') == date_str):
+                        rec_ok = True
+                        break
+        except Exception:
+            pass
+
+    if not sum_ok and new_summary.exists():
+        try:
+            import csv
+            with open(new_summary, 'r', encoding='utf-8') as f:
+                for row in csv.DictReader(f):
+                    pd_val = row.get('period', row.get('start_date', ''))
+                    if pd_val and (pd_val == date_str or pd_val == date_dash or pd_val.replace('-','') == date_str):
+                        sum_ok = True
+                        break
+        except Exception:
+            pass
+
+    details = {
+        'rec_source': 'old' if old_records.exists() else ('new_aggregate' if rec_ok else None),
+        'sum_source': 'old' if old_summary.exists() else ('new_aggregate' if sum_ok else None),
+    }
+    return rec_ok, sum_ok, details
+
+
+def is_eval_not_due(date_str):
+    """判断某交易日T的后评估是否尚未到期。
+    规则: T的后评估最早在T+1交易日收盘后生成。
+    如果当前日期还没到T+1收盘后, 返回True。"""
+    from datetime import datetime
+    td = date(int(date_str[:4]), int(date_str[4:6]), int(date_str[6:]))
+    today = date.today()
+    now = datetime.now()
+    # Find next trading day after td
+    holidays, makeup_days = load_holidays()
+    next_day = td + timedelta(days=1)
+    while next_day <= today + timedelta(days=1):
+        if is_trading_day(next_day, holidays, makeup_days):
+            break
+        next_day += timedelta(days=1)
+    # If the next trading day hasn't passed yet, eval not due
+    if next_day > today:
+        return True
+    # If next trading day is today but market hasn't closed
+    if next_day == today and now.hour < 15:
+        return True
+    return False
+
+
 def check_file_exists(subdir, template, date_str):
+
     """检查单个文件是否存在且有效（JSON/JSONL/CSV）"""
     fname = template.format(date=date_str)
     fpath = DATA_DIR / subdir / fname
@@ -367,9 +456,38 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
         # Consistency check
         consistency_issues = check_consistency(day_files)
 
+        # Override eval_data with dual-path check
+        td_display = f'{td[:4]}-{td[4:6]}-{td[6:8]}'
+        eval_status, eval_detail = check_eval_data(td)
+        if eval_status == 'ok':
+            if 'eval_data' in day_files:
+                day_files['eval_data']['status'] = 'ok'
+                day_files['eval_data']['dual_source'] = eval_detail.get('source')
+        elif eval_status == 'missing':
+            # Check if eval is not yet due (T+1 hasn't passed)
+            if 'eval_data' in day_files and is_eval_not_due(td):
+                day_files['eval_data']['status'] = 'not_due'
+                day_files['eval_data']['not_due'] = True
+
+        # Override records/summary with dual-path check
+        rec_ok, sum_ok, rs_detail = check_records_summary(td)
+        if rec_ok and 'records' in day_files:
+            day_files['records']['status'] = 'ok'
+            day_files['records']['dual_source'] = rs_detail.get('rec_source')
+        if sum_ok and 'summary' in day_files:
+            day_files['summary']['status'] = 'ok'
+            day_files['summary']['dual_source'] = rs_detail.get('sum_source')
+
+        # Check known one-time skips
+        known_skips = KNOWN_ONE_TIME_SKIPS.get(td, {})
+        for ftype, reason in known_skips.items():
+            if ftype in day_files:
+                day_files[ftype]['status'] = 'known_skip'
+                day_files[ftype]['skip_reason'] = reason
+
         # Aggregate
         required_missing = [k for k, v in day_files.items()
-                           if v.get('required') and v['status'] != 'ok']
+                           if v.get('required') and v['status'] not in ('ok', 'not_due', 'known_skip')]
         optional_missing = [k for k, v in day_files.items()
                            if not v.get('required') and v['status'] != 'ok']
         corrupt = [k for k, v in day_files.items() if v['status'] == 'corrupt']
@@ -417,12 +535,18 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
         n_corrupt = len(dr['corrupt'])
         n_cons = len(dr['consistency_issues'])
 
+        not_due = [k for k, v in dr.get('files', {}).items() if v.get('not_due')]
+        known_skips_here = [k for k, v in dr.get('files', {}).items() if v.get('status') == 'known_skip']
+
         if n_missing == 0 and n_corrupt == 0 and n_cons == 0:
             total_ok += 1
             status = 'PASS'
         elif n_corrupt > 0:
             total_fail += 1
             status = 'FAIL'
+        elif n_missing == 0 or all(dr.get('files', {}).get(k, {}).get('not_due') or dr.get('files', {}).get(k, {}).get('status') == 'known_skip' for k in dr['required_missing']):
+            total_ok += 1
+            status = 'PASS'
         else:
             total_warn += 1
             status = 'WARN'
@@ -431,11 +555,16 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
         print(f"  [{status}] {date_display}", end='')
         if n_missing:
             print(f" | missing {n_missing}: {', '.join(dr['required_missing'])}", end='')
+        if not_due:
+            print(f" | not_due: {', '.join(not_due)}", end='')
+        if known_skips_here:
+            reasons = [f"{k}({dr['files'][k].get('skip_reason','')})" for k in known_skips_here]
+            print(f" | known_skip: {', '.join(reasons)}", end='')
         if n_corrupt:
             print(f" | corrupt {n_corrupt}: {', '.join(dr['corrupt'])}", end='')
         if n_cons:
             print(f" | inconsistent: {'; '.join(dr['consistency_issues'])}", end='')
-        if n_missing == 0 and n_corrupt == 0 and n_cons == 0:
+        if n_missing == 0 and n_corrupt == 0 and n_cons == 0 and not known_skips_here:
             print(f" | all present", end='')
         print()
 

@@ -1,97 +1,15 @@
 {
-  "schema_version": "1.0",
-  "active": false,
-  "task": "保护机制Cron自动续期：每6天重建shield任务+自续",
-  "stage": 7,
-  "stage_name": "完成",
-  "executor": "腰子+青山",
+  "active": true,
+  "executor": "红结",
   "gate_1": "PASS",
-  "gate_2": "PASS",
-  "gate_3": "PASS",
-  "next_action": "done",
-  "attempts": 0,
-  "max_attempts": 3,
-  "l3_triggered": false,
-  "l3_reason": "",
-  "loop_context": "",
+  "owner": "阿黑",
+  "task": "eval链路停产修复",
+  "flow": "NEW_REQUIREMENT",
   "files_scope": [
-    ".claude/scheduled_tasks.json"
-  ],
-  "started": "2026-05-29T07:32:26",
-  "updated": "2026-05-29T07:33:12",
-  "stage_history": [
-    {
-      "stage": 1,
-      "name": "架构设计",
-      "status": "started",
-      "time": "2026-05-29T07:32:26"
-    },
-    {
-      "stage": 1,
-      "name": "架构设计",
-      "status": "complete",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 2,
-      "name": "架构审查",
-      "status": "started",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 2,
-      "name": "架构审查",
-      "status": "complete",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 3,
-      "name": "编码实现",
-      "status": "started",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 3,
-      "name": "编码实现",
-      "status": "complete",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 4,
-      "name": "上线前验证",
-      "status": "started",
-      "time": "2026-05-29T07:32:43"
-    },
-    {
-      "stage": 4,
-      "name": "上线前验证",
-      "status": "complete",
-      "time": "2026-05-29T07:33:12"
-    },
-    {
-      "stage": 5,
-      "name": "灰度部署",
-      "status": "started",
-      "time": "2026-05-29T07:33:12"
-    },
-    {
-      "stage": 5,
-      "name": "灰度部署",
-      "status": "complete",
-      "time": "2026-05-29T07:33:12"
-    },
-    {
-      "stage": 6,
-      "name": "后评估",
-      "status": "started",
-      "time": "2026-05-29T07:33:12"
-    },
-    {
-      "stage": 7,
-      "name": "完成",
-      "status": "complete",
-      "time": "2026-05-29T07:33:12"
-    }
-  ],
-  "design_doc": "审计报告/架构设计/design_cron_autorenew_v1.0.md"
+    "代码文件/每日荐股/scripts/run_daily_eval.py",
+    "代码文件/每日荐股/scripts/daily_workflow.py",
+    "代码文件/每日荐股/scripts/archive_data.py",
+    "代码文件/tools/install_crontab.sh",
+    "inspect_data_health.py"
+  ]
 }
