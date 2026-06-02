@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ccrt/保护机制/保护快照.schema.json",
+  "title": "保护快照",
+  "description": "保护机制 v3.0 只读快照层。由主系统 build_protection_snapshot.py 生成，保护机制只读消费。",
+  "type": "object",
+  "required": ["meta", "real_account", "positions", "market_guard", "event_guard", "behavior_guard", "final_guard"],
+  "properties": {
+
+    "meta": {
+      "type": "object",
+      "description": "快照元信息",
+      "required": ["generated_at", "trading_date", "snapshot_version", "source_files", "stale_seconds", "data_status"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time", "description": "快照生成时间 ISO8601"},
+        "trading_date": {"type": "string", "format": "date", "description": "交易日 YYYY-MM-DD"},
+        "snapshot_version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "语义版本"},
+        "source_files": {
+          "type": "array", "items": {"type": "string"},
+          "description": "构成此快照的源文件路径列表"
+        },
+        "stale_seconds": {"type": "integer", "minimum": 0, "description": "最旧源数据的年龄(秒)"},
+        "data_status": {
+          "type": "string",
+          "enum": ["normal", "degraded", "stale", "conflict", "missing"],
+          "description": "快照整体数据质量状态"
+        },
+        "data_quality_flags": {
+          "type": "array", "items": {
+            "type": "object",
+            "properties": {
+              "source": {"type": "string"},
+              "status": {"type": "string", "enum": ["fresh", "stale", "missing", "anomaly", "conflict"]},
+              "detail": {"type": "string"}
+            }
+          }
+        },
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+
+    "real_account": {
+      "type": "object",
+      "description": "实盘账户快照",
+      "required": ["total_capital", "cash", "total_position_pct", "consecutive_losses", "cooling_period_active"],
+      "properties": {
+        "total_capital": {"type": "number", "description": "总资金(元)"},
+        "cash": {"type": "number", "description": "可用现金(元)"},
+        "total_position_pct": {"type": "number", "minimum": 0, "maximum": 100, "description": "已用仓位百分比"},
+        "daily_realized_pnl": {"type": "number", "description": "当日已实现盈亏(元)"},
+        "daily_unrealized_pnl": {"type": "number", "description": "当日未实现盈亏(元)"},
+        "daily_pnl_limit": {"type": "number", "description": "单日最大亏损限额(元)"},
+        "daily_pnl_limit_hit": {"type": "boolean", "description": "是否已触及单日亏损限额"},
+        "consecutive_losses": {"type": "integer", "minimum": 0, "description": "连续止损笔数"},
+        "cooling_period_active": {"type": "boolean", "description": "是否处于冷却期"},
+        "cooling_reason": {"type": "string", "description": "冷却原因"},
+        "cooling_until": {"type": "string", "format": "date", "description": "冷却期结束日期"}
+      }
+    },
+
+    "positions": {
+      "type": "array",
+      "description": "持仓明细",
+      "items": {
+        "type": "object",
+        "required": ["code", "name", "shares", "avg_cost", "current_price", "unrealized_pnl_pct", "position_pct"],
+        "properties": {
+          "code": {"type": "string", "description": "股票代码"},
+          "name": {"type": "string", "description": "股票名称"},
+          "shares": {"type": "integer", "minimum": 0},
+          "avg_cost": {"type": "number"},
+          "current_price": {"type": "number"},
+          "unrealized_pnl_pct": {"type": "number", "description": "浮动盈亏百分比"},
+          "position_pct": {"type": "number", "description": "占总资金百分比"},
+          "buy_date": {"type": "string", "format": "date"},
+          "buy_time": {"type": "string"},
+          "holding_days": {"type": "integer"},
+
+          "discipline_stop_loss": {"type": "number", "description": "纪律止损价(个人风控参数)"},
+          "strategy_stop_loss": {"type": "number", "description": "策略止损价(技术分析)"},
+          "effective_stop_loss": {"type": "number", "description": "有效止损价(取更保守者)"},
+          "stop_loss_conflict": {"type": "boolean", "description": "纪律止损与策略止损冲突超过3%"},
+          "stop_loss_conflict_detail": {"type": "string"},
+          "target_price": {"type": "number"},
+
+          "report_action": {"type": "string", "description": "日报推荐操作"},
+          "report_direction": {"type": "string", "enum": ["bullish", "bearish", "neutral", "wait", "unknown"]},
+          "report_confidence": {"type": "string", "enum": ["high", "medium", "low", "unknown"]},
+
+          "triggered_signals": {
+            "type": "array", "items": {"type": "string"},
+            "description": "当前触发的信号列表"
+          },
+          "vetoed_signals": {
+            "type": "array", "items": {"type": "string"},
+            "description": "被否决的信号列表"
+          },
+          "signal_winrate": {"type": "number", "minimum": 0, "maximum": 1, "description": "当前信号历史胜率"},
+
+          "risk_factors": {
+            "type": "array", "items": {"type": "string"},
+            "description": "风险因素列表"
+          },
+          "counter_evidence": {
+            "type": "array", "items": {"type": "string"},
+            "description": "反证列表(不支持当前方向)"
+          },
+          "key_levels": {
+            "type": "object",
+            "properties": {
+              "support": {"type": "number"},
+              "resistance": {"type": "number"},
+              "current_zone": {"type": "string", "enum": ["below_support", "near_support", "mid_range", "near_resistance", "above_resistance"]}
+            }
+          },
+          "data_quality_flags": {
+            "type": "array", "items": {"type": "string"},
+            "description": "该标的数据质量标记"
+          },
+          "recent_events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {"type": "string", "format": "date"},
+                "type": {"type": "string"},
+                "summary": {"type": "string"},
+                "direction": {"type": "string", "enum": ["positive", "negative", "neutral", "unknown"]}
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "market_guard": {
+      "type": "object",
+      "description": "市场环境守护",
+      "required": ["market_sentiment", "index_change", "liquidity_status"],
+      "properties": {
+        "market_sentiment": {"type": "string", "enum": ["ice", "cold", "warm", "hot", "boil"], "description": "情绪温度"},
+        "sentiment_indicators": {
+          "type": "object",
+          "properties": {
+            "advance_decline_ratio": {"type": "number"},
+            "turnover_billion": {"type": "number"},
+            "northbound_net_billion": {"type": "number"},
+            "limit_up_count": {"type": "integer"},
+            "limit_down_count": {"type": "integer"},
+            "margin_balance_billion": {"type": "number"},
+            "vix_or_equivalent": {"type": "number"}
+          }
+        },
+        "index_change": {
+          "type": "object",
+          "properties": {
+            "shanghai_pct": {"type": "number"},
+            "shenzhen_pct": {"type": "number"},
+            "chinext_pct": {"type": "number"},
+            "star50_pct": {"type": "number"}
+          }
+        },
+        "overnight": {
+          "type": "object",
+          "properties": {
+            "sp500_pct": {"type": "number"},
+            "nasdaq_pct": {"type": "number"},
+            "a50_pct": {"type": "number"},
+            "usdcny": {"type": "number"}
+          }
+        },
+        "liquidity_status": {"type": "string", "enum": ["ample", "normal", "tight", "drain"], "description": "流动性状态"},
+        "market_forbid_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule": {"type": "string", "description": "禁止规则描述"},
+              "triggered": {"type": "boolean"},
+              "detail": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+
+    "event_guard": {
+      "type": "object",
+      "description": "事件催化守护",
+      "required": ["has_valid_catalyst", "sensitive_event_hit"],
+      "properties": {
+        "recent_events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {"type": "string", "format": "date"},
+              "code": {"type": "string"},
+              "type": {"type": "string"},
+              "summary": {"type": "string"},
+              "direction": {"type": "string", "enum": ["positive", "negative", "neutral", "unknown"]},
+              "magnitude": {"type": "string", "enum": ["high", "medium", "low"]}
+            }
+          }
+        },
+        "event_direction": {"type": "string", "enum": ["positive", "negative", "neutral", "mixed", "none"]},
+        "has_valid_catalyst": {"type": "boolean", "description": "是否有有效事件催化"},
+        "sensitive_event_hit": {"type": "boolean", "description": "是否触发了敏感消息类型"},
+        "sensitive_event_detail": {"type": "string"},
+        "negative_announcements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {"type": "string"},
+              "type": {"type": "string"},
+              "summary": {"type": "string"},
+              "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]}
+            }
+          }
+        }
+      }
+    },
+
+    "behavior_guard": {
+      "type": "object",
+      "description": "行为模式守护",
+      "required": ["forbidden_patterns_hit", "open_30min_block", "chase_without_event_block", "loss_averaging_block", "revenge_trade_risk"],
+      "properties": {
+        "forbidden_patterns_hit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {"type": "string"},
+              "matched_at": {"type": "string", "format": "date-time"},
+              "detail": {"type": "string"}
+            }
+          }
+        },
+        "cooldown_reason": {"type": "string"},
+        "open_30min_block": {"type": "boolean", "description": "9:30-10:00禁止追涨"},
+        "chase_without_event_block": {"type": "boolean", "description": "无事件催化追涨>3%禁止"},
+        "loss_averaging_block": {"type": "boolean", "description": "浮亏加仓摊平禁止"},
+        "revenge_trade_risk": {"type": "boolean", "description": "报复交易风险标记"},
+        "known_impulse_patterns": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "当前场景匹配的已知冲动模式"
+        }
+      }
+    },
+
+    "final_guard": {
+      "type": "object",
+      "description": "最终守护判定",
+      "required": ["hard_blocks", "soft_warnings", "default_action"],
+      "properties": {
+        "hard_blocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {"type": "string", "description": "阻断类型"},
+              "rule": {"type": "string", "description": "触发的规则"},
+              "detail": {"type": "string", "description": "具体说明"}
+            }
+          }
+        },
+        "soft_warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {"type": "string"},
+              "rule": {"type": "string"},
+              "detail": {"type": "string"}
+            }
+          }
+        },
+        "default_action": {"type": "string", "enum": ["可", "等", "否", "强制冷却"], "description": "默认行动结论"},
+        "required_user_inputs_before_trade": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "交易前用户必须提供的输入"
+        },
+        "yaozi_conclusion": {"type": "string", "description": "腰子最终纪律结论"},
+        "yaozi_reasoning": {"type": "string", "description": "腰子判定理由"}
+      }
+    }
+  }
+}

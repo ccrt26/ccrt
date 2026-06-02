@@ -11,12 +11,21 @@ Desktop.ini
 .claude/agents/*.json
 .claude/settings.local.json
 
+# Claude Code 运行时状态（非源码）
+.claude/im_queue/
+.claude/regen/
+.claude/pipeline_active.json
+.claude/signal_daily_report.json
+.claude/scheduled_tasks.lock
+.claude/sweep.lock
+
 # 预提交钩子日志（每次提交自动写入，非源码）
 .claude/hooks/pre-commit.log
 
 # 临时文件
 *.tmp
 *.temp
+*.bak
 ~$*
 
 # Python编译缓存
@@ -26,6 +35,89 @@ __pycache__/
 # 数据缓存（运行时生成）
 data_cache/
 _data_audit.md
+
+# 运行时数据（API缓存 / 衍生数据 / 生成JSON）
+代码文件/数据/fund_flow_cache/
+代码文件/数据/index_kline/
+代码文件/数据/kline_cache/
+代码文件/数据/tushare/
+代码文件/数据/.eastmoney_health.json
+代码文件/数据/.sina_health.json
+代码文件/数据/.tencent_health.json
+代码文件/数据/.tushare_health.json
+代码文件/数据/data_full*.json
+代码文件/数据/data_final.json
+代码文件/数据/data_scored.json
+代码文件/数据/data_scored_backup.json
+代码文件/数据/data_scored_may*.json
+代码文件/数据/data_quality_report.json
+代码文件/数据/dynamic_pool.json
+代码文件/数据/score_history.jsonl
+代码文件/数据/fault_events.json
+代码文件/每日荐股/data_cache/
+
+# 生成报告（日报 / 深度分析 / 汇总 PDF+HTML+MD）
+重点股票/股票报告/
+重点股票/深度分析/深度分析报告/
+重点股票/深度分析/临时PDF审阅版/
+重点股票/深度分析/后评估报告/
+重点股票/汇总/
+重点股票/次日评估/评估结果/
+重点股票/次日评估/复盘报告/
+重点股票/次日评估/_quarantine/
+重点股票/次日评估/评估数据_*.json
+重点股票/消息面数据/cache/
+重点股票/消息面数据/content_cache/
+重点股票/消息面数据/*.json
+每日荐股/股票报告/
+每日荐股/评估报告/
+每日荐股/事后评估/
+每日荐股/运营记录/
+
+# 审计报告（全量生成产物）
+审计报告/
+
+# 历史数据（运行时快照/原始/评估/参考）
+历史数据/00_核心交易/
+历史数据/01_交易快照/
+历史数据/02_评估数据/
+历史数据/04_原始数据/
+历史数据/05_参考数据/
+历史数据/临时回溯/
+
+# .claude 运行时生成
+.claude/checklists/
+.claude/data_packages/
+
+# 模拟交易运行时（决策/日志/快照/绩效/持仓/展示）
+模拟交易/交易决策/
+模拟交易/日志/
+模拟交易/quotes_cache.json
+模拟交易/每日快照/
+模拟交易/绩效报告/
+模拟交易/持仓记录/
+模拟交易/展示/
+模拟交易/周报/
+
+# 数据打包输出
+daily_data_pack/
+
+# 运行时JSONL
+代码文件/数据/unified_features.jsonl
+代码文件/数据/signal_winrate_db.json
+
+# 日志
+logs/
+临时报告/
+*.log
+
+# 保护机制运行时
+保护机制/部署验证_闸门.md
+保护机制/保护快照.json
+保护机制/盘前简报/
+保护机制/刹车记录/
+保护机制/复盘记录/
+保护机制/运行审计/
 
 # 保护机制 — 敏感个人数据
 保护机制/持仓账本.json

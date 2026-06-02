@@ -211,10 +211,10 @@ def _ensure_dir(path):
 def append_log(log_type, data):
     spec = {
         "gate": ("gates/gate_check.jsonl", ["timestamp","run_id","gate","script","trigger","commit_sha","checks","overall_result","fail_reasons","duration_ms"]),
-        "signature": ("signatures/signature_events.jsonl", ["timestamp","run_id","stage","role","action","checklist_version","signature","comment"]),
+        "signature": ("signatures/signature_events.jsonl", ["timestamp","run_id","stage","role","requested_actor","requested_role","actual_actor","actual_role","action","decision","reason","checklist_version","signature","comment","session_id","process_id","command_source"]),
         "checklist_chg": ("checklist/checklist_changelog.jsonl", ["timestamp","run_id","modified_by","operation","diff_summary","previous_hash","new_hash"]),
         "ai_ops": ("ai_ops/ai_ops.jsonl", ["timestamp","run_id","stage","role","task_type","input_context_hash","output_summary","token_used","model","duration_ms","result","error_msg"]),
-        "engine": ("engine/engine_events.jsonl", ["timestamp","run_id","event_type","from_stage","to_stage","target_role","package_files","override_reason"]),
+        "engine": ("engine/engine_events.jsonl", ["timestamp","run_id","event_type","from_stage","to_stage","target_role","actor","role","actual_actor","actual_role","requested_actor","requested_role","decision","reason","package_files","override_reason"]),
         "deploy": ("deployments/verify_deploy.jsonl", ["timestamp","run_id","deploy_item","check_type","expected","actual","result"]),
         "audit": ("audit/audit_findings.jsonl", ["timestamp","finding_id","severity","category","related_run_id","description","evidence_log_paths","recommended_action","status"]),
         "security": ("audit/security_events.jsonl", ["timestamp","run_id","actor","action","target","result","detail"]),
@@ -228,6 +228,25 @@ def append_log(log_type, data):
     record["timestamp"] = record.get("timestamp") or datetime.now(timezone.utc).isoformat()
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+def log_ai_ops(run_id, stage, role, task_type, token_used, model="unknown",
+               input_context_hash="", output_summary="", duration_ms=0,
+               result="ok", error_msg=""):
+    """便捷函数：记录AI/LLM调用Token消耗。所有AI调用点统一走此函数。"""
+    append_log("ai_ops", {
+        "run_id": run_id,
+        "stage": stage,
+        "role": role,
+        "task_type": task_type,
+        "input_context_hash": input_context_hash,
+        "output_summary": output_summary,
+        "token_used": token_used,
+        "model": model,
+        "duration_ms": duration_ms,
+        "result": result,
+        "error_msg": error_msg,
+    })
 
 
 def sha256_file(filepath):

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""pipeline-auth.py — Code File Write Protection Shared Auth Module.
+"""pipeline_auth.py — Code File Write Protection Shared Auth Module (v2.0).
 
-Replaces pipeline-auth.ps1 (v1.0). Single source of truth for:
+Actor-bound authorization. Single source of truth for:
+- Governance path patterns (always require pipeline token)
 - AutoCommit exemption patterns
 - Protected path patterns
-- Pipeline authorization logic
+- Pipeline authorization with actor/stage/scope binding
 
-Used by: pre-commit-check.py, write_protection_hook.py
+Used by: write_protection_hook.py, pre-commit-check.py
 Code level: L2 (security infrastructure)
 """
 import json
 import os
 import re
 
-# ── Governance paths — ALWAYS require pipeline token ──
-# Checked BEFORE auto-commit exemption; .json/.md/.py extensions do NOT bypass.
+# Governance paths — ALWAYS require pipeline token
 GOVERNANCE_PATHS = [
     r'^\.claude[/\\]hooks[/\\]',
     r'^\.claude[/\\]settings\.json$',
@@ -25,7 +25,7 @@ GOVERNANCE_PATHS = [
     r'^\.claude[/\\]agents[/\\]',
 ]
 
-# ── AutoCommit exemption patterns ──────────────────────
+# AutoCommit exemption patterns
 AUTOCOMMIT_EXTENSIONS = [
     r'\.log$', r'\.json$', r'\.jsonl$', r'\.csv$', r'\.txt$',
     r'\.md$', r'\.pdf$', r'\.docx$', r'\.html$'
@@ -68,88 +68,209 @@ PROTECTED_PATHS = [
     r'^模拟交易[/\\]工具[/\\]'
 ]
 
-VALID_EXECUTORS = ["红结", "红枫"]
+# Stages that allow code writes and their authorized roles
+CODE_WRITE_STAGES = {
+    "coding": ["红结"],
+    "deploy": ["红枫"],
+    "verify": ["新安"],
+    "post_audit": ["旧影"],
+}
+
+# Audit-only: 旧影 can only write audit records, not business code
+AUDIT_RESTRICTED_PATHS = [
+    r'^logs[/\\]audit[/\\]',
+    r'^logs[/\\]checklist[/\\]',
+]
+
+VALID_EXECUTORS = ["红结", "红枫", "新安", "旧影"]
 
 
 def _normalize(path):
-    """Normalize path to use forward slashes."""
     return path.replace("\\", "/")
 
 
-def test_pipeline_authorization(file_path, project_root, extra_patterns=None):
+def load_pipeline_state(project_root):
+    token_path = os.path.join(project_root, ".claude", "pipeline_active.json")
+    if not os.path.exists(token_path):
+        return None
+    try:
+        with open(token_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def get_active_code_runs(state):
+    """Return list of active runs that are in a code-writing stage."""
+    if not state:
+        return []
+    active = []
+    runs = state.get("runs", {})
+    for rid, run in runs.items():
+        if not isinstance(run, dict):
+            continue
+        if run.get("status") not in ("active",):
+            continue
+        stage = run.get("current_stage", "")
+        if stage in CODE_WRITE_STAGES:
+            active.append(run)
+    return active
+
+
+def get_run_by_id(state, run_id):
+    if not state:
+        return None
+    return state.get("runs", {}).get(run_id)
+
+
+def test_pipeline_authorization(file_path, project_root, actor="", role="",
+                                 run_id="", tool_name=""):
     """Check if a code file write is authorized under current pipeline state.
 
-    Returns: dict with keys: authorized (bool), reason (str), executor (str),
-             gate1 (str), scope_match (bool)
+    Args:
+        file_path: relative path to the file being written
+        project_root: project root directory
+        actor: who is actually operating (e.g. "红结", "阿黑")
+        role: what role they're acting as
+        run_id: explicit run_id (required when multiple active code runs)
+        tool_name: the tool being used (Write/Edit/Bash/etc.)
+
+    Returns: dict with keys:
+        authorized (bool), reason (str), actor (str), role (str),
+        stage (str), run_id (str), scope_match (bool), gate1 (str)
     """
     normalized = _normalize(file_path)
 
     # Step 0: Governance path check — BEFORE auto-commit exemption
-    # Governance paths (.claude/hooks, settings, commands, agents, etc.)
-    # ALWAYS require pipeline token; .json/.md/.py extensions do NOT bypass.
     is_governance = any(re.search(pat, normalized) for pat in GOVERNANCE_PATHS)
 
     # Step 1: AutoCommit exemption (skipped for governance paths)
     if not is_governance:
         for pat in AUTOCOMMIT_PATHS:
             if re.search(pat, normalized):
-                return {"authorized": True, "reason": f"Auto-commit path: matches {pat}",
-                        "executor": "", "gate1": "", "scope_match": True}
+                return {"authorized": True,
+                        "reason": f"Auto-commit path: matches {pat}",
+                        "actor": actor, "role": role, "stage": "", "run_id": "",
+                        "scope_match": True, "gate1": ""}
         for pat in AUTOCOMMIT_EXTENSIONS:
             if re.search(pat, normalized):
-                return {"authorized": True, "reason": f"Auto-commit extension: matches {pat}",
-                        "executor": "", "gate1": "", "scope_match": True}
+                # .md/.json in protected code paths should still be checked
+                if re.search(r'^代码文件[/\\]', normalized) or re.search(r'^scripts[/\\]', normalized):
+                    break  # fall through to protected check
+                return {"authorized": True,
+                        "reason": f"Auto-commit extension: matches {pat}",
+                        "actor": actor, "role": role, "stage": "", "run_id": "",
+                        "scope_match": True, "gate1": ""}
 
-    # Step 2: Check if file is in any protected path (governance paths included)
-    all_patterns = list(GOVERNANCE_PATHS) + list(PROTECTED_PATHS) + (extra_patterns or [])
+    # Step 2: Check if file is in any protected path
+    all_patterns = list(GOVERNANCE_PATHS) + list(PROTECTED_PATHS)
     is_protected = any(re.search(pat, normalized) for pat in all_patterns)
     if not is_protected:
-        return {"authorized": True, "reason": "Not a protected path",
-                "executor": "", "gate1": "", "scope_match": True}
+        return {"authorized": True,
+                "reason": "Not a protected path",
+                "actor": actor, "role": role, "stage": "", "run_id": "",
+                "scope_match": True, "gate1": ""}
 
-    # Step 3: Check pipeline token
-    token_path = os.path.join(project_root, ".claude", "pipeline_active.json")
-    if not os.path.exists(token_path):
-        return {"authorized": False, "reason": "No pipeline token found",
-                "executor": "", "gate1": "", "scope_match": False}
-
-    try:
-        with open(token_path, "r", encoding="utf-8") as f:
-            token = json.load(f)
-    except Exception as e:
-        return {"authorized": False, "reason": f"Pipeline token corrupted: {e}",
-                "executor": "", "gate1": "", "scope_match": False}
-
-    # Step 4: Check active + executor + gate_1
-    if not token.get("active"):
+    # Step 3: Load pipeline state
+    state = load_pipeline_state(project_root)
+    if not state:
         return {"authorized": False,
-                "reason": f"Pipeline not active (active={token.get('active')})",
-                "executor": "", "gate1": token.get("gate_1", ""), "scope_match": False}
+                "reason": "No pipeline state found — all protected writes require active pipeline",
+                "actor": actor, "role": role, "stage": "", "run_id": "",
+                "scope_match": False, "gate1": ""}
 
-    if token.get("executor", "") not in VALID_EXECUTORS:
+    # Step 4: Find the active run for authorization
+    active_code_runs = get_active_code_runs(state)
+
+    if not active_code_runs:
         return {"authorized": False,
-                "reason": f"Invalid executor: {token.get('executor')}",
-                "executor": "", "gate1": token.get("gate_1", ""), "scope_match": False}
+                "reason": "No active code-writing run. Start a pipeline with coding stage first.",
+                "actor": actor, "role": role, "stage": "", "run_id": "",
+                "scope_match": False, "gate1": ""}
 
-    if token.get("gate_1") != "PASS":
-        return {"authorized": False,
-                "reason": f"Gate_1 not PASS (current: {token.get('gate_1')})",
-                "executor": token.get("executor", ""),
-                "gate1": token.get("gate_1", ""), "scope_match": False}
+    target_run = None
 
-    # Step 5: Scope check
-    files_scope = token.get("files_scope", [])
-    if files_scope:
-        in_scope = any(normalized.startswith(_normalize(s)) for s in files_scope)
-        if not in_scope:
+    if run_id:
+        # Explicit run_id specified
+        target_run = get_run_by_id(state, run_id)
+        if not target_run:
             return {"authorized": False,
-                    "reason": f"File outside pipeline scope (declared: {', '.join(files_scope)})",
-                    "executor": token.get("executor", ""), "gate1": "PASS", "scope_match": False}
+                    "reason": f"Specified run_id '{run_id}' not found in pipeline state",
+                    "actor": actor, "role": role, "stage": "", "run_id": run_id,
+                    "scope_match": False, "gate1": ""}
+        if target_run.get("status") != "active":
+            return {"authorized": False,
+                    "reason": f"Specified run_id '{run_id}' is not active (status={target_run.get('status')})",
+                    "actor": actor, "role": role, "stage": "", "run_id": run_id,
+                    "scope_match": False, "gate1": ""}
+    elif len(active_code_runs) == 1:
+        target_run = active_code_runs[0]
+        run_id = target_run.get("run_id", "")
     else:
+        # Multiple active code runs — must specify
+        run_ids = [r.get("run_id", "?") for r in active_code_runs]
         return {"authorized": False,
-                "reason": "Pipeline files_scope is empty",
-                "executor": token.get("executor", ""), "gate1": "PASS", "scope_match": False}
+                "reason": f"Multiple active code-writing runs ({', '.join(run_ids)}). Must specify run_id explicitly.",
+                "actor": actor, "role": role, "stage": "", "run_id": "",
+                "scope_match": False, "gate1": ""}
+
+    # Step 5: Stage validation
+    current_stage = target_run.get("current_stage", "")
+    allowed_roles = CODE_WRITE_STAGES.get(current_stage, [])
+
+    if not allowed_roles:
+        return {"authorized": False,
+                "reason": f"Stage '{current_stage}' does not allow code writes. Allowed stages: {list(CODE_WRITE_STAGES.keys())}",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": False, "gate1": ""}
+
+    # Step 6: Role validation — role must be in the stage's allowed roles
+    if role and role not in allowed_roles:
+        return {"authorized": False,
+                "reason": f"Role '{role}' not authorized for stage '{current_stage}'. Allowed: {allowed_roles}",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": False, "gate1": ""}
+
+    # Step 7: Actor validation — 阿黑 can NEVER write code
+    if actor == "阿黑":
+        return {"authorized": False,
+                "reason": "阿黑 is forbidden from writing code files under any circumstance (§3.1)",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": False, "gate1": "BLOCK_AHEI"}
+
+    # Step 8: 旧影 audit restrictions — only allow audit log paths
+    if role == "旧影" and current_stage in ("audit", "post_audit"):
+        in_audit_scope = any(re.search(pat, normalized) for pat in AUDIT_RESTRICTED_PATHS)
+        if not in_audit_scope:
+            return {"authorized": False,
+                    "reason": "旧影 in audit stage can only write audit logs, not business code",
+                    "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                    "scope_match": False, "gate1": ""}
+
+    # Step 9: Scope check
+    files_scope = target_run.get("files_scope", [])
+    if not files_scope:
+        return {"authorized": False,
+                "reason": "Run has no files_scope defined",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": False, "gate1": ""}
+
+    in_scope = any(normalized.startswith(_normalize(s)) for s in files_scope)
+    if not in_scope:
+        return {"authorized": False,
+                "reason": f"File outside pipeline scope. Declared: {', '.join(files_scope[:5])}",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": False, "gate1": ""}
+
+    # Step 10: Gate check
+    gate1 = target_run.get("gate_1", "")
+    if gate1 and gate1 != "PASS":
+        return {"authorized": False,
+                "reason": f"Gate_1 not PASS (current: {gate1})",
+                "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+                "scope_match": True, "gate1": gate1}
 
     return {"authorized": True,
-            "reason": "Pipeline authorized: executor valid, gate_1=PASS, scope OK",
-            "executor": token.get("executor", ""), "gate1": "PASS", "scope_match": True}
+            "reason": f"Authorized: actor={actor}, role={role}, stage={current_stage}, scope OK",
+            "actor": actor, "role": role, "stage": current_stage, "run_id": run_id,
+            "scope_match": True, "gate1": gate1 or "PASS"}

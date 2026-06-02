@@ -117,8 +117,7 @@ def check_a_version_consistency(staged_files):
             continue
 
         internal_version = None
-        for pat in [r'[Vv]ersion[：:]\s*v(\d+\.\d+(?:\.\d+)?)',
-                     r'(?:^|\n)#[^\n]*v(\d+\.\d+(?:\.\d+)?)',
+        for pat in [r'(?:[Vv]ersion|版本)\s*(?:\*\*)?\s*[：:]\s*v(\d+\.\d+(?:\.\d+)?)',
                      r'(?m)^.{0,200}v(\d+\.\d+(?:\.\d+)?)']:
             im = re.search(pat, content)
             if im:
@@ -224,8 +223,23 @@ def _has_protection_declaration(filepath):
 
 def check_e_token_budget(staged_files, new_files):
     log("PASS", "===== Check E: Token Budget Gate =====")
+    staged_set = set(staged_files)
 
-    # E1/E2: Agent file line count and size
+    def _rel_path(abspath):
+        """Convert absolute path to path relative to PROJECT_ROOT."""
+        try:
+            return os.path.relpath(abspath, PROJECT_ROOT)
+        except Exception:
+            return abspath
+
+    def _is_staged(abspath):
+        """Check if a file is in the staged set."""
+        rp = _rel_path(abspath)
+        return rp in staged_set or os.path.basename(abspath) in staged_set or any(
+            rp.endswith(s) or s.endswith(rp) for s in staged_set
+        )
+
+    # E1: Agent file line count and size (aligned with check_E.py)
     agent_dir = os.path.join(PROJECT_ROOT, ".claude", "agents")
     if os.path.isdir(agent_dir):
         for entry in os.scandir(agent_dir):
@@ -239,22 +253,63 @@ def check_e_token_budget(staged_files, new_files):
             except Exception:
                 continue
             name = entry.name
-            if line_count > 300:
-                log("BLOCK", f"E1 BLOCK: {name} — {line_count} lines (>300)")
-            elif line_count > 250:
-                log("WARN", f"E1 WARN: {name} — {line_count} lines (>250)")
+            is_staged = _is_staged(af)
+            if line_count > 250:
+                sev = "BLOCK" if is_staged else "WARN"
+                tag = "E1" if is_staged else "E1-HISTORICAL"
+                log(sev, f"{tag} {sev}: {name} — {line_count} lines (>250)"
+                    + ("" if is_staged else " [历史超限，需专项拆分，不阻断本次提交]"))
+            elif line_count > 200:
+                log("WARN", f"E1 WARN: {name} — {line_count} lines (>200)")
             else:
                 log("PASS", f"E1 PASS: {name} ({line_count} lines)")
 
             size_kb = file_size / 1024
-            if size_kb > 15:
-                log("BLOCK", f"E2 BLOCK: {name} — {size_kb:.1f}KB (>15KB)")
-            elif size_kb > 12:
-                log("WARN", f"E2 WARN: {name} — {size_kb:.1f}KB (>12KB)")
+            if size_kb > 12:
+                sev = "BLOCK" if is_staged else "WARN"
+                tag = "E2" if is_staged else "E2-HISTORICAL"
+                log(sev, f"{tag} {sev}: {name} — {size_kb:.1f}KB (>12KB)"
+                    + ("" if is_staged else " [历史超限，需专项拆分，不阻断本次提交]"))
+            elif size_kb > 10:
+                log("WARN", f"E2 WARN: {name} — {size_kb:.1f}KB (>10KB)")
             else:
                 log("PASS", f"E2 PASS: {name} ({size_kb:.1f}KB)")
     else:
         log("WARN", "E1/E2: Agent directory not found")
+
+    # E1b: Command file line count and size (aligned with check_E.py)
+    cmd_dir = os.path.join(PROJECT_ROOT, ".claude", "commands")
+    if os.path.isdir(cmd_dir):
+        for entry in os.scandir(cmd_dir):
+            if not entry.is_file() or not entry.name.endswith(".md"):
+                continue
+            cf = entry.path
+            try:
+                with open(cf, "r", encoding="utf-8") as f:
+                    line_count = sum(1 for _ in f)
+                file_size = os.path.getsize(cf)
+            except Exception:
+                continue
+            name = entry.name
+            is_staged = _is_staged(cf)
+            if line_count > 40:
+                sev = "BLOCK" if is_staged else "WARN"
+                tag = "E1b" if is_staged else "E1b-HISTORICAL"
+                log(sev, f"{tag} {sev}: {name} — {line_count} lines (>40)"
+                    + ("" if is_staged else " [历史超限，需专项拆分，不阻断本次提交]"))
+            elif line_count > 35:
+                log("WARN", f"E1b WARN: {name} — {line_count} lines (>35)")
+            else:
+                log("PASS", f"E1b PASS: {name} ({line_count} lines)")
+
+            size_kb = file_size / 1024
+            if size_kb > 2:
+                sev = "BLOCK" if is_staged else "WARN"
+                tag = "E2b" if is_staged else "E2b-HISTORICAL"
+                log(sev, f"{tag} {sev}: {name} — {size_kb:.1f}KB (>2KB)"
+                    + ("" if is_staged else " [历史超限，需专项拆分，不阻断本次提交]"))
+            else:
+                log("PASS", f"E2b PASS: {name} ({size_kb:.1f}KB)")
 
     # E3: Python core script print() count
     core_dirs = [
@@ -512,7 +567,8 @@ def check_j_formal_report_protection(staged_files):
     log("PASS", "===== Check J: Formal Report Directory Protection =====")
     formal_dir = "重点股票/深度分析/深度分析报告/"
     formal_files = [f for f in staged_files
-                    if f.replace("\\", "/").startswith(formal_dir)]
+                    if f.replace("\\", "/").startswith(formal_dir)
+                    and os.path.exists(os.path.join(PROJECT_ROOT, f))]  # skip deletions
 
     if not formal_files:
         log("PASS", "J PASS: 无正式报告目录文件")

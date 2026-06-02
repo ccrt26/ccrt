@@ -1,0 +1,53 @@
+{
+  "_schema": "signal_library v1.0",
+  "_description": "七类统一信号库。后评估按信号ID统计胜率/误判率/误杀率。",
+  "_design": "青山提案+情墨设计 v2026-05-31",
+
+  "TECH": [
+    {"id": "TECH_001", "name": "均线多头排列", "definition": "MA5>MA10>MA20>MA60", "source": "[5]", "direction": "bullish", "applicable_env": ["trend"], "invalidation": "MA5下穿MA10"},
+    {"id": "TECH_002", "name": "均线空头排列", "definition": "MA5<MA10<MA20<MA60", "source": "[5]", "direction": "bearish", "applicable_env": ["trend"], "invalidation": "MA5上穿MA10"},
+    {"id": "TECH_003", "name": "MACD金叉", "definition": "DIF上穿DEA且MACD柱翻红", "source": "[5]", "direction": "bullish", "applicable_env": ["trend","range"], "invalidation": "DIF下穿DEA"},
+    {"id": "TECH_004", "name": "MACD死叉", "definition": "DIF下穿DEA且MACD柱翻绿", "source": "[5]", "direction": "bearish", "applicable_env": ["trend","range"], "invalidation": "DIF上穿DEA"},
+    {"id": "TECH_005", "name": "RSI超卖", "definition": "RSI(14)<30", "source": "[5]", "direction": "bullish", "applicable_env": ["range"], "invalidation": "RSI继续下跌<20"},
+    {"id": "TECH_006", "name": "RSI超买", "definition": "RSI(14)>70", "source": "[5]", "direction": "bearish", "applicable_env": ["range"], "invalidation": "RSI继续上涨>80"},
+    {"id": "TECH_007", "name": "放量突破", "definition": "价格突破MA20且成交量>20日均量1.5倍", "source": "[5]", "direction": "bullish", "applicable_env": ["trend"], "invalidation": "次日缩量回落到MA20以下"},
+    {"id": "TECH_008", "name": "布林带收窄", "definition": "BB宽度(20,2)处于60日最低20%", "source": "[5]", "direction": "neutral", "applicable_env": ["range"], "invalidation": "突破后未按预期方向运行"}
+  ],
+
+  "MONEY": [
+    {"id": "MONEY_001", "name": "主力持续净流入", "definition": "连续3日主力净流入>0", "source": "[9]", "direction": "bullish", "applicable_env": ["trend","range"], "invalidation": "主力转向净流出"},
+    {"id": "MONEY_002", "name": "主力持续净流出", "definition": "连续3日主力净流出>0", "source": "[9]", "direction": "bearish", "applicable_env": ["trend","range"], "invalidation": "主力转向净流入"},
+    {"id": "MONEY_003", "name": "北向资金增持", "definition": "北向持股比例环比增加>0.1%", "source": "[8]", "direction": "bullish", "applicable_env": ["trend"], "invalidation": "北向转向减持"},
+    {"id": "MONEY_004", "name": "融资余额增加", "definition": "融资余额连续3日增加", "source": "[12]", "direction": "bullish", "applicable_env": ["trend"], "invalidation": "融资余额开始下降"}
+  ],
+
+  "FUND": [
+    {"id": "FUND_001", "name": "ROE优质", "definition": "ROE>15%", "source": "[3]", "direction": "bullish", "applicable_env": ["trend","range"], "invalidation": "季报ROE下滑至<10%"},
+    {"id": "FUND_002", "name": "PE(TTM)低估", "definition": "PE(TTM)处于5年历史分位<20%", "source": "[5]", "direction": "bullish", "applicable_env": ["range"], "invalidation": "PE因盈利下滑被动抬升"},
+    {"id": "FUND_003", "name": "PE(TTM)高估", "definition": "PE(TTM)处于5年历史分位>80%", "source": "[5]", "direction": "bearish", "applicable_env": ["range"], "invalidation": "盈利超预期增长消化估值"},
+    {"id": "FUND_004", "name": "营收高增长", "definition": "营收同比增速>20%", "source": "[3]", "direction": "bullish", "applicable_env": ["trend"], "invalidation": "下季营收增速骤降"}
+  ],
+
+  "NEWS": [
+    {"id": "NEWS_001", "name": "正面研报", "definition": "机构发布买入/增持评级研报", "source": "[11]", "direction": "bullish", "applicable_env": ["trend","range"], "invalidation": "后续研报下调评级"},
+    {"id": "NEWS_002", "name": "负面公告", "definition": "公司发布减持/违规/诉讼公告", "source": "[11]", "direction": "bearish", "applicable_env": ["trend","range","bear"], "invalidation": "公告影响消除或澄清"},
+    {"id": "NEWS_003", "name": "政策利好", "definition": "国务院/部委发布行业支持政策", "source": "[11]", "direction": "bullish", "applicable_env": ["trend","range"], "invalidation": "政策执行不及预期"}
+  ],
+
+  "SECTOR": [
+    {"id": "SECTOR_001", "name": "板块轮动进入", "definition": "行业资金排名连续上升", "source": "[10]", "direction": "bullish", "applicable_env": ["range"], "invalidation": "资金排名回落"},
+    {"id": "SECTOR_002", "name": "板块轮动退出", "definition": "行业资金排名连续下降", "source": "[10]", "direction": "bearish", "applicable_env": ["range"], "invalidation": "资金重新流入"},
+    {"id": "SECTOR_003", "name": "板块潜伏期", "definition": "板块相位=潜伏期", "source": "[5]", "direction": "bullish", "applicable_env": ["range"], "invalidation": "长时间未进入主升"}
+  ],
+
+  "RISK": [
+    {"id": "RISK_001", "name": "质押比例过高", "definition": "控股股东质押比例>50%", "source": "[3]", "direction": "bearish", "applicable_env": ["trend","range","bear"], "invalidation": "质押比例降低至<30%"},
+    {"id": "RISK_002", "name": "解禁临近", "definition": "30日内有限售股解禁且占总股本>5%", "source": "[3]", "direction": "bearish", "applicable_env": ["trend","range"], "invalidation": "解禁完成且无大幅减持"},
+    {"id": "RISK_003", "name": "集中度过高", "definition": "单票持仓占比>30%", "source": "[5]", "direction": "bearish", "applicable_env": ["trend","range","bear"], "invalidation": "仓位降至<20%"}
+  ],
+
+  "TRADE": [
+    {"id": "TRADE_001", "name": "冷却期", "definition": "连续亏损后进入冷却期", "source": "[5]", "direction": "neutral", "applicable_env": ["all"], "invalidation": "冷却期满且信号恢复"},
+    {"id": "TRADE_002", "name": "连败干预", "definition": "连续3笔亏损触发暂停", "source": "[5]", "direction": "neutral", "applicable_env": ["all"], "invalidation": "复盘完成且策略调整完毕"}
+  ]
+}

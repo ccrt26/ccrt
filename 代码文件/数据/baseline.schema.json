@@ -1,0 +1,76 @@
+{
+  "_schema": "weekly_baseline v1.0",
+  "_description": "重点股票周度深度分析基线。每周五固化，供日报引用。",
+  "_design": "腰子+情墨 v2026-06-01",
+
+  "baseline": {
+    "baseline_id": {"type": "string", "format": "{code}_W{YYYY}{WW}", "required": true},
+    "stock_code": {"type": "string", "required": true},
+    "stock_name": {"type": "string", "required": true},
+    "baseline_date": {"type": "string", "format": "YYYY-MM-DD", "required": true},
+    "valid_until": {"type": "string", "format": "YYYY-MM-DD"},
+    "strategy_version": {"type": "string"},
+
+    "core_thesis": {"type": "string", "maxLength": 200},
+    "key_support_price": {"type": "number"},
+    "key_pressure_price": {"type": "number"},
+    "stop_loss_price": {"type": "number"},
+    "target_price": {"type": "number"},
+
+    "valuation_status": {
+      "pe_ttm": {"type": "number"},
+      "pe_percentile": {"type": "number"},
+      "pb": {"type": "number"},
+      "assessment": {"type": "string", "enum": ["undervalued","fair","overvalued","uncertain"]}
+    },
+
+    "technical_status": {
+      "trend": {"type": "string", "enum": ["up","down","sideways"]},
+      "ma_status": {"type": "string"},
+      "macd_signal": {"type": "string"},
+      "rsi_level": {"type": "number"},
+      "volume_assessment": {"type": "string"}
+    },
+
+    "moneyflow_status": {
+      "main_force_direction": {"type": "string", "enum": ["inflow","outflow","neutral"]},
+      "northbound_trend": {"type": "string"},
+      "margin_trend": {"type": "string"}
+    },
+
+    "risk_flags": {
+      "pledge_ratio": {"type": "number"},
+      "pledge_risk": {"type": "string"},
+      "unlock_nearby": {"type": "string"},
+      "unlock_risk": {"type": "string"},
+      "holder_change": {"type": "string"},
+      "block_trade_alert": {"type": "string"},
+      "forecast_risk": {"type": "string"},
+      "overall_risk_level": {"type": "string", "enum": ["low","medium","high","critical"]}
+    },
+
+    "counter_evidence": {"type": "array", "items": {"type": "string"}},
+    "trigger_signals": {"type": "array", "items": {"type": "string"}},
+    "decision_impact": {
+      "scoring_fields": {"type": "array", "items": {"type": "string"}},
+      "veto_fields": {"type": "array", "items": {"type": "string"}},
+      "downgrade_fields": {"type": "array", "items": {"type": "string"}},
+      "position_fields": {"type": "array", "items": {"type": "string"}},
+      "stop_loss_fields": {"type": "array", "items": {"type": "string"}}
+    },
+
+    "data_snapshot": {
+      "price": {"type": "number"},
+      "change_pct": {"type": "number"},
+      "total_score": {"type": "number"},
+      "S_Tech": {"type": "number"},
+      "S_Money": {"type": "number"},
+      "S_Fund": {"type": "number"},
+      "S_Risk": {"type": "number"},
+      "S_SectorTrend": {"type": "number"}
+    },
+
+    "source_report_path": {"type": "string"},
+    "data_sources": {"type": "array", "items": {"type": "string"}}
+  }
+}

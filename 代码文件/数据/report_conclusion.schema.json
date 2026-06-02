@@ -1,0 +1,64 @@
+{
+  "_schema": "report_conclusion v1.0",
+  "_description": "报告结构化结论JSON Schema。每份HTML/PDF报告的同名伴生文件。",
+  "_design": "情墨 v2026-05-31",
+
+  "report_meta": {
+    "report_type": {"type": "string", "enum": ["daily_rec","key_stock_daily","deep_analysis"], "description": "报告类型"},
+    "report_date": {"type": "string", "format": "YYYY-MM-DD", "description": "报告日期"},
+    "stock_code": {"type": "string", "format": "6位数字", "description": "股票代码"},
+    "stock_name": {"type": "string", "description": "股票名称"},
+    "strategy_version": {"type": "string", "description": "策略版本号"},
+    "generated_at": {"type": "string", "format": "ISO8601"}
+  },
+
+  "conclusion": {
+    "direction": {"type": "string", "enum": ["bullish","neutral","bearish","forbid"], "description": "观点方向"},
+    "action": {"type": "string", "enum": ["buy","hold","reduce","clear","wait"], "description": "操作建议"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1, "description": "置信度"},
+    "summary": {"type": "string", "maxLength": 200, "description": "人话结论(≤100字)"}
+  },
+
+  "price_targets": {
+    "buy_price": {"type": "number", "nullable": true},
+    "stop_loss": {"type": "number", "nullable": true},
+    "target_price": {"type": "number", "nullable": true},
+    "price_source": {"type": "string", "description": "价格数据源编号"}
+  },
+
+  "conditions": {
+    "trigger_conditions": {"type": "array", "items": {"type": "string"}},
+    "forbid_conditions": {"type": "array", "items": {"type": "string"}},
+    "counter_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scenario": {"type": "string", "description": "什么情况发生"},
+          "effect": {"type": "string", "description": "原判断如何失效"},
+          "trigger_type": {"type": "string", "enum": ["price","event","time","signal"]}
+        }
+      }
+    },
+    "expiry_conditions": {"type": "array", "items": {"type": "string"}}
+  },
+
+  "evidence": {
+    "key_evidence": {"type": "array", "items": {"type": "string"}, "description": "关键证据(含数据源标注)"},
+    "risk_factors": {"type": "array", "items": {"type": "string"}},
+    "data_sources": {"type": "array", "items": {"type": "string"}, "description": "使用的数据源编号列表"}
+  },
+
+  "signals": {
+    "triggered": {"type": "array", "items": {"type": "string"}, "description": "触发的信号ID"},
+    "vetoed": {"type": "array", "items": {"type": "string"}, "description": "否决的信号ID"}
+  },
+
+  "decision_impact": {
+    "scoring_fields": {"type": "array", "items": {"type": "string"}, "description": "影响评分的字段"},
+    "veto_fields": {"type": "array", "items": {"type": "string"}, "description": "触发否决的字段"},
+    "downgrade_fields": {"type": "array", "items": {"type": "string"}, "description": "触发降级的字段"},
+    "position_fields": {"type": "array", "items": {"type": "string"}, "description": "影响仓位的字段"},
+    "stop_loss_fields": {"type": "array", "items": {"type": "string"}, "description": "影响止损的字段"}
+  }
+}

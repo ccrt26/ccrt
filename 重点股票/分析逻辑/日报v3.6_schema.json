@@ -1,0 +1,150 @@
+{
+  "$schema": "日报v3.6数据契约 — baseline→delta→trigger三层模型",
+  "version": "3.6.0",
+  "date": "2026-06-01",
+  "design_principle": "深度分析是地图（baseline），日报是当天路况（delta）。日报不做深度分析，只做基线引用+增量变化+触发检查+明日动作。",
+
+  "p0_decision_card": {
+    "description": "P0明日决策卡——放在报告最前面，一屏看懂",
+    "fields": {
+      "t1_action": {"type": "enum", "values": ["观望","试探","加仓","减仓","清仓","暂停观察"], "required": true},
+      "current_position_cap": {"type": "string", "example": "0%", "required": true, "note": "当前允许仓位，与条件触发后仓位分开"},
+      "triggered_position_cap": {"type": "string", "example": "缩量回踩MA20企稳后允许试探3%", "required": true},
+      "key_buy_point": {"type": "string", "example": "35.16元(MA20)+缩量<20万手+下影线收阳", "required": true},
+      "key_sell_point": {"type": "string", "example": "放量跌破MA20或收盘<35.16", "required": false},
+      "forbidden_actions": {"type": "string", "example": "放量下跌不买; MA20下方不买; 数据缺失不买", "required": true},
+      "new_position_stop_loss": {"type": "string", "example": "32.00元(买入价-ATR×2)", "required": true, "note": "针对明日新建仓的止损"},
+      "held_position_stop_loss": {"type": "string", "example": "25.66元(S3强支撑)", "required": true, "note": "已有仓位止损，引用深度分析S3"},
+      "confidence_level": {"type": "enum", "values": ["高(>70%)","中(50-70%)","低(<50%)"], "required": true},
+      "action_change": {"type": "enum", "values": ["upgrade","unchanged","downgrade","stop_watch","reanalysis_required"], "required": true},
+      "one_line_conclusion": {"type": "string", "example": "中期逻辑未破，短期等缩量回踩MA20企稳再试探", "required": true}
+    }
+  },
+
+  "baseline": {
+    "description": "引用深度分析official baseline，不重算",
+    "fields": {
+      "baseline_id": {"type": "string", "example": "600114_deep_20260529_v1.4", "required": true},
+      "core_logic": {"type": "string", "required": true},
+      "valuation_judgment": {"type": "string", "required": false},
+      "evidence_level": {"type": "string", "required": false},
+      "key_support": {"type": "object", "fields": {"S1": "price", "S2": "price", "S3": "price"}},
+      "key_resistance": {"type": "object", "fields": {"R1": "price", "R2": "price", "R3": "price"}},
+      "risk_boundary": {"type": "object"},
+      "position_cap_baseline": {"type": "string"}
+    }
+  },
+
+  "delta": {
+    "description": "每日增量数据",
+    "fields": {
+      "price_change": {"type": "object", "fields": {"open":"float","high":"float","low":"float","close":"float","change_pct":"float","volume":"int","turnover_rate":"float"}},
+      "fund_flow_4level": {"type": "object", "fields": {"super_large_net":"string","large_net":"string","mid_small_net":"string","main_force_total":"string","structure_judgment":"enum[共识|分歧|大资金撤散户接|资金认可|资金分歧|抛压释放]"}},
+      "margin_trading": {"type": "object", "fields": {"balance":"string","change":"string","signal":"enum[加杠杆|去杠杆|稳定]"}},
+      "northbound": {"type": "object", "fields": {"daily_status":"enum[fresh|stale|missing]","quarterly_date":"date"}},
+      "sector_phase": {"type": "enum", "values": ["见底期","启动期","主升期","高潮期","退潮期"]},
+      "news_events": {"type": "array", "items": {"event_id":"string","level":"enum[S|A|B|C]","status":"enum[待落地|已兑现|落空|超预期]","t1_track":"string","t3_track":"string","t5_track":"string"}}
+    }
+  },
+
+  "trigger": {
+    "description": "触发检查——决定action_change",
+    "fields": {
+      "support_breach": {"type": "boolean", "note": "收盘跌破核心支撑?"},
+      "volume_spike": {"type": "boolean", "note": "放量异常?"},
+      "fund_continuous_outflow": {"type": "boolean", "note": "主力连续>=3日流出+四档共振?"},
+      "margin_decline": {"type": "boolean", "note": "融资连续下降+破位?"},
+      "event_failure": {"type": "boolean", "note": "公告与baseline假设相反?"},
+      "sector_decline": {"type": "boolean", "note": "板块转入衰退?"},
+      "consecutive_downgrade": {"type": "boolean", "note": "连续2日downgrade?"},
+      "data_insufficient": {"type": "boolean", "note": "数据完整度不足影响关键判断?"},
+      "extreme_move": {"type": "boolean", "note": "单日涨跌幅>±7%?"}
+    }
+  },
+
+  "signal_winrate": {
+    "description": "信号可信度表——日报§2.4",
+    "fields": {
+      "signal_id": {"type": "string", "example": "TECH_007"},
+      "signal_name": {"type": "string"},
+      "sample_count": {"type": "int"},
+      "t1_winrate": {"type": "float", "note": "T+1胜率%"},
+      "t5_winrate": {"type": "float", "note": "T+5胜率%"},
+      "avg_return": {"type": "float"},
+      "max_drawdown": {"type": "float"},
+      "low_sample": {"type": "boolean", "note": "sample_count<20→true"},
+      "usable_for_buy": {"type": "boolean", "note": "t1_winrate>=50%且!low_sample→true"},
+      "impact_on_action": {"type": "string"}
+    }
+  },
+
+  "risk_light": {
+    "description": "风控红黄绿灯",
+    "rules": {
+      "red": {"trigger": "质押>50%|解禁<7日|融资连降5日+破位|ST风险|大宗折价>10%", "action": "仓位上限=0%"},
+      "yellow": {"trigger": "质押30-50%|解禁7-30日|融资连降3日|股东人数连升2季|大宗折价5-10%|单日跌>7%", "action": "仓位上限减半，禁止加仓"},
+      "green": {"trigger": "无以上风险", "action": "正常操作"}
+    }
+  },
+
+  "position_discount": {
+    "description": "风险→仓位折扣映射",
+    "rules": [
+      {"risk": "质押>50%", "discount": "×0"},
+      {"risk": "质押30-50%", "discount": "×0.5"},
+      {"risk": "解禁<30日", "discount": "×0.5"},
+      {"risk": "融资连降3日", "discount": "×0.7"},
+      {"risk": "股东人数连升>10%", "discount": "×0.7"},
+      {"risk": "大宗折价>10%", "discount": "×0.5"},
+      {"risk": "关键数据缺失", "discount": "自动降一级"}
+    ]
+  },
+
+  "data_completeness": {
+    "description": "数据完整度检查表——12类关键数据",
+    "items": ["K线","成交量/换手率","四档资金","融资融券","北向/持股","质押","解禁","股东人数","财务指标","事件","信号胜率","baseline/深度分析"],
+    "status_per_item": {"type": "enum", "values": ["fresh(<=3日)","stale(>3日)","missing"]},
+    "overall_pct": {"type": "string", "example": "83% (10/12 fresh)"}
+  },
+
+  "t5_outlook": {
+    "description": "T+5一周情景展望",
+    "fields": {
+      "direction": {"type": "enum", "values": ["看多","偏多","中性","偏空","看空"]},
+      "vs_market": {"type": "enum", "values": ["有望跑赢","持平","可能跑输"]},
+      "target_range": {"type": "string"},
+      "confidence": {"type": "enum", "values": ["高","中","低"]},
+      "key_checkpoints": {"type": "string"}
+    }
+  },
+
+  "machine_fields": {
+    "description": "机器可读字段（HTML注释+表格），>=25项",
+    "required_fields": [
+      "report_version", "stock_code", "trade_date",
+      "baseline_id", "p0_action", "action_change", "confidence",
+      "current_position_cap", "triggered_position_cap",
+      "stop_loss_price", "add_position_price", "reduce_position_price",
+      "risk_light", "data_quality_status", "parser_status",
+      "market_regime", "market_breadth", "ma_arrangement",
+      "adx_value", "rsi_value", "macd_signal", "volume_signal",
+      "fund_flow_direction", "fund_flow_structure",
+      "margin_signal", "northbound_status",
+      "sector_rank_percentile", "wyckoff_stage",
+      "bollinger_position", "t1_action", "t5_direction",
+      "reanalysis_required"
+    ]
+  },
+
+  "report_quality_gate": {
+    "description": "PDF生成前闸门检查",
+    "checks": [
+      "parser_status=PASS",
+      "U-1~U-4全部PASS或允许WARN",
+      "P0明日决策卡存在且九字段齐全",
+      "machine_fields存在且>=25项",
+      "数据完整度表存在",
+      "无禁止级矛盾(仓位/止损/日期/量能/评分/不可获取/胜率滥用)"
+    ]
+  }
+}

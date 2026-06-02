@@ -51,10 +51,15 @@ li { margin: 2px 0; }
 
 
 def find_edge():
-    """Locate Edge browser executable. Returns None if not found."""
+    """Locate a Chromium-family browser executable. Returns None if not found."""
     candidates = [
         r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
         r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+        "/usr/bin/google-chrome",
+        "/usr/bin/chromium",
     ]
     for p in candidates:
         if os.path.exists(p):
@@ -62,8 +67,36 @@ def find_edge():
     return None
 
 
+def normalize_markdown_tables(md_text):
+    """Remove blank lines that split contiguous Markdown table rows.
+
+    Some AI-generated reports insert a blank line between every table row.
+    Python-Markdown then treats each row as a paragraph instead of a table,
+    which makes the PDF drift away from the 2026-05-29 baseline layout.
+    """
+    lines = md_text.splitlines()
+    out = []
+    for i, line in enumerate(lines):
+        if line.strip() == "" and out:
+            prev = out[-1].strip()
+            j = i + 1
+            while j < len(lines) and lines[j].strip() == "":
+                j += 1
+            nxt = lines[j].strip() if j < len(lines) else ""
+            if (
+                prev.startswith("|")
+                and prev.endswith("|")
+                and nxt.startswith("|")
+                and nxt.endswith("|")
+            ):
+                continue
+        out.append(line)
+    return "\n".join(out)
+
+
 def md_to_html_body(md_text):
     """Convert markdown text to styled HTML body."""
+    md_text = normalize_markdown_tables(md_text)
     html = markdown.markdown(md_text, extensions=['tables', 'fenced_code'])
     html = re.sub(r'(<table>)', r'<div style="overflow-x:auto;">\1', html)
     html = re.sub(r'(</table>)', r'\1</div>', html)

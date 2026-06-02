@@ -54,6 +54,27 @@ def scan_all(mode="daily"):
     # 扫描7e: 高Token操作无run记录
     findings.extend(check_high_token_no_run())
 
+    # 扫描7f: engine event actor 字段完整性 (P0-7 审计规则)
+    findings.extend(check_engine_actor_compliance())
+
+    # 扫描7g: 阿黑代码写入检测
+    findings.extend(check_ahhei_code_write())
+
+    # 扫描7h: write_events 与 git modified 一致性
+    findings.extend(check_write_events_vs_git())
+
+    # 扫描7i: 批量代签检测（同分钟多角色+同session多角色）
+    findings.extend(check_batch_signing())
+
+    # 扫描7j: stage-role 不匹配检测
+    findings.extend(check_stage_role_mismatch())
+
+    # 扫描7k: 阿黑 sign/advance/complete 检测
+    findings.extend(check_ahhei_sign_advance())
+
+    # 扫描7l: CLI actor vs actual_actor 不一致
+    findings.extend(check_actor_mismatch())
+
     # 扫描8: 优化方案合规 (daily)
     findings.extend(check_optimization_compliance_daily())
 
@@ -139,34 +160,73 @@ def check_checklist_sig_timing():
 
 
 def check_token_overspend():
-    """检查Token超支"""
+    """检查Token超支：缺账本→WARN，有账本→按run_id汇总对比预算"""
     findings = []
     ops_file = os.path.join(LOG_DIR, "ai_ops", "ai_ops.jsonl")
     if not os.path.exists(ops_file):
+        if not _finding_exists_today("token_overspend", "ALL"):
+            findings.append(make_finding(
+                "HIGH", "token_overspend",
+                "ALL",
+                "ai_ops.jsonl 缺失，Token消耗无账本可查。成本审计处于盲审状态。",
+                [ops_file],
+                "请红结实现 ai_ops 落盘，确保所有LLM调用写入 ai_ops.jsonl",
+            ))
         return findings
 
-    # 简化版：统计所有AI操作的Token总量
-    total_tokens = 0
+    # 按 run_id 汇总 ai_ops
+    run_tokens = {}
     try:
         with open(ops_file, 'r') as f:
             for line in f:
                 try:
                     record = json.loads(line.strip())
-                    total_tokens += record.get("token_used", 0)
+                    rid = record.get("run_id", "UNKNOWN")
+                    run_tokens[rid] = run_tokens.get(rid, 0) + record.get("token_used", 0)
                 except json.JSONDecodeError:
                     pass
     except Exception:
         pass
 
-    # 如果Token总量异常（阈值可配置）
-    if total_tokens > 1000000:  # 1M Token 告警阈值
-        findings.append(make_finding(
-            "MEDIUM", "token_overspend",
-            "ALL",
-            f"累计Token消耗超过阈值: {total_tokens} tokens",
-            [ops_file],
-            "请情墨审查Token使用趋势"
-        ))
+    # 加载 checklist 中的 token_budget
+    checklist_dir = os.path.join(LOG_DIR, "checklist")
+    budgets = {}
+    if os.path.isdir(checklist_dir):
+        for fn in os.listdir(checklist_dir):
+            if not fn.endswith(".json"):
+                continue
+            cp = os.path.join(checklist_dir, fn)
+            try:
+                with open(cp, 'r', encoding='utf-8') as f:
+                    cdata = json.load(f)
+                c_rid = cdata.get("run_id", "")
+                tb = cdata.get("token_budget")
+                if c_rid and tb and isinstance(tb, (int, float)) and tb > 0:
+                    budgets[c_rid] = tb
+            except Exception:
+                pass
+
+    # 对比预算
+    for rid, used in run_tokens.items():
+        budget = budgets.get(rid)
+        if budget:
+            ratio = used / budget
+            if ratio > 1.0:
+                findings.append(make_finding(
+                    "HIGH", "token_overspend",
+                    rid,
+                    f"Token超支: 实际 {used} / 预算 {budget} ({ratio:.0%})",
+                    [ops_file, f"logs/checklist/*.json"],
+                    "请情墨审查超支原因，必要时追加预算或优化实现",
+                ))
+            elif ratio > 0.8:
+                findings.append(make_finding(
+                    "MEDIUM", "token_overspend",
+                    rid,
+                    f"Token接近预算上限: 实际 {used} / 预算 {budget} ({ratio:.0%})",
+                    [ops_file],
+                    "关注后续消耗，预留余量",
+                ))
 
     return findings
 
@@ -473,6 +533,61 @@ def check_financial_impact_bypass():
     return findings
 
 
+def _parse_iso(s):
+    """Parse ISO datetime string with timezone handling. Returns datetime or None."""
+    if not s:
+        return None
+    try:
+        normalized = s.strip()
+        if normalized.endswith('Z') or normalized.endswith('z'):
+            normalized = normalized[:-1] + '+00:00'
+        return datetime.fromisoformat(normalized)
+    except (ValueError, TypeError):
+        return None
+
+
+def _get_run_time_window(run):
+    """Extract (start_dt, end_dt) from a run record.
+
+    Start priority: run["started"] → run["created_at"] → earliest stages[].started_at
+    End priority:   run["completed"] → run["updated_at"] (if status=="completed")
+                    → latest stages[].completed_at → now (if active)
+    """
+    now = datetime.now(timezone.utc)
+
+    # Start time
+    start = _parse_iso(run.get("started", ""))
+    if not start:
+        start = _parse_iso(run.get("created_at", ""))
+    if not start:
+        stage_starts = []
+        for s in run.get("stages", []):
+            st = _parse_iso(s.get("started_at", ""))
+            if st:
+                stage_starts.append(st)
+        if stage_starts:
+            start = min(stage_starts)
+    if not start:
+        return None
+
+    # End time
+    end = _parse_iso(run.get("completed", ""))
+    if not end and run.get("status") == "completed":
+        end = _parse_iso(run.get("updated_at", ""))
+    if not end:
+        stage_ends = []
+        for s in run.get("stages", []):
+            et = _parse_iso(s.get("completed_at", ""))
+            if et:
+                stage_ends.append(et)
+        if stage_ends:
+            end = max(stage_ends)
+    if not end:
+        end = now  # Active run, window extends to now
+
+    return (start, end)
+
+
 def check_short_command_bypass():
     """检查短指令绕过：ai_ops.jsonl 中高 token 操作无对应活跃 run"""
     findings = []
@@ -488,33 +603,27 @@ def check_short_command_bypass():
     except Exception:
         return findings
 
-    # 加载活跃 run 时间窗口
+    bypass_threshold = 5000
+
+    # 加载活跃 run 时间窗口（使用兼容字段解析）
     run_windows = []
     if os.path.exists(pipeline_file):
         try:
             with open(pipeline_file, 'r', encoding='utf-8') as f:
                 state = json.load(f)
             for rid, run in state.get("runs", {}).items():
-                started = run.get("started", "")
-                completed = run.get("completed", "")
-                if started:
-                    try:
-                        s = datetime.fromisoformat(started)
-                        e = datetime.fromisoformat(completed) if completed else datetime.now(timezone.utc)
-                        run_windows.append((s, e, rid))
-                    except ValueError:
-                        pass
+                win = _get_run_time_window(run)
+                if win:
+                    run_windows.append((win[0], win[1], rid))
         except Exception:
             pass
 
-    bypass_threshold = 5000
     for op in ops:
         token_used = op.get("token_used", 0)
         if token_used <= bypass_threshold:
             continue
-        try:
-            op_ts = datetime.fromisoformat(op.get("timestamp", ""))
-        except ValueError:
+        op_ts = _parse_iso(op.get("timestamp", ""))
+        if not op_ts:
             continue
         in_window = any(s <= op_ts <= e for s, e, _ in run_windows)
         if not in_window:
@@ -742,6 +851,338 @@ def check_high_token_no_run():
     return findings
 
 
+def check_write_events_vs_git():
+    """检查 git modified 文件是否都有 write_events 记录"""
+    findings = []
+    we_file = os.path.join(LOG_DIR, "security", "write_events.jsonl")
+
+    if not os.path.exists(we_file):
+        findings.append(make_finding(
+            "HIGH", "write_events_missing",
+            "ALL",
+            "write_events.jsonl 不存在，无法追溯写入审计",
+            [we_file],
+            "请红结确保 write_protection_hook 正常落盘 write_events",
+        ))
+        return findings
+
+    # Get recently written files from write_events (last 24h, PASS only)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    event_files = set()
+    try:
+        with open(we_file, 'r') as f:
+            for line in f:
+                try:
+                    rec = json.loads(line.strip())
+                    ts = datetime.fromisoformat(rec.get("timestamp", "2000-01-01T00:00:00Z"))
+                    if ts > cutoff and rec.get("decision") == "PASS":
+                        fp = rec.get("file_path", "")
+                        if fp:
+                            event_files.add(fp)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+    except Exception:
+        pass
+
+    return findings
+
+
+def check_engine_actor_compliance():
+    """P0-7 rule: engine events after 2026-06-02 must have actor field.
+    actor=阿黑 with non-whitelist event_type → FAIL."""
+    findings = []
+    eng_file = os.path.join(LOG_DIR, "engine", "engine_events.jsonl")
+    if not os.path.exists(eng_file):
+        return findings
+
+    cutoff = datetime(2026, 6, 2, tzinfo=timezone.utc)
+    dispatcher_whitelist = {"start", "status", "block", "wake", "notify", "collect", "summarize", "skip"}
+
+    try:
+        with open(eng_file, 'r') as f:
+            for line in f:
+                try:
+                    rec = json.loads(line.strip())
+                except json.JSONDecodeError:
+                    continue
+
+                ts_str = rec.get("timestamp", "")
+                try:
+                    ts = datetime.fromisoformat(ts_str)
+                except (ValueError, TypeError):
+                    continue
+
+                if ts < cutoff:
+                    continue
+
+                actor = rec.get("actor", "")
+                event_type = rec.get("event_type", "")
+
+                # Rule 1: missing actor → FAIL
+                if not actor:
+                    findings.append(make_finding(
+                        "HIGH", "engine_actor_missing",
+                        rec.get("run_id", "?"),
+                        f"Engine event after 2026-06-02 missing actor field: {event_type} at {ts_str[:19]}",
+                        [eng_file],
+                        "所有 engine event 必须包含 actor 字段",
+                    ))
+                    continue  # Only report once per type
+
+                # Rule 2: 阿黑 actor with non-whitelist event_type → FAIL
+                if actor == "阿黑" and event_type not in dispatcher_whitelist:
+                    findings.append(make_finding(
+                        "HIGH", "ahhei_unauthorized_event",
+                        rec.get("run_id", "?"),
+                        f"阿黑执行了非白名单事件: {event_type} (白名单: {dispatcher_whitelist})",
+                        [eng_file],
+                        "阿黑只能执行调度动作，不得推进/完成流程",
+                    ))
+
+        # Deduplicate findings (only first occurrence of each category)
+        seen = set()
+        unique = []
+        for f_item in findings:
+            key = (f_item["category"], f_item["related_run_id"])
+            if key not in seen:
+                seen.add(key)
+                unique.append(f_item)
+
+    except Exception:
+        pass
+
+    return unique[:3]  # Cap to avoid flooding
+
+
+def check_ahhei_code_write():
+    """P0-7 rule: 阿黑 actor + code write → FAIL."""
+    findings = []
+    we_file = os.path.join(LOG_DIR, "security", "write_events.jsonl")
+    if not os.path.exists(we_file):
+        return findings
+
+    cutoff = datetime(2026, 6, 2, tzinfo=timezone.utc)
+    try:
+        with open(we_file, 'r') as f:
+            for line in f:
+                try:
+                    rec = json.loads(line.strip())
+                except json.JSONDecodeError:
+                    continue
+
+                ts_str = rec.get("timestamp", "")
+                try:
+                    ts = datetime.fromisoformat(ts_str)
+                except (ValueError, TypeError):
+                    continue
+
+                if ts < cutoff:
+                    continue
+
+                actor = rec.get("actor", "")
+                decision = rec.get("decision", "")
+                file_path = rec.get("file_path", "")
+
+                if actor == "阿黑" and decision == "PASS":
+                    findings.append(make_finding(
+                        "HIGH", "ahhei_code_write",
+                        rec.get("run_id", "?"),
+                        f"阿黑写入代码文件且被放行: {file_path}",
+                        [we_file],
+                        "阿黑在任何情况下不得写入代码文件。检查授权逻辑是否存在漏洞。",
+                    ))
+
+    except Exception:
+        pass
+
+    return findings[:3]
+
+
+def check_batch_signing():
+    """P0-3: 批量代签检测 — 同分钟>=3角色/同session多角色"""
+    findings = []
+    sig_file = os.path.join(LOG_DIR, "signatures", "signature_events.jsonl")
+    if not os.path.exists(sig_file):
+        return findings
+
+    try:
+        with open(sig_file, 'r') as f:
+            events = [json.loads(l) for l in f if l.strip()]
+    except Exception:
+        return findings
+
+    # Check 1: same minute, >= 3 different roles → HIGH
+    minute_roles = {}
+    for e in events:
+        ts = e.get("timestamp", "")
+        if not ts:
+            continue
+        minute = ts[:16]  # "2026-06-02T00:30"
+        role = e.get("role", "")
+        rid = e.get("run_id", "")
+        if role:
+            key = (minute, rid)
+            minute_roles.setdefault(key, set()).add(role)
+
+    for (minute, rid), roles in minute_roles.items():
+        if len(roles) >= 3:
+            findings.append(make_finding(
+                "HIGH", "batch_signing",
+                rid,
+                f"同分钟({minute})内{len(roles)}个不同角色签名: {', '.join(sorted(roles))}",
+                [sig_file],
+                "疑似批量代签。每个角色签名应独立执行，不得用Bash循环批量操作。",
+            ))
+
+    # Check 2: same session_id, multiple roles → FAIL
+    session_roles = {}
+    for e in events:
+        sid = e.get("session_id", "")
+        role = e.get("role", "")
+        rid = e.get("run_id", "")
+        if sid and role:
+            key = (sid, rid)
+            session_roles.setdefault(key, set()).add(role)
+
+    for (sid, rid), roles in session_roles.items():
+        if len(roles) >= 3:
+            findings.append(make_finding(
+                "HIGH", "batch_signing_session",
+                rid,
+                f"同一session({sid[:16]}...)内{len(roles)}个角色签名: {', '.join(sorted(roles))}",
+                [sig_file],
+                "同一会话不应连续切换多个角色身份签名。",
+            ))
+
+    return findings[:5]
+
+
+def check_stage_role_mismatch():
+    """P0-3: stage-role不匹配检测"""
+    findings = []
+    sig_file = os.path.join(LOG_DIR, "signatures", "signature_events.jsonl")
+    if not os.path.exists(sig_file):
+        return findings
+
+    # Define valid stage→role mappings
+    valid_stage_roles = {
+        "design": ["情墨"], "review_1a": ["腰子"],
+        "consult": ["山猫", "信鸽", "玉夜", "流金", "青山"],
+        "review_1b": ["旧影", "新安"],
+        "coding": ["红结"], "verify": ["新安"],
+        "deploy": ["红枫"], "audit": ["旧影"],
+    }
+
+    try:
+        with open(sig_file, 'r') as f:
+            for line in f:
+                try:
+                    e = json.loads(line.strip())
+                except json.JSONDecodeError:
+                    continue
+
+                stage = e.get("stage", "")
+                role = e.get("role", "")
+                rid = e.get("run_id", "")
+
+                if stage and role and stage in valid_stage_roles:
+                    allowed = valid_stage_roles[stage]
+                    if role not in allowed:
+                        findings.append(make_finding(
+                            "HIGH", "stage_role_mismatch",
+                            rid,
+                            f"角色({role})在阶段({stage})签名，但不属于该阶段允许的角色: {allowed}",
+                            [sig_file],
+                        ))
+    except Exception:
+        pass
+
+    return findings[:5]
+
+
+def check_ahhei_sign_advance():
+    """P0-3: 阿黑在sign/advance/complete中"""
+    findings = []
+    sig_file = os.path.join(LOG_DIR, "signatures", "signature_events.jsonl")
+
+    # Check signature events
+    if os.path.exists(sig_file):
+        try:
+            with open(sig_file, 'r') as f:
+                for line in f:
+                    try:
+                        e = json.loads(line.strip())
+                    except json.JSONDecodeError:
+                        continue
+                    actual = e.get("actual_actor", e.get("actor", ""))
+                    action = e.get("action", "")
+                    if actual == "阿黑" and action in ("sign", "advance", "complete"):
+                        findings.append(make_finding(
+                            "HIGH", "ahhei_unauthorized",
+                            e.get("run_id", "?"),
+                            f"阿黑执行了 {action} 操作",
+                            [sig_file],
+                            "阿黑不得执行签名/推进/完成操作",
+                        ))
+        except Exception:
+            pass
+
+    # Check engine events
+    eng_file = os.path.join(LOG_DIR, "engine", "engine_events.jsonl")
+    if os.path.exists(eng_file):
+        try:
+            with open(eng_file, 'r') as f:
+                for line in f:
+                    try:
+                        e = json.loads(line.strip())
+                    except json.JSONDecodeError:
+                        continue
+                    actual = e.get("actual_actor", e.get("actor", ""))
+                    event_type = e.get("event_type", "")
+                    if actual == "阿黑" and event_type in ("advance", "complete"):
+                        findings.append(make_finding(
+                            "HIGH", "ahhei_unauthorized_engine",
+                            e.get("run_id", "?"),
+                            f"阿黑执行了 engine {event_type} 操作",
+                            [eng_file],
+                        ))
+        except Exception:
+            pass
+
+    return findings[:5]
+
+
+def check_actor_mismatch():
+    """P0-3: CLI actor vs actual_actor 不一致"""
+    findings = []
+    sig_file = os.path.join(LOG_DIR, "signatures", "signature_events.jsonl")
+    if not os.path.exists(sig_file):
+        return findings
+
+    try:
+        with open(sig_file, 'r') as f:
+            for line in f:
+                try:
+                    e = json.loads(line.strip())
+                except json.JSONDecodeError:
+                    continue
+
+                requested = e.get("requested_actor", "")
+                actual = e.get("actual_actor", "")
+                if requested and actual and requested != actual:
+                    findings.append(make_finding(
+                        "HIGH", "actor_mismatch",
+                        e.get("run_id", "?"),
+                        f"CLI actor({requested}) != actual_actor({actual})",
+                        [sig_file],
+                        "不能以他人身份签名。",
+                    ))
+    except Exception:
+        pass
+
+    return findings[:5]
+
+
 def make_finding(severity, category, run_id, description, evidence_paths, recommendation=""):
     """生成一条审计发现"""
     return {
@@ -755,6 +1196,30 @@ def make_finding(severity, category, run_id, description, evidence_paths, recomm
         "recommended_action": recommendation or "请相关角色确认并修复",
         "status": "open"
     }
+
+
+def _finding_exists_today(category, related_run_id):
+    """检查今日是否已有同 category + related_run_id 的 OPEN finding。"""
+    audit_file = os.path.join(LOG_DIR, "audit", "audit_findings.jsonl")
+    if not os.path.exists(audit_file):
+        return False
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    try:
+        with open(audit_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                try:
+                    rec = json.loads(line.strip())
+                    ts = rec.get("timestamp", "")
+                    if (rec.get("category") == category
+                            and rec.get("related_run_id") == related_run_id
+                            and rec.get("status") == "open"
+                            and ts.startswith(today)):
+                        return True
+                except json.JSONDecodeError:
+                    pass
+    except Exception:
+        pass
+    return False
 
 
 if __name__ == "__main__":

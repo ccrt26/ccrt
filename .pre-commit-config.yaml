@@ -3,7 +3,13 @@ repos:
     hooks:
       - id: check-E
         name: Token & Size Gate (Check E)
-        entry: python check_E.py
+        entry: python3 check_E.py
         language: system
         files: '\.(py|md)$'
+        stages: [commit]
+      - id: pre-commit-check
+        name: Full Pre-Commit Guard (actor/stage/scope/unauthorized)
+        entry: python3 .claude/hooks/pre-commit-check.py
+        language: system
+        files: '\.(py|md|json|yaml|yml|toml|sh|ps1)$'
         stages: [commit]

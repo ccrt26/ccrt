@@ -168,14 +168,62 @@ def get_stage_idx(ft, sn):
     return -1
 
 
+def get_actual_actor():
+    """Read actual_actor from non-forgeable context (env var)."""
+    for key in ["CLAUDE_CURRENT_ACTOR", "CURRENT_ACTOR"]:
+        val = os.environ.get(key, "").strip()
+        if val:
+            return val
+    id_file = os.path.join(PROJECT_ROOT, ".claude", "current_actor")
+    if os.path.exists(id_file):
+        try:
+            with open(id_file, 'r') as f:
+                val = f.read().strip()
+                if val:
+                    return val
+        except Exception:
+            pass
+    return ""
+
+
+# Stage → allowed advancement roles (who can push to next stage)
+STAGE_ADVANCERS = {
+    "design": ["情墨"],
+    "review_1a": ["腰子"],
+    "consult": ["山猫", "信鸽", "玉夜", "流金", "青山"],
+    "review_1b": ["旧影", "新安"],
+    "coding": ["红结"],
+    "verify": ["新安"],
+    "deploy": ["红枫"],
+    "deploy_verify": ["旧影"],
+    "audit": ["旧影"],
+    "post_audit": ["旧影"],
+}
+
+
 def check_actor_role(actor, role, action="advance"):
     """验证 actor→role 映射。阿黑只能做调度动作。返回 (ok, err)"""
+    actual = get_actual_actor()
+    effective_actor = actual or actor
+
+    # 1. 阿黑在任何情况下不得 advance/complete
+    if effective_actor == "阿黑" and action in ("advance", "complete"):
+        return False, f"阿黑不得执行 '{action}' 动作"
+
+    # 2. actual_actor 与 CLI actor 不一致
+    if actual and actual != actor:
+        return False, f"actual_actor({actual}) != requested_actor({actor})。不能代签。"
+
+    # 3. actual_actor != role
+    if actual and actual != role:
+        return False, f"actual_actor({actual}) != role({role})。不能以他人身份推进。"
+
     if actor not in VALID_ACTORS:
         return False, f"非法 actor: {actor}"
-    allowed = ACTOR_TO_ALLOWED_ROLES.get(actor, [])
+    allowed = ACTOR_TO_ALLOWED_ROLES.get(effective_actor, [])
     if role not in allowed:
-        return False, f"actor '{actor}' 无权扮演 role '{role}'"
-    if actor == "阿黑" and action not in DISPATCHER_ALLOWED_ACTIONS:
+        return False, f"actor '{effective_actor}' 无权扮演 role '{role}'"
+    if effective_actor == "阿黑" and action not in DISPATCHER_ALLOWED_ACTIONS:
         return False, f"阿黑不得执行 '{action}' 动作（仅限: {DISPATCHER_ALLOWED_ACTIONS}）"
     return True, ""
 
@@ -358,8 +406,13 @@ def cmd_start_internal(event_type, task_description, p0_data=None):
     state = load_state()
     state.setdefault("runs", {})[rid] = run
     save_state(state)
+    actual = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "start", "from_stage": None,
                "to_stage": stages[0]["stage"], "target_role": stages[0].get("role", ""),
+               "actor": "阿黑", "role": "阿黑",
+               "actual_actor": actual or "阿黑", "actual_role": "阿黑",
+               "requested_actor": "", "requested_role": "",
+               "decision": "PASS", "reason": "",
                "package_files": [], "override_reason": run.get("override_reason") or ""})
     print(f"✓ 流程已创建\n  run_id: {rid}\n  事件: {event_type}\n  阶段: {stages[0]['stage']}\n  任务: {task_description}")
     if p0_data:
@@ -515,6 +568,12 @@ def cmd_advance(args):
         print(f"错误: role '{role}' 无权推进阶段 '{cur}'。允许: {req_roles}")
         sys.exit(1)
 
+    # 额外检查: role 必须在 STAGE_ADVANCERS 中
+    stage_advancers = STAGE_ADVANCERS.get(cur, [])
+    if stage_advancers and role not in stage_advancers:
+        print(f"错误: role '{role}' 无权推进阶段 '{cur}'。阶段推进者: {stage_advancers}")
+        sys.exit(1)
+
     cpath = cl_path or run.get("checklist_path")
 
     # BUGFIX: 实时重算 financial_impact
@@ -579,8 +638,13 @@ def cmd_advance(args):
                     if s["stage"] == stages[nidx]["stage"]:
                         s["status"] = "skipped"
                 nidx += 1
+                actual_skip = get_actual_actor()
                 append_log("engine", {"run_id": rid, "event_type": "skip", "from_stage": cur,
                            "to_stage": stages[nidx-1]["stage"], "target_role": "",
+                           "actor": actor, "role": role,
+                           "actual_actor": actual_skip or actor, "actual_role": actual_skip or role,
+                           "requested_actor": actor, "requested_role": role,
+                           "decision": "PASS", "reason": "非金融BUGFIX，跳过consult",
                            "package_files": [], "override_reason": "非金融BUGFIX，跳过consult"})
 
     if nidx >= len(stages):
@@ -599,8 +663,13 @@ def cmd_advance(args):
     if cl_path and not run.get("checklist_path"):
         run["checklist_path"] = os.path.abspath(cl_path)
     save_state(state)
+    actual = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "advance", "from_stage": cur,
                "to_stage": nxt["stage"], "target_role": nxt.get("role", ""),
+               "actor": actor, "role": role,
+               "actual_actor": actual or actor, "actual_role": actual or role,
+               "requested_actor": actor, "requested_role": role,
+               "decision": "PASS", "reason": "",
                "package_files": [cpath] if cpath else [], "override_reason": run.get("override_reason","")})
     print(f"✓ 已推进 {cur} → {nxt['stage']}\n  角色: {nxt.get('role') or nxt.get('roles')}")
 
@@ -671,9 +740,13 @@ def cmd_complete(args):
     run["status"] = "completed"
     run["updated_at"] = now
     save_state(state)
+    actual = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "complete", "from_stage": cur,
-               "to_stage": None, "target_role": role, "package_files": [cpath] if cpath else [],
-               "override_reason": ""})
+               "to_stage": None, "target_role": role, "actor": actor, "role": role,
+               "actual_actor": actual or actor, "actual_role": actual or role,
+               "requested_actor": actor, "requested_role": role,
+               "decision": "PASS", "reason": "",
+               "package_files": [cpath] if cpath else [], "override_reason": ""})
     print(f"✓ 流程已完成\n  run_id: {rid}\n  最终阶段: {cur}")
 
 
@@ -693,8 +766,13 @@ def cmd_block(args):
         if s["stage"] == run["current_stage"]:
             s["status"] = "blocked"
     save_state(state)
+    actual_blk = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "block", "from_stage": run["current_stage"],
-               "to_stage": run["current_stage"], "target_role": "", "package_files": [],
+               "to_stage": run["current_stage"], "target_role": "", "actor": "阿黑", "role": "阿黑",
+               "actual_actor": actual_blk or "阿黑", "actual_role": "阿黑",
+               "requested_actor": "", "requested_role": "",
+               "decision": "PASS", "reason": reason,
+               "package_files": [],
                "override_reason": reason})
     print(f"✓ 已阻断 {rid}: {reason}")
 
@@ -723,6 +801,26 @@ def cmd_validate(args):
     for fb in data.get("file_budgets", []):
         if fb.get("max_lines", 0) > 500:
             errors.append(f"File budget {fb.get('path','?')} >500 lines")
+    # token_budget 硬校验（严格模式）
+    budget_warnings = []
+    tb = data.get("token_budget")
+    if tb is None:
+        errors.append("Missing: token_budget（必填，单位：token数）")
+    elif isinstance(tb, bool) or not isinstance(tb, int):
+        errors.append(f"token_budget 必须为整数，收到: {type(tb).__name__} {tb}")
+    elif tb <= 0:
+        errors.append(f"token_budget 需为正整数，收到: {tb}")
+    else:
+        if tb > 30000:
+            bj = data.get("budget_justification")
+            if not bj:
+                errors.append("token_budget > 30000 需提供 budget_justification 字段说明理由")
+            else:
+                budget_warnings.append(f"token_budget={tb} 为超大需求档(>30000)，已提供 justification")
+        elif tb > 15000:
+            budget_warnings.append(f"token_budget={tb} 为大型需求档(15000-30000)")
+        elif tb < 1000:
+            budget_warnings.append(f"token_budget={tb} 偏低(<1000)，仅适合微修复")
     state = load_state()
     td = state.get("runs", {}).get(eff_rid, {}).get("task_description", "")
     fi = detect_financial_impact(data.get("items", []), data.get("file_budgets", []), td)
@@ -738,6 +836,8 @@ def cmd_validate(args):
             print(f"  - {e}")
         sys.exit(1)
     print("PASS: 清单校验通过")
+    for w in budget_warnings:
+        print(f"  ⚠ {w}")
     if fi:
         print("  ⚠ 检测到金融影响")
         if has_l1_or_l2(data.get("items", [])):

@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "description": "规则→闸门映射表：每条禁止项对应hook/gate实现+测试用例+审计日志",
+  "rules": [
+    {
+      "id": "R-01",
+      "rule": "阿黑禁止写代码",
+      "doc_ref": "CLAUDE.md §3.1 身份边界",
+      "hooks": ["write_protection_hook.py"],
+      "gates": ["write_protection_hook: actor==阿黑 → BLOCK"],
+      "test_cases": ["test_actor_write_guard.py: test_ahhei_write_block", "test_actor_write_guard.py: test_ahhei_bash_python_block"],
+      "audit_log": "write_events.jsonl: actor=阿黑 + decision=PASS → audit FAIL",
+      "audit_rule": "audit_scan.py: check_ahhei_code_write"
+    },
+    {
+      "id": "R-02",
+      "rule": "红结只能在coding阶段写scope内文件",
+      "doc_ref": "templates/flow_bugfix.json: coding stage",
+      "hooks": ["write_protection_hook.py"],
+      "gates": ["write_protection_hook: stage!=coding → BLOCK", "write_protection_hook: file∉files_scope → BLOCK"],
+      "test_cases": ["test_actor_write_guard.py: test_hongjie_coding_in_scope_pass", "test_actor_write_guard.py: test_hongjie_coding_out_scope_block"],
+      "audit_log": "write_events.jsonl: role=红结 + stage!=coding → audit FAIL"
+    },
+    {
+      "id": "R-03",
+      "rule": "红枫只能在deploy阶段写部署文件",
+      "doc_ref": "templates/flow_bugfix.json: deploy stage",
+      "hooks": ["write_protection_hook.py"],
+      "gates": ["write_protection_hook: stage=deploy + role=红枫 + scope → PASS", "write_protection_hook: stage=deploy + role=红枫 + business_code → BLOCK"],
+      "test_cases": ["test_actor_write_guard.py: test_hongfeng_deploy_business_code_block"]
+    },
+    {
+      "id": "R-04",
+      "rule": "新安只能在verify阶段写测试文件",
+      "doc_ref": "templates/flow_bugfix.json: verify stage",
+      "hooks": ["write_protection_hook.py"],
+      "gates": ["write_protection_hook: stage=verify + role=新安 + production_code → BLOCK"],
+      "test_cases": ["test_actor_write_guard.py: test_xinan_verify_production_code_block"]
+    },
+    {
+      "id": "R-05",
+      "rule": "日报禁止快照化",
+      "doc_ref": "金融铁律/金融铁律_v1.17.md",
+      "hooks": [],
+      "gates": ["U-6 结构检查"],
+      "test_cases": [],
+      "audit_log": "audit_scan.py: check_optimization_compliance_daily"
+    },
+    {
+      "id": "R-06",
+      "rule": "东财push2his禁止进入调度",
+      "doc_ref": "金融铁律/金融铁律_v1.17.md: API纪律",
+      "hooks": ["bash_write_detector.py: eastmoney detection"],
+      "gates": ["scheduled_tasks.json audit: no eastmoney scripts"],
+      "test_cases": [],
+      "audit_log": "audit_scan.py: rg push2his|eastmoney in .claude/scripts"
+    },
+    {
+      "id": "R-07",
+      "rule": "PDF gate不通过禁止发布",
+      "doc_ref": "金融铁律/金融铁律_v1.17.md: PDF保护",
+      "hooks": [],
+      "gates": ["verify_deployment.py: G3 PDF gate"],
+      "test_cases": [],
+      "audit_log": "gate_check.jsonl"
+    },
+    {
+      "id": "R-08",
+      "rule": "U检查不通过禁止发布",
+      "doc_ref": "金融铁律/金融铁律_v1.17.md: 数据运用审计",
+      "hooks": [],
+      "gates": ["audit_scan.py: U-1~U-4 checks"],
+      "test_cases": [],
+      "audit_log": "audit_findings.jsonl"
+    },
+    {
+      "id": "R-09",
+      "rule": "多个active coding run禁止同时存在",
+      "doc_ref": "本执行单 P0-5",
+      "hooks": ["write_protection_hook.py: multiple active → require run_id"],
+      "gates": ["pipeline_auth: get_active_code_runs().length > 1 → BLOCK"],
+      "test_cases": ["test_actor_write_guard.py: test_multiple_active_runs_block"],
+      "audit_log": "audit_scan.py: check multiple active coding runs"
+    },
+    {
+      "id": "R-10",
+      "rule": "Bash写文件必须过授权检查",
+      "doc_ref": "本执行单 P0-3",
+      "hooks": ["write_protection_hook.py + bash_write_detector.py"],
+      "gates": ["bash_write_detector: >, >>, tee, cp, mv, rm, sed -i → detect"],
+      "test_cases": ["test_actor_write_guard.py: test_bash_redirect_block"],
+      "audit_log": "write_events.jsonl: tool=Bash + decision"
+    },
+    {
+      "id": "R-11",
+      "rule": "缺actor的engine event → audit FAIL",
+      "doc_ref": "本执行单 P0-7",
+      "hooks": [],
+      "gates": ["pipeline_engine: all append_log(engine) must include actor"],
+      "test_cases": ["test_actor_write_guard.py: test_missing_actor_audit_fail"],
+      "audit_log": "audit_scan.py: check_engine_actor_compliance"
+    },
+    {
+      "id": "R-12",
+      "rule": "无write_events但git modified → audit FAIL",
+      "doc_ref": "本执行单 P0-8",
+      "hooks": ["write_protection_hook.py: log_write_event on EVERY attempt"],
+      "gates": [],
+      "test_cases": ["test_actor_write_guard.py: test_no_write_events_but_git_modified_fail"],
+      "audit_log": "audit_scan.py: check_write_events_vs_git"
+    }
+  ]
+}

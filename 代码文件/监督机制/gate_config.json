@@ -1,0 +1,50 @@
+{
+  "_schema": "release_gate_config v1.0",
+  "_description": "报告发布闸门配置。P0闸门FAIL=阻断发布，WARN=允许发布限期修复。",
+
+  "gates": {
+    "G1_data_quality": {
+      "level": "P0",
+      "on_fail": "BLOCK",
+      "description": "核心字段缺失+数据源标注+缓存新鲜度",
+      "checks": ["core_fields_present", "source_annotated", "cache_freshness"]
+    },
+    "G2_structured_json": {
+      "level": "P0",
+      "on_fail": "BLOCK",
+      "description": "同名结构化JSON存在+schema校验+必填字段完整",
+      "checks": ["json_exists", "schema_valid", "required_fields_complete"]
+    },
+    "G3_post_eval": {
+      "level": "P0",
+      "on_fail": "WARN",
+      "description": "后评估数据可计算+基准可用+records/summary可写入",
+      "checks": ["returns_calculable", "benchmark_available", "csv_writable"]
+    },
+    "G4_core_fields": {
+      "level": "P0",
+      "on_fail": "BLOCK",
+      "description": "观点方向+操作建议+置信度+数据源列表非空",
+      "checks": ["direction_present", "action_present", "confidence_present", "sources_present"]
+    }
+  },
+
+  "p1_gates": {
+    "G5_signal_id": {
+      "level": "P1",
+      "on_fail": "WARN",
+      "description": "报告中使用的信号有信号ID标注"
+    },
+    "G6_counter_evidence": {
+      "level": "P1",
+      "on_fail": "WARN",
+      "description": "核心结论包含反证条件"
+    }
+  },
+
+  "audit_escalation": {
+    "first_fail": {"action": "责任人24h内修复", "record": true},
+    "second_fail": {"action": "流金+旧影联合复核", "record": true},
+    "third_fail": {"action": "升级L3用户确认", "record": true}
+  }
+}

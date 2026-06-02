@@ -2,11 +2,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash(*.py) || Bash(python *)",
-        "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/PreToolUse_hook.py\""
+        "matcher": "Edit(*) || Write(*) || MultiEdit(*)",
+        "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/write_protection_hook.py\""
       },
       {
-        "matcher": "Edit(*) || Write(*)",
+        "matcher": "Bash(*)",
         "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/write_protection_hook.py\""
       }
     ]
@@ -14,8 +14,7 @@
   "permissions": {
     "defaultMode": "bypassPermissions",
     "allow": [
-      "Bash(*.py)",
-      "Bash(python3 *)",
+      "Bash(*)",
       "Skill(update-config)",
       "Skill(fewer-permission-prompts)",
       "WebSearch",

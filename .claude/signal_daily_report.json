@@ -1,8 +1,0 @@
-{
-  "signal": "daily_report",
-  "timestamp": "2026-05-29T16:22:01.167696+08:00",
-  "data_ready": false,
-  "date": "20260529",
-  "mode": "daily",
-  "degraded": true
-}

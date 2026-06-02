@@ -1,0 +1,114 @@
+{
+  "baseline_id": "601689_W2026W22",
+  "baseline_version": "v1",
+  "baseline_status": "official",
+  "provisional_reason": "",
+  "stock_code": "601689",
+  "stock_name": "拓普集团",
+  "baseline_date": "2026-05-29",
+  "valid_until": "2026-06-04",
+  "next_deep_analysis_date": "2026-06-05",
+  "generated_from": "score_history.jsonl + data_full.json + tushare",
+  "approved_by": "腰子(待签)",
+  "strategy_version": "v1.0",
+  "core_thesis": "评分53分(T8/M14/F11)，风险等级medium",
+  "key_support_price": 56.16,
+  "key_pressure_price": 68.64,
+  "stop_loss_price": 54.91,
+  "target_price": 71.76,
+  "valuation_status": {
+    "pe_ttm": 41.36,
+    "pb": null,
+    "assessment": "fair"
+  },
+  "technical_status": {
+    "trend": "sideways",
+    "ma_status": "纠缠",
+    "macd_signal": "偏弱",
+    "volume_assessment": "放量"
+  },
+  "moneyflow_status": {
+    "main_force_direction": "inflow",
+    "northbound_trend": "2.85",
+    "margin_trend": "336条记录"
+  },
+  "risk_flags": {
+    "pledge_ratio": 2.0,
+    "pledge_note": "1笔活跃质押",
+    "pledge_source": "[3]-tushare",
+    "pledge_risk": "low",
+    "unlock_ratio": 0,
+    "unlock_note": "近期无解禁",
+    "unlock_source": "[3]-tushare",
+    "unlock_risk": "low",
+    "holder_change_pct": 4.7,
+    "holder_note": "股东人数变化+4.7%",
+    "holder_source": "[3]-tushare",
+    "forecast_type": "略减",
+    "forecast_note": "业绩预告类型: 略减",
+    "forecast_source": "[3]-tushare",
+    "forecast_risk": "high",
+    "margin_status": "336条记录",
+    "margin_note": "融资融券数据可用",
+    "margin_source": "[12]-tushare",
+    "northbound_ratio": 2.85,
+    "northbound_note": "北向持股比例: 2.85%",
+    "northbound_source": "[8]-tushare",
+    "overall_risk_level": "medium"
+  },
+  "counter_evidence": [
+    "跌破支撑56.16元，原判断减弱",
+    "主力资金连续3日净流出，原判断需重评",
+    "板块相位转入衰退期，降低置信度",
+    "季报数据恶化触发估值重评",
+    "触发质押/解禁风险升级"
+  ],
+  "trigger_signals": [
+    "TECH_001",
+    "TECH_007",
+    "MONEY_001",
+    "FUND_001"
+  ],
+  "decision_impact": {
+    "scoring_fields": [
+      "S_Tech",
+      "S_Money",
+      "S_Fund",
+      "TotalScore"
+    ],
+    "veto_fields": [],
+    "downgrade_fields": [
+      "S_Risk",
+      "pledge_risk",
+      "unlock_risk"
+    ],
+    "position_fields": [
+      "TotalScore",
+      "risk_level"
+    ],
+    "stop_loss_fields": [
+      "key_support_price",
+      "stop_loss_price"
+    ]
+  },
+  "data_snapshot": {
+    "price": 62.4,
+    "change_pct": -2.42,
+    "total_score": 53,
+    "S_Tech": 8,
+    "S_Money": 14,
+    "S_Fund": 11,
+    "S_Risk": 5
+  },
+  "source_report_path": "重点股票/股票报告/拓普集团(601689)/",
+  "data_sources": [
+    "[1]",
+    "[2]",
+    "[3]",
+    "[5]",
+    "[8]",
+    "[12]",
+    "score_history",
+    "tushare"
+  ]
+}

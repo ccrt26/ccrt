@@ -132,19 +132,35 @@ def check_g6_web_dryrun():
 
 
 def main():
+    import argparse
+    p = argparse.ArgumentParser(description="发布闸门聚合检查")
+    p.add_argument("--checklist", help="指定 checklist JSON 文件路径", default=None)
+    args = p.parse_args()
+
     results = {}
     skips = set()
     all_passed = True
 
-    # Find latest checklist for G2/G4
+    # Find checklist: explicit arg → fallback by mtime
     checklist_dir = os.path.join(PROJECT_ROOT, "logs", "checklist")
     latest_checklist = None
-    if os.path.isdir(checklist_dir):
-        checklists = sorted([
-            f for f in os.listdir(checklist_dir) if f.endswith(".json")
-        ], reverse=True)
+    if args.checklist:
+        if not os.path.exists(args.checklist):
+            print(f"错误: --checklist 指定的文件不存在: {args.checklist}")
+            sys.exit(1)
+        latest_checklist = os.path.abspath(args.checklist)
+        print(f"使用指定 checklist: {latest_checklist}")
+    elif os.path.isdir(checklist_dir):
+        checklists = [os.path.join(checklist_dir, f) for f in os.listdir(checklist_dir)
+                      if f.endswith(".json")]
         if checklists:
-            latest_checklist = os.path.join(checklist_dir, checklists[0])
+            latest_checklist = max(checklists, key=os.path.getmtime)
+            print(f"使用最新 checklist (by mtime): {latest_checklist}")
+        else:
+            print("checklist 目录为空，无可用清单")
+    else:
+        print("checklist 目录不存在")
+    print()
 
     gates = [
         ("G1_precommit", ["python3", os.path.join(PROJECT_ROOT, ".claude", "hooks", "pre-commit-check.py")]),

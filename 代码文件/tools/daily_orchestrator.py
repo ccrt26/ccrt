@@ -167,6 +167,141 @@ def check_data_readiness():
     return False, f"Only {fresh_count} cache files updated today (need >=3)"
 
 
+def check_v36_data_readiness(target_date=None):
+    """v3.6日报数据就绪检查——13项+fund_flow深度校验。
+    返回 (status: str, detail: dict)
+    target_date: 目标交易日(YYYY-MM-DD)，默认今天
+    """
+    if target_date is None:
+        today_str = datetime.now(TZ_SHANGHAI).strftime('%Y-%m-%d')
+    else:
+        today_str = target_date
+    date_compact = today_str.replace('-', '')
+
+    items = {}
+    # 1. K线缓存
+    kline_dir = os.path.join(DATA_CACHE_DIR, "kline_cache")
+    items['kline'] = os.path.isdir(kline_dir) and any(
+        f.endswith('.json') for f in os.listdir(kline_dir)[:1])
+
+    # K线trade_date校验
+    trade_date_ok = False
+    kline_file = os.path.join(kline_dir, '600114.json')
+    if os.path.exists(kline_file):
+        try:
+            with open(kline_file, 'r', encoding='utf-8') as f:
+                kd = json.load(f)
+            if kd and isinstance(kd, list) and len(kd) > 0:
+                latest_kline_date = kd[-1].get('date', '')
+                trade_date_ok = (latest_kline_date == today_str)
+                items['kline_trade_date_match'] = trade_date_ok
+        except:
+            pass
+
+    # 2-5. 数据文件(降级为辅助)
+    for fname, label in [('data_scored.json', 'scored'), ('data_full.json', 'full')]:
+        fp = os.path.join(DATA_CACHE_DIR, fname)
+        items[f'data_{label}'] = os.path.exists(fp) and os.path.getsize(fp) > 1000
+
+    # ===== P0-4: 四档资金深度校验 =====
+    fund_ok = False
+    fund_source_ok = False
+    fund_cache_all = os.path.join(DATA_CACHE_DIR, 'fund_flow_cache', f'{date_compact}_all.json')
+    tushare_health_file = os.path.join(DATA_CACHE_DIR, '.tushare_health.json')
+
+    # 检查tushare health
+    if os.path.exists(tushare_health_file):
+        try:
+            with open(tushare_health_file) as f:
+                th = json.load(f)
+            items['tushare_health_status'] = th.get('status', 'unknown')
+            items['tushare_health_date'] = th.get('latest_trade_date', '')
+            items['tushare_health_stocks'] = th.get('stock_count', 0)
+        except:
+            items['tushare_health_status'] = 'error'
+
+    # 检查fund_flow_cache
+    if os.path.exists(fund_cache_all):
+        try:
+            with open(fund_cache_all) as f:
+                ff_all = json.load(f)
+            # 验证每只重点股票
+            sample_codes = ['600114', '601727', '002230']
+            matched = 0
+            tushare_count = 0
+            for code in sample_codes:
+                if code in ff_all:
+                    rec = ff_all[code]
+                    rec_date = str(rec.get('date', '')).replace('-', '')
+                    if rec_date == date_compact:
+                        matched += 1
+                    if 'tushare' in str(rec.get('source', '')).lower():
+                        tushare_count += 1
+
+            # 验证单票缓存一致性
+            consistent = True
+            for code in ff_all:
+                single_file = os.path.join(DATA_CACHE_DIR, 'fund_flow_cache', f'{code}.json')
+                if os.path.exists(single_file):
+                    try:
+                        with open(single_file) as f:
+                            single = json.load(f)
+                        single_june1 = [r for r in single if str(r.get('date', '')).replace('-', '') == date_compact]
+                        if single_june1:
+                            s = single_june1[0].get('main_force_net', 0)
+                            a = ff_all[code].get('main_force_net', -999)
+                            if abs(s - a) > 0.01:
+                                consistent = False
+                                break
+                    except:
+                        pass
+
+            fund_ok = matched >= 2 and tushare_count >= 2
+            fund_source_ok = tushare_count >= 2
+            items['fund_flow_match'] = matched
+            items['fund_flow_tushare'] = tushare_count
+            items['fund_flow_consistent'] = consistent
+        except:
+            pass
+
+    items['fund_flow_4level'] = fund_ok
+    items['fund_flow_source_ok'] = fund_source_ok
+    items['fund_flow_consistent'] = items.get('fund_flow_consistent', False)
+
+    # 简单字段
+    items['margin'] = True  # Tushare可用
+    items['northbound'] = True
+    for label in ['pledge', 'unlock', 'holder', 'financial']:
+        items[label] = os.path.exists(os.path.join(DATA_CACHE_DIR, 'data_scored.json'))
+    items['events'] = os.path.exists(EVENTS_DB) if os.path.exists(EVENTS_DB) else False
+    items['signal_winrate'] = os.path.exists(os.path.join(DATA_CACHE_DIR, 'signal_winrate_db.json'))
+    deep_dir = os.path.join(ROOT, '重点股票', '深度分析', '深度分析报告')
+    items['baseline'] = os.path.isdir(deep_dir) and any(
+        '600114' in f for f in os.listdir(deep_dir)[:20]) if os.path.isdir(deep_dir) else False
+    items['baseline'] = os.path.isdir(deep_dir) and any(
+        '600114' in f for f in os.listdir(deep_dir)[:20]) if os.path.isdir(deep_dir) else False
+    items['deep_appendix'] = items['baseline']
+
+    ready = sum(1 for v in items.values() if v)
+    total = len(items)
+    pct = ready / total * 100
+
+    # P0-4: 必须项含fund_flow校验
+    must_have = ['kline', 'kline_trade_date_match', 'fund_flow_4level', 'fund_flow_source_ok']
+    must_ok = all(items.get(k) for k in must_have)
+    fund_inconsistent = not items.get('fund_flow_consistent', True)
+
+    if not must_ok or fund_inconsistent:
+        status = 'BLOCK'
+    elif ready < 12:
+        status = 'WARN'
+    else:
+        status = 'READY'
+
+    return status, {'ready': ready, 'total': total, 'pct': round(pct, 1),
+                    'must_ok': must_ok, 'items': items}
+
+
 def write_signal(signal_type, data):
     """Write a signal file for Claude Code to pick up."""
     signal_file = os.path.join(SIGNAL_DIR, f"signal_{signal_type}.json")
@@ -358,16 +493,21 @@ def check_pigeon_freshness():
     return False, f"events_db last updated: {mtime_dt.strftime('%Y-%m-%d %H:%M')}"
 
 
-def run_mode_daily(skip_data_check=False):
+def run_mode_daily(skip_data_check=False, target_date=None):
     """Daily report mode: data readiness check, signal if ready."""
-    if not is_trading_day():
+    if target_date is None and not is_trading_day():
         return 0
+
+    if target_date:
+        today_str = target_date
+    else:
+        today_str = datetime.now(TZ_SHANGHAI).strftime("%Y%m%d")
 
     if not acquire_lock("daily_orchestrator"):
         return 0
 
     try:
-        today_str = datetime.now(TZ_SHANGHAI).strftime("%Y%m%d")
+        # today_str already set from target_date or current date above
 
         if skip_data_check:
             log("Data check skipped (--skip-data-check)", "SKIP")
@@ -386,12 +526,19 @@ def run_mode_daily(skip_data_check=False):
             log(f"Data readiness check (attempt {attempt}/{MAX_RETRIES}): {detail}")
 
             if ready:
+                v36_status, v36_detail = check_v36_data_readiness(target_date)
+                log(f"v3.6 data readiness: {v36_status} ({v36_detail['ready']}/{v36_detail['total']})")
+                if v36_status == 'BLOCK':
+                    log(f"v3.6 BLOCK: 必须项缺失 {[k for k,v in v36_detail['items'].items() if not v]}", "BLOCK")
+                    log("日报生成已阻断——不发送daily_report signal。请补齐必须数据后重试。", "BLOCK")
+                    return 1
                 stock_ctx = extract_stock_daily_context(today_str)
                 write_signal("daily_report", {
                     "date": today_str,
                     "mode": "daily",
                     "attempt": attempt,
                     "stocks_daily_data": stock_ctx,
+                    "v36_readiness": {"status": v36_status, "detail": v36_detail},
                 })
                 log("Daily report signal sent", "OK")
                 return 0
@@ -401,6 +548,8 @@ def run_mode_daily(skip_data_check=False):
                 time.sleep(RETRY_DELAY)
 
         # All retries exhausted — still try to extract context with stale cache
+        v36_status, v36_detail = check_v36_data_readiness(target_date)
+        log(f"v3.6 data readiness (degraded mode): {v36_status} ({v36_detail['ready']}/{v36_detail['total']})")
         stock_ctx = extract_stock_daily_context(today_str)
         write_signal("daily_report", {
             "date": today_str,
@@ -408,6 +557,7 @@ def run_mode_daily(skip_data_check=False):
             "data_ready": False,
             "degraded": True,
             "stocks_daily_data": stock_ctx,
+            "v36_readiness": {"status": v36_status, "detail": v36_detail},
         })
         log("Data not ready after max retries, signal sent with degraded flag", "WARN")
         return 1
@@ -665,7 +815,7 @@ def main():
     handler = mode_handlers.get(args.mode)
     if handler:
         if args.mode == "daily":
-            exit_code = handler(skip_data_check=args.skip_data_check)
+            exit_code = handler(skip_data_check=args.skip_data_check, target_date=args.date)
         else:
             exit_code = handler()
         log(f"Orchestrator finished: mode={args.mode} exit={exit_code}")

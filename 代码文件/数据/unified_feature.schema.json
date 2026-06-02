@@ -1,0 +1,36 @@
+{
+  "_schema": "unified_feature v1.0",
+  "_description": "统一股票-日期-特征表。所有模块从此取数，禁止各自建字段口径。",
+  "_design": "情墨 v2026-05-31",
+
+  "feature_record": {
+    "date": {"type": "string", "format": "YYYY-MM-DD", "required": true},
+    "code": {"type": "string", "format": "6位数字", "required": true},
+    "name": {"type": "string", "required": false},
+    "field_name": {"type": "string", "required": true, "description": "统一字段名"},
+    "field_value": {"type": "any", "required": true},
+    "data_source": {"type": "string", "required": true, "description": "数据源编号 [1]-[12][C][5]"},
+    "updated_at": {"type": "string", "format": "ISO8601", "required": true},
+    "quality_flag": {"type": "string", "enum": ["fresh","stale","anomaly","missing","not_applicable"], "required": true},
+    "schema_version": {"type": "string", "default": "v1.0", "required": true}
+  },
+
+  "unified_fields": {
+    "quote": ["price","open","high","low","prev_close","change_pct","volume","turnover_rate","total_market_value"],
+    "technical": ["ma5","ma10","ma20","ma60","rsi14","macd_dif","macd_dea","macd_hist","adx14","bb_upper","bb_lower","bb_mid","obv","vol_ratio","atr14"],
+    "fundamental": ["pe_ttm","pb","ps","eps_ttm","roe","gross_margin","revenue_growth","eps_growth","debt_ratio","ocfps","revenue_ps"],
+    "scoring": ["S_Base","S_Fund","S_Tech","S_Money","S_News","S_Risk","S_SectorTrend","TotalScore","S1_MA","S2_Converge","S3_Volume","S4_Support","S5_RSI","S6_MACD","S7_Breakout","S8_Momentum"],
+    "risk": ["veto_status","phase","phase_multiplier","theme_path","peg","eps_growth","growth_source"],
+    "money_flow": ["net_mf_amount","net_lg_amount","net_md_amount","net_sm_amount","rzye","rzmre","rzche"],
+    "benchmark": ["hs300_return","sector_return","market_avg_return"],
+    "returns": ["ret_t1","ret_t3","ret_t5","ret_t1_vs_hs300","ret_t3_vs_hs300","ret_t5_vs_hs300","ret_t1_vs_sector","car5"]
+  },
+
+  "computed_fields": {
+    "pe_ttm": {
+      "formula": "Price[1] / TTM_EPS[3]",
+      "description": "PE(TTM)唯一计算公式。禁止使用腾讯API静态PE。",
+      "source": "[5]"
+    }
+  }
+}

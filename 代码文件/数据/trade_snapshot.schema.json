@@ -1,0 +1,52 @@
+{
+  "_schema": "trade_snapshot v1.0",
+  "_description": "模拟交易快照扩展Schema。每次开仓/减仓/止损/清仓时保存完整状态。",
+  "_design": "情墨+流金 v2026-05-31",
+
+  "snapshot": {
+    "trade_id": {"type": "string", "required": true, "description": "交易唯一ID"},
+    "action": {"type": "string", "enum": ["open","reduce","stop_loss","clear"], "required": true},
+    "timestamp": {"type": "string", "format": "ISO8601", "required": true},
+    "stock_code": {"type": "string", "required": true},
+    "stock_name": {"type": "string", "required": true},
+
+    "price_info": {
+      "entry_price": {"type": "number"},
+      "current_price": {"type": "number"},
+      "position_pct": {"type": "number"},
+      "position_value": {"type": "number"}
+    },
+
+    "scoring_snapshot": {
+      "total_score": {"type": "number", "description": "总分"},
+      "S_Tech": {"type": "number"},
+      "S_Money": {"type": "number"},
+      "S_Fund": {"type": "number"},
+      "S_News": {"type": "number"},
+      "S_SectorTrend": {"type": "number"},
+      "S_Risk": {"type": "number"},
+      "phase": {"type": "string"},
+      "pe_percentile": {"type": "number"},
+      "news_level": {"type": "string"}
+    },
+
+    "trigger_signals": {"type": "array", "items": {"type": "string"}, "description": "触发信号ID列表"},
+    "position_reason": {"type": "string", "maxLength": 200, "description": "开仓/操作理由"},
+    "stop_loss_basis": {"type": "string", "description": "止损依据"},
+
+    "known_risks": {
+      "pledge_ratio": {"type": "number", "description": "质押比例%"},
+      "unlock_nearby": {"type": "string", "description": "近期解禁信息"},
+      "concentration_hhi": {"type": "number", "description": "持仓集中度HHI"},
+      "liquidity_amihud": {"type": "number", "description": "流动性Amihud指标"},
+      "risk_check_results": {"type": "object", "description": "风控检查结果"}
+    },
+
+    "discipline": {
+      "cooling_period_active": {"type": "boolean"},
+      "consecutive_losses": {"type": "number"},
+      "drawdown_pct": {"type": "number"},
+      "position_limit_ok": {"type": "boolean"}
+    }
+  }
+}

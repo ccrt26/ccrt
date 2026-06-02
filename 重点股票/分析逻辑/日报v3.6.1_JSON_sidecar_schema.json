@@ -1,0 +1,11 @@
+{
+  "$schema": "日报v3.6.1 JSON sidecar — 机器读取用，不展示在用户版Markdown中",
+  "version": "3.6.1",
+  "required_top_level_fields": [
+    "report_version", "stock_code", "stock_name", "trade_date", "next_trade_date",
+    "baseline_id", "p0_decision_card", "action_change", "delta", "trigger",
+    "fund_flow_4level", "signal_winrate", "risk_light", "position_discount",
+    "data_completeness", "data_source_check", "parser_status",
+    "u_check_result", "pdf_gate_result", "machine_fields"
+  ]
+}

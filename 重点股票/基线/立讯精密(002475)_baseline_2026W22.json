@@ -1,0 +1,114 @@
+{
+  "baseline_id": "002475_W2026W22",
+  "baseline_version": "v1",
+  "baseline_status": "official",
+  "provisional_reason": "",
+  "stock_code": "002475",
+  "stock_name": "立讯精密",
+  "baseline_date": "2026-05-29",
+  "valid_until": "2026-06-04",
+  "next_deep_analysis_date": "2026-06-05",
+  "generated_from": "score_history.jsonl + data_full.json + tushare",
+  "approved_by": "腰子(待签)",
+  "strategy_version": "v1.0",
+  "core_thesis": "评分65分(T14/M18/F7)，风险等级low",
+  "key_support_price": 65.96,
+  "key_pressure_price": 80.62,
+  "stop_loss_price": 64.5,
+  "target_price": 84.28,
+  "valuation_status": {
+    "pe_ttm": 30.84,
+    "pb": null,
+    "assessment": "fair"
+  },
+  "technical_status": {
+    "trend": "sideways",
+    "ma_status": "多头",
+    "macd_signal": "偏弱",
+    "volume_assessment": "放量"
+  },
+  "moneyflow_status": {
+    "main_force_direction": "inflow",
+    "northbound_trend": "tushare/hk_hold/002475.json 不存在",
+    "margin_trend": "tushare/margin_detail/002475.json 不存在"
+  },
+  "risk_flags": {
+    "pledge_ratio": null,
+    "pledge_note": "tushare/pledge/002475.json 不存在或为空",
+    "pledge_source": "unavailable",
+    "pledge_risk": "low",
+    "unlock_ratio": null,
+    "unlock_note": "tushare/share_float/002475.json 不存在",
+    "unlock_source": "unavailable",
+    "unlock_risk": "low",
+    "holder_change_pct": null,
+    "holder_note": "tushare/holder_number/002475.json 不足2期",
+    "holder_source": "unavailable",
+    "forecast_type": null,
+    "forecast_note": "tushare/forecast/002475.json 不存在",
+    "forecast_source": "unavailable",
+    "forecast_risk": "low",
+    "margin_status": null,
+    "margin_note": "tushare/margin_detail/002475.json 不存在",
+    "margin_source": "unavailable",
+    "northbound_ratio": null,
+    "northbound_note": "tushare/hk_hold/002475.json 不存在",
+    "northbound_source": "unavailable",
+    "overall_risk_level": "low"
+  },
+  "counter_evidence": [
+    "跌破支撑65.96元，原判断减弱",
+    "主力资金连续3日净流出，原判断需重评",
+    "板块相位转入衰退期，降低置信度",
+    "季报数据恶化触发估值重评",
+    "触发质押/解禁风险升级"
+  ],
+  "trigger_signals": [
+    "TECH_001",
+    "TECH_007",
+    "MONEY_001",
+    "FUND_001"
+  ],
+  "decision_impact": {
+    "scoring_fields": [
+      "S_Tech",
+      "S_Money",
+      "S_Fund",
+      "TotalScore"
+    ],
+    "veto_fields": [],
+    "downgrade_fields": [
+      "S_Risk",
+      "pledge_risk",
+      "unlock_risk"
+    ],
+    "position_fields": [
+      "TotalScore",
+      "risk_level"
+    ],
+    "stop_loss_fields": [
+      "key_support_price",
+      "stop_loss_price"
+    ]
+  },
+  "data_snapshot": {
+    "price": 73.29,
+    "change_pct": 1.69,
+    "total_score": 65,
+    "S_Tech": 14,
+    "S_Money": 18,
+    "S_Fund": 7,
+    "S_Risk": 5
+  },
+  "source_report_path": "重点股票/股票报告/立讯精密(002475)/",
+  "data_sources": [
+    "[1]",
+    "[2]",
+    "[3]",
+    "[5]",
+    "[8]",
+    "[12]",
+    "score_history",
+    "tushare"
+  ]
+}
