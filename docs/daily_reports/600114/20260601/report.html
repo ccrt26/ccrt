@@ -39,10 +39,13 @@ li { margin: 2px 0; }
 <body>
 <h1>东睦股份(600114) 日报</h1>
 <blockquote>
-<p><strong>2026-06-01（周一）</strong> | 深度分析基线参考 | AI生成，仅供参考</p>
+<p><strong>2026-06-01（周一）</strong> | 基于 2026-05-29 深度分析基线 | AI辅助生成，仅供复盘参考</p>
 </blockquote>
 <hr />
-<h2>P0 明日决策卡</h2>
+<p><strong>明日一句话操作</strong>：默认不买。只有缩量、下影线、站回35.5、超大单流出收窄四项同时出现，才允许试探3%；否则继续0%观察。</p>
+<p><strong>为什么</strong>：今天价格回踩到MA20附近（好现象），但收盘靠近低点、没有止跌K线。超大单仍流出-3128万，大资金还没停止卖出。所以明天不是抢反弹，而是等止跌证据。</p>
+<hr />
+<h2>一、P0 明日决策卡</h2>
 <div style="overflow-x:auto;"><table>
 <thead>
 <tr>
@@ -61,78 +64,350 @@ li { margin: 2px 0; }
 </tr>
 <tr>
 <td style="text-align: left;"><strong>条件触发后仓位</strong></td>
-<td style="text-align: left;">待深度分析baseline确认关键价位</td>
+<td style="text-align: left;">缩量至20万手以下 + 出现下影线或收阳 + 收盘站回35.5 + 超大单流出收窄至-2000万以内 → 试探仓3%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>关键买点</strong></td>
+<td style="text-align: left;">35.16元（MA20），确认条件见上</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>禁止动作</strong></td>
-<td style="text-align: left;">追涨不买；放量下跌不买；无baseline参考不重仓</td>
+<td style="text-align: left;">放量日不建仓；MA20下方不建仓；超大单净流出未收窄至-2000万以内不建仓；无下影线不建仓</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>新仓止损</strong></td>
+<td style="text-align: left;">32元（买入价-ATR×2，约-9%）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>已持仓止损</strong></td>
+<td style="text-align: left;">25.66元（深度分析S3强支撑），当前无持仓</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>置信度</strong></td>
-<td style="text-align: left;">中——K线量能+Tushare四档资金完整</td>
+<td style="text-align: left;">中——K线+资金数据完整，部分数据有正常披露延迟</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>一句话结论</strong></td>
-<td style="text-align: left;">缩量回踩MA20+资金分歧(Tushare)，等超大单流出收窄再试探</td>
+<td style="text-align: left;">缩量回踩MA20，等止跌确认再试探</td>
 </tr>
 </tbody>
 </table></div>
 <hr />
-<h2>一、今天发生了什么</h2>
-<p>6月1日东睦股份收盘35.26元，下跌3.71%。开盘36.63，最高37.54，最低35.21，振幅6.4%。成交量2683万手（较前日缩量35%）。跑输深证成指（-3.71% vs -1.51%）。</p>
-<p>大盘偏弱：上证4057.74（-0.27%），深证15340.36（-1.51%）。</p>
-<p>action_change = unchanged。</p>
-<hr />
-<h2>二、资金与情绪</h2>
-<p>四档资金（Tushare moneyflow，6月1日收盘数据）：</p>
-<p>| 超大单 | -3128万 | 流出 | 机构大资金态度 |
-| 大单 | +1900万 | 流入 | 游资/大户在承接 |
-| 中单 | -61万 | — | — |
-| 小单 | +1289万 | 流入 | 散户继续参与 |
-| <strong>主力合计</strong> | <strong>-1228万</strong> | <strong>分歧</strong> | 超大单流出 vs 大单流入 |</p>
-<p><strong>结构判断</strong>：资金分歧。超大单在撤(-3128万)但大单在接(+1900万)，不是一边倒的"大资金加速撤退"。与之前东财数据显示的"超大单+大单共振流出"不同——Tushare口径下大单为净买入。这降低了明日继续观望的紧迫性，但仍不足以触发试探（超大单流出尚未收窄至-2000万以内）。</p>
-<hr />
-<h2>三、板块与大盘</h2>
-<p>上证-0.27%，深证-1.51%，市场偏弱。东睦股份跑输深证成指。</p>
-<hr />
-<h2>四、风控红黄绿灯</h2>
+<h2>二、深度分析基线说了什么，今天变了吗</h2>
+<blockquote>
+<p><strong>深度分析 2026-05-29 核心结论</strong>：PM+MIM+SMC三平台+并购成长,A股稀缺标的。短期不宜追入,等缩量回踩MA20企稳再试探</p>
+</blockquote>
 <div style="overflow-x:auto;"><table>
 <thead>
 <tr>
-<th style="text-align: left;">风险项</th>
-<th style="text-align: center;">状态</th>
-<th style="text-align: left;">判断</th>
+<th style="text-align: left;">指标</th>
+<th style="text-align: center;">基线值</th>
+<th style="text-align: center;">6/1实际</th>
+<th style="text-align: center;">变了没</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">技术面</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">回调中</td>
+<td style="text-align: left;">收盘价</td>
+<td style="text-align: center;">39.55</td>
+<td style="text-align: center;"><strong>35.26</strong></td>
+<td style="text-align: center;">↓ 继续回调</td>
 </tr>
 <tr>
-<td style="text-align: left;">大盘</td>
-<td style="text-align: center;">🟡</td>
-<td style="text-align: left;">深证-1.51%</td>
+<td style="text-align: left;">S1中期支撑(MA20)</td>
+<td style="text-align: center;">35.16(MA20)</td>
+<td style="text-align: center;"><strong>守住</strong></td>
+<td style="text-align: center;">没破</td>
+</tr>
+<tr>
+<td style="text-align: left;">S3硬止损</td>
+<td style="text-align: center;">25.66</td>
+<td style="text-align: center;"><strong>不变</strong></td>
+<td style="text-align: center;">安全</td>
+</tr>
+<tr>
+<td style="text-align: left;">R1阻力</td>
+<td style="text-align: center;">40.25</td>
+<td style="text-align: center;"><strong>不变</strong></td>
+<td style="text-align: center;">—</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>综合风控灯</strong>：🟡。仓位折扣：当前0%（观望），无折扣。</p>
+<p><strong>这说明</strong>：深度分析里的"等缩量回踩MA20"正在发生，但还没有完成"企稳"这一步。</p>
+<p><strong>对明日影响</strong>：基线不变，仍按"先观察、等确认"执行。不需要重做深度分析。</p>
+<p><strong>明日触发点</strong>：35.16附近能否守住，以及收盘能否重新站回35.5。</p>
 <hr />
-<h2>五、明日情景应对（6月2日 周二）</h2>
-<p>基于收盘价35.26元，仓位上限0%。</p>
-<ul>
-<li><strong>继续下跌</strong>：保持观望，等企稳</li>
-<li><strong>缩量震荡</strong>：观察，不操作</li>
-<li><strong>放量反弹</strong>：不追，等回踩确认</li>
-</ul>
-<p><strong>不做清单</strong>：放量日不建仓；无baseline参考不建仓；无明确止跌信号不建仓。</p>
+<h2>三、今天行情说了什么</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">日期</th>
+<th style="text-align: left;">开盘</th>
+<th style="text-align: left;">收盘</th>
+<th style="text-align: left;">最高</th>
+<th style="text-align: left;">最低</th>
+<th style="text-align: left;">成交量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2026-05-27</td>
+<td style="text-align: left;">39.4</td>
+<td style="text-align: left;">38.67</td>
+<td style="text-align: left;">39.99</td>
+<td style="text-align: left;">38.2</td>
+<td style="text-align: left;">29.7万手</td>
+</tr>
+<tr>
+<td style="text-align: left;">2026-05-28</td>
+<td style="text-align: left;">38.68</td>
+<td style="text-align: left;">39.55</td>
+<td style="text-align: left;">40.19</td>
+<td style="text-align: left;">38.2</td>
+<td style="text-align: left;">29.4万手</td>
+</tr>
+<tr>
+<td style="text-align: left;">2026-05-29</td>
+<td style="text-align: left;">39.55</td>
+<td style="text-align: left;">36.62</td>
+<td style="text-align: left;">39.78</td>
+<td style="text-align: left;">36.37</td>
+<td style="text-align: left;">41.4万手</td>
+</tr>
+<tr>
+<td style="text-align: left;">2026-06-01</td>
+<td style="text-align: left;"><strong>36.63</strong></td>
+<td style="text-align: left;"><strong>35.26</strong></td>
+<td style="text-align: left;"><strong>37.54</strong></td>
+<td style="text-align: left;"><strong>35.21</strong></td>
+<td style="text-align: left;"><strong>26.8万手</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这说明</strong>：下跌速度放缓（-7.41%→-3.71%）、量能收缩（41.4→26.8万手，-35%），是回踩进入观察区的信号。但收盘贴近低点、无下影线，说明买盘还没有把价格拉回去。</p>
+<p><strong>对明日影响</strong>：只缩量不够，必须看到下影线或收阳，才允许进入试探条件。</p>
+<p><strong>明日触发点</strong>：量是否继续缩到20万手以下、是否出现下影线K线。</p>
 <hr />
-<h2>六、T+5 展望</h2>
-<p>一周方向需结合深度分析baseline判断。关键验证点：6月2日量能、资金方向。</p>
+<h2>四、大盘和板块环境</h2>
+<p>上证4057（-0.27%），深证15340（-1.51%）。机械设备板块主升期。</p>
+<p><strong>这说明</strong>：板块环境没有拖后腿，但个股当天（-3.71%）弱于深证（-1.51%），α为负。</p>
+<p><strong>对明日影响</strong>：板块只能提供背景支持，不能抵消个股资金流出。板块继续强而个股仍弱时，继续降低主动性。</p>
+<hr />
+<h2>五、资金在干什么</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">资金类型</th>
+<th style="text-align: left;">净额</th>
+<th style="text-align: left;">谁在买卖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">超大单</td>
+<td style="text-align: left;">-3128万</td>
+<td style="text-align: left;">机构大资金在卖</td>
+</tr>
+<tr>
+<td style="text-align: left;">大单</td>
+<td style="text-align: left;">+1900万</td>
+<td style="text-align: left;">游资/大户在买</td>
+</tr>
+<tr>
+<td style="text-align: left;">中单</td>
+<td style="text-align: left;">-61万</td>
+<td style="text-align: left;">基本平衡</td>
+</tr>
+<tr>
+<td style="text-align: left;">小单</td>
+<td style="text-align: left;">+1289万</td>
+<td style="text-align: left;">散户在买</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主力合计</strong></td>
+<td style="text-align: left;"><strong>-1228万</strong></td>
+<td style="text-align: left;">超大单卖出 &gt; 大单买入</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这说明</strong>：大资金还在卖，承接有但不够，所以不能抢。超大单流出-3128万，远未收窄到-2000万以内。</p>
+<p><strong>对明日影响</strong>：资金分歧不能增强买入，只能允许继续观察。</p>
+<p><strong>明日触发点</strong>：超大单流出必须收窄到-2000万以内（比如-1500万这种），否则不建仓。</p>
+<hr />
+<h2>六、融资、北向和筹码</h2>
+<p><strong>融资融券</strong>：数据按T+1节奏披露，当前最新为2026-05-29。6月1日融资变化需等6月2日更新。由于当前计划仓位为0%，这项延迟不改变"先观察、不建仓"的结论。</p>
+<p><strong>北向资金</strong>：大盘日频数据可用。个股北向持仓为季度披露（截至2026Q1），不用于日频操作判断。</p>
+<p><strong>质押</strong>：&lt;30% 🟢。<strong>解禁</strong>：无近期 🟢。</p>
+<p><strong>这说明</strong>：融资和北向都不是当日可直接决策的强证据。</p>
+<p><strong>对明日影响</strong>：这些数据不支持提高置信度，也不支持提前建仓。</p>
+<hr />
+<h2>七、消息面有新东西吗</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">事件</th>
+<th style="text-align: center;">级别</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: left;">T+1(6/2)</th>
+<th style="text-align: left;">T+3(6/4)</th>
+<th style="text-align: left;">T+5(6/8)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SMC产能扩张公告</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">已兑现</td>
+<td style="text-align: left;">观察产能落地</td>
+<td style="text-align: left;">跟踪订单进展</td>
+<td style="text-align: left;">确认SMC逻辑增强</td>
+</tr>
+</tbody>
+</table></div>
+<p>未发现新增重大事件。</p>
+<p><strong>这说明</strong>：SMC产能扩张仍是中期逻辑，但当天没有新的短线催化。</p>
+<p><strong>对明日影响</strong>：消息面不支持追涨，也不改变观察策略。除非出现订单/并购/产能落地公告，否则不因消息面改变仓位。</p>
+<hr />
+<h2>八、信号靠谱吗</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">信号</th>
+<th style="text-align: center;">样本</th>
+<th style="text-align: center;">T+1胜率</th>
+<th style="text-align: left;">可靠吗</th>
+<th style="text-align: left;">怎么办</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">缩量下跌</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">48.0%</td>
+<td style="text-align: left;">❌ 低于50%</td>
+<td style="text-align: left;">历史上不稳定，不能单独当买点</td>
+</tr>
+<tr>
+<td style="text-align: left;">Markup回调</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">48.5%</td>
+<td style="text-align: left;">❌ 低于50%</td>
+<td style="text-align: left;">仅作背景参考</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这说明</strong>：当前两个信号的T+1胜率都低于50%，意味着历史上这些形态出现后，第二天未必涨。</p>
+<p><strong>对明日影响</strong>：不能把"缩量回踩"直接当成买点，只能当成观察条件。必须叠加K线止跌和资金改善，信号才有参考意义。</p>
+<hr />
+<h2>九、风险多大，仓位怎么限制</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">风险</th>
+<th style="text-align: left;">状态</th>
+<th style="text-align: center;">灯</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">质押</td>
+<td style="text-align: left;">&lt;30%</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">不构成风险</td>
+</tr>
+<tr>
+<td style="text-align: left;">解禁</td>
+<td style="text-align: left;">无近期</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">不构成限制</td>
+</tr>
+<tr>
+<td style="text-align: left;">融资</td>
+<td style="text-align: left;">T+1延迟</td>
+<td style="text-align: center;">🟡</td>
+<td style="text-align: left;">延迟属正常，不改变结论</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值</td>
+<td style="text-align: left;">PE 42倍（财务数据来自Q1 2026深度基线，非当日更新）</td>
+<td style="text-align: center;">🟡</td>
+<td style="text-align: left;">偏高，限制仓位上限</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术破位</td>
+<td style="text-align: left;">MA20未破</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">中期结构完整</td>
+</tr>
+<tr>
+<td style="text-align: left;">消息风险</td>
+<td style="text-align: left;">无P0事件</td>
+<td style="text-align: center;">🟢</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>综合</strong></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: center;"><strong>🟡</strong></td>
+<td style="text-align: left;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这说明</strong>：没有红灯风险，但融资延迟和估值偏高让风险等级保持黄灯。这意味着即使触发买点，也只能小仓位试（3%），不允许加大。</p>
+<p><strong>仓位折扣</strong>：当前0%仓位，无折扣。若触发试探，3%不折扣（无红灯触发）。</p>
+<p><strong>不做清单</strong>：放量日不建仓；MA20下方不建仓；超大单净流出未收窄至-2000万以内不建仓；无下影线不建仓。</p>
+<hr />
+<h2>十、明天怎么做</h2>
+<blockquote>
+<p><strong>执行优先级</strong>：先看是否跌破MA20 → 再看是否缩量 → 再看是否有下影/收阳 → 最后看超大单是否收窄。<strong>四项同时满足才试探；缺一项都继续0%。</strong></p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">情景</th>
+<th style="text-align: left;">条件</th>
+<th style="text-align: left;">动作</th>
+<th style="text-align: center;">仓位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">跌破MA20</td>
+<td style="text-align: left;">收盘&lt;35.16</td>
+<td style="text-align: left;">暂停观察</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: left;">只缩量，无止跌</td>
+<td style="text-align: left;">量&lt;20万手，但无下影/未站回35.5</td>
+<td style="text-align: left;">继续观察</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: left;">缩量止跌确认</td>
+<td style="text-align: left;">量&lt;20万手 + 下影线/收阳 + 收盘&gt;35.5 + 超大单&gt;-2000万</td>
+<td style="text-align: left;">⭐试探</td>
+<td style="text-align: center;">3%</td>
+</tr>
+<tr>
+<td style="text-align: left;">放量反弹</td>
+<td style="text-align: left;">量&gt;30万手且快速拉升</td>
+<td style="text-align: left;">不追</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: left;">超大单继续流出</td>
+<td style="text-align: left;">超大单 ≤ -3000万</td>
+<td style="text-align: left;">不建仓</td>
+<td style="text-align: center;">0%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>T+5展望</strong>：中性。缩量回踩MA20偏积极，超大单流出未收窄偏谨慎。关键看6/2量能、超大单方向、MA20攻防。</p>
 <hr />
 <blockquote>
-<p>⚠️ 风险提示：AI生成，基于公开数据，仅供参考。</p>
+<p>⚠️ 风险提示：AI辅助生成，基于公开数据，仅供复盘参考，不构成投资建议。</p>
 </blockquote>
 <p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
 </body>
