@@ -41,8 +41,7 @@ LOG_DIR = os.path.join(ROOT, "每日荐股", "运营记录")
 SIGNAL_DIR = os.path.join(ROOT, ".claude")
 HOLIDAY_FILE = os.path.join(ROOT, "每日荐股", "运营记录", "holidays_2026.csv")
 
-# Data readiness: sample stocks to check for closing price freshness
-SAMPLE_STOCKS = ["600114", "601727", "002230"]
+# Data readiness: sample stocks from pigeon_config (loaded dynamically)
 DATA_CACHE_DIR = os.path.join(ROOT, "代码文件", "数据")
 EVENTS_DB = os.path.join(ROOT, "重点股票", "消息面数据", "events_db.json")
 
@@ -167,140 +166,252 @@ def check_data_readiness():
     return False, f"Only {fresh_count} cache files updated today (need >=3)"
 
 
+
+def _load_pigeon_stock_pool():
+    """统一从pigeon_config.json读取股票池。返回 {ok, source, codes, name_map, error}"""
+    result = {"ok": False, "source": "pigeon_config.json", "codes": [], "name_map": {}, "error": None}
+    cfg_path = os.path.join(ROOT, "代码文件", "信鸽信息采集", "pigeon_config.json")
+    if not os.path.exists(cfg_path):
+        result["error"] = f"pigeon_config.json not found: {cfg_path}"
+        return result
+    try:
+        with open(cfg_path, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+        stocks = cfg.get("target_stocks", [])
+        if not stocks:
+            result["error"] = "target_stocks empty"
+            return result
+        codes = []
+        name_map = {}
+        for s in stocks:
+            code = str(s.get("code") or "")
+            name = s.get("name") or ""
+            if code:
+                codes.append(code)
+                if name:
+                    name_map[code] = name
+        result["ok"] = True
+        result["codes"] = codes
+        result["name_map"] = name_map
+        return result
+    except Exception as e:
+        result["error"] = str(e)
+        return result
+
+
 def check_v36_data_readiness(target_date=None):
-    """v3.6日报数据就绪检查——13项+fund_flow深度校验。
+    """v3.6日报数据就绪检查——按pigeon_config逐只检查。
     返回 (status: str, detail: dict)
-    target_date: 目标交易日(YYYY-MM-DD)，默认今天
+    target_date: 目标交易日，支持 YYYYMMDD 或 YYYY-MM-DD，默认今天
     """
     if target_date is None:
-        today_str = datetime.now(TZ_SHANGHAI).strftime('%Y-%m-%d')
+        date_dash = datetime.now(TZ_SHANGHAI).strftime('%Y-%m-%d')
+        date_compact = date_dash.replace('-', '')
+    elif '-' in target_date:
+        date_dash = target_date
+        date_compact = target_date.replace('-', '')
     else:
-        today_str = target_date
-    date_compact = today_str.replace('-', '')
+        date_compact = target_date
+        date_dash = f'{target_date[:4]}-{target_date[4:6]}-{target_date[6:8]}'
 
-    items = {}
-    # 1. K线缓存
+    # Check manifest for data collection completion timestamp
+    manifest_path = os.path.join(DATA_CACHE_DIR, "tushare", "manifest.json")
+    manifest_meta = {}
+    manifest_degraded_override = None  # None=no override, False=no change, True=force degrade
+    if os.path.exists(manifest_path):
+        try:
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                mf = json.load(f)
+            manifest_meta["exists"] = True
+            # Support both updated and updated_at, prefer updated
+            raw_ts = mf.get("updated") or mf.get("updated_at") or ""
+            manifest_meta["updated"] = raw_ts
+            if raw_ts:
+                # Normalize to YYYYMMDD for comparison
+                ts_str = str(raw_ts).replace("-", "")
+                if "T" in ts_str:
+                    ts_str = ts_str.split("T")[0]  # 20260603 before T
+                elif " " in ts_str:
+                    ts_str = ts_str.split(" ")[0]
+                # Take first 8 digits
+                mf_date = ts_str[:8] if len(ts_str) >= 8 else ts_str
+                if mf_date < date_compact:
+                    manifest_meta["degraded"] = True
+                    manifest_meta["reason"] = f"manifest updated {mf_date} < target {date_compact}"
+                    manifest_degraded_override = True
+                else:
+                    manifest_meta["degraded"] = False
+            else:
+                manifest_meta["degraded"] = True
+                manifest_meta["reason"] = "manifest updated/updated_at 均为空"
+                manifest_degraded_override = True
+        except Exception as e:
+            manifest_meta["exists"] = True
+            manifest_meta["degraded"] = True
+            manifest_meta["reason"] = f"manifest 解析失败: {e}"
+            manifest_degraded_override = True
+    else:
+        manifest_meta["exists"] = False
+        manifest_meta["degraded"] = True
+        manifest_meta["reason"] = "manifest.json 不存在"
+        manifest_degraded_override = True
+
+    # Read stock pool from pigeon_config (single source of truth)
+    pool_result = _load_pigeon_stock_pool()
+    if not pool_result.get("ok"):
+        return "BLOCK", {"stock_pool_source": "pigeon_config.json",
+                          "stock_pool_status": "missing_or_empty",
+                          "error": pool_result.get("error", "unknown"),
+                          "manifest": manifest_meta}
+
+    pool_codes = pool_result["codes"]
+
     kline_dir = os.path.join(DATA_CACHE_DIR, "kline_cache")
-    items['kline'] = os.path.isdir(kline_dir) and any(
-        f.endswith('.json') for f in os.listdir(kline_dir)[:1])
+    fund_dir = os.path.join(DATA_CACHE_DIR, "fund_flow_cache")
+    margin_dir = os.path.join(DATA_CACHE_DIR, "tushare", "margin_detail")
 
-    # K线trade_date校验
-    trade_date_ok = False
-    kline_file = os.path.join(kline_dir, '600114.json')
-    if os.path.exists(kline_file):
-        try:
-            with open(kline_file, 'r', encoding='utf-8') as f:
-                kd = json.load(f)
-            if kd and isinstance(kd, list) and len(kd) > 0:
-                latest_kline_date = kd[-1].get('date', '')
-                trade_date_ok = (latest_kline_date == today_str)
-                items['kline_trade_date_match'] = trade_date_ok
-        except:
-            pass
+    kline_by_stock = {}
+    fund_flow_by_stock = {}
+    margin_by_stock = {}
+    baseline_by_stock = {}
+    sector_by_stock = {}
 
-    # 2-5. 数据文件(降级为辅助)
-    for fname, label in [('data_scored.json', 'scored'), ('data_full.json', 'full')]:
-        fp = os.path.join(DATA_CACHE_DIR, fname)
-        items[f'data_{label}'] = os.path.exists(fp) and os.path.getsize(fp) > 1000
+    for code in pool_codes:
+        # Kline
+        kf = os.path.join(kline_dir, f"{code}.json")
+        if os.path.exists(kf):
+            try:
+                with open(kf, "r", encoding="utf-8") as f:
+                    kd = json.load(f)
+                if isinstance(kd, list) and kd:
+                    latest = kd[-1].get('date', '')
+                    kline_by_stock[code] = {'date': latest, 'match': latest == date_dash}
+                else:
+                    kline_by_stock[code] = {'date': None, 'match': False}
+            except Exception:
+                kline_by_stock[code] = {'date': None, 'match': False}
+        else:
+            kline_by_stock[code] = {'date': None, 'match': False}
 
-    # ===== P0-4: 四档资金深度校验 =====
-    fund_ok = False
-    fund_source_ok = False
-    fund_cache_all = os.path.join(DATA_CACHE_DIR, 'fund_flow_cache', f'{date_compact}_all.json')
-    tushare_health_file = os.path.join(DATA_CACHE_DIR, '.tushare_health.json')
+        # Fund flow
+        ff = os.path.join(fund_dir, f"{code}.json")
+        if os.path.exists(ff):
+            try:
+                with open(ff, "r", encoding="utf-8") as f:
+                    ff_data = json.load(f)
+                fund_flow_by_stock[code] = {'exists': True, 'records': len(ff_data) if isinstance(ff_data, list) else 1}
+            except Exception:
+                fund_flow_by_stock[code] = {'exists': True, 'error': True}
+        else:
+            fund_flow_by_stock[code] = {'exists': False}
 
-    # 检查tushare health
-    if os.path.exists(tushare_health_file):
-        try:
-            with open(tushare_health_file) as f:
-                th = json.load(f)
-            items['tushare_health_status'] = th.get('status', 'unknown')
-            items['tushare_health_date'] = th.get('latest_trade_date', '')
-            items['tushare_health_stocks'] = th.get('stock_count', 0)
-        except:
-            items['tushare_health_status'] = 'error'
+        # Margin
+        mg = os.path.join(margin_dir, f"{code}.json")
+        if code == "300736":
+            margin_by_stock[code] = {'exists': False, 'missing_allowed': True}
+        elif os.path.exists(mg):
+            try:
+                with open(mg, "r", encoding="utf-8") as f:
+                    mg_data = json.load(f)
+                margin_by_stock[code] = {'exists': True, 'records': len(mg_data) if isinstance(mg_data, list) else 1}
+            except Exception:
+                margin_by_stock[code] = {'exists': True, 'error': True}
+        else:
+            margin_by_stock[code] = {'exists': False}
 
-    # 检查fund_flow_cache
-    if os.path.exists(fund_cache_all):
-        try:
-            with open(fund_cache_all) as f:
-                ff_all = json.load(f)
-            # 验证每只重点股票
-            sample_codes = ['600114', '601727', '002230']
-            matched = 0
-            tushare_count = 0
-            for code in sample_codes:
-                if code in ff_all:
-                    rec = ff_all[code]
-                    rec_date = str(rec.get('date', '')).replace('-', '')
-                    if rec_date == date_compact:
-                        matched += 1
-                    if 'tushare' in str(rec.get('source', '')).lower():
-                        tushare_count += 1
-
-            # 验证单票缓存一致性
-            consistent = True
-            for code in ff_all:
-                single_file = os.path.join(DATA_CACHE_DIR, 'fund_flow_cache', f'{code}.json')
-                if os.path.exists(single_file):
-                    try:
-                        with open(single_file) as f:
-                            single = json.load(f)
-                        single_june1 = [r for r in single if str(r.get('date', '')).replace('-', '') == date_compact]
-                        if single_june1:
-                            s = single_june1[0].get('main_force_net', 0)
-                            a = ff_all[code].get('main_force_net', -999)
-                            if abs(s - a) > 0.01:
-                                consistent = False
+        # Baseline — report_dir first, then 基线
+        bl_found = False
+        report_dir = os.path.join(ROOT, "重点股票", "股票报告")
+        if os.path.isdir(report_dir):
+            for d in os.listdir(report_dir):
+                if code in d:
+                    bl_dir = os.path.join(report_dir, d)
+                    if os.path.isdir(bl_dir):
+                        for fname in os.listdir(bl_dir):
+                            if "baseline" in fname.lower() and fname.endswith(".json"):
+                                bl_found = True
                                 break
-                    except:
-                        pass
+                if bl_found:
+                    break
+        if not bl_found:
+            bl_dir2 = os.path.join(ROOT, "重点股票", "基线")
+            if os.path.isdir(bl_dir2):
+                for fname in os.listdir(bl_dir2):
+                    if code in fname and "baseline" in fname.lower() and fname.endswith(".json"):
+                        bl_found = True
+                        break
+        baseline_by_stock[code] = {'found': bl_found}
 
-            fund_ok = matched >= 2 and tushare_count >= 2
-            fund_source_ok = tushare_count >= 2
-            items['fund_flow_match'] = matched
-            items['fund_flow_tushare'] = tushare_count
-            items['fund_flow_consistent'] = consistent
-        except:
-            pass
+        # Sector
+        scored_file = os.path.join(DATA_CACHE_DIR, "data_scored.json")
+        sector_found = False
+        if os.path.exists(scored_file):
+            try:
+                with open(scored_file, "r", encoding="utf-8-sig") as f:
+                    scored = json.load(f)
+                for bucket in ("AllStocks", "Recommendations", "VetoedStocks"):
+                    for s in scored.get(bucket, []) or []:
+                        if str(s.get("Code") or s.get("code")) == code:
+                            if s.get("SectorPhase"):
+                                sector_found = True
+                            break
+            except Exception:
+                pass
+        sector_by_stock[code] = {'found': sector_found}
 
-    items['fund_flow_4level'] = fund_ok
-    items['fund_flow_source_ok'] = fund_source_ok
-    items['fund_flow_consistent'] = items.get('fund_flow_consistent', False)
+    # Aggregate
+    kline_ok = sum(1 for v in kline_by_stock.values() if v.get('match'))
+    kline_total = len(kline_by_stock) if kline_by_stock else len(pool_result.get("codes", []))
+    fund_ok = sum(1 for v in fund_flow_by_stock.values() if v.get('exists'))
+    margin_ok = sum(1 for v in margin_by_stock.values() if v.get('exists') or v.get('missing_allowed'))
+    baseline_ok = sum(1 for v in baseline_by_stock.values() if v.get('found'))
+    sector_ok = sum(1 for v in sector_by_stock.values() if v.get('found'))
 
-    # 简单字段
-    items['margin'] = True  # Tushare可用
-    items['northbound'] = True
-    for label in ['pledge', 'unlock', 'holder', 'financial']:
-        items[label] = os.path.exists(os.path.join(DATA_CACHE_DIR, 'data_scored.json'))
-    items['events'] = os.path.exists(EVENTS_DB) if os.path.exists(EVENTS_DB) else False
-    items['signal_winrate'] = os.path.exists(os.path.join(DATA_CACHE_DIR, 'signal_winrate_db.json'))
-    deep_dir = os.path.join(ROOT, '重点股票', '深度分析', '深度分析报告')
-    items['baseline'] = os.path.isdir(deep_dir) and any(
-        '600114' in f for f in os.listdir(deep_dir)[:20]) if os.path.isdir(deep_dir) else False
-    items['baseline'] = os.path.isdir(deep_dir) and any(
-        '600114' in f for f in os.listdir(deep_dir)[:20]) if os.path.isdir(deep_dir) else False
-    items['deep_appendix'] = items['baseline']
+    detail = {
+        "stock_pool_source": pool_result.get("source"),
+        "stock_pool_codes": pool_result.get("codes", []),
+        "stock_pool_count": len(pool_result.get("codes", [])),
+        "pigeon_ok": pool_result.get("ok", False),
+        "stock_pool_status": pool_result.get("ok") if pool_result.get("ok") else "ok",
+        'ready': kline_ok + fund_ok + margin_ok + baseline_ok + sector_ok,
+        'total': kline_total * 5,
+        'kline_by_stock': kline_by_stock,
+        'baseline_by_stock': baseline_by_stock,
+        'fund_flow_by_stock': fund_flow_by_stock,
+        'margin_by_stock': margin_by_stock,
+        'sector_by_stock': sector_by_stock,
+        'kline_match': f'{kline_ok}/{kline_total}',
+        'fund_flow_avail': f'{fund_ok}/{kline_total}',
+        'margin_avail': f'{margin_ok}/{kline_total}',
+        'baseline_avail': f'{baseline_ok}/{kline_total}',
+        'sector_avail': f'{sector_ok}/{kline_total}',
+        'manifest': manifest_meta,
+    }
 
-    ready = sum(1 for v in items.values() if v)
-    total = len(items)
-    pct = ready / total * 100
-
-    # P0-4: 必须项含fund_flow校验
-    must_have = ['kline', 'kline_trade_date_match', 'fund_flow_4level', 'fund_flow_source_ok']
-    must_ok = all(items.get(k) for k in must_have)
-    fund_inconsistent = not items.get('fund_flow_consistent', True)
-
-    if not must_ok or fund_inconsistent:
+    # BLOCK if kline < 8/10 or baseline < 5/10
+    if kline_ok < 8 or baseline_ok < 5:
         status = 'BLOCK'
-    elif ready < 12:
+    elif kline_ok < 10 or fund_ok < 8:
         status = 'WARN'
     else:
         status = 'READY'
 
-    return status, {'ready': ready, 'total': total, 'pct': round(pct, 1),
-                    'must_ok': must_ok, 'items': items}
+    # 第5.9-FIX: manifest 状态覆盖 status 判定
+    # missing/empty/parse_error → BLOCK
+    if manifest_degraded_override is True and not manifest_meta.get("reason", ""):
+        # defensive: reason should exist
+        pass
+    if manifest_degraded_override is True:
+        # manifest 缺失/空/失效 → BLOCK
+        if not manifest_meta.get("updated"):
+            if status in ('READY', 'WARN'):
+                status = 'BLOCK'
+        else:
+            # manifest 日期早于 target → WARN（不降级到 BLOCK）
+            if status == 'READY':
+                status = 'WARN'
 
+    return status, detail
 
 def write_signal(signal_type, data):
     """Write a signal file for Claude Code to pick up."""
@@ -319,166 +430,266 @@ def write_signal(signal_type, data):
         log(f"Failed to write signal: {e}", "ERROR")
 
 
-def extract_stock_daily_context(target_date_str):
-    """Extract per-stock 4-day OHLCV from data_full.json for daily report context.
 
-    Reads data_full.json and pigeon_config.json, builds a compact dict of the last
-    4 trading days' data for each stock in the pool. Written into the daily signal
-    so the AI report generator can fill §§1.2 and §zero baseline columns.
+
+
+def _load_baseline_for_stock(code):
+    """Load baseline from report_dir or基线 dir."""
+    report_dir = os.path.join(ROOT, "重点股票", "股票报告")
+    if os.path.isdir(report_dir):
+        for d in os.listdir(report_dir):
+            if code in d:
+                bl_dir = os.path.join(report_dir, d)
+                if os.path.isdir(bl_dir):
+                    for fname in sorted(os.listdir(bl_dir), reverse=True):
+                        if "baseline" in fname.lower() and fname.endswith(".json"):
+                            try:
+                                with open(os.path.join(bl_dir, fname), "r", encoding="utf-8") as f:
+                                    return json.load(f)
+                            except Exception:
+                                pass
+    bl_dir = os.path.join(ROOT, "重点股票", "基线")
+    if os.path.isdir(bl_dir):
+        for fname in sorted(os.listdir(bl_dir), reverse=True):
+            if code in fname and "baseline" in fname.lower() and fname.endswith(".json"):
+                try:
+                    with open(os.path.join(bl_dir, fname), "r", encoding="utf-8") as f:
+                        return json.load(f)
+                except Exception:
+                    pass
+    return None
+
+
+def _load_fund_flow_for_stock(code):
+    """Load latest fund flow from single-stock cache. 规范化5项字段。"""
+    ff_file = os.path.join(DATA_CACHE_DIR, "fund_flow_cache", f"{code}.json")
+    if not os.path.exists(ff_file):
+        return None
+    try:
+        with open(ff_file, "r", encoding="utf-8") as f:
+            rows = json.load(f)
+        raw = rows[-1] if isinstance(rows, list) and rows else rows
+        if not raw:
+            return None
+        # 补齐 display 字段
+        fields = ["super_large_net", "large_net", "medium_net", "small_net", "main_force_net"]
+        for fld in fields:
+            if fld not in raw:
+                raw[fld] = 0
+            disp_fld = fld.replace("_net", "_display")
+            if disp_fld not in raw:
+                val = raw.get(fld, 0)
+                try:
+                    raw[disp_fld] = f"{val:+.0f}万"
+                except (ValueError, TypeError):
+                    raw[disp_fld] = "0万"
+        return raw
+    except Exception:
+        return None
+
+
+def _load_margin_for_stock(code, trade_date=None):
+    """Load latest margin from Tushare margin_detail.
+    Returns dict with margin data + source_snapshot metadata for P0-B post-release validation."""
+    if code == "300736":
+        return {"missing": True, "source_snapshot": {"missing": True, "source_path": f"margin_detail/{code}.json"}}
+    mg_file = os.path.join(DATA_CACHE_DIR, "tushare", "margin_detail", f"{code}.json")
+    if not os.path.exists(mg_file):
+        return None
+    try:
+        with open(mg_file, "r", encoding="utf-8") as f:
+            rows = json.load(f)
+        row = rows[0] if isinstance(rows, list) and rows else rows
+        if not row or not isinstance(row, dict):
+            return None
+        # Build source_snapshot for P0-B margin date validation
+        snapshot = {}
+        if trade_date and row.get("trade_date"):
+            latest_ts = str(row["trade_date"])
+            report_ts = str(trade_date).replace("-", "")
+            lag = 0
+            try:
+                from datetime import datetime as _dt
+                latest_d = _dt.strptime(latest_ts, "%Y%m%d").date()
+                report_d = _dt.strptime(report_ts, "%Y%m%d").date()
+                lag = (report_d - latest_d).days
+            except Exception:
+                pass
+            snapshot = {
+                "latest_trade_date": latest_ts,
+                "report_trade_date": report_ts,
+                "lag_days": max(0, lag),
+                "degraded": latest_ts != report_ts,
+                "declared_in": "degraded_items",
+                "source_path": str(mg_file)
+            }
+        return {
+            "trade_date": row.get("trade_date"),
+            "rzye": row.get("rzye"),
+            "rzmre": row.get("rzmre"),
+            "rzche": row.get("rzche"),
+            "rzye_display": round(row.get("rzye", 0) / 100000000, 2) if row.get("rzye") else None,
+            "source_snapshot": snapshot
+        }
+    except Exception:
+        return None
+
+
+
+def _load_northbound_for_stock(code):
+    hk = os.path.join(DATA_CACHE_DIR, "tushare", "hk_hold", f"{code}.json")
+    if os.path.exists(hk):
+        return {"status": "缓存存在", "source": "hk_hold", "action_impact": "不作为明日买卖触发"}
+    return {"status": "缓存缺失", "source": "hk_hold", "action_impact": "不使用北向增强或削弱动作"}
+
+def _load_pledge_for_stock(code):
+    pf = os.path.join(DATA_CACHE_DIR, "tushare", "pledge", f"{code}.json")
+    if os.path.exists(pf):
+        return {"status": "缓存存在", "source": "pledge", "risk_light": "\uD83D\uDFE2", "action_impact": "不作为仓位上调依据"}
+    return {"status": "缓存缺失", "source": "pledge", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不用于增强动作"}
+
+def _load_unlock_for_stock(code):
+    uf = os.path.join(DATA_CACHE_DIR, "tushare", "share_float", f"{code}.json")
+    if os.path.exists(uf):
+        return {"status": "缓存存在", "source": "share_float", "risk_light": "\uD83D\uDFE2", "action_impact": "未识别可用于明日动作的近期解禁压力"}
+    return {"status": "缓存缺失", "source": "share_float", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不作为仓位调整依据"}
+
+def _load_holder_number_for_stock(code):
+    hf = os.path.join(DATA_CACHE_DIR, "tushare", "holder_number", f"{code}.json")
+    if os.path.exists(hf):
+        return {"status": "数据可用", "source": "holder_number", "action_impact": "不足2期仅披露不推断筹码"}
+    return {"status": "缓存缺失", "source": "holder_number", "action_impact": "样本不足，不判断筹码集中或分散"}
+
+def _load_financial_for_stock(code):
+    ff = os.path.join(DATA_CACHE_DIR, "tushare", "fina_indicator", f"{code}.json")
+    df = os.path.join(DATA_CACHE_DIR, "tushare", "daily_basic", f"{code}.json")
+    if os.path.exists(ff):
+        return {"status": "fina_indicator缓存存在", "source": "fina_indicator", "action_impact": "具体指标用于深度分析，日报仅作风险覆盖", "key_metrics": "fina_indicator缓存存在，具体指标用于深度分析，日报仅作风险覆盖"}
+    if os.path.exists(df):
+        return {"status": "daily_basic缓存存在", "source": "daily_basic", "action_impact": "估值数据用于风控参考", "key_metrics": "daily_basic估值数据用于风控参考"}
+    return {"status": "缓存缺失", "source": "fina_indicator/daily_basic", "action_impact": "财务数据引用深度分析baseline", "key_metrics": "财务数据引用深度分析baseline"}
+
+
+def _compute_risk_context(code):
+    p = _load_pledge_for_stock(code)
+    u = _load_unlock_for_stock(code)
+    return {
+        "pledge_light": p.get("risk_light", "\uD83D\uDFE1"),
+        "unlock_light": u.get("risk_light", "\uD83D\uDFE1"),
+        "margin_light": "\uD83D\uDFE1",
+        "valuation_light": "\uD83D\uDFE1",
+        "technical_light": "\uD83D\uDFE1",
+        "event_light": "\uD83D\uDFE2",
+        "fund_or_sector_light": "\uD83D\uDFE1",
+        "overall_light": "\uD83D\uDFE1",
+        "position_discount": "\u00d70.5"
+    }
+
+def _load_sector_for_stock(code):
+    """Load sector/phase from data_scored.json. 保证industry+phase非空。"""
+    scored_file = os.path.join(DATA_CACHE_DIR, "data_scored.json")
+    if not os.path.exists(scored_file):
+        return {"industry": "", "phase": "待确认", "status": "missing_file"}
+    try:
+        with open(scored_file, "r", encoding="utf-8-sig") as f:
+            scored = json.load(f)
+        for bucket in ("AllStocks", "Recommendations", "VetoedStocks"):
+            for s in scored.get(bucket, []) or []:
+                if str(s.get("Code") or s.get("code")) == code:
+                    phase = s.get("SectorPhase")
+                    if not phase:
+                        return {"industry": s.get("Industry"), "phase": "待确认", "status": "missing_phase"}
+                    return {"industry": s.get("Industry"), "phase": phase}
+    except Exception:
+        pass
+    return {"industry": "", "phase": "待确认", "status": "not_found"}
+
+
+def _load_signal_meta():
+    """Check if signal_winrate_db exists."""
+    sw_file = os.path.join(DATA_CACHE_DIR, "signal_winrate_db.json")
+    return {"available": os.path.exists(sw_file)}
+def extract_stock_daily_context(target_date_str):
+    """v3.6.3: Extract per-stock 4-day OHLCV from kline_cache (primary).
+    Falls back to data_full.json only if kline_cache is unavailable.
 
     Returns:
-        dict: {code: {name, days: [{date, w, c, chg, h, l, vol, to}]}}
-        Empty dict if data_full.json is missing or unreadable.
+        dict: {code: {name, days: [{date, w, c, chg, h, l, vol, to}], baseline, fund_flow_4level, margin, sector_phase, signal_winrate, data_status}}
     """
-    data_file = os.path.join(DATA_CACHE_DIR, "data_full.json")
-    pigeon_cfg = os.path.join(ROOT, "代码文件", "信鸽信息采集", "pigeon_config.json")
+    kline_dir = os.path.join(DATA_CACHE_DIR, "kline_cache")
 
-    if not os.path.exists(data_file):
-        log(f"data_full.json not found at {data_file}", "WARN")
-        return {}
-
-    try:
-        with open(data_file, "r", encoding="utf-8") as f:
-            raw = json.load(f)
-    except (json.JSONDecodeError, OSError) as e:
-        log(f"Failed to read data_full.json: {e}", "WARN")
-        return {}
-
-    stocks_list = raw.get("Stocks", [])
-    if not stocks_list:
-        return {}
-
-    # Build lookup by code
-    by_code = {}
-    for s in stocks_list:
-        code = s.get("Code", "")
-        if code:
-            by_code[code] = s
-
-    # Read stock pool
-    pool_codes = []
-    if os.path.exists(pigeon_cfg):
-        try:
-            with open(pigeon_cfg, "r", encoding="utf-8") as f:
-                cfg = json.load(f)
-            pool_codes = [s["code"] for s in cfg.get("target_stocks", [])]
-        except (json.JSONDecodeError, KeyError, OSError):
-            pass
-
+    # Read stock pool from pigeon_config (single source of truth)
+    pool_result = _load_pigeon_stock_pool()
+    pool_codes = pool_result.get("codes", [])
+    stock_name_map = pool_result.get("name_map", {})
     if not pool_codes:
-        pool_codes = list(by_code.keys())
-
-    # Compute weekday labels from target date
-    try:
-        target_dt = datetime.strptime(target_date_str, "%Y%m%d")
-    except ValueError:
-        target_dt = datetime.now(TZ_SHANGHAI)
-    WEEKDAY_CN = ["一", "二", "三", "四", "五", "六", "日"]
+        log("No stock pool found from pigeon_config.json", "WARN")
+        return {}
 
     result = {}
     for code in pool_codes:
-        s = by_code.get(code)
-        if not s:
+        kf = os.path.join(kline_dir, f"{code}.json")
+        if not os.path.exists(kf):
             continue
-        kc = s.get("KClose", [])
-        if len(kc) < 5:  # need 5 points for 4 changes
+        try:
+            with open(kf, "r", encoding="utf-8") as f:
+                kd = json.load(f)
+        except (json.JSONDecodeError, OSError):
             continue
-        ko = s.get("KOpen", [])
-        kh = s.get("KHigh", [])
-        kl = s.get("KLow", [])
-        kv = s.get("KVolume", [])
+        if not kd or len(kd) < 4:
+            continue
 
-        def _chg(i):
-            prev = kc[i - 1]
-            return round((kc[i] - prev) / prev * 100, 2) if prev and prev != 0 else None
-
-        def _wkday(offset):
-            """offset=0 for today, 1 for yesterday, etc. Skip weekends."""
-            d = target_dt - timedelta(days=offset)
-            while d.weekday() >= 5:
-                d -= timedelta(days=1)
-            return WEEKDAY_CN[d.weekday()], d.strftime("%m%d")
-
-        def _hi_lo(i):
-            h = kh[i] if abs(i) <= len(kh) else None
-            l = kl[i] if abs(i) <= len(kl) else None
-            return h, l
-
-        # Build 4-day window: KClose[-1]=today(T), [-2]=T-1, [-3]=T-2, [-4]=T-3
+        # Take last 4 records as the 4-day window
+        last4 = kd[-4:]
         days = []
-        for off in [3, 2, 1, 0]:
-            idx = -(off + 1)  # off=0→-1(today), off=3→-4(T-3)
-            w, date_md = _wkday(off)
-            h, l = _hi_lo(idx)
-            entry = {
-                "date": date_md,
-                "w": w,
-                "c": kc[idx],
-                "chg": _chg(idx),
-                "h": h,
-                "l": l,
-                "vol": kv[idx] if abs(idx) <= len(kv) else None,
-                "to": s.get("TurnoverRate") if off == 0 else None,
-            }
-            days.append(entry)
+        for d in last4:
+            volume_shares = int(d.get("volume") or 0)
+            days.append({
+                "date": d.get("date", ""),
+                "o": d.get("open", 0),
+                "c": d.get("close", 0),
+                "h": d.get("high", 0),
+                "l": d.get("low", 0),
+                "v": round(volume_shares / 1000000.0, 1),
+                "volume_shares": volume_shares,
+                "volume_wan_shou": round(volume_shares / 1000000.0, 1),
+                "volume_unit": "万手",
+                "chg": d.get("change_pct", 0)
+            })
 
-        # Fund flow: latest from FundFlows, with staleness note
-        fund_flows = raw.get("FundFlows", {})
-        ff_data = fund_flows.get(code, [])
-        ff_latest = None
-        if isinstance(ff_data, list) and ff_data:
-            ff_latest = ff_data[0]  # already sorted by date desc
-            ff_date = ff_latest.get("trade_date", "")
-            ff_stale = (ff_date != target_date_str)
-            ff_latest = {
-                "date": ff_date,
-                "net_mf_amount": ff_latest.get("net_mf_amount"),
-                "is_stale": ff_stale,
-                "note": f"最新可用{ff_date[4:6]}/{ff_date[6:8]}（T+1延迟）" if ff_stale else "当日数据",
-            }
-
-        # Margin: latest from Margins, with staleness note
-        margins = raw.get("Margins", {})
-        mg_data = margins.get(code, [])
-        mg_latest = None
-        if isinstance(mg_data, list) and mg_data:
-            mg_latest_rec = mg_data[0]
-            mg_date = mg_latest_rec.get("trade_date", "")
-            mg_stale = (mg_date != target_date_str)
-            mg_latest = {
-                "date": mg_date,
-                "rzye": mg_latest_rec.get("rzye"),        # 融资余额(元)
-                "rzmre": mg_latest_rec.get("rzmre"),      # 融资买入额(元)
-                "rzche": mg_latest_rec.get("rzche"),      # 融资偿还额(元)
-                "is_stale": mg_stale,
-                "note": f"最新可用{mg_date[4:6]}/{mg_date[6:8]}" if mg_stale else "当日数据",
-            }
-
-        # Financial: latest quarter from Financials
-        financials = raw.get("Financials", {})
-        fin_data = financials.get(code, [])
-        fin_latest = None
-        if isinstance(fin_data, list) and fin_data:
-            fin_rec = fin_data[0]
-            fin_latest = {
-                "end_date": fin_rec.get("end_date", ""),
-                "roe": fin_rec.get("roe"),
-                "gross_margin": fin_rec.get("grossprofit_margin"),
-                "ocfps": fin_rec.get("ocfps"),
-                "revenue_ps": fin_rec.get("revenue_ps"),
-                "eps": fin_rec.get("eps"),
-            }
-
-        result[code] = {
-            "name": s.get("Name", code),
+        # Build context with all required fields; name from pigeon_config
+        from datetime import timezone, datetime as _dt_ctx
+        report_now = _dt_ctx.now(timezone.utc).astimezone(TZ_SHANGHAI) if hasattr(locals(), 'TZ_SHANGHAI') else _dt_ctx.now()
+        report_generated_at = report_now.strftime("%Y-%m-%dT%H:%M:%S+08:00")
+        margin_data = _load_margin_for_stock(code, trade_date)
+        ctx = {
+            "code": code,
+            "name": stock_name_map.get(code, code),
             "days": days,
-            "fund_flow": ff_latest,
-            "margin": mg_latest,
-            "financial": fin_latest,
+            "baseline": _load_baseline_for_stock(code),
+            "fund_flow_4level": _load_fund_flow_for_stock(code),
+            "margin": margin_data,
+            "sector_phase": _load_sector_for_stock(code),
+            "signal_winrate": _load_signal_meta(),
+            "data_status": "fresh" if days else "missing",
+            "northbound": _load_northbound_for_stock(code),
+            "pledge": _load_pledge_for_stock(code),
+            "unlock": _load_unlock_for_stock(code),
+            "holder_number": _load_holder_number_for_stock(code),
+            "financial": _load_financial_for_stock(code),
+            "risk_context": _compute_risk_context(code),
+            "report_generated_at": report_generated_at,
         }
+        # Add source_snapshot if margin data has it
+        if isinstance(margin_data, dict) and margin_data.get("source_snapshot"):
+            ctx["source_snapshot"] = {"margin": margin_data["source_snapshot"]}
+        result[code] = ctx
 
-    log(f"Stock daily context extracted: {len(result)} stocks, {len(days)} days each")
     return result
+
+
+
+
 
 
 def check_pigeon_freshness():
@@ -493,7 +704,31 @@ def check_pigeon_freshness():
     return False, f"events_db last updated: {mtime_dt.strftime('%Y-%m-%d %H:%M')}"
 
 
-def run_mode_daily(skip_data_check=False, target_date=None):
+def _run_canonical_shadow(today_str):
+    """Run canonical shadow-only pipeline. 失败只记 WARN，不改变调用方 exit_code。"""
+    import subprocess as _subprocess
+    shadow_script = os.path.join(ROOT, "scripts", "run_canonical_shadow.py")
+    if not os.path.isfile(shadow_script):
+        log("canonical-shadow: 脚本不存在", "WARN")
+        return
+    cmd = [sys.executable, shadow_script, "--date", today_str]
+    try:
+        proc = _subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        if proc.returncode == 0:
+            log("SHADOW_CANONICAL: PASS", "OK")
+        else:
+            log("SHADOW_CANONICAL: BLOCK", "WARN")
+        if proc.stdout.strip():
+            for line in proc.stdout.strip().splitlines():
+                log(f"  [shadow] {line}", "INFO")
+        if proc.stderr.strip():
+            for line in proc.stderr.strip().splitlines():
+                log(f"  [shadow] {line}", "INFO")
+    except Exception as e:
+        log(f"canonical-shadow 异常: {e}", "WARN")
+
+
+def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=False):
     """Daily report mode: data readiness check, signal if ready."""
     if target_date is None and not is_trading_day():
         return 0
@@ -510,16 +745,20 @@ def run_mode_daily(skip_data_check=False, target_date=None):
         # today_str already set from target_date or current date above
 
         if skip_data_check:
-            log("Data check skipped (--skip-data-check)", "SKIP")
+            log("Data check skipped (--skip-data-check) — 测试用，禁止生产发布", "SKIP")
             stock_ctx = extract_stock_daily_context(today_str)
             write_signal("daily_report", {
                 "date": today_str,
                 "mode": "daily",
-                "data_ready": True,
+                "data_ready": False,
+                "skip_data_check": True,
+                "publish_allowed": False,
                 "stocks_daily_data": stock_ctx,
             })
-            log("Daily report signal sent (check skipped)", "OK")
-            return 0
+            log("测试信号已写入，publish_allowed=false，禁止生产发布", "WARN")
+            if canonical_shadow:
+                _run_canonical_shadow(today_str)
+            return 1
 
         for attempt in range(1, MAX_RETRIES + 1):
             ready, detail = check_data_readiness()
@@ -541,6 +780,8 @@ def run_mode_daily(skip_data_check=False, target_date=None):
                     "v36_readiness": {"status": v36_status, "detail": v36_detail},
                 })
                 log("Daily report signal sent", "OK")
+                if canonical_shadow:
+                    _run_canonical_shadow(today_str)
                 return 0
 
             if attempt < MAX_RETRIES:
@@ -560,6 +801,8 @@ def run_mode_daily(skip_data_check=False, target_date=None):
             "v36_readiness": {"status": v36_status, "detail": v36_detail},
         })
         log("Data not ready after max retries, signal sent with degraded flag", "WARN")
+        if canonical_shadow:
+            _run_canonical_shadow(today_str)
         return 1
     finally:
         release_lock("daily_orchestrator")
@@ -800,6 +1043,8 @@ def main():
     parser.add_argument("--date", help="指定日期 YYYYMMDD (默认今天)")
     parser.add_argument("--skip-data-check", action="store_true",
                         help="跳过数据就绪检查(测试用)")
+    parser.add_argument("--canonical-shadow", action="store_true",
+                        help="日报signal后运行canonical shadow-only旁路(不写入正式报告目录)")
     args = parser.parse_args()
 
     ensure_dirs()
@@ -815,7 +1060,7 @@ def main():
     handler = mode_handlers.get(args.mode)
     if handler:
         if args.mode == "daily":
-            exit_code = handler(skip_data_check=args.skip_data_check, target_date=args.date)
+            exit_code = handler(skip_data_check=args.skip_data_check, target_date=args.date, canonical_shadow=args.canonical_shadow)
         else:
             exit_code = handler()
         log(f"Orchestrator finished: mode={args.mode} exit={exit_code}")

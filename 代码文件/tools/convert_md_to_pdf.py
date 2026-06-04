@@ -43,6 +43,7 @@ code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12p
        font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
 hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
 p { margin: 5px 0; }
+img { max-width: 100%; height: auto; }
 ul, ol { margin: 5px 0 5px 20px; }
 li { margin: 2px 0; }
 .disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
