@@ -7,6 +7,8 @@ v3.6升级: 四档资金/融资/北向新鲜度/信号胜率/风险标签/action
 import re, json, os, sys, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATA_CACHE_DIR = os.path.join(ROOT, "代码文件", "数据")
+KLINE_CACHE_DIR = os.path.join(DATA_CACHE_DIR, "kline_cache")
 
 STOCK_MAP = {
     '600114': '东睦股份', '601727': '上海电气', '603019': '中科曙光',
@@ -193,12 +195,14 @@ def parse_from_json_sidecar(json_path, code, name):
         },
         "fund_flow_4level": {
             "super_large_net": ff.get('super_large_net'), "large_net": ff.get('large_net'),
-            "medium_net": ff.get('medium_net') or ff.get('mid_small_net'),
+            "medium_net": ff.get('medium_net') if ff.get('medium_net') is not None else ff.get('mid_small_net'),
             "small_net": ff.get('small_net'),
             "main_force_net": ff.get('main_force_net') or ff.get('main_force_total'),
             "mid_small_net": ff.get('mid_small_net'), "main_force_total": ff.get('main_force_total'),
             "structure_judgment": ff.get('structure_judgment'),
         },
+        "delta": j.get("delta", {}) or {},
+        "sector_phase": j.get("sector_phase", {}) or {},
         "margin_trading": {"balance": None, "change": None, "signal": mf.get('margin_signal')},
         "northbound": {"daily_status": None, "quarterly_date": None, "status": mf.get('northbound_status')},
         "signal_winrate": j.get('signal_winrate', []),
@@ -691,17 +695,110 @@ def main():
         stock = None
         if report_path.endswith('.json'):
             stock = parse_from_json_sidecar(report_path, code, name)
-            # JSON sidecar sparse-check: if no baseline key-levels or no stop-loss, try MD merge
+            # P0修复: 增强稀疏检测
             pl = stock.get('price_levels', {}) if stock else {}
             p0 = stock.get('p0_decision_card', {}) if stock else {}
-            is_sparse = (not pl.get('S1') and not pl.get('R1')) or \
-                        (not p0.get('new_position_stop_loss') and not p0.get('held_position_stop_loss'))
+            ff = stock.get('fund_flow_4level', {}) if stock else {}
+            sp = stock.get('sector_phase', {}) if stock else {}
+            dl = stock.get('delta', {}) if stock else {}
+            is_sparse = False
+            # 条件1: 缺关键价位
+            if not pl.get('S1') and not pl.get('R1'):
+                is_sparse = True
+            # 条件2: 缺止损
+            if not p0.get('new_position_stop_loss') and not p0.get('held_position_stop_loss'):
+                is_sparse = True
+            # 条件3: 资金缺中单/小单
+            if ff.get('medium_net') is None:
+                is_sparse = True
+            if ff.get('small_net') is None:
+                is_sparse = True
+            # 条件4: sector_phase缺phase或为占位符
+            if not sp.get('phase') or sp.get('phase') == '待确认':
+                is_sparse = True
+            # 条件5: 成交量异常(万手 vs 股数偏差>10倍)
+            if dl.get('volume_wan_shou'):
+                vws = dl.get('volume_wan_shou', 0)
+                kc_path = os.path.join(KLINE_CACHE_DIR, f'{code}.json')
+                if os.path.exists(kc_path):
+                    try:
+                        with open(kc_path) as kcf:
+                            kc_data = json.load(kcf)
+                        if kc_data:
+                            real_shares = kc_data[-1].get('volume', 0)
+                            real_wan = round(real_shares / 1000000.0, 1)
+                            if real_wan > 0 and abs(vws - real_wan) > 1.0:
+                                is_sparse = True
+                    except Exception:
+                        pass
+
             if is_sparse and stock:
+                # 先尝试MD合并
                 md_path = report_path.replace('.json', '.md')
+                merged = False
                 if os.path.exists(md_path):
                     md_stock = parse_daily_report(md_path, code, name)
                     if md_stock:
                         stock = _merge_stocks(stock, md_stock)
+                        merged = True
+                # 合并后重新绑定引用
+                ff = stock.setdefault("fund_flow_4level", {})
+                sp = stock.setdefault("sector_phase", {})
+                dl = stock.setdefault("delta", {})
+                # 补资金流（从缓存补）
+                ff_cache = os.path.join(DATA_CACHE_DIR, 'fund_flow_cache', f'{code}.json')
+                if os.path.exists(ff_cache):
+                    try:
+                        with open(ff_cache) as fcf:
+                            ff_data = json.load(fcf)
+                        if ff_data:
+                            latest = ff_data[-1] if isinstance(ff_data, list) else ff_data
+                            for k in ('super_large_net','large_net','medium_net','small_net','main_force_net',
+                                      'super_large_display','large_display','medium_display','small_display','main_force_display'):
+                                if ff.get(k) in (None, "", "—") and latest.get(k) is not None:
+                                    ff[k] = latest[k]
+                    except Exception:
+                        pass
+                # 补成交量（万手）
+                kc_path = os.path.join(KLINE_CACHE_DIR, f'{code}.json')
+                if os.path.exists(kc_path):
+                    try:
+                        with open(kc_path) as kcf:
+                            kc_data = json.load(kcf)
+                        if kc_data:
+                            real_shares = kc_data[-1].get('volume', 0)
+                            real_wan = round(real_shares / 1000000.0, 1)
+                            if dl.get('volume_wan_shou') is None or abs(float(dl.get('volume_wan_shou', 0)) - real_wan) > 1.0:
+                                dl['volume_wan_shou'] = real_wan
+                    except Exception:
+                        pass
+                # 补sector_phase
+                # 补sector_phase（缺phase或占位符时从data_scored补）
+                if not sp.get('phase') or sp.get('phase') == '待确认':
+                    scored_file = os.path.join(DATA_CACHE_DIR, 'data_scored.json')
+                    if os.path.exists(scored_file):
+                        try:
+                            with open(scored_file) as scf:
+                                scored = json.load(scf)
+                            found = False
+                            for bucket in ('AllStocks','Recommendations','VetoedStocks'):
+                                if found:
+                                    break
+                                for s in scored.get(bucket, []):
+                                    if str(s.get('Code') or s.get('code')) == code:
+                                        sp['industry'] = s.get('Industry') or sp.get('industry', '')
+                                        real_phase = s.get('SectorPhase')
+                                        if real_phase:
+                                            sp['phase'] = real_phase
+                                        found = True
+                                        break
+                        except Exception:
+                            pass
+                # 补sector_phase缺industry
+                if not sp.get('industry'):
+                    sp['industry'] = ''
+                if not sp.get('phase'):
+                    sp['phase'] = '待确认'
         else:
             stock = parse_daily_report(report_path, code, name)
         if stock:

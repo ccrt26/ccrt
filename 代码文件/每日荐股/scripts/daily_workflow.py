@@ -121,9 +121,18 @@ def run_daily(date_str, mode):
     collector_py = SCRIPTS_DIR / "batch_data_collector.py"
     collector_ps = SCRIPTS_DIR / "batch_data_collector.ps1"
     if collector_py.exists():
-        subprocess.run(["python3", str(collector_py)], cwd=str(ROOT))
+        result = subprocess.run(["python3", str(collector_py)], capture_output=True, text=True, cwd=str(ROOT))
+        if result.stdout:
+            for line in result.stdout.strip().split("\n"):
+                log(f"[batch_data] {line}")
+        if result.stderr:
+            for line in result.stderr.strip().split("\n"):
+                if line.strip():
+                    log(f"[batch_data:err] {line}", "WARN")
     elif collector_ps.exists():
-        log("batch_data_collector not migrated yet (PS1→Python deferred)", "WARN")
+        log("BLOCK: batch_data_collector.ps1 found in active directory — Python replacement exists. "
+            "Remove or rename the .ps1 file or migrate to Python version.", "BLOCK")
+        sys.exit(1)
 
     # Phase 2.5: Data quality gate
     log("[2.5/7] Data quality check...")

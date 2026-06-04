@@ -305,6 +305,7 @@ def main():
         "Stocks": engine_stocks,
         "_Meta": {
             "collect_time": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "collection_completed_at": time.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             "trade_date": trade_date,
             "stock_count": len(codes),
             "quotes_source": "tencent[1]" if args.skip_kline else "tushare-local+tencent[1]",
@@ -312,6 +313,9 @@ def main():
             "financial_source": "tushare-local+ths",
             "fundflow_source": "tushare-local+ths",
             "cache_stats": _cache.stats,
+            "collector": "batch_data_collector.py",
+            "categories_collected": ["quotes", "kline", "financials", "fundflow", "margins", "sectors"],
+            "runtime_platform": "macOS" if sys.platform == "darwin" else sys.platform,
         },
         "Financials": financials,
         "FundFlows": fund_flows,
