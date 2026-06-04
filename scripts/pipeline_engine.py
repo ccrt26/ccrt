@@ -27,6 +27,8 @@ from log_utils import (
     ACTOR_TO_ALLOWED_ROLES, VALID_ACTORS, VALID_ROLES, RISK_LEVELS,
     FINANCIAL_PATH_KEYWORDS, FINANCIAL_DESC_KEYWORDS,
     DISPATCHER_ALLOWED_ACTIONS,
+    issue_auth_token, verify_auth_token, load_auth_tokens, save_auth_tokens,
+    log_auth_token_event, token_canonical_hash,
 )
 
 STATE_FILE = os.environ.get("PIPELINE_STATE_FILE", ".claude/pipeline_active.json")
@@ -456,7 +458,14 @@ def cmd_route(user_text):
         print("[金融线] 含金融关键词，转腰子全团咨询。不启动工程流程。")
         sys.exit(0)
 
-    # 2. EMERGENCY → 提示需要完整P0参数
+    # 2. PIPELINE_CONTINUE（执行类口令——最高优先级，避免"执行P0"被P0/修复等误匹配）
+    #    注意：必须在 EMERGENCY/FIX 之前，因为"执行P0-A"含P0但意图是继续流程而非新紧急
+    execute_kw = ["执行","大家执行","按顺序执行","按计划推进","继续推进","开始做","继续流程"]
+    if any(kw in user_text for kw in execute_kw):
+        print("判定: PIPELINE_CONTINUE — 不启动新流程，请使用 --pcontinue 查询当前 pipeline 状态并路由。")
+        sys.exit(0)
+
+    # 3. EMERGENCY → 提示需要完整P0参数
     emergency_kw = ["紧急","P0","立刻","线上挂了","马上"]
     if any(kw in user_text for kw in emergency_kw):
         print("判定: EMERGENCY")
@@ -527,7 +536,142 @@ def cmd_status(run_id=None, show_all=False):
 
 
 # ---------------------------------------------------------------------------
-# --advance (含 actor/role 校验)
+# Token 联动失效 (A6)
+# ---------------------------------------------------------------------------
+def _invalidate_run_tokens(run_id, reason):
+    """使指定 run_id 的所有 active token 失效。"""
+    store = load_auth_tokens()
+    tokens = store.get("tokens", {})
+    changed = False
+    for tid, t in list(tokens.items()):
+        if t.get("run_id") == run_id and t.get("status") == "active":
+            t["status"] = "invalidated"
+            t["invalidated_reason"] = reason
+            log_auth_token_event("invalidate", tid, run_id, t.get("actor",""),
+                                 t.get("role",""), "", "", reason)
+            changed = True
+    if changed:
+        save_auth_tokens(store)
+
+
+# ---------------------------------------------------------------------------
+# --issue-auth-token (A3)
+# ---------------------------------------------------------------------------
+def cmd_issue_auth_token(args):
+    """签发工程鉴权 token。coding gate 通过后方可签发。"""
+    rid = args.issue_auth_token
+    actor = args.actor
+    role = args.role
+
+    if not actor or not role:
+        print("错误: --issue-auth-token 需要 --actor 和 --role"); sys.exit(1)
+
+    # 仅红结可持有编码 token（P1 门禁）
+    ok_ar, err_ar = check_actor_role(actor, role, "advance")
+    if not ok_ar:
+        print(f"错误: {err_ar}"); sys.exit(1)
+    if actor != "红结" or role != "红结":
+        print(f"错误: --issue-auth-token 仅限红结，收到 actor={actor} role={role}"); sys.exit(1)
+
+    state = load_state()
+    run = state.get("runs", {}).get(rid)
+    if not run:
+        print(f"错误: run_id 不存在: {rid}"); sys.exit(1)
+    if run.get("blocked"):
+        print(f"错误: run 已阻断"); sys.exit(1)
+    if run.get("status") != "active":
+        print(f"错误: run 不活跃"); sys.exit(1)
+
+    # 必须处于 coding 阶段
+    if run.get("current_stage") != "coding":
+        print(f"错误: 当前阶段={run.get('current_stage')}，仅 coding 阶段可签发 token"); sys.exit(1)
+
+    # 必须通过 coding gate
+    ok, failures, _ = check_coding_gate(rid, verbose=False)
+    if not ok:
+        print(f"错误: coding gate 未通过")
+        for f in failures:
+            print(f"  - {f}")
+        sys.exit(1)
+
+    # 从 checklist file_budgets 取最后写入路径（全量）
+    cl_path = run.get("checklist_path", "")
+    if not cl_path or not os.path.exists(cl_path):
+        print("错误: checklist_path 不存在"); sys.exit(1)
+    try:
+        with open(cl_path, 'r', encoding='utf-8') as f:
+            cl_data = json.load(f)
+    except Exception as e:
+        print(f"错误: checklist 读取失败: {e}"); sys.exit(1)
+
+    file_budgets = cl_data.get("file_budgets", [])
+    allowed_paths = [fb["path"] for fb in file_budgets if fb.get("path")] if file_budgets else []
+    # 若 file_budgets 为空，fallback 至 run.files_scope
+    if not allowed_paths:
+        allowed_paths = run.get("files_scope", [])
+    if not allowed_paths:
+        print("错误: 无授权路径 (file_budgets/files_scope 均为空)"); sys.exit(1)
+
+    cl_hash = checklist_content_hash(cl_path) if cl_path else ""
+
+    token_id = issue_auth_token(rid, actor, role, allowed_paths,
+                                 checklist_path=cl_path, checklist_hash=cl_hash)
+    print(f"AUTH_TOKEN={token_id}")
+    print(f"expires_at={(datetime.now(timezone.utc) + timedelta(minutes=15)).isoformat()}")
+    print(f"allowed_paths={allowed_paths}")
+    return token_id
+
+
+# ---------------------------------------------------------------------------
+# --revoke-auth-token (A4)
+# ---------------------------------------------------------------------------
+def cmd_revoke_auth_token(args):
+    """撤销指定 token。"""
+    token_id = args.revoke_auth_token
+    reason = args.reason or "手动撤销"
+    store = load_auth_tokens()
+    tokens = store.get("tokens", {})
+    token = tokens.get(token_id)
+    if not token:
+        print(f"错误: token 不存在: {token_id}"); sys.exit(1)
+    old_status = token.get("status", "")
+    token["status"] = "revoked"
+    token["revoked_reason"] = reason
+    save_auth_tokens(store)
+    log_auth_token_event("revoke", token_id, token.get("run_id",""),
+                         token.get("actor",""), token.get("role",""),
+                         "", "", f"手动撤销 (原状态: {old_status})")
+    print(f"✓ token {token_id} 已撤销 (原状态: {old_status})")
+
+
+# ---------------------------------------------------------------------------
+# --list-auth-tokens (A5)
+# ---------------------------------------------------------------------------
+def cmd_list_auth_tokens(args):
+    """列出 token（可指定 run_id 过滤）。"""
+    run_id = args.list_auth_tokens
+    store = load_auth_tokens()
+    tokens = store.get("tokens", {})
+    filtered = {tid: t for tid, t in tokens.items()
+                if not run_id or t.get("run_id") == run_id}
+    if not filtered:
+        print("暂无 token 记录。")
+        return
+    for tid, t in sorted(filtered.items(), key=lambda x: x[1].get("issued_at", "")):
+        print(f"  {tid}")
+        print(f"    run_id: {t.get('run_id','?')}  stage: {t.get('stage','?')}")
+        print(f"    actor: {t.get('actor','?')}  role: {t.get('role','?')}")
+        print(f"    status: {t.get('status','?')}")
+        print(f"    issued: {t.get('issued_at','?')}  expires: {t.get('expires_at','?')}")
+        print(f"    paths: {t.get('allowed_paths', [])}")
+        reason = t.get("revoked_reason", t.get("invalidated_reason", ""))
+        if reason:
+            print(f"    reason: {reason}")
+        print()
+
+
+# ---------------------------------------------------------------------------
+# --advance (含 actor/role 校验 + A6 token 联动)
 # ---------------------------------------------------------------------------
 def cmd_advance(args):
     rid, actor, role = args.advance, args.actor, args.role
@@ -663,6 +807,9 @@ def cmd_advance(args):
     if cl_path and not run.get("checklist_path"):
         run["checklist_path"] = os.path.abspath(cl_path)
     save_state(state)
+    # P2: 离开 coding 阶段 → 使 token 失效
+    if cur == "coding" and nxt["stage"] != "coding":
+        _invalidate_run_tokens(rid, f"advance: {cur}→{nxt['stage']}")
     actual = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "advance", "from_stage": cur,
                "to_stage": nxt["stage"], "target_role": nxt.get("role", ""),
@@ -740,6 +887,7 @@ def cmd_complete(args):
     run["status"] = "completed"
     run["updated_at"] = now
     save_state(state)
+    _invalidate_run_tokens(rid, "流程完成")
     actual = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "complete", "from_stage": cur,
                "to_stage": None, "target_role": role, "actor": actor, "role": role,
@@ -766,6 +914,7 @@ def cmd_block(args):
         if s["stage"] == run["current_stage"]:
             s["status"] = "blocked"
     save_state(state)
+    _invalidate_run_tokens(rid, f"流程阻断: {reason}")
     actual_blk = get_actual_actor()
     append_log("engine", {"run_id": rid, "event_type": "block", "from_stage": run["current_stage"],
                "to_stage": run["current_stage"], "target_role": "", "actor": "阿黑", "role": "阿黑",
@@ -847,6 +996,246 @@ def cmd_validate(args):
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+def cmd_pcontinue(run_id=None):
+    """检查当前 pipeline 状态并输出下一阶段路由（执行类口令门禁核心）。"""
+    state = load_state()
+    runs = state.get("runs", {})
+
+    if run_id:
+        if run_id not in runs:
+            print(f"错误: run_id 不存在: {run_id}")
+            sys.exit(1)
+        filtered = {run_id: runs[run_id]}
+    else:
+        # 查找未完成的活跃 run（优先非 blocked）
+        filtered = {}
+        for rid, r in runs.items():
+            if r.get("status") == "active" and not r.get("blocked"):
+                filtered[rid] = r
+        if not filtered:
+            # 退而求其次：找任何活跃的
+            for rid, r in runs.items():
+                if r.get("status") == "active":
+                    filtered[rid] = r
+
+    if not filtered:
+        print("无活跃流程。请先启动新流程（--start 或 --route）。")
+        sys.exit(0)
+
+    if len(filtered) > 1:
+        print(f"存在多个活跃流程（{len(filtered)}个），请指定 run_id：")
+        for rid, r in filtered.items():
+            print(f"  {rid} ({r.get('flow_type')}) — {r.get('current_stage')}")
+        sys.exit(1)
+
+    rid = list(filtered.keys())[0]
+    run = filtered[rid]
+    stage = run.get("current_stage", "")
+    status = run.get("status", "")
+    blocked = run.get("blocked", False)
+    block_reason = run.get("block_reason", "")
+    checklist = run.get("checklist_path", "")
+
+    print(f"PIPELINE_CONTINUE — 当前流程状态:")
+    print(f"  run_id: {rid}")
+    print(f"  flow_type: {run.get('flow_type', '?')}")
+    print(f"  task: {run.get('task_description', '')}")
+    print(f"  stage: {stage}")
+    print(f"  status: {status}")
+    print(f"  blocked: {blocked}" + (f" — {block_reason}" if blocked else ""))
+    print(f"  checklist: {checklist or '未注册'}")
+
+    # Stage → 角色映射
+    STAGE_ROLES = {
+        "design": "情墨",
+        "review_1a": "腰子",
+        "review_1b": "旧影/新安",
+        "consult": "山猫→信鸽→玉夜→流金→青山",
+        "coding": "红结",
+        "verify": "新安",
+        "deploy": "红枫",
+        "deploy_verify": "旧影",
+        "audit": "旧影",
+        "post_audit": "旧影",
+    }
+    role = STAGE_ROLES.get(stage, "未知")
+    print(f"  路由: 下一阶段负责人 → {role}")
+
+    # Coding 入场门禁 — 调用统一 check_coding_gate()
+    if stage == "coding":
+        print("  检测到 current_stage=coding，执行完整 C1-C8 coding 入场门禁...")
+        ok, failures, _ = check_coding_gate(rid, verbose=True)
+        if ok:
+            print(f"  coding门禁: ✅ 全部通过，允许红结入场")
+            return rid
+        else:
+            print(f"  BLOCK：红结未获得 coding 入场条件，退回阿黑/情墨补齐流程。")
+            sys.exit(1)
+    return rid
+
+
+def check_coding_gate(run_id, verbose=True):
+    """统一 C1-C8 coding 入场门禁。纯函数，不 exit。
+
+    Args:
+        run_id: 流程 run_id
+        verbose: 是否 print 失败信息
+
+    Returns: (ok: bool, failures: list[str], cl_data: dict)
+    """
+    state = load_state()
+    runs = state.get("runs", {})
+
+    failures = []
+    cl_data = {}
+
+    if run_id not in runs:
+        failures.append("run_id 不存在")
+        return False, failures, cl_data
+
+    run = runs[run_id]
+    stage = run.get("current_stage", "")
+    status = run.get("status", "")
+    blocked = run.get("blocked", False)
+    checklist = run.get("checklist_path", "")
+    stages_list = run.get("stages", [])
+
+    # C1: current_stage == coding
+    c1 = stage == "coding"
+    if not c1:
+        msg = f"C1: current_stage={stage} (需要 coding)"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C2: status == active, not blocked
+    c2 = status == "active" and not blocked
+    if not c2:
+        msg = f"C2: status={status}, blocked={blocked}"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C3: checklist_path registered
+    c3 = bool(checklist)
+    if not c3:
+        msg = "C3: checklist_path 未注册"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C4: checklist structure + token_budget + 情墨HMAC记录存在
+    c4 = False
+    if c3:
+        try:
+            with open(checklist, 'r', encoding='utf-8') as f:
+                cl_data = json.load(f)
+            c4 = all(fld in cl_data for fld in ["run_id", "items", "token_budget"])
+            qm_sig = cl_data.get("signoffs", {}).get("情墨", {})
+            if qm_sig.get("sig_type") != "HMAC-SHA256":
+                c4 = False
+        except Exception:
+            pass
+    if not c4:
+        msg = "C4: checklist 结构不完整或情墨签名缺失（必须包含 run_id/items/token_budget + 情墨 HMAC-SHA256）"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C5: 情墨 design 阶段已完成 + HMAC 签名有效
+    c5 = False
+    if c4:
+        design_completed = any(
+            s.get("stage") == "design" and s.get("status") == "completed"
+            for s in stages_list
+        )
+        if design_completed:
+            sig_ok, sig_err = _verify_checklist_signoff(checklist, "情墨", run_id, "design")
+            if sig_ok:
+                c5 = True
+                if verbose: print(f"  ✓ C5: 情墨 HMAC 签名验证通过")
+            else:
+                msg = f"C5: 情墨 HMAC 签名验证失败 — {sig_err}（checklist 已被篡改？）"
+                failures.append(msg)
+                if verbose: print(f"  FAIL {msg}")
+        else:
+            msg = "C5: 情墨 design 阶段未完成"
+            failures.append(msg)
+            if verbose: print(f"  FAIL {msg}")
+    else:
+        msg = "C5: 跳过（C4 未通过，无法验证签名）"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C6: coding 前置阶段 completed/skipped
+    coding_idx = -1
+    for i, s in enumerate(stages_list):
+        if s.get("stage") == stage:
+            coding_idx = i
+            break
+    preceding_stages = [s for i, s in enumerate(stages_list) if i < coding_idx] if coding_idx >= 0 else []
+    c6 = all(s.get("status") in ("completed", "skipped") for s in preceding_stages) if preceding_stages else True
+    if not c6:
+        failed_stages = [s.get("stage") for s in preceding_stages if s.get("status") not in ("completed", "skipped")]
+        msg = f"C6: 前置阶段未完成: {failed_stages}"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C7: file_budgets/files_scope 非空
+    fb = cl_data.get("file_budgets", []) if c3 and c4 else []
+    fs = run.get("files_scope", [])
+    c7 = bool(fb) or bool(fs)
+    if not c7:
+        msg = "C7: file_budgets/files_scope 为空"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    # C8: items[].code_level 完整
+    items = cl_data.get("items", []) if c3 and c4 else []
+    c8 = all("code_level" in item for item in items) if items else False
+    if not c8:
+        msg = "C8: code_level 未完全标注"
+        failures.append(msg)
+        if verbose: print(f"  FAIL {msg}")
+
+    ok = len(failures) == 0
+    return ok, failures, cl_data
+
+
+def _verify_checklist_signoff(checklist_path, role, run_id, expected_stage):
+    """验证 checklist 中指定角色的 HMAC 签名是否有效且内容未被篡改。
+
+    Args:
+        checklist_path: checklist JSON 路径
+        role: 要检查的角色（如 "情墨"）
+        run_id: 流程 run_id
+        expected_stage: 签名对应的阶段（如 "design"）
+
+    Returns: (ok: bool, err: str)
+    """
+    if not checklist_path or not os.path.exists(checklist_path):
+        return False, "checklist 不存在"
+    try:
+        with open(checklist_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception as e:
+        return False, f"checklist 读取失败: {e}"
+    sig = data.get("signoffs", {}).get(role, {})
+    if not sig:
+        return False, f"{role} 无签名记录"
+    sig_actor = sig.get("actor", role)
+    from log_utils import hmac_verify as _hmac_verify
+    return _hmac_verify(sig, sig_actor, role, run_id, expected_stage, checklist_path)
+
+
+def cmd_check_coding_gate(args):
+    """红结入场门禁 — 8条件全检查（委托 check_coding_gate）。"""
+    rid = args.check_coding_gate
+    ok, failures, _ = check_coding_gate(rid)
+    if ok:
+        print("PASS: 全部8项coding入场门禁通过，红结可入场编码。")
+        sys.exit(0)
+    else:
+        print("BLOCK：红结未获得 coding 入场条件，退回阿黑/情墨补齐流程。")
+        sys.exit(1)
+
+
 def main():
     p = argparse.ArgumentParser(description="铁律量化 - 流程状态机 (fix3)")
     p.add_argument("--start", metavar="EVENT"); p.add_argument("--route", metavar="TEXT")
@@ -857,6 +1246,17 @@ def main():
     p.add_argument("--checklist"); p.add_argument("--audit-report")
     p.add_argument("--block", metavar="RUN_ID"); p.add_argument("--reason")
     p.add_argument("--validate", metavar="PATH")
+    p.add_argument("--pcontinue", metavar="RUN_ID", nargs="?", const="__auto__", default=None,
+                   help="继续流程判定：检查pipeline状态并路由到当前阶段负责人")
+    p.add_argument("--check-coding-gate", metavar="RUN_ID",
+                   help="红结入场门禁全检查(C1-C8)，通过exit0，不通过exit1")
+    # Token (A3-A5)
+    p.add_argument("--issue-auth-token", metavar="RUN_ID",
+                   help="签发工程鉴权 token (coding gate PASS 后)")
+    p.add_argument("--revoke-auth-token", metavar="TOKEN_ID",
+                   help="撤销 token")
+    p.add_argument("--list-auth-tokens", metavar="RUN_ID", nargs="?", const=None,
+                   help="列出 token（可指定 run_id 过滤）")
     # P0
     p.add_argument("--incident-id"); p.add_argument("--p0-reason"); p.add_argument("--impact-scope")
     p.add_argument("--risk-level"); p.add_argument("--temp-fix"); p.add_argument("--rollback-point")
@@ -871,6 +1271,17 @@ def main():
         cmd_route(args.route)
     elif args.status:
         cmd_status(args.run_id, args.all)
+    elif args.pcontinue is not None:
+        rid = args.pcontinue if args.pcontinue != "__auto__" else None
+        cmd_pcontinue(rid)
+    elif args.issue_auth_token:
+        cmd_issue_auth_token(args)
+    elif args.revoke_auth_token:
+        cmd_revoke_auth_token(args)
+    elif args.list_auth_tokens is not None:
+        cmd_list_auth_tokens(args)
+    elif args.check_coding_gate:
+        cmd_check_coding_gate(args)
     elif args.advance:
         if not args.actor or not args.role:
             print("错误: --advance 需要 --actor 和 --role"); sys.exit(1)
