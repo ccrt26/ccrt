@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "shadow_only": true,
+  "mappings": [
+    {
+      "canonical_path": "report_identity.stock_code",
+      "sidecar_path": "stock_code",
+      "type": "string",
+      "required": true,
+      "description": "股票代码"
+    },
+    {
+      "canonical_path": "report_identity.stock_name",
+      "sidecar_path": "stock_name",
+      "type": "string",
+      "required": true,
+      "description": "股票名称"
+    },
+    {
+      "canonical_path": "report_identity.trade_date",
+      "sidecar_path": "trade_date",
+      "type": "string",
+      "required": true,
+      "description": "交易日"
+    },
+    {
+      "canonical_path": "authority_refs.baseline_id",
+      "sidecar_path": "baseline_id",
+      "type": "string",
+      "required": true,
+      "description": "深度分析基线ID"
+    },
+    {
+      "canonical_path": "decision_snapshot.p0_decision_card",
+      "sidecar_path": "p0_decision_card",
+      "type": "object",
+      "required": true,
+      "description": "P0 明日决策卡"
+    },
+    {
+      "canonical_path": "data_snapshot.delta",
+      "sidecar_path": "delta",
+      "type": "object",
+      "required": true,
+      "description": "当日行情变化"
+    },
+    {
+      "canonical_path": "data_snapshot.fund_flow_4level",
+      "sidecar_path": "fund_flow_4level",
+      "type": "object",
+      "required": true,
+      "description": "四档资金流"
+    },
+    {
+      "canonical_path": "data_snapshot.sector_phase",
+      "sidecar_path": "sector_phase",
+      "type": "object",
+      "required": true,
+      "description": "板块相位"
+    },
+    {
+      "canonical_path": "data_snapshot.source_snapshot",
+      "sidecar_path": "source_snapshot",
+      "type": "object",
+      "required": false,
+      "default": {},
+      "description": "数据源快照（sidecar 无此字段时取空对象）"
+    },
+    {
+      "canonical_path": "risk_snapshot.risk_light",
+      "sidecar_path": "risk_light",
+      "type": "object",
+      "required": true,
+      "description": "综合风控灯"
+    },
+    {
+      "canonical_path": "interpretation_snapshot.role_interpretations",
+      "sidecar_path": "role_interpretations",
+      "type": "object",
+      "required": true,
+      "description": "各角色解读"
+    },
+    {
+      "canonical_path": "interpretation_snapshot.yaozi_integration",
+      "sidecar_path": "yaozi_integration",
+      "type": "object",
+      "required": true,
+      "description": "腰子整合结论"
+    },
+    {
+      "canonical_path": "eval_snapshot.eval_hooks",
+      "sidecar_path": "eval_hooks",
+      "type": "object",
+      "required": true,
+      "description": "后评估钩子"
+    },
+    {
+      "canonical_path": "render_snapshot.md_text",
+      "sidecar_path": "__md_file__",
+      "type": "string",
+      "required": true,
+      "description": "MD 原文全文本（来自 .md 文件，非 sidecar）"
+    },
+    {
+      "canonical_path": "render_snapshot.sidecar_payload",
+      "sidecar_path": "__sidecar_full__",
+      "type": "object",
+      "required": true,
+      "description": "原始 sidecar JSON 完整对象"
+    }
+  ]
+}

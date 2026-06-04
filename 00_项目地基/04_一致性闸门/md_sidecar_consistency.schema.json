@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/md_sidecar_consistency.schema.json",
+  "title": "MD 与 JSON sidecar 一致性检查 Schema",
+  "description": "P0-D 闸门输出结果的标准格式。检查同一股票同一交易日的 MD 与 sidecar JSON 是否一致。",
+  "type": "object",
+  "required": ["stock_code", "stock_name", "trade_date", "result", "checks"],
+  "properties": {
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string"},
+    "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "result", "md_value", "sidecar_value", "issue"],
+        "properties": {
+          "field": {"type": "string", "description": "检查字段名"},
+          "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+          "md_value": {"type": ["string", "number", "null"], "description": "MD 中提取的值"},
+          "sidecar_value": {"type": ["string", "number", "null"], "description": "sidecar 中提取的值"},
+          "issue": {"type": "string", "description": "问题描述"}
+        }
+      }
+    }
+  }
+}

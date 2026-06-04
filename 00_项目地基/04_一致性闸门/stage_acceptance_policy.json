@@ -1,0 +1,80 @@
+{
+  "version": "1.0",
+  "scope": "all staged project changes after phase 1.5",
+  "required_sections": [
+    "阶段信息",
+    "流程编号、阶段门与唤醒角色",
+    "文件清单",
+    "G1 业务/金融/角色口径结论",
+    "G2 技术方案结论",
+    "阶段目标完成情况",
+    "验收命令结果",
+    "git status 说明",
+    "是否修改允许范围外文件",
+    "是否建议通过"
+  ],
+  "file_operation_codes": {
+    "N": "新增",
+    "M": "修改",
+    "D": "删除",
+    "R": "移动",
+    "??": "未跟踪"
+  },
+  "stage_gates": {
+    "G0": "需求识别与流程路由",
+    "G1": "业务/金融/角色口径设计",
+    "G2": "技术方案设计",
+    "G3": "执行实现",
+    "G4": "执行者自检",
+    "G5": "独立复查",
+    "G6": "放行归档"
+  },
+  "required_command_rules": {
+    "json_files": "python3 -m json.tool",
+    "python_files": "py_compile with cfile under /private/tmp",
+    "gate_scripts": ["single_case", "all_case", "json_parse_if_supported"],
+    "git_status": "must be path-limited"
+  },
+  "model_identity_rule": {
+    "execution_models": ["DeepSeek", "Claude", "Codex"],
+    "models_are_project_roles": false
+  },
+  "blocking_conditions": [
+    "allowed_scope_violation",
+    "unexplained_untracked_file",
+    "required_command_failed",
+    "missing_acceptance_report",
+    "claimed_pass_without_evidence",
+    "skipped_required_stage_gate",
+    "missing_flow_code",
+    "financial_logic_changed_without_G1",
+    "awakened_role_output_missing",
+    "dispatcher_signed_for_other_roles",
+    "missing_G5_independent_review",
+    "missing_role_conclusion_table",
+    "execution_model_signed_as_project_role"
+  ],
+  "repair_rules": {
+    "repair_must_be_same_stage": true,
+    "repair_must_not_expand_scope": true,
+    "repair_record_required": true
+  },
+  "auto_routing_rules": {
+    "dispatcher_must_infer_flow_code": true,
+    "user_not_required_to_provide_flow_code": true,
+    "lightweight_dispatch_card_required": true,
+    "direct_G3_without_auto_routing_is_blocked": true,
+    "financial_or_role_logic_requires_G1": true,
+    "gate_or_script_change_requires_G2": true,
+    "max_clarifying_questions": 3,
+    "must_auto_route_when_sufficient": true
+  },
+  "role_evidence_rules": {
+    "listed_role_is_not_enough": true,
+    "each_awakened_role_requires_output": true,
+    "dispatcher_cannot_sign_for_other_roles": true,
+    "execution_model_cannot_sign_as_project_role": true,
+    "G5_independent_review_required": true,
+    "missing_required_role_output_blocks_stage": true
+  }
+}

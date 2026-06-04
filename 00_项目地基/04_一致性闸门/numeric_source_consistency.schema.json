@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/numeric_source_consistency.schema.json",
+  "title": "数值来源一致性检查 Schema",
+  "description": "P0-B 闸门输出结果的标准格式。每条检查记录包含字段名、权威源值、sidecar值、MD值和判定结果。",
+  "type": "object",
+  "required": ["stock_code", "stock_name", "trade_date", "result", "checks"],
+  "properties": {
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string"},
+    "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "source_path", "expected", "sidecar_value", "md_value", "result", "issue"],
+        "properties": {
+          "field": {"type": "string", "description": "字段路径，如 delta.close"},
+          "source_path": {"type": "string", "description": "权威源文件路径"},
+          "expected": {"type": ["number", "string", "null"]},
+          "sidecar_value": {"type": ["number", "string", "null"]},
+          "md_value": {"type": ["number", "string", "null"]},
+          "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+          "issue": {"type": "string"}
+        }
+      }
+    }
+  }
+}

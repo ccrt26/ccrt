@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-04",
+  "entries": [
+    {"legacy_path": "代码文件/每日荐股/scripts/daily_workflow.ps1", "python_replacement": "代码文件/每日荐股/scripts/daily_workflow.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/每日荐股/scripts/batch_data_collector.ps1", "python_replacement": "代码文件/每日荐股/scripts/batch_data_collector.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/重点股票/run_keystock_analysis.ps1", "python_replacement": "代码文件/重点股票/run_keystock_analysis.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
+    {"legacy_path": "代码文件/信鸽信息采集/pigeon_collector.ps1", "python_replacement": "代码文件/信鸽信息采集/pigeon_collector.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/监督机制/pipeline_engine.ps1", "python_replacement": "scripts/pipeline_engine.py", "status": "forbidden", "forbidden_reason": "已全面迁移至 Python 版", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/监督机制/run_full_audit.ps1", "python_replacement": "scripts/audit_scan.py", "status": "forbidden", "forbidden_reason": "已全面迁移至 Python 版", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/监督机制/check_redlines.ps1", "python_replacement": "代码文件/规则红线/check_redlines.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
+    {"legacy_path": "代码文件/监督机制/version_supervisor.ps1", "python_replacement": "代码文件/监督机制/version_supervisor.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
+    {"legacy_path": "模拟交易/交易引擎/sim_trading.ps1", "python_replacement": "模拟交易/交易引擎/sim_trading.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
+    {"legacy_path": "模拟交易/共享模块/quote_engine.ps1", "python_replacement": "模拟交易/共享模块/quote_engine.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
+    {"legacy_path": "模拟交易/共享模块/risk_framework.ps1", "python_replacement": "模拟交易/共享模块/risk_framework.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
+    {"legacy_path": "模拟交易/共享模块/trade_utils.ps1", "python_replacement": "模拟交易/共享模块/trade_utils.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
+    {"legacy_path": "代码文件/tools/health_check.ps1", "python_replacement": "代码文件/tools/health_check.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
+    {"legacy_path": "代码文件/tools/check_data_quality.ps1", "python_replacement": "代码文件/tools/check_data_quality.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
+    {"legacy_path": "代码文件/tools/git_autocommit.ps1", "python_replacement": "无", "status": "under_review", "forbidden_reason": "待确认是否仍在使用", "allowed_exception": "待定"}
+  ]
+}

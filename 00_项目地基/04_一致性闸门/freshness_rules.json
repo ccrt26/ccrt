@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "description": "P0-C 日期新鲜度与降级路径检查规则。定义每个数据类别的权威源、允许延迟、降级处理方式。",
+  "created": "2026-06-02",
+  "updated": "2026-06-02（第3阶段补充 decision_impact/max_lag_days/authority_source）",
+  "rules": {
+    "kline": {
+      "source_path": "代码文件/数据/kline_cache/{code}.json",
+      "date_format": "YYYY-MM-DD",
+      "allowed_lag_days": 0,
+      "required_for_action": true,
+      "on_missing": "BLOCK",
+      "on_stale_claim": "BLOCK",
+      "description": "K线行情数据必须包含trade_date当日记录。sidecar/MD若声明「当日/今日/实时」，必须与trade_date一致。",
+      "authority_source": "代码文件/数据/kline_cache/{code}.json",
+      "max_lag_days": 0,
+      "decision_impact": "高——K线缺失则所有delta判断不可信",
+      "block_condition": "无trade_date当日记录或报告声称当日但缓存无记录",
+      "warn_condition": "N/A——K线不可降级",
+      "degradation_required": false
+    },
+    "fund_flow": {
+      "source_path": "代码文件/数据/fund_flow_cache/{code}.json",
+      "date_format": "YYYYMMDD",
+      "allowed_lag_days": 0,
+      "required_for_action": true,
+      "on_missing": "BLOCK",
+      "on_stale_claim": "BLOCK",
+      "description": "四档资金优先trade_date当日。若T+1/T+2延迟，必须在sidecar/MD明确声明freshness/degraded。sidecar source日期必须与当日匹配。",
+      "authority_source": "代码文件/数据/fund_flow_cache/{code}.json",
+      "max_lag_days": 0,
+      "decision_impact": "高——资金流判断依赖当日数据",
+      "block_condition": "source日期与trade_date不匹配或缺失且未声明降级",
+      "warn_condition": "缺失但已声明降级",
+      "degradation_required": true
+    },
+    "margin": {
+      "source_path": "代码文件/数据/tushare/margin_detail/{code}.json",
+      "date_format": "YYYYMMDD",
+      "allowed_lag_days": 1,
+      "required_for_action": false,
+      "on_missing_data": "WARN",
+      "on_stale_claim": "BLOCK",
+      "description": "融资数据允许T+1延迟。必须声明最新日期或延迟状态。写「当日融资」但实际T+1→BLOCK。",
+      "authority_source": "代码文件/数据/tushare/margin_detail/{code}.json",
+      "max_lag_days": 2,
+      "decision_impact": "中——融资通常不作为唯一决策依据",
+      "block_condition": "超T+2且未声明降级；或声称当日但实际T+1",
+      "warn_condition": "超T+2且已声明降级；或文件缺失且不影响动作",
+      "degradation_required": true
+    },
+    "sector_phase": {
+      "source_path": "代码文件/数据/data_scored.json",
+      "date_format": "embedded",
+      "allowed_lag_days": null,
+      "required_for_action": false,
+      "on_no_data_weak": "WARN",
+      "on_no_data_strong": "BLOCK",
+      "description": "板块相位需来源可追溯。若影响动作判断且无来源→BLOCK。仅披露→WARN。",
+      "authority_source": "代码文件/数据/data_scored.json（三桶）",
+      "max_lag_days": null,
+      "decision_impact": "中——板块相位影响仓位策略",
+      "block_condition": "影响动作判断且三桶均无数据",
+      "warn_condition": "仅披露且三桶无数据",
+      "degradation_required": false
+    },
+    "baseline": {
+      "source_path": "00_项目地基/02_权威注册表/baseline_registry.json",
+      "date_format": "YYYY-MM-DD",
+      "allowed_lag_days": null,
+      "required_for_action": true,
+      "on_missing": "BLOCK",
+      "on_multiple": "BLOCK",
+      "description": "baseline_date <= trade_date <= valid_until。过期或无有效基线→BLOCK。本阶段不检查baseline_id是否匹配。",
+      "authority_source": "00_项目地基/02_权威注册表/baseline_registry.json",
+      "max_lag_days": null,
+      "decision_impact": "高——所有价位/仓位判断基于baseline",
+      "block_condition": "无有效基线或多有效基线",
+      "warn_condition": "N/A——baseline不可降级",
+      "degradation_required": false
+    },
+    "eval_hooks": {
+      "source_path": "sidecar internal",
+      "date_format": "flexible",
+      "allowed_lag_days": null,
+      "required_for_action": false,
+      "on_early_date": "BLOCK",
+      "on_unparseable": "WARN",
+      "description": "t1_verify/t5_verify中出现的日期不得早于next_trade_date或trade_date。",
+      "authority_source": "sidecar.eval_hooks",
+      "max_lag_days": null,
+      "decision_impact": "低——eval_hooks日期错误不影响当日决策",
+      "block_condition": "t1早于next_trade_date或t5不晚于trade_date",
+      "warn_condition": "日期格式不可解析",
+      "degradation_required": false
+    }
+  },
+  "degraded_handling": {
+    "declared_degraded": "WARN",
+    "undeclared_degraded": "BLOCK",
+    "description": "已在sidecar degraded_items中声明的降级 → WARN。未声明但实际数据缺失/延迟 → BLOCK。"
+  }
+}

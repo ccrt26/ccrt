@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "description": "数值字段注册表。记录每个字段的权威源、数据类型和用途。用于统一解读和后评估引用。",
+  "generated_at": "2026-06-02",
+  "entries": [
+    {"field": "delta.close", "type": "float", "unit": "元", "source": "kline_cache", "required": true, "description": "收盘价"},
+    {"field": "delta.change_pct", "type": "float", "unit": "%", "source": "kline_cache", "required": true, "description": "涨跌幅"},
+    {"field": "delta.volume_wan_shou", "type": "float", "unit": "万手", "source": "kline_cache", "required": true, "description": "成交量（万手）"},
+    {"field": "fund_flow.super_large_net", "type": "float", "unit": "万元", "source": "fund_flow_cache", "required": true, "description": "超大单净额"},
+    {"field": "fund_flow.large_net", "type": "float", "unit": "万元", "source": "fund_flow_cache", "required": true, "description": "大单净额"},
+    {"field": "fund_flow.medium_net", "type": "float", "unit": "万元", "source": "fund_flow_cache", "required": true, "description": "中单净额"},
+    {"field": "fund_flow.small_net", "type": "float", "unit": "万元", "source": "fund_flow_cache", "required": true, "description": "小单净额"},
+    {"field": "fund_flow.main_force_net", "type": "float", "unit": "万元", "source": "fund_flow_cache", "required": true, "description": "主力合计净额"},
+    {"field": "margin.latest_date", "type": "string", "unit": "YYYYMMDD", "source": "margin_detail", "required": true, "description": "融资最新交易日期"},
+    {"field": "margin.balance", "type": "float", "unit": "元", "source": "margin_detail", "required": false, "description": "融资余额"},
+    {"field": "sector_phase.phase", "type": "string", "unit": "enum", "source": "data_scored.json (Recommendations/AllStocks/VetoedStocks)", "required": true, "description": "板块相位"},
+    {"field": "sector_phase.industry", "type": "string", "unit": "string", "source": "data_scored.json (Recommendations/AllStocks/VetoedStocks)", "required": false, "description": "行业名称"}
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CanonicalReport",
+  "description": "第6-A阶段 — canonical_report 影子对象，shadow_only=true，不用于真实生成链路",
+  "type": "object",
+  "required": [
+    "canonical_version",
+    "shadow_only",
+    "report_identity",
+    "authority_refs",
+    "data_snapshot",
+    "decision_snapshot",
+    "risk_snapshot",
+    "interpretation_snapshot",
+    "eval_snapshot",
+    "render_snapshot",
+    "source_hashes",
+    "source_payloads"
+  ],
+  "properties": {
+    "canonical_version": {
+      "type": "string",
+      "description": "本影子对象版本号，格式: v{major}.{minor}"
+    },
+    "shadow_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "标记为影子对象，永不为真实生成链路的输入"
+    },
+    "report_identity": {
+      "type": "object",
+      "description": "报告身份标识",
+      "required": ["stock_code", "stock_name", "trade_date"],
+      "properties": {
+        "stock_code": {"type": "string", "description": "股票代码，如 601727"},
+        "stock_name": {"type": "string", "description": "股票名称，如 上海电气"},
+        "trade_date": {"type": "string", "description": "交易日，格式 YYYY-MM-DD"}
+      }
+    },
+    "authority_refs": {
+      "type": "object",
+      "description": "权威引用信息",
+      "required": ["baseline_id"],
+      "properties": {
+        "baseline_id": {"type": "string", "description": "深度分析基线ID"}
+      }
+    },
+    "data_snapshot": {
+      "type": "object",
+      "description": "行情/资金/板块数据快照",
+      "required": ["delta", "fund_flow_4level", "sector_phase", "source_snapshot"],
+      "properties": {
+        "delta": {"type": "object", "description": "当日行情变化"},
+        "fund_flow_4level": {"type": "object", "description": "四档资金流"},
+        "sector_phase": {"type": "object", "description": "板块相位"},
+        "source_snapshot": {"type": "object", "description": "数据源快照"}
+      }
+    },
+    "decision_snapshot": {
+      "type": "object",
+      "description": "P0 决策卡",
+      "required": ["p0_decision_card"],
+      "properties": {
+        "p0_decision_card": {"type": "object", "description": "P0 明日决策卡"}
+      }
+    },
+    "risk_snapshot": {
+      "type": "object",
+      "description": "风控红黄绿灯",
+      "required": ["risk_light"],
+      "properties": {
+        "risk_light": {"type": "object", "description": "综合风控灯"}
+      }
+    },
+    "interpretation_snapshot": {
+      "type": "object",
+      "description": "角色解读与腰子整合",
+      "required": ["role_interpretations", "yaozi_integration"],
+      "properties": {
+        "role_interpretations": {"type": "object", "description": "各角色解读"},
+        "yaozi_integration": {"type": "object", "description": "腰子整合结论"}
+      }
+    },
+    "eval_snapshot": {
+      "type": "object",
+      "description": "后评估钩子",
+      "required": ["eval_hooks"],
+      "properties": {
+        "eval_hooks": {"type": "object", "description": "后评估钩子"}
+      }
+    },
+    "render_snapshot": {
+      "type": "object",
+      "description": "渲染镜像 — 必须与源文件完全一致",
+      "required": ["md_text", "sidecar_payload"],
+      "properties": {
+        "md_text": {"type": "string", "description": "MD 原文"},
+        "sidecar_payload": {"type": "object", "description": "原始 sidecar JSON"}
+      }
+    },
+    "source_hashes": {
+      "type": "object",
+      "description": "源文件哈希",
+      "required": ["sidecar_sha256", "md_sha256"],
+      "properties": {
+        "sidecar_sha256": {"type": "string", "description": "sidecar JSON 的 SHA-256"},
+        "md_sha256": {"type": "string", "description": "MD 文件的 SHA-256"}
+      }
+    },
+    "source_payloads": {
+      "type": "object",
+      "description": "源文件完整内容",
+      "required": ["sidecar_payload", "md_text"],
+      "properties": {
+        "sidecar_payload": {"type": "object", "description": "原始 sidecar JSON"},
+        "md_text": {"type": "string", "description": "MD 原文"}
+      }
+    }
+  }
+}

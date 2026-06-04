@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/report_authority_lineage.schema.json",
+  "title": "报告权威继承检查 Schema",
+  "description": "第5阶段检查脚本 check_report_authority_lineage.py 的 --json 输出格式。顶层为数组，每项为单票检查结果。",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["stock_code", "stock_name", "trade_date", "result", "checks"],
+    "properties": {
+      "stock_code": {"type": "string"},
+      "stock_name": {"type": "string"},
+      "trade_date": {"type": "string"},
+      "result": {"type": "string", "enum": ["PASS", "BLOCK"]},
+      "checks": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["check_id", "field", "status", "expected", "actual", "source", "message"],
+          "properties": {
+            "check_id": {"type": "string"},
+            "field": {"type": "string"},
+            "status": {"type": "string", "enum": ["PASS", "BLOCK"]},
+            "expected": {"type": ["string", "null"]},
+            "actual": {"type": ["string", "null"]},
+            "source": {"type": "string"},
+            "message": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

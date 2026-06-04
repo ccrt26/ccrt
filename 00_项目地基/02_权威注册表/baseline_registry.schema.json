@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/baseline_registry.schema.json",
+  "title": "基线注册表 Schema",
+  "description": "铁律量化项目所有baseline（周度基线/深度分析基线）的统一注册和索引。P0-A阶段建立。",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "generated_at",
+    "source_dir",
+    "entries"
+  ],
+  "properties": {
+    "registry_version": {
+      "type": "string",
+      "description": "注册表版本号"
+    },
+    "generated_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}",
+      "description": "注册表生成时间 ISO格式"
+    },
+    "source_dir": {
+      "type": "string",
+      "description": "来源目录路径（生成时记录的上下文）"
+    },
+    "entries": {
+      "type": "array",
+      "description": "基线条目列表",
+      "items": {
+        "type": "object",
+        "required": [
+          "stock_code",
+          "stock_name",
+          "baseline_id",
+          "baseline_file",
+          "baseline_date",
+          "valid_until",
+          "status",
+          "source_type"
+        ],
+        "properties": {
+          "stock_code": {
+            "type": "string",
+            "pattern": "^[0-9]{6}$",
+            "description": "股票代码"
+          },
+          "stock_name": {
+            "type": "string",
+            "description": "股票名称"
+          },
+          "baseline_id": {
+            "type": "string",
+            "description": "基线唯一ID。格式示例：600114_W2026W22。禁用旧格式（如 deep_* 前缀），深度分析基线请使用周度标准 ID。"
+          },
+          "baseline_file": {
+            "type": "string",
+            "description": "基线文件路径（相对项目根目录）"
+          },
+          "baseline_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "基线生成日期 YYYY-MM-DD"
+          },
+          "valid_until": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "基线有效期截止日期 YYYY-MM-DD"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "expired", "deprecated", "draft"],
+            "description": "基线状态：active=当前有效, expired=已过期, deprecated=已废弃, draft=草稿"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": ["weekly_baseline", "deep_analysis", "daily_pack", "other"],
+            "description": "基线来源类型"
+          },
+          "strategy_version": {
+            "type": "string",
+            "description": "策略版本号（如v1.0）"
+          },
+          "key_fields": {
+            "type": "object",
+            "description": "关键价位字段（原样记录，不做转换，兼容多命名）",
+            "properties": {
+              "key_support_price": { "type": ["number", "null"] },
+              "key_pressure_price": { "type": ["number", "null"] },
+              "stop_loss_price": { "type": ["number", "null"] },
+              "target_price": { "type": ["number", "null"] },
+              "position_cap": { "type": ["number", "null"] },
+              "position_cap_baseline": { "type": ["number", "null"] },
+              "S1": { "type": ["number", "null"] },
+              "S2": { "type": ["number", "null"] },
+              "S3": { "type": ["number", "null"] },
+              "R1": { "type": ["number", "null"] },
+              "R2": { "type": ["number", "null"] },
+              "R3": { "type": ["number", "null"] },
+              "stop_loss_new": { "type": ["number", "null"] },
+              "stop_loss_held": { "type": ["number", "null"] }
+            },
+            "additionalProperties": true
+          },
+          "core_thesis": {
+            "type": "string",
+            "description": "核心投资逻辑摘要"
+          },
+          "overall_risk_level": {
+            "type": "string",
+            "description": "总体风险等级"
+          }
+        }
+      }
+    }
+  }
+}

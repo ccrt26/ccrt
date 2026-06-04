@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CanonicalPipelineGate",
+  "description": "第6-C阶段 — canonical发布前总闸门输出格式",
+  "type": "object",
+  "required": ["gate", "date", "verdict", "summary", "checks"],
+  "properties": {
+    "gate": {
+      "type": "string",
+      "const": "canonical_pipeline_gate",
+      "description": "闸门标识"
+    },
+    "date": {
+      "type": "string",
+      "description": "交易日 YYYYMMDD"
+    },
+    "error": {
+      "type": "string",
+      "description": "阻断原因（仅BLOCK时出现）"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["PASS", "BLOCK"],
+      "description": "总闸门判定"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_checks", "pass", "block"],
+      "properties": {
+        "total_checks": {"type": "integer", "minimum": 0},
+        "pass": {"type": "integer", "minimum": 0},
+        "block": {"type": "integer", "minimum": 0}
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "exit_code"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": ["shadow_check", "report_golden_diff", "canonical_render", "canonical_render_diff"],
+            "description": "子闸门ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "BLOCK"]
+          },
+          "exit_code": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

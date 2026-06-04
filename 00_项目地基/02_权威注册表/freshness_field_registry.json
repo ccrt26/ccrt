@@ -1,0 +1,128 @@
+{
+  "version": "1.0",
+  "description": "日期新鲜度字段注册表。记录每个新鲜度相关字段的权威源、新鲜度规则、缺失/延迟策略和决策影响。",
+  "generated_at": "2026-06-02",
+  "entries": [
+    {
+      "field": "kline.trade_date",
+      "category": "kline",
+      "authority_source": "代码文件/数据/kline_cache/{code}.json",
+      "freshness_rule": "T+0 必须存在 trade_date 当日记录",
+      "missing_policy": "BLOCK",
+      "stale_policy": "BLOCK",
+      "degradation_policy": "不可降级",
+      "decision_impact": "高——K线缺失则所有 delta 判断不可信",
+      "check_script": "check_freshness_degradation.py.A"
+    },
+    {
+      "field": "fund_flow.trade_date",
+      "category": "fund_flow",
+      "authority_source": "代码文件/数据/fund_flow_cache/{code}.json",
+      "freshness_rule": "T+0 必须匹配 trade_date",
+      "missing_policy": "BLOCK",
+      "stale_policy": "BLOCK",
+      "degradation_policy": "已声明降级→WARN，未声明→BLOCK",
+      "decision_impact": "高——资金流判断依赖当日数据",
+      "check_script": "check_freshness_degradation.py.B"
+    },
+    {
+      "field": "margin.latest_date",
+      "category": "margin",
+      "authority_source": "代码文件/数据/tushare/margin_detail/{code}.json",
+      "freshness_rule": "T+1 允许，超 T+2 需声明降级",
+      "missing_policy": "WARN（不影响动作时）/ BLOCK（作为动作依据时）",
+      "stale_policy": "超 T+2 未声明→BLOCK；已声明→WARN",
+      "degradation_policy": "需在 sidecar degraded_items 中声明",
+      "decision_impact": "中——融资通常不作为唯一决策依据，但影响风控判断",
+      "check_script": "check_freshness_degradation.py.C"
+    },
+    {
+      "field": "margin.degradation_statement",
+      "category": "margin",
+      "authority_source": "sidecar.degraded_items",
+      "freshness_rule": "降级声明必须包含数据类别/应有日期/最新日期/延迟天数",
+      "missing_policy": "BLOCK（超 T+2 且无声明）",
+      "stale_policy": "N/A",
+      "degradation_policy": "声明延迟→WARN；不声明→BLOCK",
+      "decision_impact": "中——降级未声明会导致决策基于错误的新鲜度假设",
+      "check_script": "check_freshness_degradation.py.C"
+    },
+    {
+      "field": "sector_phase.source",
+      "category": "sector_phase",
+      "authority_source": "代码文件/数据/data_scored.json",
+      "freshness_rule": "三桶（Recommendations/AllStocks/VetoedStocks）",
+      "missing_policy": "影响动作→BLOCK；仅披露→WARN",
+      "stale_policy": "N/A——板块相位使用最新评分数据",
+      "degradation_policy": "不可降级——无数据时不引用",
+      "decision_impact": "中——板块相位影响仓位策略，但不单独触发交易",
+      "check_script": "check_freshness_degradation.py.D"
+    },
+    {
+      "field": "sector_phase.phase_date",
+      "category": "sector_phase",
+      "authority_source": "data_scored.json 嵌入日期",
+      "freshness_rule": "引用 data_scored 最新评分",
+      "missing_policy": "同 sector_phase.source",
+      "stale_policy": "N/A",
+      "degradation_policy": "同 sector_phase.source",
+      "decision_impact": "低——板块相位新鲜度不如相位本身重要",
+      "check_script": "check_freshness_degradation.py.D"
+    },
+    {
+      "field": "baseline.baseline_date",
+      "category": "baseline",
+      "authority_source": "00_项目地基/02_权威注册表/baseline_registry.json",
+      "freshness_rule": "baseline_date <= trade_date <= valid_until",
+      "missing_policy": "无有效→BLOCK",
+      "stale_policy": "过期→BLOCK；多条→BLOCK",
+      "degradation_policy": "不可降级——无有效 baseline 日报不得生成",
+      "decision_impact": "高——所有价位/仓位判断基于 baseline",
+      "check_script": "check_freshness_degradation.py.E"
+    },
+    {
+      "field": "baseline.valid_until",
+      "category": "baseline",
+      "authority_source": "baseline_registry.json",
+      "freshness_rule": "trade_date > valid_until → 过期",
+      "missing_policy": "N/A",
+      "stale_policy": "过期→BLOCK",
+      "degradation_policy": "不可降级",
+      "decision_impact": "高",
+      "check_script": "check_freshness_degradation.py.E"
+    },
+    {
+      "field": "eval_hooks.t1_date",
+      "category": "eval_hooks",
+      "authority_source": "sidecar.eval_hooks.t1_verify",
+      "freshness_rule": "t1 日期不得早于 next_trade_date",
+      "missing_policy": "WARN（日期格式不可解析）",
+      "stale_policy": "早于 next_trade_date→BLOCK",
+      "degradation_policy": "不可降级",
+      "decision_impact": "低——eval_hooks 日期错误不影响当日决策",
+      "check_script": "check_freshness_degradation.py.F"
+    },
+    {
+      "field": "eval_hooks.t5_date",
+      "category": "eval_hooks",
+      "authority_source": "sidecar.eval_hooks.t5_verify",
+      "freshness_rule": "t5 日期必须晚于 trade_date",
+      "missing_policy": "WARN（日期格式不可解析）",
+      "stale_policy": "不晚于 trade_date→BLOCK",
+      "degradation_policy": "不可降级",
+      "decision_impact": "低",
+      "check_script": "check_freshness_degradation.py.F"
+    },
+    {
+      "field": "eval_hooks.next_trade_date",
+      "category": "eval_hooks",
+      "authority_source": "sidecar.next_trade_date",
+      "freshness_rule": "T+1 参考日期",
+      "missing_policy": "N/A——不存在时为默认第二天",
+      "stale_policy": "N/A",
+      "degradation_policy": "N/A",
+      "decision_impact": "低",
+      "check_script": "check_freshness_degradation.py.F"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "description": "报告权威来源注册表。定义每个字段类型的权威源、允许引用和禁止引用。",
+  "generated_at": "2026-06-04",
+  "entries": [
+    {
+      "field": "baseline_id",
+      "authority_source": "00_项目地基/02_权威注册表/baseline_registry.json",
+      "allowed_reference_sources": ["resolve_current_baseline.py", "check_baseline_authority.py"],
+      "forbidden_authority_sources": ["deep_analysis_title", "deep_analysis_appendix", "historical_daily_report", "manual_input", "template_example"],
+      "gate": "check_baseline_authority.py",
+      "block_condition": "日报 baseline_id ≠ registry 返回值"
+    },
+    {
+      "field": "key_levels",
+      "authority_source": "baseline_registry.json.key_fields",
+      "allowed_reference_sources": ["resolve_current_baseline.py"],
+      "forbidden_authority_sources": ["deep_analysis_body", "system_appendix", "old_daily_report"],
+      "gate": "check_baseline_authority.py",
+      "block_condition": "关键价位与 registry 差异 >15%"
+    },
+    {
+      "field": "close",
+      "authority_source": "代码文件/数据/kline_cache/{code}.json",
+      "allowed_reference_sources": ["sidecar.delta.close"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report", "system_appendix"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "close 与 kline_cache 差异 >0.001"
+    },
+    {
+      "field": "change_pct",
+      "authority_source": "代码文件/数据/kline_cache/{code}.json",
+      "allowed_reference_sources": ["sidecar.delta.change_pct"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "change_pct 与 kline_cache 差异 >0.05%"
+    },
+    {
+      "field": "volume",
+      "authority_source": "代码文件/数据/kline_cache/{code}.json",
+      "allowed_reference_sources": ["sidecar.delta.volume_wan_shou"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "成交量与权威源差异 >1万手"
+    },
+    {
+      "field": "fund_flow_4level",
+      "authority_source": "代码文件/数据/fund_flow_cache/{code}.json",
+      "allowed_reference_sources": ["sidecar.fund_flow_4level"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "资金金额与权威源差异 >1万"
+    },
+    {
+      "field": "margin",
+      "authority_source": "代码文件/数据/tushare/margin_detail/{code}.json",
+      "allowed_reference_sources": ["sidecar", "MD"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "融资日期与权威源最新日期不匹配"
+    },
+    {
+      "field": "sector_phase",
+      "authority_source": "代码文件/数据/data_scored.json",
+      "allowed_reference_sources": ["sidecar.sector_phase"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report", "manual_override"],
+      "gate": "check_numeric_source_consistency.py",
+      "block_condition": "相位与 data_scored 不一致"
+    },
+    {
+      "field": "freshness",
+      "authority_source": "freshness_authority_contract.md + freshness_field_registry.json",
+      "allowed_reference_sources": ["sidecar.degraded_items"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_freshness_degradation.py",
+      "block_condition": "K线缺失/资金日期不匹配/baseline过期"
+    },
+    {
+      "field": "risk_light",
+      "authority_source": "sidecar.risk_light.overall + machine_fields.risk_light",
+      "allowed_reference_sources": ["sidecar"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_md_sidecar_consistency.py",
+      "block_condition": "MD 风控灯与 sidecar 不一致"
+    },
+    {
+      "field": "p0_action",
+      "authority_source": "sidecar.p0_decision_card + 白皮书规则",
+      "allowed_reference_sources": ["MD P0 决策卡"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_md_sidecar_consistency.py",
+      "block_condition": "MD 动作方向与 sidecar 冲突"
+    },
+    {
+      "field": "one_line",
+      "authority_source": "sidecar.p0_decision_card.one_line_conclusion",
+      "allowed_reference_sources": ["MD 明日一句话操作"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_md_sidecar_consistency.py",
+      "block_condition": "MD 动作方向与 sidecar 冲突 (primary action)"
+    },
+    {
+      "field": "eval_hooks",
+      "authority_source": "sidecar.eval_hooks",
+      "allowed_reference_sources": ["MD 场景表"],
+      "forbidden_authority_sources": ["deep_analysis_body", "old_daily_report"],
+      "gate": "check_freshness_degradation.py + check_md_sidecar_consistency.py",
+      "block_condition": "t1<t5 日期错误或 MD/SC 不一致"
+    },
+    {
+      "field": "analysis_thesis",
+      "authority_source": "深度分析报告正文 + 腰子口径",
+      "allowed_reference_sources": ["白皮书", "深度分析"],
+      "forbidden_authority_sources": ["N/A — analysis_thesis 允许使用深度分析"],
+      "gate": "无 — 分析逻辑不通过闸门拦截",
+      "block_condition": "N/A"
+    }
+  ]
+}

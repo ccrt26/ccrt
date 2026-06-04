@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-04",
+  "entries": [
+    {"entry": "generate_launchd.py", "authority": "primary_scheduler_registry", "path": "代码文件/每日荐股/scripts/generate_launchd.py", "platform": "macOS", "status": "active"},
+    {"entry": "launchd", "authority": "primary_scheduler_runtime", "path": "system launchd", "platform": "macOS", "status": "active"},
+    {"entry": "daily_workflow.py", "authority": "scheduled_executable", "path": "代码文件/每日荐股/scripts/daily_workflow.py", "platform": "cross", "status": "active"},
+    {"entry": "batch_data_collector.py", "authority": "data_collector", "path": "代码文件/每日荐股/scripts/batch_data_collector.py", "platform": "cross", "status": "active"},
+    {"entry": "daily_orchestrator.py", "authority": "report_generator", "path": "代码文件/tools/daily_orchestrator.py", "platform": "cross", "status": "active"},
+    {"entry": "check_runtime_entry_authority.py", "authority": "runtime_gate", "path": "scripts/check_runtime_entry_authority.py", "platform": "cross", "status": "active"},
+    {"entry": "Windows Task Scheduler", "authority": "legacy_scheduler", "path": "N/A", "platform": "Windows", "status": "legacy_forbidden"},
+    {"entry": "register_tasks.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/每日荐股/scripts/register_tasks.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
+    {"entry": "setup_scheduler.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/每日荐股/scripts/setup_scheduler.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
+    {"entry": "register_pigeon_scheduler.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/信鸽信息采集/register_pigeon_scheduler.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
+    {"entry": "batch_data_collector.ps1", "authority": "data_collector_legacy", "path": "代码文件/每日荐股/scripts/batch_data_collector.ps1", "platform": "Windows", "status": "forbidden_when_python_replacement_exists"},
+    {"entry": "daily_workflow.ps1", "authority": "workflow_legacy", "path": "代码文件/每日荐股/scripts/daily_workflow.ps1", "platform": "Windows", "status": "forbidden_when_python_replacement_exists"}
+  ]
+}

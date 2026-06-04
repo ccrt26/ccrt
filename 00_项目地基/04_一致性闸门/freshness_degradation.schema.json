@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/freshness_degradation.schema.json",
+  "title": "日期新鲜度与降级路径检查 Schema",
+  "description": "P0-C 闸门输出结果的标准格式。每条检查记录包含字段名、来源日期、允许延迟、新鲜度、降级状态和判定结果。",
+  "type": "object",
+  "required": ["stock_code", "stock_name", "trade_date", "result", "checks"],
+  "properties": {
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string"},
+    "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "source_path", "source_date", "trade_date", "allowed_lag", "freshness", "degraded", "sidecar_claim", "md_claim", "result", "issue"],
+        "properties": {
+          "field": {"type": "string"},
+          "source_path": {"type": "string"},
+          "source_date": {"type": ["string", "null"]},
+          "trade_date": {"type": "string"},
+          "allowed_lag": {"type": ["string", "null"]},
+          "freshness": {"type": "string"},
+          "degraded": {"type": "boolean"},
+          "sidecar_claim": {"type": ["string", "null"]},
+          "md_claim": {"type": ["string", "null"]},
+          "result": {"type": "string", "enum": ["PASS", "WARN", "BLOCK"]},
+          "issue": {"type": "string"}
+        }
+      }
+    }
+  }
+}
