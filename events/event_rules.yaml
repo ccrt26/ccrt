@@ -26,6 +26,12 @@ events:
     starter: 情墨
     description: 兜底规则，任何未匹配的用户请求默认走全流程
 
+  - name: PIPELINE_CONTINUE
+    keywords: ["执行", "大家执行", "按顺序执行", "按计划推进", "继续推进", "开始做", "继续流程"]
+    flow_template: ""
+    starter: 阿黑
+    description: 执行类口令——不走新流程，阿黑先核验pipeline状态再路由到当前阶段负责人。禁止直接编码。
+
 # 领域→角色映射
 domains:
   financial: ["腰子", "山猫", "信鸽", "玉夜", "流金", "青山"]

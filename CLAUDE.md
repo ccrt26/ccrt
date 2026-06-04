@@ -6,6 +6,7 @@
 > 角色定义：`.claude/commands/`（13个角色，含前置规则锚点）
 > 自动化脚本：`scripts/`（pipeline_engine / sign_off / audit_scan 等9个）
 > 项目宪法：`docs/constitution.md`
+> **统一解读**：`统一解读/统一解读协议_v1.0.md`（所有正式分析必须生成解释对象+eval_hooks）
 
 ---
 
@@ -13,6 +14,11 @@
 
 ### 1.1 金融分析规则
 > ⛔ 所有金融分析规则（数据真实性、PE(TTM)公式、1+2架构、PDF保护、报告样式、API纪律）统一维护在 `金融铁律/金融铁律_v1.17.md`。金融线全员分析前必读。
+
+### 1.2 统一解读规则（⛔ 强制）
+> ⛔ 所有正式分析（日报/深度分析/每日荐股/模拟交易/保护机制/临时分析）必须遵循 `统一解读/统一解读协议_v1.0.md`。
+> 每条正式分析必须生成：`interpretation_id` + `role_interpretations` + `yaozi_integration` + `audit_u9` + `audit_u10` + `eval_hooks` + `rule_refs` + `knowledge_refs`
+> 无解释对象、无知识引用、无 eval_hooks 的结论，不得归档为正式分析。
 
 ### 1.2 工程通用
 - 修改.md → 同步生成.docx；提交前运行 `version_supervisor.py --cross-check`
@@ -86,11 +92,12 @@
 阿黑收到用户短指令后，按以下优先级顺序判定：
 
 1. 含金融关键词（复用 flow_bugfix.json desc_keywords + path_keywords 全集）→ 输出"[金融线] 转腰子全团咨询" + 停止
-2. 含 EMERGENCY_KW（紧急/P0/立刻/线上挂了/马上）→ event=EMERGENCY, starter=腰子
-3. 含 FIX_KW（修复/bug/修/问题/改/坏了/异常）→ event=FIX, starter=情墨
-4. 含 NEW_KW（新增/新功能/开发/优化/改版/改进/添加/加一个）→ event=NEW_REQUIREMENT, starter=情墨
-5. 含 CHECK_KW（检查/查一下/看看/确认/验证/审查/诊断/排查）→ event=READONLY_CHECK, starter=阿黑→路由检查角色
-6. 其他 → event=USER_REQUEST(兜底), starter=情墨
+2. 含 EXECUTE_KW（执行/大家执行/按顺序执行/按计划推进/继续推进/开始做/继续流程）→ event=PIPELINE_CONTINUE, starter=阿黑（仅查状态路由，不启动新流程，不直接编码）
+3. 含 EMERGENCY_KW（紧急/P0/立刻/线上挂了/马上）→ event=EMERGENCY, starter=腰子
+4. 含 FIX_KW（修复/bug/修/问题/改/坏了/异常）→ event=FIX, starter=情墨
+5. 含 NEW_KW（新增/新功能/开发/优化/改版/改进/添加/加一个）→ event=NEW_REQUIREMENT, starter=情墨
+6. 含 CHECK_KW（检查/查一下/看看/确认/验证/审查/诊断/排查）→ event=READONLY_CHECK, starter=阿黑→路由检查角色
+7. 其他 → event=USER_REQUEST(兜底), starter=情墨
 
 阿黑动作：输出判定结果 → pipeline_engine --start → 交接 starter，自身退出执行链路。
 
@@ -99,6 +106,7 @@
 | 事件类型 | 模板 | 关键词 | starter |
 |:---------|:-----|:-------|:--------|
 | EMERGENCY | flow_p0.json | 紧急, P0, 立刻, 线上挂了, 马上 | 腰子 |
+| PIPELINE_CONTINUE | (无模板，不启新流程) | 执行, 大家执行, 按顺序执行, 按计划推进, 继续推进, 开始做, 继续流程 | 阿黑 |
 | FIX | flow_bugfix.json | 修复, bug, 修, 问题, 改, 坏了, 异常 | 情墨 |
 | NEW_REQUIREMENT | flow_new_requirement.json | 新增, 新功能, 开发, 优化, 改版, 改进, 添加, 加一个 | 情墨 |
 | READONLY_CHECK | (无模板，不启流程) | 检查, 查一下, 看看, 确认, 验证, 审查, 诊断, 排查 | 阿黑→路由旧影/新安/玉夜 |
@@ -117,6 +125,26 @@
 
 ---
 
+### 6.4 执行类口令语义门禁（PIPELINE_CONTINUE）
+
+> ⛔ **"执行"不代表"直接开干"。** 所有执行类口令必须先走状态核验，由阿黑只查 pipeline 状态并路由当前阶段。
+
+#### 核心规则
+1. 用户说「执行/大家执行/按顺序执行/继续推进/开始做/继续流程」→ 统一判定为 PIPELINE_CONTINUE
+2. 阿黑第一动作只能是查 pipeline_active.json / `pipeline_engine.py --pcontinue`，不得直接读/写代码
+3. 用户口头说"当前是 coding / 执行人红结 / 已到红结"不能作为流程事实。唯一事实源是 pipeline state
+4. 阿黑核验后路由到当前 stage 对应角色，自身退出执行链路
+5. 若当前 stage=coding，不得自行执行轻量检查，必须调用 `--pcontinue` 或 `--check-coding-gate` 的完整 C1-C8 结果（含 HMAC 验签）。未通过 coding gate 前不得 Read 目标代码文件，红结入场前必须先通过完整门禁。
+
+#### 禁止行为
+- Read 目标代码文件作为第一动作
+- Edit/Write/MultiEdit 直接修改
+- Bash 执行修复脚本
+- 直接进入红结编码
+- 根据用户口头阶段声明跳过状态检查
+
+---
+
 ## 七、关键工具
 
 | 工具 | 用途 |
@@ -126,6 +154,11 @@
 | `scripts/pipeline_engine.py --advance <run_id> --role <角色>` | 推进流程（强校验：签名真伪+阶段匹配+角色授权） |
 | `scripts/pipeline_engine.py --complete <run_id> --role <角色>` | 完成最后阶段并标记流程completed |
 | `scripts/pipeline_engine.py --block <run_id> --reason "<原因>"` | 阻断流程 |
+| `scripts/pipeline_engine.py --pcontinue [<run_id>]` | 继续流程判定：检查pipeline状态并路由当前阶段负责人 |
+| `scripts/pipeline_engine.py --check-coding-gate <run_id>` | 红结入场门禁C1-C8全检查（含HMAC验签） |
+| `scripts/pipeline_engine.py --issue-auth-token <run_id> --actor <actor> --role <role>` | 签发工程鉴权token（coding gate通过后） |
+| `scripts/pipeline_engine.py --revoke-auth-token <token_id> --reason "<原因>"` | 撤销token |
+| `scripts/pipeline_engine.py --list-auth-tokens [--run-id <run_id>]` | 列出token |
 | `scripts/pipeline_engine.py --validate <清单路径>` | 校验清单并注册到流程（含financial_impact检测） |
 | `scripts/sign_off.py --role <角色> --run-id <id> --checklist <路径>` | 角色签章（白名单+阶段校验+签名绑定） |
 | `scripts/check_checklist.py <清单路径>` | 清单合规审查（签名防伪+hash验证） |
@@ -157,7 +190,80 @@
 
 | 项目 | 内容 |
 |:-----|:-----|
-| 当前版本 | v2.3 |
-| 最后更新 | 2026-05-31 |
+| 当前版本 | v2.5 |
+| 最后更新 | 2026-06-02 |
 | 更新人 | 阿黑 |
-| 变更摘要 | fix2: 统一签名验证(pipeline/checklist共用)、P0启动强制7字段CLI参数+allowed/excluded代码门禁、--complete命令、BUGFIX consult条件真实执行、角色强制、超期P0阻断新发布 |
+| 变更摘要 | v2.5: 工程鉴权Token融合——新增auth_tokens.json+verify_auth_token(V1-V10)+3命令(issue/revoke/list)+write_protection_hook token校验+Read保护+AUTH_PROTECTED_PATHS+settings PreToolUse Read+T-AUTH-01~10+E2+E3测试 |
+
+---
+
+## 十、执行类口令语义门禁（完整规则）
+
+> **本规则为 §6.4 的完整展开，所有角色必须遵守。**
+
+### 10.1 问题定义
+用户口令中的"执行/大家执行/按顺序执行"被误判为动作授权，导致阿黑调度后红结直接进入代码读取/修改，绕过设计、讨论、清单、签名等标准流程。
+
+根因："执行"缺少统一语义门禁。它应该表示"继续流程判定"，而不是"当前指定执行人立刻开干"。
+
+### 10.2 执行语义重定义
+用户说以下词汇时：
+- 执行 / 大家执行 / 按顺序执行 / 按计划推进 / 继续推进 / 开始做 / 继续流程
+
+一律不得直接视为代码执行授权。统一判定为：**PIPELINE_CONTINUE**。
+
+### 10.3 阿黑 PIPELINE_CONTINUE 门禁
+阿黑第一动作只能是：
+1. 查询当前 pipeline 状态
+2. 判断 current_stage
+3. 判断 checklist_path 是否存在
+4. 判断当前阶段需要的角色和签名是否满足
+5. 输出下一阶段路由
+
+**禁止第一动作：**
+- Read 目标代码文件
+- Edit/Write/MultiEdit
+- Bash 执行修复脚本
+- 直接进入红结编码
+- 根据用户口头阶段声明跳过状态检查
+
+### 10.4 唯一事实源
+用户口头说"当前是 coding / 执行人红结 / 已到红结"不能作为流程事实。
+
+唯一事实源是：
+- `.claude/pipeline_active.json`
+- `scripts/pipeline_engine.py --status`
+- `scripts/pipeline_engine.py --pcontinue`
+- checklist JSON
+- sign_off 记录
+
+### 10.5 红结入场门禁
+红结开始读取或修改代码前，必须同时满足：
+1. pipeline current_stage == coding
+2. 当前 run 未 blocked，status == active
+3. checklist_path 已注册
+4. checklist 已通过 validate
+5. 情墨 design 阶段已签名并推进完成
+6. 若流程含 review/consult，相关前置阶段已完成或按规则跳过
+7. 本次修改文件在 checklist/file_budgets/files_scope 内
+8. code_level 已由情墨标注，红结不得自行变更
+
+任一不满足 → 红结必须拒绝编码，输出：
+**"BLOCK：红结未获得 coding 入场条件，退回阿黑/情墨补齐流程。"**
+
+> **阿黑 coding 入场门禁纪律：** PIPELINE_CONTINUE 且 current_stage=coding 时，阿黑不得自行执行轻量检查代替完整 C1-C8。`--pcontinue` 和 `--check-coding-gate` 调用同一 `check_coding_gate()` 函数，两者对 coding 入场结论完全一致。未通过 coding gate 前，阿黑不得通知红结入场、不得 Read 目标代码文件。
+
+### 10.6 情墨职责
+若当前 run 未到 coding，或缺少设计/清单：
+情墨必须先完成：
+- 影响范围分析
+- code_level 标注
+- token_budget 标注
+- file_budget/files_scope 标注
+- 需求→代码核对清单
+- checklist JSON
+- pipeline_engine --validate
+- sign_off
+
+### 10.7 测试用例
+详见 `scripts/test_workflow.py` T-EXEC 系列测试（T-EXEC-01 至 T-EXEC-05）。
