@@ -1,0 +1,25 @@
+{
+  "registry": "source_registry",
+  "version": "1.0",
+  "status": "draft",
+  "description": "数据源注册表骨架。字段定义基于 P0-B design 方案，不注册真实数据源。",
+  "meta": {
+    "id_format": "SRC-L{级别}-{4位序号}",
+    "source_type_enum": ["api","file","推算"],
+    "authority_level_enum": ["L1","L2","L3","L4"],
+    "status_enum": ["active","degraded","retired"]
+  },
+  "field_definitions": {
+    "source_id":        { "type": "string", "pattern": "^SRC-L[1-4]-[0-9]{4}$", "required": true },
+    "source_name":      { "type": "string", "required": true },
+    "source_type":      { "type": "enum", "values": ["api","file","推算"], "required": true },
+    "latency":          { "type": "string", "required": true },
+    "freshness_rule_id": { "type": "rule_id", "required": true },
+    "authority_level":  { "type": "enum", "values": ["L1","L2","L3","L4"], "required": true },
+    "fallback_source":  { "type": "source_id", "required": false },
+    "cost_profile":     { "type": "string", "required": true },
+    "owner":            { "type": "string", "required": true },
+    "status":           { "type": "enum", "values": ["active","degraded","retired"], "required": true }
+  },
+  "sources": {}
+}

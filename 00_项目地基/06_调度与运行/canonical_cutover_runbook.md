@@ -11,17 +11,17 @@
 第6-E启动前，先跑准入清单：
 
 ```bash
-# 1. 验收记录存在
-test -f 00_项目地基/08_审计与验收/第6-A阶段_canonical影子对象与日报GoldenDiff验收记录.md
-test -f 00_项目地基/08_审计与验收/第6-B阶段_canonical展示层影子渲染器验收记录.md
-test -f 00_项目地基/08_审计与验收/第6-C阶段_canonical发布前总闸门验收记录.md
+# 1. 验收记录存在（冷归档路径）
+test -f 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-A阶段_canonical影子对象与日报GoldenDiff验收记录.md
+test -f 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-B阶段_canonical展示层影子渲染器验收记录.md
+test -f 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-C阶段_canonical发布前总闸门验收记录.md
 test -f 00_项目地基/01_数据契约/canonical_cutover_contract.md
 test -f 00_项目地基/06_调度与运行/canonical_cutover_runbook.md
 
-# 2. 验收结论 grep
-rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/第6-A阶段*
-rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/第6-B阶段*
-rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/第6-C阶段*
+# 2. 验收结论 grep（冷归档）
+rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-A阶段*
+rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-B阶段*
+rg "G5 审计结论: PASS" 00_项目地基/08_审计与验收/archive/fulltext/00_项目地基/08_审计与验收/第6-C阶段*
 ```
 
 全部 PASS 后才可进入第6-E。

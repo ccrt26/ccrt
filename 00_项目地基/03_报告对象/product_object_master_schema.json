@@ -1,0 +1,42 @@
+{
+  "registry": "product_object_master_schema",
+  "version": "1.0",
+  "status": "draft",
+  "description": "12 类产物对象 master schema 骨架。字段定义基于 P0-B design 方案，不包含对象实例。",
+  "meta": {
+    "id_format": "OBJ-{类型前缀}-{4位序号}",
+    "type_prefix_enum": ["DS","IO","EP","SP","AP","CR","RS","EH","TD","PD","AR","RC"],
+    "status_enum": ["draft","published","archived","superseded"]
+  },
+  "common_fields": {
+    "object_id":       { "type": "string", "pattern": "^OBJ-(DS|IO|EP|SP|AP|CR|RS|EH|TD|PD|AR|RC)-[0-9]{4}$", "required": true },
+    "schema_version":  { "type": "string", "required": true },
+    "status":          { "type": "enum", "values": ["draft","published","archived","superseded"], "required": true },
+    "created_at":      { "type": "string", "format": "date-time", "required": true },
+    "source_refs":     { "type": "array", "items": "source_id", "required": true },
+    "capability_refs": { "type": "array", "items": "capability_id", "required": true },
+    "rule_refs":       { "type": "array", "items": "rule_id", "required": true },
+    "audit_refs":      { "type": "array", "items": "string", "required": false }
+  },
+  "object_types": {
+    "DS": { "name": "DataSnapshot",     "specific_fields": ["data_refs","quality_gates","degradation_records","freshness_status","expires_at"] },
+    "IO": { "name": "InterpretationObject", "specific_fields": ["role_interpretations","yaozi_integration","devil_block"] },
+    "EP": { "name": "EvidencePackage",  "specific_fields": ["direction","confidence","valid_until","counter_evidence"] },
+    "SP": { "name": "ScenarioPackage",  "specific_fields": ["probability","odds","reversal_conditions"] },
+    "AP": { "name": "ActionPlan",       "specific_fields": ["evidence_refs","scenario_refs","position_suggestion","risk_assessment"] },
+    "CR": { "name": "CanonicalReport",  "specific_fields": ["interpretation_ref","sidecar_ref","report_body"] },
+    "RS": { "name": "ReportSidecar",    "specific_fields": ["report_ref"] },
+    "EH": { "name": "EvalHook",         "specific_fields": ["interpretation_ref","prediction","verification_window"] },
+    "TD": { "name": "TradeDecision",    "specific_fields": ["action_plan_ref","trade_direction","quantity","price_limit"] },
+    "PD": { "name": "ProtectionDecision", "specific_fields": ["action_plan_ref","trigger_condition","action"] },
+    "AR": { "name": "AuditRecord",      "specific_fields": ["audited_object_ref","violated_rules","audit_result"] },
+    "RC": { "name": "RuleUpdateCandidate", "specific_fields": ["eval_hook_ref","audit_record_ref","proposed_change"] }
+  },
+  "constraints": [
+    "CR_RS_consistency: CanonicalReport 与 ReportSidecar 字段一一对应，不可互相替代",
+    "TD_AP_only: TradeDecision 只能来自 ActionPlan",
+    "PD_AP_only: ProtectionDecision 只能来自 ActionPlan",
+    "RC_M4_only: RuleUpdateCandidate 只能进入 M4 规则资产治理流程",
+    "AR_independent: AuditRecord 由旧影/审计流程写入，不作为业务结论"
+  ]
+}
