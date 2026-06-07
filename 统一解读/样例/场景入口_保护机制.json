@@ -1,0 +1,92 @@
+{
+  "interpretation": {
+    "interpretation_id": "INT-20260602-142923-d910bb",
+    "scene": "保护机制",
+    "stock_code": "000001.XSHE",
+    "trade_date": "2026-06-02",
+    "role": "流金",
+    "data_fact": {
+      "source": "Tushare",
+      "freshness": "当日",
+      "values": {
+        "close": 11.5,
+        "change_3d_pct": -5.2
+      }
+    },
+    "interpretation_hypothesis": "保护机制刹车触发: 连续3日下跌累计超5%",
+    "supporting_evidence": [
+      {
+        "evidence": "连续3日下跌累计5.2%",
+        "source": "Tushare",
+        "strength": "强",
+        "source_level": "L3",
+        "source_ref": "Tushare.000001.2026-06-02"
+      }
+    ],
+    "counter_evidence": [
+      {
+        "evidence": "成交量未放大，恐慌性抛售不明显",
+        "source": "Tushare",
+        "type": "技术面反证"
+      }
+    ],
+    "investment_implication": "保护机制刹车触发: 连续3日下跌累计超5%，建议HOLD，等待保护条件解除后再评估",
+    "action_bias": "HOLD",
+    "trigger_condition": "连续3日跌幅>5%",
+    "price_range": "",
+    "position_limit": "",
+    "time_window": "",
+    "confidence": "MEDIUM",
+    "invalidation_condition": "T+2内股价回升至12.00以上且量能恢复",
+    "eval_window": {
+      "t1": "检查跌幅是否收窄",
+      "t3": "检查是否回升",
+      "t5": "评估保护效果"
+    },
+    "rule_refs": [
+      "I-03",
+      "A-06"
+    ],
+    "knowledge_refs": [
+      "LIUJIN-STOP-001",
+      "LIUJIN-RISK-001"
+    ],
+    "signal_refs": []
+  },
+  "unified_interpretation": {
+    "enabled": true,
+    "interpretation_id": "INT-20260602-142923-d910bb",
+    "scene": "保护机制",
+    "role_interpretations": [
+      {
+        "role": "流金",
+        "hypothesis": "保护机制刹车触发: 连续3日下跌累计超5%"
+      }
+    ],
+    "yaozi_integration": {
+      "action_bias": "HOLD",
+      "confidence": "MEDIUM",
+      "invalidation": "T+2内股价回升至12.00以上且量能恢复"
+    },
+    "audit_u9": {
+      "status": "PASS",
+      "findings": []
+    },
+    "audit_u10": {
+      "status": "PASS",
+      "findings": []
+    },
+    "eval_hooks": [
+      "EVAL-20260602-142924-55d1cc"
+    ],
+    "rule_refs": [
+      "I-03",
+      "A-06"
+    ],
+    "knowledge_refs": [
+      "LIUJIN-STOP-001",
+      "LIUJIN-RISK-001"
+    ],
+    "signal_refs": []
+  }
+}

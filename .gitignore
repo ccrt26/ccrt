@@ -66,6 +66,8 @@ _data_audit.md
 重点股票/次日评估/复盘报告/
 重点股票/次日评估/_quarantine/
 重点股票/次日评估/评估数据_*.json
+重点股票/次日评估/freshness_report_*.json
+docs/daily_reports/
 重点股票/消息面数据/cache/
 重点股票/消息面数据/content_cache/
 重点股票/消息面数据/*.json
@@ -106,6 +108,10 @@ daily_data_pack/
 代码文件/数据/unified_features.jsonl
 代码文件/数据/signal_winrate_db.json
 
+# 统一解读运行时评估记录
+统一解读/eval_hooks/store/
+统一解读/eval_hooks/weekly/
+
 # 日志
 logs/
 临时报告/
@@ -124,3 +130,4 @@ logs/
 
 # Actor secrets
 .claude/actor_secrets.json
+.claude/auth_tokens.json

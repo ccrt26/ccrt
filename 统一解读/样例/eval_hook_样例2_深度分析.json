@@ -1,0 +1,31 @@
+{
+  "eval_hook_id": "EVAL-20260602-161500-n3o4p5",
+  "interpretation_id": "INT-20260602-161500-d4e5f6",
+  "claim": "茅台当前处于'好公司但非好价格'阶段，预计未来5个交易日股价在1650-1720区间震荡，WATCH评级等待以下条件中至少2个满足：PE<25、北向转为净流入、周线MACD金叉",
+  "action_bias": "WATCH",
+  "confidence": "MEDIUM",
+  "t1_check": {
+    "check_date": "2026-06-03",
+    "metric": "northbound_flow_direction + price_level",
+    "expected": "北向资金方向+股价守住1650以上",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t3_check": {
+    "check_date": "2026-06-05",
+    "metric": "MACD_weekly_convergence + PE_change",
+    "expected": "周线MACD收敛迹象+PE变化方向",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t5_check": {
+    "check_date": "2026-06-09",
+    "metric": "valuation_percentile + new_catalyst",
+    "expected": "PE分位变化+是否有新基本面催化",
+    "actual": "",
+    "result": "待评估"
+  },
+  "success_criteria": "T+5内出现明确入场条件(PE<25或周线金叉或北向转流入)，判断框架有效",
+  "failure_criteria": "T+5内股价跌破1600(对应PE<25提前到达)但入场条件全部未满足，或股价突破1750(PE>30)但无基本面支撑",
+  "rule_update_candidate": false
+}

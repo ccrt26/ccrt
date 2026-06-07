@@ -1,0 +1,92 @@
+{
+  "interpretation": {
+    "interpretation_id": "INT-20260602-142903-229ee6",
+    "scene": "临时分析",
+    "stock_code": "MARKET",
+    "trade_date": "2026-06-02",
+    "role": "腰子",
+    "data_fact": {
+      "source": "Tushare+新浪",
+      "freshness": "当日",
+      "values": {
+        "sh_index": 3250.5,
+        "change_pct": 0.3
+      }
+    },
+    "interpretation_hypothesis": "大盘震荡偏多，量能正常，短期无系统性风险",
+    "supporting_evidence": [
+      {
+        "evidence": "上证微涨0.3%，成交量正常",
+        "source": "新浪行情",
+        "strength": "中",
+        "source_level": "L3",
+        "source_ref": "新浪.上证.2026-06-02"
+      }
+    ],
+    "counter_evidence": [
+      {
+        "evidence": "M1-M2剪刀差为负",
+        "source": "央行数据",
+        "type": "宏观风险"
+      }
+    ],
+    "investment_implication": "市场整体处于震荡偏多状态，个股操作环境正常，但需注意信用收缩和M1-M2剪刀差为负的结构性压力，建议控制仓位在流动性约束范围内操作",
+    "action_bias": "NEUTRAL",
+    "trigger_condition": "",
+    "price_range": "",
+    "position_limit": "",
+    "time_window": "",
+    "confidence": "MEDIUM",
+    "invalidation_condition": "上证跌破3200或量能萎缩至0.7x以下",
+    "eval_window": {
+      "t1": "检查指数方向",
+      "t3": "检查量能",
+      "t5": "验证判断"
+    },
+    "rule_refs": [
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "SHANMAO-MARKET-001",
+      "SHANMAO-MACRO-001"
+    ],
+    "signal_refs": []
+  },
+  "unified_interpretation": {
+    "enabled": true,
+    "interpretation_id": "INT-20260602-142903-229ee6",
+    "scene": "临时分析",
+    "role_interpretations": [
+      {
+        "role": "腰子",
+        "hypothesis": "大盘震荡偏多，量能正常，短期无系统性风险"
+      }
+    ],
+    "yaozi_integration": {
+      "action_bias": "NEUTRAL",
+      "confidence": "MEDIUM",
+      "invalidation": "上证跌破3200或量能萎缩至0.7x以下"
+    },
+    "audit_u9": {
+      "status": "PASS",
+      "findings": []
+    },
+    "audit_u10": {
+      "status": "PASS",
+      "findings": []
+    },
+    "eval_hooks": [
+      "EVAL-20260602-142903-4ad10e"
+    ],
+    "rule_refs": [
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "SHANMAO-MARKET-001",
+      "SHANMAO-MACRO-001"
+    ],
+    "signal_refs": []
+  }
+}

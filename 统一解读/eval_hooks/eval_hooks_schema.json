@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/eval_hooks_schema.json",
+  "title": "后评估挂钩 Schema",
+  "description": "每条解释对象必须生成的后评估挂钩标准格式 v1.0",
+  "type": "object",
+  "required": [
+    "eval_hook_id",
+    "interpretation_id",
+    "claim",
+    "action_bias",
+    "confidence",
+    "t1_check",
+    "t3_check",
+    "t5_check",
+    "success_criteria",
+    "failure_criteria"
+  ],
+  "properties": {
+    "eval_hook_id": {
+      "type": "string",
+      "pattern": "^EVAL-[0-9]{8}-[0-9]{6}-[a-z0-9]{6}$",
+      "description": "唯一标识"
+    },
+    "interpretation_id": {
+      "type": "string",
+      "description": "对应的解释对象ID"
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 20,
+      "description": "可验证的主张（必须具体、可测量）"
+    },
+    "action_bias": {
+      "type": "string",
+      "enum": ["BUY", "HOLD", "SELL", "WATCH", "NEUTRAL"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    },
+    "t1_check": {
+      "type": "object",
+      "required": ["check_date", "metric", "expected", "actual", "result"],
+      "properties": {
+        "check_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "metric": {"type": "string", "description": "检查指标，如 price_change_pct, signal_direction"},
+        "expected": {"type": "string"},
+        "actual": {"type": "string"},
+        "result": {"type": "string", "enum": ["命中", "部分命中", "失败", "不可评估", "数据不足", "待评估"]}
+      }
+    },
+    "t3_check": {
+      "type": "object",
+      "required": ["check_date", "metric", "expected", "actual", "result"],
+      "properties": {
+        "check_date": {"type": "string"},
+        "metric": {"type": "string"},
+        "expected": {"type": "string"},
+        "actual": {"type": "string"},
+        "result": {"type": "string", "enum": ["命中", "部分命中", "失败", "不可评估", "数据不足", "待评估"]}
+      }
+    },
+    "t5_check": {
+      "type": "object",
+      "required": ["check_date", "metric", "expected", "actual", "result"],
+      "properties": {
+        "check_date": {"type": "string"},
+        "metric": {"type": "string"},
+        "expected": {"type": "string"},
+        "actual": {"type": "string"},
+        "result": {"type": "string", "enum": ["命中", "部分命中", "失败", "不可评估", "数据不足", "待评估"]}
+      }
+    },
+    "success_criteria": {
+      "type": "string",
+      "minLength": 10,
+      "description": "判定命中的标准"
+    },
+    "failure_criteria": {
+      "type": "string",
+      "minLength": 10,
+      "description": "判定失败的标准"
+    },
+    "rule_update_candidate": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否触发规则更新候选"
+    },
+    "failure_attribution": {
+      "type": "string",
+      "enum": ["数据问题", "规则问题", "角色问题", "腰子整合问题", "动作过强", "市场突变", "不适用"],
+      "description": "失败归因（仅result=失败时填写）"
+    }
+  }
+}

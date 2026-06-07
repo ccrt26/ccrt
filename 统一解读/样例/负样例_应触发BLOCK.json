@@ -1,0 +1,41 @@
+{
+  "interpretation_id": "INT-20260602-170000-bad001",
+  "scene": "日报",
+  "stock_code": "000001.XSHE",
+  "trade_date": "2026-06-02",
+  "role": "腰子",
+  "data_fact": {
+    "source": "未知",
+    "freshness": "当日",
+    "completeness": "完整",
+    "degradation": "无降级",
+    "anomalies": [],
+    "values": {
+      "close": 12.35,
+      "PE_TTM": 15.3
+    },
+    "note": "PE处于历史低位，估值有吸引力，建议买入"
+  },
+  "interpretation_hypothesis": "估值低所以后市看涨，这是一个确定性机会",
+  "supporting_evidence": [
+    {"evidence": "PE只有15.3，估值偏低", "source": "无", "strength": "弱"}
+  ],
+  "counter_evidence": [
+    {"evidence": "市场风险", "source": "无", "type": "宏观风险"}
+  ],
+  "investment_implication": "强烈推荐买入，毋庸置疑会上涨，长期看好",
+  "action_bias": "BUY",
+  "trigger_condition": "",
+  "price_range": "",
+  "position_limit": "",
+  "time_window": "",
+  "confidence": "LOW",
+  "invalidation_condition": "市场环境变化",
+  "eval_window": {
+    "t1": "",
+    "t3": "",
+    "t5": ""
+  },
+  "rule_refs": ["无"],
+  "knowledge_refs": []
+}

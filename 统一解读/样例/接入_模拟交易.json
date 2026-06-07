@@ -1,0 +1,175 @@
+{
+  "interpretation": {
+    "interpretation_id": "INT-20260602-142809-c4d813",
+    "scene": "模拟交易",
+    "stock_code": "000001.XSHE",
+    "trade_date": "2026-06-02",
+    "role": "腰子",
+    "data_fact": {
+      "source": "Tushare+新浪",
+      "freshness": "当日",
+      "completeness": "完整",
+      "degradation": "无降级",
+      "anomalies": [
+        "成交额较20日均值放大185%，偏离+2.1σ"
+      ],
+      "values": {
+        "close": 12.35,
+        "change_pct": 2.1,
+        "volume": 852000000,
+        "PE_TTM": 15.3,
+        "PB": 1.42,
+        "northbound_net": 32000000,
+        "margin_balance": 4210000000,
+        "MACD": "DIF上穿DEA(日线)",
+        "RSI_14": 62.3,
+        "MA_20": 11.89
+      },
+      "note": "当日有Q1业绩预告披露（营收+18%，净利润+22%），成交异常放量可能与此相关。北向资金为T+1数据(6/1)。"
+    },
+    "interpretation_hypothesis": "业绩超预期+降准政策催化+技术面突破共振，短期(5个交易日)存在向上动能，目标区间13.00-13.50",
+    "supporting_evidence": [
+      {
+        "evidence": "MACD日线金叉+放量突破20日均线，量比1.8x，技术面突破确认",
+        "source": "Tushare技术指标",
+        "strength": "强",
+        "source_level": "L5-seed",
+        "source_ref": "信号胜率库.SIG-001+SIG-004"
+      },
+      {
+        "evidence": "Q1业绩超预期(净利润+22%，超一致预期18%)，基本面改善",
+        "source": "深交所公告",
+        "strength": "强",
+        "source_level": "L3",
+        "source_ref": "深交所公告.000001.2026Q1"
+      },
+      {
+        "evidence": "央行降准0.25个百分点，银行板块受益，宏观流动性改善",
+        "source": "央行公告",
+        "strength": "中",
+        "source_level": "L3",
+        "source_ref": "央行公告.2026-06-01.降准0.25pct"
+      },
+      {
+        "evidence": "主力资金净流入占流通市值0.72%，北向连续3日净流入",
+        "source": "Tushare资金流",
+        "strength": "强",
+        "source_level": "L5-seed",
+        "source_ref": "信号胜率库.SIG-006+SIG-007"
+      }
+    ],
+    "counter_evidence": [
+      {
+        "evidence": "M1-M2剪刀差为-8.2%且较前值扩大，实体经济活跃度下降，信用环境偏紧",
+        "source": "央行统计数据",
+        "type": "宏观风险"
+      },
+      {
+        "evidence": "Q1业绩已兑现，存在利好兑现后的短期获利了结压力",
+        "source": "历史规律",
+        "type": "事件风险"
+      },
+      {
+        "evidence": "RSI(14)=62.3接近超买区域(70)，短期上行空间可能受限",
+        "source": "Tushare技术指标",
+        "type": "技术面反证"
+      }
+    ],
+    "investment_implication": "多重利好共振(业绩+政策+技术+资金)构成短期向上驱动力，但信用环境偏紧和业绩兑现压力形成对冲。当前震荡偏多市场状态下，向上概率高于向下，但需严格止损。",
+    "action_bias": "BUY",
+    "trigger_condition": "回调至12.00以下入场(不追高)，量能维持在日均1.2x以上确认",
+    "price_range": "入场11.85-12.15，目标13.00-13.50",
+    "position_limit": "25%（受M1-M2约束从30%下调）",
+    "time_window": "T+5交易日（至2026-06-09）",
+    "confidence": "HIGH",
+    "invalidation_condition": "1) T+3内跌破20日均线(11.89)；2) 北向资金连续3日净流出；3) 回购计划公告延迟超30天；4) 出现P0级宏观负面事件",
+    "eval_window": {
+      "t1": "检查T+1收盘价是否在入场区间上方+量能维持",
+      "t3": "检查T+3累计涨幅是否>1.5%+资金持续净流入",
+      "t5": "检查T+5是否触及目标区间13.00-13.50"
+    },
+    "rule_refs": [
+      "D-01",
+      "D-04",
+      "F-01",
+      "F-02",
+      "F-05",
+      "A-01",
+      "A-03",
+      "A-04",
+      "I-01",
+      "I-03",
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "YAOZI-TECH-001",
+      "YAOZI-VAL-001",
+      "QINGSHAN-SIGNAL-001",
+      "YUYE-DATA-001",
+      "SHANMAO-MARKET-001",
+      "LIUJIN-RISK-001"
+    ],
+    "signal_refs": [
+      "SIG-001",
+      "SIG-004",
+      "SIG-006",
+      "SIG-007"
+    ]
+  },
+  "unified_interpretation": {
+    "enabled": true,
+    "interpretation_id": "INT-20260602-142809-c4d813",
+    "scene": "模拟交易",
+    "role_interpretations": [
+      {
+        "role": "腰子",
+        "hypothesis": "业绩超预期+降准政策催化+技术面突破共振，短期(5个交易日)存在向上动能，目标区间13.00-13.50"
+      }
+    ],
+    "yaozi_integration": {
+      "action_bias": "BUY",
+      "confidence": "HIGH",
+      "invalidation": "1) T+3内跌破20日均线(11.89)；2) 北向资金连续3日净流出；3) 回购计划公告延迟超30天；4) 出现P0级宏观负面事件"
+    },
+    "audit_u9": {
+      "status": "PASS",
+      "findings": []
+    },
+    "audit_u10": {
+      "status": "PASS",
+      "findings": []
+    },
+    "eval_hooks": [
+      "EVAL-20260602-142809-1cdd4f"
+    ],
+    "rule_refs": [
+      "D-01",
+      "D-04",
+      "F-01",
+      "F-02",
+      "F-05",
+      "A-01",
+      "A-03",
+      "A-04",
+      "I-01",
+      "I-03",
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "YAOZI-TECH-001",
+      "YAOZI-VAL-001",
+      "QINGSHAN-SIGNAL-001",
+      "YUYE-DATA-001",
+      "SHANMAO-MARKET-001",
+      "LIUJIN-RISK-001"
+    ],
+    "signal_refs": [
+      "SIG-001",
+      "SIG-004",
+      "SIG-006",
+      "SIG-007"
+    ]
+  }
+}

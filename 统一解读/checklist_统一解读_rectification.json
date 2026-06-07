@@ -1,0 +1,152 @@
+{
+  "run_id": "RUN-20260602-041249-15fe67",
+  "flow_type": "NEW_REQUIREMENT",
+  "design_owner": "情墨",
+  "created": "2026-06-02T12:30:00+08:00",
+  "token_budget": 15000,
+  "budget_justification": "整改涉及6个P0项，含脚本修改、来源标准重定义、信号库补字段、回填脚本新建、清单注册，预估每项2000-3000 token",
+  "items": [
+    {
+      "id": "P0-1",
+      "description": "validate_interpretation.py 内置 schema 校验：16 required字段、enum、BUY/SELL强校验、LOW+强动作BLOCK、eval_window必填、rule_refs非空、强动作需knowledge_refs",
+      "code_level": "L1",
+      "file_path": "统一解读/validate_interpretation.py",
+      "token_budget": 3000,
+      "financial_impact": false,
+      "white_paper_ref": "统一解读协议_v1.0.md §四 + interpretation_schema.json",
+      "expected_output": "validate_interpretation.py 内置schema校验所有required/enum/条件字段，负样例exit code 2"
+    },
+    {
+      "id": "P0-2",
+      "description": "修正来源等级标准：L1铁律→L2项目实证→L3官方事实→L4外部研究→L5经验假设。L5不得支持强动作，信号胜率无records时标L5-seed",
+      "code_level": "L1",
+      "file_path": "统一解读/六库/知识库来源等级标准_v1.0.md",
+      "token_budget": 2000,
+      "financial_impact": false,
+      "white_paper_ref": "金融铁律_v1.17.md rule-data-source + rule-data-tier",
+      "expected_output": "知识库来源等级标准_v1.0.md 更新为L1-L5新定义，明确L5禁强动作+L5-seed规则"
+    },
+    {
+      "id": "P0-3",
+      "description": "信号胜率库补来源字段：source_file/sample_period/sample_definition/calculation_method/last_verified_date/source_level，无来源标seed_estimate=true",
+      "code_level": "L1",
+      "file_path": "统一解读/六库/信号胜率库_v1.0.md",
+      "token_budget": 2000,
+      "financial_impact": false,
+      "white_paper_ref": "信号胜率库_v1.0.md + 统一解读协议_v1.0.md §七",
+      "expected_output": "15条信号每条补全source_file/sample_period/sample_definition/calculation_method/last_verified_date/source_level，无来源标seed_estimate=true"
+    },
+    {
+      "id": "P0-4",
+      "description": "全场景接入方案改口径：当前状态改为'方案设计完成'，正式接入需满足6项条件（sidecar写入/解释对象/闸门/eval_hooks等）",
+      "code_level": "L2",
+      "file_path": "统一解读/接入方案/全场景接入方案_v1.0.md",
+      "token_budget": 1000,
+      "financial_impact": false,
+      "white_paper_ref": "全场景接入方案_v1.0.md",
+      "expected_output": "方案标题和正文将'已完成'改为'方案设计完成'，增加正式接入的6项验收条件"
+    },
+    {
+      "id": "P0-5",
+      "description": "eval_backfill.py 真实回填脚本：T+1/T+3/T+5回填逻辑、存储路径、周报输出、失败归因写回规则库流程",
+      "code_level": "L1",
+      "file_path": "scripts/eval_backfill.py",
+      "token_budget": 3000,
+      "financial_impact": false,
+      "white_paper_ref": "后评估库_v1.0.md + eval_hooks_schema.json + eval_hooks_运行规则.md",
+      "expected_output": "scripts/eval_backfill.py 可执行，支持--window t1/t3/t5参数，输出回填结果JSON"
+    },
+    {
+      "id": "P0-6",
+      "description": "注册checklist并推进Pipeline：design→review_1a→consult→review_1b→coding，情墨签章注册，腰子审金融实质，全团consult",
+      "code_level": "L2",
+      "file_path": "统一解读/checklist_统一解读_rectification.json",
+      "token_budget": 2000,
+      "financial_impact": false,
+      "white_paper_ref": "统一解读协议_v1.0.md §九 + events/event_rules.yaml",
+      "expected_output": "checklist注册通过+Pipeline推进到coding阶段，全团签章完整"
+    }
+  ],
+  "file_budgets": [
+    {
+      "path": "统一解读/validate_interpretation.py",
+      "max_lines": 400
+    },
+    {
+      "path": "统一解读/六库/知识库来源等级标准_v1.0.md",
+      "max_lines": 200
+    },
+    {
+      "path": "统一解读/六库/信号胜率库_v1.0.md",
+      "max_lines": 250
+    },
+    {
+      "path": "统一解读/接入方案/全场景接入方案_v1.0.md",
+      "max_lines": 300
+    },
+    {
+      "path": "scripts/eval_backfill.py",
+      "max_lines": 350
+    }
+  ],
+  "financial_impact": false,
+  "financial_impact_rationale": "本次整改为工程层面的闸门加固、来源标准修正、脚本补全，不涉及评分/选股/交易/因子/风控等金融参数变更",
+  "signoffs": {
+    "旧影": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:02:47.875482+00:00",
+      "stage": "audit",
+      "checklist_version": "d05e5806c4577e6871a1befabcf0c8faf87d99e14f9c0f4598499e5d89f42981",
+      "signature": "9cda0c0730734a4df7d3cee36826c4531fc7b82262f4730c6052271c0fdb54b3",
+      "sig_type": "HMAC-SHA256",
+      "actor": "旧影",
+      "requested_actor": "旧影",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "P0-D: 签名链在advance时各阶段有效。checklist补字段后check_checklist.py报告历史签名失效属版本差异。建议完成审计后归档。"
+    },
+    "新安": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:02:39.127042+00:00",
+      "stage": "verify",
+      "checklist_version": "d05e5806c4577e6871a1befabcf0c8faf87d99e14f9c0f4598499e5d89f42981",
+      "signature": "822dc90d43328f9544b657cbefa41f30ed43e2e4830d56bb5eb111aefd75e445",
+      "sig_type": "HMAC-SHA256",
+      "actor": "新安",
+      "requested_actor": "新安",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "红结": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:02:31.138664+00:00",
+      "stage": "coding",
+      "checklist_version": "d05e5806c4577e6871a1befabcf0c8faf87d99e14f9c0f4598499e5d89f42981",
+      "signature": "1550ff147c28d36966c9ee4d16e05be4a7d46cbfac1d990a364e7ce2444b4866",
+      "sig_type": "HMAC-SHA256",
+      "actor": "红结",
+      "requested_actor": "红结",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "红枫": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:02:39.207988+00:00",
+      "stage": "deploy",
+      "checklist_version": "d05e5806c4577e6871a1befabcf0c8faf87d99e14f9c0f4598499e5d89f42981",
+      "signature": "0b5392efe583eab9d7d52382500aed80f4a64449ce20fb0f5d9aa313c9596b3a",
+      "sig_type": "HMAC-SHA256",
+      "actor": "红枫",
+      "requested_actor": "红枫",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "eval_hook_id": "EVAL-20260602-163000-q6r7s8",
+  "interpretation_id": "INT-20260602-163000-g7h8i9",
+  "claim": "基于营收增长+技术面双周期金叉+北向资金大幅流入3信号共振，预计T+5内可在190-198区间建仓，中期目标220-240(PE 25-28x)",
+  "action_bias": "BUY",
+  "confidence": "MEDIUM",
+  "t1_check": {
+    "check_date": "2026-06-03",
+    "metric": "price_entry + fund_flow",
+    "expected": "价格在190-198区间可建仓+资金继续流入",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t3_check": {
+    "check_date": "2026-06-05",
+    "metric": "trend_confirmation + price_level",
+    "expected": "趋势确认突破200+资金面维持",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t5_check": {
+    "check_date": "2026-06-09",
+    "metric": "midterm_trend + PE_change",
+    "expected": "中期趋势向上+PE在20-25区间",
+    "actual": "",
+    "result": "待评估"
+  },
+  "success_criteria": "T+5内建仓成功(190-198区间)+T+5收盘价>200且趋势向上",
+  "failure_criteria": "T+5收盘价<190或跌破60日均线(182.30)或北向转为连续净流出",
+  "rule_update_candidate": false
+}

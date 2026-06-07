@@ -1,0 +1,31 @@
+{
+  "eval_hook_id": "EVAL-20260602-160000-k0l1m2",
+  "interpretation_id": "INT-20260602-160000-a1b2c3",
+  "claim": "基于MACD金叉+放量突破+主力资金流入+业绩超预期4信号共振，预计T+5内股价上涨至13.00-13.50区间(涨幅5.3-9.3%)",
+  "action_bias": "BUY",
+  "confidence": "HIGH",
+  "t1_check": {
+    "check_date": "2026-06-03",
+    "metric": "price_change_pct + volume",
+    "expected": "收盘价在12.00以上+量能维持日均1.2x以上",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t3_check": {
+    "check_date": "2026-06-05",
+    "metric": "price_change_3d_pct + fund_flow_direction",
+    "expected": "累计涨幅>1.5%+北向/主力资金持续净流入",
+    "actual": "",
+    "result": "待评估"
+  },
+  "t5_check": {
+    "check_date": "2026-06-09",
+    "metric": "price_change_5d_pct + target_reach",
+    "expected": "触及目标区间13.00-13.50(涨幅5.3-9.3%)",
+    "actual": "",
+    "result": "待评估"
+  },
+  "success_criteria": "T+5收盘价≥13.00且T+1/T+3方向正确",
+  "failure_criteria": "T+5收盘价<12.00或T+1即跌破20日均线(11.89)",
+  "rule_update_candidate": false
+}

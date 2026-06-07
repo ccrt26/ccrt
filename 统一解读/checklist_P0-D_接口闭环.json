@@ -1,0 +1,241 @@
+{
+  "run_id": "RUN-20260602-054526-6c6fa8",
+  "flow_type": "FIX",
+  "design_owner": "情墨",
+  "created": "2026-06-02T13:48:00+08:00",
+  "token_budget": 5000,
+  "items": [
+    {
+      "id": "P0-D-1",
+      "description": "统一双对象输出格式: 所有输出必须同时包含 interpretation(原始解释对象)和 unified_interpretation(包装输出)，禁止只输出包装",
+      "code_level": "L1",
+      "file_path": "统一解读/create_interpretation.py",
+      "token_budget": 800,
+      "financial_impact": false,
+      "white_paper_ref": "interpretation_schema.json",
+      "expected_output": "build_unified_output 同时返回 interpretation + unified_interpretation"
+    },
+    {
+      "id": "P0-D-2",
+      "description": "修复 create_interpretation.py --from-adapter: 正确处理3种输入格式(纯解释对象/双对象/纯包装)，纯包装无interpretation时报BLOCK错误而非KeyError",
+      "code_level": "L1",
+      "file_path": "统一解读/create_interpretation.py",
+      "token_budget": 1000,
+      "financial_impact": false,
+      "white_paper_ref": "interpretation_schema.json",
+      "expected_output": "--from-adapter 3种格式均不崩溃，纯包装报BLOCK"
+    },
+    {
+      "id": "P0-D-3",
+      "description": "修复 write_eval_hook.py: 支持双对象格式，仅unified_interpretation无interpretation时报错退出。禁止生成interpretation_id=UNKNOWN",
+      "code_level": "L1",
+      "file_path": "统一解读/write_eval_hook.py",
+      "token_budget": 800,
+      "financial_impact": false,
+      "white_paper_ref": "eval_hooks_schema.json",
+      "expected_output": "纯unified_interpretation输入→exit 1，禁止UNKNOWN"
+    },
+    {
+      "id": "P0-D-4",
+      "description": "6个adapter回填hook_id: 生成→验证→PASS/WARN时写eval_hook→回填eval_hook_id到unified_interpretation.eval_hooks。BLOCK时不写强动作hook",
+      "code_level": "L1",
+      "file_path": "统一解读/scene_adapters/*.py",
+      "token_budget": 1200,
+      "financial_impact": false,
+      "white_paper_ref": "write_eval_hook.py",
+      "expected_output": "每个adapter输出的unified_interpretation.eval_hooks含真实EVAL id"
+    },
+    {
+      "id": "P0-D-5",
+      "description": "修复6个接入样例: 双对象格式(interpretation+unified_interpretation)，id一致，eval_hooks含真实EVAL id，store有对应文件",
+      "code_level": "L2",
+      "file_path": "统一解读/样例/接入_*.json",
+      "token_budget": 800,
+      "financial_impact": false,
+      "white_paper_ref": "P0-D-1 统一格式",
+      "expected_output": "6样例全部双对象，validate通过"
+    },
+    {
+      "id": "P0-D-6",
+      "description": "真实场景入口证明: 每个场景提交1个真实入口输出样例(日报sidecar/深度report.json/荐股输出/模拟交易指令/保护记录/临时分析输出)，含完整unified_interpretation",
+      "code_level": "L2",
+      "file_path": "统一解读/样例/场景入口_*.json",
+      "token_budget": 400,
+      "financial_impact": false,
+      "white_paper_ref": "全场景代码接入方案_v1.0.md §六",
+      "expected_output": "6个场景入口样例含unified_interpretation"
+    }
+  ],
+  "file_budgets": [
+    {
+      "path": "统一解读/create_interpretation.py",
+      "max_lines": 350
+    },
+    {
+      "path": "统一解读/write_eval_hook.py",
+      "max_lines": 250
+    },
+    {
+      "path": "统一解读/scene_adapters/",
+      "max_lines": 200
+    }
+  ],
+  "financial_impact": false,
+  "financial_impact_rationale": "接口闭环修复，不涉及金融参数变更",
+  "signoffs": {
+    "情墨": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.318433+00:00",
+      "stage": "design",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "902764b227719e34b4d08f5feb8658afd4e13b4735948168dba7863e899ae9c4",
+      "sig_type": "HMAC-SHA256",
+      "actor": "情墨",
+      "requested_actor": "情墨",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "腰子": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.413183+00:00",
+      "stage": "review_1a",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "8e1ee06fa6b8241fc583d7b632eaec793ff4c9498ab498efe593ddeab681bcab",
+      "sig_type": "HMAC-SHA256",
+      "actor": "腰子",
+      "requested_actor": "腰子",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "山猫": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.506589+00:00",
+      "stage": "consult",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "92110182632a636b4a280473990616c30c296a40bc28f353bcd5a74b74b827e0",
+      "sig_type": "HMAC-SHA256",
+      "actor": "山猫",
+      "requested_actor": "山猫",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "信鸽": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.544674+00:00",
+      "stage": "consult",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "878ace22e9097cab027804e15f693cd29bf3802c1fb0d40de23e83716a9f2cb7",
+      "sig_type": "HMAC-SHA256",
+      "actor": "信鸽",
+      "requested_actor": "信鸽",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "玉夜": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.580843+00:00",
+      "stage": "consult",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "bead1f35cfcec143717b2ec150dbb09603e00ffa84ece455d47a6a07f92b932a",
+      "sig_type": "HMAC-SHA256",
+      "actor": "玉夜",
+      "requested_actor": "玉夜",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "流金": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.619570+00:00",
+      "stage": "consult",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "6c31bfa30e2655f612f45e7a8c1952e101df537bd52499d348d5b90a5b26e307",
+      "sig_type": "HMAC-SHA256",
+      "actor": "流金",
+      "requested_actor": "流金",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "青山": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:45:57.653586+00:00",
+      "stage": "consult",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "20c96313aa9a7434bce1e81b532869cdc5e4beb8f022b02328a0145650e83f64",
+      "sig_type": "HMAC-SHA256",
+      "actor": "青山",
+      "requested_actor": "青山",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "红结": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:49:34.222363+00:00",
+      "stage": "coding",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "3b17a7baf9e11ae5f41f76a254b50c9fb1b1369218969c265f0ef3e77992d048",
+      "sig_type": "HMAC-SHA256",
+      "actor": "红结",
+      "requested_actor": "红结",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "新安": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:49:34.305099+00:00",
+      "stage": "verify",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "c6a8d014ef00689a02d8d873a44f7f862c23ff2dcffb77a523b0ea8697027e18",
+      "sig_type": "HMAC-SHA256",
+      "actor": "新安",
+      "requested_actor": "新安",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "红枫": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:49:34.384050+00:00",
+      "stage": "deploy",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "8eca54c8aa4dfd0d5e067f6fc538a31489553e70d8fb317da53f30405fe5a87d",
+      "sig_type": "HMAC-SHA256",
+      "actor": "红枫",
+      "requested_actor": "红枫",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    },
+    "旧影": {
+      "signed": true,
+      "timestamp": "2026-06-02T05:49:34.463295+00:00",
+      "stage": "audit",
+      "checklist_version": "366be519896b4ca13bea304a1cee43114f17fffc84ec1aa6ea61a6ffcf396bab",
+      "signature": "61c466a4acc8c22adc12535bf4988e2e8d2a761d02c987b79d3f615942ed65bf",
+      "sig_type": "HMAC-SHA256",
+      "actor": "旧影",
+      "requested_actor": "旧影",
+      "actual_actor": "",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": ""
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "interpretation_id": "INT-20260602-161500-d4e5f6",
+  "scene": "深度分析",
+  "stock_code": "600519.XSHG",
+  "trade_date": "2026-06-02",
+  "role": "腰子",
+  "data_fact": {
+    "source": "Tushare+新浪+Wind",
+    "freshness": "当日",
+    "completeness": "完整",
+    "degradation": "无降级",
+    "anomalies": [],
+    "values": {
+      "close": 1680.5,
+      "change_pct": -0.8,
+      "PE_TTM": 28.5,
+      "PB": 8.9,
+      "ROE": 31.5,
+      "revenue_growth": 12.3,
+      "northbound_net": -52000000,
+      "margin_balance": 18500000000,
+      "MACD": "DIF在DEA下方(周线)",
+      "RSI_14": 45.2,
+      "MA_60": 1720.0
+    },
+    "note": "PE(TTM)基于最新季报计算。60日均线位于1720，当前股价略低于60日均线。北向资金为T+1数据(6/1)，当日净流出。"
+  },
+  "interpretation_hypothesis": "高端消费板块处于震荡调整期，茅台基本面稳健(ROE31.5%+营收增长12.3%)但估值偏高(PE28.5)，短期缺乏向上催化，需等待消费数据回暖或政策催化",
+  "supporting_evidence": [
+    {
+      "evidence": "ROE 31.5%为行业最高水平，盈利能力持续稳定，基本面未见恶化",
+      "source": "季报",
+      "strength": "强",
+      "source_level": "L3",
+      "source_ref": "季报.600519.2026Q1"
+    },
+    {
+      "evidence": "营收增速12.3%符合预期，品牌护城河未受损",
+      "source": "季报",
+      "strength": "强",
+      "source_level": "L3",
+      "source_ref": "季报.600519.2026Q1"
+    },
+    {
+      "evidence": "春节后消费数据平稳，高端白酒需求端未见明显萎缩",
+      "source": "行业数据",
+      "strength": "中",
+      "source_level": "L4",
+      "source_ref": "行业研报.白酒.2026Q1"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "PE(TTM)=28.5处于近3年65%分位，估值安全边际不足，均值回归压力存在",
+      "source": "Tushare估值数据",
+      "type": "基本面反证"
+    },
+    {
+      "evidence": "北向资金持续净流出(当日-5200万)，外资配置意愿下降",
+      "source": "Tushare资金流",
+      "type": "资金面反证"
+    },
+    {
+      "evidence": "股价低于60日均线(1720)，中期趋势偏弱，技术面未确认底部",
+      "source": "Tushare技术指标",
+      "type": "技术面反证"
+    },
+    {
+      "evidence": "M1-M2剪刀差为负，信用偏紧环境下高端消费品估值承压",
+      "source": "央行数据+山猫宏观",
+      "type": "宏观风险"
+    }
+  ],
+  "investment_implication": "基本面优质但估值不便宜，短期缺乏向上催化+外资流出+技术面偏弱，处于'好公司但非好价格'阶段。当前不适合建仓或加仓，应等待回调至估值合理区间或出现明确催化信号。",
+  "action_bias": "WATCH",
+  "trigger_condition": "等待以下至少2个条件满足：1) PE回落至25以下(约1550元)；2) 北向转为连续3日净流入；3) 周线MACD金叉",
+  "price_range": "关注区间1500-1600（PE 25-27x）",
+  "position_limit": "暂不建仓，观察阶段",
+  "time_window": "持续观察，下次深度分析(6/6)重新评估",
+  "confidence": "MEDIUM",
+  "invalidation_condition": "1) PE突破32且无基本面改善支撑→估值逻辑失效；2) ROE连续两个季度下滑>5%→基本面恶化；3) 出现食品安全等黑天鹅事件",
+  "eval_window": {
+    "t1": "检查北向资金流向方向+股价是否守住1650",
+    "t3": "检查是否出现周线MACD收敛迹象+PE变化",
+    "t5": "检查估值分位变化+是否有新的基本面催化"
+  },
+  "rule_refs": [
+    "D-01",
+    "D-04",
+    "F-01",
+    "F-02",
+    "F-04",
+    "F-06",
+    "A-02",
+    "I-01",
+    "M-02",
+    "M-04"
+  ],
+  "knowledge_refs": [
+    "YAOZI-VAL-001",
+    "SHANMAO-MACRO-001",
+    "LIUJIN-RISK-001",
+    "QINGSHAN-SIGNAL-001"
+  ]
+}

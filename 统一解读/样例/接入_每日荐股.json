@@ -1,0 +1,166 @@
+{
+  "interpretation": {
+    "interpretation_id": "INT-20260602-142808-630367",
+    "scene": "每日荐股",
+    "stock_code": "300750.XSHE",
+    "trade_date": "2026-06-02",
+    "role": "腰子",
+    "data_fact": {
+      "source": "Tushare+新浪",
+      "freshness": "当日",
+      "completeness": "完整",
+      "degradation": "无降级",
+      "anomalies": [],
+      "values": {
+        "close": 195.8,
+        "change_pct": 3.5,
+        "PE_TTM": 22.1,
+        "PB": 4.8,
+        "revenue_growth": 28.5,
+        "volume": 3520000000,
+        "northbound_net": 125000000,
+        "MACD": "DIF上穿DEA(日线)+周线金叉",
+        "RSI_14": 58.7,
+        "MA_20": 188.5,
+        "MA_60": 182.3
+      },
+      "note": "营收增速28.5%来自最新季报。北向资金为T+1数据(6/1)，净流入1.25亿。成交额35.2亿为近5日最高。"
+    },
+    "interpretation_hypothesis": "新能源电池龙头受益于行业景气度回升+技术面周线日线双金叉+北向资金大幅流入，中期(1-3个月)存在趋势性机会",
+    "supporting_evidence": [
+      {
+        "evidence": "营收增速28.5%，行业景气度持续，市占率稳定在35%以上",
+        "source": "季报+行业数据",
+        "strength": "强",
+        "source_level": "L3",
+        "source_ref": "季报.300750.2026Q1"
+      },
+      {
+        "evidence": "MACD日线+周线双金叉（SIG-001+002触发），技术面共振",
+        "source": "Tushare技术指标",
+        "strength": "强",
+        "source_level": "L5-seed",
+        "source_ref": "信号胜率库.SIG-001+SIG-002"
+      },
+      {
+        "evidence": "北向资金大幅净流入1.25亿（SIG-006触发），外资配置意愿强",
+        "source": "Tushare资金流",
+        "strength": "强",
+        "source_level": "L5-seed",
+        "source_ref": "信号胜率库.SIG-006"
+      },
+      {
+        "evidence": "PE(TTM)=22.1处于近2年30%分位，估值合理偏低（相比行业均值28x）",
+        "source": "Tushare估值数据",
+        "strength": "中",
+        "source_level": "L4",
+        "source_ref": "Tushare.估值分位.300750.2026-06-02"
+      }
+    ],
+    "counter_evidence": [
+      {
+        "evidence": "新能源行业产能过剩风险仍在，下游整车价格战可能传导至电池环节",
+        "source": "行业研报",
+        "type": "基本面反证"
+      },
+      {
+        "evidence": "M1-M2剪刀差为负，信用偏紧环境下成长股估值扩张受限",
+        "source": "山猫宏观",
+        "type": "宏观风险"
+      },
+      {
+        "evidence": "RSI=58.7，距离超买(70)还有空间但短期可能面临技术性回调",
+        "source": "Tushare技术指标",
+        "type": "技术面反证"
+      }
+    ],
+    "investment_implication": "入选: 新能源电池龙头受益于行业景气度回升+技术面周线日线双金叉+北向资金大幅流入，中期(1-3个月)存在趋势性机会",
+    "action_bias": "BUY",
+    "trigger_condition": "回调至190-193区间建仓（5日均线附近），若持续强势不回调则在195附近分批建仓",
+    "price_range": "建仓190-198，中期目标220-240（PE 25-28x）",
+    "position_limit": "20%（MEDIUM置信上限，受M1-M2约束未用满30%）",
+    "time_window": "建仓窗口T+3，中期持有1-3个月",
+    "confidence": "MEDIUM",
+    "invalidation_condition": "1) 跌破60日均线(182.30)且3日内未收复；2) 北向资金连续5日净流出；3) 下游车企大幅砍单；4) 行业政策出现重大利空",
+    "eval_window": {
+      "t1": "检查是否在190-198区间建仓+资金流向",
+      "t3": "检查趋势确认+是否突破200关口",
+      "t5": "检查中期趋势+PE变化"
+    },
+    "rule_refs": [
+      "D-01",
+      "F-01",
+      "F-02",
+      "F-05",
+      "A-01",
+      "A-03",
+      "A-04",
+      "I-01",
+      "I-03",
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "YAOZI-VAL-001",
+      "QINGSHAN-SIGNAL-001",
+      "LIUJIN-RISK-001",
+      "YAOZI-TECH-001"
+    ],
+    "signal_refs": [
+      "SIG-001",
+      "SIG-002",
+      "SIG-006"
+    ]
+  },
+  "unified_interpretation": {
+    "enabled": true,
+    "interpretation_id": "INT-20260602-142808-630367",
+    "scene": "每日荐股",
+    "role_interpretations": [
+      {
+        "role": "腰子",
+        "hypothesis": "新能源电池龙头受益于行业景气度回升+技术面周线日线双金叉+北向资金大幅流入，中期(1-3个月)存在趋势性机会"
+      }
+    ],
+    "yaozi_integration": {
+      "action_bias": "BUY",
+      "confidence": "MEDIUM",
+      "invalidation": "1) 跌破60日均线(182.30)且3日内未收复；2) 北向资金连续5日净流出；3) 下游车企大幅砍单；4) 行业政策出现重大利空"
+    },
+    "audit_u9": {
+      "status": "PASS",
+      "findings": []
+    },
+    "audit_u10": {
+      "status": "PASS",
+      "findings": []
+    },
+    "eval_hooks": [
+      "EVAL-20260602-142808-dc60c7"
+    ],
+    "rule_refs": [
+      "D-01",
+      "F-01",
+      "F-02",
+      "F-05",
+      "A-01",
+      "A-03",
+      "A-04",
+      "I-01",
+      "I-03",
+      "M-02",
+      "M-04"
+    ],
+    "knowledge_refs": [
+      "YAOZI-VAL-001",
+      "QINGSHAN-SIGNAL-001",
+      "LIUJIN-RISK-001",
+      "YAOZI-TECH-001"
+    ],
+    "signal_refs": [
+      "SIG-001",
+      "SIG-002",
+      "SIG-006"
+    ]
+  }
+}

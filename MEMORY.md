@@ -1,0 +1,1 @@
+- [第6-A阶段](phase-6a-canonical-shadow.md) — canonical_report影子对象与日报GoldenDiff 已通过
