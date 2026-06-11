@@ -117,8 +117,10 @@ def check_a_version_consistency(staged_files):
             continue
 
         internal_version = None
-        for pat in [r'(?:[Vv]ersion|版本)\s*(?:\*\*)?\s*[：:]\s*v(\d+\.\d+(?:\.\d+)?)',
-                     r'(?m)^.{0,200}v(\d+\.\d+(?:\.\d+)?)']:
+        for pat in [
+            r'(?:[Vv]ersion|版本)\s*(?:\*\*)?\s*[：:]\s*v?(\d+\.\d+(?:\.\d+)?)',
+            r'(?m)^\s*>?\s*(?:文件版本|文档版本|内部版本)\s*(?:\*\*)?\s*[：:]\s*v?(\d+\.\d+(?:\.\d+)?)'
+        ]:
             im = re.search(pat, content)
             if im:
                 internal_version = im.group(1)
