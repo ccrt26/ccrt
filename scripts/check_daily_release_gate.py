@@ -22,6 +22,8 @@ CHECKS = [
     ("P0-E: 日报样式锁定",     ["scripts/check_daily_report_style.py", "--date"]),
     ("P0-F: 协作解读完整性",   ["scripts/check_daily_collaborative_interpretation.py", "--date"]),
     ("P0-G: 日报内容完整度",   ["scripts/check_daily_data_completeness.py", "--all-pool", "--date"]),
+    ("P0-H: 渲染一致性",       ["scripts/check_daily_render_contract.py", "--date"]),
+    ("P0-I: 全团解读质量",     ["scripts/check_daily_interpretation_quality.py", "--date"]),
 ]
 
 

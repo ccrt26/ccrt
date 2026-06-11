@@ -52,13 +52,37 @@ def find_baseline(code, name, date):
 
 def latest_kline(code, date):
     p = ROOT / "代码文件" / "数据" / "kline_cache" / f"{code}.json"
-    if not p.exists():
-        return None, p
-    rows = load_json(p)
     target = dashed(date)
-    for r in rows:
-        if r.get("date") == target:
-            return r, p
+    if p.exists():
+        rows = load_json(p)
+        for r in rows:
+            if r.get("date") == target:
+                return r, p
+    # Fallback to data_full.json
+    df_path = ROOT / "代码文件" / "数据" / "data_full.json"
+    if df_path.exists():
+        try:
+            dfull = load_json(df_path)
+            for s in dfull.get("Stocks", []) or []:
+                c = str(s.get("Code") or s.get("code") or "")
+                if c != code:
+                    continue
+                kdates = s.get("KDate") or []
+                if target in kdates:
+                    idx = kdates.index(target)
+                    row = {
+                        "date": target,
+                        "open": s.get("KOpen", [None]*len(kdates))[idx] if idx < len(s.get("KOpen",[])) else None,
+                        "high": s.get("KHigh", [None]*len(kdates))[idx] if idx < len(s.get("KHigh",[])) else None,
+                        "low": s.get("KLow", [None]*len(kdates))[idx] if idx < len(s.get("KLow",[])) else None,
+                        "close": s.get("KClose", [None]*len(kdates))[idx] if idx < len(s.get("KClose",[])) else None,
+                        "volume": s.get("KVolume", [None]*len(kdates))[idx] if idx < len(s.get("KVolume",[])) else None,
+                        "change_pct": s.get("ChangePct"),
+                        "_source": str(df_path),
+                    }
+                    return row, df_path
+        except Exception:
+            pass
     return None, p
 
 def latest_fund_flow(code):
@@ -131,7 +155,7 @@ def check_one(code, name, date_str):
 
     krow, kpath = latest_kline(code, date_str)
     if not krow:
-        issues.append(f"kline_cache 无目标日期行情: {kpath}")
+        issues.append(f"K线源无目标日期行情: {kpath}")
     else:
         close = krow.get("close")
         if str(close) not in all_text:

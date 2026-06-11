@@ -1,0 +1,13 @@
+{
+  "scenario": "平仓盈利",
+  "description": "用户全部清仓获利",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "平仓",
+    "transaction_price": 40.80,
+    "transaction_quantity": 2000,
+    "fee_amount": 30.00,
+    "position_before_quantity": 2000,
+    "cost_before": 38.51
+  }
+}

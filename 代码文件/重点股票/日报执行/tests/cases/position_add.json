@@ -1,0 +1,13 @@
+{
+  "scenario": "加仓",
+  "description": "用户以更高价格加仓，持仓成本上升",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "加仓",
+    "transaction_price": 40.20,
+    "transaction_quantity": 1000,
+    "fee_amount": 5.00,
+    "position_before_quantity": 1000,
+    "cost_before": 38.50
+  }
+}

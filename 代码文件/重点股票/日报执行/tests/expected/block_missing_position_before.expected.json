@@ -1,0 +1,8 @@
+{
+  "validation": {
+    "status": "BLOCK",
+    "block_reason": "持仓操作必须填写操作前持股数",
+    "does_not_generate_operation_card": true,
+    "does_not_affect_stock_state": true
+  }
+}

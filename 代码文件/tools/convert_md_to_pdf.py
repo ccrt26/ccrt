@@ -140,26 +140,60 @@ def convert(md_path, pdf_path, edge_path=None):
     html_path = pdf_path.replace('.pdf', '.html')
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(full_html)
+    html_mtime = os.path.getmtime(html_path)
 
     os.makedirs(os.path.dirname(pdf_path), exist_ok=True)
+
+    # 原子替换: 先写入临时 PDF，全部校验通过后再替换正式文件
+    # 不允许在生成前删除正式 PDF，避免转换失败破坏已有可发布产物
+    tmp_pdf_path = pdf_path + ".tmp.pdf"
 
     html_uri = "file:///" + os.path.abspath(html_path).replace("\\", "/")
     cmd = [
         edge, "--headless", "--disable-gpu",
-        f"--print-to-pdf={os.path.abspath(pdf_path)}",
+        f"--print-to-pdf={os.path.abspath(tmp_pdf_path)}",
         "--no-pdf-header-footer",
         html_uri,
     ]
-    subprocess.run(cmd, capture_output=True, timeout=30)
+    proc = subprocess.run(cmd, capture_output=True, timeout=30)
     time.sleep(1.5)
 
-    if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 5000:
+    try:
+        # 校验 1: returncode
+        if proc.returncode != 0:
+            print(f"  FAIL: Edge returncode={proc.returncode}")
+            if proc.stderr:
+                print(f"       stderr: {proc.stderr.strip()[:200]}")
+            return False
+
+        # 校验 2: tmp PDF 存在
+        if not os.path.exists(tmp_pdf_path):
+            print(f"  FAIL: tmp PDF not generated")
+            return False
+
+        # 校验 3: tmp PDF 大小
+        if os.path.getsize(tmp_pdf_path) <= 5000:
+            print(f"  FAIL: tmp PDF too small ({os.path.getsize(tmp_pdf_path)} bytes)")
+            return False
+
+        # 校验 4: tmp PDF mtime >= HTML mtime（本次生成）
+        if os.path.getmtime(tmp_pdf_path) < html_mtime:
+            print(f"  FAIL: tmp PDF mtime < HTML mtime (stale)")
+            return False
+
+        # 全部校验通过 → 原子替换正式 PDF
+        os.replace(tmp_pdf_path, pdf_path)
         size_kb = os.path.getsize(pdf_path) / 1024
         print(f"  OK: {os.path.basename(pdf_path)} ({size_kb:.0f} KB)")
         return True
-    else:
-        print(f"  FAIL: PDF not generated or too small")
-        return False
+
+    finally:
+        # 清理残留 tmp 文件（无论成功或失败）
+        if os.path.exists(tmp_pdf_path):
+            try:
+                os.remove(tmp_pdf_path)
+            except OSError:
+                pass
 
 
 if __name__ == '__main__':

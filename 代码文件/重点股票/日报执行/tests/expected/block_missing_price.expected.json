@@ -1,0 +1,8 @@
+{
+  "validation": {
+    "status": "BLOCK",
+    "block_reason": "建仓/加仓/减仓/平仓必须填写成交价格",
+    "does_not_generate_operation_card": true,
+    "does_not_affect_stock_state": true
+  }
+}

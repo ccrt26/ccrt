@@ -1,5 +1,77 @@
 [
   {
+    "trade_date": "20260604",
+    "ts_code": "603092.SH",
+    "rzye": 86278709.0,
+    "rqye": 0.0,
+    "rzmre": 9186953.0,
+    "rqyl": 0.0,
+    "rzche": 7115060.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 86278709.0
+  },
+  {
+    "trade_date": "20260603",
+    "ts_code": "603092.SH",
+    "rzye": 84206816.0,
+    "rqye": 0.0,
+    "rzmre": 7178462.0,
+    "rqyl": 0.0,
+    "rzche": 10614943.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 84206816.0
+  },
+  {
+    "trade_date": "20260602",
+    "ts_code": "603092.SH",
+    "rzye": 87643297.0,
+    "rqye": 0.0,
+    "rzmre": 3821929.0,
+    "rqyl": 0.0,
+    "rzche": 6294397.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 87643297.0
+  },
+  {
+    "trade_date": "20260601",
+    "ts_code": "603092.SH",
+    "rzye": 90115766.0,
+    "rqye": 0.0,
+    "rzmre": 7208351.0,
+    "rqyl": 0.0,
+    "rzche": 8700794.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 90115766.0
+  },
+  {
+    "trade_date": "20260529",
+    "ts_code": "603092.SH",
+    "rzye": 91608209.0,
+    "rqye": 0.0,
+    "rzmre": 11857577.0,
+    "rqyl": 0.0,
+    "rzche": 8265467.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 91608209.0
+  },
+  {
+    "trade_date": "20260528",
+    "ts_code": "603092.SH",
+    "rzye": 88016099.0,
+    "rqye": 0.0,
+    "rzmre": 6494618.0,
+    "rqyl": 0.0,
+    "rzche": 7722545.0,
+    "rqchl": 0.0,
+    "rqmcl": 0.0,
+    "rzrqye": 88016099.0
+  },
+  {
     "trade_date": "20260527",
     "ts_code": "603092.SH",
     "rzye": 89244026.0,

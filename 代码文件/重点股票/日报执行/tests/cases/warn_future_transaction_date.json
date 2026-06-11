@@ -1,0 +1,17 @@
+{
+  "scenario": "未来交易日期_WARN",
+  "description": "transaction_date 晚于 report_trade_date 应为 WARN，不进入当日操作卡，但计算仍执行",
+  "input": {
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "report_trade_date": "2026-06-10",
+    "transaction_date": "2026-06-15",
+    "position_status": "持仓",
+    "action_type": "加仓",
+    "transaction_price": 40.20,
+    "transaction_quantity": 1000,
+    "fee_amount": 5.00,
+    "position_before_quantity": 1000,
+    "cost_before": 38.50
+  }
+}

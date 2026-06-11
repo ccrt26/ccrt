@@ -1,0 +1,8 @@
+{
+  "validation": {
+    "status": "BLOCK",
+    "block_reason": "已有持仓不能执行建仓动作，应选择加仓",
+    "does_not_generate_operation_card": true,
+    "does_not_affect_stock_state": true
+  }
+}

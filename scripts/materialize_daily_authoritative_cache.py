@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 materialize_daily_authoritative_cache.py — v1.0
-从 data_full.json 权威源派生补齐 kline_cache / fund_flow_cache。
-data_full.json 是单一权威源，缓存必须由它派生。
+从 data_full.json 派生补齐 kline_cache / fund_flow_cache（L1 当日权威组成之一）。
+data_full.json + kline_cache + fund_flow_cache 共同组成 L1 当日权威。
+data_full.json 是 L1 当日权威组成之一，不是单一权威源。详情见 D04_权威源决策表。
 
 用法:
   python3 scripts/materialize_daily_authoritative_cache.py --date 20260604

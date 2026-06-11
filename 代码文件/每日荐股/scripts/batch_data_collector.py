@@ -27,6 +27,26 @@ SCRIPTS_DIR = os.path.join(ROOT, "代码文件", "每日荐股", "scripts")
 # 全局缓存实例
 _cache = CachedDataSource()
 
+# 目标日期（从环境变量 DAILY_TARGET_DATE 读取，可选）
+TARGET_DATE = os.environ.get("DAILY_TARGET_DATE", "").replace("-", "")
+
+
+def emit(*args, **kwargs):
+    """集中输出，避免采集脚本散落 print 调用。"""
+    print(*args, **kwargs)
+
+
+def sanitize_for_json(obj):
+    """递归清洗 NaN/Infinity/-Infinity → None，防止写出非法 JSON"""
+    if isinstance(obj, float):
+        import math
+        return None if (math.isnan(obj) or math.isinf(obj)) else obj
+    if isinstance(obj, dict):
+        return {k: sanitize_for_json(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [sanitize_for_json(v) for v in obj]
+    return obj
+
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
@@ -34,14 +54,41 @@ def load_json(path):
 
 
 def save_json(path, data):
+    """原子写入 JSON：先写 .tmp，再 rename。不允许 NaN。
+    写入后立即重新 json.load 校验完整性。
+    失败则 exit 2 — 不允许静默吞错。"""
+    import math
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    tmp = path + ".tmp"
+    try:
+        cleaned = sanitize_for_json(data)
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(cleaned, f, ensure_ascii=False, indent=2, allow_nan=False)
+        os.replace(tmp, path)
+        # 写入后立即重新读取校验
+        with open(path, "r", encoding="utf-8") as f:
+            json.load(f)
+    except (ValueError, json.JSONDecodeError, OSError) as e:
+        emit(f"ERROR: save_json 失败 ({path}): {e}", flush=True)
+        if os.path.exists(tmp):
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
+        sys.exit(2)
+    except Exception as e:
+        emit(f"ERROR: save_json 未知异常 ({path}): {e}", flush=True)
+        if os.path.exists(tmp):
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
+        sys.exit(2)
 
 
 def collect_quotes(codes):
     """批量行情 — 腾讯API [1]"""
-    print(f"\n[1/5] 批量行情 — {len(codes)} stocks...")
+    emit(f"\n[1/5] 批量行情 — {len(codes)} stocks...")
     market_codes = ["sh" + c if c.startswith(("6", "9")) else "sz" + c for c in codes]
     result = {}
     for i in range(0, len(market_codes), 50):
@@ -80,16 +127,16 @@ def collect_quotes(codes):
                         "QuoteTime": quote_time,
                     }
         except Exception as e:
-            print(f"  Tencent API error: {e}")
+            emit(f"  Tencent API error: {e}")
         if i + 50 < len(market_codes):
             time.sleep(0.3)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    emit(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_klines(codes, count=60):
     """K线数据 — Tushare本地优先 → 新浪API[2]降级"""
-    print(f"\n[2/5] K线数据({count}日) — {len(codes)} stocks...")
+    emit(f"\n[2/5] K线数据({count}日) — {len(codes)} stocks...")
     result = {}
     api_codes = []
     for code in codes:
@@ -98,10 +145,10 @@ def collect_klines(codes, count=60):
             result[code] = cached["data"]
         else:
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    emit(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if not api_codes:
         return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+    emit(f"  需API获取: {len(api_codes)} stocks...")
     for code in api_codes:
         prefix = "sh" if code.startswith(("6", "9")) else "sz"
         url = (f"https://quotes.sina.cn/cn/api/jsonp_v2.php/"
@@ -120,15 +167,15 @@ def collect_klines(codes, count=60):
                     "close": float(d["close"]), "volume": int(d["volume"])
                 } for d in data]
         except Exception as e:
-            print(f"  {code}: Sina kline failed ({e})")
+            emit(f"  {code}: Sina kline failed ({e})")
         time.sleep(0.3)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    emit(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_financials(codes):
     """财务数据 — Tushare本地优先 → THS降级"""
-    print(f"\n[3/5] 财务数据 — {len(codes)} stocks...")
+    emit(f"\n[3/5] 财务数据 — {len(codes)} stocks...")
     result = {}
     api_codes = []
     for code in codes:
@@ -137,13 +184,13 @@ def collect_financials(codes):
             result[code] = cached["data"]
         else:
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    emit(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if not api_codes:
         return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+    emit(f"  需API获取: {len(api_codes)} stocks...")
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping remaining financials")
+        emit("  THS fetcher not found, skipping remaining financials")
         return result
     for code in api_codes:
         try:
@@ -157,28 +204,31 @@ def collect_financials(codes):
         except Exception:
             pass
         time.sleep(0.35)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    emit(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_fund_flows(codes):
     """资金流向 — Tushare本地优先 → THS降级"""
-    print(f"\n[4/6] 资金流向 — {len(codes)} stocks...")
+    emit(f"\n[4/6] 资金流向 — {len(codes)} stocks...")
+    target = TARGET_DATE if TARGET_DATE else None
+    if target:
+        emit(f"  DAILY_TARGET_DATE={target}, 传入 cached_data_source...")
     result = {}
     api_codes = []
     for code in codes:
-        cached = _cache.get_moneyflow(code)
+        cached = _cache.get_moneyflow(code, target_date=target)
         if cached["data"] and cached["freshness"] == "fresh":
             result[code] = cached["data"]
         else:
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    emit(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if not api_codes:
         return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+    emit(f"  需API获取: {len(api_codes)} stocks...")
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping remaining fund flows")
+        emit("  THS fetcher not found, skipping remaining fund flows")
         return result
     for code in api_codes:
         try:
@@ -192,31 +242,34 @@ def collect_fund_flows(codes):
         except Exception:
             pass
         time.sleep(0.35)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    emit(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_margins(codes):
     """融资融券 — Tushare本地优先"""
-    print(f"\n[5/6] 融资融券 — {len(codes)} stocks...")
+    emit(f"\n[5/6] 融资融券 — {len(codes)} stocks...")
+    target = TARGET_DATE if TARGET_DATE else None
+    if target:
+        emit(f"  DAILY_TARGET_DATE={target}, 传入 cached_data_source...")
     result = {}
     for code in codes:
-        cached = _cache.get_margin(code)
+        cached = _cache.get_margin(code, target_date=target)
         if cached["data"] and cached["freshness"] == "fresh":
             result[code] = cached["data"]
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    emit(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if len(result) < len(codes):
-        print(f"  缺失: {len(codes) - len(result)} stocks (无本地缓存)")
+        emit(f"  缺失: {len(codes) - len(result)} stocks (无本地缓存)")
     return result
 
 
 def collect_sectors():
     """板块数据 — 尝试THS, 失败静默"""
-    print("\n[6/6] 板块数据...")
+    emit("\n[6/6] 板块数据...")
     result = {}
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping sectors")
+        emit("  THS fetcher not found, skipping sectors")
         return result
     try:
         import subprocess
@@ -228,8 +281,8 @@ def collect_sectors():
             if proc.returncode == 0 and proc.stdout.strip():
                 result[action] = json.loads(proc.stdout.strip().split("\n")[-1])
     except Exception as e:
-        print(f"  Sector collection failed: {e}")
-    print(f"  板块数据: {'OK' if result else 'FAILED (non-blocking)'}")
+        emit(f"  Sector collection failed: {e}")
+    emit(f"  板块数据: {'OK' if result else 'FAILED (non-blocking)'}")
     return result
 
 
@@ -244,17 +297,21 @@ def main():
     output_file = args.output or os.path.join(DATA_DIR, "data_full.json")
 
     if not os.path.exists(pool_file):
-        print(f"ERROR: Dynamic pool file not found: {pool_file}")
+        emit(f"ERROR: Dynamic pool file not found: {pool_file}")
         sys.exit(1)
 
     pool = load_json(pool_file)
     pool_stocks = pool.get("Stocks", pool.get("stocks", []))
     if not pool_stocks:
-        print("ERROR: Dynamic pool is empty")
+        emit("ERROR: Dynamic pool is empty")
         sys.exit(1)
 
     codes = [s.get("Code", s.get("code", "")) for s in pool_stocks]
-    print(f"Dynamic pool: {len(codes)} stocks, starting data collection")
+    emit(f"Dynamic pool: {len(codes)} stocks, starting data collection")
+    if TARGET_DATE:
+        emit(f"DAILY_TARGET_DATE={TARGET_DATE} — 已设置，cached_data_source 将校验 target 日期新鲜度")
+    else:
+        emit("DAILY_TARGET_DATE=未设置 — cached_data_source 使用默认 TTL 逻辑")
 
     start_time = time.time()
 
@@ -325,8 +382,8 @@ def main():
 
     save_json(output_file, output)
     elapsed = time.time() - start_time
-    print(f"\nData collection complete: {output_file} ({elapsed:.1f}s)")
-    print(f"  Stocks: {len(engine_stocks)}, with quotes: {sum(1 for s in engine_stocks if s.get('Price'))}, with K-line: {sum(1 for s in engine_stocks if s.get('KClose'))}")
+    emit(f"\nData collection complete: {output_file} ({elapsed:.1f}s)")
+    emit(f"  Stocks: {len(engine_stocks)}, with quotes: {sum(1 for s in engine_stocks if s.get('Price'))}, with K-line: {sum(1 for s in engine_stocks if s.get('KClose'))}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+{
+  "scenario": "建仓",
+  "description": "用户首次买入东睦股份，空仓→持仓",
+  "input": {
+    "position_status": "空仓",
+    "action_type": "建仓",
+    "transaction_price": 38.50,
+    "transaction_quantity": 2000,
+    "fee_amount": 15.00,
+    "position_before_quantity": 0
+  }
+}

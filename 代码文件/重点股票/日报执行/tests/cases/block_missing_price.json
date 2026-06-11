@@ -1,0 +1,11 @@
+{
+  "scenario": "缺成交价_BLOCK",
+  "description": "加仓时必须填写成交价格",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "加仓",
+    "transaction_price": null,
+    "transaction_quantity": 1000,
+    "position_before_quantity": 1000
+  }
+}

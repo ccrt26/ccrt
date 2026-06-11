@@ -1,0 +1,13 @@
+{
+  "scenario": "平仓数量不等于持仓_BLOCK",
+  "description": "平仓时 transaction_quantity 不等于 position_before_quantity 应被 BLOCK",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "平仓",
+    "transaction_price": 39.00,
+    "transaction_quantity": 1500,
+    "fee_amount": 15.00,
+    "position_before_quantity": 2000,
+    "cost_before": 42.00
+  }
+}

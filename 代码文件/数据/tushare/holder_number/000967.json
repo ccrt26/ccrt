@@ -1,6 +1,18 @@
 [
   {
     "ts_code": "000967.SZ",
+    "ann_date": "20260601",
+    "end_date": "20260529",
+    "holder_num": 79946
+  },
+  {
+    "ts_code": "000967.SZ",
+    "ann_date": "20260601",
+    "end_date": "20260430",
+    "holder_num": 68913
+  },
+  {
+    "ts_code": "000967.SZ",
     "ann_date": "20260428",
     "end_date": "20260331",
     "holder_num": 32320

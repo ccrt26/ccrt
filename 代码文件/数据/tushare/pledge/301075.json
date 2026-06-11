@@ -1,6 +1,22 @@
 [
   {
     "ts_code": "301075.SZ",
+    "ann_date": "20260604",
+    "holder_name": "西藏嘉康时代科技发展有限公司",
+    "pledge_amount": 334.0,
+    "start_date": "20250619",
+    "end_date": null,
+    "is_release": "1",
+    "release_date": "20260603",
+    "pledgor": "西藏优富小额贷款有限责任公司",
+    "holding_amount": 892.9896,
+    "pledged_amount": 0.0,
+    "p_total_ratio": 4.18,
+    "h_total_ratio": 11.16,
+    "is_buyback": "0"
+  },
+  {
+    "ts_code": "301075.SZ",
     "ann_date": "20260312",
     "holder_name": "西藏嘉康时代科技发展有限公司",
     "pledge_amount": 280.0,

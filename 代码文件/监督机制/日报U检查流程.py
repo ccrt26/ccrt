@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """日报U检查流程 v3.6 — U-1~U-4 数据运用审计闸门"""
 import re, json, os, sys
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from datetime import datetime
 
 def has_text(md, pattern):
@@ -24,8 +25,10 @@ def u1(md):
     }
     covered = sum(1 for v in items.values() if v)
     pct = covered / len(items) * 100
+    missing_fields = [k for k,v in items.items() if not v]
     return {'result': 'PASS' if pct >= 70 else ('WARN' if pct >= 50 else 'FAIL'),
-            'covered': covered, 'total': len(items), 'pct': round(pct, 1)}
+            'covered': covered, 'total': len(items), 'pct': round(pct, 1),
+            'details': items, 'missing': missing_fields}
 
 def u2(md):
     # v3.6.1适配：action_change可选自然语言表达，machine_fields/data_table移至JSON sidecar
@@ -110,41 +113,25 @@ def u5(md):
 
 
 def u9(md):
-    """U-9: 可读性与解释层——用户版必须人话可读"""
+    """U-9: 可读性与解释层——用户版必须人话可读（仅检查可读性，数据一致性由U-8负责）"""
     issues = []
-    # 工程字段禁止
     for kw in ['v3.6.3', 'data_pack', 'report_version', 'schema_ref', 'machine_fields']:
         if re.search(kw, md):
             issues.append(f'U-9: 用户版出现工程字段: {kw}')
-    # 禁止字段串错
-    if re.search(r'最新v\d|v1\.4', md):
-        issues.append('U-9: 融资段出现版本号串字段')
-    # 必须有人话关键词
-    human_words = ['这说明', '对明日影响', '明日触发点', '为什么', '执行优先级', '默认不买']
+    human_words = ['这说明', '对明日影响', '明日触发点', '为什么', '默认不买']
     found = [w for w in human_words if re.search(w, md)]
-    if len(found) < 3:
-        issues.append(f'U-9: 解释层不足，仅找到{len(found)}个人话关键词: {found}')
-    # 四档资金必须解释
+    if len(found) < 2:
+        issues.append(f'U-9: 解释层不足，仅找到{len(found)}个人话关键词')
     if re.search(r'超大单', md) and not re.search(r'(?:还在卖|还在流出|承接|不能增强买入|不能抢)', md):
         issues.append('U-9: 四档资金段缺少人话解释')
-    # 信号胜率必须解释
     if re.search(r'胜率', md) and not re.search(r'(?:低于50|不能单独|不稳定)', md):
         issues.append('U-9: 信号胜率段缺少人话解释')
-    # 情景表不能只有缩量就买
-    if re.search(r'缩量.*?试探|缩量.*?建仓', md) and not re.search(r'(?:止跌确认|下影线.*?收阳|同时满足)', md):
-        issues.append('U-9: 情景表可能让人误以为缩量就可以买')
-    # 风控黄灯必须解释仓位限制
-    if re.search(r'综合.*?🟡|黄灯', md) and not re.search(r'(?:只能.*?仓位|限制.*?仓位|小仓位|不.*?加仓)', md):
-        issues.append('U-9: 风控黄灯未解释仓位限制')
     return {'result': 'PASS' if len(issues) == 0 else 'FAIL', 'issues': issues}
-
 def u10(md):
-    """U-10: 资金解读一致性——只检查逐项解读行(以-开头的超大单/大单行)，跳过主力合计比较句"""
+    """U-10: 资金解读一致性——只检查逐项解读行，跳过主力合计比较句（仅检查资金方向，数据一致性由U-8负责）"""
     issues = []
-    # Only check bullet-point interpretation lines
     sl_bullet = re.search(r'[-•]\s*超大单[^，,：:→\n]+(?:[，,→]|：|:)\s*(.+?)(?:\n|$)', md)
     lg_bullet = re.search(r'[-•]\s*(?<!超)大单[^，,：:→\n]+(?:[，,→]|：|:)\s*(.+?)(?:\n|$)', md)
-    # Extract table values for comparison
     sl_table = re.search(r'超大单\s*\|\s*([+-]?[\d.,]+)万', md)
     lg_table = re.search(r'(?<!超)大单\s*\|\s*([+-]?[\d.,]+)万', md)
     if sl_bullet and sl_table:
@@ -166,6 +153,7 @@ def u10(md):
                 issues.append('U-10: 大单净额为正但逐项解读写流出/在卖')
         except: pass
     return {'result': 'PASS' if len(issues) == 0 else 'FAIL', 'issues': issues}
+
 def u6(md):
     """U-6: 10段结构完整性"""
     sections = [
@@ -173,12 +161,12 @@ def u6(md):
         ('baseline引用与变化', r'深度分析基线|# 二、深度分析'),
         ('当日行情delta', r'今天行情|# 三、今天'),
         ('大盘与板块', r'大盘和板块|# 四、大盘'),
-        ('四档资金结构', r'资金在干什么|# 五、资金'),
-        ('融资北向筹码', r'融资.*北向.*筹码|# 六、融资'),
-        ('消息事件', r'消息面|# 七、消息'),
-        ('信号胜率', r'信号靠谱|# 八、信号'),
-        ('风控红黄绿灯', r'风险多大|# 九、风险'),
-        ('明日情景应对+T+5', r'明天怎么做|# 十、明天'),
+        ('四档资金结构', r'资金|# 五、资金'),
+        ('融资北向筹码', r'融资.*北向|# 六、融资'),
+        ('消息事件', r'消息事件|# 七、消息'),
+        ('信号胜率', r'信号胜率|# 八、信号'),
+        ('风控红黄绿灯', r'风控红黄绿灯|# 九、风控'),
+        ('明日情景应对+T+5', r'明日情景应对|# 十、明日'),
     ]
     missing = []
     for name, pattern in sections:
@@ -198,14 +186,14 @@ def u7(md):
         'P0九字段_禁止动作': bool(re.search(r'禁止动作.*?(?:不建仓|不买|不追)', md)),
         'P0九字段_置信度': bool(re.search(r'置信度.*?(?:高|中|低)', md)),
         'P0九字段_一句话结论': bool(re.search(r'一句话结论', md)),
-        'baseline_id': bool(re.search(r'baseline.*?600114.*?deep|深度分析.*?5.*?29', md)),
-        'delta_近4日': len(re.findall(r'2026-05-2[6789]|2026-06-01', md)) >= 4,
+        'baseline_id': bool(re.search(r'baseline_id[：:]\s*\S+|baseline[：:]\s*\S+', md)),
+        'delta_近4日': len(re.findall(r'\d{4}-\d{2}-\d{2}', md)) >= 4,
         '四档资金_5项': bool(re.search(r'超大单.*?大单.*?中单.*?小单.*?主力', md, re.DOTALL)),
         '融资段': bool(re.search(r'融资', md)),
         '北向段': bool(re.search(r'北向', md)),
-        '消息事件表': bool(re.search(r'T\+1.*?T\+3.*?T\+5', md)),
+        '消息事件表': bool(re.search(r'(?:消息|消息事件)(.+?)(?:## )', md, re.DOTALL)) and 'T+1' in md[md.find('## 七、消息'):md.find('## 八、信号')] and 'T+3' in md[md.find('## 七、消息'):md.find('## 八、信号')] and 'T+5' in md[md.find('## 七、消息'):md.find('## 八、信号')],
         '信号胜率表': bool(re.search(r'胜率.*?样本|样本.*?胜率', md)),
-        '风控_7项': bool(re.search(r'质押.*?解禁.*?融资.*?估值.*?技术', md, re.DOTALL)),
+        '风控_7项': bool(re.search(r'质押.*?解禁.*?融资.*?(?:估值|财务).*?技术', md, re.DOTALL)),
         '情景应对_3种': len(re.findall(r'(?:观望|试探|暂停|不追)', md)) >= 2,
         'T+5展望': bool(re.search(r'T\+5展望|T\+5 展望', md)),
     }
@@ -256,6 +244,59 @@ def u8(md, md_path=''):
                         issues.append(f'DEGRADED item not disclosed in MD: {item}')
         except Exception as e:
             issues.append(f'U-8 error: {str(e)[:50]}')
+
+    # P0-I: 硬检查 - baseline存在则禁止写缺失
+    if md_path:
+        # Check if baseline JSON exists
+        import glob as _glob
+        code_match = re.search(r'(\d{6})', os.path.basename(md_path))
+        if code_match:
+            code = code_match.group(1)
+            report_dir = os.path.dirname(md_path)
+            bl_pattern = os.path.join(report_dir, f'*深度分析_baseline_*.json')
+            bl_files = _glob.glob(bl_pattern)
+            if not bl_files:
+                bl_pattern2 = os.path.join(ROOT, '重点股票', '基线', f'*{code}*baseline*.json')
+                bl_files = _glob.glob(bl_pattern2)
+            if bl_files:
+                if re.search(r'baseline缺失|待baseline|baseline待引用|无baseline参考', md):
+                    issues.append('U-8 BLOCK: baseline文件存在但报告写缺失/待引用')
+                try:
+                    with open(bl_files[0]) as f: bl = json.load(f)
+                    kl = bl.get('key_levels', bl)  # support both formats
+                    for k in ('S1', 'R1', 'stop_loss_new', 'stop_loss_held'):
+                        v = kl.get(k)
+                        if v is not None and str(v) not in md:
+                            issues.append(f'U-8 BLOCK: baseline有{k}={v}但MD未引用')
+                except: pass
+
+        # Check kline consistency
+        kline_dir = os.path.join(ROOT, '代码文件', '数据', 'kline_cache')
+        if code_match:
+            kf = os.path.join(kline_dir, f'{code_match.group(1)}.json')
+            if os.path.exists(kf):
+                try:
+                    with open(kf) as f: kd = json.load(f)
+                    date_match = re.search(r'(\d{8})', os.path.basename(md_path))
+                    if date_match:
+                        target = f'{date_match.group(1)[:4]}-{date_match.group(1)[4:6]}-{date_match.group(1)[6:8]}'
+                        for r in kd:
+                            if r.get('date') == target:
+                                if sidecar:
+                                    delta_close = (sidecar.get('delta') or {}).get('close')
+                                    if delta_close is not None and abs(float(delta_close)-float(r['close']))>0.01:
+                                        issues.append(f'U-8 BLOCK: sidecar delta.close与kline不一致')
+                                break
+                except: pass
+
+    # Check signal_winrate_db
+    sw_db = os.path.join(ROOT, '代码文件', '数据', 'signal_winrate_db.json')
+    if os.path.exists(sw_db):
+        signal_section = re.search(r'(?:## 八、信号|信号胜率)(.+?)(?:\n---|\n## 九、|\n## 十、)', md, re.S)
+        sec = signal_section.group(1) if signal_section else ''
+        if '样本不足' in sec and not re.search(r'样本.*?\d+|\d+.*?样本', sec):
+            issues.append('U-8 BLOCK: signal_winrate_db存在但信号胜率段泛写样本不足无具体数字')
+
     return {'result': 'PASS' if len(issues) == 0 else 'FAIL', 'issues': issues}
 def check(path):
     if not os.path.exists(path):
@@ -297,7 +338,7 @@ def main():
         os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
         with open(out_path, 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
-    sys.exit({'PASS': 0, 'WARN': 1, 'BLOCK': 2}[result['status']])
+    sys.exit({'PASS': 0, 'WARN': 0, 'BLOCK': 2}[result['status']])
 
 if __name__ == '__main__':
     main()

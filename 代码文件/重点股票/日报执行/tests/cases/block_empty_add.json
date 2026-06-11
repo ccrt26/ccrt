@@ -1,0 +1,11 @@
+{
+  "scenario": "空仓加仓_BLOCK",
+  "description": "空仓状态不能执行加仓",
+  "input": {
+    "position_status": "空仓",
+    "action_type": "加仓",
+    "transaction_price": 40.00,
+    "transaction_quantity": 1000,
+    "position_before_quantity": 0
+  }
+}

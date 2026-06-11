@@ -122,19 +122,44 @@ def load_kline(code: str, trade_date: date) -> tuple:
 
 
 def load_fund_flow(code: str, trade_date: date) -> tuple:
-    """加载 fund_flow_cache，返回 (row_dict, file_path) 或 (None, path)"""
+    """加载 fund_flow_cache，兜底 data_full.json.FundFlows。
+    返回 (row_dict, file_path) 或 (None, path)"""
+    # 1. Try fund_flow_cache
     path = FUND_FLOW_DIR / f"{code}.json"
-    if not path.exists():
-        return None, str(path)
-    try:
-        rows = load_json(path)
-    except Exception:
-        return None, str(path)
-
     date_str = trade_date.strftime("%Y%m%d")
-    for row in rows:
-        if str(row.get("date", "")) == date_str:
-            return row, str(path)
+    if path.exists():
+        try:
+            rows = load_json(path)
+            for row in rows:
+                if str(row.get("date", "")) == date_str:
+                    return row, str(path)
+        except Exception:
+            pass
+
+    # 2. Fallback to data_full.json.FundFlows
+    df_path = PROJECT_ROOT / "代码文件" / "数据" / "data_full.json"
+    if df_path.exists():
+        try:
+            dfull = load_json(df_path)
+            flows = dfull.get("FundFlows", {}).get(code, [])
+            if flows:
+                for row in flows:
+                    d = str(row.get("trade_date") or row.get("date", "")).replace("-", "")
+                    if d == date_str:
+                        def to_f(v): return round(float(v or 0), 2)
+                        mapped = {
+                            "date": date_str,
+                            "super_large_net": round(to_f(row.get("buy_elg_amount", 0)) - to_f(row.get("sell_elg_amount", 0)), 2),
+                            "large_net": round(to_f(row.get("buy_lg_amount", 0)) - to_f(row.get("sell_lg_amount", 0)), 2),
+                            "medium_net": round(to_f(row.get("buy_md_amount", 0)) - to_f(row.get("sell_md_amount", 0)), 2),
+                            "small_net": round(to_f(row.get("buy_sm_amount", 0)) - to_f(row.get("sell_sm_amount", 0)), 2),
+                            "main_force_net": round(to_f(row.get("net_mf_amount", 0)), 2),
+                            "_source": str(df_path),
+                        }
+                        return mapped, str(df_path)
+        except Exception:
+            pass
+
     return None, str(path)
 
 
@@ -310,22 +335,25 @@ def extract_md_change_pct(md_text: str, date_compact: str) -> float:
 
 def extract_md_volume(md_text: str, date_compact: str) -> float:
     """从MD行情表提取当日成交量（万手）。
-    表格格式: | 2026-06-02 | ... | 36.2万手 |
-    或直接匹配数字格式: 36.2万手
-    """
+    只从目标日期行情表行提取。
+    表格格式: | 2026-06-04 | ... | 26.4万手 |
+    优先级: YYYY-MM-DD 行 > M月D日 行
+    禁止从正文叙述fallback提取。"""
+    date_dashed = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:8]}"
+
+    # 1. 精确匹配 YYYY-MM-DD 行情表行
+    pat = rf'\|?\s*{re.escape(date_dashed)}\s*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|\s*([\d.]+)万手'
+    m = re.search(pat, md_text)
+    if m:
+        return float(m.group(1))
+
+    # 2. 兼容 M月D日 格式行
     date_text = extract_md_text_date(date_compact)
-    patterns = [
-        # After the table, match last column: 36.2万手
-        rf'{date_text}[^|]*\|[^|]*\|[^|]*\|[^|]*\|[^|]*(?:\|\s*)([\d.]+)万手',
-        # Simpler: 日格式 + 万手
-        rf'{re.escape(date_text)}.*?(\d+[\d.]*万手)',
-    ]
-    for pat in patterns:
-        m = re.search(pat, md_text)
-        if m:
-            num = re.search(r'([\d.]+)', str(m.group(1) if pat != patterns[0] else m.group(1)))
-            if num:
-                return float(num.group(1))
+    pat2 = rf'{re.escape(date_text)}\s*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|\s*([\d.]+)万手'
+    m = re.search(pat2, md_text)
+    if m:
+        return float(m.group(1))
+
     return None
 
 
@@ -698,6 +726,43 @@ def check_sector_phase(sidecar, md_text, sector_data, sector_path) -> dict:
 
 
 # ============================================================
+# E. Kline L2 数值一致性（仅注册检查，不阻断）
+# ============================================================
+
+def check_kline_l2_numeric() -> dict:
+    """检查 kline_l2 在 numeric_field_mapping.json 中的注册状态。
+    返回 SKIP/WARN，Phase 2 前不 BLOCK。"""
+    field = "kline_l2.numeric"
+    MAPPING_PATH = PROJECT_ROOT / "00_项目地基" / "04_一致性闸门" / "numeric_field_mapping.json"
+    mapping_path = Path(str(MAPPING_PATH))
+
+    if not mapping_path.exists():
+        return make_check(field, str(mapping_path), None, None, None, "WARN",
+                          "numeric_field_mapping.json 不存在")
+
+    try:
+        import json as _json
+        with open(mapping_path, "r", encoding="utf-8-sig") as f:
+            mapping = _json.load(f)
+        kl2 = mapping.get("mappings", {}).get("kline_l2", {})
+    except Exception as e:
+        return make_check(field, str(mapping_path), None, None, None, "WARN",
+                          f"numeric_field_mapping.json 解析失败: {e}")
+
+    enabled = kl2.get("enabled", False)
+    phase = kl2.get("phase", 0)
+
+    if not enabled or phase < 2:
+        return make_check(field, f"kline_l2 enabled={enabled} phase={phase}",
+                          None, None, None, "PASS",
+                          f"kline_l2: SKIP (enabled={enabled}, phase={phase}) — Phase 2 前跳过 L2 数值检查")
+    else:
+        return make_check(field, f"kline_l2 enabled={enabled} phase={phase}",
+                          None, None, None, "PASS",
+                          f"kline_l2: registered (enabled={enabled}, phase={phase}) — 数值检查已就绪")
+
+
+# ============================================================
 # 核心检查逻辑
 # ============================================================
 
@@ -796,6 +861,13 @@ def check_one(code: str, name: str, trade_date_str: str) -> dict:
     chk = check_sector_phase(sidecar, md_text, sector_data, sector_path)
     result["checks"].append(chk)
     if chk["result"] == "BLOCK": result["result"] = "BLOCK"
+
+    # ---- E: Kline L2 数值一致性（Phase 2 前不阻断） ----
+    chk = check_kline_l2_numeric()
+    result["checks"].append(chk)
+    # L2 检查不升级为 BLOCK（Phase 2 前不阻断当日报告）
+    if chk["result"] == "BLOCK":
+        chk["result"] = "WARN"
 
     return result
 

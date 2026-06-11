@@ -1,0 +1,14 @@
+# L2 SQLite 运行态文件（不入 git）
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+
+# 备份（不入 git）
+backup/*.db
+backup/*.db.gz
+
+# 哨兵与操作日志（运行时生成，不可入 git）
+last_update.json
+operation_log.jsonl
+shadow_diff_log.jsonl

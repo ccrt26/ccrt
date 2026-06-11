@@ -19,6 +19,8 @@ P0-C: 日期新鲜度与降级路径闸门 — 检查日报数据日期与数据
   0 = PASS (所有检查通过)
   1 = 脚本异常
   2 = 任一 BLOCK
+
+G. (仅在 --tier l2/all 时) Kline L2 新鲜度 — Phase 2 前 SKIP/WARN 不阻断
 """
 
 import argparse
@@ -183,7 +185,7 @@ def check_kline_freshness(sidecar, md_text, kline_row, kline_path, td, trade_dat
     if not has_data:
         return make_check(field, kline_path, source_date, trade_date_str, "T+0",
                           "stale", False, sidecar_claim, md_claim, "BLOCK",
-                          f"K线缓存无{trade_date_str}当日数据")
+                          f"K线源无{trade_date_str}当日数据, source_path={kline_path}")
 
     # Check if sidecar has delta.close but kline doesn't exist
     if sidecar_claim and not has_data:
@@ -193,6 +195,67 @@ def check_kline_freshness(sidecar, md_text, kline_row, kline_path, td, trade_dat
 
     return make_check(field, kline_path, source_date, trade_date_str, "T+0",
                       "当日", False, sidecar_claim, md_claim, "PASS", "")
+
+
+# ============================================================
+# G. Kline L2 新鲜度（仅 --tier l2/all 时）
+# ============================================================
+
+def check_kline_l2(trade_date_str, td, code):
+    """检查 kline_l2 规则状态。enabled=false 或 phase=2 时 SKIP/WARN，不 BLOCK。"""
+    field = "kline_l2.freshness"
+    FRESHNESS_RULES_PATH = PROJECT_ROOT / "00_项目地基" / "04_一致性闸门" / "freshness_rules.json"
+
+    if not FRESHNESS_RULES_PATH.exists():
+        return make_check(field, str(FRESHNESS_RULES_PATH), None, trade_date_str,
+                          "T+1", "规则文件缺失", False, None, None, "WARN",
+                          "freshness_rules.json 不存在，无法检查 L2 规则")
+
+    try:
+        rules = load_json(FRESHNESS_RULES_PATH)
+        kl2 = rules.get("rules", {}).get("kline_l2", {})
+    except Exception as e:
+        return make_check(field, str(FRESHNESS_RULES_PATH), None, trade_date_str,
+                          "T+1", "规则解析失败", False, None, None, "WARN",
+                          f"freshness_rules.json 解析失败: {e}")
+
+    enabled = kl2.get("enabled", False)
+    phase = kl2.get("phase", 0)
+
+    if not enabled or phase < 2:
+        return make_check(field, f"kline_l2 enabled={enabled} phase={phase}",
+                          None, trade_date_str, "T+1",
+                          "SKIP (Phase 2 前不检查)", False, None, None, "PASS",
+                          f"kline_l2 enabled={enabled} phase={phase} — Phase 2 前跳过 L2 新鲜度检查")
+
+    # Phase 2 已启用，检查 L2 DB 是否有当日数据
+    L2_DB_PATH = PROJECT_ROOT / "代码文件" / "数据" / "l2_cache" / "l2_cache.db"
+    if not L2_DB_PATH.exists():
+        return make_check(field, str(L2_DB_PATH), None, trade_date_str,
+                          "T+1", "L2 DB 不存在", False, None, None, "WARN",
+                          "L2 SQLite 不存在，无法检查 L2 K 线新鲜度")
+
+    try:
+        conn = __import__("sqlite3").connect(str(L2_DB_PATH))
+        td_dashed = td.strftime("%Y-%m-%d")
+        row = conn.execute(
+            "SELECT COUNT(*) FROM kline WHERE code=? AND trade_date=?",
+            (code, td_dashed)
+        ).fetchone()
+        conn.close()
+        has_l2_data = row and row[0] > 0
+    except Exception as e:
+        return make_check(field, str(L2_DB_PATH), None, trade_date_str,
+                          "T+1", "L2 查询失败", False, None, None, "WARN",
+                          f"L2 DB 查询失败: {e}")
+
+    if has_l2_data:
+        return make_check(field, str(L2_DB_PATH), td_dashed, trade_date_str,
+                          "T+1", "L2 有当日记录", False, None, None, "PASS", "")
+    else:
+        return make_check(field, str(L2_DB_PATH), None, trade_date_str,
+                          "T+1", "L2 无当日记录", False, None, None, "WARN",
+                          f"L2 kline 无 {td_dashed} 记录，以 L1 为准")
 
 
 # ============================================================
@@ -529,7 +592,7 @@ def check_eval_hooks_dates(sidecar, td, next_trade_date_str, trade_date_str):
 # 核心检查逻辑
 # ============================================================
 
-def check_one(code, name, trade_date_str, registry):
+def check_one(code, name, trade_date_str, registry, tier="l1"):
     result = {
         "stock_code": code,
         "stock_name": name,
@@ -562,17 +625,45 @@ def check_one(code, name, trade_date_str, registry):
     degraded_items = sidecar.get("degraded_items") or []
     next_trade_date_str = sidecar.get("next_trade_date", "")
 
-    # A. K线新鲜度
+    # A. K线新鲜度 — 优先kline_cache, 兜底data_full.json
     kline_row = None
     kline_path = str(KLINE_DIR / f"{code}.json")
+    td_dashed = td.strftime("%Y-%m-%d")
     if (KLINE_DIR / f"{code}.json").exists():
         try:
             for row in load_json(KLINE_DIR / f"{code}.json"):
-                if row.get("date") == td.strftime("%Y-%m-%d"):
+                if row.get("date") == td_dashed:
                     kline_row = row
                     break
         except Exception:
             pass
+    if not kline_row:
+        # Fallback to data_full.json
+        data_full_path = PROJECT_ROOT / "代码文件" / "数据" / "data_full.json"
+        if data_full_path.exists():
+            try:
+                dfull = load_json(data_full_path)
+                for s in dfull.get("Stocks", []) or []:
+                    c = str(s.get("Code") or s.get("code") or "")
+                    if c != code:
+                        continue
+                    kdates = s.get("KDate") or []
+                    if td_dashed in kdates:
+                        idx = kdates.index(td_dashed)
+                        kline_row = {
+                            "date": td_dashed,
+                            "open": s.get("KOpen", [None] * len(kdates))[idx] if idx < len(s.get("KOpen", [])) else None,
+                            "high": s.get("KHigh", [None] * len(kdates))[idx] if idx < len(s.get("KHigh", [])) else None,
+                            "low": s.get("KLow", [None] * len(kdates))[idx] if idx < len(s.get("KLow", [])) else None,
+                            "close": s.get("KClose", [None] * len(kdates))[idx] if idx < len(s.get("KClose", [])) else None,
+                            "volume": s.get("KVolume", [None] * len(kdates))[idx] if idx < len(s.get("KVolume", [])) else None,
+                            "change_pct": s.get("ChangePct"),
+                            "_source": str(data_full_path),
+                        }
+                        kline_path = str(data_full_path)
+                        break
+            except Exception:
+                pass
 
     chk = check_kline_freshness(sidecar, md_text, kline_row, kline_path, td, trade_date_str)
     result["checks"].append(chk)
@@ -581,14 +672,41 @@ def check_one(code, name, trade_date_str, registry):
     # B. 四档资金新鲜度
     ff_row = None
     ff_path = str(FUND_FLOW_DIR / f"{code}.json")
+    td_ymd = td.strftime("%Y%m%d")
+    td_md = f"{td.month}/{td.day}"
     if (FUND_FLOW_DIR / f"{code}.json").exists():
         try:
             for row in load_json(FUND_FLOW_DIR / f"{code}.json"):
-                if str(row.get("date", "")) == td.strftime("%Y%m%d"):
+                if str(row.get("date", "")) == td_ymd:
                     ff_row = row
                     break
         except Exception:
             pass
+    if not ff_row:
+        # Fallback to data_full.json.FundFlows
+        data_full_path = PROJECT_ROOT / "代码文件" / "数据" / "data_full.json"
+        if data_full_path.exists():
+            try:
+                dfull = load_json(data_full_path)
+                flows = dfull.get("FundFlows", {}).get(code, [])
+                if flows:
+                    for row in flows:
+                        d = str(row.get("trade_date") or row.get("date", "")).replace("-", "")
+                        if d == td_ymd:
+                            def to_f(v): return round(float(v or 0), 2)
+                            ff_row = {
+                                "date": td_ymd,
+                                "super_large_net": round(to_f(row.get("buy_elg_amount", 0)) - to_f(row.get("sell_elg_amount", 0)), 2),
+                                "large_net": round(to_f(row.get("buy_lg_amount", 0)) - to_f(row.get("sell_lg_amount", 0)), 2),
+                                "medium_net": round(to_f(row.get("buy_md_amount", 0)) - to_f(row.get("sell_md_amount", 0)), 2),
+                                "small_net": round(to_f(row.get("buy_sm_amount", 0)) - to_f(row.get("sell_sm_amount", 0)), 2),
+                                "main_force_net": round(to_f(row.get("net_mf_amount", 0)), 2),
+                                "_source": str(data_full_path),
+                            }
+                            ff_path = str(data_full_path)
+                            break
+            except Exception:
+                pass
 
     chk = check_fund_flow_freshness(sidecar, md_text, ff_row, ff_path, td, trade_date_str, degraded_items)
     result["checks"].append(chk)
@@ -637,6 +755,14 @@ def check_one(code, name, trade_date_str, registry):
     chk = check_eval_hooks_dates(sidecar, td, next_trade_date_str, trade_date_str)
     result["checks"].append(chk)
     if chk["result"] == "BLOCK": result["result"] = "BLOCK"
+
+    # G. Kline L2 新鲜度（仅 --tier l2/all 时）
+    if tier in ("l2", "all"):
+        chk = check_kline_l2(trade_date_str, td, code)
+        result["checks"].append(chk)
+        # L2 检查不升级为 BLOCK（Phase 2 前不阻断当日报告）
+        if chk["result"] == "BLOCK":
+            chk["result"] = "WARN"
 
     return result
 
@@ -691,6 +817,8 @@ def main():
     parser.add_argument("--date", required=True, help="交易日期 YYYYMMDD 或 YYYY-MM-DD")
     parser.add_argument("--all", action="store_true", help="检查全部重点股票")
     parser.add_argument("--json", action="store_true", help="JSON 格式输出")
+    parser.add_argument("--tier", choices=["l1", "l2", "all"], default="l1",
+                        help="检查层级: l1(默认)仅L1, l2仅L2, all=L1+L2。Phase 2 前 L2 检查不 BLOCK")
     args = parser.parse_args()
 
     # 加载注册表
@@ -717,7 +845,7 @@ def main():
     results = []
     all_pass = True
     for code, name in stocks:
-        res = check_one(code, name, args.date, registry)
+        res = check_one(code, name, args.date, registry, tier=args.tier)
         results.append(res)
         if res["result"] == "BLOCK":
             all_pass = False

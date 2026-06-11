@@ -161,6 +161,94 @@ def pass_and_log(parsed, ctx, auth_result):
     sys.exit(0)
 
 
+def _import_log_utils():
+    sys.path.insert(0, os.path.join(PROJECT_ROOT, "scripts"))
+    import log_utils
+    return log_utils
+
+
+def get_auth_token():
+    """Read CLAUDE_AUTH_TOKEN from environment."""
+    return os.environ.get("CLAUDE_AUTH_TOKEN", "").strip()
+
+
+def verify_token_for_action(token_id, actor, role, action, file_path, run_id):
+    """Verify token, return (ok, reason)."""
+    try:
+        lu = _import_log_utils()
+        return lu.verify_auth_token(token_id, actor, role, action, file_path, run_id)
+    except Exception as e:
+        return False, f"token 校验异常: {e}"
+
+
+def token_block_and_log(reason, parsed, ctx, token_id=""):
+    """Log token-related block event."""
+    ts = datetime.now(timezone.utc).isoformat()
+    record = {
+        "timestamp": ts,
+        "actor": ctx["actor"],
+        "role": ctx["role"],
+        "run_id": ctx["run_id"],
+        "tool": parsed.get("tool_name", ""),
+        "command": parsed.get("command", "")[:200],
+        "file_path": parsed.get("file_path", ""),
+        "decision": "TOKEN_BLOCK",
+        "reason": reason,
+        "token_id": token_id,
+    }
+    log_write_event(record)
+    print()
+    print("=" * 40)
+    print("  BLOCKED — 工程鉴权 Token 拦截")
+    print("=" * 40)
+    print(f"  操作: {parsed.get('tool_name', '?')}")
+    print(f"  文件: {parsed.get('file_path', '(unknown)')}")
+    print(f"  原因: {reason}")
+    if token_id:
+        print(f"  Token: {token_id}")
+    if ctx["actor"]:
+        print(f"  Actor: {ctx['actor']}  Role: {ctx['role']}  Run: {ctx['run_id']}")
+    print(f"  解决: 通过 pipeline gate → 签发 auth token → 设置 CLAUDE_AUTH_TOKEN")
+    print("=" * 40)
+    print()
+    sys.exit(1)
+
+
+def require_auth_token(parsed, ctx, action, target_rel, targets_list):
+    """Require valid auth token for the given action and target.
+
+    Returns True if token passes. Exits with BLOCK if fails.
+    """
+    token_id = get_auth_token()
+    if not token_id:
+        token_block_and_log(
+            f"缺少工程鉴权 token（{action} {target_rel}）",
+            parsed, ctx, "")
+        return False  # never reached
+
+    ok, reason = verify_token_for_action(
+        token_id, ctx["actor"], ctx["role"],
+        action, target_rel, ctx["run_id"])
+    if not ok:
+        token_block_and_log(
+            f"Token 验证失败: {reason}",
+            parsed, ctx, token_id)
+        return False
+
+    # Bash action: check all detected targets
+    if action == "Bash" and targets_list:
+        for t_rel, _ in targets_list:
+            ok2, reason2 = verify_token_for_action(
+                token_id, ctx["actor"], ctx["role"],
+                "Write", t_rel, ctx["run_id"])
+            if not ok2:
+                token_block_and_log(
+                    f"Bash 目标路径 '{t_rel}' 不在 token 授权范围: {reason2}",
+                    parsed, ctx, token_id)
+                return False
+    return True
+
+
 def main():
     auth = _import_auth()
     parsed = parse_input()
@@ -170,6 +258,54 @@ def main():
     file_path = parsed["file_path"]
     command = parsed.get("command", "")
 
+    # ======== 工程鉴权 Token 准入 (B1/B2/B3) ========
+    # 所有受保护路径的 Edit/Write/MultiEdit/Bash 都需要 token
+    # AUTH_PROTECTED_PATHS 保护的路径 Read 也需要 token
+
+    token_targets = []  # 需要 token 验证的目标路径
+
+    if tool_name in ("Write", "Edit", "MultiEdit"):
+        rel, _ = resolve_file_path(file_path)
+        if rel:
+            lu = _import_log_utils()
+            if lu.is_auth_write_protected(rel):
+                require_auth_token(parsed, ctx, tool_name, rel, [])
+            # else: non-protected write path → pass without token, fall through to existing hook
+
+    elif tool_name == "Bash":
+        if command:
+            try:
+                from bash_write_detector import detect_writes
+                detected = detect_writes(command, PROJECT_ROOT)
+                if detected:
+                    lu = _import_log_utils()
+                    protected_targets = [d for d in detected if lu.is_auth_write_protected(d["path"])]
+                    if protected_targets:
+                        token_targets = [(d["path"], d["certainty"]) for d in protected_targets]
+                        all_paths_str = ", ".join(d["path"] for d in protected_targets)
+                        require_auth_token(parsed, ctx, "Bash", all_paths_str, token_targets)
+                    # else: no protected targets → pass without token
+            except ImportError:
+                if re.search(r'[>]|tee\s|cp\s|mv\s|rm\s|sed\s+-i|perl\s+-pi', command):
+                    token_targets.append(("(bash_write_detected)", "low"))
+                    require_auth_token(parsed, ctx, "Bash", "(bash_write)", token_targets)
+
+    elif tool_name == "Read":
+        rel, _ = resolve_file_path(file_path)
+        if rel:
+            # Check if the path is Read-protected
+            try:
+                lu = _import_log_utils()
+                if lu.is_auth_read_protected(rel):
+                    token_targets.append((rel, "high"))
+                    require_auth_token(parsed, ctx, "Read", rel, [])
+                # else: Non-protected Read: pass without token
+            except Exception as e:
+                token_block_and_log(
+                    f"Read 保护路径 token 校验异常: {e}",
+                    parsed, ctx, "")
+
+    # --- Existing protection logic ---
     # --- Determine write targets ---
     targets = []  # list of (rel_path, certainty)
 

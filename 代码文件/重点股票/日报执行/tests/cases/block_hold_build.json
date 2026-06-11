@@ -1,0 +1,11 @@
+{
+  "scenario": "持仓建仓_BLOCK",
+  "description": "已有持仓不能执行建仓",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "建仓",
+    "transaction_price": 40.00,
+    "transaction_quantity": 1000,
+    "position_before_quantity": 1000
+  }
+}

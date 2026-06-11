@@ -1,0 +1,13 @@
+{
+  "scenario": "减仓盈利",
+  "description": "用户以高于持仓成本的价格减仓，获利",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "减仓",
+    "transaction_price": 42.50,
+    "transaction_quantity": 500,
+    "fee_amount": 15.00,
+    "position_before_quantity": 2000,
+    "cost_before": 39.35
+  }
+}

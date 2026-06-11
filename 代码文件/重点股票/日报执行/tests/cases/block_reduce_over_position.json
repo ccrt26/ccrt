@@ -1,0 +1,13 @@
+{
+  "scenario": "减仓数量超过持仓_BLOCK",
+  "description": "减仓数量超过当前持仓数量应被 BLOCK",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "减仓",
+    "transaction_price": 39.00,
+    "transaction_quantity": 3000,
+    "fee_amount": 15.00,
+    "position_before_quantity": 2000,
+    "cost_before": 42.00
+  }
+}

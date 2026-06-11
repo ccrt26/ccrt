@@ -276,22 +276,45 @@ def check_v36_data_readiness(target_date=None):
     baseline_by_stock = {}
     sector_by_stock = {}
 
+    # Preload data_full.json for K-line fallback
+    data_full_stocks = {}
+    data_full_path = os.path.join(DATA_CACHE_DIR, "data_full.json")
+    try:
+        with open(data_full_path, "r", encoding="utf-8-sig") as f:
+            dfull = json.load(f)
+        for s in dfull.get("Stocks", []) or []:
+            c = str(s.get("Code") or s.get("code") or "")
+            if c:
+                data_full_stocks[c] = s
+    except Exception:
+        data_full_stocks = {}
+
     for code in pool_codes:
-        # Kline
+        # Kline — check kline_cache first, then fallback to data_full.json
         kf = os.path.join(kline_dir, f"{code}.json")
+        kline_match = False
+        kline_date = None
         if os.path.exists(kf):
             try:
                 with open(kf, "r", encoding="utf-8") as f:
                     kd = json.load(f)
                 if isinstance(kd, list) and kd:
-                    latest = kd[-1].get('date', '')
-                    kline_by_stock[code] = {'date': latest, 'match': latest == date_dash}
-                else:
-                    kline_by_stock[code] = {'date': None, 'match': False}
+                    latest = str(kd[-1].get('date', '')).replace("-", "")
+                    if len(latest) >= 8:
+                        kline_date = latest[:8]
+                        kline_match = kline_date == date_compact
             except Exception:
-                kline_by_stock[code] = {'date': None, 'match': False}
-        else:
-            kline_by_stock[code] = {'date': None, 'match': False}
+                pass
+        if not kline_match:
+            # Fallback to data_full.json
+            s = data_full_stocks.get(code) or {}
+            kd_list = s.get("KDate") or []
+            if kd_list:
+                latest2 = str(kd_list[-1]).replace("-", "")
+                if len(latest2) >= 8:
+                    kline_date = latest2[:8]
+                    kline_match = kline_date == date_compact
+        kline_by_stock[code] = {'date': kline_date, 'match': kline_match}
 
         # Fund flow
         ff = os.path.join(fund_dir, f"{code}.json")
@@ -460,32 +483,91 @@ def _load_baseline_for_stock(code):
     return None
 
 
-def _load_fund_flow_for_stock(code):
-    """Load latest fund flow from single-stock cache. 规范化5项字段。"""
+def _load_fund_flow_for_stock(code, target_date=None):
+    """Load latest fund flow from single-stock cache. 规范化5项字段。
+    优先 fund_flow_cache, 兜底 data_full.json.FundFlows (支持 raw Tushare 格式映射)。"""
+    # 1. Try fund_flow_cache
     ff_file = os.path.join(DATA_CACHE_DIR, "fund_flow_cache", f"{code}.json")
-    if not os.path.exists(ff_file):
-        return None
-    try:
-        with open(ff_file, "r", encoding="utf-8") as f:
-            rows = json.load(f)
-        raw = rows[-1] if isinstance(rows, list) and rows else rows
-        if not raw:
+    if os.path.exists(ff_file):
+        try:
+            with open(ff_file, "r", encoding="utf-8") as f:
+                rows = json.load(f)
+            raw = None
+            if target_date and isinstance(rows, list):
+                for r in rows:
+                    d = str(r.get("date", "")).replace("-", "")
+                    if d == target_date:
+                        raw = r
+                        break
+            if not raw:
+                raw = rows[-1] if isinstance(rows, list) and rows else rows
+            if raw:
+                raw["source_trace"] = "Tushare Pro moneyflow"
+                fields = ["super_large_net", "large_net", "medium_net", "small_net", "main_force_net"]
+                for fld in fields:
+                    if fld not in raw:
+                        raw[fld] = 0
+                    disp_fld = fld.replace("_net", "_display")
+                    if disp_fld not in raw:
+                        val = raw.get(fld, 0)
+                        try:
+                            raw[disp_fld] = f"{val:+.0f}万"
+                        except (ValueError, TypeError):
+                            raw[disp_fld] = "0万"
+                return raw
+        except Exception:
+            pass
+
+    # 2. Fallback to data_full.json.FundFlows
+    df_path = os.path.join(DATA_CACHE_DIR, "data_full.json")
+    if os.path.exists(df_path):
+        try:
+            with open(df_path, "r", encoding="utf-8-sig") as f:
+                dfull = json.load(f)
+            flows = dfull.get("FundFlows", {}).get(code, [])
+            if not flows:
+                return None
+            # Find matching trade_date
+            match = None
+            for row in flows:
+                d = str(row.get("trade_date") or row.get("date", "")).replace("-", "")
+                if target_date and d == target_date:
+                    match = row
+                    break
+            if not match:
+                return None
+            # Map raw Tushare fields → standard 5-field format
+            def to_f(v):
+                return round(float(v or 0), 2)
+            super_large = round(to_f(match.get("buy_elg_amount", 0)) - to_f(match.get("sell_elg_amount", 0)), 2)
+            large_net = round(to_f(match.get("buy_lg_amount", 0)) - to_f(match.get("sell_lg_amount", 0)), 2)
+            medium_net = round(to_f(match.get("buy_md_amount", 0)) - to_f(match.get("sell_md_amount", 0)), 2)
+            small_net = round(to_f(match.get("buy_sm_amount", 0)) - to_f(match.get("sell_sm_amount", 0)), 2)
+            main_force = round(to_f(match.get("net_mf_amount", 0)), 2)
+            result = {
+                "date": str(match.get("trade_date") or match.get("date", target_date or "")).replace("-", ""),
+                "source": "data_full.json.FundFlows",
+                "freshness": "当日",
+                "raw_unit": "万元",
+                "display_unit": "万元",
+                "super_large_net": super_large,
+                "large_net": large_net,
+                "medium_net": medium_net,
+                "small_net": small_net,
+                "main_force_net": main_force,
+                "super_large_display": f"{super_large:+.0f}万",
+                "large_display": f"{large_net:+.0f}万",
+                "medium_display": f"{medium_net:+.0f}万",
+                "small_display": f"{small_net:+.0f}万",
+                "main_force_display": f"{main_force:+.0f}万",
+                "source_trace": "Tushare Pro moneyflow via data_full.json",
+                "collected_at": "",
+            }
+            return result
+        except Exception:
             return None
-        # 补齐 display 字段
-        fields = ["super_large_net", "large_net", "medium_net", "small_net", "main_force_net"]
-        for fld in fields:
-            if fld not in raw:
-                raw[fld] = 0
-            disp_fld = fld.replace("_net", "_display")
-            if disp_fld not in raw:
-                val = raw.get(fld, 0)
-                try:
-                    raw[disp_fld] = f"{val:+.0f}万"
-                except (ValueError, TypeError):
-                    raw[disp_fld] = "0万"
-        return raw
-    except Exception:
-        return None
+
+    return None
 
 
 def _load_margin_for_stock(code, trade_date=None):
@@ -545,14 +627,14 @@ def _load_northbound_for_stock(code):
 def _load_pledge_for_stock(code):
     pf = os.path.join(DATA_CACHE_DIR, "tushare", "pledge", f"{code}.json")
     if os.path.exists(pf):
-        return {"status": "缓存存在", "source": "pledge", "risk_light": "\uD83D\uDFE2", "action_impact": "不作为仓位上调依据"}
-    return {"status": "缓存缺失", "source": "pledge", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不用于增强动作"}
+        return {"status": "缓存存在", "source": "pledge", "risk_light": "🟢", "action_impact": "不作为仓位上调依据"}
+    return {"status": "缓存缺失", "source": "pledge", "risk_light": "🟡", "action_impact": "缓存缺失，不用于增强动作"}
 
 def _load_unlock_for_stock(code):
     uf = os.path.join(DATA_CACHE_DIR, "tushare", "share_float", f"{code}.json")
     if os.path.exists(uf):
-        return {"status": "缓存存在", "source": "share_float", "risk_light": "\uD83D\uDFE2", "action_impact": "未识别可用于明日动作的近期解禁压力"}
-    return {"status": "缓存缺失", "source": "share_float", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不作为仓位调整依据"}
+        return {"status": "缓存存在", "source": "share_float", "risk_light": "🟢", "action_impact": "未识别可用于明日动作的近期解禁压力"}
+    return {"status": "缓存缺失", "source": "share_float", "risk_light": "🟡", "action_impact": "缓存缺失，不作为仓位调整依据"}
 
 def _load_holder_number_for_stock(code):
     hf = os.path.join(DATA_CACHE_DIR, "tushare", "holder_number", f"{code}.json")
@@ -574,14 +656,14 @@ def _compute_risk_context(code):
     p = _load_pledge_for_stock(code)
     u = _load_unlock_for_stock(code)
     return {
-        "pledge_light": p.get("risk_light", "\uD83D\uDFE1"),
-        "unlock_light": u.get("risk_light", "\uD83D\uDFE1"),
-        "margin_light": "\uD83D\uDFE1",
-        "valuation_light": "\uD83D\uDFE1",
-        "technical_light": "\uD83D\uDFE1",
-        "event_light": "\uD83D\uDFE2",
-        "fund_or_sector_light": "\uD83D\uDFE1",
-        "overall_light": "\uD83D\uDFE1",
+        "pledge_light": p.get("risk_light", "🟡"),
+        "unlock_light": u.get("risk_light", "🟡"),
+        "margin_light": "🟡",
+        "valuation_light": "🟡",
+        "technical_light": "🟡",
+        "event_light": "🟢",
+        "fund_or_sector_light": "🟡",
+        "overall_light": "🟡",
         "position_discount": "\u00d70.5"
     }
 
@@ -661,13 +743,13 @@ def extract_stock_daily_context(target_date_str):
         from datetime import timezone, datetime as _dt_ctx
         report_now = _dt_ctx.now(timezone.utc).astimezone(TZ_SHANGHAI) if hasattr(locals(), 'TZ_SHANGHAI') else _dt_ctx.now()
         report_generated_at = report_now.strftime("%Y-%m-%dT%H:%M:%S+08:00")
-        margin_data = _load_margin_for_stock(code, trade_date)
+        margin_data = _load_margin_for_stock(code, target_date_str)
         ctx = {
             "code": code,
             "name": stock_name_map.get(code, code),
             "days": days,
             "baseline": _load_baseline_for_stock(code),
-            "fund_flow_4level": _load_fund_flow_for_stock(code),
+            "fund_flow_4level": _load_fund_flow_for_stock(code, target_date_str),
             "margin": margin_data,
             "sector_phase": _load_sector_for_stock(code),
             "signal_winrate": _load_signal_meta(),
@@ -745,6 +827,10 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
         # today_str already set from target_date or current date above
 
         if skip_data_check:
+            if os.environ.get("ALLOW_DAILY_SKIP_DATA_CHECK") != "1":
+                log("BLOCK: --skip-data-check is forbidden for production daily report", "BLOCK")
+                log("  设置环境变量 ALLOW_DAILY_SKIP_DATA_CHECK=1 可跳过此阻断（仅限本地测试）", "BLOCK")
+                return 2
             log("Data check skipped (--skip-data-check) — 测试用，禁止生产发布", "SKIP")
             stock_ctx = extract_stock_daily_context(today_str)
             write_signal("daily_report", {
@@ -768,8 +854,51 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
                 v36_status, v36_detail = check_v36_data_readiness(target_date)
                 log(f"v3.6 data readiness: {v36_status} ({v36_detail['ready']}/{v36_detail['total']})")
                 if v36_status == 'BLOCK':
-                    log(f"v3.6 BLOCK: 必须项缺失 {[k for k,v in v36_detail['items'].items() if not v]}", "BLOCK")
+                    missing_summary = {
+                        "kline_match": v36_detail.get("kline_match"),
+                        "fund_flow_avail": v36_detail.get("fund_flow_avail"),
+                        "margin_avail": v36_detail.get("margin_avail"),
+                        "baseline_avail": v36_detail.get("baseline_avail"),
+                        "sector_avail": v36_detail.get("sector_avail"),
+                        "manifest_reason": (v36_detail.get("manifest") or {}).get("reason"),
+                    }
+                    log(f"v3.6 BLOCK: readiness summary {missing_summary}", "BLOCK")
                     log("日报生成已阻断——不发送daily_report signal。请补齐必须数据后重试。", "BLOCK")
+
+                    # === P3-B: BLOCK 补偿机制 — 写告警信号 + retry trigger ===
+                    alert_payload = {
+                        "alert": "v36_data_block",
+                        "severity": "P1",
+                        "date": today_str,
+                        "mode": "daily",
+                        "block_reason": f"v3.6 BLOCK: kline_match={missing_summary.get('kline_match','?')} "
+                                        f"manifest={missing_summary.get('manifest_reason','?')}",
+                        "recommend": f"运行以下命令重试数据获取: "
+                                     f"python3 scripts/run_daily_data_retry_once.py --date {today_str} --attempt 1",
+                    }
+                    alert_path = os.path.join(SIGNAL_DIR, "signal_alert.json")
+                    try:
+                        with open(alert_path, "w", encoding="utf-8") as _af:
+                            json.dump(alert_payload, _af, ensure_ascii=False, indent=2)
+                        log(f"v3.6 BLOCK ALERT 已写入: {alert_path}", "WARN")
+                    except OSError as _e:
+                        log(f"v3.6 BLOCK 告警写入失败: {_e}", "ERROR")
+
+                    # 写 retry_trigger 文件供外部脚本/运维识别
+                    trigger_path = os.path.join(LOG_DIR, f"retry_trigger_{today_str}.json")
+                    try:
+                        with open(trigger_path, "w", encoding="utf-8") as _tf:
+                            json.dump({
+                                "date": today_str,
+                                "status": "v3.6_BLOCK",
+                                "triggered_at": datetime.now(TZ_SHANGHAI).isoformat(),
+                                "retry_command": f"python3 scripts/run_daily_data_retry_once.py --date {today_str} --attempt 1",
+                                "note": "v3.6 BLOCK after check_data_readiness passed. Run retry to supplement data.",
+                            }, _tf, ensure_ascii=False, indent=2)
+                        log(f"v3.6 BLOCK RETRY_TRIGGER 已写入: {trigger_path}", "WARN")
+                    except OSError as _e:
+                        log(f"v3.6 BLOCK retry_trigger 写入失败: {_e}", "ERROR")
+
                     return 1
                 stock_ctx = extract_stock_daily_context(today_str)
                 write_signal("daily_report", {
@@ -801,6 +930,21 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
             "v36_readiness": {"status": v36_status, "detail": v36_detail},
         })
         log("Data not ready after max retries, signal sent with degraded flag", "WARN")
+        # P3-B: degraded 模式写告警
+        try:
+            _alert_path = os.path.join(SIGNAL_DIR, "signal_alert.json")
+            with open(_alert_path, "w", encoding="utf-8") as _af:
+                json.dump({
+                    "alert": "v36_data_degraded",
+                    "severity": "P1",
+                    "date": today_str,
+                    "mode": "daily",
+                    "block_reason": f"v3.6 degraded: {v36_status} ({v36_detail['ready']}/{v36_detail['total']})",
+                    "note": "数据获取重试已达上限，使用陈旧数据生成。需人工核查数据管线。",
+                }, _af, ensure_ascii=False, indent=2)
+            log(f"v3.6 DEGRADED ALERT 已写入: {_alert_path}", "WARN")
+        except OSError as _e:
+            log(f"v3.6 DEGRADED 告警写入失败: {_e}", "ERROR")
         if canonical_shadow:
             _run_canonical_shadow(today_str)
         return 1

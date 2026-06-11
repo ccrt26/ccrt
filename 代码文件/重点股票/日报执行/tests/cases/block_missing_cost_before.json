@@ -1,0 +1,13 @@
+{
+  "scenario": "持仓操作缺成本_BLOCK",
+  "description": "加仓/减仓/平仓缺少 cost_before 应被 BLOCK",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "加仓",
+    "transaction_price": 40.20,
+    "transaction_quantity": 1000,
+    "fee_amount": 5.00,
+    "position_before_quantity": 1000,
+    "cost_before": null
+  }
+}

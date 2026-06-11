@@ -1,0 +1,12 @@
+{
+  "scenario": "成交数量为0_BLOCK",
+  "description": "建仓/加仓/减仓/平仓时成交数量为0应被 BLOCK",
+  "input": {
+    "position_status": "空仓",
+    "action_type": "建仓",
+    "transaction_price": 38.50,
+    "transaction_quantity": 0,
+    "fee_amount": 15.00,
+    "position_before_quantity": 0
+  }
+}

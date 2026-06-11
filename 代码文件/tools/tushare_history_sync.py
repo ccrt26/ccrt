@@ -11,6 +11,9 @@ Tushare 历史数据沉淀脚本
     python tushare_history_sync.py --stock 600114            # 单只股票
     python tushare_history_sync.py --type holder_number       # 按数据类型
     python tushare_history_sync.py --daily                    # 仅日频数据
+
+P3-B: 内建日志系统。日志写入 logs/tushare_sync/{date}.log，
+不依赖外部 tee 重定向（crontab 中 tee 路径在部分环境失效）。
 """
 import argparse
 import json
@@ -24,6 +27,30 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "数据", "tushare")
 TUSHARE_TOKEN = os.environ.get("TUSHARE_TOKEN", "")
 RATE_LIMIT = 0.35
+
+# === P3-B: 内建日志系统 — 自动创建目录，不依赖外部重定向 ===
+_LOG_DIR = os.path.join(os.path.dirname(BASE_DIR), "logs", "tushare_sync")
+
+
+def _log_init():
+    """确保日志目录存在，返回日志文件路径。"""
+    os.makedirs(_LOG_DIR, exist_ok=True)
+    return os.path.join(_LOG_DIR, f"{datetime.now().strftime('%Y%m%d')}.log")
+
+
+_LOG_PATH = _log_init()
+
+
+def log(msg, level="INFO"):
+    """写 stdout + 日志文件，不依赖外部 tee 重定向。"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{level}] {msg}"
+    print(line)
+    try:
+        with open(_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(f"[{timestamp}][{level}] {msg}\n")
+    except OSError:
+        pass
 
 KEY_STOCKS = [
     ("600114", "东睦股份"), ("603019", "中科曙光"), ("301075", "多瑞医药"),
@@ -80,7 +107,7 @@ def sync_hk_hold(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  hk_hold {code}: {e}")
+        log(f"  hk_hold {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -97,7 +124,7 @@ def sync_holder_number(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  holder_number {code}: {e}")
+        log(f"  holder_number {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -114,7 +141,7 @@ def sync_pledge(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  pledge {code}: {e}")
+        log(f"  pledge {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -131,7 +158,7 @@ def sync_share_float(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  share_float {code}: {e}")
+        log(f"  share_float {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -148,7 +175,7 @@ def sync_moneyflow(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  moneyflow {code}: {e}")
+        log(f"  moneyflow {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -165,7 +192,7 @@ def sync_daily_basic(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  daily_basic {code}: {e}")
+        log(f"  daily_basic {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -182,7 +209,7 @@ def sync_fina_indicator(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  fina_indicator {code}: {e}")
+        log(f"  fina_indicator {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -199,7 +226,7 @@ def sync_margin_detail(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  margin_detail {code}: {e}")
+        log(f"  margin_detail {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -216,7 +243,7 @@ def sync_forecast(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  forecast {code}: {e}")
+        log(f"  forecast {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -233,7 +260,7 @@ def sync_fina_mainbz(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  fina_mainbz {code}: {e}")
+        log(f"  fina_mainbz {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -250,7 +277,7 @@ def sync_block_trade(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  block_trade {code}: {e}")
+        log(f"  block_trade {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -270,7 +297,7 @@ def sync_top_list(pro, code):
                 safe_json_save(path, merged)
                 return len(merged)
     except Exception as e:
-        print(f"  top_list {code}: {e}")
+        log(f"  top_list {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -287,7 +314,7 @@ def sync_dividend(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  dividend {code}: {e}")
+        log(f"  dividend {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -304,7 +331,7 @@ def sync_stk_holdertrade(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  stk_holdertrade {code}: {e}")
+        log(f"  stk_holdertrade {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -321,7 +348,7 @@ def sync_repurchase(pro, code):
             safe_json_save(path, merged)
             return len(merged)
     except Exception as e:
-        print(f"  repurchase {code}: {e}")
+        log(f"  repurchase {code}: {e}", "ERROR")
     return len(existing)
 
 
@@ -366,10 +393,14 @@ def main():
     args = parser.parse_args()
 
     if not TUSHARE_TOKEN:
-        print("ERROR: TUSHARE_TOKEN not set")
+        log("ERROR: TUSHARE_TOKEN not set", "BLOCK")
         sys.exit(1)
 
-    pro = get_pro()
+    try:
+        pro = get_pro()
+    except Exception as _e:
+        log(f"Tushare pro_api 初始化失败: {_e}", "BLOCK")
+        sys.exit(1)
 
     stocks = KEY_STOCKS
     if args.stock:
@@ -381,25 +412,29 @@ def main():
     elif args.daily:
         types_to_sync = DAILY_TYPES
 
-    print(f"Tushare历史数据沉淀 — {datetime.now().isoformat()}")
-    print(f"股票数: {len(stocks)}, 数据类型: {len(types_to_sync)}")
+    log(f"Tushare历史数据沉淀 — {datetime.now().isoformat()}")
+    log(f"股票数: {len(stocks)}, 数据类型: {len(types_to_sync)}")
     total = 0
 
-    for api_type in types_to_sync:
-        func = SYNC_FUNCS[api_type]
-        for code, name in stocks:
-            count = func(pro, code)
-            print(f"  {api_type} {code} {name}: {count}条")
-            total += 1
-            time.sleep(RATE_LIMIT)
+    try:
+        for api_type in types_to_sync:
+            func = SYNC_FUNCS[api_type]
+            for code, name in stocks:
+                count = func(pro, code)
+                log(f"  {api_type} {code} {name}: {count}条")
+                total += 1
+                time.sleep(RATE_LIMIT)
 
-    manifest = update_manifest()
-    total_records = sum(
-        s.get("data", {}).get(t, {}).get("records", 0)
-        for s in manifest.get("stocks", {}).values()
-        for t in types_to_sync
-    )
-    print(f"\n完成。总记录数: {total_records}, manifest已更新: {os.path.join(DATA_DIR, 'manifest.json')}")
+        manifest = update_manifest()
+        total_records = sum(
+            s.get("data", {}).get(t, {}).get("records", 0)
+            for s in manifest.get("stocks", {}).values()
+            for t in types_to_sync
+        )
+        log(f"完成。总记录数: {total_records}, manifest已更新: {os.path.join(DATA_DIR, 'manifest.json')}")
+    except Exception as _e:
+        log(f"同步过程中发生未预期异常: {_e}", "BLOCK")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

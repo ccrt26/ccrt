@@ -123,6 +123,30 @@ class CachedDataSource:
             "rows": len(data) if data else 0,
         }
 
+    @staticmethod
+    def _resolve_target_date(target_date=None):
+        """解析目标日期。优先参数，次优环境变量 DAILY_TARGET_DATE。返回 YYYYMMDD。"""
+        if target_date:
+            return str(target_date).replace("-", "")
+        env = os.environ.get("DAILY_TARGET_DATE", "")
+        if env:
+            return env.replace("-", "")
+        return ""
+
+    @staticmethod
+    def _has_target_date(data_list, target_date_compact, *date_fields):
+        """检查数据列表中是否包含目标日期（任一字段匹配即可）。"""
+        if not target_date_compact or not data_list:
+            return None  # 未指定目标日期 → 不判断
+        if not isinstance(data_list, list):
+            data_list = [data_list]
+        for row in data_list:
+            for field in date_fields:
+                val = row.get(field, "")
+                if str(val).replace("-", "") == target_date_compact:
+                    return True
+        return False
+
     # ---- 公开数据获取方法 ----
 
     def get_financial(self, code):
@@ -143,13 +167,27 @@ class CachedDataSource:
         self.stats["miss"] += 1
         return self._build_result(None, "unavailable", "stale", 168)
 
-    def get_daily_basic(self, code):
-        """每日指标 — daily_basic, TTL=24h"""
+    def get_daily_basic(self, code, target_date=None):
+        """每日指标 — daily_basic, TTL=24h
+
+        当指定 target_date 时，数据必须包含目标 trade_date 才返回 fresh。
+        """
         data = self._load_tushare("daily_basic", code)
+        target = self._resolve_target_date(target_date)
         if data:
+            if target:
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    return self._build_result(None, "tushare-local-no-target",
+                                              "stale", 24)
             return self._build_result(data, "tushare-local", "fresh", 24)
         data, ts = self._load_ps_cache(f"daily_basic_{code}")
         if data and _is_fresh(ts, 24):
+            if target:
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    return self._build_result(None, "ps-cache-no-target",
+                                              "stale", 24, ts)
             return self._build_result(data, "ps-cache", "fresh", 24, ts)
         if data:
             self.stats["stale_fallback"] += 1
@@ -157,13 +195,27 @@ class CachedDataSource:
         self.stats["miss"] += 1
         return self._build_result(None, "unavailable", "stale", 24)
 
-    def get_moneyflow(self, code):
-        """资金流向 — moneyflow, TTL=24h"""
+    def get_moneyflow(self, code, target_date=None):
+        """资金流向 — moneyflow, TTL=24h
+
+        当指定 target_date 时，数据必须包含目标 trade_date 才返回 fresh。
+        """
         data = self._load_tushare("moneyflow", code)
+        target = self._resolve_target_date(target_date)
         if data:
+            if target:
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    return self._build_result(None, "tushare-local-no-target",
+                                              "stale", 24)
             return self._build_result(data, "tushare-local", "fresh", 24)
         data, ts = self._load_ps_cache(f"fundflow_{code}")
         if data and _is_fresh(ts, 24):
+            if target:
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    return self._build_result(None, "ps-cache-no-target",
+                                              "stale", 24, ts)
             return self._build_result(data, "ps-cache", "fresh", 24, ts)
         if data:
             self.stats["stale_fallback"] += 1
@@ -171,13 +223,40 @@ class CachedDataSource:
         self.stats["miss"] += 1
         return self._build_result(None, "unavailable", "stale", 24)
 
-    def get_margin(self, code):
-        """融资融券 — margin_detail, TTL=24h"""
+    def get_margin(self, code, target_date=None):
+        """融资融券 — margin_detail, TTL=24h
+
+        当指定 target_date 时，数据必须包含目标 trade_date 才返回 fresh。
+        margin 允许 T+1，但不允许无日期匹配时伪装 fresh。
+        """
         data = self._load_tushare("margin_detail", code)
+        target = self._resolve_target_date(target_date)
         if data:
+            if target:
+                # margin 允许 T+1 宽松匹配
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    # 尝试 T+1
+                    import datetime as dt
+                    d = dt.datetime.strptime(target, "%Y%m%d")
+                    next_day = (d + dt.timedelta(days=1)).strftime("%Y%m%d")
+                    has_next = self._has_target_date(data, next_day, "trade_date", "date")
+                    if not has_next:
+                        return self._build_result(None, "tushare-local-no-target",
+                                                  "stale", 24)
             return self._build_result(data, "tushare-local", "fresh", 24)
         data, ts = self._load_ps_cache(f"margin_{code}")
         if data and _is_fresh(ts, 24):
+            if target:
+                has = self._has_target_date(data, target, "trade_date", "date")
+                if has is False:
+                    import datetime as dt
+                    d = dt.datetime.strptime(target, "%Y%m%d")
+                    next_day = (d + dt.timedelta(days=1)).strftime("%Y%m%d")
+                    has_next = self._has_target_date(data, next_day, "trade_date", "date")
+                    if not has_next:
+                        return self._build_result(None, "ps-cache-no-target",
+                                                  "stale", 24, ts)
             return self._build_result(data, "ps-cache", "fresh", 24, ts)
         if data:
             self.stats["stale_fallback"] += 1

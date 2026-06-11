@@ -1,0 +1,13 @@
+{
+  "scenario": "平仓亏损",
+  "description": "用户全部清仓亏损出场",
+  "input": {
+    "position_status": "持仓",
+    "action_type": "平仓",
+    "transaction_price": 39.50,
+    "transaction_quantity": 2000,
+    "fee_amount": 30.00,
+    "position_before_quantity": 2000,
+    "cost_before": 42.00
+  }
+}

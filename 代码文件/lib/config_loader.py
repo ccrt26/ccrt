@@ -4,6 +4,10 @@ import json, os
 _CONFIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("\\lib", "\\config"))
 _cache = {}
 
+def detect_root():
+    """Return project root directory."""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 def load_config(section):
     """Load a config section by name: 'paths', 'api_config', 'thresholds'."""
     if section in _cache:
