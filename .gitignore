@@ -36,6 +36,16 @@ __pycache__/
 data_cache/
 _data_audit.md
 
+# L2 SQLite 历史分析缓存（运行时生成，不入 git）
+代码文件/数据/l2_cache/*.db
+代码文件/数据/l2_cache/*.db-*
+代码文件/数据/l2_cache/last_update.json
+代码文件/数据/l2_cache/operation_log.jsonl
+代码文件/数据/l2_cache/shadow_diff_log.jsonl
+代码文件/数据/l2_cache/backup/*.db
+代码文件/数据/l2_cache/backup/*.db-*
+代码文件/数据/l2_cache/backup/*.db.gz
+
 # 运行时数据（API缓存 / 衍生数据 / 生成JSON）
 代码文件/数据/fund_flow_cache/
 代码文件/数据/index_kline/
