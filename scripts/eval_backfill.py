@@ -7,6 +7,13 @@
   python3 scripts/eval_backfill.py --window t5    # T+5 回填（含综合判定+归因）
   python3 scripts/eval_backfill.py --weekly       # 周报输出
   python3 scripts/eval_backfill.py --list-pending # 列出待回填
+
+结构化迁移 (2026-06-11):
+  - ERROR_CASE_DB 现指向 knowledge_entries.jsonl（category=error_case），
+    _load_error_cases() 优先从JSONL读取，失败fallback旧MD
+  - RULE_DB 现指向 interpretation_rules.json（u9_checks/u10_checks），
+    _load_rule_defs() 优先从JSON读取，失败fallback旧MD
+  - 旧MD文件不删除不移动，仅切换机器读取入口
 """
 
 import json, os, sys, re
@@ -15,11 +22,80 @@ from datetime import datetime, date, timedelta
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EVAL_STORE = os.path.join(PROJECT_ROOT, "统一解读", "eval_hooks", "store")
 WEEKLY_REPORT_DIR = os.path.join(PROJECT_ROOT, "统一解读", "eval_hooks", "weekly")
-ERROR_CASE_DB = os.path.join(PROJECT_ROOT, "统一解读", "六库", "错误反例库_v1.0.md")
-RULE_DB = os.path.join(PROJECT_ROOT, "统一解读", "六库", "统一解读规则库_v1.0.md")
+ERROR_CASE_DB = os.path.join(PROJECT_ROOT, "统一解读", "knowledge_entries.jsonl")
+RULE_DB = os.path.join(PROJECT_ROOT, "统一解读", "interpretation_rules.json")
+# 旧MD fallback 路径（不删除不移动）
+ERROR_CASE_MD_FALLBACK = os.path.join(PROJECT_ROOT, "统一解读", "六库", "错误反例库_v1.0.md")
+RULE_MD_FALLBACK = os.path.join(PROJECT_ROOT, "统一解读", "六库", "统一解读规则库_v1.0.md")
 
 os.makedirs(EVAL_STORE, exist_ok=True)
 os.makedirs(WEEKLY_REPORT_DIR, exist_ok=True)
+
+
+def _load_error_cases():
+    """从 knowledge_entries.jsonl 读取错误反例。
+    优先 JSONL，失败 fallback 到 错误反例库_v1.0.md"""
+    cases = []
+    # 尝试从 JSONL 读取
+    if os.path.exists(ERROR_CASE_DB):
+        try:
+            with open(ERROR_CASE_DB, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        if entry.get("category") == "error_case":
+                            cases.append(entry)
+                    except json.JSONDecodeError:
+                        continue
+            if cases:
+                return cases
+        except Exception:
+            pass
+    # Fallback to old MD
+    if os.path.exists(ERROR_CASE_MD_FALLBACK):
+        try:
+            with open(ERROR_CASE_MD_FALLBACK, "r", encoding="utf-8") as f:
+                content = f.read()
+            # Return as structured extract
+            cases.append({
+                "knowledge_id": "ERR-FALLBACK-001",
+                "category": "error_case",
+                "source_file": "统一解读/六库/错误反例库_v1.0.md",
+                "content": {"summary": "旧MD fallback", "raw": content[:500]}
+            })
+        except Exception:
+            pass
+    return cases
+
+
+def _load_rule_defs():
+    """从 interpretation_rules.json 读取规则定义。
+    优先 JSON，失败 fallback 到 统一解读规则库_v1.0.md"""
+    rules = {"u9_checks": [], "u10_checks": [], "failure_attribution_rules": []}
+    if os.path.exists(RULE_DB):
+        try:
+            with open(RULE_DB, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            rules["u9_checks"] = data.get("u9_checks", [])
+            rules["u10_checks"] = data.get("u10_checks", [])
+            rules["failure_attribution_rules"] = data.get("failure_attribution_rules", [])
+            rules["eval_lifecycle"] = data.get("eval_lifecycle", {})
+            return rules
+        except Exception:
+            pass
+    # Fallback: read structure from old MD
+    if os.path.exists(RULE_MD_FALLBACK):
+        try:
+            with open(RULE_MD_FALLBACK, "r", encoding="utf-8") as f:
+                content = f.read()
+            rules["_fallback_note"] = "Loaded from old MD fallback"
+            rules["_fallback_md"] = content[:500]
+        except Exception:
+            pass
+    return rules
 
 
 def list_pending_hooks():
@@ -167,21 +243,42 @@ def run_t5_comprehensive():
 
 
 def determine_attribution(hook):
-    """失败归因决策树"""
+    """失败归因决策树 — 优先从 interpretation_rules.json 读取结构化归因规则"""
+    # 加载结构化归因规则作为判定依据
+    rule_defs = _load_rule_defs()
+    attribution_rules = rule_defs.get("failure_attribution_rules", [])
+
     t1 = hook.get("t1_check", {})
     t5 = hook.get("t5_check", {})
 
-    # 检查是否有数据问题标记
+    # 从 interpretation_rules.json 的归因规则中匹配第一条符合的
+    if attribution_rules:
+        combined_note = " ".join([
+            t1.get("note", ""),
+            hook.get("t3_check", {}).get("note", ""),
+            t5.get("note", "")
+        ])
+        confidence = hook.get("confidence", "MEDIUM")
+        action = hook.get("action_bias", "NEUTRAL")
+
+        for rule in attribution_rules:
+            pat = rule.get("condition_pattern", "")
+            if "数据" in pat and ("数据" in combined_note or "缺失" in combined_note):
+                return rule["name"]
+            if "事件" in pat and any(kw in combined_note for kw in ["事件", "突变", "不可预见"]):
+                return rule["name"]
+            if "confidence=LOW" in pat and confidence == "LOW" and action in ("BUY", "SELL"):
+                return rule["name"]
+            if "confidence=HIGH" in pat and confidence == "HIGH" and action in ("BUY", "SELL"):
+                return rule["name"]
+
+    # Fallback: 内嵌归因逻辑（当 interpretation_rules.json 不可读或无规则时兜底）
     for ck in [t1, hook.get("t3_check", {}), t5]:
         if "数据" in ck.get("note", "") or "缺失" in ck.get("note", ""):
             return "数据问题"
-
-    # 检查是否有市场突变标记
     combined_note = " ".join([t1.get("note", ""), t5.get("note", "")])
     if "事件" in combined_note or "突变" in combined_note or "不可预见" in combined_note:
         return "市场突变"
-
-    # 默认归因（需人工确认）
     confidence = hook.get("confidence", "MEDIUM")
     action = hook.get("action_bias", "NEUTRAL")
     if confidence == "LOW" and action in ("BUY", "SELL"):
@@ -251,7 +348,29 @@ def main():
     parser.add_argument("--weekly", action="store_true", help="生成周报")
     parser.add_argument("--list-pending", action="store_true", help="列出待回填")
     parser.add_argument("--json", action="store_true", help="JSON输出")
+    parser.add_argument("--check-db", action="store_true", help="检查结构化数据源可读性")
     args = parser.parse_args()
+
+    if args.check_db:
+        # 检查结构化数据源
+        cases = _load_error_cases()
+        rules = _load_rule_defs()
+        status = {
+            "error_cases_from_jsonl": len(cases),
+            "rules_source": "interpretation_rules.json" if rules.get("u9_checks") else ("old_md_fallback" if rules.get("_fallback_note") else "none"),
+            "u9_checks": len(rules.get("u9_checks", [])),
+            "u10_checks": len(rules.get("u10_checks", [])),
+            "attribution_rules": len(rules.get("failure_attribution_rules", []))
+        }
+        if args.json:
+            print(json.dumps(status, ensure_ascii=False, indent=2))
+        else:
+            print(f"错误反例: {status['error_cases_from_jsonl']} 条 (from JSONL)")
+            print(f"规则来源: {status['rules_source']}")
+            print(f"U-9检查项: {status['u9_checks']}")
+            print(f"U-10检查项: {status['u10_checks']}")
+            print(f"归因规则: {status['attribution_rules']}")
+        return
 
     if args.list_pending:
         pending = list_pending_hooks()

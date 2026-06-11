@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interpretation Rules Schema",
+  "description": "统一解读 machine rules 的 schema 定义",
+  "type": "object",
+  "required": [
+    "version", "description", "source_level_policy",
+    "signal_winrate_rules", "u9_checks", "u10_checks",
+    "template_pollution_rules", "eval_lifecycle",
+    "failure_attribution_rules", "role_package_contracts"
+  ],
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "source_level_policy": {
+      "type": "object",
+      "description": "来源等级策略：L1-L5-seed 各等级的硬约束",
+      "properties": {
+        "levels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "level": { "type": "string", "enum": ["L1","L2","L3","L4","L5","L5-seed"] },
+              "can_support_strong_action": { "type": "boolean" },
+              "upgrade_condition": { "type": "string" },
+              "description": { "type": "string" }
+            },
+            "required": ["level", "can_support_strong_action", "description"]
+          }
+        },
+        "strong_action_rules": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "强动作（BUY/SELL）的source_level约束规则"
+        }
+      },
+      "required": ["levels", "strong_action_rules"]
+    },
+    "signal_winrate_rules": {
+      "type": "object",
+      "description": "信号胜率相关规则：阈值、升级条件、监督机制",
+      "properties": {
+        "upgrade_thresholds": { "type": "object" },
+        "downgrade_thresholds": { "type": "object" },
+        "sample_size_requirements": { "type": "object" },
+        "supervision_rules": { "type": "array" }
+      }
+    },
+    "u9_checks": {
+      "type": "array",
+      "description": "U-9 事实审计的检查项定义",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check_id": { "type": "string" },
+          "name": { "type": "string" },
+          "result_type": { "type": "string", "enum": ["BLOCK", "WARN", "PASS"] },
+          "condition": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["check_id", "name", "result_type"]
+      }
+    },
+    "u10_checks": {
+      "type": "array",
+      "description": "U-10 动作审计的检查项定义",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check_id": { "type": "string" },
+          "name": { "type": "string" },
+          "result_type": { "type": "string", "enum": ["BLOCK", "WARN", "PASS"] },
+          "condition": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["check_id", "name", "result_type"]
+      }
+    },
+    "template_pollution_rules": {
+      "type": "object",
+      "description": "模板污染检测规则：BLOCK禁用短语 + WARN建议替换",
+      "properties": {
+        "block_phrases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phrase": { "type": "string" },
+              "reason": { "type": "string" }
+            },
+            "required": ["phrase", "reason"]
+          }
+        },
+        "warn_phrases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phrase": { "type": "string" },
+              "suggestion": { "type": "string" }
+            },
+            "required": ["phrase", "suggestion"]
+          }
+        }
+      }
+    },
+    "eval_lifecycle": {
+      "type": "object",
+      "description": "后评估生命周期规则：T+1/T+3/T+5时间窗口、判定矩阵",
+      "properties": {
+        "windows": { "type": "object" },
+        "judgment_matrix": { "type": "object" },
+        "attribution_rules": { "type": "object" }
+      }
+    },
+    "failure_attribution_rules": {
+      "type": "array",
+      "description": "失败归因规则列表",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attribution_id": { "type": "string" },
+          "name": { "type": "string" },
+          "condition_pattern": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["attribution_id", "name"]
+      }
+    },
+    "role_package_contracts": {
+      "type": "array",
+      "description": "各角色解释包的接口契约",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": { "type": "string" },
+          "required_fields": { "type": "array", "items": { "type": "string" } },
+          "output_format": { "type": "string" },
+          "constraints": { "type": "array" }
+        },
+        "required": ["role", "required_fields"]
+      }
+    }
+  }
+}

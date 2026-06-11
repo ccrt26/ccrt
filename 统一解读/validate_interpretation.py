@@ -348,12 +348,32 @@ def _find_registry_entry(kid):
 
 
 def _load_signal_ids():
+    """读取已注册信号ID列表。
+    优先从 interpretation_rules.json 读取，失败时 fallback 到 信号胜率库_v1.0.md。"""
     global _signal_cache
     if _signal_cache is not None:
         return _signal_cache
     import os as _os
-    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "六库", "信号胜率库_v1.0.md")
     _signal_cache = set()
+
+    # 尝试从 interpretation_rules.json 读取（结构化优先）
+    rules_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "interpretation_rules.json")
+    if _os.path.exists(rules_path):
+        try:
+            with open(rules_path, "r", encoding="utf-8") as f:
+                rules_data = json.load(f)
+            signals = rules_data.get("signal_winrate_rules", {}).get("signals", [])
+            for sig in signals:
+                sid = sig.get("signal_id", "")
+                if sid:
+                    _signal_cache.add(sid)
+            if _signal_cache:
+                return _signal_cache
+        except Exception:
+            pass
+
+    # Fallback: 从旧 信号胜率库_v1.0.md 读取
+    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "六库", "信号胜率库_v1.0.md")
     try:
         with open(path, "r", encoding="utf-8") as f:
             import re

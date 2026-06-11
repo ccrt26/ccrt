@@ -25,7 +25,7 @@
     "status":         { "type": "enum", "values": ["active","deprecated","retired"], "required": true },
     "version":        { "type": "string", "required": true }
   },
-  "_note_scene_pending": "场景编排能力调用配置尚未注册为独立能力条目。当前按四大业务主场景治理：重点股票分析（含深度分析/日报/临时分析）、每日荐股、保护机制、模拟交易。场景调用矩阵已整合至 00_项目地基/05_流程与角色/CAP_能力场景与规则接入_v1.0.md。统一解读是 D07 原子能力 C-D07-0001，不是业务场景。待 D02/D04/D08-D12 能力注册后，再补充 D09 场景编排能力注册。",
+  "_note_scene_pending": "场景编排能力调用配置尚未注册为独立能力条目。当前按四大业务主场景治理：重点股票分析（含深度分析/日报/临时分析）、每日荐股、保护机制、模拟交易。场景调用矩阵已整合至 00_项目地基/05_流程与角色/role_matrix.json（flow_role_mapping）和 00_项目地基/05_流程与角色/stage_gate_policy.json（typical_paths）。统一解读是 D07 原子能力 C-D07-0001，不是业务场景。待 D02/D04/D08-D12 能力注册后，再补充 D09 场景编排能力注册。原始说明保留于 CAP_能力场景与规则接入_v1.0.md。",
   "capabilities": {
     "C-D01-0001": {
       "capability_id": "C-D01-0001",
