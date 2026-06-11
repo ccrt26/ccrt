@@ -397,9 +397,11 @@ def check_f_code_protection(staged_files):
         log("PASS", "Check F complete")
         return
 
+    import os as _os
     any_blocked = False
+    run_id = _os.environ.get("CLAUDE_CURRENT_RUN_ID", "")
     for cf in staged_code:
-        auth = pipeline_auth.test_pipeline_authorization(cf, PROJECT_ROOT)
+        auth = pipeline_auth.test_pipeline_authorization(cf, PROJECT_ROOT, run_id=run_id)
         if auth["authorized"]:
             log("PASS", f"F PASS: {cf} — {auth['reason']}")
         else:
@@ -530,19 +532,9 @@ def check_i_dispatcher_boundary():
         except Exception:
             pass
 
-    # Scan runs for 阿黑 completed flows
-    # Use run's updated_at to separate historical (WARN) from new (BLOCK)
-    runs = token.get("runs", {})
-    for rid, run in runs.items():
-        if not isinstance(run, dict):
-            continue
-        if run.get("status") == "completed":
-            stages = run.get("stages", [])
-            last_stage = stages[-1] if stages else {}
-            if last_stage.get("stage") == "audit" and last_stage.get("status") == "completed":
-                run_ts = run.get("updated_at", run.get("completed_at", ""))
-                sev = "WARN" if (not run_ts or run_ts < CUTOFF) else "BLOCK"
-                violations.append((sev, f"阿黑越权完成流程: {rid}"))
+    # (Run-level scan removed: engine_events above already catches 阿黑 advance/complete.
+    #  The old loop here flagged ALL completed runs regardless of who completed them,
+    #  causing false blocks on runs completed by 旧影/其他角色.)
 
     # Report violations — BLOCK on new violations, WARN on historical
     if violations:

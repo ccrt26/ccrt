@@ -58,6 +58,7 @@ AUTOCOMMIT_PATHS = [
 PROTECTED_PATHS = [
     r'^重点股票[/\\]深度分析[/\\]深度分析报告[/\\]',
     r'^代码文件[/\\]',
+    r'^scripts[/\\]',
     r'^模拟交易[/\\]sim_orchestrator\.py$',
     r'^模拟交易[/\\]交易引擎[/\\]',
     r'^模拟交易[/\\]每日荐股赛道[/\\]交易引擎[/\\]',
@@ -66,6 +67,15 @@ PROTECTED_PATHS = [
     r'^模拟交易[/\\]分析[/\\]',
     r'^模拟交易[/\\]展示[/\\]',
     r'^模拟交易[/\\]工具[/\\]'
+]
+
+# Read-protected paths (token required for Read on these paths)
+AUTH_PROTECTED_PATHS = [
+    r'^scripts[/\\]',
+    r'^代码文件[/\\]',
+    r'^模拟交易[/\\]交易引擎[/\\]',
+    r'^模拟交易[/\\]共享模块[/\\]',
+    r'^模拟交易[/\\]分析[/\\]',
 ]
 
 # Stages that allow code writes and their authorized roles
@@ -83,6 +93,16 @@ AUDIT_RESTRICTED_PATHS = [
 ]
 
 VALID_EXECUTORS = ["红结", "红枫", "新安", "旧影"]
+
+
+def is_auth_write_protected(rel_path):
+    """检查文件路径是否需要 token 才能 Write/Edit/MultiEdit/Bash。
+
+    复用 PROTECTED_PATHS + GOVERNANCE_PATHS 作为写鉴权匹配集。
+    """
+    normalized = _normalize(rel_path)
+    all_write = list(GOVERNANCE_PATHS) + list(PROTECTED_PATHS)
+    return any(re.search(pat, normalized) for pat in all_write)
 
 
 def _normalize(path):
@@ -198,11 +218,28 @@ def test_pipeline_authorization(file_path, project_root, actor="", role="",
                     "reason": f"Specified run_id '{run_id}' not found in pipeline state",
                     "actor": actor, "role": role, "stage": "", "run_id": run_id,
                     "scope_match": False, "gate1": ""}
-        if target_run.get("status") != "active":
+        if target_run.get("status") not in ("active", "completed"):
             return {"authorized": False,
-                    "reason": f"Specified run_id '{run_id}' is not active (status={target_run.get('status')})",
+                    "reason": f"Specified run_id '{run_id}' has unexpected status ({target_run.get('status')})",
                     "actor": actor, "role": role, "stage": "", "run_id": run_id,
                     "scope_match": False, "gate1": ""}
+        if target_run.get("status") == "completed":
+            # Completed runs: allow if the run had a coding stage (code already
+            # passed verify/deploy/audit gates). This covers pre-commit commits
+            # of files written during a now-finished pipeline.
+            stages = target_run.get("stages", [])
+            had_coding = any(s.get("stage") == "coding" and s.get("status") == "completed"
+                             for s in stages)
+            if not had_coding:
+                return {"authorized": False,
+                        "reason": f"Completed run '{run_id}' has no coding stage — no code files expected",
+                        "actor": actor, "role": role, "stage": "", "run_id": run_id,
+                        "scope_match": False, "gate1": ""}
+            # Authorize for pre-commit; skip remaining stage/role checks.
+            return {"authorized": True,
+                    "reason": f"Completed run '{run_id}' had coding stage — pre-commit authorized",
+                    "actor": actor, "role": role, "stage": "coding(completed)", "run_id": run_id,
+                    "scope_match": True, "gate1": "COMPLETED_CODING_RUN"}
     elif len(active_code_runs) == 1:
         target_run = active_code_runs[0]
         run_id = target_run.get("run_id", "")
