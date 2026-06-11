@@ -1,17 +1,29 @@
-"""Unified config loader — reads JSON configs from 代码文件/config/"""
-import json, os
+"""Unified config loader — cross-platform project config helpers."""
+import json
+import os
+from pathlib import Path
 
-_CONFIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)).replace("\\lib", "\\config"))
 _cache = {}
 
+def detect_root():
+    """Detect project root by walking upward until CLAUDE.md is found."""
+    cur = Path(__file__).resolve()
+    for candidate in [cur.parent, *cur.parents]:
+        if (candidate / "CLAUDE.md").exists():
+            return candidate
+    return Path.cwd()
+
+ROOT = detect_root()
+_CONFIG_DIR = ROOT / "代码文件" / "config"
+
 def load_config(section):
-    """Load a config section by name: 'paths', 'api_config', 'thresholds'."""
+    """Load a config section by name: paths, api_config, thresholds."""
     if section in _cache:
         return _cache[section]
-    path = os.path.join(_CONFIG_DIR, f"{section}.json")
-    if not os.path.exists(path):
+    path = _CONFIG_DIR / f"{section}.json"
+    if not path.exists():
         raise FileNotFoundError(f"Config file not found: {path}")
-    with open(path, "r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8") as f:
         config = json.load(f)
     _cache[section] = config
     return config
@@ -19,13 +31,13 @@ def load_config(section):
 def get_path(key):
     """Resolve a dotted path key against paths.json directories."""
     paths = load_config("paths")
-    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    d = paths.get("directories", {})
+    value = paths.get("directories", {})
     for part in key.split("."):
-        if isinstance(d, dict):
-            d = d.get(part)
+        if isinstance(value, dict):
+            value = value.get(part)
         else:
+            value = None
             break
-    if isinstance(d, str):
-        return os.path.join(root, d)
+    if isinstance(value, str):
+        return str(ROOT / value)
     return None

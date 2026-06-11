@@ -114,11 +114,17 @@ def run_step(script, args, label, timeout=300):
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=ROOT)
         if proc.returncode == 0:
             log(f"[OK] {label}")
+            for stream_name, output in (("stdout", proc.stdout), ("stderr", proc.stderr)):
+                for line in (output or "").split("\n")[-8:]:
+                    if line.strip():
+                        log(f"  {stream_name}: {line.strip()}", "INFO")
             return True
         else:
             log(f"[BLOCK] {label} exit={proc.returncode}", "BLOCK")
-            for line in (proc.stdout or "").split("\n")[-3:]:
-                if line.strip(): log(f"  {line.strip()}", "FAIL")
+            for stream_name, output in (("stdout", proc.stdout), ("stderr", proc.stderr)):
+                for line in (output or "").split("\n")[-5:]:
+                    if line.strip():
+                        log(f"  {stream_name}: {line.strip()}", "FAIL")
             return False
     except subprocess.TimeoutExpired:
         log(f"[TIMEOUT] {label} (timeout={timeout}s)", "BLOCK")
@@ -242,7 +248,12 @@ def main():
             sys.exit(2)
 
         # Step 3: orchestrator signal — v3.6 数据就绪检查 + 日报 signal
-        if not run_step("代码文件/tools/daily_orchestrator.py", ["--mode", "daily", "--date", date_str], "daily_orchestrator"):
+        if not run_step("代码文件/tools/daily_orchestrator.py", ["--mode", "daily", "--date", date_str], "daily_orchestrator", timeout=120):
+            sys.exit(2)
+
+        # Step 3.5: signal must be written by daily_orchestrator; do not trust exit code alone.
+        if not verify_signal(date_str):
+            log("SIGNAL_NOT_READY_AFTER_DAILY_ORCHESTRATOR", "BLOCK")
             sys.exit(2)
 
         # Step 4 (P3-B 补修): K-line 覆盖率校验 — 在 verify_signal 前直接检查 data_full KDate

@@ -1,0 +1,32 @@
+[INFO] === DATA RETRY attempt 5/3 for 20260611 ===
+[INFO] [OK] tushare_history_sync
+[INFO]   stdout: margin_detail 601727 上海电气: 346条
+[INFO]   stdout: margin_detail 002230 科大讯飞: 346条
+[INFO]   stdout: margin_detail 603092 德力佳: 142条
+[INFO]   stdout: margin_detail 300736 百邦科技: 0条
+[INFO]   stdout: margin_detail 300450 先导智能: 346条
+[INFO]   stdout: 完成。总记录数: 9394, manifest已更新: /Users/ccrt/ccrt/代码文件/数据/tushare/manifest.json
+[INFO]   stderr: /Users/ccrt/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+[INFO]   stderr: warnings.warn(
+[INFO] [OK] batch_data_collector
+[INFO]   stdout: 缺失: 46 stocks (无本地缓存)
+[INFO]   stdout: [6/6] 板块数据...
+[INFO]   stdout: 板块数据: OK
+[INFO]   stdout: Data collection complete: /Users/ccrt/ccrt/代码文件/数据/data_full.json (126.9s)
+[INFO]   stdout: Stocks: 55, with quotes: 55, with K-line: 55
+[INFO] [OK] materialize_cache
+[INFO]   stdout: [INFO]   KLINE_UPSERT PASS: 300450 先导智能 — 2026-06-11 close=41.77 (126条)
+[INFO]   stdout: [INFO]   FUND_FLOW_UPSERT PASS: 300450 先导智能 — 20260611 main_force=-6301万 (6条)
+[INFO]   stdout: [INFO] === SUMMARY ===
+[INFO]   stdout: [INFO] KLINE:       10 PASS | 0 FAIL
+[INFO]   stdout: [INFO] FUND_FLOW:   10 PASS | 0 FAIL
+[INFO]   stdout: [INFO] ALL_CACHE_MATERIALIZED
+[INFO] [OK] daily_orchestrator
+[INFO]   stdout: [2026-06-12 00:24:05][INFO] Orchestrator started: mode=daily date=20260611
+[INFO]   stdout: [2026-06-12 00:24:05][INFO] v3.6 data readiness (pipeline mode): READY (50/50)
+[INFO]   stdout: [2026-06-12 00:24:05][INFO] Signal written: /Users/ccrt/ccrt/.claude/signal_daily_report.json
+[INFO]   stdout: [2026-06-12 00:24:05][OK] Daily report signal sent (pipeline mode)
+[INFO]   stdout: [2026-06-12 00:24:05][INFO] Orchestrator finished: mode=daily exit=0
+[OK] KLINE_COVERAGE PASS: 10/10 >= 8
+[INFO] READY_WRITTEN: /Users/ccrt/ccrt/logs/daily_data_retry/status/20260611.ready.json
+[INFO] DATA_READY: 20260611 attempt 5

@@ -38,6 +38,11 @@ def weekday_schedules(hour, minute):
 # ── Task definitions ──────────────────────────────────
 # Every task here is the sole authoritative schedule definition.
 # No other scheduler (crontab, GitHub Actions, Task Scheduler, PS1) may register these.
+
+def emit(message=""):
+    sys.stdout.write(str(message) + "\n")
+
+
 TASK_DEFS = {
     "git_autosweep": {
         "label_suffix": "git-autosweep",
@@ -57,10 +62,10 @@ TASK_DEFS = {
     },
     "daily_signal": {
         "label_suffix": "daily-signal",
-        "description": "日报信号（交易日 16:15，周一至周五）",
-        "schedule": weekday_schedules(16, 15),
+        "description": "日报数据链与信号（交易日 16:30，周一至周五）",
+        "schedule": weekday_schedules(16, 30),
         "command": "python3",
-        "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "daily_orchestrator.py"), "--mode", "daily"],
+        "args": [str(PROJECT_ROOT / "scripts" / "run_daily_data_pipeline_today.py")],
         "run_at_load": False,
     },
     "deep_signal": {
@@ -162,9 +167,9 @@ def install_task(task_name, task_def):
     result = subprocess.run(["launchctl", "load", str(plist_path)],
                             capture_output=True, text=True)
     if result.returncode == 0:
-        print(f"  OK: {label} installed and loaded")
+        emit(f"  OK: {label} installed and loaded")
     else:
-        print(f"  WARN: {label} plist written but load failed: {result.stderr.strip()}")
+        emit(f"  WARN: {label} plist written but load failed: {result.stderr.strip()}")
     return plist_path
 
 
@@ -177,15 +182,15 @@ def uninstall_task(task_name, task_def):
         subprocess.run(["launchctl", "unload", str(plist_path)],
                        capture_output=True)
         plist_path.unlink()
-        print(f"  OK: {label} uninstalled")
+        emit(f"  OK: {label} uninstalled")
     else:
-        print(f"  SKIP: {label} not installed")
+        emit(f"  SKIP: {label} not installed")
 
 
 def show_status():
     """Display status of all defined tasks."""
-    print(f"{'Task':<25} {'Status':<12} {'Schedule'}")
-    print("-" * 65)
+    emit(f"{'Task':<25} {'Status':<12} {'Schedule'}")
+    emit("-" * 65)
     for name, defn in TASK_DEFS.items():
         label = f"{LABEL_PREFIX}{defn['label_suffix']}"
         plist_path = PLIST_DIR / f"{label}.plist"
@@ -196,25 +201,25 @@ def show_status():
         else:
             sched_desc = "-"
         status = "INSTALLED" if plist_path.exists() else "not installed"
-        print(f"{name:<25} {status:<12} {sched_desc}")
+        emit(f"{name:<25} {status:<12} {sched_desc}")
 
     # Also check launchctl list
-    print()
+    emit()
     result = subprocess.run(["launchctl", "list"],
                             capture_output=True, text=True)
     tielv_jobs = [l for l in result.stdout.split("\n") if LABEL_PREFIX in l]
     if tielv_jobs:
-        print(f"Active launchd jobs ({len(tielv_jobs)}):")
+        emit(f"Active launchd jobs ({len(tielv_jobs)}):")
         for job in tielv_jobs:
-            print(f"  {job}")
+            emit(f"  {job}")
     else:
-        print("No active tielv launchd jobs")
+        emit("No active tielv launchd jobs")
 
 
 def list_tasks():
     """Print a formatted list of all defined tasks."""
-    print("铁律量化 launchd 调度任务清单")
-    print(f"{'='*60}")
+    emit("铁律量化 launchd 调度任务清单")
+    emit(f"{'='*60}")
     for name, defn in TASK_DEFS.items():
         if defn.get("interval"):
             sched = f"每 {defn['interval']} 秒"
@@ -239,8 +244,8 @@ def list_tasks():
         else:
             sched = "-"
         cmd_short = " ".join(defn["args"][-2:]) if len(defn["args"]) > 1 else defn["args"][0]
-        print(f"  {name:<20} {sched:<30} {defn['description']}")
-    print()
+        emit(f"  {name:<20} {sched:<30} {defn['description']}")
+    emit()
 
 
 def main():
@@ -262,23 +267,23 @@ def main():
     if args.install:
         if args.install == "all":
             for name, defn in TASK_DEFS.items():
-                print(f"Installing {name}...")
+                emit(f"Installing {name}...")
                 install_task(name, defn)
         elif args.install in TASK_DEFS:
             install_task(args.install, TASK_DEFS[args.install])
         else:
-            print(f"ERROR: Unknown task: {args.install}")
+            emit(f"ERROR: Unknown task: {args.install}")
             sys.exit(1)
 
     if args.uninstall:
         if args.uninstall == "all":
             for name, defn in TASK_DEFS.items():
-                print(f"Uninstalling {name}...")
+                emit(f"Uninstalling {name}...")
                 uninstall_task(name, defn)
         elif args.uninstall in TASK_DEFS:
             uninstall_task(args.uninstall, TASK_DEFS[args.uninstall])
         else:
-            print(f"ERROR: Unknown task: {args.uninstall}")
+            emit(f"ERROR: Unknown task: {args.uninstall}")
             sys.exit(1)
 
     if not args.install and not args.uninstall and not args.status and not args.list:

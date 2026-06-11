@@ -1,0 +1,21 @@
+============================================================
+ 运行时入口权威检查
+============================================================
+  总结果: PASS
+
+  ✅ C1 registry: PASS
+  ✅ C2 legacy_registry: PASS
+  ✅ C3 registry_entries: PASS
+  ✅ C4 scheduler_ps1: PASS
+  ✅ C4b macos_forbidden: PASS
+  ✅ C5 legacy_ps1: PASS
+  ✅ C6 collector_ps_fallback: PASS
+  ✅ C7 generate_launchd_placeholder: PASS
+  ✅ C8 generate_launchd_forbidden_refs: PASS
+  ✅ C9 github_actions_schedule: PASS
+  ✅ C10 install_crontab_deprecated: PASS
+  ✅ C11 crontab_tielv_tasks: PASS
+  ✅ C12 launchd_registration: PASS
+
+  明细: ✅PASS=13 ❌BLOCK=0 / TOTAL=13
+

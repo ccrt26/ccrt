@@ -16,6 +16,7 @@
 | **launchd** | 调度执行器（唯一） | macOS 原生调度器，按 plist 规则定时触发 |
 | **daily_workflow.py** | 被调度的执行体 | 由 launchd 或手动触发，负责每日工作流编排 |
 | **batch_data_collector.py** | 被调度的执行体 | 由 launchd 或 workflow 触发，负责数据采集 |
+| **run_daily_data_pipeline_today.py** | 被调度的日报数据链入口 | 由 launchd 触发，串联 tushare_history_sync → batch_data_collector → materialize → daily_orchestrator |
 | **daily_orchestrator.py** | 被调度的执行体 | 由 workflow 触发，负责日报生成 |
 | **feishu_bridge.py** | 被调度的执行体 | 飞书消息桥接，由 launchd 每 30s 轮询 |
 | **im_consumer.py** | 被调度的执行体 | IM 消息消费，由 launchd 每 30s 轮询 |

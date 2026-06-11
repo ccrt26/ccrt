@@ -69,21 +69,48 @@ def log(msg, level="INFO"):
         pass
 
 
+def _read_lock_pid(lock_file):
+    try:
+        with open(lock_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("pid="):
+                    return int(line.split("=", 1)[1].strip())
+    except Exception:
+        return None
+    return None
+
+
+def _pid_is_alive(pid):
+    if not pid or pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+
+
 def acquire_lock(name):
     lock_file = os.path.join(LOCK_DIR, f"{name}.lock")
     if os.path.exists(lock_file):
         try:
             mtime = os.path.getmtime(lock_file)
             age = time.time() - mtime
-            if age < LOCK_TIMEOUT:
-                log(f"Lock exists (age={age:.0f}s), another instance running", "SKIP")
+            pid = _read_lock_pid(lock_file)
+            if age < LOCK_TIMEOUT and _pid_is_alive(pid):
+                log(f"Lock exists (age={age:.0f}s pid={pid}), another instance running", "SKIP")
                 return False
-            log(f"Stale lock (age={age:.0f}s), removing", "WARN")
+            reason = "stale" if age >= LOCK_TIMEOUT else f"dead pid={pid}"
+            log(f"Removing {reason} lock (age={age:.0f}s): {lock_file}", "WARN")
             os.remove(lock_file)
         except OSError:
             return False
     try:
-        with open(lock_file, "w") as f:
+        with open(lock_file, "w", encoding="utf-8") as f:
             f.write(f"pid={os.getpid()}\ntimestamp={datetime.now(TZ_SHANGHAI).isoformat()}")
         return True
     except OSError:
@@ -545,14 +572,14 @@ def _load_northbound_for_stock(code):
 def _load_pledge_for_stock(code):
     pf = os.path.join(DATA_CACHE_DIR, "tushare", "pledge", f"{code}.json")
     if os.path.exists(pf):
-        return {"status": "缓存存在", "source": "pledge", "risk_light": "\uD83D\uDFE2", "action_impact": "不作为仓位上调依据"}
-    return {"status": "缓存缺失", "source": "pledge", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不用于增强动作"}
+        return {"status": "缓存存在", "source": "pledge", "risk_light": "green", "action_impact": "不作为仓位上调依据"}
+    return {"status": "缓存缺失", "source": "pledge", "risk_light": "yellow", "action_impact": "缓存缺失，不用于增强动作"}
 
 def _load_unlock_for_stock(code):
     uf = os.path.join(DATA_CACHE_DIR, "tushare", "share_float", f"{code}.json")
     if os.path.exists(uf):
-        return {"status": "缓存存在", "source": "share_float", "risk_light": "\uD83D\uDFE2", "action_impact": "未识别可用于明日动作的近期解禁压力"}
-    return {"status": "缓存缺失", "source": "share_float", "risk_light": "\uD83D\uDFE1", "action_impact": "缓存缺失，不作为仓位调整依据"}
+        return {"status": "缓存存在", "source": "share_float", "risk_light": "green", "action_impact": "未识别可用于明日动作的近期解禁压力"}
+    return {"status": "缓存缺失", "source": "share_float", "risk_light": "yellow", "action_impact": "缓存缺失，不作为仓位调整依据"}
 
 def _load_holder_number_for_stock(code):
     hf = os.path.join(DATA_CACHE_DIR, "tushare", "holder_number", f"{code}.json")
@@ -574,14 +601,14 @@ def _compute_risk_context(code):
     p = _load_pledge_for_stock(code)
     u = _load_unlock_for_stock(code)
     return {
-        "pledge_light": p.get("risk_light", "\uD83D\uDFE1"),
-        "unlock_light": u.get("risk_light", "\uD83D\uDFE1"),
-        "margin_light": "\uD83D\uDFE1",
-        "valuation_light": "\uD83D\uDFE1",
-        "technical_light": "\uD83D\uDFE1",
-        "event_light": "\uD83D\uDFE2",
-        "fund_or_sector_light": "\uD83D\uDFE1",
-        "overall_light": "\uD83D\uDFE1",
+        "pledge_light": p.get("risk_light", "yellow"),
+        "unlock_light": u.get("risk_light", "yellow"),
+        "margin_light": "yellow",
+        "valuation_light": "yellow",
+        "technical_light": "yellow",
+        "event_light": "green",
+        "fund_or_sector_light": "yellow",
+        "overall_light": "yellow",
         "position_discount": "\u00d70.5"
     }
 
@@ -617,6 +644,7 @@ def extract_stock_daily_context(target_date_str):
         dict: {code: {name, days: [{date, w, c, chg, h, l, vol, to}], baseline, fund_flow_4level, margin, sector_phase, signal_winrate, data_status}}
     """
     kline_dir = os.path.join(DATA_CACHE_DIR, "kline_cache")
+    trade_date = str(target_date_str).replace("-", "")
 
     # Read stock pool from pigeon_config (single source of truth)
     pool_result = _load_pigeon_stock_pool()
@@ -659,7 +687,7 @@ def extract_stock_daily_context(target_date_str):
 
         # Build context with all required fields; name from pigeon_config
         from datetime import timezone, datetime as _dt_ctx
-        report_now = _dt_ctx.now(timezone.utc).astimezone(TZ_SHANGHAI) if hasattr(locals(), 'TZ_SHANGHAI') else _dt_ctx.now()
+        report_now = _dt_ctx.now(TZ_SHANGHAI)
         report_generated_at = report_now.strftime("%Y-%m-%dT%H:%M:%S+08:00")
         margin_data = _load_margin_for_stock(code, trade_date)
         ctx = {
@@ -728,6 +756,26 @@ def _run_canonical_shadow(today_str):
         log(f"canonical-shadow 异常: {e}", "WARN")
 
 
+
+def summarize_v36_missing(detail):
+    """Return compact missing summary for v3.6 readiness without assuming an items field."""
+    missing = []
+    checks = [
+        ("kline", "kline_by_stock", lambda v: v.get("match")),
+        ("fund_flow", "fund_flow_by_stock", lambda v: v.get("exists")),
+        ("margin", "margin_by_stock", lambda v: v.get("exists") or v.get("missing_allowed")),
+        ("baseline", "baseline_by_stock", lambda v: v.get("found")),
+        ("sector", "sector_by_stock", lambda v: v.get("found")),
+    ]
+    for label, key, ok_fn in checks:
+        bad = [code for code, value in (detail.get(key) or {}).items() if not ok_fn(value)]
+        if bad:
+            missing.append(f"{label}:{','.join(bad)}")
+    manifest = detail.get("manifest") or {}
+    if manifest.get("degraded"):
+        missing.append(f"manifest:{manifest.get('reason', 'degraded')}")
+    return missing or ["unknown"]
+
 def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=False):
     """Daily report mode: data readiness check, signal if ready."""
     if target_date is None and not is_trading_day():
@@ -739,6 +787,9 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
         today_str = datetime.now(TZ_SHANGHAI).strftime("%Y%m%d")
 
     if not acquire_lock("daily_orchestrator"):
+        if target_date:
+            log("Pipeline mode lock unavailable — fail closed", "BLOCK")
+            return 2
         return 0
 
     try:
@@ -760,6 +811,30 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
                 _run_canonical_shadow(today_str)
             return 1
 
+        if target_date:
+            # Pipeline mode: upstream has already run data sync + materialize.
+            # Use v3.6 readiness as the single authority and fail fast; never sleep here.
+            v36_status, v36_detail = check_v36_data_readiness(target_date)
+            log(f"v3.6 data readiness (pipeline mode): {v36_status} ({v36_detail['ready']}/{v36_detail['total']})")
+            if v36_status == 'BLOCK':
+                log(f"v3.6 BLOCK: 必须项缺失 {summarize_v36_missing(v36_detail)}", "BLOCK")
+                log("日报生成已阻断——pipeline模式不写daily_report signal。", "BLOCK")
+                return 1
+
+            stock_ctx = extract_stock_daily_context(today_str)
+            write_signal("daily_report", {
+                "date": today_str,
+                "mode": "daily",
+                "attempt": 1,
+                "pipeline_mode": True,
+                "stocks_daily_data": stock_ctx,
+                "v36_readiness": {"status": v36_status, "detail": v36_detail},
+            })
+            log("Daily report signal sent (pipeline mode)", "OK")
+            if canonical_shadow:
+                _run_canonical_shadow(today_str)
+            return 0
+
         for attempt in range(1, MAX_RETRIES + 1):
             ready, detail = check_data_readiness()
             log(f"Data readiness check (attempt {attempt}/{MAX_RETRIES}): {detail}")
@@ -768,7 +843,7 @@ def run_mode_daily(skip_data_check=False, target_date=None, canonical_shadow=Fal
                 v36_status, v36_detail = check_v36_data_readiness(target_date)
                 log(f"v3.6 data readiness: {v36_status} ({v36_detail['ready']}/{v36_detail['total']})")
                 if v36_status == 'BLOCK':
-                    log(f"v3.6 BLOCK: 必须项缺失 {[k for k,v in v36_detail['items'].items() if not v]}", "BLOCK")
+                    log(f"v3.6 BLOCK: 必须项缺失 {summarize_v36_missing(v36_detail)}", "BLOCK")
                     log("日报生成已阻断——不发送daily_report signal。请补齐必须数据后重试。", "BLOCK")
                     return 1
                 stock_ctx = extract_stock_daily_context(today_str)
