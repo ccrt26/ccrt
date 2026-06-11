@@ -1,0 +1,2 @@
+"""CCRT GitHub guard package."""
+
