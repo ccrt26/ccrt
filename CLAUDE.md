@@ -267,3 +267,19 @@
 
 ### 10.7 测试用例
 详见 `scripts/test_workflow.py` T-EXEC 系列测试（T-EXEC-01 至 T-EXEC-05）。
+
+---
+
+## CCRT Standard Flow Override
+
+> **本块为项目标准流程的权威口径声明。如与本文档其他章节不一致，以本块为准。**
+
+- The only project standard flow is: **FLOW routing (F-xxx)** + **G0-G6 stage gates**.
+- "阿黑，按照标准流程启动/执行：xxx" is only a **user entry phrase / trigger**, not a separate flow.
+- **pipeline / formal pipeline / actor / HMAC** is not the project standard flow and cannot replace G4/G5/G6.
+- **G0 must not be omitted.** Do not rewrite the standard flow as G1-G6.
+- Role evidence signing is enforced by:
+  - `00_项目地基/04_一致性闸门/stage_acceptance_policy.json`
+  - `00_项目地基/04_一致性闸门/role_evidence_signature_schema.json`
+  - `00_项目地基/04_一致性闸门/check_role_evidence_signature.py`
+- Execution models such as Codex, Claude, and DeepSeek are **not project roles** and must not sign for 阿黑、腰子、旧影、玉夜 or any other role.

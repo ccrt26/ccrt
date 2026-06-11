@@ -1,0 +1,27 @@
+{
+  "scan_date": "2026-06-10",
+  "checked_files": 0,
+  "total_violations": 3,
+  "errors": 3,
+  "warnings": 0,
+  "violations": [
+    {
+      "file": "knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PATH",
+      "message": "ACTIVE 文件位于非 active 目录，禁止进入 active_index: knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md"
+    },
+    {
+      "file": "knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PATH",
+      "message": "ACTIVE 文件位于非 active 目录，禁止进入 active_index: knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md"
+    },
+    {
+      "file": "knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PATH",
+      "message": "ACTIVE 文件位于非 active 目录，禁止进入 active_index: knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md"
+    }
+  ]
+}

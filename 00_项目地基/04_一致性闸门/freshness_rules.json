@@ -93,6 +93,27 @@
       "block_condition": "t1早于next_trade_date或t5不晚于trade_date",
       "warn_condition": "日期格式不可解析",
       "degradation_required": false
+    },
+    "kline_l2": {
+      "enabled": false,
+      "phase": 2,
+      "source_path": "代码文件/数据/l2_cache/l2_cache.db (kline表)",
+      "date_format": "YYYY-MM-DD",
+      "allowed_lag_days": 1,
+      "required_for_action": false,
+      "on_missing": "WARN",
+      "on_stale_claim": "WARN",
+      "authority_source": [
+        "代码文件/数据/kline_cache/{code}.json",
+        "代码文件/数据/l2_cache/l2_cache.db"
+      ],
+      "source_resolution": "L1优先——当日用L1判断；历史回引用L2。freshness检查以L1为准。",
+      "max_lag_days": 1,
+      "decision_impact": "中——L2为历史分析回源，不阻断当日报告",
+      "block_condition": "L1无当日数据且L2无当日数据",
+      "warn_condition": "L1有当日但L2无当日",
+      "degradation_required": false,
+      "description": "L2 K线——历史分析回源，不阻断当日报告。相位0仅注册规则，Phase 2启用闸门检查。"
     }
   },
   "degraded_handling": {

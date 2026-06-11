@@ -1,0 +1,173 @@
+version: "2.0"
+updated_at: "2026-06-10"
+
+# ===================================================================
+# 全角色协作链路程序化配置 v2.0
+# 定义六角色的层、入口、模块、默认顺序、场景路由、压制规则。
+# 修改此文件后须补测试 + 走 G3-G6 流程。
+# ===================================================================
+
+roles:
+  xinge:
+    name: "信鸽"
+    layer: "event_information"
+    entry: "knowledge/roles/xinge/README_信鸽知识入口.md"
+    modules:
+      duties: "knowledge/roles/xinge/01_角色职责与边界.md"
+      evidence: "knowledge/roles/xinge/03_输入证据与可信度规则.md"
+      output: "knowledge/roles/xinge/05_输出模板与表达约束.md"
+    default_can_finalize: false
+
+  yuye:
+    name: "玉夜"
+    layer: "data_fact"
+    entry: "knowledge/roles/yuye/README_玉夜知识入口.md"
+    modules:
+      duties: "knowledge/roles/yuye/01_角色职责与边界.md"
+      evidence: "knowledge/roles/yuye/03_字段口径与质量检查.md"
+      degradation: "knowledge/roles/yuye/04_时效性缺失异常与降级规则.md"
+      output: "knowledge/roles/yuye/05_输出模板与事实审计约束.md"
+    default_can_finalize: false
+
+  shanmao:
+    name: "山猫"
+    layer: "macro_context"
+    entry: "knowledge/roles/shanmao/README_山猫知识入口.md"
+    modules:
+      duties: "knowledge/roles/shanmao/01_角色职责与边界.md"
+      framework: "knowledge/roles/shanmao/02_核心判断框架.md"
+      evidence: "knowledge/roles/shanmao/03_输入证据与可信度规则.md"
+      output: "knowledge/roles/shanmao/05_输出模板与表达约束.md"
+    default_can_finalize: false
+
+  qingshan:
+    name: "青山"
+    layer: "signal_strategy"
+    entry: "knowledge/roles/qingshan/README_青山知识入口.md"
+    modules:
+      duties: "knowledge/roles/qingshan/01_角色职责与边界.md"
+      signal: "knowledge/roles/qingshan/03_信号与因子当前知识.md"
+      output: "knowledge/roles/qingshan/05_输出模板与表达约束.md"
+    default_can_finalize: false
+
+  liujin:
+    name: "流金"
+    layer: "risk_constraint"
+    entry: "knowledge/roles/liujin/README_流金知识入口.md"
+    modules:
+      duties: "knowledge/roles/liujin/01_角色职责与边界.md"
+      evidence: "knowledge/roles/liujin/03_输入证据与可信度规则.md"
+      output: "knowledge/roles/liujin/05_输出模板与表达约束.md"
+    default_can_finalize: false
+
+  yaozi:
+    name: "腰子"
+    layer: "final_financial_stance"
+    entry: "knowledge/roles/yaozi/README_腰子知识入口.md"
+    modules:
+      duties: "knowledge/roles/yaozi/01_角色职责与边界.md"
+      framework: "knowledge/roles/yaozi/02_核心判断框架.md"
+      evidence: "knowledge/roles/yaozi/03_输入证据与可信度规则.md"
+      output: "knowledge/roles/yaozi/05_输出模板与表达约束.md"
+    default_can_finalize: true
+
+default_order:
+  - xinge
+  - yuye
+  - shanmao
+  - qingshan
+  - liujin
+  - yaozi
+
+scenarios:
+  data_check:
+    order: [yuye]
+    required_roles: [yuye]
+    allowed_final_outputs: ["DATA_OK", "DATA_WARN", "DATA_BLOCK"]
+
+  signal_interpretation:
+    order: [yuye, qingshan]
+    required_roles: [yuye, qingshan]
+    allowed_final_outputs: ["REFERENCE_ONLY", "INSUFFICIENT_DATA"]
+
+  event_review:
+    order: [xinge, yuye, yaozi]
+    required_roles: [xinge, yuye, yaozi]
+    allowed_final_outputs: ["WAIT", "WATCH", "INSUFFICIENT_DATA"]
+
+  risk_review:
+    order: [yuye, liujin, yaozi]
+    required_roles: [yuye, liujin, yaozi]
+    allowed_final_outputs: ["RISK_PASS", "RISK_WARN", "RISK_BLOCK"]
+
+  macro_context:
+    order: [shanmao, yaozi]
+    required_roles: [shanmao, yaozi]
+    allowed_final_outputs: ["MACRO_CONTEXT_ONLY", "WATCH"]
+
+  comprehensive_analysis:
+    order: [xinge, yuye, shanmao, qingshan, liujin, yaozi]
+    required_roles: [xinge, yuye, shanmao, qingshan, liujin, yaozi]
+    allowed_final_outputs: ["WATCH", "INSUFFICIENT_DATA", "BLOCK"]
+
+suppression_rules:
+  - id: "SR-YUYE-BLOCK"
+    if_role: "yuye"
+    if_status_in: ["BLOCK"]
+    effect:
+      final_output_max: "BLOCK"
+      forbid: ["BUY", "SELL", "ADD_POSITION", "REDUCE_POSITION_STRONG"]
+    reason: "玉夜事实层BLOCK时，不得基于该数据输出强结论"
+
+  - id: "SR-YUYE-WARN"
+    if_role: "yuye"
+    if_status_in: ["WARN"]
+    effect:
+      final_output_max: "WATCH"
+      forbid: ["BUY", "SELL", "ADD_POSITION"]
+    reason: "玉夜事实层WARN时，腰子只能降级输出"
+
+  - id: "SR-LIUJIN-BLOCK"
+    if_role: "liujin"
+    if_status_in: ["BLOCK"]
+    effect:
+      final_output_max: "BLOCK"
+      forbid: ["BUY", "SELL", "ADD_POSITION", "REDUCE_POSITION_STRONG"]
+    reason: "流金风险BLOCK时，腰子不得输出任何动作建议"
+
+  - id: "SR-LIUJIN-WARN-WITH-FACT-MISSING"
+    if_role: "liujin"
+    if_flags_include: ["fact_missing"]
+    effect:
+      final_output_max: "BLOCK"
+      forbid: ["BUY", "SELL", "ADD_POSITION", "REDUCE_POSITION_STRONG"]
+    reason: "流金检查发现事实缺失时，升级为BLOCK"
+
+  - id: "SR-QINGSHAN-L5-SEED"
+    if_role: "qingshan"
+    if_flags_include: ["L5-seed"]
+    effect:
+      forbid: ["ACTION_UPGRADE", "BUY", "SELL", "ADD_POSITION"]
+    reason: "青山L5-seed信号不得支持动作升级"
+
+  - id: "SR-XINGE-WAIT"
+    if_role: "xinge"
+    if_status_in: ["WAIT"]
+    effect:
+      forbid: ["CONFIRMED_EVENT", "EVENT_AS_FACT"]
+    reason: "信鸽WAIT事件不得写成确认事实"
+
+  - id: "SR-SHANMAO-CONTEXT"
+    if_role: "shanmao"
+    if_flags_include: ["MACRO_CONTEXT_ONLY"]
+    effect:
+      forbid: ["STOCK_ACTION_FROM_MACRO_ONLY"]
+    reason: "山猫宏观背景不得单独推出个股动作"
+
+forbidden_read_roots:
+  - ".claude/agents/*-知识库/"
+  - "统一解读/六库/"
+  - "knowledge/external_literature/raw/"
+  - "00_项目地基/08_审计与验收/archive/"
+  - "真实报告/"
+  - "data/"

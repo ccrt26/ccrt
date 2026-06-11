@@ -1,0 +1,27 @@
+{
+  "scan_date": "2026-06-10",
+  "checked_files": 0,
+  "total_violations": 3,
+  "errors": 3,
+  "warnings": 0,
+  "violations": [
+    {
+      "file": "knowledge_guard/active_missing_confirm/active/role_knowledge/CARD-20260610-998.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PREREQ",
+      "message": "ACTIVE 前置条件不满足: confirmed_roles 为空（未经角色确认）"
+    },
+    {
+      "file": "knowledge_guard/active_missing_confirm/active/role_knowledge/CARD-20260610-998.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PREREQ",
+      "message": "ACTIVE 前置条件不满足: confirmed_roles 为空（未经角色确认）"
+    },
+    {
+      "file": "knowledge_guard/active_missing_confirm/active/role_knowledge/CARD-20260610-998.md",
+      "severity": "ERROR",
+      "rule": "IDX-ACTIVE-PREREQ",
+      "message": "ACTIVE 前置条件不满足: confirmed_roles 为空（未经角色确认）"
+    }
+  ]
+}

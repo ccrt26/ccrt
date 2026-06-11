@@ -1,24 +1,8 @@
 {
-  "alert": "daily_report_fail",
-  "severity": "P2",
-  "date": "20260528",
-  "failed_count": 2,
-  "failures": [
-    {
-      "code": "多瑞医药(3",
-      "name": "多瑞医药",
-      "issues": [
-        "P0缺失: 盘面速读, 信号变化, 基本面/策略触发, 情景应对"
-      ]
-    },
-    {
-      "code": "百邦科技(3",
-      "name": "百邦科技",
-      "issues": [
-        "P0缺失: 信号变化, 基本面/策略触发, 情景应对"
-      ]
-    }
-  ],
-  "recommend": "腰子人工修复2只日报，下一交易日9:00前完成",
-  "timestamp": "2026-05-30T17:40:32.192347"
+  "alert": "v36_data_degraded",
+  "severity": "P1",
+  "date": "20260610",
+  "mode": "daily",
+  "block_reason": "v3.6 degraded: WARN (50/50)",
+  "note": "数据获取重试已达上限，使用陈旧数据生成。需人工核查数据管线。"
 }

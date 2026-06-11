@@ -1,0 +1,57 @@
+{
+  "gray_version": "v0.1.1",
+  "mode": "shadow_dual_run",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "2026-06-10",
+  "generated_date": "2026-06-11",
+  "formal_entry_enabled": false,
+  "shadow_enabled": true,
+  "state_previous": "A",
+  "state_current": "A",
+  "risk_light": "🟡",
+  "continue_tracking": true,
+  "continue_condition": "如明日收盘跌破40元则触发A→B降级",
+  "conclusion": "继续跟踪",
+  "conclusion_detail": "盘中创52周新高42.88后大幅回落收40.21(-4.44%)，D-01未达成",
+  "changes_today": [
+    "盘中创52周新高42.88后大幅回落，收40.21跌4.44%",
+    "D-01（守住42元）未达成，触发关注"
+  ],
+  "risks": [
+    "40.21仅略高于40元警戒线，如明天续跌将触发A→B降级",
+    "42元从阻力转支撑失败",
+    "PE 47.8x偏高(99.4%分位)"
+  ],
+  "instructions": [
+    {"d_id": "D-01", "status": "未达成，触发关注", "check": "守住42元"},
+    {"d_id": "D-02", "status": "未触发(临界)", "check": "跌破40元"},
+    {"d_id": "D-03", "status": "未触发", "check": "量能异常"},
+    {"d_id": "D-04", "status": "未触发", "check": "并购公告"},
+    {"d_id": "D-05", "status": "未触发", "check": "SMC客户/订单"},
+    {"d_id": "D-06", "status": "未触发", "check": "折叠屏负面"},
+    {"d_id": "D-07", "status": "未触发", "check": "增持/回购"}
+  ],
+  "degraded_items": [
+    {
+      "item": "资金流向",
+      "data_date": "2026-06-05",
+      "level": "WARN",
+      "reason": "T+3延迟",
+      "impact": "不影响价格驱动型状态判断，但用户侧需知情"
+    },
+    {
+      "item": "融资融券",
+      "data_date": "2026-06-04",
+      "level": "WARN",
+      "reason": "T+3延迟",
+      "impact": "不影响价格驱动型状态判断，但用户侧需知情"
+    }
+  ],
+  "block_items": [],
+  "data_quality_status": "WARN",
+  "user_position_filled": false,
+  "operation_card_generated": false,
+  "html_path": "重点股票/日报灰度输出/东睦股份(600114)/20260611/东睦股份(600114)_日报灰度预览_20260611.html",
+  "disclaimer": "灰度观察预览，不构成正式日报，不构成投资建议"
+}

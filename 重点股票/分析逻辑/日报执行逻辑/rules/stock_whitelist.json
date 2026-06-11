@@ -1,0 +1,16 @@
+{
+  "rule_id": "SWL-001",
+  "rule_name": "stock_whitelist",
+  "version": "v0.1",
+  "mode": "single_stock_gray",
+  "description": "东睦股份单票灰度——仅600114可走Shadow并行，其他标的阻塞",
+  "active_stocks": [
+    {
+      "code": "600114",
+      "name": "东睦股份",
+      "enabled": true,
+      "gray_mode": "shadow_dual_run"
+    }
+  ],
+  "blocked_stocks_policy": "not_in_whitelist_do_not_run"
+}

@@ -1,0 +1,121 @@
+version: "1.0"
+updated_at: "2026-06-10"
+
+# ===================================================================
+# 外部文献观察项配置 v1.0
+#
+# 用途：把外部文献角色摘要转成"观察项候选"，每周批处理或T+0/T+1
+#       紧急处理，控制每个场景每周新增观察项容量。
+#
+# 核心约束：
+# - 观察项只记录，不改变结论权重
+# - 不进入角色核心知识库
+# - 不进入六库
+# - 直到后评估样本满足升级条件后才可考虑升级
+# ===================================================================
+
+status_flow:
+  allowed_status:
+    - candidate
+    - active
+    - paused
+    - completed
+    - rejected
+  allowed_transitions:
+    candidate: [active, rejected]
+    active: [paused, completed]
+    paused: [active, rejected]
+    completed: []
+    rejected: []
+
+priority:
+  normal:
+    batch_mode: weekly
+  high:
+    batch_mode: weekly_priority
+  urgent:
+    batch_mode: immediate_t0_t1
+
+urgent_allowed_types:
+  - exchange_rule_change
+  - regulatory_compliance
+  - data_field_definition_change
+  - risk_redline_change
+  - data_quality_issue_affecting_reports
+
+scene_capacity_per_week:
+  daily:
+    max_new_items: 2
+  weekly:
+    max_new_items: 5
+  post_eval:
+    max_new_items: 3
+  sim_trade:
+    max_new_items: 2
+  daily_pick:
+    max_new_items: 0
+    requires_yaozi_approval: true
+
+allowed_target_scenarios:
+  - daily
+  - weekly
+  - post_eval
+  - sim_trade
+  - daily_pick
+
+default_sample_requirements:
+  signal_effectiveness:
+    min_eval_samples: 20
+  data_quality:
+    min_eval_samples: 5
+  risk_rule:
+    min_eval_samples: 5
+  macro_context:
+    min_eval_samples: 8
+  event_reaction:
+    min_eval_samples: 10
+
+observation_items:
+  - observation_id: "OBS-TEST-001"
+    source_doc_id: "LIT-TEST-001"
+    title: "震荡市下MACD金叉有效性观察"
+    owner_role: "qingshan"
+    priority: "normal"
+    status: "candidate"
+    evidence_type: "signal_effectiveness"
+    target_scenarios: ["weekly", "post_eval"]
+    observation_fields:
+      - market_state
+      - signal_id
+      - signal_triggered
+      - t_plus_1_result
+      - t_plus_3_result
+      - t_plus_5_result
+    no_logic_change: true
+    no_weight_change: true
+    sample_requirement:
+      min_eval_samples: 20
+    upgrade_condition: "累计 >=20 条项目真实后评估样本，青山确认，腰子终审，旧影审计"
+    notes: "仅观察，不改变青山结论权重，不触发BUY/SELL"
+
+  - observation_id: "OBS-TEST-URGENT-001"
+    source_doc_id: "LIT-TEST-URGENT-001"
+    title: "数据字段口径变化紧急观察"
+    owner_role: "yuye"
+    priority: "urgent"
+    urgent_type: "data_field_definition_change"
+    status: "candidate"
+    evidence_type: "data_quality"
+    target_scenarios: ["daily", "post_eval"]
+    observation_fields:
+      - field_name
+      - old_definition
+      - new_definition
+      - affected_reports
+      - confidence_level
+    no_logic_change: true
+    no_weight_change: true
+    sample_requirement:
+      min_eval_samples: 5
+    upgrade_condition: "玉夜确认字段口径影响，腰子确认报告影响范围，旧影审计"
+    notes: "紧急观察项，只记录字段影响，不改生产逻辑"

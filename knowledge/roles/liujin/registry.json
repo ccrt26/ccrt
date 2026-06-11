@@ -1,0 +1,440 @@
+{
+  "meta": {
+    "description": "流金（风控官）知识注册表 — 知识条目管理",
+    "version": "v1.0",
+    "created": "2026-06-10",
+    "owner_role": "流金",
+    "total_entries": 24
+  },
+  "entries": [
+    {
+      "knowledge_id": "LJ-ROLE-001",
+      "title": "流金角色定义与职责边界",
+      "module": "01_角色职责与边界",
+      "source_type": "role_consensus",
+      "source_level": "L1",
+      "source_ref": ".claude/agents/风控官-流金.md v2.2",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/风控官-流金.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-09-10",
+      "upgrade_condition": "角色定义共识变更",
+      "deprecation_condition": "角色分工重定义"
+    },
+    {
+      "knowledge_id": "LJ-RISK-001",
+      "title": "HHI集中度风险评估",
+      "module": "02_核心判断框架",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/03-持仓风险度量.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "新HHI阈值经项目验证",
+      "deprecation_condition": "新集中度度量替代HHI"
+    },
+    {
+      "knowledge_id": "LJ-RISK-002",
+      "title": "行业集中度与相关加成",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/03-持仓风险度量.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "行业分类标准变更（申万行业调整）",
+      "deprecation_condition": "新行业分类体系替代"
+    },
+    {
+      "knowledge_id": "LJ-RISK-003",
+      "title": "个股集中度硬规则（30%/3只上限）",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L1",
+      "source_ref": "项目铁律持仓规则一节",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "腰子+阿黑+旧影联合决议",
+      "deprecation_condition": "项目持仓规则废弃"
+    },
+    {
+      "knowledge_id": "LJ-RISK-004",
+      "title": "四级回撤预警体系",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/05-回撤监控与止损.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/05-回撤监控与止损.md",
+        ".claude/agents/流金-知识库/09-回撤恢复模式库.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "回撤阈值经3个月实盘验证需调整",
+      "deprecation_condition": "新预警体系替代"
+    },
+    {
+      "knowledge_id": "LJ-RISK-005",
+      "title": "四种熔断机制",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/05-回撤监控与止损.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/05-回撤监控与止损.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "熔断参数经项目验证需调整",
+      "deprecation_condition": "熔断制度废弃"
+    },
+    {
+      "knowledge_id": "LJ-RISK-006",
+      "title": "Amihud ILLIQ流动性分级",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L3",
+      "source_ref": "Amihud(2002) + .claude/agents/流金-知识库/03-持仓风险度量.md A股适配",
+      "status": "reference",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "A股市场微观结构重大变化",
+      "deprecation_condition": "新流动性度量标准替代"
+    },
+    {
+      "knowledge_id": "LJ-RISK-007",
+      "title": "平仓冲击成本估算",
+      "module": "02_核心判断框架",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/03-持仓风险度量.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "项目经验冲击系数>30%偏差",
+      "deprecation_condition": "新冲击模型上线"
+    },
+    {
+      "knowledge_id": "LJ-RISK-008",
+      "title": "退市风险筛查清单",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L1",
+      "source_ref": "证监会2025退市新规 + .claude/agents/流金-知识库/02-A股特有风险.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/02-A股特有风险.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "退市新规修订或新规发布",
+      "deprecation_condition": "退市制度根本性改革"
+    },
+    {
+      "knowledge_id": "LJ-RISK-009",
+      "title": "质押爆仓风险筛查",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/02-A股特有风险.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/02-A股特有风险.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "质押制度或券商风控标准变更",
+      "deprecation_condition": "质押规则根本变更"
+    },
+    {
+      "knowledge_id": "LJ-RISK-010",
+      "title": "融资融券风险判断",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/02-A股特有风险.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/02-A股特有风险.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "两融规则变更",
+      "deprecation_condition": "两融制度重大变革"
+    },
+    {
+      "knowledge_id": "LJ-RISK-011",
+      "title": "相关性矩阵与危机趋同",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L3",
+      "source_ref": ".claude/agents/流金-知识库/01-风险量化方法论.md + A股经验数据",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/01-风险量化方法论.md",
+        ".claude/agents/流金-知识库/03-持仓风险度量.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "A股相关性结构显著变化",
+      "deprecation_condition": "新相关性理论替代"
+    },
+    {
+      "knowledge_id": "LJ-RISK-012",
+      "title": "风险预算分配规则（RB-01至RB-05）",
+      "module": "02_核心判断框架",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/01-风险量化方法论.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/01-风险量化方法论.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "风险预算阈值经项目验证需调整",
+      "deprecation_condition": "新风险预算框架替代"
+    },
+    {
+      "knowledge_id": "LJ-OFF-001",
+      "title": "策略过拟合五红旗检查",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L3",
+      "source_ref": "Marcos Lopez de Prado (2014/2018) + .claude/agents/流金-知识库/04-策略过拟合检测.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/04-策略过拟合检测.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "A股策略复杂度变化导致参数阈值调整",
+      "deprecation_condition": "新过拟合检测框架替代"
+    },
+    {
+      "knowledge_id": "LJ-OFF-002",
+      "title": "PBO（概率回测过拟合）CSCV方法",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L3",
+      "source_ref": "Lopez de Prado CSCV + .claude/agents/流金-知识库/04-策略过拟合检测.md",
+      "status": "reference",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/04-策略过拟合检测.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "PBO框架标准化后升级为core",
+      "deprecation_condition": "新过拟合度量方法替代"
+    },
+    {
+      "knowledge_id": "LJ-OFF-003",
+      "title": "DSR紧缩阀与Walk-forward效率",
+      "module": "02_核心判断框架",
+      "source_type": "external_authority",
+      "source_level": "L3",
+      "source_ref": "Lopez de Prado (2014) + .claude/agents/流金-知识库/04-策略过拟合检测.md",
+      "status": "reference",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/04-策略过拟合检测.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "DSR公式经项目回测验证",
+      "deprecation_condition": "新统计显著性方法替代"
+    },
+    {
+      "knowledge_id": "LJ-OFF-004",
+      "title": "因子拥挤度四维检测",
+      "module": "02_核心判断框架",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/04-策略过拟合检测.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/04-策略过拟合检测.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "A股因子拥挤度历史基准变更",
+      "deprecation_condition": "新拥挤度检测方法替代"
+    },
+    {
+      "knowledge_id": "LJ-DISC-001",
+      "title": "交易纪律审查（盘前10+盘中8+盘后12=30项）",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/06-交易纪律审查清单.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/06-交易纪律审查清单.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "新项目经验证明清单项不足或过时",
+      "deprecation_condition": "新纪律框架替代"
+    },
+    {
+      "knowledge_id": "LJ-DISC-002",
+      "title": "冷却期制度与连败响应",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/05-回撤监控与止损.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/05-回撤监控与止损.md",
+        ".claude/agents/流金-知识库/06-交易纪律审查清单.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "冷却期时长经项目验证需调整",
+      "deprecation_condition": "新冷却期制度替代"
+    },
+    {
+      "knowledge_id": "LJ-STRS-001",
+      "title": "历史情景压力测试（7个A股情景）",
+      "module": "02_核心判断框架",
+      "source_type": "project_verified",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/07-压力测试与情景分析.md",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/07-压力测试与情景分析.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-09-10",
+      "upgrade_condition": "新重大历史事件发生后加入情景库",
+      "deprecation_condition": "情景库版本更新"
+    },
+    {
+      "knowledge_id": "LJ-STRS-002",
+      "title": "因子冲击测试矩阵",
+      "module": "02_核心判断框架",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": ".claude/agents/流金-知识库/07-压力测试与情景分析.md",
+      "status": "reference",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [
+        ".claude/agents/流金-知识库/07-压力测试与情景分析.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "因子冲击参数经压力测试验证",
+      "deprecation_condition": "新冲击矩阵版本替代"
+    },
+    {
+      "knowledge_id": "LJ-EVDN-001",
+      "title": "来源等级与风控动作映射规则",
+      "module": "03_输入证据与可信度规则",
+      "source_type": "role_consensus",
+      "source_level": "L1",
+      "source_ref": "知识库来源等级标准 + role_consensus",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "来源等级标准变更",
+      "deprecation_condition": "来源等级体系废弃"
+    },
+    {
+      "knowledge_id": "LJ-EVDN-002",
+      "title": "L5-seed 不得支持动作约束红线",
+      "module": "03_输入证据与可信度规则",
+      "source_type": "project_verified",
+      "source_level": "L1",
+      "source_ref": "项目铁律金融分析规则",
+      "status": "core",
+      "can_support_action_constraint": false,
+      "owner_role": "流金",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "L5-seed升级条件经腰子审批",
+      "deprecation_condition": "L5-seed分类废弃"
+    },
+    {
+      "knowledge_id": "LJ-EVOL-001",
+      "title": "风控失效复盘与反例入库规则",
+      "module": "04_后评估与知识进化",
+      "source_type": "role_consensus",
+      "source_level": "L2",
+      "source_ref": "role_consensus",
+      "status": "core",
+      "can_support_action_constraint": true,
+      "owner_role": "流金",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "反例触发阈值经项目验证需调整",
+      "deprecation_condition": "新知识进化流程替代"
+    }
+  ]
+}

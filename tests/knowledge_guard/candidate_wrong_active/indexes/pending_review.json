@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-10",
+  "total": 1,
+  "pending_items": [
+    {
+      "file": "knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md",
+      "card_id": "CARD-20260610-999",
+      "title": "错误：候选目录误标 ACTIVE",
+      "status": "ACTIVE",
+      "reason": "ACTIVE 文件位于非 active 目录，禁止进入 active_index: knowledge_guard/candidate_wrong_active/candidates/parameters/CARD-20260610-999.md"
+    }
+  ]
+}

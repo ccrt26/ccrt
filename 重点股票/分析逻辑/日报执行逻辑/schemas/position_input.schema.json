@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/position_input.schema.json",
+  "title": "用户持仓输入 Schema",
+  "description": "用户主动填写的持仓交易记录，用于日报操作卡的成本计算 v3.7.1",
+  "type": "object",
+  "required": [
+    "stock_code", "stock_name", "report_trade_date", "transaction_date",
+    "position_status", "action_type"
+  ],
+  "properties": {
+    "stock_code": {"type": "string", "description": "股票代码"},
+    "stock_name": {"type": "string", "description": "股票名称"},
+    "report_trade_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "description": "日报对应交易日"},
+    "transaction_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "description": "用户实际交易日期"},
+    "transaction_time": {"type": ["string", "null"], "description": "交易时间可选"},
+    "position_status": {"type": "string", "enum": ["空仓", "持仓"], "description": "操作前持仓状态"},
+    "action_type": {"type": "string", "enum": ["无变化", "建仓", "加仓", "减仓", "平仓"], "description": "本次动作"},
+    "transaction_price": {"type": ["number", "null"], "description": "成交价格（建仓/加仓/减仓/平仓时必填）"},
+    "transaction_quantity": {"type": ["number", "null"], "description": "成交股数（建仓/加仓/减仓/平仓时必填）"},
+    "transaction_amount": {"type": ["number", "null"], "description": "成交金额，可由价格×数量计算"},
+    "fee_amount": {"type": "number", "default": 0, "description": "佣金+印花税+过户费合计"},
+    "fee_user_provided": {"type": "boolean", "default": false},
+    "fee_estimated": {"type": "boolean", "default": false},
+    "fee_assumed_zero": {"type": "boolean", "default": false},
+    "position_before_quantity": {"type": ["number", "null"], "description": "操作前持股数"},
+    "position_after_quantity": {"type": ["number", "null"], "description": "操作后持股数"},
+    "cost_before": {"type": ["number", "null"], "description": "操作前持仓成本"},
+    "cost_after": {"type": ["number", "null"], "description": "操作后持仓成本(平仓后null)"},
+    "realized_pnl": {"type": "number", "description": "已实现盈亏"},
+    "allow_add_position": {"type": ["boolean", "null"]},
+    "max_acceptable_drawdown_pct": {"type": ["number", "null"]},
+    "notes": {"type": ["string", "null"]}
+  }
+}

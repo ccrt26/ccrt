@@ -1,0 +1,47 @@
+{
+  "rule_id": "UOR-001",
+  "rule_name": "user_operation_card_rules",
+  "version": "3.7.1",
+  "description": "用户操作卡生成规则——持仓输入仅影响操作卡，不影响基础状态",
+  "generation_triggers": {
+    "user_filled_position": "生成操作卡，附加于P0状态卡下方",
+    "user_empty": "不生成操作卡，显示'用户持仓：未填写'",
+    "user_historical_filled_today_empty": "使用最近一次数据，标注'基于{日期}持仓数据'",
+    "user_never_filled": "不输出操作卡，不默认推断"
+  },
+  "core_principles": [
+    "用户输入只影响操作卡，不影响A/B/C/D/E/M基础状态",
+    "用户输入不影响风险灯",
+    "用户输入不影响后评估留痕",
+    "操作卡不等于交易指令，不构成投资建议",
+    "风控红灯和M-P0优先于用户操作卡"
+  ],
+  "templates": {
+    "empty": {
+      "display": "用户持仓：未填写",
+      "operation_card": "不生成",
+      "note": "日报只输出标的状态，不默认推断用户仓位"
+    },
+    "long_empty": {
+      "template": "【用户操作卡 - 空仓】\n当前状态：{state}\n风险灯：{risk_light}\n日报结论：{conclusion}\n\n是否允许试探：{allow_test}\n触发条件：{trigger_condition}\n禁止动作：{forbidden}"
+    },
+    "long_hold": {
+      "template": "【用户操作卡 - 持仓】\n当前持仓：{quantity}股\n持仓成本：{cost}元\n当前浮盈/浮亏：{pnl_pct}%\n\n明天动作：{action}\n触发条件：{trigger}\n止损/降级线：{stop_line}元\n仓位上限：不高于当前仓位"
+    },
+    "closed": {
+      "template": "【用户操作卡 - 平仓后】\n当前状态：空仓\n已实现盈亏：{realized_pnl}元\n\n次日动作：只观察，不重新建仓\n重新进入条件：状态回A且周报指令重新触发"
+    }
+  },
+  "risk_override": {
+    "red_light": "即使日报说'继续跟踪'，操作卡也必须提示'不建议新增仓位，关注止损'",
+    "m_override": "操作卡提示'宏观异常，暂停操作'",
+    "d_removed": "操作卡提示'标的已移出跟踪，建议平仓退出'"
+  },
+  "forbidden_outputs": [
+    "指定具体买入/卖出时间",
+    "全仓买入或清仓卖出",
+    "使用'我建议你'等主动性语气",
+    "根据用户未填字段默认推断",
+    "操作卡结论与日报基础结论冲突"
+  ]
+}

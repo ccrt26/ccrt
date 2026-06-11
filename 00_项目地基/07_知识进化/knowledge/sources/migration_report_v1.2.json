@@ -1,0 +1,135 @@
+{
+  "migration_date": "2026-06-11",
+  "stage": "G3-KRM-ROLE-SEMANTIC-MIGRATE",
+  "results": {
+    "yuye": {
+      "role": "玉夜",
+      "source_files_count": 9,
+      "source_lines": 2967,
+      "essence_files_count": 10,
+      "essence_lines": 233,
+      "keywords_coverage": {
+        "数据源": 1,
+        "字段口径": 1,
+        "数据质量": 1,
+        "缓存": 1,
+        "API": 1,
+        "降级": 1,
+        "1+2": 1,
+        "时效性": 1,
+        "异常": 1,
+        "新鲜度": 1
+      },
+      "keyword_pass": 10
+    },
+    "qingshan": {
+      "role": "青山",
+      "source_files_count": 9,
+      "source_lines": 3371,
+      "essence_files_count": 10,
+      "essence_lines": 225,
+      "keywords_coverage": {
+        "因子": 1,
+        "IC": 1,
+        "ICIR": 1,
+        "Rank": 1,
+        "分层": 1,
+        "回测": 1,
+        "衰减": 1,
+        "策略退化": 1,
+        "过拟合": 1,
+        "绩效归因": 1
+      },
+      "keyword_pass": 10
+    },
+    "liujin": {
+      "role": "流金",
+      "source_files_count": 9,
+      "source_lines": 3202,
+      "essence_files_count": 10,
+      "essence_lines": 233,
+      "keywords_coverage": {
+        "VaR": 1,
+        "CVaR": 1,
+        "回撤": 1,
+        "止损": 1,
+        "仓位": 1,
+        "过拟合": 1,
+        "压力测试": 1,
+        "风险": 1,
+        "纪律": 1,
+        "冷却期": 1
+      },
+      "keyword_pass": 10
+    },
+    "xinge": {
+      "role": "信鸽",
+      "source_files_count": 7,
+      "source_lines": 705,
+      "essence_files_count": 10,
+      "essence_lines": 236,
+      "keywords_coverage": {
+        "事件": 1,
+        "过滤": 1,
+        "标签": 1,
+        "公告": 1,
+        "采集": 1,
+        "催化": 1,
+        "P0": 1,
+        "去重": 1,
+        "Jaccard": 1,
+        "impact_score": 1
+      },
+      "keyword_pass": 10
+    },
+    "shanmao": {
+      "role": "山猫",
+      "source_files_count": 9,
+      "source_lines": 3128,
+      "essence_files_count": 10,
+      "essence_lines": 238,
+      "keywords_coverage": {
+        "宏观": 1,
+        "货币政策": 1,
+        "流动性": 1,
+        "情绪": 1,
+        "PMI": 1,
+        "CPI": 1,
+        "政策": 1,
+        "日历": 1,
+        "极端事件": 1,
+        "全球联动": 1
+      },
+      "keyword_pass": 10
+    },
+    "yaozi": {
+      "role": "腰子",
+      "source_files_count": 21,
+      "source_lines": 5995,
+      "essence_files_count": 10,
+      "essence_lines": 250,
+      "keywords_coverage": {
+        "PE": 1,
+        "MACD": 1,
+        "RSI": 1,
+        "Wyckoff": 1,
+        "背离": 1,
+        "板块轮动": 1,
+        "资金面": 1,
+        "仓位": 1,
+        "止损": 1,
+        "行为金融": 1
+      },
+      "keyword_pass": 10
+    }
+  },
+  "totals": {
+    "old_kb_files": 64,
+    "old_kb_lines": 19368,
+    "essence_files": 60,
+    "essence_lines": 1415,
+    "manifest_entries": 186,
+    "manifest_source_fulltext": 68,
+    "manifest_role_pack": 48
+  }
+}

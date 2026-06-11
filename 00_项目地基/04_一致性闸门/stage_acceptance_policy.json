@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "scope": "all staged project changes after phase 1.5",
+  "version": "1.2",
+  "scope": "all staged project changes after phase 1.5 — v1.2 replaces stage_pass_definition with role_evidence_signature_rules (STEP-2 fix)",
   "required_sections": [
     "阶段信息",
     "流程编号、阶段门与唤醒角色",
@@ -39,6 +39,22 @@
     "execution_models": ["DeepSeek", "Claude", "Codex"],
     "models_are_project_roles": false
   },
+  "role_evidence_signature_rules": {
+    "role_evidence_signature_required": true,
+    "role_output_requires_evidence": true,
+    "execution_model_cannot_sign_as_project_role": true,
+    "missing_required_role_output_blocks_stage": true,
+    "pipeline_pass_cannot_replace_stage_pass": true,
+    "financial_flows": ["F-ANALYSIS", "F-ROLE"],
+    "production_keywords": [
+      "production",
+      "cutover",
+      "guarded-cutover",
+      "daily_workflow",
+      "daily_orchestrator"
+    ],
+    "required_confirmers_for_financial_or_production": ["腰子", "用户明确确认"]
+  },
   "blocking_conditions": [
     "allowed_scope_violation",
     "unexplained_untracked_file",
@@ -51,8 +67,12 @@
     "awakened_role_output_missing",
     "dispatcher_signed_for_other_roles",
     "missing_G5_independent_review",
+    "missing_G6_release_archive",
     "missing_role_conclusion_table",
-    "execution_model_signed_as_project_role"
+    "execution_model_signed_as_project_role",
+    "pipeline_pass_substituted_for_stage_pass",
+    "role_output_blocked_stage",
+    "financial_or_production_missing_yaozi_or_user_confirm"
   ],
   "repair_rules": {
     "repair_must_be_same_stage": true,

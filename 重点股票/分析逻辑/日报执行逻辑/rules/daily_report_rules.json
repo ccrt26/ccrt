@@ -1,0 +1,73 @@
+{
+  "rule_id": "DRR-001",
+  "rule_name": "daily_report_core_rules",
+  "version": "3.7.1",
+  "description": "日报核心定位与执行规则——只回答三件事：状态变了吗、风险在哪、还值不值得跟",
+  "positioning": {
+    "what_it_is": "已关注标的的状态变化检查器 + 周报指令执行器 + 后评估留痕入口",
+    "what_it_is_not": ["荐股", "深度分析", "日频中期判断", "候选池排序"],
+    "three_questions": [
+      "今天状态变了吗",
+      "风险在哪里",
+      "还值不值得继续跟踪"
+    ]
+  },
+  "user_summary": {
+    "fixed_items": 5,
+    "items": [
+      {"order": 1, "label": "今日状态", "format": "A 继续跟踪 / B 等待确认 / C 降级观察 / D 移出否决"},
+      {"order": 2, "label": "今天变了什么", "format": "array, maxItems: 2"},
+      {"order": 3, "label": "主要风险", "format": "string"},
+      {"order": 4, "label": "接下来盯", "format": "string"},
+      {"order": 5, "label": "明确结论", "format": "继续跟踪 / 等待确认 / 降级观察 / 移出跟踪"}
+    ],
+    "must_fit_one_screen": true,
+    "conclusion_must_be_actionable": true
+  },
+  "forbidden_expressions": [
+    {"original": "后续关注", "replacement": "继续跟踪，明天只看XX元是否守住"},
+    {"original": "需进一步观察", "replacement": "等待确认，不新增观察动作"},
+    {"original": "风险可控但需警惕", "replacement": "降级观察，跌破XX且次日未收回"},
+    {"original": "短期扰动不影响长期", "replacement": "移出跟踪，除非mini深度分析重新通过"},
+    {"original": "数据表现较好建议留意", "replacement": "继续跟踪，核验逻辑未变"},
+    {"original": "基本面没问题技术面需观察", "replacement": "等待确认，不新增动作"},
+    {"original": "建议逢低关注", "replacement": "继续跟踪，XX元附近可关注（需用户主动决策）"},
+    {"original": "继续重点关注", "replacement": "不得使用——要写具体关注什么"}
+  ],
+  "a4_a5_a7_reference": {
+    "a4_instruction_format": {
+      "required_fields": ["instruction_id", "check_item", "threshold", "trigger_action", "event_level", "expected_trigger_date"],
+      "event_levels": ["P0", "P1", "P2"]
+    },
+    "a5_state_machine": "引用 state_machine.json，日报不自行修改",
+    "a7_risk_boundary": {
+      "veto_checks_count": 5,
+      "degradation_checks_count": 5,
+      "counter_evidence_required": true
+    }
+  },
+  "m_layer": {
+    "P0_trigger": [
+      "全A涨跌比 ≤ 1:5 且 跌停 ≥ 50家",
+      "DR007 ≥ 2.0% 且 央行连续3日净回笼",
+      "指数单日 -3%+ 或 重大黑天鹅事件"
+    ],
+    "P1_watch": [
+      "连续3日情绪极端（恐慌≥85或贪婪≥80）",
+      "连续3日温和恶化（如北向持续流出但单日未超阈）"
+    ],
+    "P0_max_duration_days": 3,
+    "after_P0_expiry": "宏观风险解除→恢复原状态；持续→正式状态重新评估"
+  },
+  "data_missing": {
+    "price_data_missing": "BLOCK（日报不生成）",
+    "other_data_missing_with_fallback": "自动切换备源，标注freshness",
+    "soft_data_missing_without_fallback": "加入degraded_items，WARN，不得用前一日数据充数",
+    "processing": "统一走degraded_items/WARN/BLOCK，禁止正文写'不可获取'糊过去"
+  },
+  "risk_light_override": {
+    "red_light": "日报结论必须降级，即使周报指令说'继续跟踪'",
+    "yellow_light": "标记风险条件，结论中添加'如XX则降级'的前置",
+    "green_light": "正常执行日报逻辑"
+  }
+}

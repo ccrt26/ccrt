@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/operation_card.schema.json",
+  "title": "操作卡输出 Schema",
+  "description": "次日用户操作卡——仅当用户提供持仓输入时生成 v3.7.1",
+  "type": "object",
+  "properties": {
+    "generated": {"type": "boolean"},
+    "card_type": {"type": "string", "enum": ["空仓", "持仓", "平仓后", "未生成"]},
+    "state": {"type": "string"},
+    "risk_light": {"type": "string"},
+    "daily_conclusion": {"type": "string"},
+    "quantity": {"type": ["number", "null"]},
+    "cost": {"type": ["number", "null"]},
+    "pnl_pct": {"type": ["number", "null"]},
+    "next_day_action": {"type": "string"},
+    "trigger_condition": {"type": "string"},
+    "stop_or_reduce_line": {"type": ["string", "null"]},
+    "position_cap_after_risk": {"type": "string"},
+    "risk_override": {"type": "boolean"},
+    "m_override": {"type": "boolean"},
+    "disclaimer": {"type": "string"}
+  }
+}

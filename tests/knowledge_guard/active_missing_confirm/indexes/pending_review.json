@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-10",
+  "total": 1,
+  "pending_items": [
+    {
+      "file": "knowledge_guard/active_missing_confirm/active/role_knowledge/CARD-20260610-998.md",
+      "card_id": "CARD-20260610-998",
+      "title": "错误：ACTIVE 缺确认",
+      "status": "ACTIVE",
+      "reason": "ACTIVE 前置条件不满足: confirmed_roles 为空（未经角色确认）"
+    }
+  ]
+}

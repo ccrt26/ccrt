@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-06-10",
+  "total": 0,
+  "note": "此索引是角色启动上下文唯一允许读取的知识入口",
+  "active_knowledge": [],
+  "rules": [
+    "角色启动上下文只读此索引指向的内容",
+    "不得加载 raw/cards/candidates/deprecated 内容"
+  ]
+}

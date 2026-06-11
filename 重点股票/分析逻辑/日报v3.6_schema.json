@@ -3,6 +3,7 @@
   "version": "3.6.0",
   "date": "2026-06-01",
   "design_principle": "深度分析是地图（baseline），日报是当天路况（delta）。日报不做深度分析，只做基线引用+增量变化+触发检查+明日动作。",
+  "authority_lineage": "第5阶段规则：baseline_id、数值、日期、板块等字段权威源由对应注册表定义，不是深度分析正文或系统附录。日报 MD 和 sidecar 必须服从权威注册表，不得引用 deep_* 旧格式。",
 
   "p0_decision_card": {
     "description": "P0明日决策卡——放在报告最前面，一屏看懂",
@@ -22,9 +23,9 @@
   },
 
   "baseline": {
-    "description": "引用深度分析official baseline，不重算",
+    "description": "引用深度分析official baseline，不重算。baseline_id 必须来自 baseline_registry.json，不得使用 deep_* 旧 ID。",
     "fields": {
-      "baseline_id": {"type": "string", "example": "600114_deep_20260529_v1.4", "required": true},
+      "baseline_id": {"type": "string", "example": "600114_W2026W22", "required": true, "note": "必须从 baseline_registry.json 查询获得，不得使用 deep_* 旧 ID"},
       "core_logic": {"type": "string", "required": true},
       "valuation_judgment": {"type": "string", "required": false},
       "evidence_level": {"type": "string", "required": false},

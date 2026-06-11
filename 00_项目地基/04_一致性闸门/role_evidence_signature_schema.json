@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "role_evidence_signature",
+  "description": "角色输出证据签名 schema — 用于 G0-G6 阶段门角色输出字段校验",
+  "type": "object",
+  "properties": {
+    "role_name": {
+      "type": "string",
+      "description": "角色名称（阿黑/腰子/山猫/信鸽/玉夜/流金/青山/情墨/千光/红枫/新安/红结/旧影）"
+    },
+    "stage_gate": {
+      "type": "string",
+      "pattern": "^G[0-6]$",
+      "description": "参与阶段门编号（G0/G1/G2/G3/G4/G5/G6）"
+    },
+    "responsibility": {
+      "type": "string",
+      "minLength": 1,
+      "description": "本阶段职责简要说明"
+    },
+    "check_scope": {
+      "type": "string",
+      "minLength": 1,
+      "description": "检查对象/文件路径/范围"
+    },
+    "conclusion": {
+      "type": "string",
+      "enum": ["PASS", "WARN", "BLOCK"],
+      "description": "结论：PASS=通过 / WARN=通过但有遗留 / BLOCK=阻断"
+    },
+    "evidence": {
+      "type": "string",
+      "minLength": 1,
+      "description": "依据或证据：文件路径、命令输出、规则编号等。不得为空。"
+    },
+    "residual_risk": {
+      "type": "string",
+      "description": "遗留问题或剩余风险说明"
+    },
+    "is_project_role_output": {
+      "type": "boolean",
+      "description": "TRUE=是项目角色本人正式输出（含人工审查）；FALSE=仅执行模型辅助输出"
+    },
+    "signed_by_execution_model": {
+      "type": "boolean",
+      "description": "TRUE=由执行模型（DeepSeek/Claude/Codex）代签输出；FALSE=由项目角色本人人工输出"
+    }
+  },
+  "required": [
+    "role_name",
+    "stage_gate",
+    "responsibility",
+    "check_scope",
+    "conclusion",
+    "evidence",
+    "is_project_role_output",
+    "signed_by_execution_model"
+  ],
+  "additionalProperties": false
+}

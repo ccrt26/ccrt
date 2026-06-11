@@ -1,0 +1,35 @@
+{
+  "rule_id": "VR-001",
+  "rule_name": "position_input_validation_rules",
+  "version": "3.7.2",
+  "description": "持仓输入校验规则——场景冲突/字段缺失/数量校验/日期校验",
+  "scenario_blocks": [
+    {"scenario": "空仓+加仓", "block_reason": "空仓状态不能执行加仓动作，应选择建仓"},
+    {"scenario": "空仓+减仓", "block_reason": "空仓状态不能执行减仓动作"},
+    {"scenario": "空仓+平仓", "block_reason": "空仓状态不能执行平仓动作"},
+    {"scenario": "持仓+建仓", "block_reason": "已有持仓不能执行建仓动作，应选择加仓"}
+  ],
+  "field_blocks": [
+    {"field": "transaction_price", "block_scenarios": ["建仓", "加仓", "减仓", "平仓"], "block_reason": "建仓/加仓/减仓/平仓必须填写成交价格"},
+    {"field": "transaction_quantity", "block_scenarios": ["建仓", "加仓", "减仓", "平仓"], "block_reason": "建仓/加仓/减仓/平仓必须填写成交数量"},
+    {"field": "cost_before", "block_scenarios": ["加仓", "减仓", "平仓"], "block_reason": "持仓操作必须填写操作前持仓成本"},
+    {"field": "position_before_quantity", "block_scenarios": ["加仓", "减仓", "平仓"], "block_reason": "持仓操作必须填写操作前持股数"}
+  ],
+  "value_blocks": [
+    {"field": "transaction_quantity", "block_condition": "<= 0", "block_scenarios": ["建仓", "加仓", "减仓", "平仓"], "block_reason": "成交数量必须大于0"},
+    {"field": "transaction_price", "block_condition": "<= 0", "block_scenarios": ["建仓", "加仓", "减仓", "平仓"], "block_reason": "成交价格必须大于0"}
+  ],
+  "quantity_validation": [
+    {"scenario": "减仓", "check": "transaction_quantity > position_before_quantity", "block_reason": "减仓数量不能超过当前持仓"},
+    {"scenario": "减仓", "check": "position_after_quantity < 0", "block_reason": "减仓后持仓不能为负数"},
+    {"scenario": "平仓", "check": "transaction_quantity != position_before_quantity", "block_reason": "平仓数量必须等于当前持仓数量"}
+  ],
+  "field_warns": [
+    {"field": "fee_amount", "warn_reason": "缺失时默认0，标注fee_assumed_zero=true"}
+  ],
+  "date_validation": [
+    {"condition": "transaction_date > report_trade_date", "action": "WARN", "detail": "未来交易记录，不进入当日日报操作卡"},
+    {"condition": "transaction_date < report_trade_date", "action": "ALLOW", "detail": "补录历史交易，允许"},
+    {"condition": "transaction_date == report_trade_date", "action": "ALLOW", "detail": "正常处理"}
+  ]
+}

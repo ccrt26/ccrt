@@ -8,19 +8,27 @@
       "fields": {
         "delta.close": {
           "sidecar_path": "$.delta.close",
-          "source_fields": ["close"],
+          "source_fields": [
+            "close"
+          ],
           "tolerance": 0.001,
           "description": "收盘价"
         },
         "delta.change_pct": {
           "sidecar_path": "$.delta.change_pct",
-          "source_fields": ["change_pct", "pct_chg", "changePercent"],
+          "source_fields": [
+            "change_pct",
+            "pct_chg",
+            "changePercent"
+          ],
           "tolerance": 0.05,
           "description": "涨跌幅(%)"
         },
         "delta.volume_wan_shou": {
           "sidecar_path": "$.delta.volume_wan_shou",
-          "source_fields": ["volume"],
+          "source_fields": [
+            "volume"
+          ],
           "unit_sidecar": "万手",
           "unit_source": "股",
           "conversion": "source_volume / 1000000.0 ≈ sidecar_value (万手=1,000,000股)",
@@ -35,35 +43,45 @@
       "fields": {
         "fund_flow.super_large_net": {
           "sidecar_path": "$.fund_flow_4level.super_large_net",
-          "source_fields": ["super_large_net"],
+          "source_fields": [
+            "super_large_net"
+          ],
           "unit": "万元",
           "tolerance_wan": 1.0,
           "description": "超大单净额（万元），sidecar字符串格式如\"+13649万\""
         },
         "fund_flow.large_net": {
           "sidecar_path": "$.fund_flow_4level.large_net",
-          "source_fields": ["large_net"],
+          "source_fields": [
+            "large_net"
+          ],
           "unit": "万元",
           "tolerance_wan": 1.0,
           "description": "大单净额"
         },
         "fund_flow.medium_net": {
           "sidecar_path": "$.fund_flow_4level.medium_net",
-          "source_fields": ["medium_net"],
+          "source_fields": [
+            "medium_net"
+          ],
           "unit": "万元",
           "tolerance_wan": 1.0,
           "description": "中单净额"
         },
         "fund_flow.small_net": {
           "sidecar_path": "$.fund_flow_4level.small_net",
-          "source_fields": ["small_net"],
+          "source_fields": [
+            "small_net"
+          ],
           "unit": "万元",
           "tolerance_wan": 1.0,
           "description": "小单净额"
         },
         "fund_flow.main_force_net": {
           "sidecar_path": "$.fund_flow_4level.main_force_net",
-          "source_fields": ["main_force_net"],
+          "source_fields": [
+            "main_force_net"
+          ],
           "unit": "万元",
           "tolerance_wan": 1.0,
           "description": "主力合计净额"
@@ -75,11 +93,17 @@
       "date_format": "YYYYMMDD",
       "fields": {
         "margin.latest_date": {
-          "source_fields": ["trade_date"],
+          "source_fields": [
+            "trade_date"
+          ],
           "description": "融资融券最新交易日期。sidecar/MD中通常以文字形式出现。"
         },
         "margin.balance": {
-          "source_fields": ["rzye", "margin_balance", "financing_balance"],
+          "source_fields": [
+            "rzye",
+            "margin_balance",
+            "financing_balance"
+          ],
           "unit": "元",
           "description": "融资余额。"
         }
@@ -90,14 +114,51 @@
       "fields": {
         "sector_phase.phase": {
           "sidecar_path": "$.sector_phase.phase",
-          "source_fields": ["SectorPhase"],
-          "source_buckets": ["Recommendations", "AllStocks", "VetoedStocks"],
+          "source_fields": [
+            "SectorPhase"
+          ],
+          "source_buckets": [
+            "Recommendations",
+            "AllStocks",
+            "VetoedStocks"
+          ],
           "description": "板块相位"
         },
         "sector_phase.industry": {
           "sidecar_path": "$.sector_phase.industry",
-          "source_fields": ["Industry"],
+          "source_fields": [
+            "Industry"
+          ],
           "description": "行业名称"
+        }
+      }
+    },
+    "kline_l2": {
+      "enabled": false,
+      "phase": 2,
+      "authority_resolution": "L1 优先——当日用 L1 判断；历史回引用 L2",
+      "source_type": "sqlite",
+      "source_path_template": "代码文件/数据/l2_cache/l2_cache.db",
+      "source_table": "kline",
+      "date_format": "YYYY-MM-DD",
+      "lookup_key": "code",
+      "fields": {
+        "delta.close": {
+          "source_query": "SELECT close FROM kline WHERE code=? AND date=?",
+          "tolerance": 0.001,
+          "description": "收盘价——L2 SQLite 前复权"
+        },
+        "delta.change_pct": {
+          "source_query": "SELECT close FROM kline WHERE code=? AND date=?",
+          "description": "L2 不直接存涨跌幅，需从两日 close 计算",
+          "tolerance": 0.05
+        },
+        "delta.volume_wan_shou": {
+          "source_query": "SELECT volume FROM kline WHERE code=? AND date=?",
+          "unit_source": "股",
+          "conversion": "volume / 1000000.0",
+          "tolerance_wan_shou": 1.0,
+          "description": "成交量（万手）——L2 SQLite"
         }
       }
     }

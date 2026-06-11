@@ -1,0 +1,12 @@
+{
+  "rule_id": "DES-001",
+  "rule_name": "daily_report_entry_switch",
+  "version": "v0.1",
+  "description": "日报正式入口开关——Shadow并行模式，不切生产",
+  "formal_entry_enabled": false,
+  "shadow_enabled": true,
+  "dual_run_enabled": true,
+  "allowed_stock_count": 1,
+  "allowed_codes": ["600114"],
+  "rollback_policy": "disable_shadow_without_touching_formal_entry"
+}

@@ -1,0 +1,33 @@
+{
+  "rule_id": "FEE-001",
+  "rule_name": "a_share_default_fee_template",
+  "version": "0.1",
+  "description": "A股普通账户默认费用估算模板——仅用于日报操作卡参考，非真实账户费率承诺",
+  "template_name": "A股普通账户默认模板 v0.1",
+  "disclaimer": "本模板基于A股普通账户常见费率设定，不同券商和资金量级的实际费率可能不同。估算结果不构成任何形式的费用或收益承诺。",
+  "buy": {
+    "commission_rate": 0.00025,
+    "min_commission": 5.0,
+    "stamp_tax_rate": 0,
+    "transfer_fee_rate": 0.00001
+  },
+  "sell": {
+    "commission_rate": 0.00025,
+    "min_commission": 5.0,
+    "stamp_tax_rate": 0.0005,
+    "transfer_fee_rate": 0.00001
+  },
+  "calculation": {
+    "formula": "fee_amount = 佣金 + 印花税 + 过户费",
+    "commission": "max(成交金额 × 0.00025, 5)",
+    "stamp_tax_if_sell": "成交金额 × 0.0005",
+    "stamp_tax_if_buy": 0,
+    "transfer_fee": "成交金额 × 0.00001"
+  },
+  "marking_rules": {
+    "fee_user_provided": "用户手填了 fee_amount → 使用用户值，标记 fee_user_provided=true",
+    "fee_estimated": "用户未填 fee_amount 但有 price×qty → 用模板估算，标记 fee_estimated=true",
+    "fee_assumed_zero": "无法估算（缺price或qty）→ fee_amount=0，标记 fee_assumed_zero=true"
+  },
+  "priority": ["fee_user_provided", "fee_estimated", "fee_assumed_zero"]
+}

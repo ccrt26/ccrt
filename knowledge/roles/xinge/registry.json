@@ -1,0 +1,402 @@
+{
+  "meta": {
+    "knowledge_base": "信鸽知识库",
+    "version": "1.0",
+    "created": "2026-06-10",
+    "updated": "2026-06-10",
+    "maintainer": "信鸽",
+    "total_entries": 22,
+    "description": "信鸽（信息采集员）角色知识条目注册表。XG-前缀表示信鸽知识域。"
+  },
+  "entries": [
+    {
+      "knowledge_id": "XG-001",
+      "title": "信鸽角色身份与能力边界",
+      "module": "01_角色职责与边界.md",
+      "source_type": "role_definition",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信息采集-信鸽.md §一/§二",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信息采集-信鸽.md",
+        ".claude/agents/信鸽-知识库/01-角色定位与职责.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "角色职责变更/新增核心能力需更新",
+      "deprecation_condition": "本角色被合并或职责重新划分"
+    },
+    {
+      "knowledge_id": "XG-002",
+      "title": "五层过滤漏斗（L1-L4）",
+      "module": "02_核心判断框架.md",
+      "source_type": "judgment_framework",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/03-五层过滤漏斗详解.md",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/03-五层过滤漏斗详解.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "过滤规则优化/新增过滤层级",
+      "deprecation_condition": "过滤体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-003",
+      "title": "事件分类与标签体系（6大类20+子类）",
+      "module": "02_核心判断框架.md",
+      "source_type": "classification_taxonomy",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/04-事件标签体系.md",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/04-事件标签体系.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "分类体系扩展/子类新增/权重调整",
+      "deprecation_condition": "标签体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-004",
+      "title": "impact_score评分公式与参数",
+      "module": "02_核心判断框架.md",
+      "source_type": "scoring_formula",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/04-事件标签体系.md §二",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/04-事件标签体系.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "权重参数调整/公式优化需腰子审批",
+      "deprecation_condition": "评分体系被完全替代"
+    },
+    {
+      "knowledge_id": "XG-005",
+      "title": "P0事件判定标准与上报协议",
+      "module": "02_核心判断框架.md",
+      "source_type": "alert_protocol",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/04-事件标签体系.md §六",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/04-事件标签体系.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "P0定义标准变更需腰子+流金审批",
+      "deprecation_condition": "P0体系被重构或风控策略变更"
+    },
+    {
+      "knowledge_id": "XG-006",
+      "title": "信息源可信度分级（S1-S5）",
+      "module": "03_输入证据与可信度规则.md",
+      "source_type": "source_credibility",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/05-数据源与API详情.md",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/05-数据源与API详情.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "新数据源引入/可信度调整需腰子+玉夜审批",
+      "deprecation_condition": "数据源架构完全重构"
+    },
+    {
+      "knowledge_id": "XG-007",
+      "title": "WAIT/WARN/BLOCK三档输出规则",
+      "module": "03_输入证据与可信度规则.md",
+      "source_type": "quality_flag_protocol",
+      "source_level": "S1",
+      "source_ref": "03_输入证据与可信度规则.md §四（新增规则）",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "三档规则细化或调整",
+      "deprecation_condition": "数据质量标识体系被完全替代"
+    },
+    {
+      "knowledge_id": "XG-008",
+      "title": "cninfo数据源API配置",
+      "module": "03_输入证据与可信度规则.md",
+      "source_type": "api_configuration",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/05-数据源与API详情.md §二",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/05-数据源与API详情.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "API端点变更/参数调整",
+      "deprecation_condition": "cninfo被替代或下线"
+    },
+    {
+      "knowledge_id": "XG-009",
+      "title": "缓存策略与数据持久化",
+      "module": "03_输入证据与可信度规则.md",
+      "source_type": "caching_policy",
+      "source_level": "S2",
+      "source_ref": ".claude/agents/信鸽-知识库/05-数据源与API详情.md §七",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/05-数据源与API详情.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "缓存策略优化/存储架构变更",
+      "deprecation_condition": "数据持久化方案被完全替代"
+    },
+    {
+      "knowledge_id": "XG-010",
+      "title": "后评估反例机制",
+      "module": "04_后评估与知识进化.md",
+      "source_type": "post_evaluation",
+      "source_level": "S1",
+      "source_ref": "04_后评估与知识进化.md §二/§四（新增规则）",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "反例数据库独立实现（Phase 2）",
+      "deprecation_condition": "后评估体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-011",
+      "title": "信息源可信度动态调整规则",
+      "module": "04_后评估与知识进化.md",
+      "source_type": "credibility_adjustment",
+      "source_level": "S1",
+      "source_ref": "04_后评估与知识进化.md §三（新增规则）",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "调整规则需腰子审批后更新",
+      "deprecation_condition": "可信度体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-012",
+      "title": "知识进化审批流程",
+      "module": "04_后评估与知识进化.md",
+      "source_type": "change_management",
+      "source_level": "S1",
+      "source_ref": "04_后评估与知识进化.md §六（新增规则）",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "审批流程变更",
+      "deprecation_condition": "知识管理流程被完全重构"
+    },
+    {
+      "knowledge_id": "XG-013",
+      "title": "输出模板（完整版/精简版/单事件版）",
+      "module": "05_输出模板与表达约束.md",
+      "source_type": "output_template",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信息采集-信鸽.md + 统一解读/角色解释包/信鸽_事件解释包.md",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        "统一解读/角色解释包/信鸽_事件解释包.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "统一解读协议版本变更/输出结构优化",
+      "deprecation_condition": "输出标准被完全重构"
+    },
+    {
+      "knowledge_id": "XG-014",
+      "title": "信鸽输出红线（10条禁止事项）",
+      "module": "05_输出模板与表达约束.md",
+      "source_type": "compliance_rules",
+      "source_level": "S1",
+      "source_ref": "05_输出模板与表达约束.md §六（新增整合）",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信息采集-信鸽.md §2.2"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "红线规则变更",
+      "deprecation_condition": "红线条目被合并到金融铁律"
+    },
+    {
+      "knowledge_id": "XG-015",
+      "title": "统一解读协议对接规范",
+      "module": "05_输出模板与表达约束.md",
+      "source_type": "integration_protocol",
+      "source_level": "S1",
+      "source_ref": "统一解读/统一解读协议_v1.0.md + 05_输出模板与表达约束.md §五",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        "统一解读/角色解释包/信鸽_事件解释包.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "统一解读协议版本更新",
+      "deprecation_condition": "统一解读体系被重构或替代"
+    },
+    {
+      "knowledge_id": "XG-016",
+      "title": "重点股票档案（7只股票详细）",
+      "module": "02_核心判断框架.md",
+      "source_type": "stock_profile",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/06-重点股票档案.md",
+      "status": "active",
+      "can_support_event_routing": true,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/06-重点股票档案.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-12-10",
+      "upgrade_condition": "股票池变更/催化剂更新需腰子确认",
+      "deprecation_condition": "股票池被完全更换或监控体系变更"
+    },
+    {
+      "knowledge_id": "XG-017",
+      "title": "模式识别规则（三类模式A/B/C）",
+      "module": "02_核心判断框架.md",
+      "source_type": "pattern_recognition",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/07-模式识别规则.md",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/07-模式识别规则.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "Phase 2自动化实现/模式扩展",
+      "deprecation_condition": "模式识别体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-018",
+      "title": "信号升级矩阵（模式→影响分升级）",
+      "module": "02_核心判断框架.md",
+      "source_type": "signal_escalation",
+      "source_level": "S1",
+      "source_ref": ".claude/agents/信鸽-知识库/07-模式识别规则.md §四",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/07-模式识别规则.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "升级规则调整需青山+腰子验证",
+      "deprecation_condition": "信号评分体系被完全重构"
+    },
+    {
+      "knowledge_id": "XG-019",
+      "title": "调度与节假日处理规则",
+      "module": "01_角色职责与边界.md",
+      "source_type": "scheduling",
+      "source_level": "S2",
+      "source_ref": ".claude/agents/信鸽-知识库/02-采集配置与调度.md §三/§四",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/02-采集配置与调度.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "调度频率变更/节假日表更新",
+      "deprecation_condition": "调度系统被完全替换"
+    },
+    {
+      "knowledge_id": "XG-020",
+      "title": "Windows Task Scheduler配置",
+      "module": "01_角色职责与边界.md",
+      "source_type": "infrastructure",
+      "source_level": "S2",
+      "source_ref": ".claude/agents/信鸽-知识库/02-采集配置与调度.md §二",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/02-采集配置与调度.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2027-06-10",
+      "upgrade_condition": "任务配置变更/调度平台迁移",
+      "deprecation_condition": "Windows调度迁移到其他平台"
+    },
+    {
+      "knowledge_id": "XG-021",
+      "title": "多瑞医药后续催化剂待补充标记",
+      "module": "02_核心判断框架.md",
+      "source_type": "known_gap",
+      "source_level": "S3",
+      "source_ref": ".claude/agents/信鸽-知识库/06-重点股票档案.md",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/06-重点股票档案.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-09-10",
+      "upgrade_condition": "待腰子确认多瑞医药的催化剂细节后更新",
+      "deprecation_condition": "股票从重点股票池移除"
+    },
+    {
+      "knowledge_id": "XG-022",
+      "title": "上海电气后续催化剂待补充标记",
+      "module": "02_核心判断框架.md",
+      "source_type": "known_gap",
+      "source_level": "S3",
+      "source_ref": ".claude/agents/信鸽-知识库/06-重点股票档案.md",
+      "status": "active",
+      "can_support_event_routing": false,
+      "owner_role": "信鸽",
+      "related_old_files": [
+        ".claude/agents/信鸽-知识库/06-重点股票档案.md"
+      ],
+      "review_date": "2026-06-10",
+      "valid_until": "2026-09-10",
+      "upgrade_condition": "待腰子确认上海电气的催化剂细节后更新",
+      "deprecation_condition": "股票从重点股票池移除"
+    }
+  ]
+}

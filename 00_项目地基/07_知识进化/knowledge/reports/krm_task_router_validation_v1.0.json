@@ -1,0 +1,13 @@
+{
+  "stage": "G3-KRM-TASK-ROUTER-v1.0",
+  "result": "PASS",
+  "route_count": 10,
+  "missing_routes": [],
+  "bad_required_fields": [],
+  "bad_must_read_paths": [],
+  "bad_deep_read_paths": [],
+  "warn_optional_missing": [],
+  "bad_owner_role_mapping": [],
+  "bad_legacy_path_usage": [],
+  "result_reason": "所有检查通过"
+}

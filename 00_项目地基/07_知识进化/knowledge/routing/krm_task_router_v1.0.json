@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "version": "1.0",
+    "name": "KRM Task Router",
+    "description": "问题类型到读取包的机器可读路由表",
+    "generated": "2026-06-11",
+    "read_tier": "startup_router"
+  },
+  "routes": {
+    "flow_issue": {
+      "label": "流程/阶段门问题",
+      "triggers": ["流程", "阶段门", "G0", "G1", "G2", "G3", "G4", "G5", "G6", "能不能跳过", "谁确认", "谁复查", "谁放行"],
+      "must_read": [
+        "00_项目地基/05_流程与角色/L1_FLOW_流程路由与阶段门_v1.0.md",
+        "00_项目地基/05_流程与角色/L1_ROLE_角色唤醒与输出规范_v1.0.md",
+        "00_项目地基/05_流程与角色/L1_TASK_阶段派单与执行模板_v1.0.md"
+      ],
+      "optional_read": ["00_项目地基/07_知识进化/L2_INDEX_知识库读取分层与执行文件清单_v1.0.md"],
+      "deep_read": [],
+      "owner_roles": ["阿黑", "旧影", "腰子"],
+      "decision_limit": "不得跳过标准阶段门；缺少角色输出时只能 WARN/BLOCK"
+    },
+    "knowledge_routing_issue": {
+      "label": "知识库读取/路由问题",
+      "triggers": ["读哪些文件", "知识库", "KRM", "读取包", "启动上下文", "全量读取", "路由"],
+      "must_read": [
+        "00_项目地基/07_知识进化/L2_INDEX_知识库读取分层与执行文件清单_v1.0.md",
+        "00_项目地基/07_知识进化/knowledge/README_KRM_知识入口.md",
+        "00_项目地基/07_知识进化/knowledge/manifest.json"
+      ],
+      "optional_read": ["00_项目地基/07_知识进化/knowledge/routing/krm_task_router_v1.0.json"],
+      "deep_read": [],
+      "owner_roles": ["旧影", "腰子"],
+      "decision_limit": "不得全量读取 knowledge；必须输出本次读取包"
+    },
+    "financial_redline": {
+      "label": "金融红线/风控问题",
+      "triggers": ["买入", "卖出", "加仓", "减仓", "止损", "仓位", "否决", "风险", "红线", "动作边界"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/shared/risk_rules/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/liujin/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/liujin/05_禁止事项.md",
+        "00_项目地基/07_知识进化/knowledge/roles/liujin/07_深度读取触发器.md"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/roles/yaozi/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yaozi/07_深度读取触发器.md"
+      ],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/liujin/SOURCE_INDEX.md"],
+      "owner_roles": ["流金", "腰子"],
+      "decision_limit": "触发 deep 但未读 source 原文时不得输出强动作结论"
+    },
+    "evidence_quality_issue": {
+      "label": "证据质量/数据口径问题",
+      "triggers": ["数据", "字段", "口径", "可信", "缺失", "缓存", "估算", "moneyflow", "北向", "融资融券", "财务数据"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/shared/evidence_rules/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yuye/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yuye/03_判断规则.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yuye/07_深度读取触发器.md"
+      ],
+      "optional_read": ["00_项目地基/07_知识进化/knowledge/roles/yaozi/README.md"],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/yuye/SOURCE_INDEX.md"],
+      "owner_roles": ["玉夜", "腰子"],
+      "decision_limit": "未确认数据口径时不得输出强结论"
+    },
+    "signal_validity_issue": {
+      "label": "信号有效性/因子问题",
+      "triggers": ["信号", "因子", "IC", "ICIR", "Rank IC", "胜率", "样本", "回测", "技术修复", "衰减", "过拟合"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/roles/qingshan/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/qingshan/03_判断规则.md",
+        "00_项目地基/07_知识进化/knowledge/roles/qingshan/07_深度读取触发器.md"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/shared/parameters/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/liujin/README.md"
+      ],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/qingshan/SOURCE_INDEX.md"],
+      "owner_roles": ["青山", "腰子"],
+      "decision_limit": "没有样本与有效性证据时不得输出确定性信号结论"
+    },
+    "event_catalyst_issue": {
+      "label": "事件/公告/催化问题",
+      "triggers": ["公告", "事件", "催化", "P0", "P1", "P2", "时间线", "证监会", "订单", "政策催化", "传闻"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/roles/xinge/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/xinge/03_判断规则.md",
+        "00_项目地基/07_知识进化/knowledge/roles/xinge/07_深度读取触发器.md",
+        "00_项目地基/07_知识进化/knowledge/shared/evidence_rules/README.md"
+      ],
+      "optional_read": ["00_项目地基/07_知识进化/knowledge/roles/shanmao/README.md"],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/xinge/SOURCE_INDEX.md"],
+      "owner_roles": ["信鸽", "腰子"],
+      "decision_limit": "未确认公告证据时不得把传闻写成事实"
+    },
+    "macro_environment_issue": {
+      "label": "宏观/行业/市场环境问题",
+      "triggers": ["宏观", "政策", "流动性", "行业相位", "市场情绪", "财政", "货币政策", "PMI", "CPI", "PPI", "全球联动"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/roles/shanmao/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/shanmao/03_判断规则.md",
+        "00_项目地基/07_知识进化/knowledge/roles/shanmao/07_深度读取触发器.md"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/shared/risk_rules/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/liujin/README.md"
+      ],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/shanmao/SOURCE_INDEX.md"],
+      "owner_roles": ["山猫", "腰子"],
+      "decision_limit": "宏观背景不得替代个股证据"
+    },
+    "integration_decision_issue": {
+      "label": "整合裁决/角色冲突问题",
+      "triggers": ["裁决", "结论强度", "角色冲突", "分歧", "状态机", "为什么不是", "why_not", "最终结论", "降级", "升级"],
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/shared/collaboration_rules/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yaozi/README.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yaozi/03_判断规则.md",
+        "00_项目地基/07_知识进化/knowledge/roles/yaozi/07_深度读取触发器.md"
+      ],
+      "optional_read": ["00_项目地基/07_知识进化/knowledge/shared/output_rules/README.md"],
+      "deep_read": ["00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/yaozi/SOURCE_INDEX.md"],
+      "owner_roles": ["腰子"],
+      "decision_limit": "角色冲突未裁决前不得输出最终强结论"
+    },
+    "post_evaluation_issue": {
+      "label": "后评估/知识进化问题",
+      "triggers": ["后评估", "复盘", "归因", "KnowledgeUpdateCandidate", "反例", "参数", "规则更新", "失败原因", "B层"],
+      "must_read": [
+        "00_项目地基/07_知识进化/scenario_adapters/L2_ADAPTER_B层后评估执行_v1.0.md",
+        "00_项目地基/07_知识进化/L2_SCHEMA_KnowledgeUpdateCandidate_v1.0.md",
+        "00_项目地基/07_知识进化/counterexamples/L2_COUNTEREXAMPLE_INDEX_v1.0.md",
+        "00_项目地基/07_知识进化/parameters/L2_PARAMETER_INDEX_v1.0.md"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/rules/role_capability_index_v1.3.json",
+        "00_项目地基/07_知识进化/knowledge/reports/role_capability_upgrade_validation_v1.3.json"
+      ],
+      "deep_read": [],
+      "owner_roles": ["旧影", "腰子"],
+      "decision_limit": "不得直接把单次失败写入核心知识；必须先生成候选或反例"
+    },
+    "output_format_issue": {
+      "label": "输出格式/报告结构问题",
+      "triggers": ["格式", "输出块", "报告结构", "PASS", "WARN", "BLOCK", "依据", "遗留问题", "归档"],
+      "must_read": [
+        "00_项目地基/05_流程与角色/L1_ROLE_角色唤醒与输出规范_v1.0.md",
+        "00_项目地基/07_知识进化/knowledge/shared/output_rules/README.md"
+      ],
+      "optional_read": ["00_项目地基/05_流程与角色/L1_TASK_阶段派单与执行模板_v1.0.md"],
+      "deep_read": [],
+      "owner_roles": ["旧影", "腰子"],
+      "decision_limit": "缺少结论/依据/遗留问题时不得放行"
+    }
+  }
+}

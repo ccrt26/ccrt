@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-06-10",
+  "total": 1,
+  "note": "此索引是角色启动上下文唯一允许读取的知识入口",
+  "active_knowledge": [
+    {
+      "file": "active/role_knowledge/CARD-20260610-001.md",
+      "card_id": "CARD-20260610-001",
+      "source_id": "SRC-20260610-001",
+      "title": "合法 ACTIVE 样例",
+      "status": "ACTIVE",
+      "primary_role": "青山",
+      "finance_aligned": true,
+      "validated": true,
+      "confirmed_roles": [
+        "青山"
+      ],
+      "valid_until": "2099-12-31",
+      "review_date": "2099-01-01",
+      "material_type": "策略方法",
+      "evidence_level": "high"
+    }
+  ],
+  "rules": [
+    "角色启动上下文只读此索引指向的内容",
+    "不得加载 raw/cards/candidates/deprecated 内容"
+  ]
+}

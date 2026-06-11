@@ -21,5 +21,61 @@
     "owner":            { "type": "string", "required": true },
     "status":           { "type": "enum", "values": ["active","degraded","retired"], "required": true }
   },
-  "sources": {}
+  "sources": {
+    "SRC-L1-0001": {
+      "source_id": "SRC-L1-0001",
+      "source_name": "L1 data_full.json — 代码文件/数据/data_full.json",
+      "source_type": "file",
+      "latency": "T+0",
+      "freshness_rule_id": "kline",
+      "authority_level": "L1",
+      "cost_profile": "低",
+      "owner": "玉夜",
+      "status": "active"
+    },
+    "SRC-L1-0002": {
+      "source_id": "SRC-L1-0002",
+      "source_name": "L1 kline_cache — 代码文件/数据/kline_cache/{code}.json",
+      "source_type": "file",
+      "latency": "T+0",
+      "freshness_rule_id": "kline",
+      "authority_level": "L1",
+      "cost_profile": "低",
+      "owner": "玉夜",
+      "status": "active"
+    },
+    "SRC-L1-0003": {
+      "source_id": "SRC-L1-0003",
+      "source_name": "L1 fund_flow_cache — 代码文件/数据/fund_flow_cache/{code}.json",
+      "source_type": "file",
+      "latency": "T+0",
+      "freshness_rule_id": "fund_flow",
+      "authority_level": "L1",
+      "cost_profile": "低",
+      "owner": "玉夜",
+      "status": "active"
+    },
+    "SRC-L2-0001": {
+      "source_id": "SRC-L2-0001",
+      "source_name": "L2 SQLite（Phase 2 待建设，仅注册）— 代码文件/数据/l2_cache/l2_cache.db",
+      "source_type": "file",
+      "latency": "T+1",
+      "freshness_rule_id": "kline_l2",
+      "authority_level": "L2",
+      "cost_profile": "中",
+      "owner": "玉夜",
+      "status": "degraded"
+    },
+    "SRC-L3-0001": {
+      "source_id": "SRC-L3-0001",
+      "source_name": "L3 archive（审计追溯）— 历史数据/04_原始数据/{year}/",
+      "source_type": "file",
+      "latency": "周级",
+      "freshness_rule_id": "kline",
+      "authority_level": "L3",
+      "cost_profile": "低",
+      "owner": "玉夜",
+      "status": "active"
+    }
+  }
 }

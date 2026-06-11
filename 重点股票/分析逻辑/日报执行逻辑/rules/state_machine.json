@@ -1,0 +1,82 @@
+{
+  "rule_id": "SM-001",
+  "rule_name": "daily_report_state_machine",
+  "version": "3.7.1",
+  "description": "日报 A/B/C/D/E/M 六状态状态机——与深度分析白皮书状态定义一致",
+  "states": {
+    "A": {
+      "name": "继续跟踪",
+      "description": "中期逻辑未证伪，短线健康",
+      "user_facing": "逻辑没坏，今天还能继续看",
+      "is_active": true,
+      "allowed_actions": ["日报正常跟踪", "指令检查"],
+      "E_substate_active": false
+    },
+    "B": {
+      "name": "等待确认",
+      "description": "中期逻辑没坏，但短期信号分歧",
+      "user_facing": "没坏，但先等确认",
+      "is_active": true,
+      "allowed_actions": ["只观察", "不新增动作"],
+      "E_substate_active": true
+    },
+    "E": {
+      "name": "试探跟踪",
+      "description": "B的子状态，小仓位模拟观察",
+      "user_facing": "只在等待确认中做小规模模拟观察",
+      "is_substate_of": "B",
+      "is_active": false,
+      "allowed_actions": ["模拟观察不超过2%仓位", "止损参考40.00"],
+      "activation_condition": "连续2日不创新低+成交量缩至5日均量以下+RSI<55（仅B状态下可触发）",
+      "max_duration_days": 5
+    },
+    "C": {
+      "name": "降级观察",
+      "description": "风险明显升高，展示优先级下降",
+      "user_facing": "风险变大，降低优先级",
+      "is_active": true,
+      "allowed_actions": ["降展示优先级", "触发D检查"],
+      "auto_trigger_D_after_days": 5
+    },
+    "D": {
+      "name": "移出/否决",
+      "description": "中期逻辑或硬风控被破坏",
+      "user_facing": "停止跟踪",
+      "is_active": false,
+      "reentry_to_B_conditions": [
+        "mini深度分析通过",
+        "至少1条L1新事实支撑",
+        "团队确认"
+      ]
+    },
+    "M": {
+      "name": "宏观覆写",
+      "description": "临时覆写动作/展示，不改个股基础状态",
+      "user_facing": "大盘环境压过个股判断，暂停动作",
+      "is_active": true,
+      "does_not_change_individual_state": true,
+      "P0_max_duration_days": 3
+    }
+  },
+  "transitions": [
+    {"from": "B", "to": "A", "condition": "H6验证通过(42元支撑确认+量价配合) + 无新增反证", "cooling_days_required": 3},
+    {"from": "A", "to": "B", "condition": "收盘跌破40元(MA5)且次日未收回"},
+    {"from": "B", "to": "E", "condition": "激活E子状态：连续2日不创新低+缩量+RSI<55（仅B下有效）"},
+    {"from": "B/A", "to": "C", "condition": "放量跌破MA20(约37.11)或资金面持续恶化"},
+    {"from": "C", "to": "D", "condition": "C维持≥5日无改善 / 跌破32元 / 并购失败 / SMC停滞 / 折叠屏明显低于预期"},
+    {"from": "D", "to": "B", "condition": "mini深度分析通过 + ≥1条L1新事实 + 团队确认"},
+    {"from": "M", "to": "any", "condition": "M-P0最长3日，超时解除覆写或正式重评估"}
+  ],
+  "action_change_map": {
+    "unchanged": "状态维持",
+    "upgrade": "B/E→A 或 风险折扣解除",
+    "downgrade": "A→B 或 B→C",
+    "stop_watch": "暂停动作（通常C或M状态）",
+    "reanalysis_required": "触发mini深度分析或全团咨询",
+    "cancelled": "永久移出（白皮书逻辑完全证伪）"
+  },
+  "red_light_override_logic": {
+    "description": "风控红灯状态下，即使周报说'继续跟踪'，日报结论也必须降级",
+    "优先级": "风险高于逻辑"
+  }
+}

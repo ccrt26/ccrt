@@ -1,21 +1,195 @@
 {
   "version": "1.0",
-  "generated_at": "2026-06-04",
+  "generated_at": "2026-06-09",
   "entries": [
-    {"legacy_path": "代码文件/每日荐股/scripts/daily_workflow.ps1", "python_replacement": "代码文件/每日荐股/scripts/daily_workflow.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/每日荐股/scripts/batch_data_collector.ps1", "python_replacement": "代码文件/每日荐股/scripts/batch_data_collector.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/重点股票/run_keystock_analysis.ps1", "python_replacement": "代码文件/重点股票/run_keystock_analysis.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
-    {"legacy_path": "代码文件/信鸽信息采集/pigeon_collector.ps1", "python_replacement": "代码文件/信鸽信息采集/pigeon_collector.py", "status": "forbidden", "forbidden_reason": "已有 Python 替代，双入口风险", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/监督机制/pipeline_engine.ps1", "python_replacement": "scripts/pipeline_engine.py", "status": "forbidden", "forbidden_reason": "已全面迁移至 Python 版", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/监督机制/run_full_audit.ps1", "python_replacement": "scripts/audit_scan.py", "status": "forbidden", "forbidden_reason": "已全面迁移至 Python 版", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/监督机制/check_redlines.ps1", "python_replacement": "代码文件/规则红线/check_redlines.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
-    {"legacy_path": "代码文件/监督机制/version_supervisor.ps1", "python_replacement": "代码文件/监督机制/version_supervisor.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
-    {"legacy_path": "模拟交易/交易引擎/sim_trading.ps1", "python_replacement": "模拟交易/交易引擎/sim_trading.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
-    {"legacy_path": "模拟交易/共享模块/quote_engine.ps1", "python_replacement": "模拟交易/共享模块/quote_engine.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
-    {"legacy_path": "模拟交易/共享模块/risk_framework.ps1", "python_replacement": "模拟交易/共享模块/risk_framework.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
-    {"legacy_path": "模拟交易/共享模块/trade_utils.ps1", "python_replacement": "模拟交易/共享模块/trade_utils.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "None"},
-    {"legacy_path": "代码文件/tools/health_check.ps1", "python_replacement": "代码文件/tools/health_check.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
-    {"legacy_path": "代码文件/tools/check_data_quality.ps1", "python_replacement": "代码文件/tools/check_data_quality.py", "status": "forbidden_when_python_available", "forbidden_reason": "已有 Python 替代", "allowed_exception": "当 Python 版不可用时的回退"},
-    {"legacy_path": "代码文件/tools/git_autocommit.ps1", "python_replacement": "无", "status": "under_review", "forbidden_reason": "待确认是否仍在使用", "allowed_exception": "待定"}
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/daily_workflow.ps1",
+      "python_replacement": "代码文件/每日荐股/scripts/daily_workflow.py",
+      "status": "forbidden",
+      "forbidden_reason": "已有 Python 替代，双入口风险",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/batch_data_collector.ps1",
+      "python_replacement": "代码文件/每日荐股/scripts/batch_data_collector.py",
+      "status": "forbidden",
+      "forbidden_reason": "已有 Python 替代，双入口风险",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/重点股票/run_keystock_analysis.ps1",
+      "python_replacement": "代码文件/重点股票/run_keystock_analysis.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/信鸽信息采集/pigeon_collector.ps1",
+      "python_replacement": "代码文件/信鸽信息采集/pigeon_collector.py",
+      "status": "forbidden",
+      "forbidden_reason": "已有 Python 替代，双入口风险",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/监督机制/pipeline_engine.ps1",
+      "python_replacement": "scripts/pipeline_engine.py",
+      "status": "forbidden",
+      "forbidden_reason": "已全面迁移至 Python 版",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/监督机制/run_full_audit.ps1",
+      "python_replacement": "scripts/audit_scan.py",
+      "status": "forbidden",
+      "forbidden_reason": "已全面迁移至 Python 版",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/监督机制/check_redlines.ps1",
+      "python_replacement": "代码文件/规则红线/check_redlines.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/监督机制/version_supervisor.ps1",
+      "python_replacement": "代码文件/监督机制/version_supervisor.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "模拟交易/交易引擎/sim_trading.ps1",
+      "python_replacement": "模拟交易/交易引擎/sim_trading.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "模拟交易/共享模块/quote_engine.ps1",
+      "python_replacement": "模拟交易/共享模块/quote_engine.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "模拟交易/共享模块/risk_framework.ps1",
+      "python_replacement": "模拟交易/共享模块/risk_framework.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "模拟交易/共享模块/trade_utils.ps1",
+      "python_replacement": "模拟交易/共享模块/trade_utils.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/tools/health_check.ps1",
+      "python_replacement": "代码文件/tools/health_check.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/tools/check_data_quality.ps1",
+      "python_replacement": "代码文件/tools/check_data_quality.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/tools/git_autocommit.ps1",
+      "python_replacement": "代码文件/tools/git_autocommit.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/archive_data.ps1",
+      "python_replacement": "代码文件/每日荐股/scripts/archive_data.py",
+      "status": "forbidden",
+      "forbidden_reason": "已有 Python 版 (archive_data.py) 纳入 L3 归档链路",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/gen_monthly_report.ps1",
+      "python_replacement": "待确认",
+      "status": "under_review",
+      "forbidden_reason": "需确认是否有 Python 替代（monthly_learn.ps1 关联）",
+      "allowed_exception": "待定"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/catchup_launcher.ps1",
+      "python_replacement": "待确认",
+      "status": "under_review",
+      "forbidden_reason": "需确认是否有 Python 替代",
+      "allowed_exception": "待定"
+    },
+    {
+      "legacy_path": "_win32_legacy/（整体目录）",
+      "python_replacement": "N/A",
+      "status": "legacy_isolated",
+      "forbidden_reason": "Windows 遗留 Hook 和配置资产的隔离目录，不纳入运营",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "_win32_legacy/PreToolUse_hook.ps1",
+      "python_replacement": "已由 Python 版替代",
+      "status": "legacy_isolated",
+      "forbidden_reason": "旧 Windows hook 实现，已由 Python 版替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "_win32_legacy/write_protection_hook.ps1",
+      "python_replacement": "已由 Python 版替代",
+      "status": "legacy_isolated",
+      "forbidden_reason": "旧 Windows hook 实现，已由 Python 版替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/tools/build_docx.ps1",
+      "python_replacement": "代码文件/tools/build_tools.py",
+      "status": "forbidden",
+      "forbidden_reason": "已有 Python build_tools.py 替代",
+      "allowed_exception": "None"
+    },
+    {
+      "legacy_path": "代码文件/tools/gen_pdf.ps1",
+      "python_replacement": "代码文件/tools/build_tools.py + 代码文件/tools/convert_md_to_pdf.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代（build_tools.py + convert_md_to_pdf.py），覆盖验证通过",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/tools/gen_eval_pdf.ps1",
+      "python_replacement": "代码文件/tools/build_tools.py + 代码文件/tools/convert_md_to_pdf.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代（build_tools.py + convert_md_to_pdf.py），覆盖验证通过",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/tools/gen_keystock_pdf.ps1",
+      "python_replacement": "代码文件/tools/build_tools.py + 代码文件/tools/convert_md_to_pdf.py + 代码文件/tools/gen_keystock_pdf.py",
+      "status": "forbidden_when_python_available",
+      "forbidden_reason": "已有 Python 替代（build_tools.py + convert_md_to_pdf.py + gen_keystock_pdf.py），覆盖验证通过",
+      "allowed_exception": "当 Python 版不可用时的回退"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/_split_fetcher.py",
+      "python_replacement": "N/A（工具脚本，非调度入口）",
+      "status": "active",
+      "forbidden_reason": "数据分片工具脚本，保留",
+      "allowed_exception": "N/A"
+    },
+    {
+      "legacy_path": "代码文件/每日荐股/scripts/_split_fetcher_v2.py",
+      "python_replacement": "N/A（工具脚本，非调度入口）",
+      "status": "active",
+      "forbidden_reason": "数据分片工具脚本 v2，保留",
+      "allowed_exception": "N/A"
+    }
   ]
 }

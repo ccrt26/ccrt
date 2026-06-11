@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>600114 东睦股份 — 深度分析周报 (样稿验证)</title>
+<style>
+@page { size: A4; margin: 15mm 18mm; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+    color: #333; font-size: 13px; line-height: 1.7;
+    padding: 15mm 18mm; max-width: 210mm; margin: 0 auto;
+}
+h1 { font-size: 22px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e;
+     padding-bottom: 8px; margin: 0 0 12px 0; }
+h2 { font-size: 17px; color: #16213e; border-bottom: 1.5px solid #16213e;
+     padding-bottom: 5px; margin: 20px 0 10px 0; }
+h3 { font-size: 14px; color: #333; margin: 14px 0 6px 0; }
+h4 { font-size: 13px; color: #555; margin: 10px 0 4px 0; }
+blockquote { background: #f0f2f5; border-left: 4px solid #1a1a2e;
+             padding: 8px 14px; margin: 10px 0; font-size: 12px; color: #555; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+        font-size: 12px; page-break-inside: avoid; }
+th { background: #1a1a2e; color: #fff; padding: 7px 10px;
+     text-align: center; font-weight: normal; }
+td { padding: 5px 10px; border: 1px solid #ddd; text-align: center; }
+tr:nth-child(even) { background: #f8f9fa; }
+strong { color: #16213e; }
+pre { font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif;
+      font-size: 12px; margin: 8px 0; white-space: pre-wrap; }
+code { background: #f0f2f5; padding: 1px 5px; border-radius: 3px; font-size: 12px;
+       font-family: "Microsoft YaHei", "微软雅黑", "SimHei", sans-serif; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 16px 0; }
+p { margin: 5px 0; }
+img { max-width: 100%; height: auto; }
+ul, ol { margin: 5px 0 5px 20px; }
+li { margin: 2px 0; }
+.disclaimer { font-size: 11px; color: #999; border-top: 1px solid #eee;
+              margin-top: 24px; padding-top: 10px; }
+</style>
+</head>
+<body>
+<h1>600114 东睦股份 — 深度分析周报 (样稿验证)</h1>
+<blockquote>
+<p><strong>报告日期</strong>: 2026年6月10日（周三） | <strong>方法论版本</strong>: v1.5 + 新G1/G2口径 | <strong>报告编号</strong>: SA-600114-2026W24
+<strong>样稿状态</strong>: ⛔ 样稿验证 / 非正式生产报告 / 不构成投资建议
+<strong>新口径依据</strong>: <code>L2_REPORT_分析逻辑重构_G1G2口径表_v1.0.md</code>，经金融全团(山猫→信鸽→玉夜→流金→青山→腰子)讨论，9条意见冻结后生成
+<strong>分析团队</strong>: 腰子（综合判断）+ 山猫（宏观行业）+ 信鸽（事件采集）+ 玉夜（数据诊断）+ 流金（风险评估）+ 青山（策略因子）</p>
+</blockquote>
+<hr />
+<blockquote>
+<p><strong>免责声明</strong>: 以下分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</blockquote>
+<hr />
+<h2>【A层】金融团队作业层</h2>
+<h3>A0. 本周版本与样本说明</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">项目</th>
+<th style="text-align: left;">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">报告周期</td>
+<td style="text-align: left;">2026-06-03（周三）至 2026-06-10（周三）</td>
+</tr>
+<tr>
+<td style="text-align: left;">数据截止</td>
+<td style="text-align: left;">2026-06-09收盘</td>
+</tr>
+<tr>
+<td style="text-align: left;">K线数据源</td>
+<td style="text-align: left;">kline_cache/600114.json，124条记录（2025-12-02 至 2026-06-09）</td>
+</tr>
+<tr>
+<td style="text-align: left;">基线参考</td>
+<td style="text-align: left;">baseline_2026W22（2026-05-29基准）</td>
+</tr>
+<tr>
+<td style="text-align: left;">事件数据源</td>
+<td style="text-align: left;">events_db.json（最后事件：5/28竞得土地使用权）</td>
+</tr>
+<tr>
+<td style="text-align: left;">财务数据源</td>
+<td style="text-align: left;">fina_indicator[tushare]（截至Q1 2026）</td>
+</tr>
+<tr>
+<td style="text-align: left;">注意</td>
+<td style="text-align: left;">本报告为G1/G2新口径样稿验证，不使用生产代码，不修改任何生产入口</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3>A1. 一句话工作结论</h3>
+<p><strong>短线状态明显修复，中期逻辑未证伪</strong>——5/29放量急跌后仅用7个交易日就完成了MA20测试+强势反弹+创阶段新高(42.66)的全周期，且6/9收盘42.08已站上所有均线。上周"等待缩量止跌"的日报指令被严格执行并验证。</p>
+<p>当前核心判断：<strong>从"等待确认"升级为"继续跟踪"，MA20已确认有效支撑。</strong></p>
+<blockquote>
+<p><strong>口径</strong>: 上周测试了"5/29是技术回调而非基本面恶化"这个假设，结果验证通过。但当前暂无新增L1基本面催化——5/28至今无新公告、无新增订单或客户披露。是否进入中期逻辑强化，仍需等待富驰并购、SMC客户/订单、Q2营收和毛利率数据验证。本周的优先任务是：守住反弹成果，不追高，确认量价配合，等待新增基本面催化。</p>
+</blockquote>
+<hr />
+<h3>A2. 周度核心假设表</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">假设</th>
+<th style="text-align: left;">证据等级</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: left;">下周验证</th>
+<th style="text-align: left;">反证条件</th>
+<th style="text-align: left;">宏观有效期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">H1</td>
+<td style="text-align: left;">折叠屏MIM铰链是核心中期主线</td>
+<td style="text-align: left;"><strong>L1</strong></td>
+<td style="text-align: left;">✅ 维持成立</td>
+<td style="text-align: left;">跟踪华为新机发布节奏、竞品精研科技动态</td>
+<td style="text-align: left;">折叠屏出货/客户份额明显低于预期</td>
+<td style="text-align: left;">12周</td>
+</tr>
+<tr>
+<td style="text-align: left;">H2</td>
+<td style="text-align: left;">SMC芯片电感是第二成长曲线</td>
+<td style="text-align: left;"><strong>L2a</strong></td>
+<td style="text-align: left;">✅ 推进正常</td>
+<td style="text-align: left;">跟踪首份客户/订单披露，产能建设进度</td>
+<td style="text-align: left;">产能建设停滞或首次投产延期 &gt;3个月</td>
+<td style="text-align: left;">6周</td>
+</tr>
+<tr>
+<td style="text-align: left;">H3</td>
+<td style="text-align: left;">富驰并购将带来EPS增厚</td>
+<td style="text-align: left;"><strong>L2a</strong></td>
+<td style="text-align: left;">● 待落地（预计6月）</td>
+<td style="text-align: left;">关注证监会注册进展，并表后商誉比例</td>
+<td style="text-align: left;">并购失败/延期/商誉/净资产&gt;50%</td>
+<td style="text-align: left;">4周</td>
+</tr>
+<tr>
+<td style="text-align: left;">H4</td>
+<td style="text-align: left;">毛利率改善反映产品结构升级</td>
+<td style="text-align: left;"><strong>L1/L2a</strong></td>
+<td style="text-align: left;">✅ 维持成立</td>
+<td style="text-align: left;">Q2毛利率是否维持26%+水平</td>
+<td style="text-align: left;">毛利率回落且营收增速未修复</td>
+<td style="text-align: left;">至Q2财报</td>
+</tr>
+<tr>
+<td style="text-align: left;">H5</td>
+<td style="text-align: left;">5/29急跌是技术性回调</td>
+<td style="text-align: left;"><strong>L2a</strong></td>
+<td style="text-align: left;">✅ <strong>已验证通过</strong></td>
+<td style="text-align: left;">本月无需再验证</td>
+<td style="text-align: left;">—（已验证）</td>
+<td style="text-align: left;">已关闭</td>
+</tr>
+<tr>
+<td style="text-align: left;">H6</td>
+<td style="text-align: left;">42元以上区域需量能确认</td>
+<td style="text-align: left;"><strong>L2b</strong></td>
+<td style="text-align: left;">● 待验证</td>
+<td style="text-align: left;">42元是否从阻力转为支撑</td>
+<td style="text-align: left;">缩量上涨或放量滞涨</td>
+<td style="text-align: left;">2周</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>证据等级说明（新版）</strong>:
+| 等级 | 定义 | H1-H6对应 |
+|:-----|:-----|:----------|
+| L1 | 已公告/财报/披露的硬事实 | H1（订单已确认）、H4（财务数据） |
+| L2a | 有明确预期窗口的推进事项 | H2（SMC产能）、H3（并购6月窗口）、H5（已验证） |
+| L2b | 有方向但无时间表的叙事 | H6（42元区域定为验证中） |
+| L3 | 推测/概念/无法落地叙事 | 当前无L3假设进入核心表 |</p>
+<hr />
+<h3>A3. 本周变化归因</h3>
+<h4>🔵 增强项（正面变化）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">变化</th>
+<th style="text-align: left;">详情</th>
+<th style="text-align: left;">对核心假设的影响</th>
+<th style="text-align: left;">玉夜数据确认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>价格突破42元</strong></td>
+<td style="text-align: left;">6/9收盘42.08，最高42.66，创阶段新高</td>
+<td style="text-align: left;">✅ H5验证（5/29回调确认结束），H6进入观察</td>
+<td style="text-align: left;">🟢 硬数据确认</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>MA20支撑有效性确认</strong></td>
+<td style="text-align: left;">6/1最低35.21（MA20~35.16），精确测试后反弹</td>
+<td style="text-align: left;">✅ 核心技术位守住，支撑假设成立</td>
+<td style="text-align: left;">🟢 硬数据确认</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>反弹幅度+19.5%</strong></td>
+<td style="text-align: left;">从6/1低点35.21至6/9高点42.66</td>
+<td style="text-align: left;">✅ 短期回补确认，资金态度转积极</td>
+<td style="text-align: left;">🟢 硬数据</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>量能配合合理</strong></td>
+<td style="text-align: left;">反弹期日均成交~4500万手，非极端放量</td>
+<td style="text-align: left;">✅ 健康回升，非游资一日游</td>
+<td style="text-align: left;">🟢 硬数据</td>
+</tr>
+</tbody>
+</table></div>
+<h4>🔴 削弱项（负面变化）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">变化</th>
+<th style="text-align: left;">详情</th>
+<th style="text-align: left;">对核心假设的影响</th>
+<th style="text-align: left;">玉夜数据确认</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>6/5日内大幅波动</strong></td>
+<td style="text-align: left;">开盘39.20→最高42.16→最低37.76→收40.39，振幅11.2%</td>
+<td style="text-align: left;">⚠️ 短线交易分歧存在</td>
+<td style="text-align: left;">🟢 硬数据</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6/8缩量回调</strong></td>
+<td style="text-align: left;">从42.16回调至39.93，成交量5898万手</td>
+<td style="text-align: left;">⚠️ 但6/9已收复，属于正常整理</td>
+<td style="text-align: left;">🟢 硬数据</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>基本面无新增催化</strong></td>
+<td style="text-align: left;">5/28至今无新公告、无新增订单披露</td>
+<td style="text-align: left;">⚠️ 缺乏L1级新催化，上涨靠技术面驱动</td>
+<td style="text-align: left;">🟡 软数据</td>
+</tr>
+</tbody>
+</table></div>
+<h4>⚪ 待验证项</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">待验证</th>
+<th style="text-align: left;">观察期</th>
+<th style="text-align: left;">预期验证窗口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">42元能否从阻力转为支撑</td>
+<td style="text-align: left;">6/10-6/17</td>
+<td style="text-align: left;">1-2周</td>
+</tr>
+<tr>
+<td style="text-align: left;">是否有新的并购/订单公告出现</td>
+<td style="text-align: left;">6月</td>
+<td style="text-align: left;">2-4周</td>
+</tr>
+<tr>
+<td style="text-align: left;">Q2营收增速是否能从+5.3%修复</td>
+<td style="text-align: left;">7月中旬</td>
+<td style="text-align: left;">约4-6周</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3>A4. 下周日报指令清单</h3>
+<blockquote>
+<p><strong>指令格式</strong>: 周报下发 → 信鸽每日扫描 → 玉夜数据确认 → 流金风控复核 → 腰子每日签字</p>
+</blockquote>
+<h4>📋 固定采集项（信鸽每日例行扫描）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指令ID</th>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">阈值/观察点</th>
+<th style="text-align: left;">触发后动作</th>
+<th style="text-align: left;">截止日期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">D-01</td>
+<td style="text-align: left;"><strong>价格是否守住42元</strong></td>
+<td style="text-align: left;">收盘≥42.00</td>
+<td style="text-align: left;">守住→H6技术触发项确认，状态维持A；不改变证据等级</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-02</td>
+<td style="text-align: left;"><strong>是否跌破40元</strong></td>
+<td style="text-align: left;">收盘&lt;40.00</td>
+<td style="text-align: left;">跌破→降回B(等待确认)，观察MA5是否失守</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-03</td>
+<td style="text-align: left;"><strong>成交量是否异常</strong></td>
+<td style="text-align: left;">单日&gt;6500万手（&gt;5日均量1.4x）且收阴</td>
+<td style="text-align: left;">放量阴线→WARN，腰子复核</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-04</td>
+<td style="text-align: left;"><strong>是否出现并购公告</strong></td>
+<td style="text-align: left;">富驰并购进展</td>
+<td style="text-align: left;">落地→更新EPS/商誉假设，L2a→L1</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-05</td>
+<td style="text-align: left;"><strong>是否出现SMC客户/订单信息</strong></td>
+<td style="text-align: left;">从产能叙事到订单验证</td>
+<td style="text-align: left;">若出现→H2证据等级可讨论上修至L1</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-06</td>
+<td style="text-align: left;"><strong>折叠屏链条负面变化</strong></td>
+<td style="text-align: left;">出货、客户、竞品明显恶化</td>
+<td style="text-align: left;">若出现→H1反证审查启动</td>
+<td style="text-align: left;">每日</td>
+</tr>
+<tr>
+<td style="text-align: left;">D-07</td>
+<td style="text-align: left;"><strong>是否有增持/回购/股权变动</strong></td>
+<td style="text-align: left;">董监高增持、回购计划、大宗交易</td>
+<td style="text-align: left;">记录并评估对资金面的影响</td>
+<td style="text-align: left;">每日</td>
+</tr>
+</tbody>
+</table></div>
+<h4>📋 开放采集项（信鸽自主上报）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">信鸽分类标签</th>
+<th style="text-align: left;">上报条件</th>
+<th style="text-align: left;">P0直推腰子条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>行业异动</strong></td>
+<td style="text-align: left;">行业/产业新闻</td>
+<td style="text-align: left;">同行业竞品公告或行业政策变化</td>
+<td style="text-align: left;">直接影响东睦核心假设</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>技术面异动</strong></td>
+<td style="text-align: left;">技术面</td>
+<td style="text-align: left;">盘中单波跌幅&gt;3%且无明确原因</td>
+<td style="text-align: left;">日内累积跌幅&gt;5%</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>突发利空</strong></td>
+<td style="text-align: left;">法律法规/监管</td>
+<td style="text-align: left;">立案、问询函、立案调查</td>
+<td style="text-align: left;">任何监管类P0事件</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3>A5. 状态机与触发规则</h3>
+<pre><code>当前状态：A（继续跟踪）
+                    ▲
+                    │ 缩量确认支撑+趋势修复
+                    │
+      ┌─────────────┴─────────────┐
+      │                           │
+  B(等待确认) ◄───► A(继续跟踪)     M(宏观覆写层)
+  E(试探跟踪) ═══ B的子状态          │
+      │                           │  宏观突变→批量降级
+      │  恶化                     ▼
+      ▼                        C(降级观察)
+  C(降级观察) ──────────────► D(移出/否决)
+                                      │
+                                      │ 新L1事实→mini深度分析→回B
+                                      ▼
+                                (重评入口)
+</code></pre>
+<h4>状态说明</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">含义</th>
+<th style="text-align: left;">当前</th>
+<th style="text-align: left;">允许动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>A 继续跟踪</strong></td>
+<td style="text-align: left;">中期逻辑成立，短期趋势健康</td>
+<td style="text-align: left;">✅ <strong>当前状态</strong></td>
+<td style="text-align: left;">日报正常跟踪，不考虑减仓</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>B 等待确认</strong></td>
+<td style="text-align: left;">中期逻辑未坏，但短期信号分歧</td>
+<td style="text-align: left;">升级条件：H6验证通过后持续</td>
+<td style="text-align: left;">只观察，不追，不建仓</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>E 试探跟踪</strong>（B的子状态）</td>
+<td style="text-align: left;">满足小仓位观察条件</td>
+<td style="text-align: left;">未触发</td>
+<td style="text-align: left;">可模拟交易试探3%，止损40.00</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>C 降级观察</strong></td>
+<td style="text-align: left;">风险明显升高</td>
+<td style="text-align: left;">触发条件：跌破40且次日未收回</td>
+<td style="text-align: left;">降展示优先级</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>D 移出/否决</strong></td>
+<td style="text-align: left;">中期逻辑被破坏</td>
+<td style="text-align: left;">触发条件：跌破32或核心反证出现</td>
+<td style="text-align: left;">停止推荐</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>M 宏观覆写</strong></td>
+<td style="text-align: left;">宏观突变批量覆写</td>
+<td style="text-align: left;">参见A5.1</td>
+<td style="text-align: left;">山猫+腰子双签</td>
+</tr>
+</tbody>
+</table></div>
+<h4>触发条件</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">触发</th>
+<th style="text-align: left;">从</th>
+<th style="text-align: left;">到</th>
+<th style="text-align: left;">具体条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">升级</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">H6验证通过（42元支撑确认+量价配合）+ 无新增反证</td>
+</tr>
+<tr>
+<td style="text-align: left;">降级</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">收盘跌破40元(MA5)且次日未收回</td>
+</tr>
+<tr>
+<td style="text-align: left;">试探</td>
+<td style="text-align: left;">B→E</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">连续2日不创新低+成交量缩至5日均量以下+RSI&lt;55</td>
+</tr>
+<tr>
+<td style="text-align: left;">降级</td>
+<td style="text-align: left;">B/A</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">放量跌破MA20(约37.11)或资金面持续恶化</td>
+</tr>
+<tr>
+<td style="text-align: left;">否决</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">跌破32元/并购失败/SMC停滞/折叠屏明显低于预期</td>
+</tr>
+<tr>
+<td style="text-align: left;">重评</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">出现至少1个L1新事实支撑 → mini深度分析通过</td>
+</tr>
+</tbody>
+</table></div>
+<h4>A5.1 M层（宏观覆写检查）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">当前判断</th>
+<th style="text-align: left;">山猫意见</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">宏观环境对东睦当前阶段是否有区分度</td>
+<td style="text-align: left;"><strong>弱</strong></td>
+<td style="text-align: left;">当前宏观无增量区分度。市场整体震荡格局未变，流动性正常，无系统性事件。东睦走势主要受个股基本面+技术面驱动</td>
+</tr>
+<tr>
+<td style="text-align: left;">需要M层覆写的条件</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">流动性突然收紧、指数单日跌幅&gt;3%、相关政策方向突变</td>
+</tr>
+<tr>
+<td style="text-align: left;">当前M层状态</td>
+<td style="text-align: left;">🟢 <strong>正常</strong></td>
+<td style="text-align: left;">无需覆写</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3>A6. 参数快照</h3>
+<blockquote>
+<p>参数版本: <code>v20260610-W1</code> | 生成时间: 2026-06-10 | 用途: 后评估时定位误差来源</p>
+</blockquote>
+<h4>技术位参数</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">参数</th>
+<th style="text-align: left;">当前值</th>
+<th style="text-align: left;">上次值(5/29)</th>
+<th style="text-align: left;">变化</th>
+<th style="text-align: left;">来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MA5</td>
+<td style="text-align: left;">40.25</td>
+<td style="text-align: left;">38.86</td>
+<td style="text-align: left;">+3.6%</td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+<tr>
+<td style="text-align: left;">MA10</td>
+<td style="text-align: left;">39.01</td>
+<td style="text-align: left;">36.17</td>
+<td style="text-align: left;">+7.8%</td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+<tr>
+<td style="text-align: left;">MA20</td>
+<td style="text-align: left;">37.11</td>
+<td style="text-align: left;">35.16</td>
+<td style="text-align: left;">+5.5%</td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>现价</strong></td>
+<td style="text-align: left;"><strong>42.08</strong></td>
+<td style="text-align: left;"><strong>36.62</strong></td>
+<td style="text-align: left;"><strong>+14.9%</strong></td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+<tr>
+<td style="text-align: left;">52周高</td>
+<td style="text-align: left;">42.66</td>
+<td style="text-align: left;">40.25</td>
+<td style="text-align: left;">+6.0%</td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+<tr>
+<td style="text-align: left;">阶段低(6/1)</td>
+<td style="text-align: left;">35.21</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">kline_cache</td>
+</tr>
+</tbody>
+</table></div>
+<h4>估值参数</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">参数</th>
+<th style="text-align: left;">当前值(6/9)</th>
+<th style="text-align: left;">上次值(5/29)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PE_TTM</td>
+<td style="text-align: left;">42.08 / 0.88 = <strong>47.8x</strong></td>
+<td style="text-align: left;">36.62 / 0.88 = 41.6x</td>
+</tr>
+<tr>
+<td style="text-align: left;">PB</td>
+<td style="text-align: left;">42.08 / 5.64 = <strong>7.5x</strong></td>
+<td style="text-align: left;">6.5x</td>
+</tr>
+<tr>
+<td style="text-align: left;">PEG（估）</td>
+<td style="text-align: left;">47.8 / ~20% ≈ <strong>2.4</strong></td>
+<td style="text-align: left;">2.1</td>
+</tr>
+</tbody>
+</table></div>
+<h4>量能与资金参数</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">参数</th>
+<th style="text-align: left;">当前值</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">近5日均量</td>
+<td style="text-align: left;">46,917,369</td>
+<td style="text-align: left;">较上周明显放大</td>
+</tr>
+<tr>
+<td style="text-align: left;">近20日均量</td>
+<td style="text-align: left;">36,268,650</td>
+<td style="text-align: left;">基线量能</td>
+</tr>
+<tr>
+<td style="text-align: left;">当前量比(6/9)</td>
+<td style="text-align: left;">1.13 vs 5dma</td>
+<td style="text-align: left;">正常量能</td>
+</tr>
+<tr>
+<td style="text-align: left;">换手率(6/9)</td>
+<td style="text-align: left;">~4.3%</td>
+<td style="text-align: left;">中等</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>参数变化解读</strong>: 因股价从36.62涨至42.08(+14.9%)，PE从41.6x升至47.8x，PB从6.5x升至7.5x。当前估值已处于偏贵区间（PE接近50x），但相对同业精研科技(~55x)/铂科新材(~80x)仍有折价。</p>
+</blockquote>
+<hr />
+<h3>A7. 风险边界</h3>
+<h4>7.1 否决项检查（每项单独判定）</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">否决项</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">核心业务逻辑被公告或财报证伪</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">5/28公告正面（扩产），无证伪</td>
+</tr>
+<tr>
+<td style="text-align: left;">重大财务真实性风险</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">财务可信度A级（5/29判断仍有效）</td>
+</tr>
+<tr>
+<td style="text-align: left;">关键催化失败且原估值依赖该催化</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">并购推进中，SMC扩产正常</td>
+</tr>
+<tr>
+<td style="text-align: left;">价格跌破硬风控位且无法收回</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">距32元铁底尚远(+31.5%)</td>
+</tr>
+<tr>
+<td style="text-align: left;">数据源关键字段缺失且无法解释</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">K线数据完整</td>
+</tr>
+</tbody>
+</table></div>
+<h4>7.2 降级项检查</h4>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">降级项</th>
+<th style="text-align: left;">当前状态</th>
+<th style="text-align: left;">阈值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">放量跌破核心支撑</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">支撑已从MA20(37.11)上移至MA5(40.25)/40元</td>
+</tr>
+<tr>
+<td style="text-align: left;">资金面持续恶化</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">反弹期间资金态度积极</td>
+</tr>
+<tr>
+<td style="text-align: left;">催化推迟但未失败</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">并购/产能进度正常</td>
+</tr>
+<tr>
+<td style="text-align: left;">估值上行但基本面未同步</td>
+<td style="text-align: left;">⚠️ <strong>需关注</strong></td>
+<td style="text-align: left;">PE 47.8x，若Q2营收仍+5.3%则估值承压</td>
+</tr>
+<tr>
+<td style="text-align: left;">L1/L2a下修，或L2b长期无进展</td>
+<td style="text-align: left;">🟢 未触发</td>
+<td style="text-align: left;">无下修理由</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>【B层】后评估基准层</h2>
+<h3>B1. 后评估问题</h3>
+<blockquote>
+<p>下周五（6/17）复盘时回答以下问题：</p>
+</blockquote>
+<ol>
+<li>42元是否确认从阻力转为支撑？（H6验证结果）</li>
+<li>6/1-6/9的反弹是否为<strong>有效的V型反转</strong>，还是需要二次确认？</li>
+<li>富驰并购是否在6月内出现实质性进展公告？</li>
+<li>6/1 MA20测试时最低35.21——<strong>是否应该作为未来支撑修正参考</strong>？</li>
+<li>本周日报指令(D-01~D-07)执行是否完整？是否有遗漏触发？</li>
+<li>PE从41.6x升至47.8x——<strong>估值容忍区间是否需要调整</strong>？</li>
+<li>用户摘要是否准确传达了"短线修复、中期未证伪"的状态？</li>
+</ol>
+<h3>B2. Shadow指令执行栏</h3>
+<blockquote>
+<p>记录上周(5/29-6/9)日报对旧版周报指令的执行情况。Shadow阶段：不进入生产入口，仅人工追溯。</p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">原指令(5/29报告)</th>
+<th style="text-align: left;">实际市场表现</th>
+<th style="text-align: left;">执行结论</th>
+<th style="text-align: left;">误差归因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MA20(35.16)是否守住</td>
+<td style="text-align: left;">✅ 6/1最低35.21，精确测试MA20后反弹</td>
+<td style="text-align: left;">指令明确，日报可执行</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr>
+<td style="text-align: left;">是否放量跌破34元</td>
+<td style="text-align: left;">✅ 未跌破，最低35.21</td>
+<td style="text-align: left;">指令明确</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr>
+<td style="text-align: left;">是否缩量止跌</td>
+<td style="text-align: left;">✅ 6/2缩量+6/3放量确认反弹</td>
+<td style="text-align: left;">指令明确</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr>
+<td style="text-align: left;">是否出现并购进展</td>
+<td style="text-align: left;">❌ 无新并购公告</td>
+<td style="text-align: left;">未触发</td>
+<td style="text-align: left;">正常等待</td>
+</tr>
+<tr>
+<td style="text-align: left;">是否出现SMC客户/订单</td>
+<td style="text-align: left;">❌ 无相关信息</td>
+<td style="text-align: left;">未触发</td>
+<td style="text-align: left;">正常等待</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Shadow结论</strong>: 5/29报告的日报指令清晰可执行，实际验证结果显示"等待MA20"的判断正确。仅并购/SMC进展未触发（正常等待），非指令设计问题。</p>
+<h3>B3. 可量化复盘指标</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">上周(5/29)</th>
+<th style="text-align: left;">本周(6/9)</th>
+<th style="text-align: left;">变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">价格</td>
+<td style="text-align: left;">36.62</td>
+<td style="text-align: left;">42.08</td>
+<td style="text-align: left;">+14.9%</td>
+</tr>
+<tr>
+<td style="text-align: left;">MA20</td>
+<td style="text-align: left;">35.16</td>
+<td style="text-align: left;">37.11</td>
+<td style="text-align: left;">+5.5%</td>
+</tr>
+<tr>
+<td style="text-align: left;">PE_TTM</td>
+<td style="text-align: left;">41.6x</td>
+<td style="text-align: left;">47.8x</td>
+<td style="text-align: left;">+14.9%</td>
+</tr>
+<tr>
+<td style="text-align: left;">量化综合评分(参考)</td>
+<td style="text-align: left;">6.1/10</td>
+<td style="text-align: left;">≈6.5-7.0(估)</td>
+<td style="text-align: left;">↑</td>
+</tr>
+<tr>
+<td style="text-align: left;">日报指令检查率</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">5/5</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">日报指令触发率</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">2/5</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;">触发判断准确率</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">2/2</td>
+<td style="text-align: left;">✅</td>
+</tr>
+</tbody>
+</table></div>
+<h3>B4. 参数修正入口</h3>
+<blockquote>
+<p>注：本栏不自动修改参数，仅供后评估时参考。</p>
+</blockquote>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">参数</th>
+<th style="text-align: left;">当前值</th>
+<th style="text-align: left;">建议保留/修正</th>
+<th style="text-align: left;">理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MA20支撑(5/29设定35.16)</td>
+<td style="text-align: left;">已上移至37.11</td>
+<td style="text-align: left;">✅ 自动跟随均线系统，不做人工修正</td>
+<td style="text-align: left;">均线自带移动属性</td>
+</tr>
+<tr>
+<td style="text-align: left;">硬止损位32元</td>
+<td style="text-align: left;">未变</td>
+<td style="text-align: left;">✅ 保留</td>
+<td style="text-align: left;">基于近3月底部，逻辑不变</td>
+</tr>
+<tr>
+<td style="text-align: left;">PE估值容忍上限</td>
+<td style="text-align: left;">当前默认150x</td>
+<td style="text-align: left;">✅ 保留</td>
+<td style="text-align: left;">成长股界定不变</td>
+</tr>
+<tr>
+<td style="text-align: left;">反弹突破量能阈值</td>
+<td style="text-align: left;">&gt;6500万手异常</td>
+<td style="text-align: left;">⚠️ 观察是否需要调整</td>
+<td style="text-align: left;">随日均量上升，阈值可能偏低</td>
+</tr>
+<tr>
+<td style="text-align: left;">状态机升级条件(H6→A)</td>
+<td style="text-align: left;">42元支撑确认</td>
+<td style="text-align: left;">✅ 保留</td>
+<td style="text-align: left;">尚未完全验证</td>
+</tr>
+</tbody>
+</table></div>
+<h3>B5. 字段价值评估入口</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">本周表现</th>
+<th style="text-align: left;">建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">核心假设表(H1-H6)</td>
+<td style="text-align: left;">✅ 有效区分了已验证和待验证假设</td>
+<td style="text-align: left;">保留，L2a/L2b拆分有价值</td>
+</tr>
+<tr>
+<td style="text-align: left;">日报指令清单(D-01~D-07)</td>
+<td style="text-align: left;">✅ 清晰可执行，本周验证率100%</td>
+<td style="text-align: left;">保留，建议成为强制章节</td>
+</tr>
+<tr>
+<td style="text-align: left;">状态机(A/B/C/D/E/M)</td>
+<td style="text-align: left;">A状态明确，B→A升级有触发条件</td>
+<td style="text-align: left;">保留5档+E子状态+M层设计</td>
+</tr>
+<tr>
+<td style="text-align: left;">参数快照(技术位/估值)</td>
+<td style="text-align: left;">✅ 本周验证了参数修正需求</td>
+<td style="text-align: left;">保留，建议增加自动计算</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shadow执行栏</td>
+<td style="text-align: left;">✅ 人工追溯可用</td>
+<td style="text-align: left;">保留至正式生产后转为自动</td>
+</tr>
+<tr>
+<td style="text-align: left;">后评估问题</td>
+<td style="text-align: left;">✅ 具体可回答</td>
+<td style="text-align: left;">保留，建议每题配指标阈值</td>
+</tr>
+<tr>
+<td style="text-align: left;">用户摘要</td>
+<td style="text-align: left;">✅ 本版用手写</td>
+<td style="text-align: left;">建议保持半自动格式</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>【C层】用户摘要层</h2>
+<h3>一句话结论</h3>
+<blockquote>
+<p><strong>短线状态明显修复，中期逻辑未证伪。MA20支撑验证有效，从"等待确认"升级为"继续跟踪"，但当前42元以上不宜追高。</strong></p>
+</blockquote>
+<h3>下周可做（≤5条）</h3>
+<ol>
+<li><strong>观察42元能否守住</strong>——如果6/10-6/17期间收盘站稳42元以上且量能配合，说明新支撑有效</li>
+<li><strong>关注并购/SMC进展</strong>——6月是富驰并购窗口，出现进展公告是正面催化</li>
+<li><strong>已有持仓者可持有</strong>——中期趋势健康，无需急卖</li>
+</ol>
+<h3>下周不做（≤3条）</h3>
+<ol>
+<li>⛔ <strong>不追高</strong>——从35.21到42.66已涨+21.2%，追高风险收益比不佳</li>
+<li>⛔ <strong>不因创新高而加仓</strong>——当前基本面无L1级新催化，上涨主要靠技术面修复</li>
+<li>⛔ <strong>不在单日涨幅&gt;3%后买入</strong>——东睦弹性大(日均振幅6%+)，应等回调</li>
+</ol>
+<h3>触发后变化</h3>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">触发器</th>
+<th style="text-align: left;">动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">若收盘站稳42元+量能正常（连续3日）</td>
+<td style="text-align: left;">维持A状态，当前判断有效</td>
+</tr>
+<tr>
+<td style="text-align: left;">若收盘跌破40元（MA5区域）</td>
+<td style="text-align: left;">转为B(等待确认)，暂不追加观察</td>
+</tr>
+<tr>
+<td style="text-align: left;">若出现并购完成公告</td>
+<td style="text-align: left;">正面催化，但需评估商誉后判断</td>
+</tr>
+<tr>
+<td style="text-align: left;">若放量跌回37元(MA20)以下</td>
+<td style="text-align: left;">降级至C(降级观察)，中期逻辑重评</td>
+</tr>
+</tbody>
+</table></div>
+<h3>风险边界（≤3条）</h3>
+<ol>
+<li><strong>PE已升至47.8x</strong>——从5/29的41.6x涨到47.8x，涨幅主要由价格驱动而非基本面。若Q2营收仍只有+5.3%，估值压力将上升</li>
+<li><strong>无新增基本面对话</strong>——5/28至6/9无新公告，当前的上涨是"旧逻辑+技术修复"</li>
+<li><strong>弹性大=双刃剑</strong>——近两周日均振幅6-8%，短期波动风险显著</li>
+</ol>
+<hr />
+<h2>证据等级快照（完整）</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">假设</th>
+<th style="text-align: left;">等级</th>
+<th style="text-align: left;">核实状态</th>
+<th style="text-align: left;">上次更新</th>
+<th style="text-align: left;">下步更新触发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">H1</td>
+<td style="text-align: left;">折叠屏MIM铰链为核心主线</td>
+<td style="text-align: left;">L1</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">5/29</td>
+<td style="text-align: left;">新订单/新机型发布</td>
+</tr>
+<tr>
+<td style="text-align: left;">H2</td>
+<td style="text-align: left;">SMC芯片电感为第二成长曲线</td>
+<td style="text-align: left;">L2a</td>
+<td style="text-align: left;">● 推进中</td>
+<td style="text-align: left;">5/28</td>
+<td style="text-align: left;">首份订单/客户披露</td>
+</tr>
+<tr>
+<td style="text-align: left;">H3</td>
+<td style="text-align: left;">富驰并购EPS增厚</td>
+<td style="text-align: left;">L2a</td>
+<td style="text-align: left;">● 待落地</td>
+<td style="text-align: left;">5/26</td>
+<td style="text-align: left;">证监会注册/并表</td>
+</tr>
+<tr>
+<td style="text-align: left;">H4a</td>
+<td style="text-align: left;">毛利率改善反映产品结构升级</td>
+<td style="text-align: left;">L1</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">Q1'26财报</td>
+<td style="text-align: left;">Q2毛利率数据</td>
+</tr>
+<tr>
+<td style="text-align: left;">H4b</td>
+<td style="text-align: left;">Q1营收增速放缓为短期波动</td>
+<td style="text-align: left;">L2b</td>
+<td style="text-align: left;">○ 待验证</td>
+<td style="text-align: left;">Q1'26财报</td>
+<td style="text-align: left;">Q2营收同比(7月)</td>
+</tr>
+<tr>
+<td style="text-align: left;">H5</td>
+<td style="text-align: left;">5/29回调为技术性非基本面</td>
+<td style="text-align: left;">L2a</td>
+<td style="text-align: left;">✅ <strong>已验证</strong></td>
+<td style="text-align: left;">6/9</td>
+<td style="text-align: left;">关闭</td>
+</tr>
+<tr>
+<td style="text-align: left;">H6</td>
+<td style="text-align: left;">42元可转为支撑</td>
+<td style="text-align: left;">L2b</td>
+<td style="text-align: left;">○ 观察中</td>
+<td style="text-align: left;">6/9</td>
+<td style="text-align: left;">站稳42元连续&gt;3日</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>✅ L1=已核实  ○ L2a/L2b=推进中待验证</p>
+</blockquote>
+<hr />
+<h2>日报指令最小模板（供每日分析参照）</h2>
+<pre><code>日期: 2026-06-__
+股票: 600114 东睦股份
+当日状态: A（继续跟踪）
+
+【状态检查】
+□ D-01 守住42元?     [守住/跌破42/跌破40]
+□ D-03 量能正常?      [正常/放量异常]
+□ D-04 并购公告?      [有/无]
+□ D-07 增持/回购?     [有/无]
+□ M层检查:              [正常/需覆写]
+
+【当日结论】
+今日状态: 维持/升级/降级
+触发指令: D-__ 触发/未触发
+后续动作: ______
+
+【后评估记录】
+是否需要更新后评估记录: [是/否]
+</code></pre>
+<hr />
+<h2>G4复查WARN处理记录</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">WARN编号</th>
+<th style="text-align: left;">问题</th>
+<th style="text-align: left;">数据核查</th>
+<th style="text-align: left;">归因</th>
+<th style="text-align: left;">处理</th>
+<th style="text-align: left;">状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">WARN-001</td>
+<td style="text-align: left;">技术状态修复被表述为中期逻辑强化</td>
+<td style="text-align: left;">价格、量能、MA20测试等硬数据基本无误；5/28后无新增公告、订单或客户披露</td>
+<td style="text-align: left;">分析逻辑问题 + 证据等级边界问题</td>
+<td style="text-align: left;">无新增L1/L2a基本面证据时，降口径为"短线状态明显修复，中期逻辑未证伪"</td>
+<td style="text-align: left;">✅ 已修订</td>
+</tr>
+</tbody>
+</table></div>
+<h2>G4 样稿自检</h2>
+<div style="overflow-x:auto;"><table>
+<thead>
+<tr>
+<th style="text-align: left;">#</th>
+<th style="text-align: left;">检查项</th>
+<th style="text-align: left;">结果</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">是否已把技术修复写成中期强化</td>
+<td style="text-align: left;">✅ <strong>已修订</strong></td>
+<td style="text-align: left;">降口径为"短线状态明显修复，中期逻辑未证伪"（WARN-001）</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">是否仍把技术位确认升级为L1</td>
+<td style="text-align: left;">✅ <strong>已修订</strong></td>
+<td style="text-align: left;">D-01改为"技术触发项确认，不改变证据等级"</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">E是否仍和A状态冲突</td>
+<td style="text-align: left;">✅ <strong>已排除</strong></td>
+<td style="text-align: left;">"模拟试探窗口已打开"已删除，A状态下E不活跃</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">后评估指标是否拆清楚检查率/触发率/准确率</td>
+<td style="text-align: left;">✅ <strong>已修订</strong></td>
+<td style="text-align: left;">B3拆为3行：检查率5/5、触发率2/5、准确率2/2</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">证据等级写法是否为L1/L2a/L2b/L3</td>
+<td style="text-align: left;">✅ <strong>已修订</strong></td>
+<td style="text-align: left;">A7.2降级项改为"L1/L2a下修，或L2b长期无进展"</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">是否包含G4复查WARN处理记录</td>
+<td style="text-align: left;">✅ <strong>已追加</strong></td>
+<td style="text-align: left;">详见G4复查WARN处理记录表</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">是否未把自动评分直接当结论</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">评分仅作参考指标（B3节）</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">是否未声称构成投资建议</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">首页+免责声明明确标注</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">是否未修改生产入口</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">仅为样稿文件，不触发任何生产脚本</td>
+</tr>
+<tr>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">是否明确本报告只是样稿验证</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">标题标注"样稿验证"，首页明确状态</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>自检结论</strong>: ✅ 全部10项通过，其中6项为修订后验证。</p>
+<hr />
+<p><em>本报告为G1/G2新口径样稿验证，不等同于formal pipeline PASS；不代替金融团队结论；不得据此自动推进生产代码改造。</em></p>
+<p class="disclaimer">免责声明：以上分析基于公开数据和分析框架，仅供参考，不构成投资建议。市场有风险，投资需谨慎。</p>
+</body>
+</html>

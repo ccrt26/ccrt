@@ -8,6 +8,10 @@
       {
         "matcher": "Bash(*)",
         "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/write_protection_hook.py\""
+      },
+      {
+        "matcher": "Read(*)",
+        "command": "python3 \"/Users/ccrt/ccrt/代码文件/监督机制/write_protection_hook.py\""
       }
     ]
   },

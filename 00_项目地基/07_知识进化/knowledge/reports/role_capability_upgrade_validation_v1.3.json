@@ -1,0 +1,31 @@
+{
+  "stage": "G3-KRM-ROLE-CAPABILITY-UPGRADE-FIX-v1.3.2",
+  "result": "PASS",
+  "active_rules": 118,
+  "draft_rules": 0,
+  "active_rule_counts": {
+    "玉夜": 20,
+    "青山": 20,
+    "流金": 20,
+    "信鸽": 15,
+    "山猫": 18,
+    "腰子": 25
+  },
+  "draft_rule_ids": [],
+  "rules_without_source_evidence": [],
+  "bad_evidence_lines": [],
+  "supplementary_active_rules": [],
+  "bad_source_paths": [],
+  "role_boundary_violations": [],
+  "weak_keyword_only_rules": [],
+  "source_coverage_by_active_rules": {
+    "total": 64,
+    "covered": 64,
+    "rate": 100.0
+  },
+  "missing_domains": {},
+  "min_active_ok": true,
+  "ability_not_decrease_check": "PASS",
+  "ability_improvement_check": "PASS",
+  "total_rules": 118
+}

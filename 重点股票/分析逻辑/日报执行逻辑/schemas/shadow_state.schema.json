@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/shadow_state.schema.json",
+  "title": "日报 Shadow State Schema",
+  "description": "每个重点股票每日日报生成后输出的状态快照 v3.7.1",
+  "type": "object",
+  "required": [
+    "shadow_id", "stock_code", "stock_name", "trade_date", "baseline_id",
+    "state_current", "state_previous", "action_change", "risk_light",
+    "l0_routing", "l1_authority", "l2_weekly_ref", "l3_daily_delta",
+    "l4_trigger_eval", "instruction_execution", "degraded_items", "user_summary"
+  ],
+  "properties": {
+    "shadow_id": {"type": "string", "pattern": "^SHADOW-[0-9]{8}-[0-9]{4}-[a-z0-9]{6}$"},
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "baseline_id": {"type": "string"},
+    "state_current": {"type": "string", "enum": ["A", "B", "C", "D", "E", "M"]},
+    "state_previous": {"type": "string", "enum": ["A", "B", "C", "D", "E", "M", "NONE"]},
+    "action_change": {"type": "string", "enum": ["unchanged", "upgrade", "downgrade", "stop_watch", "reanalysis_required", "cancelled"]},
+    "risk_light": {"type": "string", "enum": ["🟢", "🟡", "🔴"]},
+    "state_change_reason": {"type": "string"},
+    "l0_routing": {"type": "object"},
+    "l1_authority": {"type": "object"},
+    "l2_weekly_ref": {"type": "object"},
+    "l3_daily_delta": {"type": "object"},
+    "l4_trigger_eval": {"type": "object"},
+    "instruction_execution": {"type": "object"},
+    "degraded_items": {"type": "array"},
+    "user_summary": {"type": "object"},
+    "eval_hook_refs": {"type": "array", "items": {"type": "string"}},
+    "data_sources": {"type": "object"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "user_position_input": {"type": "object"},
+    "user_operation_card": {"type": "object"}
+  }
+}

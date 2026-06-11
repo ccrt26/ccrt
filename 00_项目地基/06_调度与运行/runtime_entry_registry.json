@@ -1,18 +1,21 @@
 {
   "version": "1.0",
-  "generated_at": "2026-06-04",
+  "generated_at": "2026-06-09",
   "entries": [
     {"entry": "generate_launchd.py", "authority": "primary_scheduler_registry", "path": "代码文件/每日荐股/scripts/generate_launchd.py", "platform": "macOS", "status": "active"},
     {"entry": "launchd", "authority": "primary_scheduler_runtime", "path": "system launchd", "platform": "macOS", "status": "active"},
-    {"entry": "daily_workflow.py", "authority": "scheduled_executable", "path": "代码文件/每日荐股/scripts/daily_workflow.py", "platform": "cross", "status": "active"},
-    {"entry": "batch_data_collector.py", "authority": "data_collector", "path": "代码文件/每日荐股/scripts/batch_data_collector.py", "platform": "cross", "status": "active"},
+    {"entry": "daily_workflow.py", "authority": "scheduled_executable", "path": "代码文件/每日荐股/scripts/daily_workflow.py", "platform": "cross", "status": "active", "note": "L1 日报编排入口（D04 Phase 2 前保持 L1 链路）"},
+    {"entry": "batch_data_collector.py", "authority": "data_collector", "path": "代码文件/每日荐股/scripts/batch_data_collector.py", "platform": "cross", "status": "active", "note": "数据采集核心（保持旧链路，不改读 D04）"},
     {"entry": "daily_orchestrator.py", "authority": "report_generator", "path": "代码文件/tools/daily_orchestrator.py", "platform": "cross", "status": "active"},
     {"entry": "check_runtime_entry_authority.py", "authority": "runtime_gate", "path": "scripts/check_runtime_entry_authority.py", "platform": "cross", "status": "active"},
     {"entry": "Windows Task Scheduler", "authority": "legacy_scheduler", "path": "N/A", "platform": "Windows", "status": "legacy_forbidden"},
     {"entry": "register_tasks.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/每日荐股/scripts/register_tasks.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
     {"entry": "setup_scheduler.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/每日荐股/scripts/setup_scheduler.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
     {"entry": "register_pigeon_scheduler.ps1", "authority": "legacy_scheduler_registration", "path": "代码文件/信鸽信息采集/register_pigeon_scheduler.ps1", "platform": "Windows", "status": "forbidden_current_runtime"},
-    {"entry": "batch_data_collector.ps1", "authority": "data_collector_legacy", "path": "代码文件/每日荐股/scripts/batch_data_collector.ps1", "platform": "Windows", "status": "forbidden_when_python_replacement_exists"},
-    {"entry": "daily_workflow.ps1", "authority": "workflow_legacy", "path": "代码文件/每日荐股/scripts/daily_workflow.ps1", "platform": "Windows", "status": "forbidden_when_python_replacement_exists"}
+    {"entry": "batch_data_collector.ps1", "authority": "data_collector_legacy", "path": "代码文件/每日荐股/scripts/batch_data_collector.ps1", "platform": "Windows", "status": "forbidden"},
+    {"entry": "daily_workflow.ps1", "authority": "workflow_legacy", "path": "代码文件/每日荐股/scripts/daily_workflow.ps1", "platform": "Windows", "status": "forbidden"},
+    {"entry": "check_d04_health.py", "authority": "d04_health_check", "path": "scripts/check_d04_health.py", "platform": "cross", "status": "active", "note": "D04 常规巡检—日检/周检入口"},
+    {"entry": "check_freshness_degradation_l2", "authority": "freshness_audit_l2", "path": "scripts/check_freshness_degradation.py --tier l2", "platform": "cross", "status": "active", "note": "L2 新鲜度检查（phase 2 启用）"},
+    {"entry": "check_numeric_source_consistency_kline_l2", "authority": "numeric_audit_l2", "path": "scripts/check_numeric_source_consistency.py (kline_l2)", "platform": "cross", "status": "active", "note": "L2 数值一致性检查（phase 2 启用）"}
   ]
 }
