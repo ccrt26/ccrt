@@ -1,0 +1,26 @@
+# === 铁律量化调度系统 (installed 2026-06-06) ===
+# git自动清扫
+7 * * * * /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/git_autosweep.py
+
+# 信鸽采集 (交易日19:00)
+7 19 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/daily_orchestrator.py --mode pigeon
+
+# 数据链 (交易日): 15:55日频同步 → 16:05加工归档 → 16:12健康检查 → 16:15signal
+55 15 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/tushare_history_sync.py --daily
+5 16 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/每日荐股/scripts/daily_workflow.py --mode data_only
+12 16 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/scripts/check_daily_data_chain_health.py --date $(date +\%Y\%m\%d)
+15 16 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/daily_orchestrator.py --mode daily
+
+# 深度分析 (周五20:30)
+30 20 * * 5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/daily_orchestrator.py --mode deep
+
+# 模拟交易引擎 (交易日9:45)
+45 9 * * 1-5 /bin/bash /Users/ccrt/ccrt/模拟交易/工具/cron_runner.sh
+
+# 后评估 (交易日17:20)
+20 17 * * 1-5 /usr/bin/python3 /Users/ccrt/ccrt/代码文件/每日荐股/scripts/daily_workflow.py --mode eval
+
+# 心跳监控 (每30分钟)
+3,33 * * * * /usr/bin/python3 /Users/ccrt/ccrt/代码文件/tools/scheduler_health_check.py
+
+# === 结束 ===

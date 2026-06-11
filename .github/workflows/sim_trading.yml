@@ -1,80 +1,26 @@
 name: 模拟交易自动执行
 
 on:
-  schedule:
-    - cron: "35 1 * * 1-5"  # 北京时间 09:35 周一至周五
-  workflow_dispatch:
+  workflow_dispatch:  # 仅允许手动触发，禁止定时自动模拟交易
 
 permissions:
-  contents: write
+  contents: read  # 只读，禁止自动 commit/push
 
 jobs:
-  sim-trading:
-    runs-on: windows-latest
+  sim-trading-dry-run:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure Git
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Dry Run Sim Trading (no trades executed)
         run: |
-          git config user.name "铁律量化"
-          git config user.email "tielv@bot"
-
-      - name: Concurrency Lock Check
-        run: |
-          $lockFile = ".github/workflows/lock.txt"
-          if (Test-Path $lockFile) {
-            $lockAge = (Get-Date) - (Get-Item $lockFile).LastWriteTime
-            if ($lockAge.TotalMinutes -lt 30) {
-              Write-Error "Another workflow is running (lock age: $($lockAge.TotalMinutes)min). Aborting."
-              exit 1
-            }
-            Write-Host "Stale lock (>30min), removing and proceeding."
-            Remove-Item $lockFile -Force
-          }
-          New-Item $lockFile -ItemType File -Force | Out-Null
-          Write-Host "Lock acquired."
-        shell: powershell
-
-      - name: Run Unified Sim Trading
-        run: |
-          $dateStr = Get-Date -Format 'yyyyMMdd'
-          Write-Host "=== 统一模拟交易: $dateStr ==="
-          & "模拟交易/sim_orchestrator.ps1" -Date $dateStr -RootDir $env:GITHUB_WORKSPACE -Force
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "Unified Sim Trading failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
-          }
-          Write-Host "Unified Sim Trading completed successfully."
-        shell: powershell
-
-      - name: Commit and Push
-        run: |
-          # 精确路径提交，避免临时文件/日志/无关变更混入
-          git add 历史数据/00_核心交易/ 历史数据/01_交易快照/
-          git add 模拟交易/每日荐股赛道/持仓记录/ 模拟交易/每日荐股赛道/每日快照/ 模拟交易/每日荐股赛道/绩效报告/
-          git add 模拟交易/共享模块/shared/ 模拟交易/日志/
-          git add 模拟交易/交易决策/ 2>$null
-
-          $beijingTime = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId((Get-Date), [System.TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
-          $dateStr = $beijingTime.ToString("yyyyMMdd")
-
-          $hasChanges = git diff --staged --quiet; $hasChanges = $LASTEXITCODE
-          if ($hasChanges -ne 0) {
-            git commit -m "sim: ${dateStr} 模拟交易自动执行"
-            git push
-            Write-Host "Changes committed and pushed."
-          } else {
-            Write-Host "No changes to commit."
-          }
-        shell: powershell
-
-      - name: Release Lock
-        if: always()
-        run: |
-          $lockFile = ".github/workflows/lock.txt"
-          if (Test-Path $lockFile) {
-            Remove-Item $lockFile -Force
-            Write-Host "Lock released."
-          }
-        shell: powershell
+          DATE=$(date -u +%Y%m%d)
+          echo "=== 模拟交易 dry-run: $DATE ==="
+          python3 模拟交易/sim_orchestrator.py --date "$DATE" --root-dir "$GITHUB_WORKSPACE" --dry-run
+          echo "=== Dry-run 完成（未执行实际交易） ==="

@@ -1,0 +1,53 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "check_id": "C1",
+      "field": "registry",
+      "status": "PASS",
+      "expected": "合法JSON",
+      "actual": "12 entries",
+      "message": ""
+    },
+    {
+      "check_id": "C2",
+      "field": "legacy_registry",
+      "status": "PASS",
+      "expected": "合法JSON",
+      "actual": "15 entries",
+      "message": ""
+    },
+    {
+      "check_id": "C3",
+      "field": "registry_entries",
+      "status": "PASS",
+      "expected": "['generate_launchd.py', 'launchd', 'daily_workflow.py', 'batch_data_collector.py', 'daily_orchestrator.py']",
+      "actual": "['generate_launchd.py', 'launchd', 'daily_workflow.py', 'batch_data_collector.py', 'daily_orchestrator.py']",
+      "message": ""
+    },
+    {
+      "check_id": "C4",
+      "field": "scheduler_ps1",
+      "status": "PASS",
+      "expected": "全部标记",
+      "actual": "全部标记",
+      "message": ""
+    },
+    {
+      "check_id": "C5",
+      "field": "legacy_ps1",
+      "status": "PASS",
+      "expected": "全部登记",
+      "actual": "全部登记",
+      "message": ""
+    },
+    {
+      "check_id": "C6",
+      "field": "collector_ps_fallback",
+      "status": "PASS",
+      "expected": "已阻断",
+      "actual": "sys.exit(1)",
+      "message": ""
+    }
+  ]
+}
