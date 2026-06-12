@@ -5,25 +5,118 @@
   "description": "原子能力注册表骨架。字段定义基于 P0-B design 方案，不注册真实能力。",
   "meta": {
     "id_format": "C-D{域编号}-{4位序号}",
-    "domain_enum": ["D01","D02","D03","D04","D05","D06","D07","D08","D09","D10","D11","D12"],
-    "status_enum": ["active","deprecated","retired"],
-    "cost_profile_structure": { "token": "integer", "api": "integer", "time": "string" }
+    "domain_enum": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10",
+      "D11",
+      "D12"
+    ],
+    "status_enum": [
+      "active",
+      "deprecated",
+      "retired"
+    ],
+    "cost_profile_structure": {
+      "token": "integer",
+      "api": "integer",
+      "time": "string"
+    }
   },
   "field_definitions": {
-    "capability_id":  { "type": "string", "pattern": "^C-D(0[1-9]|1[0-2])-[0-9]{4}$", "required": true },
-    "name":           { "type": "string", "max_length": 64, "required": true },
-    "domain":         { "type": "enum", "values": ["D01","D02","D03","D04","D05","D06","D07","D08","D09","D10","D11","D12"], "required": true },
-    "owner":          { "type": "string", "required": true },
-    "executor":       { "type": "string", "required": true },
-    "inputs":         { "type": "array", "items": "string", "required": true },
-    "outputs":        { "type": "array", "items": "string", "required": true },
-    "interface":      { "type": "string", "required": true },
-    "rules_applied":  { "type": "array", "items": "rule_id", "required": true },
-    "dependencies":   { "type": "array", "items": "capability_id", "required": false },
-    "cost_profile":   { "type": "object", "properties": { "token": "integer", "api": "integer", "time": "string" }, "required": true },
-    "audit_required": { "type": "boolean", "required": true },
-    "status":         { "type": "enum", "values": ["active","deprecated","retired"], "required": true },
-    "version":        { "type": "string", "required": true }
+    "capability_id": {
+      "type": "string",
+      "pattern": "^C-D(0[1-9]|1[0-2])-[0-9]{4}$",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "max_length": 64,
+      "required": true
+    },
+    "domain": {
+      "type": "enum",
+      "values": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06",
+        "D07",
+        "D08",
+        "D09",
+        "D10",
+        "D11",
+        "D12"
+      ],
+      "required": true
+    },
+    "owner": {
+      "type": "string",
+      "required": true
+    },
+    "executor": {
+      "type": "string",
+      "required": true
+    },
+    "inputs": {
+      "type": "array",
+      "items": "string",
+      "required": true
+    },
+    "outputs": {
+      "type": "array",
+      "items": "string",
+      "required": true
+    },
+    "interface": {
+      "type": "string",
+      "required": true
+    },
+    "rules_applied": {
+      "type": "array",
+      "items": "rule_id",
+      "required": true
+    },
+    "dependencies": {
+      "type": "array",
+      "items": "capability_id",
+      "required": false
+    },
+    "cost_profile": {
+      "type": "object",
+      "properties": {
+        "token": "integer",
+        "api": "integer",
+        "time": "string"
+      },
+      "required": true
+    },
+    "audit_required": {
+      "type": "boolean",
+      "required": true
+    },
+    "status": {
+      "type": "enum",
+      "values": [
+        "active",
+        "deprecated",
+        "retired"
+      ],
+      "required": true
+    },
+    "version": {
+      "type": "string",
+      "required": true
+    }
   },
   "_note_scene_pending": "场景编排能力调用配置尚未注册为独立能力条目。当前按四大业务主场景治理：重点股票分析（含深度分析/日报/临时分析）、每日荐股、保护机制、模拟交易。场景调用矩阵已整合至 00_项目地基/05_流程与角色/role_matrix.json（flow_role_mapping）和 00_项目地基/05_流程与角色/stage_gate_policy.json（typical_paths）。统一解读是 D07 原子能力 C-D07-0001，不是业务场景。待 D02/D04/D08-D12 能力注册后，再补充 D09 场景编排能力注册。原始说明保留于 CAP_能力场景与规则接入_v1.0.md。",
   "capabilities": {
@@ -33,12 +126,21 @@
       "domain": "D01",
       "owner": "信鸽",
       "executor": "红结",
-      "inputs": ["股票列表", "日期范围"],
-      "outputs": ["RawData(原始JSON/CSV)"],
+      "inputs": [
+        "股票列表",
+        "日期范围"
+      ],
+      "outputs": [
+        "RawData(原始JSON/CSV)"
+      ],
       "interface": "代码文件/数据/采集/",
       "rules_applied": [],
       "dependencies": [],
-      "cost_profile": { "token": 0, "api": 1, "time": "5s" },
+      "cost_profile": {
+        "token": 0,
+        "api": 1,
+        "time": "5s"
+      },
       "audit_required": true,
       "status": "active",
       "version": "1.0"
@@ -49,12 +151,23 @@
       "domain": "D03",
       "owner": "玉夜",
       "executor": "红结",
-      "inputs": ["RawData", "质量规则"],
-      "outputs": ["DataSnapshot"],
+      "inputs": [
+        "RawData",
+        "质量规则"
+      ],
+      "outputs": [
+        "DataSnapshot"
+      ],
       "interface": "scripts/check_*",
       "rules_applied": [],
-      "dependencies": ["C-D01-0001"],
-      "cost_profile": { "token": 0, "api": 0, "time": "1s" },
+      "dependencies": [
+        "C-D01-0001"
+      ],
+      "cost_profile": {
+        "token": 0,
+        "api": 0,
+        "time": "1s"
+      },
       "audit_required": true,
       "status": "active",
       "version": "1.0"
@@ -65,12 +178,23 @@
       "domain": "D05",
       "owner": "青山",
       "executor": "红结",
-      "inputs": ["DataSnapshot", "信号评分"],
-      "outputs": ["EvidencePackage"],
+      "inputs": [
+        "DataSnapshot",
+        "信号评分"
+      ],
+      "outputs": [
+        "EvidencePackage"
+      ],
       "interface": "AI结构化流程",
       "rules_applied": [],
-      "dependencies": ["C-D03-0001"],
-      "cost_profile": { "token": 1000, "api": 0, "time": "2s" },
+      "dependencies": [
+        "C-D03-0001"
+      ],
+      "cost_profile": {
+        "token": 1000,
+        "api": 0,
+        "time": "2s"
+      },
       "audit_required": true,
       "status": "active",
       "version": "1.0"
@@ -81,12 +205,22 @@
       "domain": "D06",
       "owner": "青山",
       "executor": "红结",
-      "inputs": ["DataSnapshot(量价/资金等)"],
-      "outputs": ["信号评分列表"],
+      "inputs": [
+        "DataSnapshot(量价/资金等)"
+      ],
+      "outputs": [
+        "信号评分列表"
+      ],
       "interface": "AI结构化流程",
       "rules_applied": [],
-      "dependencies": ["C-D03-0001"],
-      "cost_profile": { "token": 500, "api": 0, "time": "1s" },
+      "dependencies": [
+        "C-D03-0001"
+      ],
+      "cost_profile": {
+        "token": 500,
+        "api": 0,
+        "time": "1s"
+      },
       "audit_required": true,
       "status": "active",
       "version": "1.0"
@@ -97,15 +231,82 @@
       "domain": "D07",
       "owner": "腰子",
       "executor": "红结",
-      "inputs": ["DataSnapshot","EvidencePackage","RuleRefs(rule_id)","RoleOpinions","CounterOpinion","ScenarioContext"],
-      "outputs": ["InterpretationObject"],
+      "inputs": [
+        "DataSnapshot",
+        "EvidencePackage",
+        "RuleRefs(rule_id)",
+        "RoleOpinions",
+        "CounterOpinion",
+        "ScenarioContext"
+      ],
+      "outputs": [
+        "InterpretationObject"
+      ],
       "interface": "AI 结构化流程 — 集成全金融团意见 + 反方挑战，经腰子整合产出 InterpretationObject",
-      "rules_applied": ["R-FIN-0001", "R-ROL-0002"],
-      "dependencies": ["C-D01-0001","C-D03-0001","C-D05-0001","C-D06-0001"],
-      "cost_profile": { "token": 3000, "api": 0, "time": "15s" },
+      "rules_applied": [
+        "R-FIN-0001",
+        "R-ROL-0002"
+      ],
+      "dependencies": [
+        "C-D01-0001",
+        "C-D03-0001",
+        "C-D05-0001",
+        "C-D06-0001"
+      ],
+      "cost_profile": {
+        "token": 3000,
+        "api": 0,
+        "time": "15s"
+      },
       "audit_required": true,
       "status": "active",
       "version": "1.0"
+    },
+    "C-D04-0001": {
+      "capability_id": "C-D04-0001",
+      "name": "数据中台与历史分析服务",
+      "domain": "D04",
+      "owner": "玉夜",
+      "executor": "红结",
+      "inputs": [
+        "DataSnapshot",
+        "L1/L2/L3 historical data",
+        "quality_flag"
+      ],
+      "outputs": [
+        "HistoricalDataPackage",
+        "KlineSeries",
+        "ScoreHistoryIndex"
+      ],
+      "interface": "代码文件/数据/unified_data_source.py::UnifiedDataSource",
+      "rules_applied": [
+        "D04 v2.8 Phase 0 dual signoff"
+      ],
+      "dependencies": [
+        "C-D01-0001",
+        "C-D03-0001"
+      ],
+      "consumed_by": [
+        "C-D05-0001",
+        "C-D06-0001",
+        "C-D07-0001"
+      ],
+      "cost_profile": {
+        "token": 0,
+        "api": 0,
+        "time": "<50ms local query target"
+      },
+      "audit_required": true,
+      "status": "active",
+      "version": "1.0",
+      "registered_at": "2026-06-13T00:24:17",
+      "phase": "D04 v2.8 one-step landing",
+      "release_state": "g6_released",
+      "release_note": "G5 (旧影) + G6 (腰子) HMAC signoff completed. D04 v2.8 fully released.",
+      "last_fixed_at": "2026-06-13T00:38:20",
+      "released_at": "2026-06-13T01:09:45",
+      "g5_signoff": "09ee6db1392def8294c70c7a320f7c5070f0ae3c9e32175708bd6b451af41543",
+      "g6_signoff": "fa9e4ddc0163650ca89e2edb3b495c0b79d47d8b18d7050c33344a60088f42dc"
     }
   }
 }

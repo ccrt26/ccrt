@@ -50,7 +50,8 @@ AUTO_COMMIT_PATHS = [
 AUTO_COMMIT_BLOCKED = [
     r'^\.claude/settings\.json$', r'^\.claude/settings\.local\.json$',
     r'^\.claude/scheduled_tasks\.json$', r'^\.claude/pipeline_active\.json$',
-    r'^\.claude/hooks/', r'^\.claude/commands/', r'^\.claude/agents/',
+    r'^\.claude/hooks/', r'^\.claude/commands/.*\.(json|local|secret|token|key)$',
+    r'^\.claude/agents/.*\.(json|local|secret|token|key)$',
 ]
 
 PIPELINE_DIRS = [

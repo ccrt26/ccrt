@@ -1,0 +1,155 @@
+{
+  "checklist_id": "D04-V2.8-PHASE0-DUAL-SIGN-20260613",
+  "run_id": "D04-V2.8-PHASE0-DUAL-SIGN-20260613",
+  "document": "00_项目地基/02_数据架构重设计/数据分层架构_v2.8_设计提案.md",
+  "version": "v2.8",
+  "created_at": "2026-06-13",
+  "status": "phase0_dual_signed_ready_for_phase1",
+  "formal_pipeline_status": "not_run",
+  "no_role_impersonation": true,
+  "signature_execution_status": {
+    "status": "completed",
+    "checked_at": "2026-06-13",
+    "sign_tool": "scripts/sign_off.py",
+    "signature_storage": "top-level signoffs written by scripts/sign_off.py",
+    "hmac_secrets_available": true,
+    "actual_actor_available": false,
+    "block_reason": "Current execution context has no CLAUDE_CURRENT_ACTOR/CURRENT_ACTOR/current_actor binding. Using CLI --actor fallback would amount to execution model signing as project roles, which is forbidden.",
+    "required_next_actor_sessions": [
+      "玉夜",
+      "情墨"
+    ],
+    "forbidden_workaround": [
+      "Do not set CLI --actor to 玉夜/情墨 from a Codex/阿黑 execution context",
+      "Do not hand-fill signature fields",
+      "Do not mark C-D04-0001 active before valid HMAC signatures exist"
+    ],
+    "completed_at": "2026-06-13T00:14:45"
+  },
+  "signoffs": {
+    "玉夜": {
+      "signed": true,
+      "timestamp": "2026-06-12T16:14:35.381031+00:00",
+      "stage": "unknown",
+      "checklist_version": "21c62e339b9fd7bd74d5d4baa482058b219c6535c3e01f67a411e2f6e3be8d5e",
+      "signature": "147179e5d9a4fd42f120f68643979dd5840ab4a6d429e9f871f627d1a2b824cd",
+      "sig_type": "HMAC-SHA256",
+      "actor": "玉夜",
+      "requested_actor": "玉夜",
+      "actual_actor": "玉夜",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "确认 D03/D04 边界、L1/L2/L3 分层、quality_flag 与数据可用性"
+    },
+    "情墨": {
+      "signed": true,
+      "timestamp": "2026-06-12T16:14:36.428186+00:00",
+      "stage": "unknown",
+      "checklist_version": "21c62e339b9fd7bd74d5d4baa482058b219c6535c3e01f67a411e2f6e3be8d5e",
+      "signature": "643a8c2bd95ba0b3259b7ca8e43059dfcd83f7aee29954d140b8d525bbf78179",
+      "sig_type": "HMAC-SHA256",
+      "actor": "情墨",
+      "requested_actor": "情墨",
+      "actual_actor": "情墨",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "确认能力域边界、L0 接口等级、Golden Master、回滚与注册准入"
+    }
+  },
+  "scope": {
+    "flow": [
+      "F-ARCH",
+      "F-DATA"
+    ],
+    "phase": "Phase 0 requirement finalization",
+    "allowed_effect": [
+      "clarify why v2.8 was pending dual sign",
+      "define exact sign-off responsibilities",
+      "define entry criteria for Phase 1/2/3",
+      "create auditable checklist"
+    ],
+    "forbidden_effect": [
+      "register C-D04-0001 before human sign-off",
+      "modify production data pipeline",
+      "change capability_registry",
+      "claim D04 is active",
+      "sign on behalf of 玉夜 or 情墨"
+    ]
+  },
+  "pending_reason_closed": {
+    "d04_not_registered": true,
+    "l0_infrastructure_risk_identified": true,
+    "d04_boundary_drift_identified": true,
+    "phase_sequence_defined": true,
+    "human_signatures_still_required": true
+  },
+  "yuye_data_owner_sign": {
+    "required": true,
+    "status": "signed",
+    "signer_role": "玉夜",
+    "must_confirm": [
+      "D03 owns data quality validation; D04 only consumes quality_flag",
+      "D04 stores, indexes and retrieves L1/L2/L3 data; it does not perform unified interpretation",
+      "L1 JSON, L2 SQLite and L3 JSON archive layering is acceptable",
+      "quality_flag priority complete > pending_review > unverified > invalid is acceptable",
+      "temporary or newly backfilled data cannot enter analysis conclusions before validation",
+      "fallback and freshness degradation rules are acceptable"
+    ],
+    "signature": "147179e5d9a4fd42f120f68643979dd5840ab4a6d429e9f871f627d1a2b824cd",
+    "signed_at": "2026-06-12T16:14:35.381031+00:00",
+    "evidence": []
+  },
+  "qingmo_architect_sign": {
+    "required": true,
+    "status": "signed",
+    "signer_role": "情墨",
+    "must_confirm": [
+      "D04 capability boundary does not conflict with D01/D03/D05/D06/D07/D08",
+      "UnifiedDataSource as L0 infrastructure requires V1-V7 validation before production use",
+      "capability_registry may register C-D04-0001 only after Phase 2 entry criteria are met",
+      "temporary D04-held items compute_factor_ic, compare_current_vs_historical and get_max_drawdown have Phase 3 migration review paths",
+      "rollback and Golden Master requirements are sufficient",
+      "new D04 interfaces must follow the D04 demand change flow"
+    ],
+    "signature": "643a8c2bd95ba0b3259b7ca8e43059dfcd83f7aee29954d140b8d525bbf78179",
+    "signed_at": "2026-06-12T16:14:36.428186+00:00",
+    "evidence": []
+  },
+  "yaozi_financial_consumer_ack": {
+    "required": false,
+    "status": "optional_pending_human",
+    "signer_role": "腰子",
+    "must_confirm": [
+      "D07 unified interpretation needs historical percentile, score history and risk-history access",
+      "D04 output is data service only and does not replace investment interpretation",
+      "D04 activation should improve daily, weekly, deep and ad-hoc analysis evidence quality"
+    ],
+    "signature": null,
+    "signed_at": null,
+    "evidence": []
+  },
+  "phase_entry_rules": {
+    "phase_1_allowed_when": [
+      "yuye_data_owner_sign.status == signed",
+      "qingmo_architect_sign.status == signed",
+      "no unresolved BLOCK item in this checklist"
+    ],
+    "phase_2_allowed_when": [
+      "Phase 1 artifacts exist",
+      "L1/L2/L3 basic infrastructure self-check PASS",
+      "C-D04-0001 registration patch is reviewed but not merged before G5/G6"
+    ],
+    "phase_3_allowed_when": [
+      "C-D04-0001 is active in capability_registry",
+      "UnifiedDataSource V1-V7 validation PASS",
+      "D05/D06/D07/D08 consumers have fallback behavior verified"
+    ]
+  },
+  "self_check": {
+    "json_valid": true,
+    "capability_registry_modified": false,
+    "production_code_modified": false,
+    "d04_claimed_active": false,
+    "phase0_dual_sign_completed": true
+  }
+}

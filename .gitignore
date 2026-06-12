@@ -141,3 +141,10 @@ logs/
 # Actor secrets
 .claude/actor_secrets.json
 .claude/auth_tokens.json
+
+# Runtime signal data
+.claude/signal_deep_analysis.json
+
+# L2 cache runtime metadata (keep .gitkeep and README.md tracked)
+代码文件/数据/l2_cache/health.json
+代码文件/数据/l2_cache/score_history_index.json
