@@ -137,8 +137,7 @@
     {"role": "信鸽", "required_fields": ["role","data_fact","interpretation_hypothesis"], "output_format": "事件影响评估", "constraints": ["只提供事件事实和影响评估","不替代腰子做最终决定"]},
     {"role": "玉夜", "required_fields": ["stock_code","trade_date","data_fact"], "output_format": "数据事实报告", "constraints": ["只提供数据结构化事实","不含分析结论","维护数据质量和新鲜度"]},
     {"role": "流金", "required_fields": ["role","data_fact","investment_implication"], "output_format": "风控边界意见", "constraints": ["只提供风控层面的约束","仓位/止损等边界检查"]},
-    {"role": "青山", "required_fields": ["role","data_fact","interpretation_hypothesis","supporting_evidence"], "output_format": "信号分析报告", "constraints": ["只提供信号维度的分析","signal_refs必须引用已注册信号"]},
-    {"role": "砺石", "required_fields": ["role","data_fact","interpretation_hypothesis"], "output_format": "方法审查报告", "constraints": ["按需唤醒，非必填角色","role_code固定为LISHI","不替代腰子裁决","不输出投资方向","method_review为可选子对象"]}
+    {"role": "青山", "required_fields": ["role","data_fact","interpretation_hypothesis","supporting_evidence"], "output_format": "信号分析报告", "constraints": ["只提供信号维度的分析","signal_refs必须引用已注册信号"]}
   ],
   "knowledge_aliases": {
     "YAOZI-TECH-001": ["KNOW-腰子-MACD"],
@@ -159,14 +158,20 @@
     "QINGSHAN-FACTOR-001": ["KNOW-青山-因子"],
     "QINGSHAN-BACKTEST-001": ["KNOW-青山-回测"]
   },
-  "lishi_method_review_rules": {
-    "description": "砺石 method_review 字段校验规则（代码层面执行）",
-    "checks": [
-      {"check_id": "LMR-01", "name": "role_code校验", "result_type": "BLOCK", "condition": "method_review存在时 role_code不为LISHI", "description": "method_review.role_code 必须为 LISHI"},
-      {"check_id": "LMR-02", "name": "result值域", "result_type": "WARN", "condition": "result不在PASS/WARN/BLOCK", "description": "result 仅允许 PASS / WARN / BLOCK"},
-      {"check_id": "LMR-03", "name": "BLOCK缺质疑点", "result_type": "WARN", "condition": "result=BLOCK且main_challenge为空", "description": "result=BLOCK 时 main_challenge 必填"},
-      {"check_id": "LMR-04", "name": "置信度调整缺原因", "result_type": "WARN", "condition": "confidence_adjustment!=NONE且adjustment_reason为空", "description": "confidence_adjustment != NONE 时 adjustment_reason 必填"},
-      {"check_id": "LMR-05", "name": "动作方向调整缺质疑", "result_type": "WARN", "condition": "action_adjustment!=NONE且main_challenge为空", "description": "action_adjustment != NONE 时 main_challenge 必填"}
+  "lishi_method_review_field_descriptions": {
+    "description": "砺石 method_review 字段说明（仅记录用途，不要求 validator 消费）",
+    "fields": [
+      {"name": "role_code", "type": "string", "const": "LISHI", "description": "角色代码，固定为LISHI"},
+      {"name": "result", "type": "string", "enum": ["PASS","WARN","BLOCK"], "description": "砺石方法校准结果"},
+      {"name": "main_challenge", "type": "string", "description": "主要方法挑战，砺石对推理链最核心的质疑"},
+      {"name": "calibration_note", "type": "string", "description": "给腰子的校准参考，不超过100字"},
+      {"name": "rejected_reason", "type": "string", "description": "腰子驳回砺石建议时填写的具体理由"}
+    ],
+    "usage_notes": [
+      "method_review 为 optional metadata，不进入 interpretation 的 required 字段",
+      "仅在砺石被唤醒时填写，否则不存在",
+      "不走 validate_interpretation.py 的校验逻辑",
+      "未来如需强校验，再单独启用 validator 消费此规则"
     ]
   }
 }

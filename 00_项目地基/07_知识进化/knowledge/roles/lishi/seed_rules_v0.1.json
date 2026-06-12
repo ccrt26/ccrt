@@ -1,0 +1,39 @@
+{
+  "seed_rules_version": "v0.1",
+  "role": "砺石",
+  "role_code": "LISHI",
+  "created": "2026-06-12",
+  "description": "砺石初始候选规则池（L5-seed），未经验证，不进入 active knowledge",
+  "rules": [
+    {
+      "seed_id": "LISHI-SEED-001",
+      "name": "同源证据识别",
+      "description": "识别同一数据源被多次用于支撑多个独立推论的情况，评估推理链独立性",
+      "source_level": "L5-seed",
+      "status": "seed_candidate",
+      "can_support_strong_action": false,
+      "active_rule": false,
+      "validation_status": "not_started"
+    },
+    {
+      "seed_id": "LISHI-SEED-002",
+      "name": "因果混淆识别",
+      "description": "识别相关性被误读为因果关系的逻辑偏误",
+      "source_level": "L5-seed",
+      "status": "seed_candidate",
+      "can_support_strong_action": false,
+      "active_rule": false,
+      "validation_status": "not_started"
+    },
+    {
+      "seed_id": "LISHI-SEED-003",
+      "name": "结论强度校验",
+      "description": "评估结论强度是否超出证据范围",
+      "source_level": "L5-seed",
+      "status": "seed_candidate",
+      "can_support_strong_action": false,
+      "active_rule": false,
+      "validation_status": "not_started"
+    }
+  ]
+}

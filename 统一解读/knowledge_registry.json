@@ -1,24 +1,381 @@
 {
   "version": "1.1",
   "created": "2026-06-11",
-  "description": "统一知识引用注册表 — 所有角色知识库条目结构化索引。file指向JSONL（结构化主源），jsonl_ref指向具体条目ID。旧MD路径不再指向不存在的文件。",
+  "description": "统一知识引用注册表 — 所有角色知识库条目结构化索引。file指向JSONL（结构化主源），jsonl_ref指向具体条目ID。旧MD路径不再指向不存在的文件。 2026-06-12: +LISHI-METHOD-001/002/003 砺石方法审查",
   "entries": [
-    {"knowledge_id":"YAOZI-TECH-001","role":"腰子","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-TECH-001","section":"MACD金叉判断","source_level":"L4","source_ref":"经典技术分析方法论，项目内待验证","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析","每日荐股"],"failure_condition":"连续20个项目样本胜率低于50%","owner":"腰子"},
-    {"knowledge_id":"YAOZI-VAL-001","role":"腰子","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-VAL-001","section":"PE(TTM)估值","source_level":"L1","source_ref":"金融铁律_v1.17.md rule-pe-calc","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["日报","深度分析","每日荐股","模拟交易"],"failure_condition":"估值分位判断方向与价格实际走势连续背离","owner":"腰子"},
-    {"knowledge_id":"YAOZI-FUND-001","role":"腰子","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-FUND-001","section":"主力资金流向判断","source_level":"L5-seed","source_ref":"信号胜率库.SIG-007，项目内待验证","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"连续20个样本胜率低于40%","owner":"腰子"},
-    {"knowledge_id":"YAOZI-POS-001","role":"腰子","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-POS-001","section":"仓位上限规则","source_level":"L1","source_ref":"金融铁律_v1.17.md + 流金.仓位边界","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["日报","深度分析","模拟交易"],"failure_condition":"仓位上限导致回撤超阈值","owner":"腰子"},
-    {"knowledge_id":"YAOZI-EVENT-001","role":"腰子","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-EVENT-001","section":"事件等级映射","source_level":"L3","source_ref":"信鸽知识库.事件分级标准","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析","每日荐股"],"failure_condition":"事件兑现后价格反向运行超过50%案例","owner":"腰子"},
-    {"knowledge_id":"SHANMAO-MACRO-001","role":"山猫","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-MACRO-001","section":"PMI/CPI/PPI解读","source_level":"L3","source_ref":"国家统计局官方数据","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"宏观判断与市场实际走势连续背离","owner":"山猫"},
-    {"knowledge_id":"SHANMAO-MARKET-001","role":"山猫","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-MARKET-001","section":"五阶段市场状态判定","source_level":"L5","source_ref":"山猫经验框架，项目内待验证","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析","每日荐股"],"failure_condition":"状态判断与实际趋势不符超过30%案例","owner":"山猫"},
-    {"knowledge_id":"SHANMAO-POLICY-001","role":"山猫","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-POLICY-001","section":"政策力度分级S/A/B/C/D","source_level":"L3","source_ref":"国务院/央行/各部委官方文件","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"政策效果与预期严重偏离","owner":"山猫"},
-    {"knowledge_id":"XINGE-EVENT-001","role":"信鸽","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=XINGE-EVENT-001","section":"P0/P1/P2/P3事件等级","source_level":"L2","source_ref":"项目事件分类标准，基于历史回测","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析","每日荐股"],"failure_condition":"P0事件后48h内价格未产生预期波动","owner":"信鸽"},
-    {"knowledge_id":"XINGE-FILTER-001","role":"信鸽","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=XINGE-FILTER-001","section":"五层去噪过滤","source_level":"L5","source_ref":"信鸽经验规则，待标准化","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"过滤规则遗漏P0事件","owner":"信鸽"},
-    {"knowledge_id":"YUYE-DATA-001","role":"玉夜","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YUYE-DATA-001","section":"13源数据源列表","source_level":"L1","source_ref":"金融铁律_v1.17.md rule-data-source","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["日报","深度分析","每日荐股","模拟交易","保护机制","临时分析"],"failure_condition":"主源不可用且备源也不可用","owner":"玉夜"},
-    {"knowledge_id":"YUYE-QUALITY-001","role":"玉夜","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=YUYE-QUALITY-001","section":"六维数据质量检查","source_level":"L3","source_ref":"数据质量方法论+项目实践","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"异常数据未被检测导致错误结论","owner":"玉夜"},
-    {"knowledge_id":"LIUJIN-RISK-001","role":"流金","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=LIUJIN-RISK-001","section":"仓位边界规则","source_level":"L2","source_ref":"项目模拟交易回测验证","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["日报","深度分析","模拟交易"],"failure_condition":"仓位上限连续导致回撤超阈值","owner":"流金"},
-    {"knowledge_id":"LIUJIN-STOP-001","role":"流金","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=LIUJIN-STOP-001","section":"价格止损+时间止损","source_level":"L2","source_ref":"项目模拟交易止损统计","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["模拟交易","日报"],"failure_condition":"止损触发后价格逆转超过50%案例","owner":"流金"},
-    {"knowledge_id":"QINGSHAN-SIGNAL-001","role":"青山","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-SIGNAL-001","section":"MACD日线金叉信号","source_level":"L5-seed","source_ref":"信号胜率库.SIG-001","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["日报","深度分析"],"failure_condition":"20样本胜率低于40%","owner":"青山"},
-    {"knowledge_id":"QINGSHAN-FACTOR-001","role":"青山","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-FACTOR-001","section":"动量因子(MOM)","source_level":"L4","source_ref":"Fama-French+项目适配","last_verified":"2026-06-02","status":"active","can_support_strong_action":false,"applicable_scenes":["深度分析"],"failure_condition":"IC连续为负超过10期","owner":"青山"},
-    {"knowledge_id":"QINGSHAN-BACKTEST-001","role":"青山","file":"统一解读/knowledge_entries.jsonl","jsonl_ref":"统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-BACKTEST-001","section":"后评估统计方法","source_level":"L2","source_ref":"项目eval_hooks回填数据","last_verified":"2026-06-02","status":"active","can_support_strong_action":true,"applicable_scenes":["日报","深度分析","每日荐股","模拟交易"],"failure_condition":"统计方法不能正确反映实际胜率","owner":"青山"}
+    {
+      "knowledge_id": "YAOZI-TECH-001",
+      "role": "腰子",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-TECH-001",
+      "section": "MACD金叉判断",
+      "source_level": "L4",
+      "source_ref": "经典技术分析方法论，项目内待验证",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "连续20个项目样本胜率低于50%",
+      "owner": "腰子"
+    },
+    {
+      "knowledge_id": "YAOZI-VAL-001",
+      "role": "腰子",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-VAL-001",
+      "section": "PE(TTM)估值",
+      "source_level": "L1",
+      "source_ref": "金融铁律_v1.17.md rule-pe-calc",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股",
+        "模拟交易"
+      ],
+      "failure_condition": "估值分位判断方向与价格实际走势连续背离",
+      "owner": "腰子"
+    },
+    {
+      "knowledge_id": "YAOZI-FUND-001",
+      "role": "腰子",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-FUND-001",
+      "section": "主力资金流向判断",
+      "source_level": "L5-seed",
+      "source_ref": "信号胜率库.SIG-007，项目内待验证",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "连续20个样本胜率低于40%",
+      "owner": "腰子"
+    },
+    {
+      "knowledge_id": "YAOZI-POS-001",
+      "role": "腰子",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-POS-001",
+      "section": "仓位上限规则",
+      "source_level": "L1",
+      "source_ref": "金融铁律_v1.17.md + 流金.仓位边界",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "模拟交易"
+      ],
+      "failure_condition": "仓位上限导致回撤超阈值",
+      "owner": "腰子"
+    },
+    {
+      "knowledge_id": "YAOZI-EVENT-001",
+      "role": "腰子",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YAOZI-EVENT-001",
+      "section": "事件等级映射",
+      "source_level": "L3",
+      "source_ref": "信鸽知识库.事件分级标准",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "事件兑现后价格反向运行超过50%案例",
+      "owner": "腰子"
+    },
+    {
+      "knowledge_id": "SHANMAO-MACRO-001",
+      "role": "山猫",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-MACRO-001",
+      "section": "PMI/CPI/PPI解读",
+      "source_level": "L3",
+      "source_ref": "国家统计局官方数据",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "宏观判断与市场实际走势连续背离",
+      "owner": "山猫"
+    },
+    {
+      "knowledge_id": "SHANMAO-MARKET-001",
+      "role": "山猫",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-MARKET-001",
+      "section": "五阶段市场状态判定",
+      "source_level": "L5",
+      "source_ref": "山猫经验框架，项目内待验证",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "状态判断与实际趋势不符超过30%案例",
+      "owner": "山猫"
+    },
+    {
+      "knowledge_id": "SHANMAO-POLICY-001",
+      "role": "山猫",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=SHANMAO-POLICY-001",
+      "section": "政策力度分级S/A/B/C/D",
+      "source_level": "L3",
+      "source_ref": "国务院/央行/各部委官方文件",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "政策效果与预期严重偏离",
+      "owner": "山猫"
+    },
+    {
+      "knowledge_id": "XINGE-EVENT-001",
+      "role": "信鸽",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=XINGE-EVENT-001",
+      "section": "P0/P1/P2/P3事件等级",
+      "source_level": "L2",
+      "source_ref": "项目事件分类标准，基于历史回测",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "P0事件后48h内价格未产生预期波动",
+      "owner": "信鸽"
+    },
+    {
+      "knowledge_id": "XINGE-FILTER-001",
+      "role": "信鸽",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=XINGE-FILTER-001",
+      "section": "五层去噪过滤",
+      "source_level": "L5",
+      "source_ref": "信鸽经验规则，待标准化",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "过滤规则遗漏P0事件",
+      "owner": "信鸽"
+    },
+    {
+      "knowledge_id": "YUYE-DATA-001",
+      "role": "玉夜",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YUYE-DATA-001",
+      "section": "13源数据源列表",
+      "source_level": "L1",
+      "source_ref": "金融铁律_v1.17.md rule-data-source",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股",
+        "模拟交易",
+        "保护机制",
+        "临时分析"
+      ],
+      "failure_condition": "主源不可用且备源也不可用",
+      "owner": "玉夜"
+    },
+    {
+      "knowledge_id": "YUYE-QUALITY-001",
+      "role": "玉夜",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=YUYE-QUALITY-001",
+      "section": "六维数据质量检查",
+      "source_level": "L3",
+      "source_ref": "数据质量方法论+项目实践",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "异常数据未被检测导致错误结论",
+      "owner": "玉夜"
+    },
+    {
+      "knowledge_id": "LIUJIN-RISK-001",
+      "role": "流金",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=LIUJIN-RISK-001",
+      "section": "仓位边界规则",
+      "source_level": "L2",
+      "source_ref": "项目模拟交易回测验证",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "模拟交易"
+      ],
+      "failure_condition": "仓位上限连续导致回撤超阈值",
+      "owner": "流金"
+    },
+    {
+      "knowledge_id": "LIUJIN-STOP-001",
+      "role": "流金",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=LIUJIN-STOP-001",
+      "section": "价格止损+时间止损",
+      "source_level": "L2",
+      "source_ref": "项目模拟交易止损统计",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "模拟交易",
+        "日报"
+      ],
+      "failure_condition": "止损触发后价格逆转超过50%案例",
+      "owner": "流金"
+    },
+    {
+      "knowledge_id": "QINGSHAN-SIGNAL-001",
+      "role": "青山",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-SIGNAL-001",
+      "section": "MACD日线金叉信号",
+      "source_level": "L5-seed",
+      "source_ref": "信号胜率库.SIG-001",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "20样本胜率低于40%",
+      "owner": "青山"
+    },
+    {
+      "knowledge_id": "QINGSHAN-FACTOR-001",
+      "role": "青山",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-FACTOR-001",
+      "section": "动量因子(MOM)",
+      "source_level": "L4",
+      "source_ref": "Fama-French+项目适配",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "深度分析"
+      ],
+      "failure_condition": "IC连续为负超过10期",
+      "owner": "青山"
+    },
+    {
+      "knowledge_id": "QINGSHAN-BACKTEST-001",
+      "role": "青山",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=QINGSHAN-BACKTEST-001",
+      "section": "后评估统计方法",
+      "source_level": "L2",
+      "source_ref": "项目eval_hooks回填数据",
+      "last_verified": "2026-06-02",
+      "status": "active",
+      "can_support_strong_action": true,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股",
+        "模拟交易"
+      ],
+      "failure_condition": "统计方法不能正确反映实际胜率",
+      "owner": "青山"
+    },
+    {
+      "knowledge_id": "LISHI-METHOD-001",
+      "role": "砺石",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=LISHI-METHOD-001",
+      "section": "方法审查流程总则",
+      "source_level": "L3",
+      "source_ref": "F-ROLE-LISHI-METHOD-REVIEW-FIX 流程定义",
+      "last_verified": "2026-06-12",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "method_review 字段定义与生产使用持续偏离",
+      "owner": "砺石"
+    },
+    {
+      "knowledge_id": "LISHI-METHOD-002",
+      "role": "砺石",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=LISHI-METHOD-002",
+      "section": "方法审查字段与值域标准",
+      "source_level": "L3",
+      "source_ref": "F-ROLE-LISHI-METHOD-REVIEW-FIX 流程定义",
+      "last_verified": "2026-06-12",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "日报",
+        "深度分析"
+      ],
+      "failure_condition": "method_review 字段定义与实际值域不符",
+      "owner": "砺石"
+    },
+    {
+      "knowledge_id": "LISHI-METHOD-003",
+      "role": "砺石",
+      "file": "统一解读/knowledge_entries.jsonl",
+      "jsonl_ref": "统一解读/knowledge_entries.jsonl#knowledge_id=LISHI-METHOD-003",
+      "section": "方法审查置信度校准",
+      "source_level": "L3",
+      "source_ref": "F-ROLE-LISHI-METHOD-REVIEW-FIX 流程定义",
+      "last_verified": "2026-06-12",
+      "status": "active",
+      "can_support_strong_action": false,
+      "applicable_scenes": [
+        "深度分析",
+        "每日荐股"
+      ],
+      "failure_condition": "校准建议持续被腰子驳回且不修正",
+      "owner": "砺石"
+    }
   ]
 }
