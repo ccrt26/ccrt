@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-v1.0",
+  "status": "active",
+  "purpose": "Define which analysis modules participate in RuleCandidate validation.",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "owner_role": "青山",
+  "validation_modules": {
+    "weekly_report": {
+      "enabled": true,
+      "role": "primary_validation_surface",
+      "responsibility": "在周报中记录候选规则是否被触发、是否产生 A 股适配/样本外/衰减/反例/误用风险证据。",
+      "must_emit_trace": true,
+      "trace_destination": "scenario_traces/weekly_report/",
+      "promotion_power": "none",
+      "required_fields": [
+        "candidate_id",
+        "triggered",
+        "trigger_context",
+        "a_share_adaptation_result",
+        "out_of_sample_result",
+        "decay_result",
+        "counterexample_result",
+        "misuse_risk_level",
+        "module_conclusion"
+      ]
+    },
+    "daily_report": {
+      "enabled": true,
+      "role": "execution_trace_surface",
+      "responsibility": "记录日报是否引用周报假设、是否出现新增证据、是否触发等待/降级/继续观察。",
+      "must_emit_trace": true,
+      "trace_destination": "scenario_traces/daily_report/",
+      "promotion_power": "none",
+      "required_fields": [
+        "candidate_id",
+        "linked_weekly_instruction",
+        "tracked_hypothesis",
+        "new_evidence",
+        "action_boundary",
+        "downgrade_or_wait_signal"
+      ]
+    },
+    "b_layer_post_eval": {
+      "enabled": true,
+      "role": "outcome_attribution_surface",
+      "responsibility": "在 B 层后评估中判断候选规则是否解释失败、是否只进入反例库、是否允许继续观察。",
+      "must_emit_trace": true,
+      "trace_destination": "scenario_traces/b_layer_post_eval/",
+      "promotion_power": "none",
+      "required_fields": [
+        "candidate_id",
+        "outcome",
+        "failure_attribution",
+        "reusable_value",
+        "counterexample_required",
+        "candidate_status_suggestion"
+      ]
+    },
+    "deep_analysis": {
+      "enabled": true,
+      "role": "evidence_extension_surface",
+      "responsibility": "在深度分析中补充样本、适用边界和外部文献迁移风险，不直接推动入库。",
+      "must_emit_trace": true,
+      "trace_destination": "scenario_traces/deep_analysis/",
+      "promotion_power": "none",
+      "required_fields": [
+        "candidate_id",
+        "evidence_extension",
+        "sample_constraint",
+        "market_regime_constraint",
+        "transfer_risk"
+      ]
+    }
+  },
+  "redlines": [
+    "No module can promote a RuleCandidate to active rule directly.",
+    "No module can bypass role confirmation.",
+    "No module can bypass knowledge merge check.",
+    "No module can treat foreign factor evidence as directly applicable to A-share without validation."
+  ]
+}

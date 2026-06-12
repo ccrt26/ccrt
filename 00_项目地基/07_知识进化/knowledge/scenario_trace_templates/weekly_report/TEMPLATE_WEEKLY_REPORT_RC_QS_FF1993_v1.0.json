@@ -1,0 +1,32 @@
+{
+  "template_status": "template_only",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-SCENARIO-TRACE-TEMPLATES-v1.0",
+  "redlines": [
+    "Template only, not real trace.",
+    "No active rule promotion.",
+    "No production entry change."
+  ],
+  "template_id": "STT-WEEKLY-RC-QS-FF1993-001",
+  "scenario": "weekly_report",
+  "module": "weekly_report",
+  "purpose": "周报记录候选规则是否触发，以及 A股适配、样本外、衰减、反例、误用风险证据。",
+  "required_fields": [
+    "trace_id",
+    "task_id",
+    "candidate_id",
+    "report_date",
+    "triggered",
+    "trigger_context",
+    "a_share_adaptation_result",
+    "out_of_sample_result",
+    "decay_result",
+    "counterexample_result",
+    "misuse_risk_level",
+    "module_conclusion",
+    "evidence_refs"
+  ]
+}

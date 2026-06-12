@@ -1,0 +1,25 @@
+{
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-FIX-v1.0.3",
+  "result": "PASS",
+  "checks": {
+    "closure_PASS": true,
+    "fix_PASS": true,
+    "global_krm_report_PASS": true,
+    "strict_source_check": true,
+    "warn_evidence_all_true": true
+  },
+  "locked_artifacts": [
+    "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json",
+    "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_fix_validation_v1.0.json",
+    "00_项目地基/07_知识进化/knowledge/reports/workflow_foundation_warn_closure_v1.0.json",
+    "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_final_lock_v1.0.json",
+    "00_项目地基/07_知识进化/knowledge/scripts/validate_rule_candidate_validation_tasks_v1_0.py",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G0路由记录_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G1业务边界记录_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G2技术方案_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G4自检报告_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G5旧影复查报告_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G6放行归档记录_v1.0.md"
+  ],
+  "formal_pipeline_note": "This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS."
+}

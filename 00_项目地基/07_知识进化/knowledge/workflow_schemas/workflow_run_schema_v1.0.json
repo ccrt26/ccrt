@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-v1.0",
+  "required_fields": [
+    "run_id",
+    "workflow_id",
+    "state_before",
+    "state_after",
+    "actor",
+    "action",
+    "result",
+    "timestamp",
+    "evidence"
+  ],
+  "result_values": [
+    "pass",
+    "warn",
+    "block",
+    "fail"
+  ],
+  "formal_pipeline_note": "This schema records workflow state evidence. It does not replace actor/HMAC formal pipeline signing."
+}

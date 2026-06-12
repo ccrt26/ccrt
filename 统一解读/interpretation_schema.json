@@ -45,7 +45,7 @@
     },
     "role": {
       "type": "string",
-      "enum": ["腰子", "山猫", "信鸽", "玉夜", "流金", "青山"],
+      "enum": ["腰子", "山猫", "信鸽", "玉夜", "流金", "青山", "砺石"],
       "description": "生成角色"
     },
     "data_fact": {
@@ -179,6 +179,54 @@
       "type": "array",
       "items": {"type": "string"},
       "description": "引用的知识库条目"
+    },
+    "method_review": {
+      "type": "object",
+      "description": "砺石方法审查输出（可选字段，按需唤醒时填写）",
+      "required": ["role", "role_code", "result"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "const": "砺石",
+          "description": "角色名"
+        },
+        "role_code": {
+          "type": "string",
+          "const": "LISHI",
+          "description": "角色代码"
+        },
+        "result": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BLOCK"],
+          "description": "方法审查结论"
+        },
+        "main_challenge": {
+          "type": "string",
+          "description": "主要质疑点（result=BLOCK时必填）"
+        },
+        "check_item": {
+          "type": "string",
+          "description": "本次审查项描述（最大隐含假设/最强反证等）"
+        },
+        "confidence_adjustment": {
+          "type": "string",
+          "enum": ["NONE", "HIGH_TO_MEDIUM", "MEDIUM_TO_LOW"],
+          "description": "置信度调整建议"
+        },
+        "adjustment_reason": {
+          "type": "string",
+          "description": "调整原因（confidence_adjustment != NONE时必填）"
+        },
+        "action_adjustment": {
+          "type": "string",
+          "enum": ["NONE", "BUY_TO_WATCH", "SELL_TO_WATCH"],
+          "description": "动作方向调整建议（仅作参考，不强制执行）"
+        },
+        "rejected_reason": {
+          "type": "string",
+          "description": "腰子驳回砺石质疑的理由"
+        }
+      }
     }
   },
 
@@ -203,6 +251,11 @@
     "R5_强动作无触发条件": "BLOCK — allOf条件：BUY/SELL时require trigger/price/position/time",
     "R6_低置信强动作": "BLOCK — 需代码层面检查 confidence=LOW + action_bias in (BUY,SELL)",
     "R7_data_fact含结论": "WARN — 需代码层面正则检查（建议/看好/推荐等词）",
-    "R8_反证套话": "WARN — 需代码层面检查 counter_evidence仅1条且evidence匹配套话模式"
+    "R8_反证套话": "WARN — 需代码层面检查 counter_evidence仅1条且evidence匹配套话模式",
+    "R9_method_review_role_code": "BLOCK — method_review存在时 role_code 必须为 LISHI",
+    "R10_method_review_result": "WARN — result 不在 PASS/WARN/BLOCK 范围",
+    "R11_method_review_BLOCK缺质疑": "WARN — result=BLOCK 但 main_challenge 为空",
+    "R12_置信度调整缺原因": "WARN — confidence_adjustment != NONE 但 adjustment_reason 为空",
+    "R13_动作方向调整缺质疑": "WARN — action_adjustment != NONE 但 main_challenge 为空"
   }
 }

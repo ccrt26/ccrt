@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-SCENARIO-TRACE-GENERATION-RULES-v1.0",
+  "status": "active",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "mode": "dry_run_only",
+  "real_trace_allowed_now": false,
+  "purpose": "Dry-run only. Define how future real ScenarioTrace should be generated from templates.",
+  "allowed_scenarios": [
+    "weekly_report",
+    "daily_report",
+    "b_layer_post_eval",
+    "deep_analysis"
+  ],
+  "trace_id_format": "TRACE-{scenario}-RC-QS-FF1993-{YYYYMMDD}-{seq}",
+  "redlines": [
+    "Do not create real ScenarioTrace.",
+    "Do not promote active rules.",
+    "Do not modify production entry."
+  ]
+}

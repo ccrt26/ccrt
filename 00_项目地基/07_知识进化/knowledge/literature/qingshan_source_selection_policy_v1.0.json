@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stage": "G3-QINGSHAN-SOURCE-SELECTION-v1.0",
+    "owner_role": "青山",
+    "purpose": "定义青山外部资料来源准入规则与优先候选池",
+    "generated": "2026-06-11",
+    "read_tier": "task",
+    "status": "active"
+  },
+  "scope": {
+    "applies_to": [
+      "因子有效性",
+      "IC/ICIR/Rank IC",
+      "样本外检验",
+      "过拟合防范",
+      "因子衰减",
+      "市场状态切换",
+      "A股因子实证",
+      "技术信号胜率验证"
+    ],
+    "not_applies_to": [
+      "直接投资建议",
+      "仓位动作",
+      "最终裁决",
+      "未经验证的规则写入"
+    ]
+  },
+  "selection_principle": {
+    "primary_rule": "来源准入规则优先于候选池；候选池不是白名单，不构成唯一允许来源。",
+    "candidate_pool_usage": "候选池只作为优先检查入口，任何候选仍需通过准入规则。",
+    "external_text_policy": "外部资料不得进入启动上下文，只能形成 source_candidate，后续再进入质量评分和文献卡片流程。",
+    "direct_rule_application": "禁止外部资料直接成为 applied 规则。"
+  },
+  "source_classes": {
+    "S": {
+      "name": "官方/一手/可复现权威源",
+      "examples": ["官方数据库", "交易所规则", "顶级学者公开数据集", "同行评审顶级期刊论文"],
+      "allowed_next_status": ["source_candidate"],
+      "requirements": ["source_identity_clear", "method_or_data_disclosed", "usage_boundary_clear"]
+    },
+    "A": {
+      "name": "高质量学术/专业研究源",
+      "examples": ["同行评审论文", "SSRN/NBER/CEPR 工作论文", "专业量化研究论文"],
+      "allowed_next_status": ["source_candidate"],
+      "requirements": ["author_identity_clear", "sample_period_disclosed", "method_disclosed"]
+    },
+    "B": {
+      "name": "机构研究/数据库说明/券商深度",
+      "examples": ["数据库官方说明", "券商深度报告", "指数公司方法文件"],
+      "allowed_next_status": ["source_candidate_with_cross_check"],
+      "requirements": ["institution_clear", "conflict_risk_marked", "cross_check_required"]
+    },
+    "C": {
+      "name": "个人研究/博客/开源项目",
+      "examples": ["个人论文", "技术博客", "GitHub 回测项目"],
+      "allowed_next_status": ["source_candidate_low_confidence"],
+      "requirements": ["data_or_code_available", "replication_required", "cannot_directly_generate_rule"]
+    },
+    "D": {
+      "name": "观点型/不可复现/营销材料",
+      "examples": ["纯观点文章", "无样本报告", "产品宣传", "社群观点"],
+      "allowed_next_status": ["background_only"],
+      "requirements": ["cannot_generate_rule_candidate"]
+    }
+  },
+  "must_have_gates": [
+    {
+      "gate_id": "QS-SRC-GATE-001",
+      "name": "主题匹配",
+      "rule": "资料必须服务青山职责范围内的问题。",
+      "block_if_missing": true
+    },
+    {
+      "gate_id": "QS-SRC-GATE-002",
+      "name": "来源身份清晰",
+      "rule": "必须能识别作者、机构、数据库或发布主体。",
+      "block_if_missing": true
+    },
+    {
+      "gate_id": "QS-SRC-GATE-003",
+      "name": "方法或样本披露",
+      "rule": "至少披露方法、样本区间、变量定义、数据来源之一。",
+      "block_if_missing": true
+    },
+    {
+      "gate_id": "QS-SRC-GATE-004",
+      "name": "使用边界清晰",
+      "rule": "必须明确可用于方法参考、数据参考、规则候选或背景参考中的哪一种。",
+      "block_if_missing": true
+    },
+    {
+      "gate_id": "QS-SRC-GATE-005",
+      "name": "不得直接应用",
+      "rule": "任何外部资料不得直接写入 applied 规则。",
+      "block_if_missing": true
+    }
+  ],
+  "score_dimensions_for_next_stage": [
+    "authority",
+    "replicability",
+    "market_fit",
+    "recency",
+    "conflict_risk",
+    "rule_convertibility"
+  ],
+  "preferred_candidate_pool": [
+    {
+      "source_id": "QS-SRC-PREF-001",
+      "name": "Kenneth French Data Library",
+      "class_hint": "S",
+      "source_type": "public_factor_dataset",
+      "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+      "why_preferred": "因子定义、组合分组、研究收益序列的权威方法基准。",
+      "allowed_use": ["factor_definition_reference", "portfolio_sorting_reference", "factor_return_reference"],
+      "not_allowed_use": ["direct_A_share_rule", "direct_buy_sell_signal"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-002",
+      "name": "Fama/French asset pricing papers",
+      "class_hint": "S",
+      "source_type": "academic_paper_family",
+      "url": "",
+      "why_preferred": "现代因子模型基础文献，适合建立因子定义与组合排序方法。",
+      "allowed_use": ["factor_model_methodology", "factor_definition_reference"],
+      "not_allowed_use": ["direct_A_share_rule"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-003",
+      "name": "Harvey/Liu/Zhu factor significance research",
+      "class_hint": "A",
+      "source_type": "academic_research",
+      "url": "",
+      "why_preferred": "用于因子多重检验、假发现、显著性阈值的风险控制。",
+      "allowed_use": ["multiple_testing_reference", "false_discovery_control"],
+      "not_allowed_use": ["single_factor_acceptance_without_project_validation"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-004",
+      "name": "McLean/Pontiff factor decay research",
+      "class_hint": "A",
+      "source_type": "academic_research",
+      "url": "",
+      "why_preferred": "用于因子发表后衰减、投资者学习、样本外表现判断。",
+      "allowed_use": ["factor_decay_reference", "out_of_sample_reference"],
+      "not_allowed_use": ["direct_parameter_without_A_share_validation"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-005",
+      "name": "Bailey/López de Prado backtest overfitting research",
+      "class_hint": "A",
+      "source_type": "academic_practitioner_research",
+      "url": "",
+      "why_preferred": "用于样本外检验、回测过拟合、防止参数挖掘。",
+      "allowed_use": ["backtest_overfitting_reference", "deflated_sharpe_reference"],
+      "not_allowed_use": ["direct_strategy_approval"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-006",
+      "name": "CSMAR",
+      "class_hint": "B",
+      "source_type": "A_share_research_database",
+      "url": "https://www.csmar.com/",
+      "why_preferred": "A股研究数据源，可用于本土样本验证。",
+      "allowed_use": ["A_share_sample_validation", "factor_backtest_data_reference"],
+      "not_allowed_use": ["unverified_vendor_result_as_rule"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-007",
+      "name": "CNRDS",
+      "class_hint": "B",
+      "source_type": "China_research_database",
+      "url": "https://www.cnrds.com/",
+      "why_preferred": "中国市场研究数据源，可辅助A股样本验证。",
+      "allowed_use": ["A_share_sample_validation", "event_or_research_data_reference"],
+      "not_allowed_use": ["unverified_vendor_result_as_rule"],
+      "not_exclusive": true
+    },
+    {
+      "source_id": "QS-SRC-PREF-008",
+      "name": "Official exchange / disclosure sources",
+      "class_hint": "S",
+      "source_type": "official_disclosure_source",
+      "url": "",
+      "why_preferred": "用于样本事实边界、公告、交易规则、停复牌、指数成分等事实校验。",
+      "allowed_use": ["sample_fact_boundary", "event_verification"],
+      "not_allowed_use": ["factor_methodology_source"],
+      "not_exclusive": true
+    }
+  ],
+  "decision_output": {
+    "accepted_status": ["source_candidate", "source_candidate_with_cross_check", "source_candidate_low_confidence", "background_only"],
+    "blocked_status": ["blocked_not_qingshan_scope", "blocked_unknown_source", "blocked_no_method_or_sample", "blocked_direct_rule_attempt"],
+    "next_required_stage": "qingshan_literature_quality_scoring_v1.0"
+  }
+}

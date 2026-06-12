@@ -10,6 +10,7 @@
     {"role": "玉夜", "line": "金融线", "responsibilities": "数据事实审查、数据方案", "is_primary": false},
     {"role": "流金", "line": "金融线", "responsibilities": "风控边界审计", "is_primary": false},
     {"role": "青山", "line": "金融线", "responsibilities": "策略方案、后评估", "is_primary": false},
+    {"role": "砺石", "line": "金融线", "responsibilities": "方法校准、反证审查", "is_primary": false},
     {"role": "情墨", "line": "工程线", "responsibilities": "架构设计、制度维护", "is_primary": true},
     {"role": "千光", "line": "工程线", "responsibilities": "CI/CD、自动化编排", "is_primary": false},
     {"role": "红枫", "line": "工程线", "responsibilities": "部署、环境管理", "is_primary": false},

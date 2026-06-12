@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "1.0",
+    "last_updated": "2026-06-11",
+    "stage": "G3-QINGSHAN-FLOW-GLOBAL-KRM-RESTORE-FIX-v1.1",
+    "description": "KRM 全局路由——根据问题类型决定知识文件的 must_read / optional_read 策略。所有 legacy_role_kb 路径使用真实中文目录。",
+    "owner_role": "阿黑",
+    "status": "active"
+  },
+  "routes": {
+    "flow_issue": {
+      "description": "流程相关问题——pipeline 状态、阶段门、角色交接",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/玉夜",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/青山",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/流金",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/信鸽",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/山猫",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/腰子"
+      ],
+      "optional_read": []
+    },
+    "knowledge_routing_issue": {
+      "description": "知识路由问题——知识文件定位、读取策略、manifest 查询",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/manifest.json",
+        "00_项目地基/07_知识进化/knowledge/routing/krm_task_router_v1.0.json"
+      ],
+      "optional_read": []
+    },
+    "financial_redline": {
+      "description": "金融红线检查——交易纪律、禁止行为、合规要求",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/流金",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/腰子"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/rules/role_capability_rules_v1.3.json"
+      ]
+    },
+    "evidence_quality_issue": {
+      "description": "证据质量判断——数据真实性、来源可信度、交叉验证",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/玉夜"
+      ],
+      "optional_read": []
+    },
+    "signal_validity_issue": {
+      "description": "信号有效性判断——因子IC衰退、过拟合、样本外检验、策略退化",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/玉夜",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/青山",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/流金",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/信鸽",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/山猫",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/腰子"
+      ],
+      "optional_read": [
+        "00_项目地基/07_知识进化/knowledge/literature/qingshan_source_selection_policy_v1.0.json",
+        "00_项目地基/07_知识进化/knowledge/literature/qingshan_literature_quality_schema_v1.0.json",
+        "00_项目地基/07_知识进化/knowledge/literature/qingshan_literature_card_to_rule_candidate_flow_v1.0.json"
+      ],
+      "optional_read_trigger": "仅当涉及外部资料来源选择、文献引入、资料质量评分、source_candidate处理、文献卡片生成、规则候选推导时才需要读取"
+    },
+    "event_catalyst_issue": {
+      "description": "事件催化剂判断——公告、政策、财报、突发事件",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/信鸽",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/山猫"
+      ],
+      "optional_read": []
+    },
+    "macro_environment_issue": {
+      "description": "宏观环境判断——PMI、货币/财政政策、全球联动、市场情绪",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/山猫"
+      ],
+      "optional_read": []
+    },
+    "integration_decision_issue": {
+      "description": "综合决策——评分、选股、推荐、深度分析、投资结论",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/腰子",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/青山"
+      ],
+      "optional_read": []
+    },
+    "post_evaluation_issue": {
+      "description": "后评估——策略绩效归因、交易回顾、回测复盘",
+      "must_read": [
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/流金",
+        "00_项目地基/07_知识进化/knowledge/sources/legacy_role_kb/青山"
+      ],
+      "optional_read": []
+    },
+    "output_format_issue": {
+      "description": "输出格式问题——报告模板、文档规范、解读协议",
+      "must_read": [],
+      "optional_read": []
+    }
+  }
+}

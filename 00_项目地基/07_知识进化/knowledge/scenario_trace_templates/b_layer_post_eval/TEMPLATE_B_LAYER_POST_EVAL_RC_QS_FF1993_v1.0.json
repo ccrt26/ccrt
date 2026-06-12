@@ -1,0 +1,30 @@
+{
+  "template_status": "template_only",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-SCENARIO-TRACE-TEMPLATES-v1.0",
+  "redlines": [
+    "Template only, not real trace.",
+    "No active rule promotion.",
+    "No production entry change."
+  ],
+  "template_id": "STT-BLAYER-RC-QS-FF1993-001",
+  "scenario": "b_layer_post_eval",
+  "module": "b_layer_post_eval",
+  "purpose": "B层后评估记录结果归因、复用价值、是否进入反例、是否继续观察。",
+  "required_fields": [
+    "trace_id",
+    "task_id",
+    "candidate_id",
+    "eval_date",
+    "outcome",
+    "failure_attribution",
+    "reusable_value",
+    "counterexample_required",
+    "candidate_status_suggestion",
+    "module_conclusion",
+    "evidence_refs"
+  ]
+}

@@ -1,0 +1,2709 @@
+{
+  "meta": {
+    "version": "1.3",
+    "generated": "2026-06-11",
+    "stage": "G3-QINGSHAN-FLOW-GLOBAL-KRM-RESTORE-FIX-v1.1",
+    "purpose": "角色能力规则——所有规则从 legacy_role_kb 原始文件提取，路径使用真实中文目录",
+    "status": "active"
+  },
+  "rules": [
+    {
+      "rule_id": "KRM-RULE-0001",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/01-数据源全景.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-数据源全景] 玉夜: 01 — 数据源全景",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/01-数据源全景.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/01-数据源全景.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "01-数据源全景",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0002",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/02-数据质量维度.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-数据质量维度] 玉夜: 02 — 数据质量维度",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/02-数据质量维度.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/02-数据质量维度.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "02-数据质量维度",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0003",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/03-缓存策略与审计.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-缓存策略与审计] 玉夜: 03 — 缓存策略与审计",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/03-缓存策略与审计.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/03-缓存策略与审计.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "03-缓存策略与审计",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0004",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-1+2架构合规检查] 玉夜: 04 — 1+2架构合规检查",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "04-1+2架构合规检查",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0005",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/05-异常检测与告警.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-异常检测与告警] 玉夜: 05 — 异常检测与告警",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/05-异常检测与告警.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/05-异常检测与告警.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "05-异常检测与告警",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0006",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-数据时效性与延迟度量] 玉夜: 06 — 数据时效性与延迟度量",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "06-数据时效性与延迟度量",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0007",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/07-API频率限制速查表.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-API频率限制速查表] 玉夜: API频率限制速查表 — 玉夜数据监理",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/07-API频率限制速查表.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/07-API频率限制速查表.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "07-API频率限制速查表",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0008",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/07-数据运用审计.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-数据运用审计] 玉夜: 07 — 数据运用审计",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/07-数据运用审计.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/07-数据运用审计.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "07-数据运用审计",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0009",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/08-数据源故障历史.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-数据源故障历史] 玉夜: 数据源故障历史 — 玉夜数据监理",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/08-数据源故障历史.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/08-数据源故障历史.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "玉夜",
+        "08-数据源故障历史",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0010",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/01-因子体系总览.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-因子体系总览] 青山: 01-因子体系总览",
+      "full_rule": "来源: sources/legacy_role_kb/青山/01-因子体系总览.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/01-因子体系总览.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "01-因子体系总览",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0011",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/02-A股因子实证特征.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-A股因子实证特征] 青山: 02-A股因子实证特征",
+      "full_rule": "来源: sources/legacy_role_kb/青山/02-A股因子实证特征.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/02-A股因子实证特征.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "02-A股因子实证特征",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0012",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/03-因子评估方法论.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-因子评估方法论] 青山: 03-因子评估方法论",
+      "full_rule": "来源: sources/legacy_role_kb/青山/03-因子评估方法论.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/03-因子评估方法论.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "03-因子评估方法论",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0013",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/04-因子衰减与策略退化.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-因子衰减与策略退化] 青山: 04-因子衰减与策略退化",
+      "full_rule": "来源: sources/legacy_role_kb/青山/04-因子衰减与策略退化.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/04-因子衰减与策略退化.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "04-因子衰减与策略退化",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0014",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/05-策略优化提案框架.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-策略优化提案框架] 青山: 05-策略优化提案框架",
+      "full_rule": "来源: sources/legacy_role_kb/青山/05-策略优化提案框架.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/05-策略优化提案框架.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "05-策略优化提案框架",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0015",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-绩效归因与收益拆解] 青山: 06 — 绩效归因与收益拆解",
+      "full_rule": "来源: sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "06-绩效归因与收益拆解",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0016",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/07-当前活跃因子清单.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-当前活跃因子清单] 青山: 当前活跃因子清单 — 青山策略研究员",
+      "full_rule": "来源: sources/legacy_role_kb/青山/07-当前活跃因子清单.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/07-当前活跃因子清单.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "07-当前活跃因子清单",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0017",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/08-回测数据集规范.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-回测数据集规范] 青山: 回测数据集规范 — 青山策略研究员",
+      "full_rule": "来源: sources/legacy_role_kb/青山/08-回测数据集规范.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/08-回测数据集规范.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "08-回测数据集规范",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0018",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/09-事件驱动因子体系.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-事件驱动因子体系] 青山: 09-事件驱动因子体系",
+      "full_rule": "来源: sources/legacy_role_kb/青山/09-事件驱动因子体系.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/09-事件驱动因子体系.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "青山",
+        "09-事件驱动因子体系",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0019",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/01-风险量化方法论.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-风险量化方法论] 流金: 01 — 风险量化方法论",
+      "full_rule": "来源: sources/legacy_role_kb/流金/01-风险量化方法论.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/01-风险量化方法论.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "01-风险量化方法论",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0020",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/02-A股特有风险.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-A股特有风险] 流金: 02 — A股特有风险",
+      "full_rule": "来源: sources/legacy_role_kb/流金/02-A股特有风险.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/02-A股特有风险.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "02-A股特有风险",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0021",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/03-持仓风险度量.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-持仓风险度量] 流金: 03 — 持仓风险度量",
+      "full_rule": "来源: sources/legacy_role_kb/流金/03-持仓风险度量.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/03-持仓风险度量.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "03-持仓风险度量",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0022",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/04-策略过拟合检测.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-策略过拟合检测] 流金: 04 — 策略过拟合检测",
+      "full_rule": "来源: sources/legacy_role_kb/流金/04-策略过拟合检测.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/04-策略过拟合检测.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "04-策略过拟合检测",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0023",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/05-回撤监控与止损.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-回撤监控与止损] 流金: 05 — 回撤监控与止损",
+      "full_rule": "来源: sources/legacy_role_kb/流金/05-回撤监控与止损.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/05-回撤监控与止损.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "05-回撤监控与止损",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0024",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/06-交易纪律审查清单.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-交易纪律审查清单] 流金: 06 — 交易纪律审查清单",
+      "full_rule": "来源: sources/legacy_role_kb/流金/06-交易纪律审查清单.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/06-交易纪律审查清单.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "06-交易纪律审查清单",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0025",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/07-压力测试与情景分析.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-压力测试与情景分析] 流金: 07 — 压力测试与情景分析",
+      "full_rule": "来源: sources/legacy_role_kb/流金/07-压力测试与情景分析.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/07-压力测试与情景分析.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "07-压力测试与情景分析",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0026",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/08-风控事件日志模板.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-风控事件日志模板] 流金: 风控事件日志模板 — 流金风控官",
+      "full_rule": "来源: sources/legacy_role_kb/流金/08-风控事件日志模板.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/08-风控事件日志模板.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "08-风控事件日志模板",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0027",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/09-回撤恢复模式库.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-回撤恢复模式库] 流金: A股回撤恢复模式库 — 流金风控官",
+      "full_rule": "来源: sources/legacy_role_kb/流金/09-回撤恢复模式库.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/09-回撤恢复模式库.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "流金",
+        "09-回撤恢复模式库",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0028",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/01-角色定位与职责.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-角色定位与职责] 信鸽: 01 — 信鸽角色定位与职责",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/01-角色定位与职责.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/01-角色定位与职责.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "01-角色定位与职责",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0029",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/02-采集配置与调度.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-采集配置与调度] 信鸽: 02 — 采集配置与调度",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/02-采集配置与调度.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/02-采集配置与调度.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "02-采集配置与调度",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0030",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-五层过滤漏斗详解] 信鸽: 03 — 五层过滤漏斗详解",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "03-五层过滤漏斗详解",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0031",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/04-事件标签体系.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-事件标签体系] 信鸽: 04 — 事件标签体系",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/04-事件标签体系.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/04-事件标签体系.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "04-事件标签体系",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0032",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/05-数据源与API详情.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-数据源与API详情] 信鸽: 05 — 数据源与API详情",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/05-数据源与API详情.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/05-数据源与API详情.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "05-数据源与API详情",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0033",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/06-重点股票档案.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-重点股票档案] 信鸽: 06 — 重点股票档案",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/06-重点股票档案.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/06-重点股票档案.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "06-重点股票档案",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0034",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/07-模式识别规则.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-模式识别规则] 信鸽: 07 — 模式识别规则 (Phase 2)",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/07-模式识别规则.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/07-模式识别规则.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "信鸽",
+        "07-模式识别规则",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0035",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/01-货币政策与流动性.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-货币政策与流动性] 山猫: 01 -- 货币政策与流动性",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/01-货币政策与流动性.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/01-货币政策与流动性.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "01-货币政策与流动性",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0036",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/02-财政与产业政策.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-财政与产业政策] 山猫: 02 -- 财政与产业政策",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/02-财政与产业政策.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/02-财政与产业政策.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "02-财政与产业政策",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0037",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/03-宏观数据解读框架.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-宏观数据解读框架] 山猫: 03 -- 宏观数据解读框架",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/03-宏观数据解读框架.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/03-宏观数据解读框架.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "03-宏观数据解读框架",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0038",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/04-A股政策维度.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-A股政策维度] 山猫: 04 -- A股政策维度",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/04-A股政策维度.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/04-A股政策维度.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "04-A股政策维度",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0039",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/05-市场情绪指标体系.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-市场情绪指标体系] 山猫: 05 -- 市场情绪指标体系",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/05-市场情绪指标体系.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/05-市场情绪指标体系.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "05-市场情绪指标体系",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0040",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/06-全球宏观联动.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-全球宏观联动] 山猫: 06 -- 全球宏观联动",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/06-全球宏观联动.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/06-全球宏观联动.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "06-全球宏观联动",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0041",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/07-A股极端事件编年史.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-A股极端事件编年史] 山猫: 07 — A股极端事件编年史",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/07-A股极端事件编年史.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/07-A股极端事件编年史.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "07-A股极端事件编年史",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0042",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/08-信息源清单.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-信息源清单] 山猫: 信息源清单 — 山猫宏观巡检",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/08-信息源清单.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/08-信息源清单.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "08-信息源清单",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0043",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/09-政策日历模板.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-政策日历模板] 山猫: 政策日历模板 — 山猫宏观巡检",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/09-政策日历模板.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/09-政策日历模板.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "山猫",
+        "09-政策日历模板",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0044",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/01-A股交易规则.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-A股交易规则] 腰子: 01 - A股交易规则知识库",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/01-A股交易规则.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/01-A股交易规则.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "01-A股交易规则",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0045",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-技术分析-均线+MACD+RSI+布林+ATR] 腰子: 02 - 技术分析：均线+MACD+RSI+布林带+ATR 知识库",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "02-技术分析-均线+MACD+RSI+布林+ATR",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0046",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-Wyckoff量价分析法] 腰子: 03 - Wyckoff 量价分析法 知识库",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "03-Wyckoff量价分析法",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0047",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/04-背离信号系统.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-背离信号系统] 腰子: 04 - 背离信号系统 知识库",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/04-背离信号系统.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/04-背离信号系统.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "04-背离信号系统",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0048",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-板块轮动与生命周期] 腰子: 05-板块轮动与生命周期",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "05-板块轮动与生命周期",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0049",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/06-估值方法.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-估值方法] 腰子: 06-估值方法",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/06-估值方法.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/06-估值方法.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "06-估值方法",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0050",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/07-财务质量分析.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-财务质量分析] 腰子: 07-财务质量分析",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/07-财务质量分析.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/07-财务质量分析.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "07-财务质量分析",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0051",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/08-资金面分析.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-资金面分析] 腰子: 08-资金面分析",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/08-资金面分析.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/08-资金面分析.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "08-资金面分析",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0052",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/09-突破性质分类.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-突破性质分类] 腰子: 09-突破性质分类",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/09-突破性质分类.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/09-突破性质分类.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "09-突破性质分类",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0053",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-量化因子-IC-IR-Spearman] 腰子: 09-量化因子：IC、IR、Spearman 相关系数",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "09-量化因子-IC-IR-Spearman",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0054",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/10-催化剂事件追踪.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[10-催化剂事件追踪] 腰子: 10-催化剂事件追踪",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/10-催化剂事件追踪.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/10-催化剂事件追踪.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "10-催化剂事件追踪",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0055",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[10-因子衰减与过拟合防范] 腰子: 10-因子衰减与过拟合防范",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "10-因子衰减与过拟合防范",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0056",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[11-仓位管理与止损策略] 腰子: 11-仓位管理与止损策略",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "11-仓位管理与止损策略",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0057",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[12-路径优选与市场状态自适应] 腰子: 12-路径优选与市场状态自适应",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "12-路径优选与市场状态自适应",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0058",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[13-Brinson归因与Barra风险模型] 腰子: 13 — Brinson归因与Barra风险模型",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "13-Brinson归因与Barra风险模型",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0059",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/14-行为金融与市场心理.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[14-行为金融与市场心理] 腰子: 14 — 行为金融与市场心理",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/14-行为金融与市场心理.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/14-行为金融与市场心理.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "14-行为金融与市场心理",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0060",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/15-研究追踪与更新.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[15-研究追踪与更新] 腰子: 15 — 研究追踪与更新",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/15-研究追踪与更新.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/15-研究追踪与更新.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "15-研究追踪与更新",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0061",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/16-组合管理与资金分配.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[16-组合管理与资金分配] 腰子: 16 — 组合管理与资金分配",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/16-组合管理与资金分配.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/16-组合管理与资金分配.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "16-组合管理与资金分配",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0062",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[17-决策日志与可追溯性] 腰子: 17 — 决策日志与可追溯性",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "17-决策日志与可追溯性",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0063",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/18-事件驱动策略框架.md",
+      "source_line": 2,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[18-事件驱动策略框架] 腰子: 18 — 事件驱动策略框架",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/18-事件驱动策略框架.md (第2行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/18-事件驱动策略框架.md",
+        "line": 2,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "18-事件驱动策略框架",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0064",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md",
+      "source_line": 3,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[19-团队协作与升级裁决] 腰子: 19 — 团队协作与升级裁决",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md (第3行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md",
+        "line": 3,
+        "confidence": "high"
+      },
+      "tags": [
+        "腰子",
+        "19-团队协作与升级裁决",
+        "knowledge"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0065",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/01-数据源全景.md",
+      "source_line": 23,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-数据源全景] 玉夜: 1.1 数据源编号规范",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/01-数据源全景.md (第23行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/01-数据源全景.md",
+        "line": 23,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "01-数据源全景",
+        "1.1 数据源编号规范"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0066",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/02-数据质量维度.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-数据质量维度] 玉夜: 一、六大维度总览",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/02-数据质量维度.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/02-数据质量维度.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "02-数据质量维度",
+        "一、六大维度总览"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0067",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/03-缓存策略与审计.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-缓存策略与审计] 玉夜: 一、缓存体系架构",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/03-缓存策略与审计.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/03-缓存策略与审计.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "03-缓存策略与审计",
+        "一、缓存体系架构"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0068",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-1+2架构合规检查] 玉夜: 一、1+2架构定义",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/04-1+2架构合规检查.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "04-1+2架构合规检查",
+        "一、1+2架构定义"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0069",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/05-异常检测与告警.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-异常检测与告警] 玉夜: 一、异常分类体系：P0-P5 六级别",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/05-异常检测与告警.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/05-异常检测与告警.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "05-异常检测与告警",
+        "一、异常分类体系：P0-P5 六级别"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0070",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-数据时效性与延迟度量] 玉夜: 一、时效性为什么重要",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/06-数据时效性与延迟度量.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "06-数据时效性与延迟度量",
+        "一、时效性为什么重要"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0071",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/07-API频率限制速查表.md",
+      "source_line": 28,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-API频率限制速查表] 玉夜: 二、全局纪律（所有API通用）",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/07-API频率限制速查表.md (第28行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/07-API频率限制速查表.md",
+        "line": 28,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "07-API频率限制速查表",
+        "二、全局纪律（所有API通用）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0072",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/07-数据运用审计.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-数据运用审计] 玉夜: 一、审计维度定义",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/07-数据运用审计.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/07-数据运用审计.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "07-数据运用审计",
+        "一、审计维度定义"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0073",
+      "role": "玉夜",
+      "source_file": "sources/legacy_role_kb/玉夜/08-数据源故障历史.md",
+      "source_line": 38,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-数据源故障历史] 玉夜: 三、故障统计（每季度汇总）",
+      "full_rule": "来源: sources/legacy_role_kb/玉夜/08-数据源故障历史.md (第38行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/玉夜/08-数据源故障历史.md",
+        "line": 38,
+        "confidence": "medium"
+      },
+      "tags": [
+        "玉夜",
+        "08-数据源故障历史",
+        "三、故障统计（每季度汇总）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0074",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/01-因子体系总览.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-因子体系总览] 青山: 一、什么是因子——策略研究员的视角",
+      "full_rule": "来源: sources/legacy_role_kb/青山/01-因子体系总览.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/01-因子体系总览.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "01-因子体系总览",
+        "一、什么是因子——策略研究员的视角"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0075",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/02-A股因子实证特征.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-A股因子实证特征] 青山: 一、A股因子研究的核心命题",
+      "full_rule": "来源: sources/legacy_role_kb/青山/02-A股因子实证特征.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/02-A股因子实证特征.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "02-A股因子实证特征",
+        "一、A股因子研究的核心命题"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0076",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/03-因子评估方法论.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-因子评估方法论] 青山: 一、评估体系总览",
+      "full_rule": "来源: sources/legacy_role_kb/青山/03-因子评估方法论.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/03-因子评估方法论.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "03-因子评估方法论",
+        "一、评估体系总览"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0077",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/04-因子衰减与策略退化.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-因子衰减与策略退化] 青山: 一、核心命题：任何因子都会衰减",
+      "full_rule": "来源: sources/legacy_role_kb/青山/04-因子衰减与策略退化.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/04-因子衰减与策略退化.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "04-因子衰减与策略退化",
+        "一、核心命题：任何因子都会衰减"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0078",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/05-策略优化提案框架.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-策略优化提案框架] 青山: 一、优化哲学：先问\"要不要改\"，再问\"怎么改\"",
+      "full_rule": "来源: sources/legacy_role_kb/青山/05-策略优化提案框架.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/05-策略优化提案框架.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "05-策略优化提案框架",
+        "一、优化哲学：先问\"要不要改\"，再问\"怎么改\""
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0079",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-绩效归因与收益拆解] 青山: 一、核心命题：没有归因就没有进化",
+      "full_rule": "来源: sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/06-绩效归因与收益拆解.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "06-绩效归因与收益拆解",
+        "一、核心命题：没有归因就没有进化"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0080",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/07-当前活跃因子清单.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-当前活跃因子清单] 青山: 二、活跃因子清单",
+      "full_rule": "来源: sources/legacy_role_kb/青山/07-当前活跃因子清单.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/07-当前活跃因子清单.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "07-当前活跃因子清单",
+        "二、活跃因子清单"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0081",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/08-回测数据集规范.md",
+      "source_line": 23,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-回测数据集规范] 青山: 二、已知数据质量问题",
+      "full_rule": "来源: sources/legacy_role_kb/青山/08-回测数据集规范.md (第23行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/08-回测数据集规范.md",
+        "line": 23,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "08-回测数据集规范",
+        "二、已知数据质量问题"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0082",
+      "role": "青山",
+      "source_file": "sources/legacy_role_kb/青山/09-事件驱动因子体系.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-事件驱动因子体系] 青山: 一、为什么需要第8族——事件驱动因子",
+      "full_rule": "来源: sources/legacy_role_kb/青山/09-事件驱动因子体系.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/青山/09-事件驱动因子体系.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "青山",
+        "09-事件驱动因子体系",
+        "一、为什么需要第8族——事件驱动因子"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0083",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/01-风险量化方法论.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-风险量化方法论] 流金: 一、VaR（Value at Risk，在险价值）",
+      "full_rule": "来源: sources/legacy_role_kb/流金/01-风险量化方法论.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/01-风险量化方法论.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "01-风险量化方法论",
+        "一、VaR（Value at Risk，在险价值）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0084",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/02-A股特有风险.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-A股特有风险] 流金: 一、退市新规（2025年1月1日起全面实施）",
+      "full_rule": "来源: sources/legacy_role_kb/流金/02-A股特有风险.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/02-A股特有风险.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "02-A股特有风险",
+        "一、退市新规（2025年1月1日起全面实施）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0085",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/03-持仓风险度量.md",
+      "source_line": 20,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-持仓风险度量] 流金: 1.1 Herfindahl-Hirschman指数（HHI）",
+      "full_rule": "来源: sources/legacy_role_kb/流金/03-持仓风险度量.md (第20行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/03-持仓风险度量.md",
+        "line": 20,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "03-持仓风险度量",
+        "1.1 Herfindahl-Hirschman指数（HHI"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0086",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/04-策略过拟合检测.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-策略过拟合检测] 流金: 一、过拟合本质：你在拟合噪音而不是信号",
+      "full_rule": "来源: sources/legacy_role_kb/流金/04-策略过拟合检测.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/04-策略过拟合检测.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "04-策略过拟合检测",
+        "一、过拟合本质：你在拟合噪音而不是信号"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0087",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/05-回撤监控与止损.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-回撤监控与止损] 流金: 一、回撤分类体系",
+      "full_rule": "来源: sources/legacy_role_kb/流金/05-回撤监控与止损.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/05-回撤监控与止损.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "05-回撤监控与止损",
+        "一、回撤分类体系"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0088",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/06-交易纪律审查清单.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-交易纪律审查清单] 流金: 一、盘前检查清单（10项）",
+      "full_rule": "来源: sources/legacy_role_kb/流金/06-交易纪律审查清单.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/06-交易纪律审查清单.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "06-交易纪律审查清单",
+        "一、盘前检查清单（10项）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0089",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/07-压力测试与情景分析.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-压力测试与情景分析] 流金: 一、为什么需要压力测试",
+      "full_rule": "来源: sources/legacy_role_kb/流金/07-压力测试与情景分析.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/07-压力测试与情景分析.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "07-压力测试与情景分析",
+        "一、为什么需要压力测试"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0090",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/08-风控事件日志模板.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-风控事件日志模板] 流金: 二、事件日志模板",
+      "full_rule": "来源: sources/legacy_role_kb/流金/08-风控事件日志模板.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/08-风控事件日志模板.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "08-风控事件日志模板",
+        "二、事件日志模板"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0091",
+      "role": "流金",
+      "source_file": "sources/legacy_role_kb/流金/09-回撤恢复模式库.md",
+      "source_line": 24,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-回撤恢复模式库] 流金: 二、回撤恢复模式分类",
+      "full_rule": "来源: sources/legacy_role_kb/流金/09-回撤恢复模式库.md (第24行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/流金/09-回撤恢复模式库.md",
+        "line": 24,
+        "confidence": "medium"
+      },
+      "tags": [
+        "流金",
+        "09-回撤恢复模式库",
+        "二、回撤恢复模式分类"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0092",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/01-角色定位与职责.md",
+      "source_line": 31,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-角色定位与职责] 信鸽: 二、日常工作节奏",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/01-角色定位与职责.md (第31行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/01-角色定位与职责.md",
+        "line": 31,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "01-角色定位与职责",
+        "二、日常工作节奏"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0093",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/02-采集配置与调度.md",
+      "source_line": 23,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-采集配置与调度] 信鸽: 二、Windows Task Scheduler",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/02-采集配置与调度.md (第23行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/02-采集配置与调度.md",
+        "line": 23,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "02-采集配置与调度",
+        "二、Windows Task Scheduler"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0094",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-五层过滤漏斗详解] 信鸽: 二、L1 — 黑名单关键词+域名",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/03-五层过滤漏斗详解.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "03-五层过滤漏斗详解",
+        "二、L1 — 黑名单关键词+域名"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0095",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/04-事件标签体系.md",
+      "source_line": 24,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-事件标签体系] 信鸽: 二、impact_score 公式",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/04-事件标签体系.md (第24行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/04-事件标签体系.md",
+        "line": 24,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "04-事件标签体系",
+        "二、impact_score 公式"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0096",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/05-数据源与API详情.md",
+      "source_line": 20,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-数据源与API详情] 信鸽: 二、cninfo [16] — 主源",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/05-数据源与API详情.md (第20行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/05-数据源与API详情.md",
+        "line": 20,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "05-数据源与API详情",
+        "二、cninfo [16] — 主源"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0097",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/06-重点股票档案.md",
+      "source_line": 14,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-重点股票档案] 信鸽: 东睦股份 (600114)",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/06-重点股票档案.md (第14行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/06-重点股票档案.md",
+        "line": 14,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "06-重点股票档案",
+        "东睦股份 (600114)"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0098",
+      "role": "信鸽",
+      "source_file": "sources/legacy_role_kb/信鸽/07-模式识别规则.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-模式识别规则] 信鸽: 模式A — 同股多信号",
+      "full_rule": "来源: sources/legacy_role_kb/信鸽/07-模式识别规则.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/信鸽/07-模式识别规则.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "信鸽",
+        "07-模式识别规则",
+        "模式A — 同股多信号"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0099",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/01-货币政策与流动性.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-货币政策与流动性] 山猫: 一、央行货币政策工具箱",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/01-货币政策与流动性.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/01-货币政策与流动性.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "01-货币政策与流动性",
+        "一、央行货币政策工具箱"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0100",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/02-财政与产业政策.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-财政与产业政策] 山猫: 一、年度关键政治会议日历",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/02-财政与产业政策.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/02-财政与产业政策.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "02-财政与产业政策",
+        "一、年度关键政治会议日历"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0101",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/03-宏观数据解读框架.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-宏观数据解读框架] 山猫: 一、PMI（采购经理指数）",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/03-宏观数据解读框架.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/03-宏观数据解读框架.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "03-宏观数据解读框架",
+        "一、PMI（采购经理指数）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0102",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/04-A股政策维度.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-A股政策维度] 山猫: 一、证监会与交易所监管风向",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/04-A股政策维度.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/04-A股政策维度.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "04-A股政策维度",
+        "一、证监会与交易所监管风向"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0103",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/05-市场情绪指标体系.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-市场情绪指标体系] 山猫: 一、两市成交额 —— 情绪的\"心脏\"",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/05-市场情绪指标体系.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/05-市场情绪指标体系.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "05-市场情绪指标体系",
+        "一、两市成交额 —— 情绪的\"心脏\""
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0104",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/06-全球宏观联动.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-全球宏观联动] 山猫: 一、美元指数（DXY）与A股",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/06-全球宏观联动.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/06-全球宏观联动.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "06-全球宏观联动",
+        "一、美元指数（DXY）与A股"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0105",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/07-A股极端事件编年史.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-A股极端事件编年史] 山猫: 一、为什么需要极端事件知识",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/07-A股极端事件编年史.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/07-A股极端事件编年史.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "07-A股极端事件编年史",
+        "一、为什么需要极端事件知识"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0106",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/08-信息源清单.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-信息源清单] 山猫: 二、财政与产业政策",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/08-信息源清单.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/08-信息源清单.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "08-信息源清单",
+        "二、财政与产业政策"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0107",
+      "role": "山猫",
+      "source_file": "sources/legacy_role_kb/山猫/09-政策日历模板.md",
+      "source_line": 21,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-政策日历模板] 山猫: 经济数据发布日历（月度模板）",
+      "full_rule": "来源: sources/legacy_role_kb/山猫/09-政策日历模板.md (第21行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/山猫/09-政策日历模板.md",
+        "line": 21,
+        "confidence": "medium"
+      },
+      "tags": [
+        "山猫",
+        "09-政策日历模板",
+        "经济数据发布日历（月度模板）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0108",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/01-A股交易规则.md",
+      "source_line": 28,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[01-A股交易规则] 腰子: 二、交易时段与集合竞价",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/01-A股交易规则.md (第28行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/01-A股交易规则.md",
+        "line": 28,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "01-A股交易规则",
+        "二、交易时段与集合竞价"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0109",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[02-技术分析-均线+MACD+RSI+布林+ATR] 腰子: 1.2 常用周期含义",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/02-技术分析-均线+MACD+RSI+布林+ATR.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "02-技术分析-均线+MACD+RSI+布林+ATR",
+        "1.2 常用周期含义"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0110",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[03-Wyckoff量价分析法] 腰子: 1.2 四阶段循环",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/03-Wyckoff量价分析法.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "03-Wyckoff量价分析法",
+        "1.2 四阶段循环"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0111",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/04-背离信号系统.md",
+      "source_line": 17,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[04-背离信号系统] 腰子: 1.2 背离的本质含义",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/04-背离信号系统.md (第17行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/04-背离信号系统.md",
+        "line": 17,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "04-背离信号系统",
+        "1.2 背离的本质含义"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0112",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md",
+      "source_line": 20,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[05-板块轮动与生命周期] 腰子: 1.2 31个申万一级行业全称及典型代表股",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md (第20行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/05-板块轮动与生命周期.md",
+        "line": 20,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "05-板块轮动与生命周期",
+        "1.2 31个申万一级行业全称及典型代表股"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0113",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/06-估值方法.md",
+      "source_line": 22,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[06-估值方法] 腰子: 1.2 PE(TTM)计算公式（项目红线强制要求）",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/06-估值方法.md (第22行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/06-估值方法.md",
+        "line": 22,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "06-估值方法",
+        "1.2 PE(TTM)计算公式（项目红线强制要求）"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0114",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/07-财务质量分析.md",
+      "source_line": 42,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[07-财务质量分析] 腰子: 1.2 资产负债表：公司的\"骨架\"",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/07-财务质量分析.md (第42行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/07-财务质量分析.md",
+        "line": 42,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "07-财务质量分析",
+        "1.2 资产负债表：公司的\"骨架\""
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0115",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/08-资金面分析.md",
+      "source_line": 21,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[08-资金面分析] 腰子: 1.2 关键计算公式",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/08-资金面分析.md (第21行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/08-资金面分析.md",
+        "line": 21,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "08-资金面分析",
+        "1.2 关键计算公式"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0116",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/09-突破性质分类.md",
+      "source_line": 20,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-突破性质分类] 腰子: 二、突破性质分类决策树",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/09-突破性质分类.md (第20行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/09-突破性质分类.md",
+        "line": 20,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "09-突破性质分类",
+        "二、突破性质分类决策树"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0117",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md",
+      "source_line": 15,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[09-量化因子-IC-IR-Spearman] 腰子: 1.2 六大类因子",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md (第15行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/09-量化因子-IC-IR-Spearman.md",
+        "line": 15,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "09-量化因子-IC-IR-Spearman",
+        "1.2 六大类因子"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0118",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/10-催化剂事件追踪.md",
+      "source_line": 19,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[10-催化剂事件追踪] 腰子: 二、事件分类体系",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/10-催化剂事件追踪.md (第19行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/10-催化剂事件追踪.md",
+        "line": 19,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "10-催化剂事件追踪",
+        "二、事件分类体系"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0119",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md",
+      "source_line": 15,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[10-因子衰减与过拟合防范] 腰子: 1.2 衰减的三个原因",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md (第15行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/10-因子衰减与过拟合防范.md",
+        "line": 15,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "10-因子衰减与过拟合防范",
+        "1.2 衰减的三个原因"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0120",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md",
+      "source_line": 13,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[11-仓位管理与止损策略] 腰子: 1.1 仓位管理的三个层面",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md (第13行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/11-仓位管理与止损策略.md",
+        "line": 13,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "11-仓位管理与止损策略",
+        "1.1 仓位管理的三个层面"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0121",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[12-路径优选与市场状态自适应] 腰子: 1.2 对项目的直接启示",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/12-路径优选与市场状态自适应.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "12-路径优选与市场状态自适应",
+        "1.2 对项目的直接启示"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0122",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md",
+      "source_line": 11,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[13-Brinson归因与Barra风险模型] 腰子: 1.1 核心目的",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md (第11行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/13-Brinson归因与Barra风险模型.md",
+        "line": 11,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "13-Brinson归因与Barra风险模型",
+        "1.1 核心目的"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0123",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/14-行为金融与市场心理.md",
+      "source_line": 21,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[14-行为金融与市场心理] 腰子: 二、六大核心行为偏差",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/14-行为金融与市场心理.md (第21行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/14-行为金融与市场心理.md",
+        "line": 21,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "14-行为金融与市场心理",
+        "二、六大核心行为偏差"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0124",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/15-研究追踪与更新.md",
+      "source_line": 11,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[15-研究追踪与更新] 腰子: 1.1 A股规则在变化",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/15-研究追踪与更新.md (第11行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/15-研究追踪与更新.md",
+        "line": 11,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "15-研究追踪与更新",
+        "1.1 A股规则在变化"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0125",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/16-组合管理与资金分配.md",
+      "source_line": 21,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[16-组合管理与资金分配] 腰子: 二、相关性管理——避免虚假分散化",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/16-组合管理与资金分配.md (第21行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/16-组合管理与资金分配.md",
+        "line": 21,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "16-组合管理与资金分配",
+        "二、相关性管理——避免虚假分散化"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0126",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md",
+      "source_line": 21,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[17-决策日志与可追溯性] 腰子: 二、什么情况下必须写决策日志",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md (第21行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/17-决策日志与可追溯性.md",
+        "line": 21,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "17-决策日志与可追溯性",
+        "二、什么情况下必须写决策日志"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0127",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/18-事件驱动策略框架.md",
+      "source_line": 18,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[18-事件驱动策略框架] 腰子: 一、为什么需要事件驱动框架",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/18-事件驱动策略框架.md (第18行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/18-事件驱动策略框架.md",
+        "line": 18,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "18-事件驱动策略框架",
+        "一、为什么需要事件驱动框架"
+      ]
+    },
+    {
+      "rule_id": "KRM-RULE-0128",
+      "role": "腰子",
+      "source_file": "sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md",
+      "source_line": 24,
+      "rule_type": "guideline",
+      "target_bucket": "knowledge",
+      "rule_summary": "[19-团队协作与升级裁决] 腰子: 二、RAPID 决策角色映射（源自 Bain & Company）",
+      "full_rule": "来源: sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md (第24行)",
+      "status": "active",
+      "evidence": {
+        "file": "sources/legacy_role_kb/腰子/19-团队协作与升级裁决.md",
+        "line": 24,
+        "confidence": "medium"
+      },
+      "tags": [
+        "腰子",
+        "19-团队协作与升级裁决",
+        "二、RAPID 决策角色映射（源自 Bain & Compa"
+      ]
+    }
+  ],
+  "counts": {
+    "total_rules": 128,
+    "active_rules": 128,
+    "draft_rules": 0,
+    "source_files_covered": 64,
+    "total_source_files": 64,
+    "rules_without_source_evidence": 0,
+    "bad_evidence_paths": 0,
+    "bad_evidence_lines": 0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-v1.0",
+  "required_fields": [
+    "task_id",
+    "candidate_id",
+    "owner_role",
+    "validation_scope",
+    "scenario_bindings",
+    "observation_policy",
+    "status",
+    "created_at",
+    "updated_at"
+  ],
+  "allowed_status": [
+    "validation_task_open",
+    "scenario_trace_collecting",
+    "weekly_validation_summary_ready",
+    "validation_review_ready",
+    "blocked",
+    "rejected",
+    "archived"
+  ],
+  "scenario_binding_required_fields": [
+    "scenario",
+    "trace_required",
+    "minimum_observation_count"
+  ],
+  "redlines": [
+    "Validation task cannot write active rules.",
+    "Validation task cannot bypass role confirmation.",
+    "Validation task cannot bypass knowledge merge check."
+  ]
+}

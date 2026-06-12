@@ -1,0 +1,30 @@
+{
+  "decision_id": "PD-RC-QS-FF1993-20260612-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "decision_date": "2026-06-12",
+  "decision": "continue_observation",
+  "active_rule_allowed": false,
+  "reason": "observation evidence insufficient; Dongmu daily real case did not trigger candidate application",
+  "next_required_evidence": [
+    "weekly_report_trace",
+    "b_layer_post_eval_trace",
+    "triggered_daily_report_trace_when_applicable"
+  ],
+  "evidence_summary": {
+    "scenario_trace_count": 2,
+    "available_scenarios": [
+      "deep_analysis",
+      "daily_report"
+    ],
+    "daily_report_trace_status": "present_not_triggered_real_case",
+    "missing_scenarios": [
+      "weekly_report",
+      "b_layer_post_eval"
+    ],
+    "observation_weeks_completed": 1,
+    "minimum_observation_weeks_required": 4
+  },
+  "formal_pipeline_note": "This is a real PromotionDecision, not actor/HMAC formal pipeline PASS."
+}

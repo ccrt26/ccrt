@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-SCENARIO-TRACE-TEMPLATES-v1.0",
+  "status": "active",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "template_only": true,
+  "bindings": [
+    {
+      "scenario": "weekly_report",
+      "template_id": "STT-WEEKLY-RC-QS-FF1993-001",
+      "template_path": "00_项目地基/07_知识进化/knowledge/scenario_trace_templates/weekly_report/TEMPLATE_WEEKLY_REPORT_RC_QS_FF1993_v1.0.json",
+      "real_trace_allowed_now": false
+    },
+    {
+      "scenario": "daily_report",
+      "template_id": "STT-DAILY-RC-QS-FF1993-001",
+      "template_path": "00_项目地基/07_知识进化/knowledge/scenario_trace_templates/daily_report/TEMPLATE_DAILY_REPORT_RC_QS_FF1993_v1.0.json",
+      "real_trace_allowed_now": false
+    },
+    {
+      "scenario": "b_layer_post_eval",
+      "template_id": "STT-BLAYER-RC-QS-FF1993-001",
+      "template_path": "00_项目地基/07_知识进化/knowledge/scenario_trace_templates/b_layer_post_eval/TEMPLATE_B_LAYER_POST_EVAL_RC_QS_FF1993_v1.0.json",
+      "real_trace_allowed_now": false
+    },
+    {
+      "scenario": "deep_analysis",
+      "template_id": "STT-DEEP-RC-QS-FF1993-001",
+      "template_path": "00_项目地基/07_知识进化/knowledge/scenario_trace_templates/deep_analysis/TEMPLATE_DEEP_ANALYSIS_RC_QS_FF1993_v1.0.json",
+      "real_trace_allowed_now": false
+    }
+  ],
+  "weekly_summary_template": "00_项目地基/07_知识进化/knowledge/weekly_validation_summary_templates/TEMPLATE_WEEKLY_VALIDATION_SUMMARY_RC_QS_FF1993_v1.0.json",
+  "redlines": [
+    "Bindings only. No real trace yet. No production entry change."
+  ]
+}

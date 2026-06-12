@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-v1.0",
+  "status": "active",
+  "purpose": "Define validation policy for knowledge evolution workflow foundation.",
+  "knowledge_types": {
+    "source_candidate": {
+      "owner_role_required": true,
+      "quality_score_required": true,
+      "may_generate_active_rule": false,
+      "default_next_state": "quality_scored"
+    },
+    "literature_card": {
+      "owner_role_required": true,
+      "source_evidence_required": true,
+      "quality_pass_required": true,
+      "may_generate_active_rule": false,
+      "default_next_state": "rule_candidate_draft"
+    },
+    "rule_candidate": {
+      "owner_role_required": true,
+      "source_card_required": true,
+      "initial_status": "candidate_draft",
+      "may_generate_active_rule": false,
+      "default_next_state": "validation_task_open"
+    },
+    "validation_task": {
+      "scenario_trace_required": true,
+      "weekly_summary_required": true,
+      "min_observation_weeks_default": 4,
+      "may_generate_active_rule": false,
+      "default_next_state": "scenario_trace_collecting"
+    },
+    "scenario_trace": {
+      "allowed_scenarios": [
+        "weekly_report",
+        "daily_report",
+        "b_layer_post_eval",
+        "deep_analysis"
+      ],
+      "must_bind_candidate_id": true,
+      "may_generate_active_rule": false
+    },
+    "validation_review": {
+      "requires_role_confirmation": true,
+      "requires_yaozi_confirmation": true,
+      "may_generate_active_rule": false,
+      "default_next_state": "knowledge_merge_check_ready"
+    },
+    "knowledge_merge_check": {
+      "dedupe_required": true,
+      "gap_check_required": true,
+      "obsolete_check_required": true,
+      "merge_strategy_required": true,
+      "may_generate_active_rule": false
+    },
+    "active_rule": {
+      "promotion_decision_required": true,
+      "adoption_record_required": true,
+      "performance_monitor_required": true,
+      "may_generate_active_rule": true
+    }
+  },
+  "hard_redlines": [
+    "No direct promotion from literature_card to active_rule.",
+    "No active rule without scenario validation.",
+    "No active rule without knowledge merge check.",
+    "No active rule without role confirmation and yaozi confirmation.",
+    "No production entry modification in this foundation stage."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stage": "G3-QINGSHAN-LITERATURE-CARD-TO-RULE-CANDIDATE-v1.0",
+    "owner_role": "青山",
+    "purpose": "定义 LiteratureCard → RuleCandidate 的固化流程",
+    "generated": "2026-06-11",
+    "read_tier": "task",
+    "status": "active",
+    "depends_on": [
+      "knowledge/literature/qingshan_source_selection_policy_v1.0.json",
+      "knowledge/literature/qingshan_literature_quality_schema_v1.0.json"
+    ]
+  },
+  "input_objects": {
+    "source_candidate": "经过 source selection 准入的候选资料",
+    "quality_score_result": "经过 quality scoring 的输出结果",
+    "qingshan_relevance_reason": "青山判断该资料与职责相关性的说明",
+    "evidence_trace": "可追溯到原始资料的证据链对象"
+  },
+  "literature_card_schema": {
+    "description": "文献卡片最小字段集（card_draft 初始状态）",
+    "required_fields": [
+      "card_id", "source_id", "source_title", "source_type",
+      "author_or_institution", "publication_date",
+      "source_selection_status", "quality_status",
+      "total_score", "hard_block_triggered",
+      "extracted_claims", "evidence_units",
+      "applicable_market", "sample_scope",
+      "method_summary", "limitations",
+      "conflict_notes", "qingshan_use_case",
+      "traceability", "card_status"
+    ],
+    "initial_status": "card_draft"
+  },
+  "rule_candidate_schema": {
+    "description": "规则候选最小字段集（candidate_draft 初始状态）",
+    "required_fields": [
+      "candidate_id", "source_card_id", "owner_role",
+      "candidate_type", "target_knowledge_bucket",
+      "proposed_rule_summary", "evidence_refs",
+      "applicability_scope", "exclusion_conditions",
+      "expected_benefit", "risk_of_misuse",
+      "validation_requirement", "candidate_status"
+    ],
+    "initial_status": "candidate_draft",
+    "allowed_candidate_types": [
+      "role_capability_rules",
+      "parameter_candidate",
+      "counterexample_candidate",
+      "literature_background",
+      "reject_or_hold"
+    ]
+  },
+  "allow_generation_conditions": [
+    {"id": "ALLOW-001", "rule": "quality_status 必须为 quality_pass 或 quality_pass_with_cross_check"},
+    {"id": "ALLOW-002", "rule": "hard_block_triggered 必须为空"},
+    {"id": "ALLOW-003", "rule": "source_selection_status 不得为 rejected"},
+    {"id": "ALLOW-004", "rule": "至少存在 1 条 extracted_claim"},
+    {"id": "ALLOW-005", "rule": "至少存在 1 条 evidence_unit"},
+    {"id": "ALLOW-006", "rule": "必须写明 applicability_scope"},
+    {"id": "ALLOW-007", "rule": "必须写明 limitations 或 exclusion_conditions"},
+    {"id": "ALLOW-008", "rule": "必须有 traceability"},
+    {"id": "ALLOW-009", "rule": "必须经过青山适用性判断"},
+    {"id": "ALLOW-010", "rule": "只能生成 candidate_draft，不能直接成为 active rule"}
+  ],
+  "block_generation_conditions": [
+    {"id": "BLOCK-001", "rule": "quality_reject"},
+    {"id": "BLOCK-002", "rule": "quality_background_only"},
+    {"id": "BLOCK-003", "rule": "hard_block_triggered 非空"},
+    {"id": "BLOCK-004", "rule": "无法追溯原文证据"},
+    {"id": "BLOCK-005", "rule": "只有观点，没有方法或样本"},
+    {"id": "BLOCK-006", "rule": "与 A 股/技术信号/因子有效性无明确关系"},
+    {"id": "BLOCK-007", "rule": "无法说明适用边界"},
+    {"id": "BLOCK-008", "rule": "只有单篇文献但结论强泛化"},
+    {"id": "BLOCK-009", "rule": "涉及交易动作红线但未经过流金规则"},
+    {"id": "BLOCK-010", "rule": "涉及核心知识库更新但未经过角色确认"}
+  ],
+  "diversion_rules": [
+    {"condition": "方法稳定、跨样本有效", "target": "role_capability_rules", "description": "进入角色能力规则候选池"},
+    {"condition": "阈值、窗口、权重", "target": "parameter_candidate", "description": "进入参数候选池"},
+    {"condition": "失败案例或适用边界", "target": "counterexample_candidate", "description": "进入反例候选池"},
+    {"condition": "只作为背景", "target": "literature_background", "description": "仅作为背景文献"},
+    {"condition": "证据不足", "target": "reject_or_hold", "description": "拒绝或暂存"}
+  ],
+  "redlines": [
+    {"id": "RL-001", "rule": "不得从文献直接生成 active rule"},
+    {"id": "RL-002", "rule": "不得从文献直接改角色核心知识库"},
+    {"id": "RL-003", "rule": "不得把外部文献全文放入启动上下文"},
+    {"id": "RL-004", "rule": "不得因为权威来源自动通过"},
+    {"id": "RL-005", "rule": "不得因为高评分自动通过"},
+    {"id": "RL-006", "rule": "不得绕过项目内验证"},
+    {"id": "RL-007", "rule": "不得绕过青山/腰子确认"}
+  ],
+  "anti_overreach": {
+    "no_direct_active_rule_from_literature": true,
+    "no_direct_core_knowledge_update": true,
+    "no_external_fulltext_in_startup": true,
+    "no_auto_pass_for_authority": true,
+    "no_auto_pass_for_high_score": true,
+    "requires_project_validation": true,
+    "requires_qingshan_confirmation": true,
+    "requires_yaozi_confirmation_for_trading_redlines": true
+  }
+}

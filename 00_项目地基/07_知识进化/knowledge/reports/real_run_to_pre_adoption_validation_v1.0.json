@@ -1,0 +1,23 @@
+{
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "result": "PASS",
+  "checks": {
+    "required_files_ok": true,
+    "json_parse_ok": true,
+    "deep_trace_real_continue_observation": true,
+    "daily_trace_real_case_bound": true,
+    "daily_trace_not_false_triggered": true,
+    "wvs_has_two_traces_and_still_insufficient": true,
+    "vr_missing_only_weekly_and_b_layer": true,
+    "rc_required_pending_not_signed": true,
+    "kmc_merge_not_ready": true,
+    "pd_continue_observation_locked": true,
+    "active_rule_unchanged": true
+  },
+  "missing": [],
+  "json_errors": [],
+  "real_case": "东睦股份(600114) 日报 2026-06-11",
+  "go_live_conclusion": "knowledge_evolution_workflow_can_enter_regular_operation",
+  "adoption_conclusion": "candidate_must_continue_observation_not_active_rule",
+  "formal_pipeline_note": "CCRT relay-package record; not actor/HMAC formal pipeline PASS."
+}

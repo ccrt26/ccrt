@@ -1,0 +1,44 @@
+{
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-FIX-v1.0.1",
+  "result": "PASS",
+  "checks": {
+    "required_files_ok": true,
+    "json_parse_ok": true,
+    "task_identity_ok": true,
+    "module_binding_ok": true,
+    "task_initial_status_ok": true,
+    "manifest_ok": true,
+    "foundation_validator_executed_ok": true,
+    "foundation_validator_report_pass": true,
+    "global_krm_validator_executed_ok": true,
+    "global_krm_validator_report_pass": true,
+    "global_krm_warn_not_accepted": true,
+    "no_new_literature_card": true,
+    "no_new_rule_candidate": true,
+    "validation_task_count_exactly_one": true,
+    "active_rule_unchanged_by_candidate": true
+  },
+  "missing_files": [],
+  "json_errors": [],
+  "task_errors": [],
+  "module_errors": [],
+  "manifest_bad": [],
+  "missing_manifest_ids": [],
+  "duplicate_manifest_ids": [],
+  "counts": {
+    "literature_cards": 1,
+    "rule_candidates": 1,
+    "validation_tasks": 1
+  },
+  "foundation_validator": {
+    "exit_code": 0,
+    "report_result": "PASS",
+    "tail": "est_counts_match_ok\": true,\n    \"manifest_no_abs_path_ok\": true,\n    \"manifest_no_missing_id_ok\": true,\n    \"manifest_required_kinds_ok\": true,\n    \"literature_cards_registered_ok\": true,\n    \"rule_candidates_registered_ok\": true,\n    \"global_krm_validator_ok\": true\n  },\n  \"missing_files\": [],\n  \"json_errors\": [],\n  \"missing_knowledge_types\": [],\n  \"missing_states\": [],\n  \"transition_errors\": [],\n  \"policy_state_errors\": [],\n  \"manifest_check\": {\n    \"entry_count\": 182,\n    \"counts_total_entries\": 182,\n    \"missing_required_ids\": [],\n    \"bad_entries\": [],\n    \"absolute_paths\": [],\n    \"missing_id_entries\": [],\n    \"missing_required_kinds\": []\n  },\n  \"registration_check\": {\n    \"literature_card_count\": 1,\n    \"rule_candidate_count\": 1,\n    \"unregistered_cards\": [],\n    \"unregistered_candidates\": []\n  },\n  \"global_krm_validator\": {\n    \"result\": \"PASS\",\n    \"report_result\": \"PASS\",\n    \"tail\": \"script_exists=True report_exists=True result=PASS\"\n  },\n  \"boundary_check\": {\n    \"no_active_rule_promotion_claimed\": true,\n    \"no_production_entry_change_claimed\": true,\n    \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n  }\n}\n"
+  },
+  "global_krm_validator": {
+    "exit_code": 0,
+    "report_result": "PASS",
+    "tail": "uched_by_candidate = False\n  bad_evidence_lines = 0\n  bad_evidence_paths = 0\n  draft_rule_count = 0\n  forbidden_downstream_created = False\n  json_jsonl_consistent = True\n  legacy_role_kb_file_count = 64\n  legacy_role_kb_sha_match = True\n  literature_card_count = 1\n  literature_cards_allowed = True\n  literature_cards_boundary_ok = True\n  literature_cards_registered = True\n  literature_cards_status_ok = True\n  literature_cards_validation_ok = True\n  manifest_entry_count = 182\n  manifest_integrity_ok = True\n  old_quality_phrase_exists = False\n  qingshan_three_steps_preserved = True\n  result = PASS\n  role_chinese_paths_exist = True\n  role_path_residue_count = 0\n  router_no_placeholders = True\n  router_paths_exist = True\n  router_route_count = 10\n  rule_candidate_count = 1\n  rule_candidates_allowed = True\n  rule_candidates_boundary_ok = True\n  rule_candidates_created = True\n  rule_candidates_registered = True\n  rule_candidates_status_ok = True\n  rules_without_source_evidence = 0\n  source_coverage = 64/64\n  stage = G3-QINGSHAN-FIRST-LITERATURE-CARD-VALIDATOR-FIX-v1.0\n\nreport: /Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json\n"
+  },
+  "formal_pipeline_note": "This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS."
+}

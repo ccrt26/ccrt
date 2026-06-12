@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stage": "G3-QINGSHAN-FIRST-RULE-CANDIDATE-FAMA-FRENCH-1993-v1.0",
+    "owner_role": "青山",
+    "status": "candidate_draft",
+    "created": "2026-06-11",
+    "purpose": "青山第一条 RuleCandidate 草稿；仅验证流程，不进入 active rule"
+  },
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "candidate_type": "role_capability_rule_candidate",
+  "target_knowledge_bucket": "role_capability_rules_candidate_pool",
+  "proposed_rule_summary": "青山在引用非 A 股外部因子文献时，只能先作为方法论和验证框架使用。不得因为文献权威或评分高，直接把结论写成 A 股 active rule。必须先完成 A 股样本适配、样本外验证、衰减检查、反例检查和误用风险检查。",
+  "evidence_refs": [
+    {
+      "card_id": "LC-QS-FF1993-001",
+      "source_title": "Common Risk Factors in the Returns on Stocks and Bonds",
+      "authors": "Fama/French 1993",
+      "evidence_unit_ids": [
+        "EV-001",
+        "EV-002"
+      ],
+      "claim_ids": [
+        "CLAIM-001",
+        "CLAIM-002"
+      ]
+    }
+  ],
+  "applicability_scope": [
+    "因子有效性判断时引用非 A 股文献的场景",
+    "因子 IC/ICIR 分析方法参考",
+    "多因子解释框架前置知识",
+    "A 股因子样本迁移风险检查"
+  ],
+  "exclusion_conditions": [
+    "不适用于已通过 A 股全样本验证的本土因子",
+    "不适用于已进入 active rule 且经多周期检验的角色规则",
+    "不影响青山从 wind/CSMAR 等 A 股数据源直接提取的本土因子"
+  ],
+  "expected_benefit": [
+    "防止因子文献权威被直接迁移为交易规则",
+    "要求因子候选必须经历 A 股完整验证",
+    "降低因子迁移导致的过拟合风险"
+  ],
+  "risk_of_misuse": [
+    "若忽视 exclusion_conditions，可能阻碍必要的本土因子写入",
+    "可能存在过度拒绝外部文献价值的情况",
+    "需结合青山专业判断使用，不能死板执行"
+  ],
+  "validation_requirement": {
+    "a_share_sample_adaptation": "必须验证 A 股适用性",
+    "out_of_sample_test": "需要 A 股样本外检验",
+    "decay_check": "需要因子衰减检查",
+    "counterexample_check": "需要反例检查",
+    "misuse_risk_assessment": "需要误用风险评估",
+    "role_confirmation": "需要青山确认适用性",
+    "yaozi_confirmation": "需要腰子确认可写入候选池"
+  },
+  "candidate_status": "candidate_draft",
+  "promotion_blockers": [
+    "尚未完成 A 股样本适配",
+    "尚未完成样本外验证",
+    "尚未完成衰减检查",
+    "尚未完成反例检查",
+    "尚未完成误用风险评估",
+    "尚未获得青山确认",
+    "尚未获得腰子确认"
+  ],
+  "next_required_checks": [
+    "A 股样本适配报告",
+    "样本外验证结果",
+    "因子衰减检查结果",
+    "反例检查结果",
+    "误用风险评估结果",
+    "青山适用性确认书",
+    "腰子确认书"
+  ]
+}

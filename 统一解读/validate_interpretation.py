@@ -430,7 +430,6 @@ def main():
         overall = "BLOCK"
     elif u9_status == "WARN" or u10_status == "WARN" or schema_warns:
         overall = "WARN"
-
     result = {
         "interpretation_id": obj.get("interpretation_id", "UNKNOWN"),
         "timestamp": datetime.now().isoformat(),
@@ -441,6 +440,7 @@ def main():
         "u9": {"status": u9_status, "findings": u9_findings} if u9_status != "SKIP" else None,
         "u10": {"status": u10_status, "findings": u10_findings} if u10_status != "SKIP" else None,
         "extra_checks": extra_findings,
+        "method_review_checks": mr_findings,
         "overall": overall
     }
 
@@ -468,6 +468,10 @@ def main():
         if extra_findings:
             print(f"\n额外检查:")
             for f in extra_findings:
+                print(f"  [{f['result']}] {f['check']}: {f['detail']}")
+        if mr_findings:
+            print(f"\n砺石方法审查校验 ({len(mr_findings)}):")
+            for f in mr_findings:
                 print(f"  [{f['result']}] {f['check']}: {f['detail']}")
 
     sys.exit(0 if overall == "PASS" else (1 if overall == "WARN" else 2))

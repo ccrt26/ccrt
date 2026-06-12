@@ -40,7 +40,11 @@ def main():
         print(json.dumps({"skip": "non_trading_day", **payload}, ensure_ascii=False))
         return 0
 
-    return subprocess.run(cmd, cwd=str(ROOT)).returncode
+    data_rc = subprocess.run(cmd, cwd=str(ROOT)).returncode
+    if data_rc != 0:
+        return data_rc
+    report_cmd = [sys.executable, str(ROOT / "scripts" / "run_daily_report_html_only.py"), "--date", date_str, "--write"]
+    return subprocess.run(report_cmd, cwd=str(ROOT)).returncode
 
 if __name__ == "__main__":
     raise SystemExit(main())

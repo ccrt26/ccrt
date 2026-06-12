@@ -1,0 +1,12 @@
+{
+  "confirmation_id": "RC-PENDING-QS-FF1993-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "confirmation_type": "role_confirmation_pending",
+  "confirmation_status": "required_pending",
+  "generated_at": "2026-06-12",
+  "note": "This is a required_pending record, not a role PASS. Role confirmation can only be issued by the actual role holder in an approved workflow.",
+  "formal_pipeline_note": "This is a pending notification, not actor/HMAC formal pipeline PASS."
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "G3-QINGSHAN-LITERATURE-CARD-TO-RULE-CANDIDATE-v1.0",
+  "result": "PASS",
+  "flow_exists": true,
+  "depends_on_complete": true,
+  "literature_card_fields_complete": true,
+  "rule_candidate_fields_complete": true,
+  "initial_status_ok": true,
+  "allow_generation_count": 10,
+  "block_generation_count": 10,
+  "diversion_rule_count": 5,
+  "redline_count": 7,
+  "anti_overreach_ok": true,
+  "bad_anti_overreach": [],
+  "unexpected_downstream_files": [],
+  "result_reason": "[PASS] flow_exists: True; [PASS] depends_on: both source selection and quality schema present=True; [PASS] depends_on_files_exist: True; [PASS] literature_card_fields: missing=[]; [PASS] literature_card_initial_status: card_draft; [PASS] rule_candidate_fields: missing=[]; [PASS] rule_candidate_initial_status: candidate_draft; [PASS] allow_generation_conditions: 10 expected, 10 found; [PASS] block_generation_conditions: 10 expected, 10 found; [PASS] diversion_rules: count=5, targets_complete=True; [PASS] redlines: 7 expected, 7 found; [PASS] anti_overreach: all_true=True; [PASS] unexpected_downstream: none"
+}

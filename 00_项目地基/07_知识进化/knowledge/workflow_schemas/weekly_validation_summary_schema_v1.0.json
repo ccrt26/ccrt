@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-v1.0",
+  "status": "active",
+  "purpose": "Schema for weekly summary of RuleCandidate validation traces.",
+  "required_fields": [
+    "summary_id",
+    "candidate_id",
+    "task_id",
+    "week_start",
+    "week_end",
+    "trigger_count",
+    "scenario_trace_refs",
+    "a_share_adaptation_summary",
+    "out_of_sample_summary",
+    "decay_summary",
+    "counterexample_summary",
+    "misuse_risk_summary",
+    "next_status_suggestion"
+  ],
+  "allowed_next_status_suggestion": [
+    "continue_observation",
+    "extend_observation",
+    "enter_validation_review",
+    "downgrade_to_counterexample",
+    "reject_candidate",
+    "blocked"
+  ],
+  "redlines": [
+    "WeeklyValidationSummary cannot promote active rules.",
+    "WeeklyValidationSummary cannot replace role confirmation.",
+    "WeeklyValidationSummary cannot replace knowledge merge check."
+  ]
+}

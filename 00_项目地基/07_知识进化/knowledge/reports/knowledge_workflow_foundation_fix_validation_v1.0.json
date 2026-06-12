@@ -1,0 +1,9 @@
+{
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-FIX-v1.0",
+  "result": "PASS",
+  "foundation_result": "PASS",
+  "krm_exit": 0,
+  "krm_result": "PASS",
+  "manifest_count": 145,
+  "foundation_failures": []
+}

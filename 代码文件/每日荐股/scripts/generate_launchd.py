@@ -49,7 +49,7 @@ TASK_DEFS = {
         "description": "自动 Git 同步清扫（每小时 :07）",
         "schedule": [{"Minute": 7}],
         "command": "python3",
-        "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "git_autosweep.py")],
+        "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "git_autosweep.py"), "--commit", "--push"],
         "run_at_load": True,
     },
     "pigeon": {

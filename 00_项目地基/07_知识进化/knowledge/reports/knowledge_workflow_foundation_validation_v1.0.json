@@ -1,0 +1,53 @@
+{
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-FIX-v1.0",
+  "result": "PASS",
+  "checks": {
+    "required_files_ok": true,
+    "json_parse_ok": true,
+    "knowledge_types_ok": true,
+    "workflow_states_ok": true,
+    "transitions_ok": true,
+    "policy_states_ok": true,
+    "manifest_integrity_ok": true,
+    "manifest_required_ids_ok": true,
+    "manifest_min_count_ok": true,
+    "manifest_counts_match_ok": true,
+    "manifest_no_abs_path_ok": true,
+    "manifest_no_missing_id_ok": true,
+    "manifest_required_kinds_ok": true,
+    "literature_cards_registered_ok": true,
+    "rule_candidates_registered_ok": true,
+    "global_krm_validator_ok": true
+  },
+  "missing_files": [],
+  "json_errors": [],
+  "missing_knowledge_types": [],
+  "missing_states": [],
+  "transition_errors": [],
+  "policy_state_errors": [],
+  "manifest_check": {
+    "entry_count": 182,
+    "counts_total_entries": 182,
+    "missing_required_ids": [],
+    "bad_entries": [],
+    "absolute_paths": [],
+    "missing_id_entries": [],
+    "missing_required_kinds": []
+  },
+  "registration_check": {
+    "literature_card_count": 1,
+    "rule_candidate_count": 1,
+    "unregistered_cards": [],
+    "unregistered_candidates": []
+  },
+  "global_krm_validator": {
+    "result": "PASS",
+    "report_result": "PASS",
+    "tail": "script_exists=True report_exists=True result=PASS"
+  },
+  "boundary_check": {
+    "no_active_rule_promotion_claimed": true,
+    "no_production_entry_change_claimed": true,
+    "formal_pipeline_note": "This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS."
+  }
+}
