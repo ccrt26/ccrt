@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "description": "每日数据生产闭环作用域配置 — 定义重点股票日报必需/可选/超范围产物",
+  "profile": "daily_focus",
+  "required_outputs": [
+    {"path": "代码文件/数据/data_full.json", "archive_dir": "04_原始数据", "desc": "全量采集数据"},
+    {"path": "代码文件/数据/data_scored.json", "archive_dir": "04_原始数据", "desc": "评分数据"},
+    {"path": "代码文件/数据/data_final.json", "archive_dir": "04_原始数据", "desc": "终选数据"},
+    {"path": "代码文件/数据/score_history.jsonl", "archive_dir": "04_原始数据", "desc": "评分历史"},
+    {"path": "代码文件/数据/dynamic_pool.json", "archive_dir": "05_参考数据", "desc": "动态股票池"}
+  ],
+  "optional_outputs": [
+    {"path": "代码文件/数据/data_final_optimized.json", "archive_dir": "04_原始数据", "desc": "优化终选"},
+    {"path": "代码文件/数据/eastmoney_sector_map.json", "archive_dir": "05_参考数据", "desc": "板块映射"},
+    {"path": "代码文件/数据/industry_map.json", "archive_dir": "05_参考数据", "desc": "行业映射"}
+  ],
+  "out_of_scope_outputs": [
+    {"path_template": "05_参考数据/{date}_sector_data.json", "desc": "板块聚合产物(旧荐策链)，非重点股票日报必需"},
+    {"path_template": "02_评估数据/{date}_records.csv", "desc": "后评估明细(旧荐策链)，非重点股票日报必需"},
+    {"path_template": "02_评估数据/{date}_summary.csv", "desc": "后评估汇总(旧荐策链)，非重点股票日报必需"},
+    {"path_template": "01_交易快照/snapshot_{date}.json", "desc": "交易快照(模拟交易链)，非重点股票日报必需"},
+    {"path_template": "02_评估数据/eval_data_{date}.json", "desc": "后评估数据(旧荐策链)，非日报必需"}
+  ],
+  "dq_warn_allowlist": {
+    "DQ-W7": {"condition": "only_if_zscore_gt_3", "action": "WARN_NON_BLOCKING", "reason": "价格异常由Z-score统计检测，不影响数据链完整性"},
+    "DQ-W9": {"required_missing_allowed": 0, "optional_missing_allowed": -1, "reason": "required_missing>0则BLOCK；optional_missing可WARN"}
+  },
+  "archive_required_files": [
+    "data_full.json", "data_scored.json", "data_final.json",
+    "score_history.jsonl", "dynamic_pool.json"
+  ]
+}

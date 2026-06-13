@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "description": "数据质量 WARN 分级策略：区分阻断、非阻断、仅复核展示",
+  "policies": {
+    "DQ-W7": {
+      "category": "price_statistical_outlier",
+      "display_level": "WARN_NON_BLOCKING",
+      "release_blocking": false,
+      "action": "REVIEW_ONLY",
+      "reason": "价格 Z-score 异常属于统计离群提示，需展示但不阻断生产闭环"
+    },
+    "DQ-W9": {
+      "category": "field_applicability_gap",
+      "display_level": "WARN_NON_BLOCKING",
+      "release_blocking_when": "required_missing > 0",
+      "action": "OPTIONAL_GAP_TRACKING",
+      "reason": "必填字段缺失才阻断；可选字段缺失仅作为质量观察项"
+    }
+  }
+}

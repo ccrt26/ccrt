@@ -1,0 +1,39 @@
+{
+  "flow": "F-FIX-DATA-DAILY-PRODUCTION-CLOSURE-20260614-R4",
+  "date": "20260612",
+  "created_at": "2026-06-14T00:49:37.515823",
+  "evidence_files": [
+    "logs/daily_production/20260612_manifest.json",
+    "logs/daily_data_retry/status/20260612.ready.json",
+    "历史数据/manifest/20260612_archive_manifest.json",
+    "logs/daily_production/20260612_closure_verify.json",
+    "logs/daily_production/20260612_check_data_quality.json",
+    "logs/daily_production/20260612_inspect_data_health_daily_focus.json"
+  ],
+  "stage": "G5_REVIEW_CANDIDATE",
+  "overall": "PASS",
+  "findings": {
+    "P0": [],
+    "P1": []
+  },
+  "review_basis": [
+    "现场 closure_verify PASS",
+    "ready.json 含 closure_ready=PASS",
+    "manifest status_split 全 PASS",
+    "archive_date=20260612",
+    "热区与 20260612 归档五件套 hash 全匹配",
+    "DQ blocked=false required_missing=0",
+    "inspect daily_focus PASS",
+    "范围外文件未纳入 R4"
+  ],
+  "changed_files": [
+    "scripts/run_daily_production_pipeline.py",
+    "scripts/verify_daily_production_closure.py",
+    "代码文件/每日荐股/scripts/batch_data_collector.py",
+    "代码文件/每日荐股/scripts/archive_data.py",
+    "inspect_data_health.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "configs/daily_production_scope.json",
+    "历史数据/manifest/20260612_archive_manifest.json"
+  ]
+}

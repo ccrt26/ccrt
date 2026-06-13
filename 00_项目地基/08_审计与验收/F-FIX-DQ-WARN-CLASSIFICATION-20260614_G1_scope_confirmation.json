@@ -1,0 +1,24 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+  "stage": "G1_SCOPE_CONFIRMATION",
+  "created_at": "2026-06-14T00:57:10.129568",
+  "target_date": "20260612",
+  "purpose": "细化 DQ-W7/DQ-W9 的非阻断 WARN 分级展示，避免 WARN 被误读为生产阻断",
+  "in_scope": [
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "configs/data_quality_issue_policy.json",
+    "logs/daily_production/20260612_check_data_quality.json"
+  ],
+  "out_of_scope": [
+    "交易执行器",
+    "capability registry",
+    "D07_v1.2 方法框架",
+    "历史报告正文",
+    "每日数据生产闭环 ready/manifest 语义"
+  ],
+  "release_blocking_policy": {
+    "DQ-W7": "WARN_NON_BLOCKING / REVIEW_ONLY",
+    "DQ-W9": "required_missing > 0 才 BLOCK；当前 optional_missing 只 WARN_NON_BLOCKING"
+  }
+}

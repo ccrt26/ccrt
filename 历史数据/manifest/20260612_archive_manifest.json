@@ -1,0 +1,116 @@
+{
+  "archive_date": "20260612",
+  "created_at": "2026-06-14T00:48:41.746486",
+  "files": [
+    {
+      "name": "data_full.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/data_full.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260612_data_full.json",
+      "source_sha256": "3c0657fe68f454416140e73a2c37b112a027cd6b13dcf1c6d4b88293cb9cdce7",
+      "destination_sha256": "3c0657fe68f454416140e73a2c37b112a027cd6b13dcf1c6d4b88293cb9cdce7",
+      "size": 3704739,
+      "archived_at": "2026-06-14T00:48:41.749335",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "data_scored.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/data_scored.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260612_data_scored.json",
+      "source_sha256": "e0fcabb2f1871e3b5d098ff8af46a4b66d83a2f1b648081d50884ce3d3b95378",
+      "destination_sha256": "e0fcabb2f1871e3b5d098ff8af46a4b66d83a2f1b648081d50884ce3d3b95378",
+      "size": 240485,
+      "archived_at": "2026-06-14T00:48:41.749577",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "data_final.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/data_final.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260612_data_final.json",
+      "source_sha256": "fa6c1b76ab5eb265fbf0a658fa844f3ca97e67ab41baffaf21f7a53efe2cc4c9",
+      "destination_sha256": "fa6c1b76ab5eb265fbf0a658fa844f3ca97e67ab41baffaf21f7a53efe2cc4c9",
+      "size": 7370,
+      "archived_at": "2026-06-14T00:48:41.749635",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "score_history.jsonl",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/score_history.jsonl",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260612_score_history.jsonl",
+      "source_sha256": "a4b95fea8d478fef3215c600be87388db0243f7f86c996171d61ada68878294b",
+      "destination_sha256": "a4b95fea8d478fef3215c600be87388db0243f7f86c996171d61ada68878294b",
+      "size": 297290,
+      "archived_at": "2026-06-14T00:48:41.749896",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "dynamic_pool.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/dynamic_pool.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260612_dynamic_pool.json",
+      "source_sha256": "7d2be9c10b8ec3a624e4026a3c86a6905362835232d8f1b9860bae0cf73121be",
+      "destination_sha256": "7d2be9c10b8ec3a624e4026a3c86a6905362835232d8f1b9860bae0cf73121be",
+      "size": 8448,
+      "archived_at": "2026-06-14T00:48:41.749952",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "sector_data.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/sector_data.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260612_sector_data.json",
+      "source_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
+      "destination_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
+      "size": 3013,
+      "archived_at": "2026-06-14T00:48:41.750001",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "industry_map.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/industry_map.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260612_industry_map.json",
+      "source_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
+      "destination_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
+      "size": 1133,
+      "archived_at": "2026-06-14T00:48:41.750049",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "eastmoney_sector_map.json",
+      "source_path": "/Users/ccrt/ccrt/代码文件/数据/eastmoney_sector_map.json",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260612_eastmoney_sector_map.json",
+      "source_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
+      "destination_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
+      "size": 1312,
+      "archived_at": "2026-06-14T00:48:41.750098",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "records.csv",
+      "source_path": "/Users/ccrt/ccrt/每日荐股/事后评估/records.csv",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/02_评估数据/20260612_records.csv",
+      "source_sha256": "089d375faadcc870766af70fbad194122e84ef2cd4d29adc6d1bfd73eb7bac7a",
+      "destination_sha256": "089d375faadcc870766af70fbad194122e84ef2cd4d29adc6d1bfd73eb7bac7a",
+      "size": 42613,
+      "archived_at": "2026-06-14T00:48:41.750227",
+      "archive_date": "20260612",
+      "status": "PASS"
+    },
+    {
+      "name": "summary.csv",
+      "source_path": "/Users/ccrt/ccrt/每日荐股/事后评估/summary.csv",
+      "destination_path": "/Users/ccrt/ccrt/历史数据/02_评估数据/20260612_summary.csv",
+      "source_sha256": "eda29db8b18b59b0b5f59a15c829be2d5177194e3540e08b131a225d779edeb8",
+      "destination_sha256": "eda29db8b18b59b0b5f59a15c829be2d5177194e3540e08b131a225d779edeb8",
+      "size": 1413,
+      "archived_at": "2026-06-14T00:48:41.750291",
+      "archive_date": "20260612",
+      "status": "PASS"
+    }
+  ]
+}

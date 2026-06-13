@@ -1,0 +1,21 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2",
+  "date": "20260612",
+  "created_at": "2026-06-14T01:01:47.031230",
+  "evidence_files": [
+    "configs/data_quality_issue_policy.json",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "logs/daily_production/20260612_check_data_quality.json"
+  ],
+  "stage": "G6_RELEASE_CANDIDATE",
+  "release_statement": "DQ-W7/DQ-W9 已完成非阻断 WARN 分级展示。optional_missing=159 已与 metrics.missing_fields=159 一致。data_quality_tracker.md 未纳入改动。",
+  "final_state": {
+    "dq_display_overall": "WARN_NON_BLOCKING",
+    "dq_overall_gate": "PASS_WITH_NON_BLOCKING_WARNINGS",
+    "release_blocking": false,
+    "required_missing": 0,
+    "optional_missing": 159,
+    "closure_verify": "PASS"
+  }
+}

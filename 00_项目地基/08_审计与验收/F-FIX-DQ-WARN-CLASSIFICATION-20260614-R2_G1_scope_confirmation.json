@@ -1,0 +1,24 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2",
+  "stage": "G1_SCOPE_CONFIRMATION",
+  "created_at": "2026-06-14T01:01:12.899932",
+  "target_date": "20260612",
+  "fix_points": [
+    "修正 DQ-W9 optional_missing 数量错配：必须等于 metrics.missing_fields=159",
+    "清理 data_quality_tracker.md 副作用，不纳入本次 DQ 分级修复"
+  ],
+  "in_scope": [
+    "代码文件/监督机制/check_data_quality.py",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "configs/data_quality_issue_policy.json",
+    "logs/daily_production/20260612_check_data_quality.json"
+  ],
+  "out_of_scope": [
+    "代码文件/监督机制/data_quality_tracker.md",
+    "交易执行器",
+    "capability registry",
+    "D07_v1.2 方法框架",
+    "历史报告正文",
+    "每日数据生产闭环 ready/manifest 语义"
+  ]
+}

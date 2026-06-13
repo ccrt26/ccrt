@@ -1,0 +1,25 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+  "date": "20260612",
+  "created_at": "2026-06-14T00:57:50.139273",
+  "evidence_files": [
+    "configs/data_quality_issue_policy.json",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "logs/daily_production/20260612_check_data_quality.json"
+  ],
+  "stage": "G6_RELEASE_CANDIDATE",
+  "release_statement": "DQ-W7/DQ-W9 已完成非阻断 WARN 分级展示。不改变生产 ready 语义，不影响 D07_v1.2，不修改交易执行。",
+  "final_state": {
+    "dq_display_overall": "WARN_NON_BLOCKING",
+    "dq_overall_gate": "PASS_WITH_NON_BLOCKING_WARNINGS",
+    "release_blocking": false,
+    "closure_verify": "PASS"
+  },
+  "not_in_scope": [
+    "trading executor",
+    "capability registry",
+    "D07_v1.2 methodology",
+    "historical report rewrite"
+  ]
+}
