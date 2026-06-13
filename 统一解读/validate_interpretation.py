@@ -167,6 +167,7 @@ def run_u9(obj):
             "data_fact.values.share_count",
             "data_fact.values.share_ratio",
             "data_fact.values.consecutive_periods",
+            "data_fact.values.pension_chain",
         }
         if path in skip_paths:
             return []

@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-06-13",
+  "items": {
+    "key_stock_daily_analysis": {
+      "name": "重点股票每日分析（日报）",
+      "release_status": "full_release",
+      "framework_version": "D07_v1.2",
+      "gray_status": "disabled",
+      "default_enabled": true,
+      "scope": "重点股票每日分析（日报）",
+      "not_scope": [
+        "每日荐股",
+        "模拟交易",
+        "临时分析默认入口",
+        "交易执行器"
+      ],
+      "long_term_institutional_evidence_policy": {
+        "daily_force_update": false,
+        "trigger_only": true,
+        "triggers": [
+          "财报季",
+          "重点股票已有机构持仓记录",
+          "中期逻辑出现争议",
+          "周报或深度分析已形成机构资金证据链",
+          "用户明确要求"
+        ]
+      },
+      "issue_policy": "问题不回灰度，直接走 F-FIX 定点修",
+      "canonical_cutover_relation": "与 canonical E3 guarded-cutover 独立；canonical 状态不影响 D07_v1.2 日报分析口径全量启用"
+    },
+    "key_stock_deep_analysis_weekly": {
+      "name": "重点股票深度分析（周报）",
+      "release_status": "full_release",
+      "framework_version": "D07_v1.2",
+      "gray_status": "disabled",
+      "default_enabled": true,
+      "scope": "重点股票深度分析（周报）",
+      "scope_detail": "默认完整使用 D07_v1.2；必查多假设、反证、证据缺口、结论强度；财报季或已有机构持仓记录时必须检查长期机构资金证据",
+      "issue_policy": "问题不回灰度，直接走 F-FIX 定点修"
+    }
+  }
+}

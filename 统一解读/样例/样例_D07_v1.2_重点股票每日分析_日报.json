@@ -1,0 +1,80 @@
+{
+  "$schema": "https://tielv-quant.ccrt/interpretation_schema.json",
+  "interpretation_id": "INT-20260613-140100-a1b2c3",
+  "scene": "日报",
+  "stock_code": "600114",
+  "trade_date": "2026-06-13",
+  "role": "腰子",
+  "framework_version": "D07_v1.2",
+  "data_fact": {
+    "source": "新浪行情 + 同花顺资金流",
+    "freshness": "当日",
+    "values": {
+      "closing_price": 39.06,
+      "change_pct": -0.8,
+      "volume_ratio": 0.92,
+      "turnover_rate": 2.1,
+      "fund_flow_5d": "-2550万"
+    },
+    "note": "今日小幅缩量回调，资金连续5日小幅流出。板块指数无显著异动。"
+  },
+  "interpretation_hypothesis": "东睦今日缩量回调，资金面偏弱但未触及风控线。中期逻辑上周深度分析已覆盖（养老金退出P1闭环），本日不重复抓取机构持仓数据。",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "短线技术性回调：缩量下跌不构成趋势破坏，关键位39元附近存在支撑",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "倾向判断",
+      "missing_data": "次日开盘方向待确认"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "资金连续流出风险：5日累计净流出2550万，若持续可能加速回调",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-002"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "风险假设",
+      "missing_data": "今日资金流向结构需分时验证"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "evidence": "今日缩量0.92倍，跌幅0.8%，未放量破位",
+      "source": "新浪行情",
+      "strength": "中",
+      "source_level": "L1",
+      "source_ref": "新浪.600114.2026-06-13"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "资金连续5日净流出(-2550万)，短线交投偏弱",
+      "source": "同花顺资金流",
+      "type": "资金面反证"
+    }
+  ],
+  "evidence_gap_requests": [],
+  "long_term_institutional_evidence": {
+    "status": "not_applicable",
+    "p1_verification_status": "not_applicable",
+    "signal_usage": "仅背景",
+    "records": [],
+    "conclusion_strength_impact": "not_used"
+  },
+  "investment_implication": "本日无新增触发条件，维持上周深度分析结论。中期逻辑弱化信号已记录(养老金退出P1闭环)，今日短线缩量回调不改变中期判断。不追加，不减仓，观察关键位。",
+  "action_bias": "WATCH",
+  "trigger_condition": "若跌破39元关键位且放量，需盘中重评",
+  "time_window": "T+1",
+  "confidence": "MEDIUM",
+  "conclusion_strength": "倾向判断",
+  "invalidation_condition": "若次日放量收复39.5元，则回调确认结束。若缩量跌破39元，则可能加速回调。",
+  "eval_window": {
+    "t1": "次日观察39元关键位能否守住",
+    "t3": "资金流是否持续流出",
+    "t5": "周度深度分析复查"
+  },
+  "rule_refs": ["R-FIN-0001"],
+  "knowledge_refs": ["XINGE-EVENT-001"]
+}

@@ -7,6 +7,7 @@ from create_interpretation import create_interpretation, validate, build_unified
 SAMPLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "样例")
 
 def adapt_deep(stock_code, trade_date, chapter_data, action_bias, confidence, **kw):
+    extra_fields = kw.get("extra_fields", None) or chapter_data
     obj = create_interpretation(
         scene="深度分析", stock_code=stock_code, trade_date=trade_date, role="腰子",
         data_fact=chapter_data.get("data_fact",{}), hypothesis=chapter_data.get("hypothesis",""),
@@ -16,7 +17,12 @@ def adapt_deep(stock_code, trade_date, chapter_data, action_bias, confidence, **
         position_limit=kw.get("position_limit",""), time_window=kw.get("time_window",""),
         invalidation=kw.get("invalidation_condition",""), rule_refs=kw.get("rule_refs",[]),
         knowledge_refs=kw.get("knowledge_refs",[]), signal_refs=kw.get("signal_refs",[]),
-        eval_window=kw.get("eval_window",{}))
+        eval_window=kw.get("eval_window",{}), extra_fields=extra_fields)
+    # D07 v1.2 字段追加写入（透传未覆盖的场景）
+    for key in ["framework_version", "hypotheses", "evidence_gap_requests",
+                 "long_term_institutional_evidence", "conclusion_strength"]:
+        if key not in obj and key in extra_fields:
+            obj[key] = extra_fields[key]
     result = validate(obj)
     u9, u10 = result.get("u9",{"status":"ERROR"}), result.get("u10",{"status":"ERROR"})
     overall = result.get("overall","ERROR")
