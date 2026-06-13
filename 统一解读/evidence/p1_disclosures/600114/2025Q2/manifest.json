@@ -1,0 +1,15 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "report_period": "2025Q2",
+  "announcement_title": "东睦股份：东睦股份2025年半年度报告",
+  "disclosure_date": "2025-08-06",
+  "source_platform": "cninfo",
+  "source_url": "http://static.cninfo.com.cn/finalpage/2025-08-06/1224401030.PDF",
+  "local_pdf_path": "/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Q2/original.pdf",
+  "local_pdf_size": 995778,
+  "sha256": "d354e63c6f02c6658af74a49eca274a6199a69f067db6296e4677e803be12c0b",
+  "downloaded_at": "2026-06-13",
+  "verification_status": "verified",
+  "extraction_status": "verified"
+}

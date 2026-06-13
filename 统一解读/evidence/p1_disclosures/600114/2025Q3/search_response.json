@@ -1,0 +1,36 @@
+{
+  "classifiedAnnouncements": null,
+  "totalSecurities": 0,
+  "totalAnnouncement": 1,
+  "totalRecordNum": 1,
+  "announcements": [
+    {
+      "id": null,
+      "secCode": "600114",
+      "secName": "东睦股份",
+      "orgId": "gssh0600114",
+      "announcementId": "1224739288",
+      "announcementTitle": "<em>东睦股份</em>：<em>东睦股份</em><em>2025年</em><em>第三季度报告</em>",
+      "announcementTime": 1761580800000,
+      "adjunctUrl": "finalpage/2025-10-28/1224739288.PDF",
+      "adjunctSize": 179,
+      "adjunctType": "PDF",
+      "storageTime": null,
+      "columnId": "250401||251302",
+      "pageColumn": "SHZB",
+      "announcementType": "01010501||01010503||010113||010307",
+      "associateAnnouncement": null,
+      "important": null,
+      "batchNum": null,
+      "announcementContent": null,
+      "orgName": null,
+      "tileSecName": "<em>东睦股份</em>",
+      "shortTitle": "<em>东睦股份</em><em>2025年</em><em>第三季度报告</em>",
+      "announcementTypeName": null,
+      "secNameList": null
+    }
+  ],
+  "categoryList": null,
+  "hasMore": false,
+  "totalpages": 0
+}

@@ -1,0 +1,15 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "report_period": "2026Q1",
+  "announcement_title": "东睦股份：东睦股份2026年第一季度报告",
+  "disclosure_date": "2026-04-21",
+  "source_platform": "cninfo",
+  "source_url": "http://static.cninfo.com.cn/finalpage/2026-04-21/1225127652.PDF",
+  "local_pdf_path": "/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2026Q1/original.pdf",
+  "local_pdf_size": 179588,
+  "sha256": "7fbe63c5c2d04f30315a698dfd91021f391fd0bd7c250ab393aee877672f03d4",
+  "downloaded_at": "2026-06-13",
+  "verification_status": "verified_absent",
+  "extraction_status": "verified_absent"
+}

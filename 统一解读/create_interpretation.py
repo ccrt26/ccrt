@@ -34,12 +34,12 @@ def create_interpretation(scene, stock_code, trade_date, role, data_fact, hypoth
                           supporting, counter, implication, action_bias, confidence,
                           trigger_cond="", price_range="", position_limit="", time_window="",
                           invalidation="", rule_refs=None, knowledge_refs=None, signal_refs=None,
-                          eval_window=None):
+                          eval_window=None, extra_fields=None):
     if scene not in SCENES:
         raise ValueError(f"scene 必须为: {SCENES}")
     if role not in ROLES:
         raise ValueError(f"role 必须为: {ROLES}")
-    return {
+    obj = {
         "interpretation_id": generate_id("INT", trade_date),
         "scene": scene, "stock_code": stock_code, "trade_date": trade_date, "role": role,
         "data_fact": data_fact, "interpretation_hypothesis": hypothesis,
@@ -52,6 +52,13 @@ def create_interpretation(scene, stock_code, trade_date, role, data_fact, hypoth
         "rule_refs": rule_refs or [], "knowledge_refs": knowledge_refs or [],
         "signal_refs": signal_refs or []
     }
+    # 透传 D07 v1.2 新增字段（optional，不破坏旧签名）
+    if extra_fields:
+        for key in ["framework_version", "hypotheses", "evidence_gap_requests",
+                     "long_term_institutional_evidence", "conclusion_strength"]:
+            if key in extra_fields:
+                obj[key] = extra_fields[key]
+    return obj
 
 
 def validate(obj):

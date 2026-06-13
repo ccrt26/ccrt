@@ -1,0 +1,177 @@
+{
+  "$schema": "https://tielv-quant.ccrt/interpretation_schema.json",
+  "interpretation_id": "INT-20260613-130000-m1p2p3",
+  "scene": "深度分析",
+  "stock_code": "600114",
+  "trade_date": "2026-06-13",
+  "role": "腰子",
+  "framework_version": "D07_v1.2",
+  "data_fact": {
+    "source": "巨潮资讯原始PDF x5 + 同花顺辅助索引",
+    "freshness": "季度",
+    "values": {
+      "report_period": "2025Q1~2026Q1",
+      "periods_available": 5,
+      "pension_fund": "基本养老保险基金一二零五组合",
+      "p1_verified_periods": ["2025Q1","2025Q2","2025Q3"],
+      "p1_verified_absent_periods": ["2025Y","2026Q1"]
+    },
+    "note": "五期P1 PDF全部从cninfo下载并核验。2025Q1~2025Q3目标股东在前十大中出现(P1 hit)。2025Y~2026Q1目标股东从前十大退出(P1 absent verified)。P1证据链完整闭环。"
+  },
+  "interpretation_hypothesis": "东睦股份600114的长期机构资金证据已覆盖5个连续报告期(2025Q1~2026Q1)，P1原始披露全部核验通过。基本养老保险基金一二零五组合呈现新进→连续增持→退出前十大→未回归的完整变化轨迹。证据链完整但披露滞后2-4个月，不可据此做短线交易决策。",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "中期逻辑弱化风险：基本养老保险基金一二零五组合连续3期增持后自2025年报起退出前十大(已持续2期)，长线资金分歧信号明确",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "风险假设",
+      "missing_data": "退出后实际持股数据不可知；2026Q2尚未披露"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "机构分歧信号：养老金退出但同期北向资金增持，长短资金方向分化，不宜单边解读",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001", "EV-002"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "倾向判断",
+      "missing_data": "北向资金持仓变化需持续跟踪"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "evidence": "基本养老保险基金一二零五组合完整持仓链(P1 verified): 2025Q1新进(438万股)→2025Q2增持(627万股)→2025Q3增持(820万股/1.30%/排名第6)→2025Y退出前十大(absent verified)→2026Q1未回归(absent verified)",
+      "source": "巨潮资讯cninfo原始PDF x5",
+      "strength": "强",
+      "source_level": "L1",
+      "source_ref": "cninfo finalpage/2025-04-29/1223363874.PDF et al."
+    },
+    {
+      "evidence": "北向资金同期变化：香港中央结算有限公司从867万→2,760万→3,129→3,493→3,329万股，整体增持趋势",
+      "source": "同花顺辅助索引",
+      "strength": "中",
+      "source_level": "L3",
+      "source_ref": "https://basic.10jqka.com.cn/mobile/600114/holder.html"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "养老金已连续2个报告期(2025Y/2026Q1)未出现在前十大披露名单。P1 PDF文本抽取确认缺席。",
+      "source": "巨潮资讯cninfo原始PDF (2025Y/2026Q1)",
+      "type": "资金面反证"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-P1-2025Q3",
+      "gap_type": "original_disclosure_missing",
+      "description": "600114五期P1已全部闭环。2025Q1~2025Q3目标股东P1 hit verified；2025Y~2026Q1目标股东P1 absent verified。",
+      "requested_source": ["cninfo"],
+      "requested_fields": ["announcement_title","source_url","local_pdf_path","sha256"],
+      "status": "resolved",
+      "impact": "2025Q1~2026Q1 P1证据链完整。",
+      "resolved_by": "cninfo_pdf_multi_period",
+      "resolved_at": "2026-06-13"
+    }
+  ],
+  "long_term_institutional_evidence": {
+    "status": "present",
+    "p1_verification_status": "verified",
+    "signal_usage": "中期逻辑支持",
+    "records": [
+      {
+        "report_period": "2025Q1",
+        "disclosure_date": "2025-04-29",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": null,
+        "share_count": 4375000,
+        "share_ratio": 0.0071,
+        "change_type": "新进",
+        "consecutive_periods": 1,
+        "source_refs": [
+          {"source_name":"巨潮资讯-东睦股份2025年第一季度报告","source_url":"http://static.cninfo.com.cn/finalpage/2025-04-29/1223363874.PDF","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Q1/original.pdf","sha256":"6c6c377c1020d01b7063201948a10c3c18e752abc794a24602468e3093bbe26b"}
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；不得作为买卖信号。P1 PDF已验证(sha256=6c6c377c)。"
+      },
+      {
+        "report_period": "2025Q2",
+        "disclosure_date": "2025-08-06",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": null,
+        "share_count": 6266400,
+        "share_ratio": 0.0102,
+        "change_type": "增持",
+        "consecutive_periods": 2,
+        "source_refs": [
+          {"source_name":"巨潮资讯-东睦股份2025年半年度报告","source_url":"http://static.cninfo.com.cn/finalpage/2025-08-06/1224401030.PDF","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Q2/original.pdf","sha256":"d354e63c6f02c6658af74a49eca274a6199a69f067db6296e4677e803be12c0b"}
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；不得作为买卖信号。P1 PDF已验证(sha256=d354e63c)。"
+      },
+      {
+        "report_period": "2025Q3",
+        "disclosure_date": "2025-10-28",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": 6,
+        "share_count": 8197600,
+        "share_ratio": 0.013,
+        "change_type": "增持",
+        "consecutive_periods": 3,
+        "source_refs": [
+          {"source_name":"巨潮资讯-东睦股份2025年第三季度报告","source_url":"http://static.cninfo.com.cn/finalpage/2025-10-28/1224739288.PDF","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Q3/original.pdf","sha256":"405dae71956dad3561c01abf20635987500ed08d31cd6ea678c0d97ce23ae003"}
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；不得作为买卖信号。P1 PDF已验证(sha256=405dae71)。"
+      },
+      {
+        "report_period": "2025Y",
+        "disclosure_date": "2026-04-21",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合（该期已退出前十大披露名单）",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": null,
+        "missing_reason": "P1 PDF文本抽取确认前十大段落存在(8段)，目标股东未在前十大中出现",
+        "share_count": null,
+        "share_ratio": null,
+        "change_type": "退出披露名单",
+        "consecutive_periods": null,
+        "source_refs": [
+          {"source_name":"巨潮资讯-东睦股份2025年年度报告","source_url":"http://static.cninfo.com.cn/finalpage/2026-04-21/1225127680.PDF","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Y/original.pdf","sha256":"1d69f8c425aef4dd8bf3b979c57299419d2f1686c58da6fef46ca687c3b23c6c"}
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；P1 PDF已验证缺席(sha256=1d69f8c4)；不得作为买卖信号。"
+      },
+      {
+        "report_period": "2026Q1",
+        "disclosure_date": "2026-04-21",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合（该期已退出前十大披露名单）",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": null,
+        "missing_reason": "P1 PDF文本抽取确认前十大段落存在(2段)，目标股东未在前十大中出现",
+        "share_count": null,
+        "share_ratio": null,
+        "change_type": "退出披露名单",
+        "consecutive_periods": null,
+        "source_refs": [
+          {"source_name":"巨潮资讯-东睦股份2026年第一季度报告","source_url":"http://static.cninfo.com.cn/finalpage/2026-04-21/1225127652.PDF","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2026Q1/original.pdf","sha256":"7fbe63c5c2d04f30315a698dfd91021f391fd0bd7c250ab393aee877672f03d4"}
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；P1 PDF已验证缺席(sha256=7fbe63c5)；不得作为买卖信号。"
+      }
+    ],
+    "conclusion_strength_impact": "neutral"
+  },
+  "investment_implication": "600114长期机构资金P1证据五期全部闭环。养老金历史持仓(新进→增持→退出)已获原始披露验证。当前不在前十大但不确定清仓，中期逻辑需谨慎但不可因此做出买卖决策。",
+  "action_bias": "WATCH",
+  "trigger_condition": "2026Q2定期报告披露后复核养老金是否回归前十大",
+  "time_window": "至2026Q2披露后5个交易日内",
+  "confidence": "MEDIUM",
+  "conclusion_strength": "风险假设",
+  "invalidation_condition": "若2026Q2养老金仍不在前十大且北向资金同步流出，中期弱化信号强化。若养老金回归，需重新评估。",
+  "eval_window": {
+    "t1": "复查每期P1 manifest sha256一致性",
+    "t3": "等待2026Q2定期报告披露",
+    "t5": "五期证据链归档用于后续股票类似场景参考"
+  },
+  "rule_refs": ["R-FIN-0001", "R01", "R02"],
+  "knowledge_refs": ["XINGE-EVENT-001", "YUYE-DATA-001", "QINGSHAN-SIGNAL-001"]
+}

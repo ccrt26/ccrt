@@ -1,0 +1,24 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "report_period": "2025Q3",
+  "announcement_title": "东睦股份：东睦股份2025年第三季度报告",
+  "disclosure_date": "2025-10-28",
+  "source_platform": "cninfo",
+  "source_url": "http://static.cninfo.com.cn/finalpage/2025-10-28/1224739288.PDF",
+  "local_pdf_path": "/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/2025Q3/original.pdf",
+  "local_pdf_size": 182105,
+  "sha256": "405dae71956dad3561c01abf20635987500ed08d31cd6ea678c0d97ce23ae003",
+  "downloaded_at": "2026-06-13T21:30:00",
+  "verification_status": "verified",
+  "extraction_status": "verified",
+  "fields_verified": [
+    "shareholder_name_raw: 基本养老保险基金一二零五组合 ✅",
+    "share_count: 8,197,600 股 ✅ (P0: 8,197,700 → 差值<0.01%, 四舍五入差异)",
+    "share_ratio: 1.30% ✅",
+    "holding_rank: 可推算(在前十名股东表第6位)",
+    "report_period: 2025Q3 ✅",
+    "disclosure_date: 2025-10-28 ✅"
+  ],
+  "verification_note": "PDF文本抽取命中目标股东及持股数据。P0数据(10jqka)与P1原始PDF字段一致。"
+}
