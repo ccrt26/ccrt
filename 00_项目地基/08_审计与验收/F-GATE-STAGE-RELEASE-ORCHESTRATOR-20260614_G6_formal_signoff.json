@@ -1,0 +1,30 @@
+{
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "gate": "G6",
+  "artifact_type": "formal_signoff",
+  "role": "腰子",
+  "result": "PASS",
+  "formal_signoff": {
+    "signed": true,
+    "timestamp": "2026-06-14T14:04:44.971658+00:00",
+    "stage": "review_1a",
+    "checklist_version": "c07b65ff4b0fa2fda96cfed78cd39d897dd0398aa5e50dfd830e19a0b1f52477",
+    "signature": "745a61408fb679f5a27930b82c7cca766984368ca35746bb2094777f28bf37e7",
+    "sig_type": "HMAC-SHA256",
+    "actor": "腰子",
+    "requested_actor": "腰子",
+    "actual_actor": "腰子",
+    "git_sha": "",
+    "audit_report_hash": "",
+    "comment": "G6 actor-bound signoff for release orchestrator",
+    "role": "腰子"
+  },
+  "requested_actions": [],
+  "user_confirmed_release": false,
+  "candidate_only": false,
+  "no_role_signoff_claimed": false,
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false
+}

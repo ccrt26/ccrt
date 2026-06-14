@@ -1,0 +1,51 @@
+{
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "stage": "G6_archive_readiness_record",
+  "artifact_type": "archive_record",
+  "result": "READY_DRY_RUN",
+  "generated_at": "2026-06-14T13:18:35.720173+00:00",
+  "g5_formal_signoff": {
+    "role": "旧影",
+    "actual_actor": "旧影",
+    "hmac_prefix": "592ab00afb2706e15273",
+    "stage": "audit",
+    "signed": true
+  },
+  "g6_formal_signoff": {
+    "role": "腰子",
+    "actual_actor": "腰子",
+    "hmac_prefix": "67b720ff3c477f1a1de3",
+    "stage": "review_1a",
+    "signed": true
+  },
+  "auto_advance": {
+    "g5_to_g6_status": "ADVANCE_READY",
+    "g5_to_g6_issues": []
+  },
+  "archive_readiness": {
+    "status": "ARCHIVE_READY_DRY_RUN",
+    "issues": [],
+    "archive_not_executed": true,
+    "would_tag": false,
+    "would_merge": false,
+    "would_push": false
+  },
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false,
+  "production_switched": false,
+  "forbidden_actions": [
+    "archive",
+    "tag",
+    "merge",
+    "push",
+    "production_write"
+  ],
+  "self_test_results": {
+    "stage_gate_auto_advance_self_test": "PASS",
+    "archive_after_g6_self_test": "PASS",
+    "unittest": "PASS",
+    "forbidden_dir_changes": []
+  }
+}

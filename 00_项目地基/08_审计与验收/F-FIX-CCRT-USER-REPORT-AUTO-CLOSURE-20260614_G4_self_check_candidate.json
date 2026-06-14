@@ -1,0 +1,71 @@
+{
+  "task_id": "F-FIX-CCRT-USER-REPORT-AUTO-CLOSURE-20260614",
+  "artifact_type": "g4_self_check_candidate",
+  "result": "PASS",
+  "generated_at": "2026-06-14T15:04:00.846223+00:00",
+  "root_cause": "旧人工阶段门模板泄漏到用户汇报层",
+  "user_visible_status_enum": [
+    "COMPLETE",
+    "AUTO_REPAIRING",
+    "BLOCK"
+  ],
+  "forbidden_user_phrases_blocked": true,
+  "internal_evidence_preserved": true,
+  "changed_files": [
+    "00_项目地基/05_流程与角色/FLOW_G6完成定义与闭环规则_v1.0.md",
+    "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "scripts/ccrt_user_report_normalizer.py",
+    "scripts/stage_gate_release_orchestrator.py",
+    "tests/test_ccrt_user_report_normalizer.py",
+    "/Users/ccrt/.codex/skills/ccrt-standard-flow/SKILL.md"
+  ],
+  "commands_run": [
+    "py_compile all scripts: PASS",
+    "ccrt_user_report_normalizer.py --self-test: PASS (5 cases)",
+    "stage_gate_release_orchestrator.py --self-test: PASS (4 cases)",
+    "stage_gate_auto_advance.py --self-test: PASS (6 cases)",
+    "archive_after_g6.py --self-test: PASS (4 cases)",
+    "github_sync_after_archive.py --self-test: PASS (2 cases)",
+    "unittest (28 tests): OK"
+  ],
+  "test_results": {
+    "total": 28,
+    "passed": 28,
+    "failed": 0
+  },
+  "forbidden_dirs_status": "clean",
+  "user_facing_output_rules": {
+    "status_enum": [
+      "COMPLETE",
+      "AUTO_REPAIRING",
+      "BLOCK"
+    ],
+    "COMPLETE_message": "CCRT 全流程已完成，已归档，已提交 GitHub。",
+    "AUTO_REPAIRING_message": "发现问题，系统已打回对应环节自动修复，无需用户处理。",
+    "BLOCK_message": "BLOCK: <具体不可自动处理原因>"
+  },
+  "forbidden_user_phrases_list": [
+    "本输出只是",
+    "不是 G5 PASS",
+    "不是 G6 PASS",
+    "等待复查",
+    "等待 G6",
+    "等待归档",
+    "未 tag/merge/push",
+    "请用户确认下一阶段",
+    "candidate_only",
+    "not_g5_pass",
+    "not_g6_pass",
+    "waiting_review",
+    "archive_not_executed",
+    "forbidden_claims",
+    "forbidden_actions",
+    "no_role_signoff_claimed"
+  ],
+  "orchestrator_user_report_fields": [
+    "user_visible_status",
+    "user_visible_message",
+    "internal_stage_evidence_hidden_from_user"
+  ],
+  "conclusion": "G4 candidate PASS"
+}

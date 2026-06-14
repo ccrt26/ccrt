@@ -1,0 +1,30 @@
+{
+  "task_id": "F-FIX-CCRT-SAFE-EVIDENCE-WRITE-CONTEXT-20260615",
+  "artifact_type": "g4_self_check_candidate",
+  "result": "PASS",
+  "generated_at": "2026-06-14T16:29:18.750629+00:00",
+  "root_cause": "业务输出目录校验与内部证据写入路径分离，main() 绕过 validate_output_dir 写入 args.output_dir",
+  "safe_output_context_added": true,
+  "raw_output_dir_write_forbidden": true,
+  "unsafe_output_dir_creates_requested_dir": false,
+  "unsafe_output_dir_uses_tmp_fallback": true,
+  "default_stdout_minimal": true,
+  "changed_files": [
+    "scripts/stage_gate_release_orchestrator.py",
+    "tests/test_stage_gate_release_orchestrator.py"
+  ],
+  "commands_run": [
+    "py_compile: PASS",
+    "stage_gate_release_orchestrator.py --self-test: PASS (7 cases)",
+    "unittest tests/test_stage_gate_release_orchestrator.py: OK (10 tests)",
+    "STDOUT isolation + unsafe write context check: PASS",
+    "historical pollution cleaned: relative_output/ removed"
+  ],
+  "test_results": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0
+  },
+  "forbidden_dirs_status": "clean",
+  "conclusion": "G4 candidate PASS"
+}

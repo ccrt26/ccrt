@@ -1,0 +1,104 @@
+{
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "stage": "production_switch_runtime_verification",
+  "artifact_type": "production_switch_runtime_verification",
+  "result": "PASS",
+  "generated_at": "2026-06-14T13:43:29.976398+00:00",
+  "production_scope": {
+    "stage_gate_auto_advance": {
+      "runtime_status": "active",
+      "is_production": true
+    },
+    "archive_after_g6": {
+      "runtime_status": "active_dry_run",
+      "is_production": false,
+      "reason": "dry-run only"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "S1",
+      "name": "G4 candidate → ADVANCE_READY to G5",
+      "status": "PASS",
+      "outcome": "ADVANCE_READY",
+      "to_gate": "G5",
+      "dry_run": true
+    },
+    {
+      "id": "S2",
+      "name": "G5 formal_signoff + actual_actor=旧影 → ADVANCE_READY to G6",
+      "status": "PASS",
+      "outcome": "ADVANCE_READY",
+      "to_gate": "G6"
+    },
+    {
+      "id": "S3",
+      "name": "G6 formal_signoff + actual_actor=腰子 → ARCHIVE_READY_DRY_RUN",
+      "status": "PASS",
+      "outcome": "ARCHIVE_READY_DRY_RUN",
+      "archive_not_executed": true
+    },
+    {
+      "id": "S4",
+      "name": "G5 missing actual_actor → WAITING, no user escalation",
+      "status": "PASS",
+      "outcome": "WAITING_FORMAL_SIGNOFF",
+      "issues": [
+        "missing_actual_actor"
+      ],
+      "user_escalation": false
+    },
+    {
+      "id": "S5",
+      "name": "G6 missing actual_actor → WAITING, no user escalation",
+      "status": "PASS",
+      "outcome": "WAITING_FORMAL_SIGNOFF",
+      "issues": [
+        "missing_actual_actor"
+      ],
+      "user_escalation": false
+    },
+    {
+      "id": "S6",
+      "name": "G5 actual_actor=mismatch → REPAIR, no user escalation",
+      "status": "PASS",
+      "outcome": "REPAIR_DISPATCH_REQUIRED",
+      "issues": [
+        "actual_actor_role_mismatch"
+      ],
+      "user_escalation": false
+    },
+    {
+      "id": "S7",
+      "name": "G5 role substitution → REPAIR, required_role=旧影",
+      "status": "PASS",
+      "outcome": "REPAIR_DISPATCH_REQUIRED",
+      "required_role": "旧影",
+      "required_artifact": "formal_signoff"
+    },
+    {
+      "id": "S8",
+      "name": "G5 missing HMAC → WAITING, required_role=旧影",
+      "status": "PASS",
+      "outcome": "WAITING_FORMAL_SIGNOFF",
+      "required_role": "旧影"
+    },
+    {
+      "id": "S9",
+      "name": "G6 prod action no user → USER_ESCALATION_REQUIRED",
+      "status": "PASS",
+      "outcome": "USER_ESCALATION_REQUIRED",
+      "user_escalation": true,
+      "would_tag": true,
+      "would_push": true
+    }
+  ],
+  "self_tests": {
+    "stage_gate_auto_advance": "PASS",
+    "archive_after_g6": "PASS",
+    "unittest": "PASS"
+  },
+  "forbidden_dirs_clean": true,
+  "tag_merge_push": "NOT_EXECUTED",
+  "all_assertions_pass": true
+}

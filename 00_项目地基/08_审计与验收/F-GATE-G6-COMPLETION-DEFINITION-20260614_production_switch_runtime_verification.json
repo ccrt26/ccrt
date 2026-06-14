@@ -1,0 +1,62 @@
+{
+  "task_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "stage": "production_switch_runtime_verification",
+  "artifact_type": "production_switch_runtime_verification",
+  "result": "PASS",
+  "generated_at": "2026-06-14T14:35:19.632116+00:00",
+  "scenarios": [
+    {
+      "id": "S1",
+      "name": "G5 missing actor→WAITING_ROLE_SIGNOFF role=旧影",
+      "status": "PASS"
+    },
+    {
+      "id": "S2",
+      "name": "G6 missing actor→WAITING_ROLE_SIGNOFF role=腰子",
+      "status": "PASS"
+    },
+    {
+      "id": "S3",
+      "name": "G6 good→ARCHIVED archive_completed=true",
+      "status": "PASS"
+    },
+    {
+      "id": "S4",
+      "name": "bad: missing formal_signoff→BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "S5",
+      "name": "bad: actual_actor=阿黑→BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "S6",
+      "name": "bad: gate=G5→BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "S7",
+      "name": "bad: result=BLOCK→BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "S8",
+      "name": "relative output_dir→BLOCK",
+      "status": "PASS"
+    },
+    {
+      "id": "S9",
+      "name": "code_release→no unconfirmed push",
+      "status": "PASS"
+    },
+    {
+      "id": "S10",
+      "name": "audit_archive_only→no tag/merge/push",
+      "status": "PASS"
+    }
+  ],
+  "scenarios_total": 10,
+  "scenarios_pass": 10,
+  "tag_merge_push": "NOT_EXECUTED"
+}

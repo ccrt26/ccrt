@@ -1,0 +1,67 @@
+{
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "stage": "production_switch",
+  "artifact_type": "production_switch_record",
+  "result": "ACTIVE",
+  "generated_at": "2026-06-14T13:30:13.478468+00:00",
+  "switch_scope": {
+    "stage_gate_auto_advance": {
+      "script": "scripts/stage_gate_auto_advance.py",
+      "runtime_entry_status": "active",
+      "authority": "stage_gate_auto_advance",
+      "capability": "auto-advance evaluation + dispatch generation",
+      "is_dry_run": false,
+      "production_readiness": true
+    },
+    "archive_after_g6": {
+      "script": "scripts/archive_after_g6.py",
+      "runtime_entry_status": "active_dry_run",
+      "authority": "g6_archive_dry_run_entry",
+      "capability": "G6 archive dry-run evaluation",
+      "is_dry_run": true,
+      "production_readiness": false
+    }
+  },
+  "not_switched": {
+    "reason": "dry-run only, requires explicit user confirmation for production archive/tag/merge/push",
+    "scripts": [
+      "scripts/archive_after_g6.py"
+    ]
+  },
+  "forbidden_actions_not_taken": [
+    "tag",
+    "merge",
+    "push",
+    "production_archive",
+    "production_report_write"
+  ],
+  "certification_chain": {
+    "g5_formal_signoff": {
+      "role": "旧影",
+      "actual_actor": "旧影",
+      "hmac_prefix": "592ab00afb2706e15273",
+      "stage": "audit",
+      "signed": true
+    },
+    "g6_formal_signoff": {
+      "role": "腰子",
+      "actual_actor": "腰子",
+      "hmac_prefix": "67b720ff3c477f1a1de3",
+      "stage": "review_1a",
+      "signed": true
+    },
+    "archive_record": "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_archive_record.json"
+  },
+  "evidence_files": [
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G5_formal_checklist.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G5_formal_state.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G5_formal_signoff.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_formal_checklist.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_formal_state.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_formal_signoff.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_archive_readiness_record.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_archive_record.json",
+    "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_archive_record.json"
+  ]
+}

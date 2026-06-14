@@ -1,0 +1,30 @@
+{
+  "task_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "gate": "G6",
+  "artifact_type": "formal_signoff",
+  "role": "腰子",
+  "result": "PASS",
+  "formal_signoff": {
+    "signed": true,
+    "timestamp": "2026-06-14T14:34:42.451691+00:00",
+    "stage": "review_1a",
+    "checklist_version": "72ced3fb24278ccf975c283d259247ea27932ab44b39d1c0b7e65bd57d3082ab",
+    "signature": "a68b531062aadb586959b03330afc9b8f93e9b4d9a86a7bc1cf498db08bcbced",
+    "sig_type": "HMAC-SHA256",
+    "actor": "腰子",
+    "requested_actor": "腰子",
+    "actual_actor": "腰子",
+    "git_sha": "",
+    "audit_report_hash": "",
+    "comment": "G6 actor-bound signoff for G6 completion definition",
+    "role": "腰子"
+  },
+  "requested_actions": [],
+  "user_confirmed_release": false,
+  "candidate_only": false,
+  "no_role_signoff_claimed": false,
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false
+}

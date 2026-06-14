@@ -1,0 +1,33 @@
+{
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "generated_at": "2026-06-14T14:04:29.276401+00:00",
+  "overall_result": "PASS",
+  "scope": {
+    "implemented_files": [
+      "00_项目地基/05_流程与角色/stage_gate_release_policy.json",
+      "scripts/stage_gate_release_orchestrator.py",
+      "tests/test_stage_gate_release_orchestrator.py"
+    ],
+    "forbidden_claims": [
+      "G5_PASS",
+      "G6_PASS",
+      "formal_signoff_completed",
+      "archive_completed",
+      "tag_completed",
+      "merge_completed",
+      "push_completed"
+    ]
+  },
+  "self_test_results": {
+    "orchestrator_self_test": "PASS",
+    "stage_gate_auto_advance_self_test": "PASS",
+    "archive_after_g6_self_test": "PASS",
+    "unittest": "PASS",
+    "bad_evidence_rejected": true,
+    "forbidden_dir_changes": []
+  },
+  "conclusion": "G4 candidate PASS"
+}

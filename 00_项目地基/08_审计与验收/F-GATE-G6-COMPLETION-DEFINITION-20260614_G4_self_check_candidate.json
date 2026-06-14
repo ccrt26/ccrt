@@ -1,0 +1,79 @@
+{
+  "task_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "generated_at": "2026-06-14T14:30:46.832054+00:00",
+  "overall_result": "PASS",
+  "scope": {
+    "created_file": "00_项目地基/05_流程与角色/FLOW_G6完成定义与闭环规则_v1.0.md",
+    "forbidden_claims": [
+      "G5_PASS",
+      "G6_PASS",
+      "formal_signoff_completed",
+      "archive_completed",
+      "tag_completed",
+      "merge_completed",
+      "push_completed"
+    ]
+  },
+  "self_checks": [
+    {
+      "id": "C1",
+      "name": "文件存在",
+      "result": "PASS"
+    },
+    {
+      "id": "C2",
+      "name": "包含 \"G6 PASS = 任务目标已完成\"",
+      "result": "PASS"
+    },
+    {
+      "id": "C3",
+      "name": "包含 \"未完成目标终态，不得输出 G6 PASS\"",
+      "result": "PASS"
+    },
+    {
+      "id": "C4",
+      "name": "包含 \"G6 candidate / G6 readiness / G6 PASS\"",
+      "result": "PASS"
+    },
+    {
+      "id": "C5",
+      "name": "包含 \"用户不需要判断归档、启用、发布、生产验证的差异\"",
+      "result": "PASS"
+    },
+    {
+      "id": "C6",
+      "name": "包含 G6 完成定义与闭环规则",
+      "result": "PASS"
+    },
+    {
+      "id": "C7",
+      "name": "包含禁止表达列表",
+      "result": "PASS"
+    },
+    {
+      "id": "C8",
+      "name": "包含自动化闭环要求",
+      "result": "PASS"
+    },
+    {
+      "id": "C9",
+      "name": "包含术语统一表",
+      "result": "PASS"
+    },
+    {
+      "id": "C10",
+      "name": "包含 G0-G6 流程引用要求",
+      "result": "PASS"
+    },
+    {
+      "id": "C11",
+      "name": "不包含混淆表达",
+      "result": "PASS"
+    }
+  ],
+  "forbidden_dir_changes": [],
+  "conclusion": "G4 candidate PASS"
+}

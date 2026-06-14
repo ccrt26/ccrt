@@ -1,0 +1,132 @@
+{
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "stage": "production_switch",
+  "artifact_type": "production_switch_record",
+  "result": "ACTIVE",
+  "generated_at": "2026-06-14T14:06:13.491383+00:00",
+  "switch_scope": {
+    "stage_gate_release_orchestrator": {
+      "script": "scripts/stage_gate_release_orchestrator.py",
+      "runtime_entry_status": "active_policy_controlled",
+      "authority": "stage_gate_release_orchestrator",
+      "capability": "policy-controlled release orchestration (signoff + archive)",
+      "production_readiness": true
+    },
+    "stage_gate_auto_advance": {
+      "script": "scripts/stage_gate_auto_advance.py",
+      "runtime_entry_status": "active",
+      "authority": "stage_gate_auto_advance",
+      "production_readiness": true
+    },
+    "archive_after_g6": {
+      "script": "scripts/archive_after_g6.py",
+      "runtime_entry_status": "active_dry_run",
+      "authority": "g6_archive_dry_run_entry",
+      "capability": "G6 archive dry-run evaluation",
+      "is_dry_run": true,
+      "production_readiness": false
+    }
+  },
+  "active_policies": {
+    "default": "audit_archive_only",
+    "description": "auto archive, no tag/merge/push without user confirmation"
+  },
+  "certification_chain": {
+    "g5_formal_signoff": {
+      "role": "旧影",
+      "actual_actor": "旧影",
+      "sig_type": "HMAC-SHA256",
+      "signed": true,
+      "hmac_prefix": "767da93f227dce623e5a",
+      "source": "00_项目地基/08_审计与验收/F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614_G5_formal_signoff.json"
+    },
+    "g6_formal_signoff": {
+      "role": "腰子",
+      "actual_actor": "腰子",
+      "sig_type": "HMAC-SHA256",
+      "signed": true,
+      "hmac_prefix": "745a61408fb679f5a279",
+      "source": "00_项目地基/08_审计与验收/F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614_G6_formal_signoff.json"
+    },
+    "archive_record_referenced": "00_项目地基/08_审计与验收/F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614_G6_archive_record.json"
+  },
+  "archive_completed": true,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false,
+  "production_switched": false,
+  "forbidden_actions_not_taken": [
+    "tag",
+    "merge",
+    "push",
+    "production_report_write",
+    "daily_scheduler_switch"
+  ],
+  "runtime_verification": {
+    "verification_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614-runtime-verify",
+    "generated_at": "2026-06-14T14:09:59.292852+00:00",
+    "scenarios": [
+      {
+        "id": "S1",
+        "name": "G5 signoff missing actual_actor → WAITING_ROLE_SIGNOFF, role=旧影",
+        "status": "PASS"
+      },
+      {
+        "id": "S2",
+        "name": "G6 signoff missing actual_actor → WAITING_ROLE_SIGNOFF, role=腰子",
+        "status": "PASS"
+      },
+      {
+        "id": "S3",
+        "name": "G6 good evidence → ARCHIVED, archive_completed=true",
+        "status": "PASS"
+      },
+      {
+        "id": "S4",
+        "name": "bad: missing formal_signoff → BLOCK, no archive_record",
+        "status": "PASS"
+      },
+      {
+        "id": "S5",
+        "name": "bad: actual_actor=阿黑 → BLOCK",
+        "status": "PASS"
+      },
+      {
+        "id": "S6",
+        "name": "bad: gate=G5 → BLOCK",
+        "status": "PASS"
+      },
+      {
+        "id": "S7",
+        "name": "bad: result=BLOCK → BLOCK",
+        "status": "PASS"
+      },
+      {
+        "id": "S8",
+        "name": "relative output_dir → BLOCK",
+        "status": "PASS"
+      },
+      {
+        "id": "S9",
+        "name": "code_release_requires_confirmation – no unconfirmed push",
+        "status": "PASS"
+      },
+      {
+        "id": "S10",
+        "name": "audit_archive_only default → no tag/merge/push",
+        "status": "PASS"
+      }
+    ],
+    "assertions": {
+      "all_10_pass": true,
+      "runtime_registry": {
+        "orchestrator": "active_policy_controlled",
+        "stage_gate_auto_advance": "active",
+        "archive_after_g6": "active_dry_run"
+      },
+      "hmac_chain_valid": true,
+      "forbidden_dirs_clean": true
+    },
+    "tag_merge_push": "NOT_EXECUTED"
+  }
+}

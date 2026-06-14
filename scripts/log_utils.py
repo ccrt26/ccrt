@@ -215,6 +215,7 @@ def append_log(log_type, data):
         "checklist_chg": ("checklist/checklist_changelog.jsonl", ["timestamp","run_id","modified_by","operation","diff_summary","previous_hash","new_hash"]),
         "ai_ops": ("ai_ops/ai_ops.jsonl", ["timestamp","run_id","stage","role","task_type","input_context_hash","output_summary","token_used","model","duration_ms","result","error_msg"]),
         "engine": ("engine/engine_events.jsonl", ["timestamp","run_id","event_type","from_stage","to_stage","target_role","actor","role","actual_actor","actual_role","requested_actor","requested_role","decision","reason","package_files","override_reason"]),
+        "auto_advance": ("engine/auto_advance_events.jsonl", ["timestamp","task_id","source_script","status","from_gate","to_gate","issues","dispatch_action","user_escalation","dry_run","writes","forbidden_actions"]),
         "deploy": ("deployments/verify_deploy.jsonl", ["timestamp","run_id","deploy_item","check_type","expected","actual","result"]),
         "audit": ("audit/audit_findings.jsonl", ["timestamp","finding_id","severity","category","related_run_id","description","evidence_log_paths","recommended_action","status"]),
         "security": ("audit/security_events.jsonl", ["timestamp","run_id","actor","action","target","result","detail"]),

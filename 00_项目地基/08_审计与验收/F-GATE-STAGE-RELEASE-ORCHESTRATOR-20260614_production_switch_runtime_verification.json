@@ -1,0 +1,109 @@
+{
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "stage": "production_switch_runtime_verification",
+  "artifact_type": "production_switch_runtime_verification",
+  "result": "PASS",
+  "generated_at": "2026-06-14T14:14:04.176883+00:00",
+  "scenarios": [
+    {
+      "id": "S1",
+      "name": "G5 signoff missing actual_actor → WAITING_ROLE_SIGNOFF, required_role=旧影",
+      "input_summary": "signoff mode, gate=G5, no CLAUDE_CURRENT_ACTOR set in env",
+      "expected": "WAITING_ROLE_SIGNOFF, required_role=旧影, user_escalation=false",
+      "actual": "status=WAITING_ROLE_SIGNOFF, role=旧影, escalation=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S2",
+      "name": "G6 signoff missing actual_actor → WAITING_ROLE_SIGNOFF, required_role=腰子",
+      "input_summary": "signoff mode, gate=G6, no CLAUDE_CURRENT_ACTOR",
+      "expected": "WAITING_ROLE_SIGNOFF, required_role=腰子, user_escalation=false",
+      "actual": "status=WAITING_ROLE_SIGNOFF, role=腰子, escalation=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S3",
+      "name": "G6 good formal_signoff → ARCHIVED, archive_completed=true",
+      "input_summary": "archive mode, valid G6 signoff with role=腰子, actual_actor=腰子, HMAC-SHA256",
+      "expected": "ARCHIVED, archive_completed=true, archive_record created",
+      "actual": "status=ARCHIVED, archive_completed=True, archive_record=True",
+      "archive_record_created": true,
+      "status": "PASS"
+    },
+    {
+      "id": "S4",
+      "name": "G6 bad evidence: missing formal_signoff → BLOCK, no archive_record",
+      "input_summary": "archive mode, G6 evidence with no 'formal_signoff' key at all",
+      "expected": "BLOCK, archive_completed=false, no archive_record path",
+      "actual": "status=BLOCK, archive_completed=False, has_archive_record=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S5",
+      "name": "G6 bad evidence: actual_actor=阿黑 → BLOCK, no archive_record",
+      "input_summary": "archive mode, G6 signoff with actual_actor=阿黑 (≠腰子)",
+      "expected": "BLOCK, archive_completed=false, no archive_record",
+      "actual": "status=BLOCK, archive_completed=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S6",
+      "name": "G6 bad evidence: gate=G5 → BLOCK, no archive_record",
+      "input_summary": "archive mode, gate=G5 (must be G6 for archive)",
+      "expected": "BLOCK, archive_completed=false",
+      "actual": "status=BLOCK, archive_completed=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S7",
+      "name": "G6 bad evidence: result=BLOCK → BLOCK, no archive_record",
+      "input_summary": "archive mode, result=BLOCK on G6 evidence",
+      "expected": "BLOCK, archive_completed=false",
+      "actual": "status=BLOCK, archive_completed=False",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S8",
+      "name": "relative output_dir → BLOCK",
+      "input_summary": "archive mode, --output-dir=relative_dir (not absolute)",
+      "expected": "BLOCK, reason about relative output",
+      "actual": "status=BLOCK, reason=relative output directory is forbidden",
+      "archive_record_created": false,
+      "status": "PASS"
+    },
+    {
+      "id": "S9",
+      "name": "code_release_requires_confirmation → no unconfirmed push",
+      "input_summary": "archive mode, release-policy=code_release_requires_confirmation, no --user-confirmed-release",
+      "expected": "push_completed=false, no production actions executed",
+      "actual": "status=ARCHIVED, push_completed=False",
+      "archive_record_created": true,
+      "status": "PASS"
+    },
+    {
+      "id": "S10",
+      "name": "audit_archive_only default → no tag/merge/push",
+      "input_summary": "archive mode, default release-policy=audit_archive_only",
+      "expected": "ARCHIVED, tag/merge/push all false",
+      "actual": "status=ARCHIVED, tag=False, merge=False, push=False",
+      "archive_record_created": true,
+      "status": "PASS"
+    }
+  ],
+  "scenarios_total": 10,
+  "scenarios_pass": 10,
+  "self_tests": {
+    "orchestrator": "PASS",
+    "stage_gate_auto_advance": "PASS",
+    "archive_after_g6": "PASS",
+    "unittest": "PASS"
+  },
+  "forbidden_dirs_clean": true,
+  "tag_merge_push": "NOT_EXECUTED"
+}

@@ -1,0 +1,78 @@
+{
+  "run_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "stage": "G5_formal_signoff",
+  "artifact_type": "formal_signoff_checklist",
+  "candidate_only_before_signoff": true,
+  "no_role_signoff_claimed_before_signoff": true,
+  "generated_at": "2026-06-14T10:30:39.745451+00:00",
+  "source_g4_candidate": "/Users/ccrt/ccrt/00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G4_self_check_candidate.json",
+  "g4_overall_result": "PASS",
+  "items": [
+    {
+      "id": "G5-01",
+      "title": "G4 candidate evidence valid",
+      "result": "PASS",
+      "code_level": "L1"
+    },
+    {
+      "id": "G5-02",
+      "title": "stage gate registry candidate/formal/archive boundary valid",
+      "result": "PASS",
+      "code_level": "L1"
+    },
+    {
+      "id": "G5-03",
+      "title": "stage_gate_auto_advance dry-run and repair behavior valid",
+      "result": "PASS",
+      "code_level": "L1"
+    },
+    {
+      "id": "G5-04",
+      "title": "archive_after_g6 dry-run and path guard valid",
+      "result": "PASS",
+      "code_level": "L1"
+    },
+    {
+      "id": "G5-05",
+      "title": "runtime entry and auto_advance logging valid",
+      "result": "PASS",
+      "code_level": "L1"
+    },
+    {
+      "id": "G5-06",
+      "title": "unit tests and runtime gate pass",
+      "result": "PASS",
+      "code_level": "L1"
+    }
+  ],
+  "token_budget": {
+    "used": 0,
+    "limit": 0,
+    "unit": "not_applicable"
+  },
+  "file_budgets": [],
+  "forbidden_claims": [
+    "G6_PASS",
+    "archive_completed",
+    "tag_completed",
+    "merge_completed",
+    "push_completed"
+  ],
+  "signoffs": {
+    "旧影": {
+      "signed": true,
+      "timestamp": "2026-06-14T13:13:22.185482+00:00",
+      "stage": "audit",
+      "checklist_version": "6bd0a9072ffa9e62165b7b3883a5497da2eb1b50564dcb1fbb35b070e277c790",
+      "signature": "592ab00afb2706e15273e8952373eb5e4f78b4dd09cab6b596713fc447cb1248",
+      "sig_type": "HMAC-SHA256",
+      "actor": "旧影",
+      "requested_actor": "旧影",
+      "actual_actor": "旧影",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "G5 actor-bound formal signoff for one-step archive-ready flow"
+    }
+  }
+}

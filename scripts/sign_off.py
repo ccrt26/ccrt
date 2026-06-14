@@ -74,17 +74,23 @@ def sign_off(requested_actor, requested_role, run_id, checklist_path, comment=""
     session_id = get_session_id()
     pid = str(os.getpid())
 
-    # 1. Determine actor identity
-    effective_actor = actual_actor or requested_actor
-
-    # 2. actual_actor 缺失 → BLOCK (除非 transitional)
+    # 1. Determine actor identity. Formal signoff requires actor-bound identity.
     if not actual_actor:
-        print("警告: actual_actor 无法从环境识别，降级使用 CLI --actor (transitional mode)")
-        print("  后续版本将强制要求 CLAUDE_CURRENT_ACTOR 环境变量")
-        effective_actor = requested_actor
-        decision_reason = "transitional: actual_actor not available"
-    else:
-        decision_reason = ""
+        print("BLOCK: actual_actor 无法从环境识别，拒绝 transitional 签名")
+        append_log("signature", {
+            "run_id": run_id, "stage": "", "role": requested_role,
+            "requested_actor": requested_actor, "requested_role": requested_role,
+            "actual_actor": "", "actual_role": "",
+            "action": "sign", "decision": "BLOCK",
+            "reason": "actual_actor missing",
+            "checklist_version": "", "signature": "",
+            "comment": comment, "session_id": session_id, "process_id": pid,
+            "command_source": " ".join(sys.argv),
+        })
+        sys.exit(1)
+
+    effective_actor = actual_actor
+    decision_reason = ""
 
     # 3. actual_actor != requested_role → BLOCK
     if actual_actor and actual_actor != requested_role:

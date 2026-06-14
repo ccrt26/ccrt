@@ -365,6 +365,10 @@ def run_daily(date_str, mode):
                 log(f"batch_data_collector stderr 含 {keyword} — aborting", "ERROR")
                 write_record(date_str, mode, "FAILED", notes=f"batch_data stderr:{keyword}")
                 return False
+    else:
+        log("batch_data_collector.py missing; PS1 fallback is forbidden", "ERROR")
+        log(f"Forbidden collector_ps fallback path: {collector_ps}", "ERROR")
+        sys.exit(1)
 
     # Phase 2.2: 立即校验 data_full.json 完整性
     log("[2.2/7] Validating data_full.json...")

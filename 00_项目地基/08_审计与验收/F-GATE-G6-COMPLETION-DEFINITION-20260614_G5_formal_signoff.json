@@ -1,0 +1,29 @@
+{
+  "task_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "gate": "G5",
+  "artifact_type": "formal_signoff",
+  "role": "旧影",
+  "result": "PASS",
+  "formal_signoff": {
+    "signed": true,
+    "timestamp": "2026-06-14T14:34:35.164332+00:00",
+    "stage": "audit",
+    "checklist_version": "0b1440c942cdfadb5774d2876f93b0e9d239b2f2ff759acaf50de8955c41a5cc",
+    "signature": "a48558f74ee3bb6c507af45edad332b36c2718425312fdbb546f9ad480aeaf1d",
+    "sig_type": "HMAC-SHA256",
+    "actor": "旧影",
+    "requested_actor": "旧影",
+    "actual_actor": "旧影",
+    "git_sha": "",
+    "audit_report_hash": "",
+    "comment": "G5 actor-bound signoff for G6 completion definition",
+    "role": "旧影"
+  },
+  "candidate_only": false,
+  "no_role_signoff_claimed": false,
+  "g6_pass_claimed": false,
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false
+}

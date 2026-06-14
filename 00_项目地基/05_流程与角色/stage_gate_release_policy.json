@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "default_policy": "archive_and_github_sync",
+  "policies": {
+    "audit_archive_only": {
+      "description": "G6 formal_signoff PASS 后自动生成 archive_record，不 tag/merge/push，不切生产。",
+      "auto_signoff": true,
+      "auto_archive": true,
+      "auto_tag": false,
+      "auto_merge": false,
+      "auto_push": false,
+      "requires_user_confirmation": false
+    },
+    "production_switch_record_only": {
+      "description": "G6 formal_signoff PASS 后自动归档并生成 production_switch_record，不 tag/merge/push。",
+      "auto_signoff": true,
+      "auto_archive": true,
+      "auto_production_switch_record": true,
+      "auto_tag": false,
+      "auto_merge": false,
+      "auto_push": false,
+      "requires_user_confirmation": false
+    },
+    "code_release_requires_confirmation": {
+      "description": "涉及 tag/merge/push 的发布必须用户确认。",
+      "auto_signoff": true,
+      "auto_archive": true,
+      "auto_tag": false,
+      "auto_merge": false,
+      "auto_push": false,
+      "requires_user_confirmation": true
+    },
+    "archive_and_github_sync": {
+      "description": "G6 formal_signoff PASS 后自动归档，并自动 commit/push 到 GitHub；不 tag、不 merge、不切生产日报。",
+      "auto_signoff": true,
+      "auto_archive": true,
+      "auto_github_sync": true,
+      "auto_commit": true,
+      "auto_push": true,
+      "auto_tag": false,
+      "auto_merge": false,
+      "requires_user_confirmation": false
+    }
+  },
+  "role_signoff": {
+    "G5": {
+      "role": "旧影",
+      "stage": "audit"
+    },
+    "G6": {
+      "role": "腰子",
+      "stage": "review_1a"
+    }
+  },
+  "forbidden_without_explicit_policy": [
+    "tag",
+    "merge",
+    "push",
+    "production_report_write",
+    "daily_scheduler_switch"
+  ]
+}

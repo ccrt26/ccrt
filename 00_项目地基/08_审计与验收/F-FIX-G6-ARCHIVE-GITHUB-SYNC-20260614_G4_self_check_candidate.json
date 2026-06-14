@@ -1,0 +1,47 @@
+{
+  "task_id": "F-FIX-G6-ARCHIVE-GITHUB-SYNC-20260614",
+  "artifact_type": "g4_self_check_candidate",
+  "result": "PASS",
+  "generated_at": "2026-06-14T14:57:24.472321+00:00",
+  "root_cause": "默认策略和测试将 push 固化为 false，导致归档后 GitHub 同步不是强制终态",
+  "changed_files": [
+    "00_项目地基/05_流程与角色/stage_gate_release_policy.json",
+    "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "scripts/github_sync_after_archive.py",
+    "scripts/stage_gate_release_orchestrator.py",
+    "tests/test_stage_gate_release_orchestrator.py",
+    "tests/test_github_sync_after_archive.py"
+  ],
+  "commands_run": [
+    "py_compile all scripts: PASS",
+    "github_sync_after_archive.py --self-test: PASS",
+    "stage_gate_release_orchestrator.py --self-test: PASS",
+    "stage_gate_auto_advance.py --self-test: PASS",
+    "archive_after_g6.py --self-test: PASS",
+    "unittest (20 tests): OK",
+    "policy self-check: PASS"
+  ],
+  "test_results": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "default_policy_after_fix": "archive_and_github_sync",
+  "github_sync_required_after_archive": true,
+  "g6_pass_requires": [
+    "archive_completed=true",
+    "github_sync_completed=true",
+    "push_completed=true"
+  ],
+  "forbidden_dirs_status": "clean",
+  "forbidden_claims": [
+    "G5_PASS",
+    "G6_PASS",
+    "formal_signoff_completed_by_executor"
+  ],
+  "safety_env_vars": {
+    "GITHUB_SYNC_NO_PUSH": "Prevents accidental push to GitHub in test mode",
+    "GITHUB_SYNC_SKIP_FETCH": "Prevents git fetch in test mode"
+  },
+  "conclusion": "G4 candidate PASS"
+}

@@ -1,0 +1,29 @@
+{
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "gate": "G5",
+  "artifact_type": "formal_signoff",
+  "role": "旧影",
+  "result": "PASS",
+  "formal_signoff": {
+    "signed": true,
+    "timestamp": "2026-06-14T14:04:36.994264+00:00",
+    "stage": "audit",
+    "checklist_version": "112b1476fb328c5f16ee80b3d87130698688ab308e7c05a32d59166705ca1ee3",
+    "signature": "767da93f227dce623e5a93a79a940cb7004e404e445f0f7e3965b31136fdb43a",
+    "sig_type": "HMAC-SHA256",
+    "actor": "旧影",
+    "requested_actor": "旧影",
+    "actual_actor": "旧影",
+    "git_sha": "",
+    "audit_report_hash": "",
+    "comment": "G5 actor-bound signoff for release orchestrator",
+    "role": "旧影"
+  },
+  "candidate_only": false,
+  "no_role_signoff_claimed": false,
+  "g6_pass_claimed": false,
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false
+}

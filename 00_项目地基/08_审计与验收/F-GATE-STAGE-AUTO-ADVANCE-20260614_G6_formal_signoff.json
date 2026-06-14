@@ -1,0 +1,30 @@
+{
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "gate": "G6",
+  "artifact_type": "formal_signoff",
+  "role": "腰子",
+  "result": "PASS",
+  "formal_signoff": {
+    "signed": true,
+    "timestamp": "2026-06-14T13:13:49.727007+00:00",
+    "stage": "review_1a",
+    "checklist_version": "cba2148c5ac2d14fe45a0bbc4d3dfad4a18325297a95d7a2e9cb5eaf858fefea",
+    "signature": "67b720ff3c477f1a1de3e24d7ec3cca9bace6c781047d49079a6514e5e128bef",
+    "sig_type": "HMAC-SHA256",
+    "actor": "腰子",
+    "requested_actor": "腰子",
+    "actual_actor": "腰子",
+    "git_sha": "",
+    "audit_report_hash": "",
+    "comment": "G6 actor-bound formal signoff for archive dry-run readiness",
+    "role": "腰子"
+  },
+  "requested_actions": [],
+  "user_confirmed_release": false,
+  "candidate_only": false,
+  "no_role_signoff_claimed": false,
+  "archive_completed": false,
+  "tag_completed": false,
+  "merge_completed": false,
+  "push_completed": false
+}

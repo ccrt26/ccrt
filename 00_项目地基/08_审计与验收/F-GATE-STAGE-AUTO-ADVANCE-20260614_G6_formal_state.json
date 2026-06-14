@@ -1,0 +1,9 @@
+{
+  "runs": {
+    "F-GATE-STAGE-AUTO-ADVANCE-20260614": {
+      "current_stage": "review_1a",
+      "status": "active",
+      "checklist_path": "/Users/ccrt/ccrt/00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G6_formal_checklist.json"
+    }
+  }
+}

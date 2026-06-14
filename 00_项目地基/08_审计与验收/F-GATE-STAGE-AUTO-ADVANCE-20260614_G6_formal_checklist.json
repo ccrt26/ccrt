@@ -1,0 +1,48 @@
+{
+  "run_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "gate": "G6",
+  "stage": "G6_formal_release_dry_run",
+  "artifact_type": "formal_signoff_checklist",
+  "created_from": "00_项目地基/08_审计与验收/F-GATE-STAGE-AUTO-ADVANCE-20260614_G5_formal_signoff.json",
+  "result": "PENDING_SIGNOFF",
+  "requested_actions": [],
+  "user_confirmed_release": false,
+  "checks": [
+    {
+      "id": "G6-01",
+      "name": "G5 actor-bound formal_signoff exists",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-02",
+      "name": "G5 to G6 auto advance is ADVANCE_READY",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-03",
+      "name": "archive_after_g6 remains dry-run only",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-04",
+      "name": "no production archive/tag/merge/push requested",
+      "result": "PASS"
+    }
+  ],
+  "signoffs": {
+    "腰子": {
+      "signed": true,
+      "timestamp": "2026-06-14T13:13:49.727007+00:00",
+      "stage": "review_1a",
+      "checklist_version": "cba2148c5ac2d14fe45a0bbc4d3dfad4a18325297a95d7a2e9cb5eaf858fefea",
+      "signature": "67b720ff3c477f1a1de3e24d7ec3cca9bace6c781047d49079a6514e5e128bef",
+      "sig_type": "HMAC-SHA256",
+      "actor": "腰子",
+      "requested_actor": "腰子",
+      "actual_actor": "腰子",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "G6 actor-bound formal signoff for archive dry-run readiness"
+    }
+  }
+}

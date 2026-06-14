@@ -1,0 +1,158 @@
+{
+  "version": "1.0",
+  "description": "CCRT阶段门自动推进注册表：区分candidate、formal_signoff、archive_record，并定义自动推进、自动打回、用户升级边界。",
+  "artifact_types": [
+    {
+      "type": "candidate",
+      "meaning": "执行模型或审查候选证据，只能作为下一阶段派单输入，不等同正式角色签章。",
+      "formal": false
+    },
+    {
+      "type": "formal_signoff",
+      "meaning": "真实项目角色通过sign_off.py产生的HMAC绑定签章。",
+      "formal": true
+    },
+    {
+      "type": "archive_record",
+      "meaning": "G6正式通过后的归档记录或归档待执行任务记录。",
+      "formal": true
+    }
+  ],
+  "advance_rules": [
+    {
+      "rule_id": "ADV-G4-G5-CANDIDATE-PASS",
+      "from_gate": "G4",
+      "to_gate": "G5",
+      "required_artifact_type": "candidate",
+      "required_role": null,
+      "required_result": "PASS",
+      "formal_signoff_required": false,
+      "action": "create_dispatch",
+      "stop_if": [
+        "missing_evidence",
+        "candidate_claims_formal_signoff",
+        "BLOCK"
+      ]
+    },
+    {
+      "rule_id": "ADV-G5-G6-FORMAL-PASS",
+      "from_gate": "G5",
+      "to_gate": "G6",
+      "required_artifact_type": "formal_signoff",
+      "required_role": "旧影",
+      "required_result": "PASS",
+      "formal_signoff_required": true,
+      "action": "create_dispatch",
+      "stop_if": [
+        "actual_actor_role_mismatch",
+        "missing_actual_actor",
+        "missing_hmac",
+        "role_substitution",
+        "BLOCK"
+      ]
+    },
+    {
+      "rule_id": "ADV-G6-ARCHIVE-FORMAL-PASS",
+      "from_gate": "G6",
+      "to_gate": "archive",
+      "required_artifact_type": "formal_signoff",
+      "required_role": "腰子",
+      "required_result": "PASS",
+      "formal_signoff_required": true,
+      "action": "archive_after_g6",
+      "stop_if": [
+        "actual_actor_role_mismatch",
+        "missing_actual_actor",
+        "missing_hmac",
+        "role_substitution",
+        "permission_missing",
+        "production_action_without_user_confirmation",
+        "BLOCK"
+      ]
+    }
+  ],
+  "repair_rules": [
+    {
+      "issue": "missing_evidence",
+      "classification": "recoverable_block",
+      "return_to_gate": "G4",
+      "dispatch_action": "create_evidence_completion_dispatch",
+      "user_escalation": false
+    },
+    {
+      "issue": "BLOCK_in_G5_review",
+      "classification": "recoverable_block",
+      "return_to_gate": "G3_or_G4",
+      "dispatch_action": "create_repair_dispatch_from_findings",
+      "user_escalation": false
+    },
+    {
+      "issue": "missing_hmac",
+      "classification": "missing_signoff",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "create_formal_signoff_dispatch_for_required_role",
+      "user_escalation": false
+    },
+    {
+      "issue": "missing_actual_actor",
+      "classification": "missing_signoff",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "create_formal_signoff_dispatch_for_required_role",
+      "user_escalation": false
+    },
+    {
+      "issue": "actual_actor_role_mismatch",
+      "classification": "security_repair",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "invalidate_artifact_and_request_correct_role_resign",
+      "user_escalation": false
+    },
+    {
+      "issue": "permission_missing",
+      "classification": "permission_block",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "create_permission_owner_dispatch",
+      "user_escalation": false
+    },
+    {
+      "issue": "role_substitution",
+      "classification": "security_repair",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "invalidate_artifact_and_request_correct_role_resign",
+      "user_escalation": false
+    },
+    {
+      "issue": "candidate_claims_formal_signoff",
+      "classification": "security_repair",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "invalidate_candidate_and_request_clean_candidate",
+      "user_escalation": false
+    },
+    {
+      "issue": "scope_expansion",
+      "classification": "user_decision_block",
+      "return_to_gate": "current_gate",
+      "dispatch_action": "escalate_to_user_for_scope_confirmation",
+      "user_escalation": true
+    },
+    {
+      "issue": "production_action_without_user_confirmation",
+      "classification": "user_decision_block",
+      "return_to_gate": "G6",
+      "dispatch_action": "escalate_to_user_for_release_confirmation",
+      "user_escalation": true
+    }
+  ],
+  "user_escalation_rules": [
+    "scope_expansion",
+    "production_action_without_user_confirmation",
+    "tag_merge_push_required",
+    "same_issue_repair_attempts_exceeded",
+    "actor_secret_or_identity_unavailable",
+    "registry_rule_conflict"
+  ],
+  "safety_limits": {
+    "max_auto_repair_attempts": 3,
+    "default_archive_mode": "dry_run"
+  }
+}

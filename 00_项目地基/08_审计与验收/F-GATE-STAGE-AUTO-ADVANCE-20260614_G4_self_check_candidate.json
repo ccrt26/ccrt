@@ -1,0 +1,185 @@
+{
+  "task_id": "F-GATE-STAGE-AUTO-ADVANCE-20260614",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "generated_at": "2026-06-14T09:06:59.522669+00:00",
+  "overall_result": "PASS",
+  "scope": {
+    "implemented_files": [
+      "00_项目地基/05_流程与角色/stage_gate_registry.schema.json",
+      "00_项目地基/05_流程与角色/stage_gate_registry.json",
+      "scripts/stage_gate_auto_advance.py",
+      "scripts/archive_after_g6.py",
+      "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+      "scripts/log_utils.py",
+      "代码文件/每日荐股/scripts/daily_workflow.py",
+      "tests/test_stage_gate_auto_advance.py"
+    ],
+    "forbidden_claims": [
+      "G5_PASS",
+      "G6_PASS",
+      "formal_signoff_completed",
+      "archive_completed",
+      "tag_completed",
+      "merge_completed",
+      "push_completed"
+    ]
+  },
+  "validation_results": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "00_项目地基/05_流程与角色/stage_gate_registry.schema.json"
+      ],
+      "returncode": 0,
+      "stdout_tail": "           \"to_gate\",\n                    \"required_artifact_type\",\n                    \"required_result\",\n                    \"formal_signoff_required\",\n                    \"action\",\n                    \"stop_if\"\n                ],\n                \"additionalProperties\": false,\n                \"properties\": {\n                    \"rule_id\": {\n                        \"type\": \"string\"\n                    },\n                    \"from_gate\": {\n                        \"type\": \"string\"\n                    },\n                    \"to_gate\": {\n                        \"type\": \"string\"\n                    },\n                    \"required_artifact_type\": {\n                        \"type\": \"string\",\n                        \"enum\": [\n                            \"candidate\",\n                            \"formal_signoff\",\n                            \"archive_record\"\n                        ]\n                    },\n                    \"required_role\": {\n                        \"type\": [\n                            \"string\",\n                            \"null\"\n                        ]\n                    },\n                    \"required_result\": {\n                        \"type\": \"string\",\n                        \"enum\": [\n                            \"PASS\"\n                        ]\n                    },\n                    \"formal_signoff_required\": {\n                        \"type\": \"boolean\"\n                    },\n                    \"action\": {\n                        \"type\": \"string\",\n                        \"enum\": [\n                            \"create_dispatch\",\n                            \"archive_after_g6\"\n                        ]\n                    },\n                    \"stop_if\": {\n                        \"type\": \"array\",\n                        \"items\": {\n                            \"type\": \"string\"\n                        }\n                    }\n                }\n            }\n        },\n        \"repair_rules\": {\n            \"type\": \"array\",\n            \"minItems\": 5,\n            \"items\": {\n                \"type\": \"object\",\n                \"required\": [\n                    \"issue\",\n                    \"classification\",\n                    \"return_to_gate\",\n                    \"dispatch_action\",\n                    \"user_escalation\"\n                ],\n                \"additionalProperties\": false,\n                \"properties\": {\n                    \"issue\": {\n                        \"type\": \"string\"\n                    },\n                    \"classification\": {\n                        \"type\": \"string\",\n                        \"enum\": [\n                            \"recoverable_block\",\n                            \"missing_signoff\",\n                            \"permission_block\",\n                            \"security_repair\",\n                            \"user_decision_block\"\n                        ]\n                    },\n                    \"return_to_gate\": {\n                        \"type\": \"string\"\n                    },\n                    \"dispatch_action\": {\n                        \"type\": \"string\"\n                    },\n                    \"user_escalation\": {\n                        \"type\": \"boolean\"\n                    }\n                }\n            }\n        },\n        \"user_escalation_rules\": {\n            \"type\": \"array\",\n            \"minItems\": 1,\n            \"items\": {\n                \"type\": \"string\"\n            }\n        },\n        \"safety_limits\": {\n            \"type\": \"object\",\n            \"required\": [\n                \"max_auto_repair_attempts\",\n                \"default_archive_mode\"\n            ],\n            \"additionalProperties\": false,\n            \"properties\": {\n                \"max_auto_repair_attempts\": {\n                    \"type\": \"integer\",\n                    \"minimum\": 1\n                },\n                \"default_archive_mode\": {\n                    \"type\": \"string\",\n                    \"enum\": [\n                        \"dry_run\"\n                    ]\n                }\n            }\n        }\n    }\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "00_项目地基/05_流程与角色/stage_gate_registry.json"
+      ],
+      "returncode": 0,
+      "stdout_tail": " null,\n            \"required_result\": \"PASS\",\n            \"formal_signoff_required\": false,\n            \"action\": \"create_dispatch\",\n            \"stop_if\": [\n                \"missing_evidence\",\n                \"candidate_claims_formal_signoff\",\n                \"BLOCK\"\n            ]\n        },\n        {\n            \"rule_id\": \"ADV-G5-G6-FORMAL-PASS\",\n            \"from_gate\": \"G5\",\n            \"to_gate\": \"G6\",\n            \"required_artifact_type\": \"formal_signoff\",\n            \"required_role\": \"\\u65e7\\u5f71\",\n            \"required_result\": \"PASS\",\n            \"formal_signoff_required\": true,\n            \"action\": \"create_dispatch\",\n            \"stop_if\": [\n                \"missing_hmac\",\n                \"role_substitution\",\n                \"BLOCK\"\n            ]\n        },\n        {\n            \"rule_id\": \"ADV-G6-ARCHIVE-FORMAL-PASS\",\n            \"from_gate\": \"G6\",\n            \"to_gate\": \"archive\",\n            \"required_artifact_type\": \"formal_signoff\",\n            \"required_role\": \"\\u8170\\u5b50\",\n            \"required_result\": \"PASS\",\n            \"formal_signoff_required\": true,\n            \"action\": \"archive_after_g6\",\n            \"stop_if\": [\n                \"missing_hmac\",\n                \"role_substitution\",\n                \"permission_missing\",\n                \"production_action_without_user_confirmation\",\n                \"BLOCK\"\n            ]\n        }\n    ],\n    \"repair_rules\": [\n        {\n            \"issue\": \"missing_evidence\",\n            \"classification\": \"recoverable_block\",\n            \"return_to_gate\": \"G4\",\n            \"dispatch_action\": \"create_evidence_completion_dispatch\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"BLOCK_in_G5_review\",\n            \"classification\": \"recoverable_block\",\n            \"return_to_gate\": \"G3_or_G4\",\n            \"dispatch_action\": \"create_repair_dispatch_from_findings\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"missing_hmac\",\n            \"classification\": \"missing_signoff\",\n            \"return_to_gate\": \"current_gate\",\n            \"dispatch_action\": \"create_formal_signoff_dispatch_for_required_role\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"permission_missing\",\n            \"classification\": \"permission_block\",\n            \"return_to_gate\": \"current_gate\",\n            \"dispatch_action\": \"create_permission_owner_dispatch\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"role_substitution\",\n            \"classification\": \"security_repair\",\n            \"return_to_gate\": \"current_gate\",\n            \"dispatch_action\": \"invalidate_artifact_and_request_correct_role_resign\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"candidate_claims_formal_signoff\",\n            \"classification\": \"security_repair\",\n            \"return_to_gate\": \"current_gate\",\n            \"dispatch_action\": \"invalidate_candidate_and_request_clean_candidate\",\n            \"user_escalation\": false\n        },\n        {\n            \"issue\": \"scope_expansion\",\n            \"classification\": \"user_decision_block\",\n            \"return_to_gate\": \"current_gate\",\n            \"dispatch_action\": \"escalate_to_user_for_scope_confirmation\",\n            \"user_escalation\": true\n        },\n        {\n            \"issue\": \"production_action_without_user_confirmation\",\n            \"classification\": \"user_decision_block\",\n            \"return_to_gate\": \"G6\",\n            \"dispatch_action\": \"escalate_to_user_for_release_confirmation\",\n            \"user_escalation\": true\n        }\n    ],\n    \"user_escalation_rules\": [\n        \"scope_expansion\",\n        \"production_action_without_user_confirmation\",\n        \"tag_merge_push_required\",\n        \"same_issue_repair_attempts_exceeded\",\n        \"actor_secret_or_identity_unavailable\",\n        \"registry_rule_conflict\"\n    ],\n    \"safety_limits\": {\n        \"max_auto_repair_attempts\": 3,\n        \"default_archive_mode\": \"dry_run\"\n    }\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "json.tool",
+        "00_项目地基/06_调度与运行/runtime_entry_registry.json"
+      ],
+      "returncode": 0,
+      "stdout_tail": "latform\": \"macOS\",\n            \"status\": \"active\",\n            \"label_suffix\": \"deep-signal\"\n        },\n        {\n            \"entry\": \"post_eval\",\n            \"authority\": \"post_eval\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u6bcf\\u65e5\\u8350\\u80a1/scripts/daily_workflow.py\",\n            \"platform\": \"macOS\",\n            \"status\": \"active\",\n            \"label_suffix\": \"post-eval\"\n        },\n        {\n            \"entry\": \"Windows Task Scheduler\",\n            \"authority\": \"legacy_scheduler\",\n            \"path\": \"N/A\",\n            \"platform\": \"Windows\",\n            \"status\": \"legacy_forbidden\"\n        },\n        {\n            \"entry\": \"register_tasks.ps1\",\n            \"authority\": \"legacy_scheduler_registration\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u6bcf\\u65e5\\u8350\\u80a1/scripts/register_tasks.ps1\",\n            \"platform\": \"Windows\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"setup_scheduler.ps1\",\n            \"authority\": \"legacy_scheduler_registration\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u6bcf\\u65e5\\u8350\\u80a1/scripts/setup_scheduler.ps1\",\n            \"platform\": \"Windows\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"register_pigeon_scheduler.ps1\",\n            \"authority\": \"legacy_scheduler_registration\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u4fe1\\u9e3d\\u4fe1\\u606f\\u91c7\\u96c6/register_pigeon_scheduler.ps1\",\n            \"platform\": \"Windows\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"batch_data_collector.ps1\",\n            \"authority\": \"data_collector_legacy\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u6bcf\\u65e5\\u8350\\u80a1/scripts/batch_data_collector.ps1\",\n            \"platform\": \"Windows\",\n            \"status\": \"forbidden_when_python_replacement_exists\"\n        },\n        {\n            \"entry\": \"daily_workflow.ps1\",\n            \"authority\": \"workflow_legacy\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/\\u6bcf\\u65e5\\u8350\\u80a1/scripts/daily_workflow.ps1\",\n            \"platform\": \"Windows\",\n            \"status\": \"forbidden_when_python_replacement_exists\"\n        },\n        {\n            \"entry\": \"crontab\",\n            \"authority\": \"legacy_scheduler\",\n            \"path\": \"system crontab\",\n            \"platform\": \"macOS\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"install_crontab.sh\",\n            \"authority\": \"legacy_scheduler_registration\",\n            \"path\": \"\\u4ee3\\u7801\\u6587\\u4ef6/tools/install_crontab.sh\",\n            \"platform\": \"macOS\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"cron_runner.sh\",\n            \"authority\": \"legacy_scheduler_runner\",\n            \"path\": \"\\u6a21\\u62df\\u4ea4\\u6613/\\u5de5\\u5177/cron_runner.sh\",\n            \"platform\": \"macOS\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"GitHub Actions schedule: sim_trading.yml\",\n            \"authority\": \"legacy_scheduler\",\n            \"path\": \".github/workflows/sim_trading.yml\",\n            \"platform\": \"GitHub\",\n            \"status\": \"forbidden_current_runtime\"\n        },\n        {\n            \"entry\": \"run_daily_production_pipeline.py\",\n            \"authority\": \"daily_production_pipeline_entry\",\n            \"path\": \"scripts/run_daily_production_pipeline.py\",\n            \"platform\": \"macOS\",\n            \"status\": \"active\"\n        },\n        {\n            \"entry\": \"stage_gate_auto_advance.py\",\n            \"authority\": \"stage_gate_auto_advance\",\n            \"path\": \"scripts/stage_gate_auto_advance.py\",\n            \"platform\": \"cross\",\n            \"status\": \"active\"\n        },\n        {\n            \"entry\": \"archive_after_g6.py\",\n            \"authority\": \"g6_archive_dry_run_entry\",\n            \"path\": \"scripts/archive_after_g6.py\",\n            \"platform\": \"cross\",\n            \"status\": \"active_dry_run\"\n        }\n    ]\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "-c",
+        "import py_compile; py_compile.compile('scripts/stage_gate_auto_advance.py', cfile='/private/tmp/stage_gate_auto_advance.pyc', doraise=True); py_compile.compile('scripts/archive_after_g6.py', cfile='/private/tmp/archive_after_g6.pyc', doraise=True); py_compile.compile('scripts/log_utils.py', cfile='/private/tmp/log_utils.pyc', doraise=True); py_compile.compile('代码文件/每日荐股/scripts/daily_workflow.py', cfile='/private/tmp/daily_workflow.pyc', doraise=True); py_compile.compile('tests/test_stage_gate_auto_advance.py', cfile='/private/tmp/test_stage_gate_auto_advance.pyc', doraise=True); print('PASS py_compile explicit cfile')"
+      ],
+      "returncode": 0,
+      "stdout_tail": "PASS py_compile explicit cfile\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/stage_gate_auto_advance.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "stdout_tail": "{\n  \"self_test\": \"PASS\",\n  \"cases\": 6\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/archive_after_g6.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "stdout_tail": "{\n  \"self_test\": \"PASS\",\n  \"cases\": 4\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests/test_stage_gate_auto_advance.py"
+      ],
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.431s\n\nOK\n",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests/test_runtime_entry_authority.py"
+      ],
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ".\n----------------------------------------------------------------------\nRan 1 test in 0.030s\n\nOK\n",
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_runtime_entry_authority.py",
+        "--all",
+        "--json"
+      ],
+      "returncode": 0,
+      "stdout_tail": "{\n  \"result\": \"PASS\",\n  \"checks\": [\n    {\n      \"check_id\": \"C1\",\n      \"field\": \"registry\",\n      \"status\": \"PASS\",\n      \"expected\": \"合法JSON\",\n      \"actual\": \"30 entries\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C2\",\n      \"field\": \"legacy_registry\",\n      \"status\": \"PASS\",\n      \"expected\": \"合法JSON\",\n      \"actual\": \"15 entries\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C3\",\n      \"field\": \"registry_entries\",\n      \"status\": \"PASS\",\n      \"expected\": \"['generate_launchd.py', 'launchd', 'daily_workflow.py', 'batch_data_collector.py', 'daily_orchestrator.py', 'feishu_bridge.py', 'im_consumer.py', 'sim_orchestrator.py', 'scheduler_health_check.py', 'git_autosweep.py', 'pigeon', 'daily_signal', 'deep_signal', 'post_eval']\",\n      \"actual\": \"['generate_launchd.py', 'launchd', 'daily_workflow.py', 'batch_data_collector.py', 'daily_orchestrator.py', 'feishu_bridge.py', 'im_consumer.py', 'sim_orchestrator.py', 'scheduler_health_check.py', 'git_autosweep.py', 'pigeon', 'daily_signal', 'deep_signal', 'post_eval']\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C3b\",\n      \"field\": \"daily_production_authority\",\n      \"status\": \"PASS\",\n      \"expected\": \"production active + wrapper delegates\",\n      \"actual\": \"ok\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C4\",\n      \"field\": \"scheduler_ps1\",\n      \"status\": \"PASS\",\n      \"expected\": \"全部标记\",\n      \"actual\": \"全部标记\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C4b\",\n      \"field\": \"macos_forbidden\",\n      \"status\": \"PASS\",\n      \"expected\": \"全部标记\",\n      \"actual\": \"全部标记\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C5\",\n      \"field\": \"legacy_ps1\",\n      \"status\": \"PASS\",\n      \"expected\": \"全部登记\",\n      \"actual\": \"全部登记\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C6\",\n      \"field\": \"collector_ps_fallback\",\n      \"status\": \"PASS\",\n      \"expected\": \"已阻断\",\n      \"actual\": \"sys.exit(1)\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C7\",\n      \"field\": \"generate_launchd_placeholder\",\n      \"status\": \"PASS\",\n      \"expected\": \"无占位任务\",\n      \"actual\": \"无占位任务\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C8\",\n      \"field\": \"generate_launchd_forbidden_refs\",\n      \"status\": \"PASS\",\n      \"expected\": \"无禁止引用\",\n      \"actual\": \"无禁止引用\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C9\",\n      \"field\": \"github_actions_schedule\",\n      \"status\": \"PASS\",\n      \"expected\": \"无 schedule\",\n      \"actual\": \"无 schedule\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C10\",\n      \"field\": \"install_crontab_deprecated\",\n      \"status\": \"PASS\",\n      \"expected\": \"废弃保护\",\n      \"actual\": \"已标记废弃\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C11\",\n      \"field\": \"crontab_tielv_tasks\",\n      \"status\": \"PASS\",\n      \"expected\": \"无铁律量化任务\",\n      \"actual\": \"无铁律量化任务\",\n      \"message\": \"\"\n    },\n    {\n      \"check_id\": \"C12\",\n      \"field\": \"launchd_registration\",\n      \"status\": \"PASS\",\n      \"expected\": \"全部 9 个已登记\",\n      \"actual\": \"全部已登记\",\n      \"message\": \"\"\n    }\n  ]\n}\n",
+      "stderr_tail": "",
+      "result": "PASS"
+    }
+  ],
+  "git_status_results": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--",
+        "00_项目地基/05_流程与角色/stage_gate_registry.json",
+        "00_项目地基/05_流程与角色/stage_gate_registry.schema.json",
+        "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+        "scripts/log_utils.py",
+        "scripts/stage_gate_auto_advance.py",
+        "scripts/archive_after_g6.py",
+        "代码文件/每日荐股/scripts/daily_workflow.py",
+        "tests/test_stage_gate_auto_advance.py"
+      ],
+      "returncode": 0,
+      "stdout": " M \"00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/06_\\350\\260\\203\\345\\272\\246\\344\\270\\216\\350\\277\\220\\350\\241\\214/runtime_entry_registry.json\"\n M scripts/log_utils.py\n M \"\\344\\273\\243\\347\\240\\201\\346\\226\\207\\344\\273\\266/\\346\\257\\217\\346\\227\\245\\350\\215\\220\\350\\202\\241/scripts/daily_workflow.py\"\n?? \"00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/05_\\346\\265\\201\\347\\250\\213\\344\\270\\216\\350\\247\\222\\350\\211\\262/stage_gate_registry.json\"\n?? \"00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/05_\\346\\265\\201\\347\\250\\213\\344\\270\\216\\350\\247\\222\\350\\211\\262/stage_gate_registry.schema.json\"\n?? scripts/archive_after_g6.py\n?? scripts/stage_gate_auto_advance.py\n?? tests/test_stage_gate_auto_advance.py\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--",
+        "00_项目地基/08_审计与验收"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--",
+        ".claude",
+        "重点股票",
+        "每日荐股",
+        "统一解读"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "conclusion": "G4 candidate PASS"
+}

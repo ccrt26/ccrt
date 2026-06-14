@@ -1,0 +1,45 @@
+{
+  "run_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "task_id": "F-GATE-STAGE-RELEASE-ORCHESTRATOR-20260614",
+  "stage": "G6_formal_release_dry_run",
+  "artifact_type": "formal_signoff_checklist",
+  "generated_at": "2026-06-14T14:04:44.934288+00:00",
+  "checks": [
+    {
+      "id": "G6-01",
+      "name": "G5 actor-bound formal_signoff exists",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-02",
+      "name": "orchestrator self-test PASS",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-03",
+      "name": "bad evidence rejected",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-04",
+      "name": "archive_after_g6 reused for validation",
+      "result": "PASS"
+    }
+  ],
+  "signoffs": {
+    "腰子": {
+      "signed": true,
+      "timestamp": "2026-06-14T14:04:44.971658+00:00",
+      "stage": "review_1a",
+      "checklist_version": "c07b65ff4b0fa2fda96cfed78cd39d897dd0398aa5e50dfd830e19a0b1f52477",
+      "signature": "745a61408fb679f5a27930b82c7cca766984368ca35746bb2094777f28bf37e7",
+      "sig_type": "HMAC-SHA256",
+      "actor": "腰子",
+      "requested_actor": "腰子",
+      "actual_actor": "腰子",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "G6 actor-bound signoff for release orchestrator"
+    }
+  }
+}

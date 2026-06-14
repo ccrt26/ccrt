@@ -1,0 +1,45 @@
+{
+  "run_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "task_id": "F-GATE-G6-COMPLETION-DEFINITION-20260614",
+  "stage": "G6_formal_release_dry_run",
+  "artifact_type": "formal_signoff_checklist",
+  "generated_at": "2026-06-14T14:34:42.418188+00:00",
+  "checks": [
+    {
+      "id": "G6-01",
+      "name": "G5 actor-bound formal_signoff exists",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-02",
+      "name": "auto_advance self-test PASS",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-03",
+      "name": "archive_after_g6 self-test PASS",
+      "result": "PASS"
+    },
+    {
+      "id": "G6-04",
+      "name": "orchestrator self-test PASS",
+      "result": "PASS"
+    }
+  ],
+  "signoffs": {
+    "腰子": {
+      "signed": true,
+      "timestamp": "2026-06-14T14:34:42.451691+00:00",
+      "stage": "review_1a",
+      "checklist_version": "72ced3fb24278ccf975c283d259247ea27932ab44b39d1c0b7e65bd57d3082ab",
+      "signature": "a68b531062aadb586959b03330afc9b8f93e9b4d9a86a7bc1cf498db08bcbced",
+      "sig_type": "HMAC-SHA256",
+      "actor": "腰子",
+      "requested_actor": "腰子",
+      "actual_actor": "腰子",
+      "git_sha": "",
+      "audit_report_hash": "",
+      "comment": "G6 actor-bound signoff for G6 completion definition"
+    }
+  }
+}

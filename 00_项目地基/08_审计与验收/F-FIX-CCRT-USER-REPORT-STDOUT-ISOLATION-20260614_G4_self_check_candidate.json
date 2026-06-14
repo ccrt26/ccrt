@@ -1,0 +1,36 @@
+{
+  "task_id": "F-FIX-CCRT-USER-REPORT-STDOUT-ISOLATION-20260614",
+  "artifact_type": "g4_self_check_candidate",
+  "result": "PASS",
+  "generated_at": "2026-06-14T15:36:59.723743+00:00",
+  "root_cause": "用户可见输出只标记 hidden，未真正隔离内部完整 response",
+  "stdout_isolation": true,
+  "default_stdout_fields": [
+    "user_visible_status",
+    "user_visible_message",
+    "internal_evidence_record"
+  ],
+  "internal_json_requires_explicit_flag": true,
+  "forbidden_phrases_not_in_default_stdout": true,
+  "internal_evidence_preserved": true,
+  "changed_files": [
+    "scripts/stage_gate_release_orchestrator.py",
+    "scripts/ccrt_user_report_normalizer.py",
+    "tests/test_stage_gate_release_orchestrator.py",
+    "tests/test_ccrt_user_report_normalizer.py"
+  ],
+  "commands_run": [
+    "py_compile: PASS",
+    "ccrt_user_report_normalizer.py --self-test: PASS (5 cases)",
+    "stage_gate_release_orchestrator.py --self-test: PASS (4 cases)",
+    "unittest tests/test_stage_gate_release_orchestrator.py + test_ccrt_user_report_normalizer.py: OK (18 tests)",
+    "STDOUT isolation leak check: PASS"
+  ],
+  "test_results": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0
+  },
+  "forbidden_dirs_status": "clean",
+  "conclusion": "G4 candidate PASS"
+}

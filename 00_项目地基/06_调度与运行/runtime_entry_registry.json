@@ -1,213 +1,248 @@
 {
-    "version": "2.0",
-    "generated_at": "2026-06-11",
-    "note": "macOS 当前唯一调度注册器: generate_launchd.py | 唯一调度执行器: launchd. crontab/GitHub Actions schedule/PS1 均禁止作为当前运行入口。 | R4: run_daily_data_pipeline_today.py is wrapper; run_daily_production_pipeline.py is production closure authority.",
-    "entries": [
-        {
-            "entry": "generate_launchd.py",
-            "authority": "primary_scheduler_registry",
-            "path": "代码文件/每日荐股/scripts/generate_launchd.py",
-            "platform": "macOS",
-            "status": "active"
-        },
-        {
-            "entry": "launchd",
-            "authority": "primary_scheduler_runtime",
-            "path": "system launchd",
-            "platform": "macOS",
-            "status": "active"
-        },
-        {
-            "entry": "daily_workflow.py",
-            "authority": "scheduled_executable",
-            "path": "代码文件/每日荐股/scripts/daily_workflow.py",
-            "platform": "cross",
-            "status": "active"
-        },
-        {
-            "entry": "batch_data_collector.py",
-            "authority": "data_collector",
-            "path": "代码文件/每日荐股/scripts/batch_data_collector.py",
-            "platform": "cross",
-            "status": "active"
-        },
-        {
-            "entry": "daily_orchestrator.py",
-            "authority": "report_generator",
-            "path": "代码文件/tools/daily_orchestrator.py",
-            "platform": "cross",
-            "status": "active"
-        },
-        {
-            "entry": "check_runtime_entry_authority.py",
-            "authority": "runtime_gate",
-            "path": "scripts/check_runtime_entry_authority.py",
-            "platform": "cross",
-            "status": "active"
-        },
-        {
-            "entry": "feishu_bridge.py",
-            "authority": "feishu_bridge",
-            "path": "代码文件/tools/feishu_bridge.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "feishu-bridge"
-        },
-        {
-            "entry": "im_consumer.py",
-            "authority": "im_consumer",
-            "path": "代码文件/tools/im_consumer.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "im-consumer"
-        },
-        {
-            "entry": "sim_orchestrator.py",
-            "authority": "sim_trading_engine",
-            "path": "模拟交易/sim_orchestrator.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "sim-trading"
-        },
-        {
-            "entry": "scheduler_health_check.py",
-            "authority": "scheduler_health",
-            "path": "代码文件/tools/scheduler_health_check.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "scheduler-health"
-        },
-        {
-            "entry": "run_daily_data_pipeline_today.py",
-            "authority": "daily_data_pipeline_wrapper",
-            "path": "scripts/run_daily_data_pipeline_today.py",
-            "platform": "macOS",
-            "status": "active_wrapper",
-            "delegates_to": "run_daily_production_pipeline.py"
-        },
-        {
-            "entry": "run_daily_data_retry_once.py",
-            "authority": "daily_data_retry_chain",
-            "path": "scripts/run_daily_data_retry_once.py",
-            "platform": "cross",
-            "status": "active"
-        },
-        {
-            "entry": "git_autosweep.py",
-            "authority": "git_autosweep",
-            "path": "代码文件/tools/git_autosweep.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "git-autosweep"
-        },
-        {
-            "entry": "pigeon",
-            "authority": "pigeon_collector",
-            "path": "代码文件/tools/daily_orchestrator.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "pigeon"
-        },
-        {
-            "entry": "daily_signal",
-            "authority": "daily_data_pipeline_signal",
-            "path": "scripts/run_daily_data_pipeline_today.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "daily-signal"
-        },
-        {
-            "entry": "deep_signal",
-            "authority": "deep_signal",
-            "path": "代码文件/tools/daily_orchestrator.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "deep-signal"
-        },
-        {
-            "entry": "post_eval",
-            "authority": "post_eval",
-            "path": "代码文件/每日荐股/scripts/daily_workflow.py",
-            "platform": "macOS",
-            "status": "active",
-            "label_suffix": "post-eval"
-        },
-        {
-            "entry": "Windows Task Scheduler",
-            "authority": "legacy_scheduler",
-            "path": "N/A",
-            "platform": "Windows",
-            "status": "legacy_forbidden"
-        },
-        {
-            "entry": "register_tasks.ps1",
-            "authority": "legacy_scheduler_registration",
-            "path": "代码文件/每日荐股/scripts/register_tasks.ps1",
-            "platform": "Windows",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "setup_scheduler.ps1",
-            "authority": "legacy_scheduler_registration",
-            "path": "代码文件/每日荐股/scripts/setup_scheduler.ps1",
-            "platform": "Windows",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "register_pigeon_scheduler.ps1",
-            "authority": "legacy_scheduler_registration",
-            "path": "代码文件/信鸽信息采集/register_pigeon_scheduler.ps1",
-            "platform": "Windows",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "batch_data_collector.ps1",
-            "authority": "data_collector_legacy",
-            "path": "代码文件/每日荐股/scripts/batch_data_collector.ps1",
-            "platform": "Windows",
-            "status": "forbidden_when_python_replacement_exists"
-        },
-        {
-            "entry": "daily_workflow.ps1",
-            "authority": "workflow_legacy",
-            "path": "代码文件/每日荐股/scripts/daily_workflow.ps1",
-            "platform": "Windows",
-            "status": "forbidden_when_python_replacement_exists"
-        },
-        {
-            "entry": "crontab",
-            "authority": "legacy_scheduler",
-            "path": "system crontab",
-            "platform": "macOS",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "install_crontab.sh",
-            "authority": "legacy_scheduler_registration",
-            "path": "代码文件/tools/install_crontab.sh",
-            "platform": "macOS",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "cron_runner.sh",
-            "authority": "legacy_scheduler_runner",
-            "path": "模拟交易/工具/cron_runner.sh",
-            "platform": "macOS",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "GitHub Actions schedule: sim_trading.yml",
-            "authority": "legacy_scheduler",
-            "path": ".github/workflows/sim_trading.yml",
-            "platform": "GitHub",
-            "status": "forbidden_current_runtime"
-        },
-        {
-            "entry": "run_daily_production_pipeline.py",
-            "authority": "daily_production_pipeline_entry",
-            "path": "scripts/run_daily_production_pipeline.py",
-            "platform": "macOS",
-            "status": "active"
-        }
-    ]
+  "version": "2.0",
+  "generated_at": "2026-06-11",
+  "note": "macOS 当前唯一调度注册器: generate_launchd.py | 唯一调度执行器: launchd. crontab/GitHub Actions schedule/PS1 均禁止作为当前运行入口。 | R4: run_daily_data_pipeline_today.py is wrapper; run_daily_production_pipeline.py is production closure authority.",
+  "entries": [
+    {
+      "entry": "generate_launchd.py",
+      "authority": "primary_scheduler_registry",
+      "path": "代码文件/每日荐股/scripts/generate_launchd.py",
+      "platform": "macOS",
+      "status": "active"
+    },
+    {
+      "entry": "launchd",
+      "authority": "primary_scheduler_runtime",
+      "path": "system launchd",
+      "platform": "macOS",
+      "status": "active"
+    },
+    {
+      "entry": "daily_workflow.py",
+      "authority": "scheduled_executable",
+      "path": "代码文件/每日荐股/scripts/daily_workflow.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "batch_data_collector.py",
+      "authority": "data_collector",
+      "path": "代码文件/每日荐股/scripts/batch_data_collector.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "daily_orchestrator.py",
+      "authority": "report_generator",
+      "path": "代码文件/tools/daily_orchestrator.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "check_runtime_entry_authority.py",
+      "authority": "runtime_gate",
+      "path": "scripts/check_runtime_entry_authority.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "feishu_bridge.py",
+      "authority": "feishu_bridge",
+      "path": "代码文件/tools/feishu_bridge.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "feishu-bridge"
+    },
+    {
+      "entry": "im_consumer.py",
+      "authority": "im_consumer",
+      "path": "代码文件/tools/im_consumer.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "im-consumer"
+    },
+    {
+      "entry": "sim_orchestrator.py",
+      "authority": "sim_trading_engine",
+      "path": "模拟交易/sim_orchestrator.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "sim-trading"
+    },
+    {
+      "entry": "scheduler_health_check.py",
+      "authority": "scheduler_health",
+      "path": "代码文件/tools/scheduler_health_check.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "scheduler-health"
+    },
+    {
+      "entry": "run_daily_data_pipeline_today.py",
+      "authority": "daily_data_pipeline_wrapper",
+      "path": "scripts/run_daily_data_pipeline_today.py",
+      "platform": "macOS",
+      "status": "active_wrapper",
+      "delegates_to": "run_daily_production_pipeline.py"
+    },
+    {
+      "entry": "run_daily_data_retry_once.py",
+      "authority": "daily_data_retry_chain",
+      "path": "scripts/run_daily_data_retry_once.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "git_autosweep.py",
+      "authority": "git_autosweep",
+      "path": "代码文件/tools/git_autosweep.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "git-autosweep"
+    },
+    {
+      "entry": "pigeon",
+      "authority": "pigeon_collector",
+      "path": "代码文件/tools/daily_orchestrator.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "pigeon"
+    },
+    {
+      "entry": "daily_signal",
+      "authority": "daily_data_pipeline_signal",
+      "path": "scripts/run_daily_data_pipeline_today.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "daily-signal"
+    },
+    {
+      "entry": "deep_signal",
+      "authority": "deep_signal",
+      "path": "代码文件/tools/daily_orchestrator.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "deep-signal"
+    },
+    {
+      "entry": "post_eval",
+      "authority": "post_eval",
+      "path": "代码文件/每日荐股/scripts/daily_workflow.py",
+      "platform": "macOS",
+      "status": "active",
+      "label_suffix": "post-eval"
+    },
+    {
+      "entry": "Windows Task Scheduler",
+      "authority": "legacy_scheduler",
+      "path": "N/A",
+      "platform": "Windows",
+      "status": "legacy_forbidden"
+    },
+    {
+      "entry": "register_tasks.ps1",
+      "authority": "legacy_scheduler_registration",
+      "path": "代码文件/每日荐股/scripts/register_tasks.ps1",
+      "platform": "Windows",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "setup_scheduler.ps1",
+      "authority": "legacy_scheduler_registration",
+      "path": "代码文件/每日荐股/scripts/setup_scheduler.ps1",
+      "platform": "Windows",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "register_pigeon_scheduler.ps1",
+      "authority": "legacy_scheduler_registration",
+      "path": "代码文件/信鸽信息采集/register_pigeon_scheduler.ps1",
+      "platform": "Windows",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "batch_data_collector.ps1",
+      "authority": "data_collector_legacy",
+      "path": "代码文件/每日荐股/scripts/batch_data_collector.ps1",
+      "platform": "Windows",
+      "status": "forbidden_when_python_replacement_exists"
+    },
+    {
+      "entry": "daily_workflow.ps1",
+      "authority": "workflow_legacy",
+      "path": "代码文件/每日荐股/scripts/daily_workflow.ps1",
+      "platform": "Windows",
+      "status": "forbidden_when_python_replacement_exists"
+    },
+    {
+      "entry": "crontab",
+      "authority": "legacy_scheduler",
+      "path": "system crontab",
+      "platform": "macOS",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "install_crontab.sh",
+      "authority": "legacy_scheduler_registration",
+      "path": "代码文件/tools/install_crontab.sh",
+      "platform": "macOS",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "cron_runner.sh",
+      "authority": "legacy_scheduler_runner",
+      "path": "模拟交易/工具/cron_runner.sh",
+      "platform": "macOS",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "GitHub Actions schedule: sim_trading.yml",
+      "authority": "legacy_scheduler",
+      "path": ".github/workflows/sim_trading.yml",
+      "platform": "GitHub",
+      "status": "forbidden_current_runtime"
+    },
+    {
+      "entry": "run_daily_production_pipeline.py",
+      "authority": "daily_production_pipeline_entry",
+      "path": "scripts/run_daily_production_pipeline.py",
+      "platform": "macOS",
+      "status": "active"
+    },
+    {
+      "entry": "stage_gate_auto_advance.py",
+      "authority": "stage_gate_auto_advance",
+      "path": "scripts/stage_gate_auto_advance.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "archive_after_g6.py",
+      "authority": "g6_archive_dry_run_entry",
+      "path": "scripts/archive_after_g6.py",
+      "platform": "cross",
+      "status": "active_dry_run"
+    },
+    {
+      "entry": "stage_gate_release_orchestrator.py",
+      "authority": "stage_gate_release_orchestrator",
+      "path": "scripts/stage_gate_release_orchestrator.py",
+      "platform": "cross",
+      "status": "active_policy_controlled"
+    },
+    {
+      "entry": "github_sync_after_archive.py",
+      "authority": "github_sync_after_archive",
+      "path": "scripts/github_sync_after_archive.py",
+      "platform": "cross",
+      "status": "active"
+    },
+    {
+      "entry": "ccrt_user_report_normalizer.py",
+      "authority": "ccrt_user_report_normalizer",
+      "path": "scripts/ccrt_user_report_normalizer.py",
+      "platform": "cross",
+      "status": "active"
+    }
+  ]
 }
