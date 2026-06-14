@@ -1,0 +1,70 @@
+{
+  "version": "0.1",
+  "description": "CCRT LangGraph local wiring config. Keeps orchestration paths and model runtime boundaries in project scope.",
+  "project_root": "/Users/ccrt/ccrt",
+  "runtime": {
+    "python": "/Users/ccrt/ccrt/.venv/bin/python",
+    "langgraph_package": "langgraph"
+  },
+  "model_runtimes": {
+    "codex": {
+      "role_modes": ["需求精准描述", "阿黑", "情墨", "腰子", "青山", "流金", "山猫", "信鸽", "玉夜", "旧影"],
+      "bin": "/Applications/Codex.app/Contents/Resources/codex",
+      "non_interactive_command": ["exec"],
+      "default_args": ["--cd", "/Users/ccrt/ccrt", "--sandbox", "workspace-write", "--ask-for-approval", "never"],
+      "auth_mode": "chatgpt_login",
+      "notes": "Uses local Codex login/session. No OpenAI API key is stored here."
+    },
+    "deepseek_via_claude_code": {
+      "role_modes": ["红结"],
+      "bin": "/usr/local/bin/claude",
+      "non_interactive_command": ["-p"],
+      "default_args": ["--output-format", "text"],
+      "stream_args": ["--output-format", "stream-json"],
+      "notes": "Claude Code CLI is the execution bridge to the configured DeepSeek model."
+    }
+  },
+  "terminal_streaming": {
+    "enabled_by_default": true,
+    "mode": "terminal_and_log",
+    "log_root": "/private/tmp/ccrt_langgraph_streams",
+    "real_model_stream_requires_explicit_flag": true,
+    "mock_stream_available": true
+  },
+  "ccrt_rules": {
+    "flow_routes": "00_项目地基/05_流程与角色/flow_routes.json",
+    "role_matrix": "00_项目地基/05_流程与角色/role_matrix.json",
+    "task_templates": "00_项目地基/05_流程与角色/task_templates.json",
+    "stage_gate_registry": "00_项目地基/05_流程与角色/stage_gate_registry.json",
+    "stage_gate_release_policy": "00_项目地基/05_流程与角色/stage_gate_release_policy.json"
+  },
+  "orchestration_tools": {
+    "ccrt_langgraph_orchestrator": "代码文件/tools/ccrt_langgraph_orchestrator.py",
+    "ccrt_langgraph_smoke": "代码文件/tools/ccrt_langgraph_smoke.py",
+    "ccrt_terminal_stream_adapter": "代码文件/tools/ccrt_terminal_stream_adapter.py"
+  },
+  "stage_gate_tools": {
+    "stage_gate_auto_advance": "scripts/stage_gate_auto_advance.py",
+    "archive_after_g6": "scripts/archive_after_g6.py",
+    "stage_gate_release_orchestrator": "scripts/stage_gate_release_orchestrator.py",
+    "ccrt_user_report_normalizer": "scripts/ccrt_user_report_normalizer.py",
+    "github_sync_after_archive": "scripts/github_sync_after_archive.py"
+  },
+  "graph_nodes": [
+    "requirement_precision",
+    "g0_route_ahei_codex",
+    "g1_g2_role_modes_codex",
+    "g3_g4_hongjie_deepseek",
+    "stage_gate_auto_advance",
+    "user_report_normalize"
+  ],
+  "user_visible_statuses": ["COMPLETE", "AUTO_REPAIRING", "BLOCK"],
+  "safety": {
+    "default_mode": "smoke_only",
+    "orchestrator_default_mode": "dry_run",
+    "model_calls_enabled_by_default": false,
+    "terminal_stream_enabled_by_default": true,
+    "production_actions_enabled_by_default": false,
+    "forbidden_without_explicit_mode": ["tag", "merge", "production_report_write", "daily_scheduler_switch"]
+  }
+}
