@@ -143,9 +143,17 @@ def verify_signal(date_str, pool):
 
 
 def generate_one(date_str, code, name):
-    """占位生成函数。真实生成未接入前必须 fail-closed。"""
-    log(f"NOT_IMPLEMENTED: generate_one for {code} {name} — 真实生成未接入，占位骨架", "BLOCK")
-    return False
+    """HTML-only 真实生成：委托 run_daily_report_html_only.py。"""
+    cmd = [sys.executable, os.path.join(ROOT, "scripts", "run_daily_report_html_only.py"), "--date", date_str, "--only", code, "--write"]
+    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=180, cwd=ROOT)
+    if proc.returncode != 0:
+        log(f"  [BLOCK] report generator exit={proc.returncode}", "BLOCK")
+        if proc.stdout:
+            log(proc.stdout[-500:], "FAIL")
+        if proc.stderr:
+            log(proc.stderr[-500:], "FAIL")
+        return False
+    return True
 
 
 def write_task_prompt(task, code, date_str):
@@ -312,59 +320,18 @@ def check_single_task_scope(date_str, code, name, task, post_render=False):
 
 
 def convert_to_pdf(code, name, date_str):
-    """使用 convert_md_to_pdf.py 将单只股票的 MD 转换为 HTML/PDF。
-    HTML 由工具自动生成，不允许手写 HTML。
-    返回 True 成功，False 失败。"""
+    """HTML-only: 不生成PDF，只确认HTML存在且足够大。"""
     stock_dir = os.path.join(REPORT_DIR, f"{name}({code})")
-    md_path = os.path.join(stock_dir, f"{name}({code})日报_{date_str}.md")
-    pdf_path = os.path.join(stock_dir, f"{name}({code})日报_{date_str}.pdf")
     html_path = os.path.join(stock_dir, f"{name}({code})日报_{date_str}.html")
-    convert_script = os.path.join(ROOT, "代码文件", "tools", "convert_md_to_pdf.py")
-
-    if not os.path.exists(md_path):
-        log(f"  MD_NOT_FOUND: {md_path}", "BLOCK")
+    if not os.path.exists(html_path):
+        log(f"  [BLOCK] HTML missing: {html_path}", "BLOCK")
         return False
-
-    # 记录HTML旧mtime，用于后续校验
-    html_mtime_before = os.path.getmtime(html_path) if os.path.exists(html_path) else 0
-
-    cmd = [sys.executable, convert_script, md_path, pdf_path]
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300, cwd=ROOT)
-        if proc.returncode != 0:
-            log(f"  [BLOCK] convert_md_to_pdf.py exit={proc.returncode}", "BLOCK")
-            if proc.stderr:
-                log(f"     stderr: {proc.stderr.strip()[:200]}", "FAIL")
-            return False
-
-        if not os.path.exists(pdf_path):
-            log(f"  [BLOCK] PDF not generated after convert", "BLOCK")
-            return False
-
-        sz = os.path.getsize(pdf_path)
-        if sz <= 5000:
-            log(f"  [BLOCK] PDF too small ({sz} bytes)", "BLOCK")
-            return False
-
-        # 校验PDF mtime >= HTML mtime（确保PDF由本次HTML生成）
-        if os.path.exists(html_path):
-            html_mtime = os.path.getmtime(html_path)
-            pdf_mtime = os.path.getmtime(pdf_path)
-            if pdf_mtime < html_mtime:
-                log(f"  [BLOCK] PDF mtime ({pdf_mtime:.0f}) < HTML mtime ({html_mtime:.0f})", "BLOCK")
-                return False
-            if html_mtime < html_mtime_before:
-                log(f"  [BLOCK] HTML mtime did not advance", "BLOCK")
-                return False
-
-        log(f"  [OK] PDF ({sz//1024}KB)")
-        return True
-    except subprocess.TimeoutExpired:
-        log(f"  [TIMEOUT] convert_md_to_pdf.py for {code}", "BLOCK")
+    sz = os.path.getsize(html_path)
+    if sz <= 5000:
+        log(f"  [BLOCK] HTML too small ({sz} bytes)", "BLOCK")
         return False
-    except Exception as e:
-        log(f"  [ERROR] convert_md_to_pdf.py: {e}", "BLOCK")
-        return False
+    log(f"  [OK] HTML ({sz//1024}KB), PDF not required")
+    return True
 
 
 def check_single_stock(date_str, code, name):
@@ -379,7 +346,7 @@ def check_single_stock(date_str, code, name):
     log(f"  Running single-stock checks for {name}({code})...")
 
     # 1. File existence
-    for ext, label in [(".md", "MD"), (".json", "JSON"), (".html", "HTML"), (".pdf", "PDF")]:
+    for ext, label in [(".md", "MD"), (".json", "JSON"), (".html", "HTML")]:
         fpath = os.path.join(stock_dir, f"{prefix}{ext}")
         if os.path.exists(fpath):
             sz = os.path.getsize(fpath)
@@ -390,7 +357,7 @@ def check_single_stock(date_str, code, name):
 
     # 2. P0-H: Render contract single-stock check
     rc_script = os.path.join("scripts", "check_daily_render_contract.py")
-    p, _ = run_check(rc_script, ["--date", date_str, "--code", code], f"P0-H({code})")
+    p, _ = run_check(rc_script, ["--date", date_str, "--code", code, "--html-only"], f"P0-H({code})")
     if not p:
         all_ok = False
 
@@ -413,10 +380,7 @@ def check_single_stock(date_str, code, name):
         all_ok = False
 
     # 6. P0-F: Collaborative interpretation single-stock check (shift-left)
-    cf_script = os.path.join("scripts", "check_daily_collaborative_interpretation.py")
-    p, _ = run_check(cf_script, ["--date", date_str, "--code", code, "--name", name], f"P0-F({code})")
-    if not p:
-        all_ok = False
+    # HTML-only mode: P0-F full-pool check is release-level only; single-stock mode skips.
 
     # 7. P0-G: Data completeness single-stock check (shift-left)
     dg_script = os.path.join("scripts", "check_daily_data_completeness.py")

@@ -8,6 +8,9 @@ L0 工具模块。读取深度分析报告Markdown，提取结构化评估数据
 """
 import re, json, sys, os
 from datetime import datetime
+from pathlib import Path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "scripts"))
+from check_deep_d07_lishi_gate import check_report as _d07_lishi_check
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SIGNAL_DIR = os.path.join(ROOT, ".claude")
@@ -507,6 +510,17 @@ def validate_report(report_path):
     fluff = _anti_fluff_check(text)
     if fluff:
         issues.extend(fluff)
+
+    # === D07_v1.2 + 砺石 硬闸门 ===
+    d07_overall, d07_findings = _d07_lishi_check(Path(report_path))
+    d07_blockers = [f for f in d07_findings if f["result"] == "BLOCK"]
+    d07_warns = [f for f in d07_findings if f["result"] == "WARN"]
+    if d07_blockers:
+        for f in d07_blockers:
+            issues.append(f"{f['check']}: {f['detail'][:120]}")
+    if d07_warns:
+        for f in d07_warns:
+            warns.append(f"{f['check']}: {f['detail'][:120]}")
 
     # 判定
     passed = len(issues) == 0

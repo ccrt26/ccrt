@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-v1.0",
+  "status": "active",
+  "purpose": "Schema for scenario-level traces generated while validating a RuleCandidate.",
+  "required_fields": [
+    "trace_id",
+    "candidate_id",
+    "task_id",
+    "scenario",
+    "module",
+    "trace_date",
+    "triggered",
+    "evidence",
+    "module_conclusion",
+    "created_at"
+  ],
+  "allowed_scenarios": [
+    "weekly_report",
+    "daily_report",
+    "b_layer_post_eval",
+    "deep_analysis"
+  ],
+  "allowed_module_conclusion": [
+    "continue_observation",
+    "not_triggered",
+    "counterexample_required",
+    "misuse_risk_detected",
+    "ready_for_validation_review",
+    "blocked"
+  ],
+  "redlines": [
+    "ScenarioTrace cannot write active rules.",
+    "ScenarioTrace cannot change candidate_status directly.",
+    "ScenarioTrace must bind candidate_id and task_id."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3",
+  "date": "20260612",
+  "created_at": "2026-06-14T01:28:49.008797",
+  "changed_files": [
+    "scripts/check_deep_d07_lishi_gate.py (U-9/U-10 拆分为独立必检项, 缺失必 BLOCK)",
+    "tests/test_deep_d07_lishi_gate.py (新增缺U-9 BLOCK, 缺U-10 BLOCK, 完整样例加入U-9+U-10)"
+  ],
+  "forbidden_scope_check": {
+    "trading_executor_touched": false,
+    "capability_registry_touched": false,
+    "D07_v1_2_methodology_changed": false,
+    "historical_reports_rewritten": false,
+    "signal_alert_json_diff": false
+  },
+  "stage": "G4_SELF_CHECK_CANDIDATE",
+  "overall": "PASS",
+  "assertions": {
+    "pytest_7_of_7_pass": true,
+    "empty_date_scan_BLOCK": true,
+    "old_report_20260612_BLOCK": true,
+    "missing_u9_BLOCK": true,
+    "missing_u10_BLOCK": true,
+    "signal_alert_json_no_diff": true
+  },
+  "verification": {
+    "pytest": "7/7 passed",
+    "date_20990101": "BLOCK (exit=2)",
+    "old_report": "BLOCK (exit=2)",
+    "u9_u10_split": "PASS",
+    "signal_alert_diff": "无"
+  }
+}

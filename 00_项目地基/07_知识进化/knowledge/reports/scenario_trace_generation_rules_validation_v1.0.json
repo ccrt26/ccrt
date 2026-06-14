@@ -1,0 +1,17 @@
+{
+  "stage": "G3-KB-SCENARIO-TRACE-GENERATION-RULES-v1.0",
+  "result": "FAIL",
+  "checks": {
+    "required_files_ok": true,
+    "json_parse_ok": true,
+    "rules_mode_dry_run_only": true,
+    "rules_real_trace_not_allowed": true,
+    "dry_run_not_real_trace": true,
+    "would_generate_four": true,
+    "third_audit_warn_closed": true,
+    "no_real_trace_generated": false,
+    "previous_validators_ok": false
+  },
+  "missing": [],
+  "formal_pipeline_note": "CCRT relay-package record."
+}

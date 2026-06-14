@@ -1,0 +1,29 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2",
+  "stage": "G5_REVIEW_CANDIDATE",
+  "created_at": "2026-06-14T01:24:50.192717",
+  "date": "20260612",
+  "overall": "PASS",
+  "findings": {
+    "P0": [],
+    "P1": []
+  },
+  "review_basis": [
+    "1. launch_deep_analysis.sh: 移除不存在的 --extra 参数，全部写入 prompt",
+    "2. check_deep_d07_lishi_gate.py --date 空扫描: 已修复，exit=2",
+    "3. tests/test_deep_d07_lishi_gate.py: 5 tests (缺D07→BLOCK, 缺砺石→BLOCK, 砺石越界→BLOCK, 空扫描→空结果, 完整样例→PASS)",
+    "4. bash -n: PASS",
+    "5. 旧东睦 20260612 报告: 仍被 D07+砺石 双闸门拦截",
+    "6. 无关每日荐股/DQ/归档改动已标记为 unrelated"
+  ],
+  "changed_files": [
+    "代码文件/tools/launch_deep_analysis.sh (移除 --extra, 参数写入 prompt)",
+    "scripts/check_deep_d07_lishi_gate.py (空扫描 BLOCK + exit 2)",
+    "tests/test_deep_d07_lishi_gate.py (新增, 5 tests)"
+  ],
+  "regression_risks": [
+    "旧报告批量拦截：预期行为，新闸门从WARN升为BLOCK",
+    "砺石仅在正文出现未结构化：check命令可检测关键词",
+    "D07灌水：反灌水检查+check命令组合检测"
+  ]
+}

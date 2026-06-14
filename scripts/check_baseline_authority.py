@@ -132,6 +132,10 @@ def rebuild_registry() -> dict:
         rf = d.get("risk_flags", {})
         risk = rf.get("overall_risk_level", "") if isinstance(rf, dict) else ""
 
+        generated_from = d.get("generated_from", "")
+        source_type = "deep_analysis_report" if generated_from == "deep_analysis_report" else "weekly_baseline"
+        source_deep_report_path = d.get("source_deep_report_path", "")
+
         entry = {
             "stock_code": code,
             "stock_name": name,
@@ -140,7 +144,9 @@ def rebuild_registry() -> dict:
             "baseline_date": bdate,
             "valid_until": vuntil,
             "status": status,
-            "source_type": "weekly_baseline",
+            "source_type": source_type,
+            "source_deep_report_path": source_deep_report_path,
+            "generated_from": generated_from,
             "strategy_version": d.get("strategy_version", ""),
         }
         if kf:
@@ -393,9 +399,23 @@ def check_one(code: str, name: str, trade_date_str: str, registry: dict, verbose
         result["result"] = "BLOCK"
         result["issues"].append(f"注册表中日期 {trade_date_str} 无有效基线")
     elif len(matched) > 1:
-        result["result"] = "BLOCK"
-        ids = [e["baseline_id"] for e in matched]
-        result["issues"].append(f"注册表中存在 {len(matched)} 条有效基线: {ids}")
+        deep_matched = [e for e in matched if e.get("source_deep_report_path")]
+        if len(deep_matched) == 1:
+            matched = deep_matched
+            current = matched[0]
+            result["expected_baseline_id"] = current["baseline_id"]
+            result["actual_sidecar_baseline_id"] = "（文件不存在）"
+            result["actual_md_baseline_id"] = "（文件不存在）"
+        elif len(deep_matched) > 1:
+            result["result"] = "BLOCK"
+            ids = [e["baseline_id"] for e in deep_matched]
+            result["issues"].append(f"注册表中存在 {len(deep_matched)} 条有效深度基线: {ids}")
+            return result
+        else:
+            result["result"] = "BLOCK"
+            ids = [e["baseline_id"] for e in matched]
+            result["issues"].append(f"注册表中存在 {len(matched)} 条有效基线: {ids}")
+            return result
     else:
         current = matched[0]
         result["expected_baseline_id"] = current["baseline_id"]

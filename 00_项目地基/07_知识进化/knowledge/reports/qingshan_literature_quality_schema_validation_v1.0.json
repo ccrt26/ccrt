@@ -1,0 +1,16 @@
+{
+  "stage": "G3-QINGSHAN-LITERATURE-QUALITY-SCORING-v1.0",
+  "result": "PASS",
+  "schema_exists": true,
+  "score_total": 100,
+  "dimension_count": 6,
+  "weight_sum": 100,
+  "hard_block_count": 4,
+  "status_count": 4,
+  "bad_required_fields": [],
+  "bad_weights": [],
+  "bad_status_decision": [],
+  "bad_anti_overreach": [],
+  "unexpected_downstream_files": [],
+  "result_reason": "[PASS] schema_exists: True; [PASS] version: meta.version=1.0; [PASS] owner: owner_role=青山; [PASS] depends_on: depends_on ok, policy exists; [PASS] total_score: total_score=100; [PASS] dimensions: count=6, missing=none, bad_dims=none, weight_sum=100; [PASS] hard_blocks: count=4, bad=none; [PASS] status_decision: status_count=4, all ok; [PASS] anti_overreach: all true; [PASS] output_required_fields: all ok; [PASS] not_allowed_output: forbidden_output_guard_ok=True; [PASS] unexpected_downstream: none"
+}

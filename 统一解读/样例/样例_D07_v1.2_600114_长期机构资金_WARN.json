@@ -1,0 +1,127 @@
+{
+  "$schema": "https://tielv-quant.ccrt/interpretation_schema.json",
+  "interpretation_id": "INT-20260613-120001-a1b2c3",
+  "scene": "临时分析",
+  "stock_code": "600114",
+  "trade_date": "2026-06-13",
+  "role": "腰子",
+  "framework_version": "D07_v1.2",
+  "data_fact": {
+    "source": "同花顺10jqka + 搜狐证券股东页",
+    "freshness": "季度",
+    "values": {
+      "report_period": "2025Q3",
+      "shareholder_name_raw": "基本养老保险基金一二零五组合",
+      "share_count": 8197600,
+      "share_ratio": 0.013,
+      "change_type": "增持",
+      "consecutive_periods": 3
+    },
+    "note": "基本养老保险基金一二零五组合持仓变化：2025Q1新进(438万股)→2025Q2(627万股)→2025Q3(820万股)→2025年报退出前十大披露名单→2026Q1仍不在前十大。P1原始披露单篇公告URL尚未定位，仅P0辅助索引(data:10jqka/搜狐)可用。"
+  },
+  "interpretation_hypothesis": "东睦股份中期逻辑曾获得养老金连续增持认可（3期），但2025年报已退出前十大披露名单。当前披露滞后约2-4个月，最新可用数据为2026Q1（仍不在前十大）。需警惕中期逻辑弱化风险，但目前无法确认清仓。",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "中期逻辑弱化风险：养老金连续增持后退出前十大披露名单，可能表明长线资金对当前价位或基本面分歧加大",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "风险假设",
+      "missing_data": "P1单篇公告原始披露URL待补证；2026Q2数据尚未披露"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "中期逻辑稳定性：养老金仅退出前十大但不等同清仓，可能仍持有低于门槛的股份；北向资金同期增持可部分对冲分歧信号",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001", "EV-002"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "倾向判断",
+      "missing_data": "退出后实际持股数据不可知"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "evidence": "基本养老保险基金一二零五组合连续3期增持：438万→627万→820万股（2025Q1-Q3）",
+      "source": "同花顺/10jqka.com.cn",
+      "strength": "中",
+      "source_level": "L3",
+      "source_ref": "https://basic.10jqka.com.cn/mobile/600114/holder.html"
+    },
+    {
+      "evidence": "北向资金同期增持：香港中央结算有限公司持股从867万→2,760万→3,129万股（2025Q1-Q3）",
+      "source": "同花顺/10jqka.com.cn",
+      "strength": "中",
+      "source_level": "L3",
+      "source_ref": "https://basic.10jqka.com.cn/mobile/600114/holder.html"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "2025年报中养老金已退出前十大披露名单，2026Q1仍未回归。累计2个报告期未在前十大出现",
+      "source": "同花顺/10jqka.com.cn",
+      "type": "资金面反证"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-P1-2025Q3",
+      "gap_type": "original_disclosure_missing",
+      "description": "600114 2025Q3 定期报告单篇公告URL或本地PDF路径待补证。当前仅有P0辅助索引(10jqka/搜狐)，P1原始披露路径可达但单篇直链未定位。",
+      "requested_source": ["cninfo", "sse"],
+      "requested_fields": ["announcement_title", "source_url", "local_pdf_path", "disclosure_date"],
+      "status": "open",
+      "impact": "限制长期机构资金证据结论强度，不允许声明P1 PASS。当前结论强度仅能到'风险假设'或'数据不足'。",
+      "owner_role_hint": "信鸽"
+    }
+  ],
+  "long_term_institutional_evidence": {
+    "status": "present",
+    "p1_verification_status": "warn_pending",
+    "signal_usage": "中期逻辑支持",
+    "records": [
+      {
+        "report_period": "2025Q3",
+        "disclosure_date": "2025-10-30",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": 6,
+        "share_count": 8197600,
+        "share_ratio": 0.013,
+        "change_type": "增持",
+        "consecutive_periods": 3,
+        "source_refs": [
+          {
+            "source_name": "同花顺股东结构页",
+            "source_url": "https://basic.10jqka.com.cn/mobile/600114/holder.html",
+            "source_level": "secondary_organization",
+            "usage": "structure_precheck"
+          },
+          {
+            "source_name": "巨潮资讯/上交所定期报告原文",
+            "source_url": "待填真实URL或本地PDF路径",
+            "source_level": "original_disclosure",
+            "usage": "authority_check",
+            "verification_status": "pending"
+          }
+        ],
+        "limitation_note": "披露滞后约2-4个月；退出前十大不等于确认清仓；原始股东名称保留完整；不得作为买卖信号。"
+      }
+    ],
+    "conclusion_strength_impact": "downgrade"
+  },
+  "investment_implication": "东睦股份中期逻辑曾获养老金认可（连续3期增持），但2025年报退出前十大后需警惕弱化风险。当前披露滞后约2-4个月，数据不足以支撑加仓结论。最稳妥方式：维持观察仓位，不追加。",
+  "action_bias": "WATCH",
+  "trigger_condition": "仅在P1原始披露补证完成或2026Q2定期报告披露后更新观察结论",
+  "time_window": "至2026Q2定期报告披露后5个交易日内复核",
+  "confidence": "LOW",
+  "conclusion_strength": "风险假设",
+  "invalidation_condition": "若2026Q2（截至6月底）再披露时养老金仍不在前十大，且北向资金同步流出，则中期逻辑弱化信号进一步强化。",
+  "eval_window": {
+    "t1": "检查P1原始披露补证进度",
+    "t3": "关注2026Q2前十大变动",
+    "t5": "对比养老金退出后第3个报告期是否回归"
+  },
+  "rule_refs": ["R-FIN-0001", "R01", "R02"],
+  "knowledge_refs": ["XINGE-EVENT-001", "YUYE-DATA-001", "QINGSHAN-SIGNAL-001"]
+}

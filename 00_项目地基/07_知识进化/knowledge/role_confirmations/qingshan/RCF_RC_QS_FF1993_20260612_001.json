@@ -1,0 +1,13 @@
+{
+  "confirmation_id": "RCF-RC-QS-FF1993-20260612-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "confirmation_status": "required_pending",
+  "conclusion": "not_signed",
+  "owner_role": "青山",
+  "yaozi_confirmation": "not_signed",
+  "can_promote_active_rule": false,
+  "note": "Role confirmation pending. Cannot be signed by automation. Requires real role holder workflow.",
+  "formal_pipeline_note": "This is a required_pending record, not actor/HMAC formal pipeline PASS."
+}

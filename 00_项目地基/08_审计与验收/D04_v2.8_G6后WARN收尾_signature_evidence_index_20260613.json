@@ -1,0 +1,35 @@
+{
+  "title": "D04 v2.8 G6 后 WARN 收尾 — 签名证据索引",
+  "created_at": "2026-06-13T07:43:06",
+  "target_capability": "C-D04-0001",
+  "source_run_id": "D04-V2.8-ONE-STEP-FIX-G0-G6-20260613",
+  "source_log": "logs/signatures/signature_events.jsonl",
+  "registry_release_state": "g6_released",
+  "registry_g5_signoff": "09ee6db1392def8294c70c7a320f7c5070f0ae3c9e32175708bd6b451af41543",
+  "registry_g6_signoff": "fa9e4ddc0163650ca89e2edb3b495c0b79d47d8b18d7050c33344a60088f42dc",
+  "signature_entries": [
+    {
+      "role": "旧影",
+      "stage": "G5",
+      "timestamp": "2026-06-12T17:07:38.091383+00:00",
+      "decision": "PASS",
+      "signature": "09ee6db1392def8294c70c7a320f7c5070f0ae3c9e32175708bd6b451af41543",
+      "comment": "G5 独立复查通过：D04 接口回归 kline 主表，健康检查覆盖 quality/source，注册表 release_state 未误判为 G6 放行"
+    },
+    {
+      "role": "腰子",
+      "stage": "G6",
+      "timestamp": "2026-06-12T17:07:39.033271+00:00",
+      "decision": "PASS",
+      "signature": "fa9e4ddc0163650ca89e2edb3b495c0b79d47d8b18d7050c33344a60088f42dc",
+      "comment": "G6 金融消费确认通过：D04 可支撑日报、周报、临时分析的历史数据读取和质量标记消费"
+    }
+  ],
+  "evidence_summary": "旧影 G5 独立复查 + 腰子 G6 金融消费放行均已 HMAC 签署并可追溯",
+  "warn_cleanup": {
+    "run_id": "D04-V2.8-G6-WARN-CLEANUP-20260613",
+    "completed_at": "2026-06-13T07:43:25",
+    "g5_signoff_hmac": "3883a7f9aa9bb911...",
+    "g6_signoff_hmac": "0af01ba646b1227e..."
+  }
+}

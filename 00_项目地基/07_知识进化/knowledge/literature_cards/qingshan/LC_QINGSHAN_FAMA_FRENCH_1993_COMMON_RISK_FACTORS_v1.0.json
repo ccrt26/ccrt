@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stage": "G3-QINGSHAN-FIRST-LITERATURE-CARD-FAMA-FRENCH-1993-v1.0",
+    "owner_role": "青山",
+    "status": "card_draft",
+    "created": "2026-06-11",
+    "purpose": "青山第一张真实 LiteratureCard 小样本试跑；只验证文献卡片流程，不生成规则候选"
+  },
+  "card_id": "LC-QS-FF1993-001",
+  "source_id": "SRC-FAMA-FRENCH-1993-JFE-COMMON-RISK-FACTORS",
+  "source_title": "Common Risk Factors in the Returns on Stocks and Bonds",
+  "source_type": "academic_paper",
+  "author_or_institution": [
+    "Eugene F. Fama",
+    "Kenneth R. French",
+    "Journal of Financial Economics"
+  ],
+  "publication_date": "1993",
+  "source_selection_status": "source_candidate_accepted",
+  "quality_status": "quality_pass_with_cross_check",
+  "total_score": 88,
+  "hard_block_triggered": [],
+  "source_urls": [
+    "https://doi.org/10.1016/0304-405X(93)90023-5",
+    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+  ],
+  "extracted_claims": [
+    {
+      "claim_id": "CLAIM-001",
+      "claim": "股票收益可以用市场、规模、价值等共同因子进行解释，单一 beta 不足以覆盖主要横截面差异。",
+      "evidence_ref": "Fama/French 1993, Journal of Financial Economics 33, 3-56",
+      "qingshan_relevance": "用于训练青山判断因子有效性时必须区分单因子解释与多因子解释。"
+    },
+    {
+      "claim_id": "CLAIM-002",
+      "claim": "SMB 与 HML 的构造依赖分组、样本、组合形成方法和数据口径，不能脱离样本环境直接迁移。",
+      "evidence_ref": "Kenneth French Data Library: Fama/French 3 Factors and portfolio details",
+      "qingshan_relevance": "用于约束青山在 A 股场景下不得直接套用美股因子结论。"
+    }
+  ],
+  "evidence_units": [
+    {
+      "evidence_id": "EV-001",
+      "source": "Journal of Financial Economics",
+      "type": "peer_reviewed_paper",
+      "trace": "Fama & French 1993, Common Risk Factors in the Returns on Stocks and Bonds"
+    },
+    {
+      "evidence_id": "EV-002",
+      "source": "Kenneth French Data Library",
+      "type": "research_dataset",
+      "trace": "Fama/French 3 Factors, 5 Factors, portfolio downloads and details"
+    }
+  ],
+  "applicable_market": {
+    "primary": "US equities",
+    "secondary": "factor research methodology",
+    "a_share_direct_applicability": "not_direct",
+    "a_share_use_policy": "只能作为方法论和反例检查框架，必须经过 A 股样本验证后才可转规则候选"
+  },
+  "sample_scope": {
+    "market": "NYSE/AMEX/NASDAQ context in original research",
+    "asset_class": [
+      "stocks",
+      "bonds"
+    ],
+    "frequency": "monthly factor/portfolio research context",
+    "limitation": "不是 A 股样本，不覆盖中国交易制度、涨跌停、壳价值、ST、北向资金等本土结构"
+  },
+  "method_summary": [
+    "使用共同风险因子解释股票和债券收益。",
+    "强调市场因子之外，规模和账面市值比相关因子具有解释力。",
+    "通过组合分组和回归框架检验因子解释能力。"
+  ],
+  "limitations": [
+    "原始研究主要基于美国市场，不能直接迁移为 A 股交易规则。",
+    "该文献支持因子研究框架，不支持单次信号直接下交易结论。",
+    "后续如进入 RuleCandidate，必须补充 A 股数据、样本外验证、衰减检查和反例检查。"
+  ],
+  "conflict_notes": [
+    "Fama/French 因子模型有强学术地位，但因子有效性存在市场、时期、样本和构造方式差异。",
+    "高权威不等于自动通过；本卡片只进入 card_draft。"
+  ],
+  "qingshan_use_case": [
+    "因子有效性判断",
+    "IC/ICIR 与多因子解释框架前置知识",
+    "样本迁移风险提醒",
+    "A 股因子规则候选前的质量门"
+  ],
+  "traceability": {
+    "doi": "10.1016/0304-405X(93)90023-5",
+    "data_library": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+    "depends_on": [
+      "knowledge/literature/qingshan_source_selection_policy_v1.0.json",
+      "knowledge/literature/qingshan_literature_quality_schema_v1.0.json",
+      "knowledge/literature/qingshan_literature_card_to_rule_candidate_flow_v1.0.json"
+    ]
+  },
+  "card_status": "card_draft",
+  "next_step": "仅允许进入 RuleCandidate 评估准备；不得直接生成 active rule"
+}

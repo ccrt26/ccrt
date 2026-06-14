@@ -1,0 +1,40 @@
+{
+  "check_id": "KMC-RC-QS-FF1993-20260612-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "check_date": "2026-06-12",
+  "check_type": "knowledge_merge_check",
+  "dedupe_check": {
+    "result": "no_direct_overlap",
+    "existing_rules_checked": [
+      "role_capability_rules_v1.3.json"
+    ],
+    "overlap_found": false,
+    "notes": "Candidate defines factor validity boundaries. No existing rule has identical scope."
+  },
+  "gap_check": {
+    "result": "potential_gap_filler",
+    "gap_description": "Existing rules lack explicit factor validity boundary constraints for foreign literature migration."
+  },
+  "obsolete_check": {
+    "result": "no_obsolete_impact",
+    "obsolete_rules": []
+  },
+  "merge_strategy": {
+    "strategy": "new_boundary_rule_potential",
+    "not_ready_reason": "Daily real-case trace is available but candidate was not triggered; weekly and B-layer evidence are still required.",
+    "suggested_kind": "potential_boundary_rule",
+    "daily_report_trace_status": "present_not_triggered_real_case"
+  },
+  "merge_conclusion": "merge_not_ready",
+  "merge_blockers": [
+    "Scenario evidence remains insufficient for active rule adoption.",
+    "Daily report trace is available but not a positive candidate trigger.",
+    "Weekly report and B-layer post-evaluation traces are still missing.",
+    "Role confirmation required from 青山."
+  ],
+  "formal_pipeline_note": "This is a real KnowledgeMergeCheck, not actor/HMAC formal pipeline PASS."
+}

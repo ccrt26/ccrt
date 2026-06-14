@@ -1,0 +1,490 @@
+{
+  "run_id": "F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614-R6",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "write_mode": true,
+  "total_hooks": 59,
+  "counts": {
+    "不可评估": 59
+  },
+  "status_counts": {
+    "closed_unassessable": 59
+  },
+  "closed_evaluated_with_change_pct": 0,
+  "closed_evaluated_without_change_pct": [],
+  "legacy_bad": [],
+  "rows": [
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-16469a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-345d1a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-47e0be.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-48abdb.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-56ec61.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-8b8b0d.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-949153.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-9a95c1.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-131148-c09fb8.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134821-35d96a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134821-8e58c7.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-13b319.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-174d34.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-27014a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-339e31.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-8b5a0d.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-bcd2b9.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-c4b20d.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134822-d55370.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-42090f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-60921f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-6289c3.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-95b612.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-a9705e.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134834-cdc6a7.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134905-36e74f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134905-737b57.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134905-aee2ac.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134905-ce6746.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134905-f83df5.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134923-67cbb2.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134923-dd562b.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-134924-e347fc.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135648-2346b4.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135648-b40796.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-021939.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-076ea4.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-1f055f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-25f9c7.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-34ed2d.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-3aecc4.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-8b73fe.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-c9921e.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-cb61df.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135649-e3a569.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135658-997f0f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-135658-c5a33a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "legacy_missing_interpretation_or_missing_identity",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": true
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-433390.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-6b77aa.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-8b1c5c.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-c2d654.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-dc60c7.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142808-df9a58.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142809-1cdd4f.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142809-9607f4.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142903-4ad10e.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142903-938e5b.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142923-a0d55a.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    },
+    {
+      "file": "统一解读/eval_hooks/store/EVAL-20260602-142924-55d1cc.json",
+      "result": "不可评估",
+      "status": "closed_unassessable",
+      "reason": "local_price_data_missing",
+      "has_change_pct": false,
+      "legacy_missing_interpretation": false
+    }
+  ]
+}

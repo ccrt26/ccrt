@@ -98,11 +98,21 @@ def resolve_one(code, name, trade_date_str, entries):
                 "status": None, "key_fields": {}}
 
     if len(matched) > 1:
-        ids = [e["baseline_id"] for e in matched]
-        return {"stock_code": code, "stock_name": name, "trade_date": trade_date_str,
-                "result": "BLOCK", "reason": f"多有效基线: {ids}", "baseline_id": None,
-                "baseline_file": None, "baseline_date": None, "valid_until": None,
-                "status": None, "key_fields": {}}
+        deep_matched = [e for e in matched if e.get("source_deep_report_path")]
+        if len(deep_matched) == 1:
+            matched = deep_matched
+        elif len(deep_matched) > 1:
+            ids = [e["baseline_id"] for e in deep_matched]
+            return {"stock_code": code, "stock_name": name, "trade_date": trade_date_str,
+                    "result": "BLOCK", "reason": f"多有效深度基线: {ids}", "baseline_id": None,
+                    "baseline_file": None, "baseline_date": None, "valid_until": None,
+                    "status": None, "key_fields": {}}
+        else:
+            ids = [e["baseline_id"] for e in matched]
+            return {"stock_code": code, "stock_name": name, "trade_date": trade_date_str,
+                    "result": "BLOCK", "reason": f"多有效基线: {ids}", "baseline_id": None,
+                    "baseline_file": None, "baseline_date": None, "valid_until": None,
+                    "status": None, "key_fields": {}}
 
     bl = matched[0]
     kf = bl.get("key_fields", {})

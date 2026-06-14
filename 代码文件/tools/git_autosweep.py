@@ -50,7 +50,8 @@ AUTO_COMMIT_PATHS = [
 AUTO_COMMIT_BLOCKED = [
     r'^\.claude/settings\.json$', r'^\.claude/settings\.local\.json$',
     r'^\.claude/scheduled_tasks\.json$', r'^\.claude/pipeline_active\.json$',
-    r'^\.claude/hooks/', r'^\.claude/commands/', r'^\.claude/agents/',
+    r'^\.claude/hooks/', r'^\.claude/commands/.*\.(json|local|secret|token|key)$',
+    r'^\.claude/agents/.*\.(json|local|secret|token|key)$',
 ]
 
 PIPELINE_DIRS = [
@@ -174,6 +175,16 @@ def is_auto_blocked(filepath):
     return False
 
 
+def is_git_ignored(filepath):
+    """Check if a file is matched by .gitignore rules.
+
+    This catches runtime data files (data_full.json, tushare/, etc.) that
+    were tracked before being added to .gitignore and should not be auto-committed.
+    """
+    result = run_git(["check-ignore", "--", filepath])
+    return result.returncode == 0
+
+
 def commit_auto_files(files, dry_run):
     if not files:
         return []
@@ -185,6 +196,8 @@ def commit_auto_files(files, dry_run):
         if is_forbidden(f):
             blocked.append(f)
         elif is_auto_blocked(f):
+            blocked.append(f)
+        elif is_git_ignored(f):
             blocked.append(f)
         else:
             safe.append(f)

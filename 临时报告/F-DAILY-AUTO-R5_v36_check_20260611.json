@@ -1,0 +1,18 @@
+{
+  "v36_status": "READY",
+  "ready": 50,
+  "total": 50,
+  "kline_match": "10/10",
+  "fund_flow_avail": "10/10",
+  "margin_avail": "10/10",
+  "baseline_avail": "10/10",
+  "sector_avail": "10/10",
+  "missing": [
+    "unknown"
+  ],
+  "manifest": {
+    "exists": true,
+    "updated": "2026-06-12T00:21:58.210776",
+    "degraded": false
+  }
+}

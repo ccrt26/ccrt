@@ -1,0 +1,13 @@
+{
+  "role": "砺石",
+  "role_code": "LISHI",
+  "status": "initialized",
+  "sample_count": 0,
+  "challenge_count": 0,
+  "effective_challenge_count": 0,
+  "adopted_count": 0,
+  "false_block_count": 0,
+  "active_rule_count": 0,
+  "l2_rule_count": 0,
+  "last_updated": "2026-06-12"
+}

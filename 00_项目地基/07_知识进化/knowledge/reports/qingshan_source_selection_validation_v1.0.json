@@ -1,0 +1,14 @@
+{
+  "stage": "G3-QINGSHAN-SOURCE-SELECTION-v1.0",
+  "result": "PASS",
+  "policy_exists": true,
+  "source_class_count": 5,
+  "gate_count": 5,
+  "preferred_candidate_count": 8,
+  "bad_required_fields": [],
+  "bad_exclusive_policy": [],
+  "bad_direct_application_policy": [],
+  "direct_application_policy_ok": true,
+  "unexpected_downstream_files": [],
+  "result_reason": "[PASS] policy_exists: True; [PASS] version: meta.version=1.0; [PASS] owner: owner_role=青山; [PASS] selection_principle: all ok; [PASS] source_classes: ['A', 'B', 'C', 'D', 'S']; [PASS] must_have_gates: count=5; [PASS] preferred_candidate_pool: count=8, all not_exclusive=True; [PASS] bad_required_fields: none; [PASS] bad_exclusive_policy: none; [PASS] direct_application_policy_ok: principle_has_applied=True, gate_005_exists=True; [PASS] forbidden_keywords: none; [PASS] decision_output: ok=True; [PASS] unexpected_downstream: none"
+}

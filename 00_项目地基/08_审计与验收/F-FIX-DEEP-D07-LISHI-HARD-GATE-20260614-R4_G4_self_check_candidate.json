@@ -1,0 +1,61 @@
+{
+  "run_id": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4",
+  "generated_at": "2026-06-14T15:27:32",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope": "Deep D07/LISHI hard gate closure only",
+  "verdict": "PASS",
+  "errors": [],
+  "kept_files": [
+    "scripts/check_deep_d07_lishi_gate.py",
+    "tests/test_deep_d07_lishi_gate.py",
+    "代码文件/tools/launch_deep_analysis.sh",
+    "代码文件/深度分析/parse_deep_analysis_report.py"
+  ],
+  "old_candidates_classified_as_history": [
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_archive_record.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json"
+  ],
+  "sample_report": "重点股票/深度分析/深度分析报告/东睦股份(600114)/东睦股份(600114)深度分析报告_20260612.md",
+  "runs": {
+    "compile": {
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "unit_test": {
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.003s\n\nOK\n"
+    },
+    "single_gate": {
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"findings\": [\n    {\n      \"check\": \"D07_v1.2\",\n      \"result\": \"PASS\",\n      \"detail\": \"全部 10 项通过\"\n    },\n    {\n      \"check\": \"砺石_method_review\",\n      \"result\": \"PASS\",\n      \"detail\": \"全部 7 项通过\"\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    "single_parse_validate": {
+      "returncode": 0,
+      "stdout_tail": "PASS: 重点股票/深度分析/深度分析报告/东睦股份(600114)/东睦股份(600114)深度分析报告_20260612.md (WARN: P1缺失1项(≤2): 分段止盈三目标)\n",
+      "stderr_tail": ""
+    },
+    "date_gate": {
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"findings\": [\n    {\n      \"stock\": \"600114\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"check\": \"D07_v1.2\",\n          \"result\": \"PASS\",\n          \"detail\": \"全部 10 项通过\"\n        },\n        {\n          \"check\": \"砺石_method_review\",\n          \"result\": \"PASS\",\n          \"detail\": \"全部 7 项通过\"\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    "date_parse_validate": {
+      "returncode": 0,
+      "stdout_tail": "质量闸门扫描: 20260612\n  PASS (WARN: P1缺失1项(≤2): 分段止盈三目标): 600114 东睦股份\n\n闸门结果: 1 PASS / 0 FAIL / 1 total\n",
+      "stderr_tail": ""
+    }
+  },
+  "note": "旧 R/R2/R3 Deep D07 candidate 文件不删除，只归类为历史候选；R4 为当前收口候选证据。"
+}

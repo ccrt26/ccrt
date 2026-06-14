@@ -1,0 +1,38 @@
+{
+  "template_id": "WVST-RC-QS-FF1993-001",
+  "template_status": "template_only",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-SCENARIO-TRACE-TEMPLATES-v1.0",
+  "purpose": "汇总一周内各场景 ScenarioTrace，形成是否继续观察/进入复核/降级反例的周度建议。",
+  "required_fields": [
+    "summary_id",
+    "task_id",
+    "candidate_id",
+    "week_start",
+    "week_end",
+    "trace_refs",
+    "trigger_count",
+    "a_share_adaptation_summary",
+    "out_of_sample_summary",
+    "decay_summary",
+    "counterexample_summary",
+    "misuse_risk_summary",
+    "next_status_suggestion"
+  ],
+  "allowed_next_status_suggestion": [
+    "continue_observation",
+    "extend_observation",
+    "enter_validation_review",
+    "downgrade_to_counterexample",
+    "reject_candidate",
+    "blocked"
+  ],
+  "redlines": [
+    "Cannot promote active rules.",
+    "Cannot replace role confirmation.",
+    "Cannot replace knowledge merge check."
+  ]
+}

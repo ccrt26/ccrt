@@ -1,0 +1,26 @@
+{
+  "stage": "G3-KB-SCENARIO-TRACE-GENERATION-RULES-v1.0",
+  "status": "dry_run_only",
+  "real_trace_created": false,
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "would_generate": [
+    {
+      "scenario": "weekly_report",
+      "trace_id": "TRACE-weekly-RC-QS-FF1993-YYYYMMDD-001"
+    },
+    {
+      "scenario": "daily_report",
+      "trace_id": "TRACE-daily-RC-QS-FF1993-YYYYMMDD-001"
+    },
+    {
+      "scenario": "b_layer_post_eval",
+      "trace_id": "TRACE-b_layer-RC-QS-FF1993-YYYYMMDD-001"
+    },
+    {
+      "scenario": "deep_analysis",
+      "trace_id": "TRACE-deep-RC-QS-FF1993-YYYYMMDD-001"
+    }
+  ],
+  "note": "Dry-run plan only. Not a real ScenarioTrace."
+}

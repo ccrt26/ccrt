@@ -1,0 +1,28 @@
+{
+  "run_id": "F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R1",
+  "gate": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "source_scope_report": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R1_scope_report.json",
+  "verdict": "PASS",
+  "blocking_errors": [],
+  "total_paths": 100,
+  "summary": {
+    "EXCLUDED_OR_PREEXISTING_REVIEW": 6,
+    "MAINLINE_CODE_AND_REGISTRY": 12,
+    "KRM_VALIDATOR_READONLY_AND_REPORTS": 8,
+    "DEEP_D07_LISHI_FIX": 4,
+    "DQ_WARN_CLASSIFICATION_FIX": 3,
+    "R4_MAINLINE_EVIDENCE": 14,
+    "DEEP_D07_LISHI_EVIDENCE": 13,
+    "DQ_WARN_CLASSIFICATION_EVIDENCE": 4,
+    "EVAL_HOOK_EVIDENCE": 6,
+    "KRM_MAINLINE_EVIDENCE": 6,
+    "KRM_MANIFEST_FIX_R1": 3,
+    "MAINLINE_CLOSURE_EVIDENCE": 4,
+    "OLD_CANDIDATE_ARCHIVE_EVIDENCE": 12,
+    "THIS_AUDIT_EVIDENCE": 1,
+    "OLD_SCOPE_CLEAN_EVIDENCE": 4
+  },
+  "note": "candidate only; does not claim 旧影/腰子 role signoff"
+}

@@ -1,0 +1,57 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3",
+  "stage": "G6_ARCHIVE_RECORD",
+  "created_at": "2026-06-14T01:32:00+08:00",
+  "archive_status": "archived_candidate",
+  "archive_scope": "深度分析 D07_v1.2 + 砺石 method_review 硬闸门功能修复链路",
+  "not_release_scope": [
+    "旧东睦股份(600114)深度分析报告_20260612.md — 未放行，需重生成",
+    "每日荐股/DQ/归档旁路改动",
+    "任何交易动作或报告放行结论"
+  ],
+  "changed_files": [
+    "scripts/check_deep_d07_lishi_gate.py",
+    "tests/test_deep_d07_lishi_gate.py",
+    ".claude/commands/深度分析.md",
+    "代码文件/tools/launch_deep_analysis.sh",
+    "代码文件/深度分析/parse_deep_analysis_report.py"
+  ],
+  "verification_commands": [
+    {
+      "command": "python3 -m pytest tests/test_deep_d07_lishi_gate.py",
+      "expected": "7 passed, exit=0",
+      "actual": "7 passed in 0.01s",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 scripts/check_deep_d07_lishi_gate.py --date 20990101",
+      "expected": "BLOCK, exit=2",
+      "actual": "BLOCK: 未找到 20990101 的深度分析报告",
+      "exit_code": 2,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 scripts/check_deep_d07_lishi_gate.py --report '...东睦股份(600114)深度分析报告_20260612.md'",
+      "expected": "BLOCK, 含 U-9/U-10/砺石',
+      "actual": "BLOCK: U-9/U-10 必检项缺失 + 砺石 7 项缺失",
+      "exit_code": 2,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 '代码文件/深度分析/parse_deep_analysis_report.py' --validate-date 20260612",
+      "expected": "FAIL, 含 D07+砺石缺口",
+      "actual": "FAIL: 含 D07_v1.2 U-9/U-10 + 砺石_method_review 缺失",
+      "exit_code": 1,
+      "status": "PASS"
+    },
+    {
+      "command": "git diff -- .claude/signal_alert.json",
+      "expected": "无输出",
+      "actual": "无 diff (已绕过并恢复)",
+      "status": "PASS"
+    }
+  ],
+  "final_conclusion": "深度分析 D07_v1.2 + 砺石 method_review 硬闸门功能修复链路可归档。旧东睦(600114)20260612 深度分析报告未放行，需重生成。",
+  "role_boundary": "不得宣称旧影 G5 PASS；不得宣称最终 G6 角色签字；不得冒充腰子/旧影/用户。"
+}

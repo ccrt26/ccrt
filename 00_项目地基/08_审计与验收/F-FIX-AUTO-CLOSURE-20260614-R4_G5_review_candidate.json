@@ -1,0 +1,12 @@
+{
+  "task_id": "F-FIX-AUTO-CLOSURE-20260614-R4",
+  "stage": "G5",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope_excluded": [
+    "不生成全池深度分析",
+    "不生成基于20260612深度分析的新日报",
+    "不修改正式报告产物"
+  ],
+  "status": "PENDING_USER_REVIEW"
+}

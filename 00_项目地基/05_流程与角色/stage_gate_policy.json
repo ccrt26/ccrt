@@ -1,0 +1,188 @@
+{
+  "version": "1.0",
+  "description": "阶段门路由策略 — 定义G0-G6各门的通过条件和路由规则",
+  "source_md": "00_项目地基/05_流程与角色/FLOW_流程路由与阶段门_v1.0.md",
+  "relationship_to_acceptance_policy": "本文件（stage_gate_policy.json）定义路由层面的阶段门：G0(路由)→G1(口径)→G2(方案)→G3(执行)→G4(自检)→G5(复查)→G6(放行)。04_一致性闸门/stage_acceptance_policy.json 定义验收层面的检查清单和阻塞条件。两者一个管路由（什么时候该走哪个门），一个管验收（门过了要检查什么）。路由门不可跳过（G0永远是第一步），验收阻塞条件不可绕过（所有检查项必须通过）。",
+  "gates": [
+    {
+      "gate": "G0",
+      "name": "需求识别与流程路由",
+      "can_skip": false,
+      "purpose": "识别用户意图，匹配流程编号F-xxx，确定阶段门路线",
+      "skip_condition": null,
+      "owner": "阿黑",
+      "input": "用户原始需求/指令",
+      "output": "flow_code + 路由路径 + 唤醒角色列表",
+      "pass_condition": "正确匹配F-xxx，输出G0→G6路线"
+    },
+    {
+      "gate": "G1",
+      "name": "业务/金融/角色口径设计",
+      "can_skip": true,
+      "purpose": "确定业务逻辑、金融口径、角色协作的设计变更方案",
+      "skip_condition": "定点修复（F-FIX）可简化；非金融变更（F-GATE/F-EVAL/F-MIGRATE/F-SCHEDULE）可跳过",
+      "owner": "腰子（金融线）/ 情墨（非金融）",
+      "input": "G0路由结果 + 影响范围分析",
+      "output": "G1结论（口径变更说明 + 角色确认）",
+      "pass_condition": "金融变更/角色变更必须有角色签名，非金融变更可注明跳过理由",
+      "financial_change_required": true,
+      "role_change_required": true
+    },
+    {
+      "gate": "G2",
+      "name": "技术方案设计",
+      "can_skip": true,
+      "purpose": "设计工程方案：字段映射、检查逻辑、架构变更",
+      "skip_condition": "仅F-FIX定点修复可简化；涉及schema、policy、脚本、运行入口、地基注册表、知识库结构化迁移时不可跳过",
+      "owner": "情墨",
+      "input": "G1口径结论 + 影响范围",
+      "output": "技术方案说明 + code_level标注 + file_budget",
+      "pass_condition": "字段映射完整、code_level已标注、file_budget已设定",
+      "gate_script_required": true
+    },
+    {
+      "gate": "G3",
+      "name": "执行实现",
+      "can_skip": false,
+      "purpose": "按技术方案编码/改文档，实现全部变更",
+      "owner": "红结（代码变更）/ 对应角色（文档变更）",
+      "input": "G2技术方案 + checklist JSON",
+      "output": "全部变更文件 + 自检结果",
+      "pass_condition": "所有允许范围内的文件已创建/修改，验收命令初步通过",
+      "pre_condition": "必须通过C1-C8编码门禁检查",
+      "scope_rule": "不得修改file_budget范围外的文件"
+    },
+    {
+      "gate": "G4",
+      "name": "执行者自检",
+      "can_skip": false,
+      "purpose": "执行者自我检查：验收命令、范围合规、git status",
+      "owner": "红结（代码）/ 对应角色（文档）",
+      "input": "G3产出物 + 验收命令列表",
+      "output": "验收报告（含命令结果 + 范围声明 + git status）",
+      "pass_condition": "全部验收命令通过、无范围违规、全部文件已解释"
+    },
+    {
+      "gate": "G5",
+      "name": "独立复查",
+      "can_skip": false,
+      "purpose": "旧影独立复查：验收报告真伪、命令结果、范围合规",
+      "owner": "旧影",
+      "input": "验收报告 + git diff + 命令输出",
+      "output": "G5复查结论（建议通过 / 需补修 / 不通过）",
+      "pass_condition": "旧影复查意见为'建议通过'或'需补修（完成后通过）'",
+      "block_condition": "旧影结论'不通过'直接BLOCK"
+    },
+    {
+      "gate": "G6",
+      "name": "放行归档",
+      "can_skip": false,
+      "purpose": "阿黑放行 + 腰子签字，归档验收报告",
+      "owner": "阿黑（放行）/ 腰子（签字）",
+      "input": "G5通过结论 + 验收报告",
+      "output": "最终验收结论 + 归档记录 + 阶段完成标记",
+      "pass_condition": "G5通过 + 腰子签字确认金融口径无误 + 验收报告归档"
+    }
+  ],
+  "typical_paths": [
+    {
+      "flow_code": "F-GATE",
+      "path": "G0→G2→G3→G4→G5→G6",
+      "description": "闸门脚本变更，跳过G1不需要业务口径"
+    },
+    {
+      "flow_code": "F-ANALYSIS",
+      "path": "G0→G1→G2→G3→G4→G5→G6",
+      "description": "金融分析逻辑变更，全部阶段门必走"
+    },
+    {
+      "flow_code": "F-FIX",
+      "path": "G0→G1/G2简化→G3→G4→G5→G6",
+      "description": "定点修复，G1/G2可简化但需注明理由"
+    },
+    {
+      "flow_code": "F-ARCH",
+      "path": "G0→G1→G2→G3→G4→G5→G6",
+      "description": "地基/架构变更，全部阶段门推荐走"
+    },
+    {
+      "flow_code": "F-DATA",
+      "path": "G0→G1→G2→G3→G4→G5→G6",
+      "description": "数据事实变更，涉及结构化/脚本/入口时必须走G2"
+    },
+    {
+      "flow_code": "F-KNOW",
+      "path": "G0→G1→G2→G3→G4→G5→G6",
+      "description": "知识库/信号库进化，涉及结构化/脚本/入口时必须走G2"
+    },
+    {
+      "flow_code": "F-FEATURE",
+      "path": "G0→G1→G2→G3→G4→G5→G6",
+      "description": "功能新增，全部阶段门必走"
+    }
+  ],
+  "non_bypass_rules": [
+    {
+      "rule": "G0永远不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    },
+    {
+      "rule": "G1在金融变更/角色变更下不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "F-ANALYSIS",
+        "F-ROLE",
+        "F-FEATURE"
+      ]
+    },
+    {
+      "rule": "G2在闸门/脚本变更下不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "F-GATE",
+        "F-EVAL",
+        "F-KNOW",
+        "F-DATA",
+        "F-ARCH"
+      ]
+    },
+    {
+      "rule": "G3不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    },
+    {
+      "rule": "G4不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    },
+    {
+      "rule": "G5不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    },
+    {
+      "rule": "G6不可跳过",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    },
+    {
+      "rule": "跳过门必须有书面理由",
+      "severity": "BLOCK",
+      "applicable_flows": [
+        "*"
+      ]
+    }
+  ]
+}

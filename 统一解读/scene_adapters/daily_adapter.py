@@ -9,7 +9,8 @@ SAMPLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 def adapt_daily(stock_code, trade_date, data_fact, action_bias, confidence,
                 supporting, counter, implication, trigger="", price="",
                 position="", time_win="", invalidation="",
-                rule_refs=None, knowledge_refs=None, signal_refs=None, eval_window=None):
+                rule_refs=None, knowledge_refs=None, signal_refs=None, eval_window=None,
+                extra_fields=None):
     obj = create_interpretation(
         scene="日报", stock_code=stock_code, trade_date=trade_date, role="腰子",
         data_fact=data_fact, hypothesis=implication[:80], supporting=supporting,
@@ -17,7 +18,13 @@ def adapt_daily(stock_code, trade_date, data_fact, action_bias, confidence,
         confidence=confidence, trigger_cond=trigger, price_range=price,
         position_limit=position, time_window=time_win, invalidation=invalidation,
         rule_refs=rule_refs, knowledge_refs=knowledge_refs, signal_refs=signal_refs,
-        eval_window=eval_window)
+        eval_window=eval_window, extra_fields=extra_fields)
+    # D07 v1.2 字段追加写入（适配器原始参数未覆盖的场景）
+    if extra_fields:
+        for key in ["framework_version", "hypotheses", "evidence_gap_requests",
+                     "long_term_institutional_evidence", "conclusion_strength"]:
+            if key not in obj and key in extra_fields:
+                obj[key] = extra_fields[key]
     result = validate(obj)
     u9, u10 = result.get("u9", {"status": "ERROR"}), result.get("u10", {"status": "ERROR"})
     overall = result.get("overall", "ERROR")

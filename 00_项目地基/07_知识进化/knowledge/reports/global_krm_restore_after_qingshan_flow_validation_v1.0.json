@@ -1,0 +1,19 @@
+{
+  "stage": "G3-QINGSHAN-FLOW-GLOBAL-KRM-RESTORE-FIX-v1.0",
+  "result": "PASS",
+  "legacy_role_kb_file_count": 64,
+  "legacy_role_kb_sha_match": true,
+  "roles_dirs_ok": true,
+  "shared_dirs_ok": true,
+  "rules_ok": true,
+  "active_rule_count": 144,
+  "source_coverage": "64/64",
+  "draft_rules": 0,
+  "bad_evidence_lines": 0,
+  "router_route_count": 10,
+  "manifest_entry_count": 119,
+  "manifest_integrity_ok": true,
+  "qingshan_three_steps_preserved": true,
+  "forbidden_downstream_created": false,
+  "result_reason": "legacy_kb=64_sha=True roles_ok=True shared_ok=True rules_ok=True active=144 coverage=64/64 routes=10 manifest=119_integrity=True qs_preserved=True"
+}

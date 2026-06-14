@@ -1,0 +1,120 @@
+{
+  "$schema": "https://tielv-quant.ccrt/interpretation_schema.json",
+  "interpretation_id": "INT-20260613-140000-weekly",
+  "scene": "深度分析",
+  "stock_code": "600114",
+  "trade_date": "2026-06-13",
+  "role": "腰子",
+  "framework_version": "D07_v1.2",
+  "data_fact": {
+    "source": "巨潮资讯PDF + 同花顺 + 东方财富",
+    "freshness": "季度",
+    "values": {
+      "report_period": "2025Q1~2026Q1",
+      "closing_price": 39.06,
+      "weekly_change_pct": -1.2,
+      "volume_ratio_5d": 0.87,
+      "pension_chain": "新进→增持→增持→退出→未回归"
+    },
+    "note": "本周重点股票深度分析。五期P1原始披露证据已核验，基本养老保险基金呈退出态势。板块情绪中性偏弱。"
+  },
+  "interpretation_hypothesis": "东睦股份中期逻辑曾获养老金连续增持认可，但自2025年报起退出前十大已持续两期。披露滞后2-4个月，当前无法确认清仓，但弱化信号需纳入中期跟踪。",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "中期逻辑弱化风险：养老金退出前十大+板块情绪偏弱，需警惕中期支撑减弱",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-001", "EV-003"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "风险假设",
+      "missing_data": "2026Q2披露后养老金是否回归；板块指数完整样本"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "机构分歧而非一致看空：北向资金同期增持，长短资金方向分化，不宜单一解读",
+      "status": "active",
+      "supporting_evidence_refs": ["EV-002", "EV-001"],
+      "counter_evidence_refs": ["CE-001"],
+      "conclusion_strength": "倾向判断",
+      "missing_data": "北向资金持续性待跟踪"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "evidence": "基本养老保险基金持仓链(P1 verified)：2025Q1新进438万→Q2增持627万→Q3增持820万→年报退出前十大(verified_absent)→2026Q1仍未回归(verified_absent)",
+      "source": "巨潮资讯原始PDF x5",
+      "strength": "强",
+      "source_level": "L1",
+      "source_ref": "cninfo finalpage系列/evidence/p1_disclosures/600114/"
+    },
+    {
+      "evidence": "北向资金同期变化：香港中央结算有限公司从867万持续增持至3,329万股",
+      "source": "同花顺辅助索引",
+      "strength": "中",
+      "source_level": "L3",
+      "source_ref": "https://basic.10jqka.com.cn/mobile/600114/holder.html"
+    },
+    {
+      "evidence": "板块粉末冶金同业对比：样本均值略偏弱，但未出现系统性退潮",
+      "source": "东方财富板块数据",
+      "strength": "中",
+      "source_level": "L3",
+      "source_ref": "板块分析模块"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "基本养老保险基金已连续2个报告期(2025Y/2026Q1)未出现在前十大披露名单，P1原始PDF缺席确认",
+      "source": "巨潮资讯cninfo(2025Y/2026Q1)",
+      "type": "资金面反证"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-WEEKLY-20260613",
+      "gap_type": "other",
+      "description": "2026Q2定期报告尚未披露，退出后实际持股无法确认",
+      "requested_fields": ["report_period", "shareholder_name_raw", "share_count", "change_type"],
+      "status": "open",
+      "impact": "中期逻辑结论强度限制为风险假设",
+      "owner_role_hint": "信鸽"
+    }
+  ],
+  "long_term_institutional_evidence": {
+    "status": "present",
+    "p1_verification_status": "verified",
+    "signal_usage": "中期逻辑支持",
+    "records": [
+      {
+        "report_period": "2025Q1~2026Q1",
+        "disclosure_date": "多期",
+        "shareholder_name_raw": "基本养老保险基金一二零五组合（2025Y起退出前十大）",
+        "institution_type": "基本养老保险基金",
+        "holding_rank": null,
+        "share_count": null,
+        "share_ratio": null,
+        "change_type": "退出披露名单",
+        "consecutive_periods": null,
+        "source_refs": [
+          {"source_name":"五期P1证据包(2025Q1~2026Q1)","source_url":"cninfo多期:参见统一解读/evidence/p1_disclosures/600114/","source_level":"original_disclosure","usage":"authority_check","verification_status":"verified","local_pdf_path":"/Users/ccrt/ccrt/统一解读/evidence/p1_disclosures/600114/","sha256":"多期:6c6c377c/d354e63c/405dae71/1d69f8c4/7fbe63c5"}
+        ],
+        "limitation_note": "五期P1均已核验。退出前十大不等于确认清仓；披露滞后约2-4个月；不得作为买卖信号。"
+      }
+    ],
+    "conclusion_strength_impact": "downgrade"
+  },
+  "investment_implication": "东睦股份中期逻辑面临养老金退出的弱化信号，但P1证据链完整、无数据造假风险。当前不宜加仓，也不应因养老金退出直接减仓。维持跟踪观察，等待2026Q2披露后再评估。",
+  "action_bias": "WATCH",
+  "trigger_condition": "2026Q2披露后核查养老金是否回归前十大",
+  "time_window": "至2026Q2披露后5个交易日内",
+  "confidence": "MEDIUM",
+  "conclusion_strength": "风险假设",
+  "invalidation_condition": "2026Q2养老金回归前十大且北向资金未持续流出，则弱化信号解除。若2026Q2仍缺席且北向转出，则中期逻辑进一步承压。",
+  "eval_window": {
+    "t1": "本周核查P1证据一致性",
+    "t3": "等待2026Q2定期报告前瞻",
+    "t5": "五期P1闭环已确认"
+  },
+  "rule_refs": ["R-FIN-0001", "R01", "R03"],
+  "knowledge_refs": ["XINGE-EVENT-001", "YUYE-DATA-001", "QINGSHAN-SIGNAL-001"]
+}

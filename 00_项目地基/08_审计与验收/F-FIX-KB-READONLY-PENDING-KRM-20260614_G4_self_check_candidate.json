@@ -1,0 +1,152 @@
+{
+  "run_id": "F-FIX-KB-READONLY-PENDING-KRM-20260614",
+  "generated_at": "2026-06-14T14:59:03",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope": "P0-A validator readonly; P0-B eval_hooks pending ledger; P0-C foundation/global KRM validator chain",
+  "verdict": "BLOCK",
+  "errors": [
+    "write_report_chain_has_nonzero_exit"
+  ],
+  "readonly_hash_before": {
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/knowledge_workflow_foundation_validation_v1.0.json": "4f166fab96622757714231aa459ac1713150fb8ec9b6c4b6dbcd59823c10ccf3",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json": "322fc0ac2eb9fd3959835ab1aefbe1ff635581599af9ce8ba6d6063d424ea6cf",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json": "477fcefe18ed32e33246e4bd430d6da1a2542d19318d5fafddf1d110a845f143",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/scenario_trace_templates_validation_v1.0.json": "b9652a6cef2a4dd37fc9669fe7793b1cf5225e3221726d3eafbabf42307de41c"
+  },
+  "readonly_hash_after": {
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/knowledge_workflow_foundation_validation_v1.0.json": "4f166fab96622757714231aa459ac1713150fb8ec9b6c4b6dbcd59823c10ccf3",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json": "322fc0ac2eb9fd3959835ab1aefbe1ff635581599af9ce8ba6d6063d424ea6cf",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json": "477fcefe18ed32e33246e4bd430d6da1a2542d19318d5fafddf1d110a845f143",
+    "/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/scenario_trace_templates_validation_v1.0.json": "b9652a6cef2a4dd37fc9669fe7793b1cf5225e3221726d3eafbabf42307de41c"
+  },
+  "proposal_before": [],
+  "proposal_after": [],
+  "readonly_runs": [
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py",
+      "exit_code": 0,
+      "stdout_tail": "wed\": true,\n  \"rule_candidate_count\": 1,\n  \"rule_candidates_registered\": true,\n  \"rule_candidates_status_ok\": true,\n  \"rule_candidates_boundary_ok\": true,\n  \"bad_rule_candidates\": [],\n  \"active_rule_touched_by_candidate\": false,\n  \"rule_candidates_created\": true,\n  \"forbidden_downstream_created\": false,\n  \"old_quality_phrase_exists\": false,\n  \"result_reason\": \"roles_residue=0_chinese_paths=True_legacy=64_sha=True_router=10_paths=True_noplaceholder=True_active=128_draft=0_cov=64/64_noev=0_badpath=0_badline=0_jsonl=True_manifest=184_integrity=False_qs=True_lit_cards_allowed=True_count=1_registered=True_status_ok=True_boundary_ok=True_val_ok=True_bad_lit=0_rc_allowed=True_rc_count=1_rc_registered=True_rc_status_ok=True_rc_boundary_ok=True_bad_rc=0_active_rule_touched=False_forbidden=False\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_knowledge_workflow_foundation_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "plates-v1.0\",\n        \"path\": \"00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py\",\n        \"error\": \"line_count_mismatch\"\n      }\n    ],\n    \"absolute_paths\": [],\n    \"missing_id_entries\": [],\n    \"missing_required_kinds\": []\n  },\n  \"registration_check\": {\n    \"literature_card_count\": 1,\n    \"rule_candidate_count\": 1,\n    \"unregistered_cards\": [],\n    \"unregistered_candidates\": []\n  },\n  \"global_krm_validator\": {\n    \"result\": \"PASS\",\n    \"report_result\": \"PASS\",\n    \"tail\": \"script_exists=True report_exists=True result=PASS\"\n  },\n  \"boundary_check\": {\n    \"no_active_rule_promotion_claimed\": true,\n    \"no_production_entry_change_claimed\": true,\n    \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_rule_candidate_validation_tasks_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "k\\\": true,\\n  \\\"bad_rule_candidates\\\": [],\\n  \\\"active_rule_touched_by_candidate\\\": false,\\n  \\\"rule_candidates_created\\\": true,\\n  \\\"forbidden_downstream_created\\\": false,\\n  \\\"old_quality_phrase_exists\\\": false,\\n  \\\"result_reason\\\": \\\"roles_residue=0_chinese_paths=True_legacy=64_sha=True_router=10_paths=True_noplaceholder=True_active=128_draft=0_cov=64/64_noev=0_badpath=0_badline=0_jsonl=True_manifest=184_integrity=False_qs=True_lit_cards_allowed=True_count=1_registered=True_status_ok=True_boundary_ok=True_val_ok=True_bad_lit=0_rc_allowed=True_rc_count=1_rc_registered=True_rc_status_ok=True_rc_boundary_ok=True_bad_rc=0_active_rule_touched=False_forbidden=False\\\"\\n}\\n\"\n  },\n  \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "/00_项目地基/07_知识进化/knowledge/scenario_traces/deep_analysis/TRACE_DEEP_ANALYSIS_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/weekly_validation_summaries/WVS_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/validation_reviews/qingshan/VR_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/role_confirmations/qingshan/RCF_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/knowledge_merge_checks/qingshan/KMC_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/knowledge_merge_checks/qingshan/RC_PENDING_RC_QS_FF1993_v1.0.json\"\n  ],\n  \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "weekly_tail": "=== 知识进化周报 2026-06-14 ===\neval_hooks: 59条\n  已评估: 0条 | 待评估: 59条\n  pending_oldest: UNKNOWN\n  pending_status: WARN\n  命中率: 暂无可计算样本\n知识注册: 20条\nL5-seed待升级: 4条\n进化草案: 0份\n",
+  "pending_summary": {
+    "total": 59,
+    "evaluated": 0,
+    "pending": 59,
+    "pending_status": "WARN",
+    "oldest_pending": "UNKNOWN",
+    "pending_hook_ids": [
+      "INT-20260602-161500-d4e5f6",
+      "INT-20260602-163000-g7h8i9",
+      "INT-20260602-131115-71c3df",
+      "INT-20260602-131116-b64826",
+      "INT-20260602-160000-a1b2c3",
+      "INT-20260602-131115-f8ee36",
+      "INT-20260602-131115-6d9df4",
+      "INT-20260602-131116-5493d6",
+      "INT-20260602-131116-0f8b0c",
+      "INT-20260602-134821-77b6a0",
+      "INT-20260602-134821-77b6a0",
+      "INT-20260602-134822-0c4a95",
+      "INT-20260602-134822-754fb6",
+      "INT-20260602-134822-5b3163",
+      "INT-20260602-134822-db8322",
+      "INT-20260602-134822-5b3163",
+      "INT-20260602-134822-db8322",
+      "INT-20260602-134822-754fb6",
+      "INT-20260602-134822-0c4a95",
+      "INT-20260602-134822-0c4a95",
+      "INT-20260602-134821-77b6a0",
+      "INT-20260602-134821-77b6a0",
+      "INT-20260602-134822-db8322",
+      "INT-20260602-134822-5b3163",
+      "INT-20260602-134822-754fb6",
+      "INT-20260602-134822-5b3163",
+      "INT-20260602-134822-754fb6",
+      "INT-20260602-134822-0c4a95",
+      "INT-20260602-134821-77b6a0",
+      "INT-20260602-134822-db8322",
+      "INT-20260602-134923-dde208",
+      "INT-20260602-134923-dde208",
+      "INT-20260602-134923-dde208",
+      "INT-20260602-135648-089644",
+      "INT-20260602-135648-089644",
+      "INT-20260602-135649-6b7f3b",
+      "INT-20260602-135649-489e67",
+      "INT-20260602-135649-489e67",
+      "INT-20260602-135649-8c0eb9",
+      "INT-20260602-135649-e7a322",
+      "INT-20260602-135649-e7a322",
+      "INT-20260602-135649-e8e34d",
+      "INT-20260602-135649-e8e34d",
+      "INT-20260602-135649-6b7f3b",
+      "INT-20260602-135649-8c0eb9",
+      "INT-20260602-135658-cb3032",
+      "INT-20260602-135658-cb3032",
+      "INT-20260602-142808-6154a8",
+      "INT-20260602-142808-6d4885",
+      "INT-20260602-142808-6d4885",
+      "INT-20260602-142808-6154a8",
+      "INT-20260602-142808-630367",
+      "INT-20260602-142808-630367",
+      "INT-20260602-142809-c4d813",
+      "INT-20260602-142809-c4d813",
+      "INT-20260602-142903-229ee6",
+      "INT-20260602-142903-229ee6",
+      "INT-20260602-142923-d910bb",
+      "INT-20260602-142923-d910bb"
+    ]
+  },
+  "write_runs": [
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py",
+      "exit_code": 0,
+      "stdout_tail": "e_cards_registered\": true,\n  \"literature_cards_status_ok\": true,\n  \"literature_cards_boundary_ok\": true,\n  \"literature_cards_validation_ok\": true,\n  \"bad_literature_cards\": [],\n  \"rule_candidates_allowed\": true,\n  \"rule_candidate_count\": 1,\n  \"rule_candidates_registered\": true,\n  \"rule_candidates_status_ok\": true,\n  \"rule_candidates_boundary_ok\": true,\n  \"bad_rule_candidates\": [],\n  \"active_rule_touched_by_candidate\": false,\n  \"rule_candidates_created\": true,\n  \"forbidden_downstream_created\": false,\n  \"old_quality_phrase_exists\": false,\n  \"result_reason\": \"roles_residue=0_chinese_paths=True_legacy=64_sha=True_router=10_paths=True_noplaceholder=True_active=128_draft=0_cov=64/64_noev=0_badpath=0_badline=0_jsonl=True_manifest=184_integrity=False_qs=True_lit_cards_allowed=True_count=1_registered=True_status_ok=True_boundary_ok=True_val_ok=True_bad_lit=0_rc_allowed=True_rc_count=1_rc_registered=True_rc_status_ok=True_rc_boundary_ok=True_bad_rc=0_active_rule_touched=False_forbidden=False\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_knowledge_workflow_foundation_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "\n        \"path\": \"00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py\",\n        \"error\": \"sha256_mismatch\"\n      },\n      {\n        \"id\": \"kb-script-validate-scenario-trace-templates-v1.0\",\n        \"path\": \"00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py\",\n        \"error\": \"line_count_mismatch\"\n      }\n    ],\n    \"absolute_paths\": [],\n    \"missing_id_entries\": [],\n    \"missing_required_kinds\": []\n  },\n  \"registration_check\": {\n    \"literature_card_count\": 1,\n    \"rule_candidate_count\": 1,\n    \"unregistered_cards\": [],\n    \"unregistered_candidates\": []\n  },\n  \"global_krm_validator\": {\n    \"result\": \"WARN\",\n    \"report_result\": \"WARN\",\n    \"tail\": \"script_exists=True report_exists=True result=WARN\"\n  },\n  \"boundary_check\": {\n    \"no_active_rule_promotion_claimed\": true,\n    \"no_production_entry_change_claimed\": true,\n    \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_rule_candidate_validation_tasks_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "ture_cards\\\": [],\\n  \\\"rule_candidates_allowed\\\": true,\\n  \\\"rule_candidate_count\\\": 1,\\n  \\\"rule_candidates_registered\\\": true,\\n  \\\"rule_candidates_status_ok\\\": true,\\n  \\\"rule_candidates_boundary_ok\\\": true,\\n  \\\"bad_rule_candidates\\\": [],\\n  \\\"active_rule_touched_by_candidate\\\": false,\\n  \\\"rule_candidates_created\\\": true,\\n  \\\"forbidden_downstream_created\\\": false,\\n  \\\"old_quality_phrase_exists\\\": false,\\n  \\\"result_reason\\\": \\\"roles_residue=0_chinese_paths=True_legacy=64_sha=True_router=10_paths=True_noplaceholder=True_active=128_draft=0_cov=64/64_noev=0_badpath=0_badline=0_jsonl=True_manifest=184_integrity=False_qs=True_lit_cards_allowed=True_count=1_registered=True_status_ok=True_boundary_ok=True_val_ok=True_bad_lit=0_rc_allowed=True_rc_count=1_rc_registered=True_rc_status_ok=True_rc_boundary_ok=True_bad_rc=0_active_rule_touched=False_forbidden=False\\\"\\n}\\n\"\n  },\n  \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "script": "00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py",
+      "exit_code": 1,
+      "stdout_tail": "ng_scenarios\": [],\n  \"real_trace_files\": [\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/scenario_traces/daily_report/TRACE_DAILY_REPORT_DONGMU_20260611_RC_QS_FF1993_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/scenario_traces/deep_analysis/TRACE_DEEP_ANALYSIS_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/weekly_validation_summaries/WVS_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/validation_reviews/qingshan/VR_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/role_confirmations/qingshan/RCF_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/knowledge_merge_checks/qingshan/KMC_RC_QS_FF1993_20260612_001.json\",\n    \"/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/knowledge_merge_checks/qingshan/RC_PENDING_RC_QS_FF1993_v1.0.json\"\n  ],\n  \"formal_pipeline_note\": \"This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS.\"\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "written_report_results": {
+    "00_项目地基/07_知识进化/knowledge/reports/knowledge_workflow_foundation_validation_v1.0.json": "FAIL",
+    "00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json": "WARN",
+    "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json": "FAIL",
+    "00_项目地基/07_知识进化/knowledge/reports/scenario_trace_templates_validation_v1.0.json": "FAIL"
+  }
+}

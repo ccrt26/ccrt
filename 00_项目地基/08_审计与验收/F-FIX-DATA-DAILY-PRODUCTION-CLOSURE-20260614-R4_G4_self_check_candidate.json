@@ -1,0 +1,41 @@
+{
+  "flow": "F-FIX-DATA-DAILY-PRODUCTION-CLOSURE-20260614-R4",
+  "date": "20260612",
+  "created_at": "2026-06-14T00:49:37.515823",
+  "evidence_files": [
+    "logs/daily_production/20260612_manifest.json",
+    "logs/daily_data_retry/status/20260612.ready.json",
+    "历史数据/manifest/20260612_archive_manifest.json",
+    "logs/daily_production/20260612_closure_verify.json",
+    "logs/daily_production/20260612_check_data_quality.json",
+    "logs/daily_production/20260612_inspect_data_health_daily_focus.json"
+  ],
+  "stage": "G4_SELF_CHECK_CANDIDATE",
+  "overall": "PASS",
+  "assertions": {
+    "manifest_overall": "PASS",
+    "ready": true,
+    "ready_pipeline_status": "PASS",
+    "ready_closure_ready": "PASS",
+    "closure_verify": "PASS",
+    "hash_match": "5/5"
+  },
+  "changed_files": [
+    "scripts/run_daily_production_pipeline.py",
+    "scripts/verify_daily_production_closure.py",
+    "代码文件/每日荐股/scripts/batch_data_collector.py",
+    "代码文件/每日荐股/scripts/archive_data.py",
+    "inspect_data_health.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "configs/daily_production_scope.json",
+    "历史数据/manifest/20260612_archive_manifest.json"
+  ],
+  "forbidden_scope_check": {
+    "trading_executor_touched": false,
+    "capability_registry_touched": false,
+    "D07_v1_2_methodology_changed": false,
+    "historical_reports_rewritten": false,
+    "token_committed": false,
+    "out_of_scope_files_excluded": true
+  }
+}

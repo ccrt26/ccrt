@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "description": "角色唤醒与输出规范矩阵 — 承接 ROLE_角色唤醒与输出规范_v1.0.md",
+  "source_md": "00_项目地基/05_流程与角色/ROLE_角色唤醒与输出规范_v1.0.md",
+  "roles": [
+    {"role": "阿黑", "line": "调度", "responsibilities": "流程路由、阶段调度、争议协调", "is_primary": true},
+    {"role": "腰子", "line": "金融线", "responsibilities": "金融口径、最终签字（金融线负责人）", "is_primary": true},
+    {"role": "山猫", "line": "金融线", "responsibilities": "宏观信息支撑", "is_primary": false},
+    {"role": "信鸽", "line": "金融线", "responsibilities": "事件信息支撑", "is_primary": false},
+    {"role": "玉夜", "line": "金融线", "responsibilities": "数据事实审查、数据方案", "is_primary": false},
+    {"role": "流金", "line": "金融线", "responsibilities": "风控边界审计", "is_primary": false},
+    {"role": "青山", "line": "金融线", "responsibilities": "策略方案、后评估", "is_primary": false},
+    {"role": "砺石", "line": "金融线", "responsibilities": "方法校准、反证审查", "is_primary": false},
+    {"role": "情墨", "line": "工程线", "responsibilities": "架构设计、制度维护", "is_primary": true},
+    {"role": "千光", "line": "工程线", "responsibilities": "CI/CD、自动化编排", "is_primary": false},
+    {"role": "红枫", "line": "工程线", "responsibilities": "部署、环境管理", "is_primary": false},
+    {"role": "新安", "line": "工程线", "responsibilities": "测试策略、回归验收", "is_primary": false},
+    {"role": "红结", "line": "工程线", "responsibilities": "编码实现", "is_primary": true},
+    {"role": "旧影", "line": "审计线", "responsibilities": "独立审计、阶段复查", "is_primary": true}
+  ],
+  "flow_role_mapping": {
+    "F-ARCH":     ["阿黑", "情墨", "旧影", "腰子"],
+    "F-DATA":     ["阿黑", "玉夜", "旧影", "腰子"],
+    "F-REPORT":   ["阿黑", "情墨", "玉夜", "旧影", "腰子"],
+    "F-ANALYSIS": ["阿黑", "腰子", "青山", "流金", "山猫", "信鸽", "玉夜", "旧影"],
+    "F-ROLE":     ["阿黑", "腰子", "情墨", "全部解释角色", "旧影"],
+    "F-EVAL":     ["阿黑", "青山", "玉夜", "旧影"],
+    "F-KNOW":     ["阿黑", "青山", "腰子", "旧影"],
+    "F-GATE":     ["阿黑", "玉夜", "旧影", "情墨"],
+    "F-FIX":      ["阿黑", "问题所属角色", "玉夜/旧影", "腰子"],
+    "F-MIGRATE":  ["阿黑", "情墨", "旧影"],
+    "F-FEATURE":  ["阿黑", "情墨", "腰子", "旧影"],
+    "F-SCHEDULE": ["阿黑", "情墨", "千光", "旧影"]
+  },
+  "timing": {
+    "G0": "阿黑（路由）",
+    "G1": "金融团队（腰子+山猫+信鸽+玉夜+流金+青山；砺石按需）；若涉及报告也引入情墨",
+    "G2": "情墨（架构设计）+ 玉夜（数据方案）",
+    "G3": "执行模型（编码/改文档）",
+    "G4": "执行模型（自检）",
+    "G5": "旧影（独立复查）",
+    "G6": "阿黑（放行）+ 腰子（签字）"
+  },
+  "output_format": {
+    "description": "每个被唤醒角色输出必须包含以下7个字段",
+    "fields": [
+      {"name": "角色名", "label": "角色名：【】", "required": true},
+      {"name": "参与阶段门", "label": "参与阶段门：【G0/G1/G2/G3/G4/G5/G6】", "required": true},
+      {"name": "本阶段职责", "label": "本阶段职责：【一句话说明】", "required": true},
+      {"name": "检查对象", "label": "检查对象：【路径/文件/范围】", "required": true},
+      {"name": "结论", "label": "结论：【PASS / BLOCK / WARN】", "required": true},
+      {"name": "依据", "label": "依据：【文件/命令/规则编号】", "required": true},
+      {"name": "遗留问题", "label": "遗留问题：【如有】", "required": false}
+    ]
+  },
+  "g5_review_format": {
+    "description": "G5独立复查格式",
+    "fields": [
+      {"name": "复查角色", "label": "复查角色：旧影"},
+      {"name": "复查范围", "label": "复查范围：【验收报告+命令+文件】"},
+      {"name": "复查结果", "label": "复查结果：【命令通过率 / 文件范围合规 / 角色输出完备性】"},
+      {"name": "总体结论", "label": "总体结论：【建议通过 / 需补修 / 不通过】"},
+      {"name": "遗留问题", "label": "遗留问题：【如有】"}
+    ]
+  },
+  "block_rules": [
+    {"condition": "必唤醒角色未输出结论", "action": "BLOCK", "description": "任何必唤醒角色缺少输出即阻塞"},
+    {"condition": "阿黑代签角色结论", "action": "BLOCK", "description": "阿黑是调度者，不得代签"},
+    {"condition": "执行模型以角色身份签结论", "action": "BLOCK", "description": "执行模型（DeepSeek/Claude/Codex）不是项目角色"},
+    {"condition": "G5复查缺失", "action": "BLOCK", "description": "G5独立复查不可跳过"},
+    {"condition": "角色输出BLOCK", "action": "BLOCK", "description": "转化为阶段BLOCK"},
+    {"condition": "角色输出PASS/WARN", "action": "PASS", "description": "汇总到验收报告"},
+    {"condition": "跳过角色未说明", "action": "BLOCK", "description": "跳过必唤醒角色必须在验收报告中逐条说明"}
+  ]
+}

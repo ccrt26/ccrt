@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Role Matrix Schema",
+  "description": "角色唤醒与输出规范的 schema 定义 — 承接 ROLE_角色唤醒与输出规范_v1.0.md",
+  "type": "object",
+  "required": ["version", "description", "roles", "flow_role_mapping", "timing", "output_format", "block_rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role", "line", "responsibilities"],
+        "properties": {
+          "role": { "type": "string" },
+          "line": { "type": "string", "enum": ["调度", "金融线", "工程线", "审计线"] },
+          "responsibilities": { "type": "string" },
+          "is_primary": { "type": "boolean" }
+        }
+      }
+    },
+    "flow_role_mapping": {
+      "type": "object",
+      "description": "流程→必唤醒角色映射",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "properties": {
+        "G0": { "type": "string" },
+        "G1": { "type": "string" },
+        "G2": { "type": "string" },
+        "G3": { "type": "string" },
+        "G4": { "type": "string" },
+        "G5": { "type": "string" },
+        "G6": { "type": "string" }
+      }
+    },
+    "output_format": {
+      "type": "object",
+      "required": ["fields"],
+      "properties": {
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "required": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "block_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition": { "type": "string" },
+          "action": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

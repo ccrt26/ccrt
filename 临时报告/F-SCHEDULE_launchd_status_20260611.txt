@@ -1,0 +1,23 @@
+Task                      Status       Schedule
+-----------------------------------------------------------------
+git_autosweep             INSTALLED    {'Minute': 7}
+pigeon                    INSTALLED    {'Hour': 19, 'Minute': 7, 'Weekday': 1}
+daily_signal              INSTALLED    {'Hour': 16, 'Minute': 15, 'Weekday': 1}
+deep_signal               INSTALLED    {'Hour': 20, 'Minute': 30, 'Weekday': 5}
+post_eval                 INSTALLED    {'Hour': 17, 'Minute': 20, 'Weekday': 1}
+scheduler_health          INSTALLED    {'Minute': 3}
+sim_trading               INSTALLED    {'Hour': 9, 'Minute': 45, 'Weekday': 1}
+feishu_bridge             INSTALLED    每 30s
+im_consumer               INSTALLED    每 30s
+
+Active launchd jobs (10):
+  -	0	com.tielv.pigeon
+  -	1	com.tielv.scheduler-health
+  -	0	com.tielv.feishu-bridge
+  -	0	com.tielv.daily-signal
+  39161	0	com.tielv.caffeinate
+  -	0	com.tielv.post-eval
+  -	0	com.tielv.sim-trading
+  -	0	com.tielv.git-autosweep
+  -	0	com.tielv.deep-signal
+  -	0	com.tielv.im-consumer

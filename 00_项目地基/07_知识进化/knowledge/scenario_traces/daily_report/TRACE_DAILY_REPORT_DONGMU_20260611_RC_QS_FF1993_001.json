@@ -1,0 +1,51 @@
+{
+  "trace_id": "TRACE-daily_report-DONGMU-20260611-RC-QS-FF1993-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "scenario": "daily_report",
+  "module": "daily_report",
+  "owner_role": "青山",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "trace_date": "2026-06-11",
+  "trace_type": "real_trace",
+  "real_case": {
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "2026-06-11",
+    "baseline_id": "600114_2026W24_deep",
+    "report_version": "3.7.0-html-only-auto"
+  },
+  "triggered": false,
+  "trigger_context": "Dongmu 2026-06-11 daily report was used as a real execution trace. The report contains signal discipline and eval_hooks, but it does not cite or migrate external factor literature.",
+  "trigger_checks": {
+    "external_factor_literature_cited": false,
+    "foreign_factor_conclusion_migrated_to_a_share": false,
+    "factor_boundary_rule_needed_for_this_report": false,
+    "daily_execution_trace_available": true
+  },
+  "daily_execution_evidence": {
+    "baseline_id": "600114_2026W24_deep",
+    "t1_action": "持有观察，不主动加仓",
+    "qingshan_signal_reading": "价格低于42.00，信号只支持跟踪，不支持追高。",
+    "eval_hooks": {
+      "t1_verify": "次日验证是否收回40.25并靠近42.00",
+      "t5_verify": "5个交易日验证42.00能否转支撑，跌破32.00则否决"
+    },
+    "risk_boundary": "短线38.70；中线32.00",
+    "forbidden_actions": [
+      "42.00以上不追高",
+      "主力流出未收窄不加仓",
+      "跌破38.70不补仓",
+      "跌破32.00或核心反证出现则移出/否决"
+    ]
+  },
+  "module_conclusion": "not_triggered_continue_observation",
+  "evidence_refs": [
+    "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260611.md",
+    "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260611.json",
+    "00_项目地基/07_知识进化/knowledge/scenario_traces/deep_analysis/TRACE_DEEP_ANALYSIS_RC_QS_FF1993_20260612_001.json"
+  ],
+  "created_at": "2026-06-12",
+  "formal_pipeline_note": "This is a real daily_report ScenarioTrace, not actor/HMAC formal pipeline PASS."
+}

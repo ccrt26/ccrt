@@ -1,0 +1,22 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+  "stage": "G6_RELEASE_CANDIDATE",
+  "date": "20260612",
+  "created_at": "2026-06-14T01:20:39.310995",
+  "release_statement": "深度分析执行链路 D07+砺石硬闸门修复完成。check_deep_d07_lishi_gate.py 已集成到 parse_deep_analysis_report.py 质量闸门中。旧 20260612 东睦报告仍被正确拦截(D07+砺石双重BLOCK)。后续深度分析周报必须通过双闸门(parse_deep_analysis_report + check_deep_d07_lishi_gate)方可放行。",
+  "final_state": {
+    "old_report_blocked_by_D07": true,
+    "old_report_blocked_by_lishi": true,
+    "gate_integrated_into_parser": true,
+    "command_updated": true,
+    "launch_script_updated": true
+  },
+  "not_in_scope": [
+    "trading executor",
+    "capability registry",
+    "D07_v1.2 methodology change",
+    "historical report rewrite",
+    "G5/G6 formal sign-off"
+  ],
+  "必须重新生成": "东睦股份(600114) 20260612 深度分析报告 — 新报告必须通过 parse_deep_analysis_report.py --validate 和 check_deep_d07_lishi_gate.py --report 双闸门"
+}

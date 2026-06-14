@@ -1,0 +1,12 @@
+{
+  "stage": "G3-QINGSHAN-FIRST-RULE-CANDIDATE-FAMA-FRENCH-1993-v1.0",
+  "result": "PASS",
+  "candidate_exists": true,
+  "candidate_status": "candidate_draft",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "required_missing": [],
+  "bad_checks": [],
+  "active_rule_touched_by_candidate": false,
+  "result_reason": "missing=[]; bad=[]"
+}

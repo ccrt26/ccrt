@@ -1,0 +1,10 @@
+total 56
+drwx------@  9 ccrt  staff   288 May 29 14:45 .
+drwx------@ 89 ccrt  staff  2848 Jun  5 07:44 ..
+-rw-r--r--@  1 ccrt  staff   871 May 28 21:39 com.google.GoogleUpdater.wake.plist
+-rw-r--r--@  1 ccrt  staff   181 May 28 21:39 com.google.keystone.agent.plist
+-rw-r--r--@  1 ccrt  staff   181 May 28 21:39 com.google.keystone.xpcservice.plist
+-rw-r--r--@  1 ccrt  staff   583 May 29 15:24 com.tielv.caffeinate.plist
+-rw-r--r--@  1 ccrt  staff   799 May 29 15:24 com.tielv.feishu-bridge.plist
+-rw-r--r--@  1 ccrt  staff  1006 May 29 15:24 com.tielv.im-consumer.plist
+-rw-r--r--@  1 ccrt  staff   625 May 29 11:21 com.xray.proxy.plist

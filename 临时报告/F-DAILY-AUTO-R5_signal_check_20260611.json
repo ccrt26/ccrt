@@ -1,0 +1,10 @@
+{
+  "exists": true,
+  "date": "20260611",
+  "data_ready": true,
+  "stock_count": 10,
+  "timestamp": "2026-06-12T00:24:05.381811+08:00",
+  "degraded": null,
+  "pipeline_mode": true,
+  "v36_status": "READY"
+}

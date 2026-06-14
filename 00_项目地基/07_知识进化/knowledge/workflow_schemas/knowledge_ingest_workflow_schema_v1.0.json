@@ -1,0 +1,116 @@
+{
+  "version": "1.0",
+  "stage": "G3-KB-WORKFLOW-FOUNDATION-v1.0",
+  "required_fields": [
+    "workflow_id",
+    "owner_role",
+    "current_state",
+    "created_at",
+    "updated_at",
+    "source_refs",
+    "candidate_refs",
+    "audit_refs"
+  ],
+  "workflow_states": [
+    "source_candidate",
+    "quality_scored",
+    "literature_card_draft",
+    "rule_candidate_draft",
+    "validation_task_open",
+    "scenario_trace_collecting",
+    "weekly_validation_summary_ready",
+    "validation_review_ready",
+    "role_confirmation_ready",
+    "knowledge_merge_check_ready",
+    "promotion_decision_ready",
+    "active_rule_ready",
+    "knowledge_adoption_recorded",
+    "performance_monitoring",
+    "role_metrics_updated",
+    "blocked",
+    "rejected",
+    "archived"
+  ],
+  "allowed_transitions": {
+    "source_candidate": [
+      "quality_scored",
+      "rejected"
+    ],
+    "quality_scored": [
+      "literature_card_draft",
+      "rejected"
+    ],
+    "literature_card_draft": [
+      "rule_candidate_draft",
+      "archived"
+    ],
+    "rule_candidate_draft": [
+      "validation_task_open",
+      "rejected"
+    ],
+    "validation_task_open": [
+      "scenario_trace_collecting",
+      "blocked"
+    ],
+    "scenario_trace_collecting": [
+      "weekly_validation_summary_ready",
+      "blocked"
+    ],
+    "weekly_validation_summary_ready": [
+      "validation_review_ready",
+      "scenario_trace_collecting",
+      "blocked"
+    ],
+    "validation_review_ready": [
+      "role_confirmation_ready",
+      "rejected",
+      "blocked"
+    ],
+    "role_confirmation_ready": [
+      "knowledge_merge_check_ready",
+      "rejected",
+      "blocked"
+    ],
+    "knowledge_merge_check_ready": [
+      "promotion_decision_ready",
+      "rejected",
+      "blocked"
+    ],
+    "promotion_decision_ready": [
+      "active_rule_ready",
+      "rejected",
+      "blocked"
+    ],
+    "active_rule_ready": [
+      "knowledge_adoption_recorded"
+    ],
+    "knowledge_adoption_recorded": [
+      "performance_monitoring"
+    ],
+    "performance_monitoring": [
+      "role_metrics_updated",
+      "validation_review_ready",
+      "blocked"
+    ],
+    "role_metrics_updated": [
+      "archived",
+      "performance_monitoring"
+    ],
+    "blocked": [
+      "validation_task_open",
+      "scenario_trace_collecting",
+      "validation_review_ready",
+      "archived"
+    ],
+    "rejected": [
+      "archived"
+    ],
+    "archived": []
+  },
+  "initial_state": "source_candidate",
+  "terminal_states": [
+    "archived",
+    "rejected"
+  ],
+  "blocked_state": "blocked"
+}

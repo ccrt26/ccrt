@@ -179,6 +179,142 @@
       "type": "array",
       "items": {"type": "string"},
       "description": "引用的知识库条目"
+    },
+    "framework_version": {
+      "type": "string",
+      "enum": ["D07_v1.0", "D07_v1.1", "D07_v1.2"],
+      "description": "分析框架版本。D07_v1.2 触发多假设、证据缺口、长期机构资金等增强校验。"
+    },
+    "hypotheses": {
+      "type": "array",
+      "description": "多假设阵列。D07_v1.2 场景下至少 2 条；涉交易动作时必须含反向假设。",
+      "items": {
+        "type": "object",
+        "required": ["hypothesis_id", "statement", "status", "conclusion_strength"],
+        "properties": {
+          "hypothesis_id": {"type": "string", "description": "假设标识，如 H1/H2/反向假设"},
+          "statement": {"type": "string", "minLength": 10, "description": "假设描述"},
+          "status": {"type": "string", "enum": ["active", "weakened", "rejected", "pending_evidence"],
+                      "description": "假设状态"},
+          "supporting_evidence_refs": {"type": "array", "items": {"type": "string"},
+                                        "description": "支持证据引用标识"},
+          "counter_evidence_refs": {"type": "array", "items": {"type": "string"},
+                                     "description": "反证引用标识"},
+          "conclusion_strength": {"type": "string", "enum": ["可定性", "倾向判断", "风险假设", "数据不足"],
+                                   "description": "该假设的结论强度"},
+          "missing_data": {"type": "string", "description": "缺什么数据会影响结论"}
+        }
+      }
+    },
+    "evidence_gap_requests": {
+      "type": "array",
+      "description": "证据缺口申请。P1 原始披露未闭合时必须至少包含一条 open gap。",
+      "items": {
+        "type": "object",
+        "required": ["gap_id", "gap_type", "description", "status"],
+        "properties": {
+          "gap_id": {"type": "string", "description": "证据缺口唯一标识"},
+          "gap_type": {"type": "string", "enum": ["original_disclosure_missing", "field_missing", "freshness_unknown",
+                       "source_conflict", "sample_insufficient", "other"],
+                       "description": "缺口类型"},
+          "description": {"type": "string", "minLength": 10, "description": "缺口说明"},
+          "requested_source": {"type": "array", "items": {"type": "string"},
+                                "description": "期望补充的来源"},
+          "requested_fields": {"type": "array", "items": {"type": "string"},
+                                "description": "期望补充的字段"},
+          "status": {"type": "string", "enum": ["open", "resolved", "waived_with_reason"],
+                      "description": "缺口状态"},
+          "impact": {"type": "string", "description": "缺口对结论的影响"},
+          "owner_role_hint": {"type": "string", "description": "负责角色提示"}
+        }
+      }
+    },
+    "long_term_institutional_evidence": {
+      "type": "object",
+      "description": "社保/养老金/长期机构资金证据。不使用时可缺省；使用时每条 record 必须含 limitation_note。",
+      "properties": {
+        "status": {"type": "string", "enum": ["not_applicable", "present", "gap_requested"],
+                    "description": "长期机构资金证据整体状态"},
+        "p1_verification_status": {"type": "string", "enum": ["verified", "warn_pending", "not_applicable"],
+                                    "description": "P1 原始披露验真状态"},
+        "signal_usage": {"type": "string", "enum": ["中期逻辑支持", "机构分歧", "风险反证", "仅背景"],
+                          "description": "该证据在分析中的角色"},
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["report_period", "shareholder_name_raw", "institution_type", "source_refs", "limitation_note"],
+            "properties": {
+              "report_period": {"type": "string", "description": "报告期"},
+              "disclosure_date": {"type": "string", "description": "披露日期"},
+              "shareholder_name_raw": {"type": "string", "description": "原始股东名称，须保留原文"},
+              "institution_type": {"type": "string", "enum": ["全国社保基金", "基本养老保险基金", "企业年金", "险资", "公募", "其他"],
+                                    "description": "机构类型"},
+              "holding_rank": {"type": "integer", "description": "前十大排名；退出/未披露时缺省"},
+              "share_count": {"type": "number", "description": "持股数量，单位：股"},
+              "share_ratio": {"type": "number", "description": "持股比例，小数格式"},
+              "change_type": {"type": "string", "enum": ["新进", "增持", "减持", "持平", "退出披露名单", "无法判断"],
+                               "description": "变动类型"},
+              "consecutive_periods": {"type": "integer", "description": "连续出现报告期数"},
+              "source_refs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["source_name", "source_level"],
+                  "properties": {
+                    "source_name": {"type": "string", "description": "来源名称"},
+                    "source_url": {"type": "string", "description": "来源 URL"},
+                    "source_level": {"type": "string", "enum": ["original_disclosure", "exchange_announcement",
+                                     "secondary_organization", "index_reference", "pending_review"],
+                                     "description": "来源可信度等级"},
+                    "usage": {"type": "string", "description": "用途说明"},
+                    "verification_status": {"type": "string", "enum": ["verified", "pending"],
+                                             "description": "该来源的核验状态"}
+                  }
+                }
+              },
+              "limitation_note": {"type": "string", "description": "滞后说明+退出≠清仓声明。必须包含'滞后''退出''不等于清仓''不得作为买卖信号'等表达。"}
+            }
+          }
+        },
+        "conclusion_strength_impact": {
+          "type": "string",
+          "enum": ["upgrade", "downgrade", "neutral", "not_used"]
+        }
+      }
+    },
+    "conclusion_strength": {
+      "type": "string",
+      "enum": ["可定性", "倾向判断", "风险假设", "数据不足"],
+      "description": "分析结论强度。有未解决 evidence_gap_requests 时不得为'可定性'。"
+    },
+    "method_review": {
+      "type": "object",
+      "description": "砺石方法审查输出（可选字段，按需唤醒时填写，不加入required）",
+      "properties": {
+        "role_code": {
+          "type": "string",
+          "const": "LISHI",
+          "description": "角色代码（固定LISHI）"
+        },
+        "result": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BLOCK"],
+          "description": "方法审查结论"
+        },
+        "main_challenge": {
+          "type": "string",
+          "description": "主要方法挑战"
+        },
+        "calibration_note": {
+          "type": "string",
+          "description": "给腰子的校准参考"
+        },
+        "rejected_reason": {
+          "type": "string",
+          "description": "腰子驳回砺石建议时填写"
+        }
+      }
     }
   },
 

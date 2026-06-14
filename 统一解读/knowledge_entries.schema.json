@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Knowledge Entries JSONL Schema",
+  "description": "每条 knowledge_entries.jsonl 行的 schema 定义",
+  "type": "object",
+  "required": [
+    "knowledge_id",
+    "category",
+    "source_file",
+    "source_section",
+    "role",
+    "owner",
+    "source_level",
+    "status",
+    "can_support_strong_action",
+    "content",
+    "version"
+  ],
+  "properties": {
+    "knowledge_id": {
+      "type": "string",
+      "pattern": "^(KNOW|SIG|EVAL|POL|SRC|RUL|ERR|ROLE|GATE|YAOZI|SHANMAO|XINGE|YUYE|LIUJIN|QINGSHAN)-[A-Z0-9]+-[0-9]{3}$",
+      "description": "知识条目唯一ID"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "signal_winrate",
+        "eval",
+        "template_pollution",
+        "source_level",
+        "rules",
+        "error_case",
+        "role_package",
+        "gate",
+        "general"
+      ],
+      "description": "知识类别，对应六库分类"
+    },
+    "source_file": {
+      "type": "string",
+      "description": "来源文件路径（原始MD或结构化文件）"
+    },
+    "source_section": {
+      "type": "string",
+      "description": "来源章节或板块"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "腰子",
+        "山猫",
+        "信鸽",
+        "玉夜",
+        "流金",
+        "青山",
+        "阿黑",
+        "情墨",
+        "旧影",
+        "新安",
+        "红结",
+        "通用"
+      ],
+      "description": "归属角色"
+    },
+    "owner": {
+      "type": "string",
+      "description": "维护人"
+    },
+    "source_level": {
+      "type": "string",
+      "enum": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "L5-seed"
+      ],
+      "description": "来源等级"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "pending_review",
+        "seed"
+      ],
+      "description": "条目状态"
+    },
+    "can_support_strong_action": {
+      "type": "boolean",
+      "description": "是否可支撑强动作（BUY/SELL）"
+    },
+    "applicable_scenes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "日报",
+          "深度分析",
+          "每日荐股",
+          "模拟交易",
+          "保护机制",
+          "临时分析"
+        ]
+      },
+      "description": "适用场景列表"
+    },
+    "rule_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^R-[A-Z0-9]{3}-\\d{4}$"
+      },
+      "description": "关联规则ID列表"
+    },
+    "signal_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^SIG-\\d{3}$"
+      },
+      "description": "关联信号ID列表"
+    },
+    "content": {
+      "type": "object",
+      "description": "知识条目结构化内容",
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "array"
+        },
+        "thresholds": {
+          "type": "object"
+        },
+        "examples": {
+          "type": "array"
+        },
+        "conditions": {
+          "type": "array"
+        },
+        "actions": {
+          "type": "array"
+        },
+        "template": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "migrated_from_md_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "原始MD文件的SHA256指纹，用于验证迁移一致性"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "条目版本号"
+    },
+    "knowledge_aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "知识条目别名（用于兼容旧引用）"
+    }
+  },
+  "additionalProperties": false
+}

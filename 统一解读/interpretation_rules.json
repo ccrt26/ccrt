@@ -1,0 +1,177 @@
+{
+  "version": "1.0",
+  "description": "统一解读机器规则 — 从六库MD提取的结构化规则集，脚本优先读取此文件，失败fallback到旧MD",
+  "source_level_policy": {
+    "levels": [
+      {"level": "L1", "can_support_strong_action": true, "description": "官方权威源（交易所/央行/统计局）"},
+      {"level": "L2", "can_support_strong_action": true, "description": "项目验证源（回测验证/历史统计）"},
+      {"level": "L3", "can_support_strong_action": false, "description": "半权威源（方法论+实践）"},
+      {"level": "L4", "can_support_strong_action": false, "description": "待验证方法论（经典理论待验证）"},
+      {"level": "L5", "can_support_strong_action": false, "description": "经验规则（角色经验，数据待沉淀）"},
+      {"level": "L5-seed", "can_support_strong_action": false, "description": "种子信号（需20样本验证方可升级）"}
+    ],
+    "strong_action_rules": [
+      {"rule": "至少1条支持证据为L1/L2/L3方可BUY/SELL", "severity": "BLOCK"},
+      {"rule": "knowledge_refs全部为L4/L5/L5-seed时禁止BUY/SELL", "severity": "BLOCK"},
+      {"rule": "L5-seed信号不得用于动作升级，除非有L1-L4主证据", "severity": "BLOCK"},
+      {"rule": "单一L5/L5-seed证据不得支撑强动作", "severity": "BLOCK"}
+    ],
+    "upgrade_thresholds": {
+      "L5_seed_to_L4": {"min_samples": 20, "min_winrate": 0.6, "min_ic": 0.02},
+      "L4_to_L3": {"min_samples": 50, "min_winrate": 0.65, "min_ic": 0.03},
+      "L3_to_L2": {"min_samples": 100, "min_winrate": 0.7, "min_ic": 0.05}
+    }
+  },
+  "signal_winrate_rules": {
+    "winrate_thresholds": {
+      "excellent": 0.8,
+      "good": 0.65,
+      "acceptable": 0.5,
+      "poor": 0.4
+    },
+    "sample_size_requirements": {
+      "minimum_for_evaluation": 5,
+      "minimum_for_upgrade": 20,
+      "target_for_statistical_significance": 30
+    },
+    "supervision_rules": [
+      {"condition": "连续10个样本胜率<40%", "action": "自动降级至L5-seed"},
+      {"condition": "IC连续5期为负", "action": "触发review"},
+      {"condition": "累计样本>=100且胜率>=70%", "action": "可申请升级至L2"}
+    ],
+    "signals": [
+      {"signal_id": "SIG-001", "name": "MACD日线金叉", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-002", "name": "成交量异常放大", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-003", "name": "RSI超卖", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-004", "name": "KDJ金叉", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-005", "name": "布林带下轨反弹", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-006", "name": "MACD日线死叉", "category": "技术", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-007", "name": "主力资金净流入", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-008", "name": "主力资金净流出", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-009", "name": "大单净买入占比上升", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-010", "name": "大单净卖出占比上升", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-011", "name": "融资余额持续增加", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-012", "name": "融资余额持续减少", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-013", "name": "北向资金持续净买入", "category": "资金", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-014", "name": "涨停板封单率上升", "category": "情绪", "seed_estimate": true, "can_upgrade_action": false},
+      {"signal_id": "SIG-015", "name": "跌停板封单率上升", "category": "情绪", "seed_estimate": true, "can_upgrade_action": false}
+    ]
+  },
+  "u9_checks": [
+    {"check_id": "U9-01", "name": "事实观点分离", "result_type": "WARN", "condition": "data_fact含结论性词汇", "description": "data_fact应为纯事实，不含'建议/看好/推荐/买入/卖出'等"},
+    {"check_id": "U9-02", "name": "反证存在", "result_type": "BLOCK", "condition": "counter_evidence为空", "description": "每条解释必须有至少1条反证"},
+    {"check_id": "U9-03", "name": "反证质量", "result_type": "WARN", "condition": "仅1条反证且为套话", "description": "套话列表: 市场风险/政策风险/系统性风险/不确定性/大盘波动"},
+    {"check_id": "U9-04", "name": "失效条件", "result_type": "BLOCK", "condition": "invalidation_condition为空或<15字", "description": "必须写明在什么条件下结论失效"},
+    {"check_id": "U9-05", "name": "单一信号强结论", "result_type": "WARN", "condition": "仅1条支持证据+BUY/SELL", "description": "单一证据不足以支撑强动作"},
+    {"check_id": "U9-06", "name": "相关性≠因果", "result_type": "WARN", "condition": "出现因果断言表述", "description": "避免'因为X所以Y涨/跌'式的因果断言"}
+  ],
+  "u10_checks": [
+    {"check_id": "U10-01", "name": "触发条件", "result_type": "BLOCK", "condition": "BUY/SELL无trigger_condition", "description": "强动作必须有明确的触发条件"},
+    {"check_id": "U10-02", "name": "置信度与动作匹配", "result_type": "BLOCK", "condition": "LOW置信度+BUY/SELL", "description": "LOW置信度下不得给出强动作"},
+    {"check_id": "U10-03", "name": "动作三要素", "result_type": "BLOCK", "condition": "BUY/SELL缺price_range/position_limit/time_window", "description": "强动作必须有价格范围/仓位限制/时间窗口"},
+    {"check_id": "U10-04", "name": "模板污染BLOCK", "result_type": "BLOCK", "condition": "含BLOCK禁用短语", "description": "见template_pollution_rules.block_phrases"},
+    {"check_id": "U10-05", "name": "模板污染WARN", "result_type": "WARN", "condition": "含WARN建议替换短语", "description": "见template_pollution_rules.warn_phrases"},
+    {"check_id": "U10-06", "name": "动作可执行性", "result_type": "WARN", "condition": "缺触发条件且无时间窗口", "description": "BUY/SELL/WATCH至少需触发条件或时间窗口"}
+  ],
+  "template_pollution_rules": {
+    "block_phrases": [
+      {"phrase": "大概率上涨", "reason": "因果关系不成立"},
+      {"phrase": "确定性机会", "reason": "不存在确定性"},
+      {"phrase": "后市看涨", "reason": "无时间窗口"},
+      {"phrase": "逢低布局", "reason": "未定义'低'的标准"},
+      {"phrase": "长期看好", "reason": "未定义'长期'"},
+      {"phrase": "强烈推荐", "reason": "无量化标准"},
+      {"phrase": "毋庸置疑", "reason": "绝对性表述"},
+      {"phrase": "必然", "reason": "绝对性表述"},
+      {"phrase": "肯定", "reason": "绝对性表述"},
+      {"phrase": "一定", "reason": "绝对性表述"}
+    ],
+    "warn_phrases": [
+      {"phrase": "建议关注", "suggestion": "替换为具体触发条件"},
+      {"phrase": "值得关注", "suggestion": "替换为观察指标"},
+      {"phrase": "可适当", "suggestion": "请量化范围"},
+      {"phrase": "相对乐观", "suggestion": "请量化程度"},
+      {"phrase": "偏谨慎", "suggestion": "请量化程度"},
+      {"phrase": "存在机会", "suggestion": "请指明具体机会"},
+      {"phrase": "风险可控", "suggestion": "请列出具体风险"},
+      {"phrase": "有望", "suggestion": "替换为概率估计"},
+      {"phrase": "或将", "suggestion": "替换为条件判断"},
+      {"phrase": "大概率", "suggestion": "请给出概率区间"}
+    ],
+    "data_fact_blocked_terms": ["建议","看好","推荐","买入","卖出","增持","减持","值得","机会","风险小","安全边际","估值偏低","估值偏高","超跌","超买","底部","顶部","见底","见顶"],
+    "boilerplate_phrases": ["市场风险","政策风险","系统性风险","不确定性","大盘波动"]
+  },
+  "eval_lifecycle": {
+    "windows": {
+      "t1": {"name": "T+1初步验证", "check_offset_days": 1},
+      "t3": {"name": "T+3趋势确认", "check_offset_days": 3},
+      "t5": {"name": "T+5综合判定", "check_offset_days": 5}
+    },
+    "judgment_matrix": {
+      "t1_hit_t3_hit_t5_hit": "命中",
+      "t1_hit_t3_hit_t5_partial_or_fail": "部分命中",
+      "t1_hit_t3_fail": "失败",
+      "t1_fail": "失败",
+      "all_insufficient_or_na": "不可评估",
+      "default": "部分命中"
+    },
+    "backfill_labels": {
+      "待评估": "initial",
+      "数据不足": "awaiting_data",
+      "命中": "hit",
+      "部分命中": "partial",
+      "失败": "fail",
+      "不可评估": "insufficient"
+    }
+  },
+  "failure_attribution_rules": [
+    {"attribution_id": "F-001", "name": "数据问题", "condition_pattern": "t1/t3/t5_check.note含'数据'或'缺失'", "description": "数据缺失或质量问题导致的失败"},
+    {"attribution_id": "F-002", "name": "市场突变", "condition_pattern": "note含'事件'或'突变'或'不可预见'", "description": "不可预见的市场突变导致预测失效"},
+    {"attribution_id": "F-003", "name": "动作过强", "condition_pattern": "confidence=LOW且action_bias=BUY/SELL", "description": "低置信度下给出强动作"},
+    {"attribution_id": "F-004", "name": "规则问题", "condition_pattern": "confidence=HIGH且action_bias=BUY/SELL", "description": "高置信度但仍失败，规则可能需要调整"},
+    {"attribution_id": "F-005", "name": "待进一步分析", "condition_pattern": "其他情况", "description": "无法自动归因，需人工分析"}
+  ],
+  "role_package_contracts": [
+    {"role": "腰子", "required_fields": ["interpretation_id","scene","stock_code","trade_date","role","data_fact","interpretation_hypothesis","supporting_evidence","counter_evidence","investment_implication","action_bias","confidence","invalidation_condition","eval_window","rule_refs","knowledge_refs"], "output_format": "完整解释对象", "constraints": ["必须整合全团意见","BUY/SELL必须含trigger_condition","L5-seed不得升级为强动作"]},
+    {"role": "山猫", "required_fields": ["role","data_fact","interpretation_hypothesis","confidence"], "output_format": "宏观背景描述", "constraints": ["只提供宏观面事实和分析","不给出股级别建议","反方角色不签action_bias"]},
+    {"role": "信鸽", "required_fields": ["role","data_fact","interpretation_hypothesis"], "output_format": "事件影响评估", "constraints": ["只提供事件事实和影响评估","不替代腰子做最终决定"]},
+    {"role": "玉夜", "required_fields": ["stock_code","trade_date","data_fact"], "output_format": "数据事实报告", "constraints": ["只提供数据结构化事实","不含分析结论","维护数据质量和新鲜度"]},
+    {"role": "流金", "required_fields": ["role","data_fact","investment_implication"], "output_format": "风控边界意见", "constraints": ["只提供风控层面的约束","仓位/止损等边界检查"]},
+    {"role": "青山", "required_fields": ["role","data_fact","interpretation_hypothesis","supporting_evidence"], "output_format": "信号分析报告", "constraints": ["只提供信号维度的分析","signal_refs必须引用已注册信号"]}
+  ],
+  "knowledge_aliases": {
+    "YAOZI-TECH-001": ["KNOW-腰子-MACD"],
+    "YAOZI-VAL-001": ["KNOW-腰子-PE"],
+    "YAOZI-FUND-001": ["KNOW-腰子-资金"],
+    "YAOZI-POS-001": ["KNOW-腰子-仓位"],
+    "YAOZI-EVENT-001": ["KNOW-腰子-事件"],
+    "SHANMAO-MACRO-001": ["KNOW-山猫-宏观"],
+    "SHANMAO-MARKET-001": ["KNOW-山猫-市场"],
+    "SHANMAO-POLICY-001": ["KNOW-山猫-政策"],
+    "XINGE-EVENT-001": ["KNOW-信鸽-事件"],
+    "XINGE-FILTER-001": ["KNOW-信鸽-过滤"],
+    "YUYE-DATA-001": ["KNOW-玉夜-数据"],
+    "YUYE-QUALITY-001": ["KNOW-玉夜-质量"],
+    "LIUJIN-RISK-001": ["KNOW-流金-风险"],
+    "LIUJIN-STOP-001": ["KNOW-流金-止损"],
+    "QINGSHAN-SIGNAL-001": ["KNOW-青山-信号"],
+    "QINGSHAN-FACTOR-001": ["KNOW-青山-因子"],
+    "QINGSHAN-BACKTEST-001": ["KNOW-青山-回测"]
+  },
+  "lishi_method_review_field_descriptions": {
+    "description": "砺石 method_review 字段说明（仅记录用途，不要求 validator 消费）",
+    "fields": [
+      {"name": "role_code", "type": "string", "const": "LISHI", "description": "角色代码，固定为LISHI"},
+      {"name": "result", "type": "string", "enum": ["PASS","WARN","BLOCK"], "description": "砺石方法校准结果"},
+      {"name": "main_challenge", "type": "string", "description": "主要方法挑战，砺石对推理链最核心的质疑"},
+      {"name": "calibration_note", "type": "string", "description": "给腰子的校准参考，不超过100字"},
+      {"name": "rejected_reason", "type": "string", "description": "腰子驳回砺石建议时填写的具体理由"}
+    ],
+    "usage_notes": [
+      "method_review 为 optional metadata，不进入 interpretation 的 required 字段",
+      "仅在砺石被唤醒时填写，否则不存在",
+      "不走 validate_interpretation.py 的校验逻辑",
+      "未来如需强校验，再单独启用 validator 消费此规则"
+    ]
+  }
+}

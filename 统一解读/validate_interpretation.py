@@ -27,6 +27,14 @@ POLLUTION = {
         ("或将", "请替换为条件判断"), ("大概率", "请给出概率区间"),
     ]
 }
+
+# D07 v1.2 过度表达触发词
+SOCIAL_SECURITY_OVERUSE = [
+    "社保买了所以买", "养老金增持所以买入", "退出前十大等于清仓",
+    "社保减持所以卖出", "长期机构资金作为交易指令", "直接生成买卖信号",
+    "养老金增持=买入", "社保基金=交易信号"
+]
+
 DATA_FACT_BLOCKED = ["建议","看好","推荐","买入","卖出","增持","减持","值得","机会",
                      "风险小","安全边际","估值偏低","估值偏高","超跌","超买","底部","顶部","见底","见顶"]
 BOILERPLATE = ["市场风险","政策风险","系统性风险","不确定性","大盘波动"]
@@ -148,9 +156,36 @@ def run_u9(obj):
     findings = []
     status = "PASS"
 
-    # 事实观点分离
-    data_str = json.dumps(obj.get("data_fact", {}), ensure_ascii=False)
-    hits = [t for t in DATA_FACT_BLOCKED if t in data_str]
+    # 事实观点分离（递归扫描，跳过结构化枚举字段）
+    def _collect_text(value, path=""):
+        skip_paths = {
+            "data_fact.values.change_type",
+            "data_fact.values.change_types",
+            "data_fact.values.institutional_change_type",
+            "data_fact.values.long_term_institutional_change_type",
+            "data_fact.values.holding_rank",
+            "data_fact.values.share_count",
+            "data_fact.values.share_ratio",
+            "data_fact.values.consecutive_periods",
+            "data_fact.values.pension_chain",
+        }
+        if path in skip_paths:
+            return []
+        if isinstance(value, dict):
+            out = []
+            for k, v in value.items():
+                out.extend(_collect_text(v, f"{path}.{k}" if path else k))
+            return out
+        if isinstance(value, list):
+            out = []
+            for item in value:
+                out.extend(_collect_text(item, path))
+            return out
+        if isinstance(value, str):
+            return [value]
+        return []
+    data_text = " ".join(_collect_text(obj.get("data_fact", {}), "data_fact"))
+    hits = [t for t in DATA_FACT_BLOCKED if t in data_text]
     if hits:
         findings.append({"check": "事实观点分离", "result": "WARN",
                          "detail": f"data_fact 含结论性词汇: {', '.join(hits)}"})
@@ -312,6 +347,165 @@ def run_extra_checks(obj):
     return findings
 
 
+def run_d07_v12_checks(obj):
+    """D07 v1.2 增强校验：多假设、证据缺口、长期机构资金、结论强度"""
+    findings = []
+    fw = obj.get("framework_version", "")
+    if fw != "D07_v1.2":
+        return findings  # 非 v1.2 框架不触发
+
+    # ============================================================
+    # 1. 多假设检查
+    # ============================================================
+    hypos = obj.get("hypotheses", [])
+    if len(hypos) < 2:
+        findings.append({"check": "D07_v1.2-多假设", "result": "WARN",
+                         "detail": f"framework_version=D07_v1.2 但 hypotheses 仅 {len(hypos)} 条，至少需 2 条"})
+    for h in hypos:
+        for req in ["hypothesis_id", "statement", "status", "conclusion_strength"]:
+            if not h.get(req):
+                findings.append({"check": "D07_v1.2-假设结构", "result": "WARN",
+                                 "detail": f"hypothesis {h.get('hypothesis_id','?')} 缺少 {req}"})
+        if h.get("status") == "active" and not h.get("counter_evidence_refs") and not h.get("missing_data"):
+            findings.append({"check": "D07_v1.2-反证检查", "result": "WARN",
+                             "detail": f"hypothesis {h.get('hypothesis_id','?')} active 但无 counter_evidence_refs 或 missing_data"})
+
+    # 仅一条假设 + 强动作
+    ab = obj.get("action_bias", "")
+    if len(hypos) <= 1 and ab in ("BUY", "SELL"):
+        findings.append({"check": "D07_v1.2-单一假设强动作", "result": "WARN",
+                         "detail": "仅 1 条 hypothesis 但 action_bias 为 BUY/SELL"})
+
+    # ============================================================
+    # 2. 证据缺口检查
+    # ============================================================
+    lie = obj.get("long_term_institutional_evidence", {})
+    gaps = obj.get("evidence_gap_requests", [])
+    p1_status = lie.get("p1_verification_status", "") if isinstance(lie, dict) else ""
+
+    if p1_status == "warn_pending":
+        if not gaps:
+            findings.append({"check": "D07_v1.2-证据缺口", "result": "WARN",
+                             "detail": "long_term_institutional_evidence.p1_verification_status=warn_pending 但 evidence_gap_requests 为空"})
+        else:
+            open_gaps = [g for g in gaps if g.get("status") == "open"]
+            if open_gaps:
+                for g in open_gaps:
+                    if not g.get("requested_fields"):
+                        findings.append({"check": "D07_v1.2-缺口字段", "result": "WARN",
+                                         "detail": f"gap {g.get('gap_id','?')} open 但缺少 requested_fields"})
+                    if not g.get("impact"):
+                        findings.append({"check": "D07_v1.2-缺口影响", "result": "WARN",
+                                         "detail": f"gap {g.get('gap_id','?')} open 但缺少 impact"})
+                # open gap → conclusion_strength 不得为"可定性"
+                cs = obj.get("conclusion_strength", "")
+                if cs == "可定性":
+                    findings.append({"check": "D07_v1.2-结论强度与缺口", "result": "BLOCK",
+                                     "detail": f"evidence_gap_requests 有 open gap 但 conclusion_strength='可定性'"})
+                # open gap 存在 → 显式报告 P1 待补证 WARN（正面的合规确认）
+                findings.append({"check": "D07_v1.2-P1原始披露待补证", "result": "WARN",
+                                 "detail": "P1原始披露单篇URL/PDF未闭合，已进入evidence_gap_requests；结论强度必须限制为风险假设或数据不足，不得声明P1 PASS。"})
+
+    # ============================================================
+    # 3. 长期机构资金检查
+    # ============================================================
+    if isinstance(lie, dict) and lie.get("status") == "present" and lie.get("records"):
+        records = lie.get("records", [])
+        for i, rec in enumerate(records):
+            rid = rec.get("report_period", f"records[{i}]")
+            for req in ["report_period", "shareholder_name_raw", "institution_type", "source_refs", "limitation_note"]:
+                if not rec.get(req):
+                    findings.append({"check": "D07_v1.2-机构资金记录", "result": "WARN",
+                                     "detail": f"{rid}: 缺少必填字段 {req}"})
+            # limitation_note 必须包含指定关键词
+            ln = rec.get("limitation_note", "")
+            required_kw = ["滞后", "退出", "不得作为买卖信号"]
+            missing_kw = [kw for kw in required_kw if kw not in ln]
+            if missing_kw or ("清仓" not in ln and "不等于" not in ln):
+                findings.append({"check": "D07_v1.2-限制说明", "result": "WARN",
+                                 "detail": f"{rid}: limitation_note 缺少必要关键词。需含：滞后、退出、不等于清仓/不等于xxx、不得作为买卖信号"})
+
+            # source_refs 只含 secondary_organization → p1 不能是 verified
+            srefs = rec.get("source_refs", [])
+            if srefs and all(s.get("source_level") == "secondary_organization" for s in srefs):
+                if p1_status == "verified":
+                    findings.append({"check": "D07_v1.2-来源等级", "result": "BLOCK",
+                                     "detail": f"{rid}: source_refs 仅含 secondary_organization 但 p1_verification_status=verified"})
+
+    # ============================================================
+    # 4. 社保/养老金过度解释检查
+    # ============================================================
+    text_full = json.dumps(obj, ensure_ascii=False)
+    for phrase in SOCIAL_SECURITY_OVERUSE:
+        if phrase in text_full:
+            findings.append({"check": "D07_v1.2-社保过度解释", "result": "BLOCK",
+                             "detail": f"发现过度解释表达: '{phrase}'。长期机构资金证据不得直接作为买卖信号。"})
+            break  # 一条足以 BLOCK
+
+    # ============================================================
+    # 5. 强动作限制
+    # ============================================================
+    if ab in ("BUY", "SELL"):
+        # P1 warn_pending → 强动作 BLOCK
+        if p1_status == "warn_pending":
+            findings.append({"check": "D07_v1.2-强动作+P1未验", "result": "BLOCK",
+                             "detail": "action_bias=BUY/SELL 但 long_term_institutional_evidence.p1_verification_status=warn_pending"})
+
+        # 检查 supporting_evidence 是否主要来自长期机构资金
+        evidence = obj.get("supporting_evidence", [])
+        if isinstance(lie, dict) and lie.get("status") == "present":
+            # 主要证据来自机构资金的判断：看是否 mentioning evidence 与机构资金相关
+            ev_text = " ".join(e.get("evidence", "") for e in evidence)
+            lie_keywords = ["社保", "养老金", "养老保险", "年金", "险资", "长期机构", "机构资金"]
+            lie_hits = sum(1 for kw in lie_keywords if kw in ev_text)
+            if lie_hits >= 2 and len(evidence) >= 1 and lie_hits / max(len(evidence), 1) >= 0.5:
+                findings.append({"check": "D07_v1.2-机构资金强动作", "result": "BLOCK",
+                                 "detail": "支持证据主要来自长期机构资金，但 action_bias=BUY/SELL。长期机构资金最多辅助 WATCH/HOLD/NEUTRAL。"})
+
+    # ============================================================
+    # 6. 结论强度检查
+    # ============================================================
+    cs = obj.get("conclusion_strength", "")
+    if cs:
+        if p1_status == "warn_pending" and cs not in ("风险假设", "数据不足"):
+            findings.append({"check": "D07_v1.2-结论强度与P1", "result": "WARN",
+                             "detail": f"p1_verification_status=warn_pending 但 conclusion_strength='{cs}'，应为'风险假设'或'数据不足'"})
+
+        # 仅 P0 索引，无 P1 或 gap → 不得可定性
+        if isinstance(lie, dict) and lie.get("status") == "present" and p1_status != "verified":
+            has_p0 = any(s.get("source_level") == "original_disclosure"
+                         for rec in lie.get("records", [])
+                         for s in rec.get("source_refs", []))
+            if not has_p0 and cs == "可定性":
+                findings.append({"check": "D07_v1.2-结论强度与P0", "result": "WARN",
+                                 "detail": "仅 P0 辅助索引，无 P1 原始披露 verified，但 conclusion_strength='可定性'"})
+
+    # ============================================================
+    # 7. P1 verified 防伪检查
+    # ============================================================
+    if p1_status == "verified" and isinstance(lie, dict) and lie.get("status") == "present":
+        records = lie.get("records", [])
+        for i, rec in enumerate(records):
+            srefs = rec.get("source_refs", [])
+            official = [s for s in srefs if s.get("source_level") in ("original_disclosure", "exchange_announcement")]
+            if not official:
+                findings.append({"check": "D07_v1.2-P1伪verified", "result": "BLOCK",
+                                 "detail": f"声明 p1_verification_status=verified 但无 source_level=original_disclosure/exchange_announcement 的来源记录"})
+            else:
+                for s in official:
+                    missing = []
+                    if not s.get("source_url"): missing.append("source_url")
+                    if not s.get("local_pdf_path"): missing.append("local_pdf_path")
+                    if not s.get("sha256"): missing.append("sha256")
+                    if s.get("verification_status") != "verified":
+                        missing.append("verification_status!=verified")
+                    if missing:
+                        findings.append({"check": "D07_v1.2-P1伪verified", "result": "BLOCK",
+                                         "detail": f"声明 verified 但官方来源缺少: {', '.join(missing)}"})
+
+    return findings
+
+
 # ============================================================
 # P0-G: Registry/Signal helpers
 # ============================================================
@@ -348,12 +542,32 @@ def _find_registry_entry(kid):
 
 
 def _load_signal_ids():
+    """读取已注册信号ID列表。
+    优先从 interpretation_rules.json 读取，失败时 fallback 到 信号胜率库_v1.0.md。"""
     global _signal_cache
     if _signal_cache is not None:
         return _signal_cache
     import os as _os
-    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "六库", "信号胜率库_v1.0.md")
     _signal_cache = set()
+
+    # 尝试从 interpretation_rules.json 读取（结构化优先）
+    rules_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "interpretation_rules.json")
+    if _os.path.exists(rules_path):
+        try:
+            with open(rules_path, "r", encoding="utf-8") as f:
+                rules_data = json.load(f)
+            signals = rules_data.get("signal_winrate_rules", {}).get("signals", [])
+            for sig in signals:
+                sid = sig.get("signal_id", "")
+                if sid:
+                    _signal_cache.add(sid)
+            if _signal_cache:
+                return _signal_cache
+        except Exception:
+            pass
+
+    # Fallback: 从旧 信号胜率库_v1.0.md 读取
+    path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "六库", "信号胜率库_v1.0.md")
     try:
         with open(path, "r", encoding="utf-8") as f:
             import re
@@ -396,10 +610,16 @@ def main():
         if f["result"] == "BLOCK":
             schema_errs.append(f["detail"])
 
-    # Step 2: U-9
+    # Step 2: D07 v1.2 校验
+    d07_findings = run_d07_v12_checks(obj)
+    for f in d07_findings:
+        if f["result"] == "BLOCK":
+            schema_errs.append(f["detail"])
+
+    # Step 3: U-9
     u9_status, u9_findings = run_u9(obj) if not args.skip_schema else ("SKIP", [])
 
-    # Step 3: U-10
+    # Step 4: U-10
     u10_status, u10_findings = run_u10(obj) if not args.skip_schema else ("SKIP", [])
 
     # 合并结果
@@ -410,7 +630,9 @@ def main():
         overall = "BLOCK"
     elif u9_status == "WARN" or u10_status == "WARN" or schema_warns:
         overall = "WARN"
-
+    # D07 v1.2 的 WARN 也能升级整体
+    if overall == "PASS" and any(f["result"] == "WARN" for f in d07_findings):
+        overall = "WARN"
     result = {
         "interpretation_id": obj.get("interpretation_id", "UNKNOWN"),
         "timestamp": datetime.now().isoformat(),
@@ -418,6 +640,7 @@ def main():
             "errors": schema_errs,
             "warnings": schema_warns
         },
+        "d07_v12_checks": d07_findings,
         "u9": {"status": u9_status, "findings": u9_findings} if u9_status != "SKIP" else None,
         "u10": {"status": u10_status, "findings": u10_findings} if u10_status != "SKIP" else None,
         "extra_checks": extra_findings,
@@ -444,6 +667,10 @@ def main():
         if result["u10"]:
             print(f"\nU-10 动作审计: {u10_status}")
             for f in u10_findings:
+                print(f"  [{f['result']}] {f['check']}: {f['detail']}")
+        if d07_findings:
+            print(f"\nD07 v1.2 校验:")
+            for f in d07_findings:
                 print(f"  [{f['result']}] {f['check']}: {f['detail']}")
         if extra_findings:
             print(f"\n额外检查:")

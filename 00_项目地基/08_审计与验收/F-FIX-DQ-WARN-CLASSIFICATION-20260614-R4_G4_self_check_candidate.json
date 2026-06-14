@@ -1,0 +1,65 @@
+{
+  "run_id": "F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4",
+  "generated_at": "2026-06-14T15:24:18",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope": "DQ residual cleanup: side-effect-safe tracker, warn classification, real data block separation",
+  "verdict": "PASS",
+  "errors": [],
+  "command": [
+    "python3",
+    "代码文件/监督机制/check_data_quality.py",
+    "--date",
+    "20991231",
+    "--json-output",
+    "/private/tmp/ccrt_dq_r4_report.json"
+  ],
+  "returncode": 0,
+  "stdout_tail": "[DQ-Gate] FAIL | 5 issues | blocked=True\n  [FAIL] DQ-F1: 行情覆盖率0.0% < 80%\n  [FAIL] DQ-F2: K线数据不足(30根): ['688041', '688256', '688521', '603986', '688012']\n  [WARN] DQ-W2: 财务覆盖率18.2% < 90%\n  [WARN] DQ-W3: 资金流覆盖率18.2% < 50%\n  [WARN] DQ-W9: 159个字段缺失(非不适用)。required_missing=0, optional_missing=159(非生产阻塞)\n[DQ-Gate] target_date=20991231\n",
+  "stderr_tail": "",
+  "tracker_sha_before": "d722460d11dacaa4ed82bd2722e24f292a474cf556b53256bf98696fedc56560",
+  "tracker_sha_after": "d722460d11dacaa4ed82bd2722e24f292a474cf556b53256bf98696fedc56560",
+  "tracker_unchanged_without_write_tracker": true,
+  "report_path": "/private/tmp/ccrt_dq_r4_report.json",
+  "report_overall": "FAIL",
+  "display_overall": "BLOCK",
+  "overall_gate": "BLOCK",
+  "release_blocking": true,
+  "issue_summary": {
+    "total_issues": 5,
+    "blocking_issues": 2,
+    "non_blocking_warnings": 3,
+    "warn_non_blocking_ids": [
+      "DQ-W2",
+      "DQ-W3",
+      "DQ-W9"
+    ],
+    "blocking_ids": [
+      "DQ-F1",
+      "DQ-F2"
+    ],
+    "required_missing": 0,
+    "optional_missing": 159,
+    "not_applicable_fields": 6
+  },
+  "dq_w9": [
+    {
+      "id": "DQ-W9",
+      "severity": "WARN",
+      "desc": "159个字段缺失(非不适用)。required_missing=0, optional_missing=159(非生产阻塞)",
+      "category": "field_applicability_gap",
+      "required_missing": 0,
+      "optional_missing": 159,
+      "release_blocking": false,
+      "display_level": "WARN_NON_BLOCKING",
+      "action": "OPTIONAL_GAP_TRACKING",
+      "explain": "必填字段缺失才阻断；可选字段缺失仅作为质量观察项"
+    }
+  ],
+  "real_data_issue_status": "BLOCK_REAL_DATA",
+  "real_data_blocking_ids": [
+    "DQ-F1",
+    "DQ-F2"
+  ],
+  "note": "DQ-F1/DQ-F2 如存在，属于真实数据质量阻断，不在本包伪装修复；本包只确保 WARN 分类与验证副作用正确。"
+}

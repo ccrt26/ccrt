@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stage Gate Policy Schema",
+  "description": "阶段门路由策略的 schema 定义 — 承接 FLOW.md §3 + 与 stage_acceptance_policy.json 互补",
+  "type": "object",
+  "required": ["version", "description", "gates", "typical_paths", "non_bypass_rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "name", "can_skip", "purpose"],
+        "properties": {
+          "gate": { "type": "string", "pattern": "^G[0-6]$" },
+          "name": { "type": "string" },
+          "can_skip": { "type": "boolean" },
+          "skip_condition": { "type": "string" },
+          "purpose": { "type": "string" }
+        }
+      }
+    },
+    "typical_paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "flow_code": { "type": "string" },
+          "path": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "non_bypass_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": { "type": "string" },
+          "severity": { "type": "string" },
+          "applicable_flows": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "relationship_to_acceptance_policy": {
+      "type": "string",
+      "description": "本文件与 04_一致性闸门/stage_acceptance_policy.json 的关系说明"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-06-12",
+  "policy": "daily report generation target pool is separated from data collection pool",
+  "active_targets": [
+    {
+      "code": "600114",
+      "name": "东睦股份",
+      "enabled": true,
+      "reason": "当前唯一重点持仓日报目标"
+    }
+  ],
+  "activation_rule": "New target stocks must complete baseline authority flow before being enabled here."
+}

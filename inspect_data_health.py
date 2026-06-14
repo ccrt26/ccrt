@@ -631,7 +631,101 @@ def run_inspection(scope_days=SCOPE_DAYS, auto_repair=True):
     return day_results, repairs_applied
 
 
+def run_inspection_single(date_str, auto_repair=True):
+    """单日巡检入口 — daily_focus 模式，使用生产闭环必需清单"""
+    print("=" * 60)
+    print(f"  单日沉淀巡检: {date_str[:4]}-{date_str[4:6]}-{date_str[6:8]}")
+    print(f"  Profile: daily_focus")
+    print("=" * 60)
+    # 加载 daily_focus 配置
+    _scope = {"required_outputs": [
+        {"path": "data_full.json", "archive_dir": "04_原始数据", "desc": "全量采集数据"},
+        {"path": "data_scored.json", "archive_dir": "04_原始数据", "desc": "评分数据"},
+        {"path": "data_final.json", "archive_dir": "04_原始数据", "desc": "终选数据"},
+        {"path": "score_history.jsonl", "archive_dir": "04_原始数据", "desc": "评分历史"},
+        {"path": "dynamic_pool.json", "archive_dir": "05_参考数据", "desc": "动态股票池"},
+    ]}
+    _scope_path = Path(__file__).parent / "configs" / "daily_production_scope.json"
+    if _scope_path.exists():
+        import json as _j
+        _scope = _j.loads(_scope_path.read_text())
+    _required_files = [
+        (r["archive_dir"], "{date}_" + r["path"].split("/")[-1], r["desc"])
+        for r in _scope.get("required_outputs", _scope["required_outputs"])
+    ]
+    day_files = {}
+    for subdir, template, desc in _required_files:
+        key = template.replace("data_", "").replace(".json", "").replace("score_history", "score_history")
+        key = template.replace("{date}_", "").split(".")[0]
+        if "data_full" in template: key = "data_full"
+        elif "data_scored" in template: key = "data_scored"
+        elif "data_final" in template: key = "data_final"
+        elif "score_history" in template: key = "score_history"
+        elif "dynamic_pool" in template: key = "dynamic_pool"
+        result = check_file_exists(subdir, template, date_str)
+        result["desc"] = desc
+        result["type"] = key
+        result["required"] = True
+        day_files[key] = result
+    missing = [k for k, v in day_files.items() if v["status"] != "ok"]
+    corrupt = [k for k, v in day_files.items() if v["status"] == "corrupt"]
+    if missing:
+        print(f"  [WARN] 缺失: {missing}")
+    if corrupt:
+        print(f"  [WARN] 损坏: {corrupt}")
+    if not missing and not corrupt:
+        print(f"  [PASS] 全部必需产物存在")
+    had_warn = bool(missing or corrupt)
+    print(f"\n{'='*60}")
+    print(f"  巡检汇总")
+    print(f"{'='*60}")
+    print(f"  PASS: {0 if had_warn else 1}  |  WARN: {1 if had_warn else 0}")
+    # Build JSON result for --json-output
+    _result_json = {"overall": "WARN" if had_warn else "PASS", "date": date_str,
+                    "required_missing": missing, "corrupt": corrupt,
+                    "required_count": len(day_files), "optional_count": 0}
+    _rio_path = getattr(getattr(sys, '_args', None), 'json_output', '') or ''
+    if not _rio_path:
+        for _idx, _arg in enumerate(sys.argv):
+            if _arg == "--json-output" and _idx + 1 < len(sys.argv):
+                _rio_path = sys.argv[_idx + 1]
+                break
+    if _rio_path:
+        import json as _j
+        os.makedirs(os.path.dirname(_rio_path) or ".", exist_ok=True)
+        with open(_rio_path, "w") as _f:
+            _j.dump(_result_json, _f, ensure_ascii=False, indent=2)
+    return day_files, []
+
+
 if __name__ == '__main__':
-    import shutil
-    do_repair = '--no-repair' not in sys.argv
-    run_inspection(auto_repair=do_repair)
+    import shutil, argparse as _ap
+    _parser = _ap.ArgumentParser(description="历史数据沉淀巡检+修复")
+    _parser.add_argument("--no-repair", action="store_true", help="只读模式，不执行自动修复")
+    _parser.add_argument("--date", default="", help="YYYYMMDD 单日检查（不指定则扫描最近N天）")
+    _parser.add_argument("--profile", default="", choices=["", "daily_focus"],
+                         help="巡检配置：daily_focus 使用重点股票日报闭环必需产物清单")
+    _parser.add_argument("--json-output", default="", help="输出JSON路径")
+    _args = _parser.parse_args()
+    do_repair = not _args.no_repair
+
+    if _args.profile == "daily_focus":
+        # run_inspection_single 内部已加载 daily_focus 配置，此处仅输出说明
+        _scope_path = Path(__file__).parent / "configs" / "daily_production_scope.json"
+        if _scope_path.exists():
+            import json as _j2
+            _s2 = _j2.loads(_scope_path.read_text())
+            _o2 = [o["path_template"] for o in _s2.get("out_of_scope_outputs", [])]
+            print(f"[daily_focus] 使用生产闭环必需清单，超范围已排除: {_o2}")
+
+    if _args.date:
+        # 单日模式：只检查指定日期
+        _date_str = _args.date
+        _day_files, _ = run_inspection_single(_date_str, auto_repair=do_repair)
+        _missing = [k for k, v in _day_files.items() if v.get("status") != "ok"]
+        _corrupt = [k for k, v in _day_files.items() if v.get("status") == "corrupt"]
+        if _missing or _corrupt:
+            sys.exit(2)  # BLOCK
+        sys.exit(0)  # PASS
+    else:
+        run_inspection(auto_repair=do_repair)

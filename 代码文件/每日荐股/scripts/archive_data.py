@@ -2,7 +2,7 @@
 """archive_data.py — 每日数据归档脚本 (macOS Python 移植)
 
 从 代码文件/数据/ 归档当日产出到 历史数据/ 对应子目录。
-保留策略：每目录最新60个文件 + 90天过期清理。
+保留策略：冷数据永久保留；必要时仅按显式参数裁剪。
 
 Code level: L0
 """
@@ -19,8 +19,8 @@ ARCHIVE_ROOT = ROOT / "历史数据"
 SCRIPTS_DIR = ROOT / "代码文件" / "每日荐股" / "scripts"
 LOG_FILE = SCRIPTS_DIR / f"workflow_{datetime.now().strftime('%Y%m')}.log"
 
-KEEP_LATEST = 60
-RETENTION_DAYS = 90
+KEEP_LATEST = 999999
+RETENTION_DAYS = 36500
 SAFE_FLOOR = 10  # 安全底线：每个目录至少保留10个文件
 
 # 归档映射: (源文件, 目标子目录, 是否必须)

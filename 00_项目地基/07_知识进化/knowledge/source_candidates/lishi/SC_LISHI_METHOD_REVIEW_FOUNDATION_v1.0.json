@@ -1,0 +1,19 @@
+{
+  "source_id": "SC-LISHI-METHOD-REVIEW-FOUNDATION-v1.0",
+  "title": "砺石方法校准角色初始规则来源",
+  "owner_role": "砺石",
+  "owner_role_code": "LISHI",
+  "status": "candidate_registered",
+  "source_type": "project_design",
+  "next_step": "QualityScore",
+  "downstream_created": false,
+  "created": "2026-06-12",
+  "description": "砺石方法审查基础源 — 同源证据识别、因果混淆识别、结论强度校验",
+  "source_files": [
+    "统一解读/角色解释包/砺石_方法审查包.md",
+    "统一解读/interpretation_schema.json",
+    "00_项目地基/07_知识进化/knowledge/roles/lishi/01_角色职责.md",
+    "00_项目地基/07_知识进化/knowledge/roles/lishi/02_启动必读.md",
+    "00_项目地基/07_知识进化/knowledge/roles/lishi/03_能力边界.md"
+  ]
+}

@@ -7,19 +7,26 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STORE = os.path.join(PROJECT_ROOT, "统一解读", "eval_hooks", "store")
 PROPOSALS = os.path.join(PROJECT_ROOT, "统一解读", "evolution", "proposals")
 REGISTRY = os.path.join(PROJECT_ROOT, "统一解读", "knowledge_registry.json")
+EVALUATED = {"命中", "部分命中", "失败", "不可评估"}
 
-os.makedirs(PROPOSALS, exist_ok=True)
 
+
+LOAD_ERRORS = []
 
 def load_hooks():
     hooks = []
-    if not os.path.exists(STORE): return hooks
+    LOAD_ERRORS.clear()
+    if not os.path.exists(STORE):
+        return hooks
     for fn in sorted(os.listdir(STORE)):
-        if not fn.endswith(".json"): continue
+        if not fn.endswith(".json"):
+            continue
+        path = os.path.join(STORE, fn)
         try:
-            with open(os.path.join(STORE, fn)) as f:
+            with open(path, encoding="utf-8-sig") as f:
                 hooks.append(json.load(f))
-        except: pass
+        except Exception as exc:
+            LOAD_ERRORS.append({"file": fn, "error": str(exc)})
     return hooks
 
 
@@ -104,6 +111,7 @@ def propose():
 
     # 写入草案
     if proposals:
+        os.makedirs(PROPOSALS, exist_ok=True)
         fn = f"evolution_proposal_{today}.json"
         path = os.path.join(PROPOSALS, fn)
         with open(path,"w",encoding="utf-8") as f:
@@ -114,6 +122,26 @@ def propose():
     else:
         print("无需更新草案（无失败案例或候选）")
 
+
+def pending_summary():
+    hooks = load_hooks()
+    pending = [h for h in hooks if h.get("comprehensive_result", "") not in EVALUATED]
+    pending_dates = sorted(str(h.get("created_at") or h.get("timestamp") or h.get("date") or "") for h in pending)
+    return {
+        "total": len(hooks),
+        "evaluated": len(hooks) - len(pending),
+        "pending": len(pending),
+        "pending_status": "WARN" if pending else "PASS",
+        "oldest_pending": next((x for x in pending_dates if x), "UNKNOWN"),
+        "pending_hook_ids": [
+            h.get("interpretation_id") or h.get("id") or h.get("hook_id") or "UNKNOWN"
+            for h in pending
+        ],
+        "load_errors": LOAD_ERRORS,
+    }
+
+def pending_json():
+    print(json.dumps(pending_summary(), ensure_ascii=False, indent=2))
 
 def weekly():
     """周报: eval_hooks统计+五库状态"""
@@ -128,6 +156,13 @@ def weekly():
     print(f"=== 知识进化周报 {date.today().isoformat()} ===")
     print(f"eval_hooks: {total}条")
     print(f"  已评估: {len(completed)}条 | 待评估: {len(pending)}条")
+    if pending:
+        pending_dates = sorted(str(h.get("created_at") or h.get("timestamp") or h.get("date") or "") for h in pending)
+        oldest = next((x for x in pending_dates if x), "UNKNOWN")
+        print(f"  pending_oldest: {oldest}")
+        print("  pending_status: WARN")
+    else:
+        print("  pending_status: PASS")
     if completed:
         print(f"  命中率: {len(hits)}/{len(completed)} = {len(hits)/len(completed)*100:.1f}%")
     else:
@@ -151,11 +186,13 @@ def main():
     p.add_argument("--scan", action="store_true", help="扫描eval_hooks统计")
     p.add_argument("--propose", action="store_true", help="生成五库更新草案")
     p.add_argument("--weekly", action="store_true", help="周报")
+    p.add_argument("--pending-json", action="store_true", help="输出待评估eval_hooks只读台账")
     args = p.parse_args()
 
     if args.scan: scan()
     elif args.propose: propose()
     elif args.weekly: weekly()
+    elif args.pending_json: pending_json()
     else:
         scan()
         print()

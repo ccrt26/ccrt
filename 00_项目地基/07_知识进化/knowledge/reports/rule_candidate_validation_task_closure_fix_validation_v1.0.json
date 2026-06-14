@@ -1,0 +1,34 @@
+{
+  "stage": "G3-KB-VALIDATION-TASK-CLOSURE-FIX-v1.0.1",
+  "result": "PASS",
+  "fixed_items": [
+    "KRM report must be PASS",
+    "KRM self-reference fixed",
+    "G0-G6 audit evidence"
+  ],
+  "checks": {
+    "required_files_ok": true,
+    "json_parse_ok": true,
+    "task_identity_ok": true,
+    "module_binding_ok": true,
+    "task_initial_status_ok": true,
+    "manifest_ok": true,
+    "foundation_validator_executed_ok": true,
+    "foundation_validator_report_pass": true,
+    "global_krm_validator_executed_ok": true,
+    "global_krm_validator_report_pass": true,
+    "global_krm_warn_not_accepted": true,
+    "no_new_literature_card": true,
+    "no_new_rule_candidate": true,
+    "validation_task_count_exactly_one": true,
+    "active_rule_unchanged_by_candidate": true
+  },
+  "audit_files": [
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G0路由记录_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G1业务边界记录_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G2技术方案_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G4自检报告_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G5旧影复查报告_v1.0.md",
+    "00_项目地基/08_审计与验收/L2_KB_知识进化_G3-KB-VALIDATION-TASK-CLOSURE-v1.0_G6放行归档记录_v1.0.md"
+  ]
+}

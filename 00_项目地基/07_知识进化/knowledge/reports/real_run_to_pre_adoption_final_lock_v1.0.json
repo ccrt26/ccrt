@@ -1,0 +1,26 @@
+{
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "result": "PASS",
+  "locked_artifacts": [
+    "00_项目地基/07_知识进化/knowledge/scenario_traces/deep_analysis/TRACE_DEEP_ANALYSIS_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/scenario_traces/daily_report/TRACE_DAILY_REPORT_DONGMU_20260611_RC_QS_FF1993_001.json",
+    "00_项目地基/07_知识进化/knowledge/weekly_validation_summaries/WVS_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/validation_reviews/qingshan/VR_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/role_confirmations/qingshan/RCF_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/knowledge_merge_checks/qingshan/KMC_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/promotion_decisions/qingshan/PD_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/scripts/validate_real_run_to_pre_adoption_v1_0.py",
+    "00_项目地基/07_知识进化/knowledge/reports/real_run_to_pre_adoption_validation_v1.0.json"
+  ],
+  "real_case": "东睦股份(600114) 日报 2026-06-11",
+  "go_live_conclusion": "knowledge_evolution_workflow_can_enter_regular_operation",
+  "adoption_conclusion": "candidate_must_continue_observation_not_active_rule",
+  "boundary": [
+    "Workflow can enter regular operation after PASS.",
+    "The FF1993 candidate is not promoted to active rule.",
+    "No production entrance or daily report generator is modified.",
+    "No role signature or actor/HMAC formal pipeline PASS is claimed."
+  ],
+  "formal_pipeline_note": "CCRT relay-package record; not actor/HMAC formal pipeline PASS.",
+  "manifest_bad": []
+}

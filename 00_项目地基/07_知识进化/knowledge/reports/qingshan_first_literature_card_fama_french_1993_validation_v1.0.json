@@ -1,0 +1,12 @@
+{
+  "stage": "G3-QINGSHAN-FIRST-LITERATURE-CARD-FAMA-FRENCH-1993-v1.0",
+  "result": "PASS",
+  "card_exists": true,
+  "card_status": "card_draft",
+  "quality_status": "quality_pass_with_cross_check",
+  "required_missing": [],
+  "bad_checks": [],
+  "rule_candidate_created": false,
+  "active_rule_touched_by_card": false,
+  "result_reason": "missing=[]; bad=[]; card=/Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/literature_cards/qingshan/LC_QINGSHAN_FAMA_FRENCH_1993_COMMON_RISK_FACTORS_v1.0.json"
+}

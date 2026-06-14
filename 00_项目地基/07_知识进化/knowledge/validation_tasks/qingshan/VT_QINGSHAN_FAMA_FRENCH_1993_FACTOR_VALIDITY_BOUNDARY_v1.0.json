@@ -1,0 +1,90 @@
+{
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "source_card_id": "LC-QS-FF1993-001",
+  "owner_role": "青山",
+  "task_type": "rule_candidate_validation_task",
+  "status": "validation_task_open",
+  "created_at": "2026-06-12",
+  "updated_at": "2026-06-12",
+  "validation_scope": {
+    "primary_question": "Fama/French 1993 类型的外部因子文献能否只作为因子有效性边界知识，而不能直接迁移成 A 股交易规则。",
+    "checks": [
+      "A股适配检查",
+      "样本外验证",
+      "因子衰减检查",
+      "反例检查",
+      "误用风险评估"
+    ],
+    "not_in_scope": [
+      "不验证三因子模型在 A 股直接有效",
+      "不生成 active rule",
+      "不改青山正式规则库",
+      "不改周报/日报生产入口"
+    ]
+  },
+  "scenario_bindings": [
+    {
+      "scenario": "weekly_report",
+      "module": "weekly_report",
+      "trace_required": true,
+      "minimum_observation_count": 4,
+      "minimum_trigger_count": 2,
+      "role": "primary_validation_surface"
+    },
+    {
+      "scenario": "daily_report",
+      "module": "daily_report",
+      "trace_required": true,
+      "minimum_observation_count": 10,
+      "minimum_trigger_count": 2,
+      "role": "execution_trace_surface"
+    },
+    {
+      "scenario": "b_layer_post_eval",
+      "module": "b_layer_post_eval",
+      "trace_required": true,
+      "minimum_observation_count": 2,
+      "minimum_trigger_count": 1,
+      "role": "outcome_attribution_surface"
+    },
+    {
+      "scenario": "deep_analysis",
+      "module": "deep_analysis",
+      "trace_required": true,
+      "minimum_observation_count": 1,
+      "minimum_trigger_count": 1,
+      "role": "evidence_extension_surface"
+    }
+  ],
+  "observation_policy": {
+    "minimum_observation_weeks": 4,
+    "maximum_observation_weeks": 12,
+    "no_trigger_week_counts_as_observation": false,
+    "early_reject_conditions": [
+      "发现该候选诱导外部结论直接迁移到 A 股交易规则",
+      "连续出现高误用风险且无法通过文本边界约束消除",
+      "确认候选与既有青山规则重复且无增量价值"
+    ],
+    "early_review_conditions": [
+      "连续 2 次触发且均能稳定降低误用风险",
+      "B层后评估出现高复用价值的正反证据",
+      "深度分析补齐 A 股适配边界且无重大反例"
+    ]
+  },
+  "next_required_artifacts": [
+    "ScenarioTrace",
+    "WeeklyValidationSummary",
+    "ValidationReview",
+    "RoleConfirmation",
+    "KnowledgeMergeCheck",
+    "PromotionDecision"
+  ],
+  "redlines": [
+    "ValidationTask 初始状态必须是 validation_task_open。",
+    "ValidationTask 不能直接生成 active rule。",
+    "ValidationTask 不能修改 RuleCandidate 正文。",
+    "ValidationTask 不能修改 LiteratureCard 正文。",
+    "ValidationTask 不能修改生产入口。"
+  ]
+}

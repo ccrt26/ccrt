@@ -19,7 +19,15 @@ def adapt_temp(stock_code, trade_date, analysis_data):
         rule_refs=analysis_data.get("rule_refs",[]),
         knowledge_refs=analysis_data.get("knowledge_refs",[]),
         signal_refs=analysis_data.get("signal_refs",[]),
-        eval_window=analysis_data.get("eval_window",{"t1":"检查方向","t3":"检查持续","t5":"综合验证"}))
+        eval_window=analysis_data.get("eval_window",{"t1":"检查方向","t3":"检查持续","t5":"综合验证"}),
+        extra_fields=analysis_data)
+    # 追加写入 adapter 未透传的新增字段
+    for key in [
+        "framework_version", "hypotheses", "evidence_gap_requests",
+        "long_term_institutional_evidence", "conclusion_strength",
+    ]:
+        if key in analysis_data and key not in obj:
+            obj[key] = analysis_data[key]
     result = validate(obj)
     u9, u10 = result.get("u9",{"status":"ERROR"}), result.get("u10",{"status":"ERROR"})
     overall = result.get("overall","ERROR")

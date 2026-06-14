@@ -416,11 +416,21 @@ def extract_md_sector_phase(md_text):
 def extract_md_risk_light(md_text):
     """从MD风控段提取综合灯"""
     clean = md_text.replace("**", "")
-    m = re.search(r'综合灯\s*([🟢🔴🟡])', clean)
-    if m: return m.group(1)
-    m = re.search(r'综合灯[：:]*\s*([红绿黄]|🔴|🟢|🟡|green|red|yellow)', clean)
+    m = re.search(r'综合灯[：:]*\s*([^。\n；|]+)', clean)
     if m: return m.group(1)
     return None
+
+def normalize_risk_light(value):
+    text = str(value or "").replace("**", "").strip().lower()
+    if not text:
+        return ""
+    if "🟢" in text or "绿" in text or "green" in text:
+        return "green"
+    if "🟡" in text or "黄" in text or "yellow" in text:
+        return "yellow"
+    if "🔴" in text or "红" in text or "red" in text:
+        return "red"
+    return text
 
 
 def extract_md_forbidden_actions(md_text):
@@ -768,16 +778,19 @@ def check_one(code, name, trade_date_str):
     mf_rl = sc.get("machine_fields", {}).get("risk_light", "")
     md_rl = extract_md_risk_light(md)
     ri_liujin_rl = ri.get("流金_风控", {}).get("综合灯", "") if ri else ""
+    sc_rl_norm = normalize_risk_light(sc_rl)
+    md_rl_norm = normalize_risk_light(md_rl)
+    ri_liujin_rl_norm = normalize_risk_light(ri_liujin_rl)
 
     # F1: MD vs sidecar
-    if md_rl and sc_rl and md_rl != sc_rl:
+    if md_rl and sc_rl and md_rl_norm != sc_rl_norm:
         add("risk_light.overall", md_rl, sc_rl, "BLOCK",
             f"MD='{md_rl}' ≠ sidecar='{sc_rl}'")
     else:
         add("risk_light.overall", md_rl, sc_rl, "PASS", "")
 
     # F2: sidecar vs 流金_风控.综合灯
-    if sc_rl and ri_liujin_rl and sc_rl != ri_liujin_rl:
+    if sc_rl and ri_liujin_rl and sc_rl_norm != ri_liujin_rl_norm:
         add("risk_light.ri_liujin", sc_rl, ri_liujin_rl, "BLOCK",
             f"sidecar='{sc_rl}' ≠ 流金风控='{ri_liujin_rl}'")
     else:

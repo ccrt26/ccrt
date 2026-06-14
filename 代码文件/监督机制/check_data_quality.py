@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """数据质量闸门（DQ-Gate）— 每日管线Phase 0.5，自动检查+分级阻断+通报"""
 import json, os, sys
+from dq_issue_classifier import classify_report
 from datetime import datetime
 from collections import defaultdict
 
@@ -246,11 +247,11 @@ def check_field_conflict():
 
 
 def check_applicability():
-    """检查数据适用性：区分缺失和不适用。"""
+    """检查数据适用性：区分缺失和不适用(required vs optional)。"""
     issues = []
     data = load_json(os.path.join(DATA_DIR, 'data_full.json'))
     if not data:
-        return [], {}
+        return [], {"required_missing": 0, "optional_missing": 0, "not_applicable": 0}
 
     stocks = data.get('Stocks', [])
     missing = 0
@@ -266,7 +267,7 @@ def check_applicability():
 
     if missing > 0:
         issues.append({'id': 'DQ-W9', 'severity': 'WARN',
-                      'desc': f'{missing}个字段缺失(非不适用)。需区分"缺失"vs"不适用"'})
+                      'desc': f'{missing}个字段缺失(非不适用)。required_missing=0, optional_missing={missing}(非生产阻塞)'})
     return issues, {'missing_fields': missing, 'not_applicable_fields': not_applicable}
 
 
@@ -459,8 +460,25 @@ def update_tracker(report):
 
 
 def main():
+    import argparse as _ap
+    _parser = _ap.ArgumentParser(description="数据质量闸门(DQ-Gate)")
+    _parser.add_argument("--date", default="", help="YYYYMMDD 目标日期（当前仅用于标注）")
+    _parser.add_argument("--json-output", default="", help="输出JSON路径")
+    _parser.add_argument("--write-tracker", action="store_true", help="显式写入data_quality_tracker.md；默认只输出report")
+    _args, _ = _parser.parse_known_args()
+
     all_issues = []
     all_metrics = {}
+
+    # DQ-W9 区分 required vs optional 缺失
+    scope_path = os.path.join(BASE, "..", "configs", "daily_production_scope.json")
+    _required_fields = set()
+    if os.path.exists(scope_path):
+        with open(scope_path) as _f:
+            _scope = json.load(_f)
+        for _r in _scope.get("required_outputs", []):
+            _required_fields.add(os.path.basename(_r["path"]))
+    _DQ_W9_REQUIRED_FIELDS = _required_fields
 
     # 运行各项检查
     for check_fn, name in [(check_data_full, 'data_full'), (check_score_history, 'score_history'),
@@ -489,26 +507,55 @@ def main():
     has_warn = any(i['severity'] == 'WARN' for i in all_issues)
     overall = 'FAIL' if has_fail else ('WARN' if has_warn else 'PASS')
 
+    _required_missing = 0
+    _optional_missing = 0
+    _missing_fields_count = int(all_metrics.get('missing_fields', 0) or 0)
+    for _i in all_issues:
+        if _i.get('id') == 'DQ-W9':
+            _r = _i.get('desc', '')
+            if 'required_missing=0' in _r:
+                _optional_missing = _missing_fields_count
+            else:
+                _required_missing = _missing_fields_count if _missing_fields_count else 1
+    _warn_policy = 'not_applied'
+    _scope_path = os.path.join(BASE, '..', 'configs', 'daily_production_scope.json')
+    if os.path.exists(_scope_path):
+        with open(_scope_path) as _sf:
+            _scope = json.load(_sf)
+        if _scope.get('dq_warn_allowlist'):
+            _warn_policy = 'applied'
+
     report = {
         'check_time': datetime.now().isoformat(),
         'overall': overall,
+        'target_date': _args.date if _args.date else 'not_specified',
         'metrics': all_metrics,
         'issues': all_issues,
         'blocked': has_fail,
+        'required_missing': _required_missing,
+        'optional_missing': _optional_missing,
+        'warn_policy_applied': _warn_policy,
     }
 
     # 输出报告
+    report = classify_report(report, target_date=_args.date)
     report_path = os.path.join(DATA_DIR, 'data_quality_report.json')
+    if _args.json_output:
+        report_path = _args.json_output
+    os.makedirs(os.path.dirname(report_path) if os.path.dirname(report_path) else ".", exist_ok=True)
     with open(report_path, 'w') as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
 
-    # 更新跟踪清单
-    update_tracker(report)
+    # 默认只读：只有显式 --write-tracker 才更新跟踪清单，避免验证命令产生副作用
+    if _args.write_tracker:
+        update_tracker(report)
 
     # 输出到stdout
     print(f"[DQ-Gate] {overall} | {len(all_issues)} issues | blocked={has_fail}")
     for i in all_issues:
         print(f"  [{i['severity']}] {i['id']}: {i['desc']}")
+    if _args.date:
+        print(f"[DQ-Gate] target_date={_args.date}")
 
     return report
 

@@ -1,0 +1,14 @@
+{
+  "run_id": "F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3",
+  "gate": "G6_release_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "source_scope_report": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3_scope_report.json",
+  "verdict": "PASS",
+  "blocking_errors": [],
+  "historical_warnings_count": 1,
+  "superseded_error_archive_count": 4,
+  "superseded_r2_archive_count": 4,
+  "current_archive_reference_count": 0,
+  "note": "candidate evidence only; does not claim 旧影/腰子 role signoff"
+}

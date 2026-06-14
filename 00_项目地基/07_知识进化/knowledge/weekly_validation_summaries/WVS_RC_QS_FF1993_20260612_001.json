@@ -1,0 +1,34 @@
+{
+  "summary_id": "WVS-RC-QS-FF1993-20260612-001",
+  "task_id": "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "candidate_id": "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001",
+  "owner_role": "青山",
+  "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
+  "summary_type": "initial_partial_summary",
+  "observation_period_status": "insufficient",
+  "conclusion": "continue_observation",
+  "week_start": "2026-06-08",
+  "week_end": "2026-06-12",
+  "trigger_count": 1,
+  "scenario_trace_refs": [
+    "00_项目地基/07_知识进化/knowledge/scenario_traces/deep_analysis/TRACE_DEEP_ANALYSIS_RC_QS_FF1993_20260612_001.json",
+    "00_项目地基/07_知识进化/knowledge/scenario_traces/daily_report/TRACE_DAILY_REPORT_DONGMU_20260611_RC_QS_FF1993_001.json"
+  ],
+  "missing_evidence": [
+    "weekly_report_trace",
+    "b_layer_post_eval_trace"
+  ],
+  "a_share_adaptation_summary": "Deep analysis identified A-share migration limits; Dongmu daily report provided real daily execution trace but did not trigger external factor migration.",
+  "out_of_sample_summary": "No out-of-sample validation. Original study predates A-share.",
+  "decay_summary": "No decay observation possible — factor not deployed.",
+  "counterexample_summary": "No counterexample found in Dongmu daily report because the candidate was not applied.",
+  "misuse_risk_summary": "High misuse risk remains if foreign factor conclusions are directly migrated; daily report trace shows the router can avoid false triggering.",
+  "formal_pipeline_note": "This is a real WeeklyValidationSummary, not actor/HMAC formal pipeline PASS.",
+  "trace_count": 2,
+  "non_triggered_trace_count": 1,
+  "available_scenarios": [
+    "deep_analysis",
+    "daily_report"
+  ],
+  "daily_report_trace_status": "real_case_available_not_triggered"
+}

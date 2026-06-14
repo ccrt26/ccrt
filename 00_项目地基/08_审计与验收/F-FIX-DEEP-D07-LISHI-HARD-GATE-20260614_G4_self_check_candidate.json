@@ -1,0 +1,29 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+  "stage": "G4_SELF_CHECK_CANDIDATE",
+  "created_at": "2026-06-14T01:20:39.271862",
+  "date": "20260612",
+  "overall": "PASS",
+  "assertions": {
+    "old_report_20260612_D07_BLOCK": true,
+    "old_report_lishi_BLOCK": true,
+    "check_gate_exit_2": true,
+    "parse_report_integrated": true,
+    "old_report_blocked_by_both_gates": true
+  },
+  "changed_files": [
+    "scripts/check_deep_d07_lishi_gate.py(新增)",
+    "代码文件/深度分析/parse_deep_analysis_report.py",
+    ".claude/commands/深度分析.md",
+    "代码文件/tools/launch_deep_analysis.sh"
+  ],
+  "evidence_files": [
+    "scripts/check_deep_d07_lishi_gate.py"
+  ],
+  "forbidden_scope_check": {
+    "trading_executor_touched": false,
+    "capability_registry_touched": false,
+    "D07_v1_2_methodology_changed": false,
+    "historical_reports_rewritten": false
+  }
+}

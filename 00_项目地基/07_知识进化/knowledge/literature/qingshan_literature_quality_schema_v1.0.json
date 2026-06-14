@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "version": "1.0",
+    "stage": "G3-QINGSHAN-LITERATURE-QUALITY-SCORING-v1.0",
+    "owner_role": "青山",
+    "purpose": "定义青山 source_candidate 的文献质量评分模型",
+    "generated": "2026-06-11",
+    "read_tier": "task",
+    "status": "active",
+    "depends_on": [
+      "knowledge/literature/qingshan_source_selection_policy_v1.0.json"
+    ]
+  },
+  "scope": {
+    "input_status": [
+      "source_candidate",
+      "source_candidate_with_cross_check",
+      "source_candidate_low_confidence",
+      "background_only"
+    ],
+    "output_status": [
+      "quality_pass",
+      "quality_pass_with_cross_check",
+      "quality_background_only",
+      "quality_reject"
+    ],
+    "not_allowed_output": [
+      "applied_rule",
+      "rule_candidate",
+      "parameter_update",
+      "core_knowledge_update"
+    ]
+  },
+  "score_model": {
+    "total_score": 100,
+    "pass_threshold": 75,
+    "cross_check_threshold": 60,
+    "background_threshold": 40,
+    "reject_below": 40,
+    "dimensions": [
+      {
+        "dimension_id": "authority",
+        "name": "来源权威性",
+        "weight": 20,
+        "description": "评估作者、机构、期刊、数据库或官方发布主体的可信度。",
+        "scoring_rules": [
+          {"score": 20, "condition": "官方/一手/顶级同行评审/权威公开数据集"},
+          {"score": 15, "condition": "高质量学术论文或专业研究机构"},
+          {"score": 10, "condition": "机构研究或数据库说明"},
+          {"score": 5, "condition": "个人研究但身份清晰"},
+          {"score": 0, "condition": "来源身份不清"}
+        ]
+      },
+      {
+        "dimension_id": "replicability",
+        "name": "可复现性",
+        "weight": 20,
+        "description": "评估是否披露数据、样本区间、变量定义、方法或代码。",
+        "scoring_rules": [
+          {"score": 20, "condition": "数据/方法/样本/变量定义完整，可直接复现"},
+          {"score": 15, "condition": "方法和样本清楚，但数据需授权"},
+          {"score": 10, "condition": "方法清楚，样本或变量定义部分缺失"},
+          {"score": 5, "condition": "只有结论，少量方法描述"},
+          {"score": 0, "condition": "不可复现"}
+        ]
+      },
+      {
+        "dimension_id": "market_fit",
+        "name": "市场适配性",
+        "weight": 15,
+        "description": "评估资料是否适用于 A 股或可迁移到 A 股验证。",
+        "scoring_rules": [
+          {"score": 15, "condition": "直接基于 A 股样本或中国市场制度"},
+          {"score": 12, "condition": "全球/新兴市场样本，含可迁移方法"},
+          {"score": 8, "condition": "美股/海外样本，但方法可作为基准"},
+          {"score": 4, "condition": "市场差异大，仅可背景参考"},
+          {"score": 0, "condition": "市场范围不明"}
+        ]
+      },
+      {
+        "dimension_id": "recency",
+        "name": "时效性",
+        "weight": 10,
+        "description": "评估资料是否仍适用于当前市场与数据口径。",
+        "scoring_rules": [
+          {"score": 10, "condition": "近 3 年且方法/数据口径仍有效"},
+          {"score": 8, "condition": "3-7 年，仍有方法价值"},
+          {"score": 6, "condition": "7 年以上经典方法，作为基准可用"},
+          {"score": 3, "condition": "可能受市场制度变化影响，需要复核"},
+          {"score": 0, "condition": "明显过时或时效不明"}
+        ]
+      },
+      {
+        "dimension_id": "conflict_risk",
+        "name": "利益冲突风险",
+        "weight": 15,
+        "description": "评估资料是否存在营销、卖方偏见、产品推广或数据商利益冲突。",
+        "scoring_rules": [
+          {"score": 15, "condition": "无明显商业利益冲突"},
+          {"score": 12, "condition": "存在机构背景但方法透明"},
+          {"score": 8, "condition": "卖方/数据商材料，需交叉验证"},
+          {"score": 4, "condition": "产品推广或观点导向明显"},
+          {"score": 0, "condition": "利益冲突严重且未披露"}
+        ]
+      },
+      {
+        "dimension_id": "rule_convertibility",
+        "name": "规则转化能力",
+        "weight": 20,
+        "description": "评估资料能否转成青山可执行判断规则。",
+        "scoring_rules": [
+          {"score": 20, "condition": "可直接转成清晰触发条件、检查项、输出限制"},
+          {"score": 15, "condition": "可转成规则候选，但需项目验证"},
+          {"score": 10, "condition": "只能转成参数或反例候选"},
+          {"score": 5, "condition": "只能作为背景参考"},
+          {"score": 0, "condition": "无法转化"}
+        ]
+      }
+    ]
+  },
+  "hard_blocks": [
+    {
+      "block_id": "QS-LIT-BLOCK-001",
+      "name": "不属于青山职责",
+      "condition": "资料主题不属于因子有效性、IC/ICIR、样本外、过拟合、衰减、A股因子实证、技术信号胜率验证",
+      "result": "quality_reject"
+    },
+    {
+      "block_id": "QS-LIT-BLOCK-002",
+      "name": "来源身份不清",
+      "condition": "无法识别作者、机构、数据库、发布主体",
+      "result": "quality_reject"
+    },
+    {
+      "block_id": "QS-LIT-BLOCK-003",
+      "name": "直接要求写入 applied 规则",
+      "condition": "资料或执行请求试图跳过文献卡片、项目验证，直接进入 applied 规则",
+      "result": "quality_reject"
+    },
+    {
+      "block_id": "QS-LIT-BLOCK-004",
+      "name": "无方法无样本无边界",
+      "condition": "资料既无方法说明，也无样本区间，也无使用边界",
+      "result": "quality_reject"
+    }
+  ],
+  "status_decision": {
+    "quality_pass": {
+      "score_range": [75, 100],
+      "next_step": "create_literature_card_candidate",
+      "requires_cross_check": false,
+      "can_generate_rule_candidate": false,
+      "note": "只能进入文献卡片候选，不得直接生成规则。"
+    },
+    "quality_pass_with_cross_check": {
+      "score_range": [60, 74],
+      "next_step": "create_literature_card_candidate_after_cross_check",
+      "requires_cross_check": true,
+      "can_generate_rule_candidate": false,
+      "note": "需交叉验证后才能进入文献卡片候选。"
+    },
+    "quality_background_only": {
+      "score_range": [40, 59],
+      "next_step": "background_reference_only",
+      "requires_cross_check": true,
+      "can_generate_rule_candidate": false,
+      "note": "只能作为背景参考。"
+    },
+    "quality_reject": {
+      "score_range": [0, 39],
+      "next_step": "reject_or_archive",
+      "requires_cross_check": false,
+      "can_generate_rule_candidate": false,
+      "note": "不得进入文献卡片流程。"
+    }
+  },
+  "output_schema": {
+    "required_fields": [
+      "source_id",
+      "source_title",
+      "input_status",
+      "dimension_scores",
+      "total_score",
+      "hard_block_triggered",
+      "quality_status",
+      "reason",
+      "next_step",
+      "review_required"
+    ],
+    "dimension_scores_schema": {
+      "authority": "0-20",
+      "replicability": "0-20",
+      "market_fit": "0-15",
+      "recency": "0-10",
+      "conflict_risk": "0-15",
+      "rule_convertibility": "0-20"
+    }
+  },
+  "anti_overreach": {
+    "no_direct_applied_rule": true,
+    "no_direct_rule_candidate": true,
+    "no_external_fulltext_in_startup": true,
+    "requires_project_validation_before_rule_update": true,
+    "requires_role_confirmation_before_core_update": true
+  }
+}

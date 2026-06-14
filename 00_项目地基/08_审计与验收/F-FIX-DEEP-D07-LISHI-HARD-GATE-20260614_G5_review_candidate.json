@@ -1,0 +1,30 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+  "stage": "G5_REVIEW_CANDIDATE",
+  "date": "20260612",
+  "created_at": "2026-06-14T01:20:39.292622",
+  "overall": "PASS",
+  "findings": {
+    "P0": [],
+    "P1": []
+  },
+  "review_basis": [
+    "check_deep_d07_lishi_gate.py 新增：D07_v1.2 9项 + 砺石 7项 + 砺石越界 4项检查",
+    "旧 20260612 东睦报告被正确拦截 (D07 BLOCK + 砺石 BLOCK)",
+    "parse_deep_analysis_report.py 集成 D07+砺石检查: 旧报告 FAIL 含 D07+砺石 缺失项",
+    ".claude/commands/深度分析.md: 追加 D07_v1.2 输入参考 + 砺石 method_review + MD+HTML 默认",
+    "launch_deep_analysis.sh: 注入 D07/砺石/约束",
+    "三个回归风险已评估: 旧报告拦截非破坏(新闸门本意); 砺石字段需在正文或JSON中出现; D07灌水可通过反灌水+check检测"
+  ],
+  "changed_files": [
+    "scripts/check_deep_d07_lishi_gate.py(新增)",
+    "代码文件/深度分析/parse_deep_analysis_report.py",
+    ".claude/commands/深度分析.md",
+    "代码文件/tools/launch_deep_analysis.sh"
+  ],
+  "regression_risks": [
+    "旧报告批量被新闸门拦截: 这是预期行为，新闸门从WARN变为BLOCK",
+    "砺石只在正文出现但未结构化: 可以由check命令检测关键词",
+    "D07关键词灌水: 反灌水检查 + check命令组合检测"
+  ]
+}

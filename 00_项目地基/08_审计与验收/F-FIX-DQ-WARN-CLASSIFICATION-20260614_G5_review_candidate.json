@@ -1,0 +1,30 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+  "date": "20260612",
+  "created_at": "2026-06-14T00:57:50.139273",
+  "evidence_files": [
+    "configs/data_quality_issue_policy.json",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py",
+    "logs/daily_production/20260612_check_data_quality.json"
+  ],
+  "stage": "G5_REVIEW_CANDIDATE",
+  "overall": "PASS",
+  "findings": {
+    "P0": [],
+    "P1": []
+  },
+  "review_basis": [
+    "DQ-W7 = WARN_NON_BLOCKING / REVIEW_ONLY",
+    "DQ-W9 = WARN_NON_BLOCKING / OPTIONAL_GAP_TRACKING",
+    "required_missing=0",
+    "release_blocking=false",
+    "overall_gate=PASS_WITH_NON_BLOCKING_WARNINGS",
+    "生产闭环仍 PASS"
+  ],
+  "changed_files": [
+    "configs/data_quality_issue_policy.json",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py"
+  ]
+}

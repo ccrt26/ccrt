@@ -1,0 +1,54 @@
+{
+  "$schema": "https://tielv-quant.ccrt/interpretation_schema.json",
+  "interpretation_id": "INT-20260612-160000-lishi1",
+  "scene": "日报",
+  "stock_code": "002230",
+  "trade_date": "2026-06-04",
+  "role": "腰子",
+  "data_fact": {
+    "source": "tushare-moneyflow",
+    "freshness": "当日",
+    "values": {
+      "主力净流入": "-64998万",
+      "超大单": "-47743万",
+      "中单": "+19334万"
+    },
+    "note": "科大讯飞2026-06-04资金流数据"
+  },
+  "interpretation_hypothesis": "主力-64998万大幅流出结论偏强，未区分被动减仓与主动调仓。",
+  "supporting_evidence": [
+    {
+      "evidence": "主力-64998万为当日10只重点股中流出最大，但超大单(-47743万)与中单(+19334万)反向，说明存在承接力量。",
+      "source": "tushare-moneyflow",
+      "strength": "中",
+      "source_level": "L2",
+      "source_ref": "统一解读/validate_interpretation.py/run_extra_checks"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "中单+19334万和小单+46541万逆势承接，若连续出现可能意味着聪明钱在布局而非恐慌出货。",
+      "source": "tushare-moneyflow",
+      "type": "资金面反证"
+    }
+  ],
+  "investment_implication": "建议腰子增加板块资金净流出对照表，区分个股vs板块归因后确认回避强度是否合理。",
+  "action_bias": "WATCH",
+  "confidence": "MEDIUM",
+  "invalidation_condition": "若次日中单净流入<5000万且主力流出>3亿，则方法校准结论失效。",
+  "eval_window": {
+    "t1": "检查板块资金流向对比",
+    "t3": "检查中单是否连续3日净流入",
+    "t5": "综合判断归因模型是否调整"
+  },
+  "rule_refs": ["R8"],
+  "knowledge_refs": ["LISHI-METHOD-001", "LISHI-METHOD-002", "LISHI-METHOD-003"],
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "WARN",
+    "main_challenge": "回避力度未区分被动/主动减仓，板块归因缺少独立数据支撑",
+    "calibration_note": "建议增加板块资金净流出对照表，区分个股vs系统性调仓后定动作强度",
+    "rejected_reason": ""
+  }
+}

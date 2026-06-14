@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "description": "阶段派单与执行模板 — 承接 TASK_阶段派单与执行模板_v1.0.md",
+  "source_md": "00_项目地基/05_流程与角色/TASK_阶段派单与执行模板_v1.0.md",
+  "stage_numbering": [
+    {"prefix": "第-X", "meaning": "启动和审计阶段（X=负数或0）"},
+    {"prefix": "第0.X", "meaning": "固化/标准化阶段"},
+    {"prefix": "P0-X", "meaning": "最小强制地基闸门包（只检测不修复）"},
+    {"prefix": "P0-FIX", "meaning": "P0级问题定点修复"},
+    {"prefix": "第X", "meaning": "正式重构阶段"},
+    {"prefix": "第X.5", "meaning": "流程标准化/制度固化"}
+  ],
+  "lifecycle": {
+    "sequence": "设计 → 路由 → 阶段门判断 → 角色唤醒 → 派单 → 执行 → 自检 → 报告 → 复查 → 通过/补修 → 下一阶段",
+    "steps": [
+      {"step": "设计", "owner": "阿黑/情墨"},
+      {"step": "路由", "owner": "阿黑"},
+      {"step": "阶段门判断", "owner": "阿黑"},
+      {"step": "角色唤醒", "owner": "阿黑"},
+      {"step": "派单", "owner": "阿黑"},
+      {"step": "执行", "owner": "执行模型或角色"},
+      {"step": "自检", "owner": "执行模型"},
+      {"step": "报告", "owner": "执行模型"},
+      {"step": "复查", "owner": "旧影/阿黑"},
+      {"step": "通过/补修", "owner": "阿黑"}
+    ]
+  },
+  "dispatch_template": {
+    "description": "标准阶段派单模板（11部分）",
+    "sections": [
+      {"id": 1, "title": "你现在执行：【阶段编号】：【阶段名称】", "required": true},
+      {"id": 2, "title": "流程编号：F-xxx", "required": true},
+      {"id": 3, "title": "启用阶段门：G0/G1/G2/G3/G4/G5/G6", "required": true},
+      {"id": 4, "title": "跳过阶段门：【列出并说明原因】", "required": false},
+      {"id": 5, "title": "唤醒角色：【角色列表】", "required": true},
+      {"id": 6, "title": "执行模型：【DeepSeek/Codex/Claude】", "required": true},
+      {"id": 7, "title": "阶段目标", "required": true},
+      {"id": 8, "title": "G1业务/金融/角色口径（如适用）", "required": false},
+      {"id": 9, "title": "G2技术方案（如适用）", "required": false},
+      {"id": 10, "title": "允许修改范围", "required": true},
+      {"id": 11, "title": "禁止修改范围", "required": true}
+    ],
+    "implementation_sections": [
+      {"id": 12, "title": "必须完成任务", "required": true},
+      {"id": 13, "title": "实现要求", "required": true},
+      {"id": 14, "title": "验收命令", "required": true},
+      {"id": 15, "title": "验收报告要求", "required": true},
+      {"id": 16, "title": "最终回复格式", "required": true},
+      {"id": 17, "title": "禁止事项", "required": true}
+    ]
+  },
+  "pass_conditions": [
+    {"condition_id": "PC-01", "description": "所有允许范围内文件已创建/修改"},
+    {"condition_id": "PC-02", "description": "所有验收命令通过"},
+    {"condition_id": "PC-03", "description": "未修改允许范围外文件"},
+    {"condition_id": "PC-04", "description": "git status已解释"},
+    {"condition_id": "PC-05", "description": "无静默失败"},
+    {"condition_id": "PC-06", "description": "未跳过必须的阶段门"},
+    {"condition_id": "PC-07", "description": "验收报告已提交"}
+  ],
+  "repair_rules": [
+    {"rule": "补修必须在同一阶段", "description": "不得另开新阶段"},
+    {"rule": "补修不得扩大范围", "description": "只能修已暴露的问题"},
+    {"rule": "补修同样需要验收", "description": "补修后重跑全部验收命令"}
+  ],
+  "file_operation_codes": {
+    "N": "新增",
+    "M": "修改",
+    "D": "删除",
+    "R": "移动",
+    "??": "未跟踪（必须说明来源）"
+  },
+  "acceptance_command_rules": [
+    {"file_type": "JSON", "command": "python3 -m json.tool <路径>"},
+    {"file_type": "Python", "command": "python3 -c \"import py_compile; py_compile.compile('<路径>', cfile='/private/tmp/__pycache__/_.pyc')\""},
+    {"file_type": "闸门脚本", "command": "单票 + --all 场景覆盖"},
+    {"file_type": "git status", "command": "必须 path-limited 范围检查"}
+  ]
+}

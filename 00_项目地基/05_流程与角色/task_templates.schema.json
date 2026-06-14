@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task Templates Schema",
+  "description": "阶段派单与执行模板的 schema 定义 — 承接 TASK_阶段派单与执行模板_v1.0.md",
+  "type": "object",
+  "required": ["version", "description", "stage_numbering", "lifecycle", "dispatch_template", "pass_conditions", "repair_rules", "file_operation_codes", "acceptance_command_rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "stage_numbering": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "prefix": { "type": "string" },
+          "meaning": { "type": "string" }
+        },
+        "required": ["prefix", "meaning"]
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": { "type": "string" },
+              "owner": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "dispatch_template": {
+      "type": "object",
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "title": { "type": "string" },
+              "required": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "pass_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition_id": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "repair_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "file_operation_codes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "acceptance_command_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file_type": { "type": "string" },
+          "command": { "type": "string" }
+        }
+      }
+    }
+  }
+}

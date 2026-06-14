@@ -1,0 +1,42 @@
+{
+  "run_id": "D04-V2.8-ONE-STEP-FIX-G0-G6-20260613",
+  "status": "g6_released",
+  "created_at": "2026-06-13T00:38:20",
+  "route": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G6"
+  ],
+  "scope": "D04 v2.8 one-step landing repair",
+  "must_pass": [
+    "UnifiedDataSource reads kline table",
+    "build_l2_cache writes kline table",
+    "update_l2_cache health checks kline table",
+    "rebuild_score_history writes score_history table",
+    "pytest tests/test_d04_fallback.py pass",
+    "capability_registry C-D04-0001 has release_state pending_g5_g6_review before G5/G6",
+    "旧影 G5 HMAC signoff",
+    "腰子 G6 HMAC signoff"
+  ],
+  "signoffs": {
+    "旧影": {
+      "signed": true,
+      "signed_at": "2026-06-13T01:07:46",
+      "sig_type": "HMAC-SHA256",
+      "comment": "G5 独立复查通过：D04 接口回归 kline 主表，健康检查覆盖 quality/source，注册表 release_state 未误判为 G6 放行",
+      "signature": "09ee6db1392def8294c70c7a320f7c5070f0ae3c9e32175708bd6b451af41543"
+    },
+    "腰子": {
+      "signed": true,
+      "signed_at": "2026-06-13T01:07:46",
+      "sig_type": "HMAC-SHA256",
+      "comment": "G6 金融消费确认通过：D04 可支撑日报、周报、临时分析的历史数据读取和质量标记消费",
+      "signature": "fa9e4ddc0163650ca89e2edb3b495c0b79d47d8b18d7050c33344a60088f42dc"
+    }
+  },
+  "completed_at": "2026-06-13T01:09:45"
+}
