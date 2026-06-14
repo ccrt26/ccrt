@@ -4,6 +4,9 @@
 This script coordinates post-G4 automation under an explicit release policy.
 It never forges role signatures. It may execute sign_off.py only when the
 current actual_actor already matches the required role.
+
+All file writes go through prepare_output_context() — never directly
+mkdir or write_json() on args.output_dir.
 """
 
 import argparse
@@ -18,6 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "00_项目地基" / "05_流程与角色" / "stage_gate_release_policy.json"
 AUDIT_DIR = ROOT / "00_项目地基" / "08_审计与验收"
+FALLBACK_BLOCKED_DIR = Path("/private/tmp/ccrt_release_orchestrator_blocked")
 
 STATUS_ADVANCED = "ADVANCED"
 STATUS_WAITING_ROLE_SIGNOFF = "WAITING_ROLE_SIGNOFF"
@@ -61,6 +65,49 @@ def validate_output_dir(output_dir):
     if any(resolved == root or is_relative_to(resolved, root) for root in SAFE_OUTPUT_ROOTS):
         return True, ""
     return False, "output directory must be under /tmp, /private/tmp, or audit evidence dir"
+
+
+def prepare_output_context(requested_output_dir, run_id):
+    """Unified output context: validates and provides safe fallback.
+
+    Rules:
+    - If requested_output_dir is valid → use it as safe_output_dir.
+    - If invalid → do NOT create it, use fallback under /private/tmp.
+    - Never mkdir() on invalid requested dir.
+    """
+    valid, issue = validate_output_dir(requested_output_dir)
+    if valid:
+        safe_dir = Path(requested_output_dir).resolve()
+        safe_dir.mkdir(parents=True, exist_ok=True)
+        return {
+            "output_dir_valid": True,
+            "output_dir_issue": "",
+            "safe_output_dir": safe_dir,
+            "requested_output_dir": Path(requested_output_dir).resolve(),
+        }
+    else:
+        safe_dir = FALLBACK_BLOCKED_DIR / run_id
+        safe_dir.mkdir(parents=True, exist_ok=True)
+        return {
+            "output_dir_valid": False,
+            "output_dir_issue": issue,
+            "safe_output_dir": safe_dir,
+            "requested_output_dir": Path(requested_output_dir) if requested_output_dir else Path(".").resolve(),
+        }
+
+
+def write_internal_evidence(full_response, output_context):
+    """Write full internal evidence JSON to safe output dir.
+
+    Always writes even when output_dir_valid=false (writes to fallback).
+    Never writes to invalid requested dir.
+    """
+    run_id = full_response.get("task_id", "UNKNOWN")
+    safe_dir = output_context["safe_output_dir"]
+    safe_dir.mkdir(parents=True, exist_ok=True)
+    internal_path = safe_dir / f"{run_id}_internal_orchestrator_response.json"
+    write_json(internal_path, full_response)
+    return internal_path
 
 
 def actual_actor():
@@ -131,8 +178,10 @@ def build_signoff_dispatch(run_id, gate, role, reason):
     }
 
 
-def maybe_sign(run_id, gate, checklist, state_file, role, comment, output_dir):
+def maybe_sign(run_id, gate, checklist, state_file, role, comment, output_context):
     actor = actual_actor()
+    safe_dir = output_context["safe_output_dir"]
+
     if actor != role:
         return build_signoff_dispatch(run_id, gate, role, f"actual_actor({actor}) != required_role({role})")
 
@@ -178,8 +227,10 @@ def evaluate_g6_archive_evidence(g6_signoff):
     return evaluate_archive(evidence), evidence
 
 
-def make_archive_record(run_id, g6_signoff, output_dir, policy_name, policy):
+def make_archive_record(run_id, g6_signoff, output_context, policy_name, policy):
     archive_eval, signoff = evaluate_g6_archive_evidence(g6_signoff)
+    safe_dir = output_context["safe_output_dir"]
+
     if archive_eval.get("status") != "ARCHIVE_READY_DRY_RUN":
         return None, {
             "task_id": run_id,
@@ -220,7 +271,7 @@ def make_archive_record(run_id, g6_signoff, output_dir, policy_name, policy):
         "push_completed": False,
         "production_switched": False,
     }
-    out = Path(output_dir) / f"{run_id}_G6_archive_record.json"
+    out = safe_dir / f"{run_id}_G6_archive_record.json"
     write_json(out, archive_record)
     return out, archive_record
 
@@ -232,8 +283,6 @@ def build_user_visible_response(full_response, evidence_path):
       - user_visible_status
       - user_visible_message
       - internal_evidence_record (path to full evidence file)
-
-    Full internal JSON is written to evidence_path, not shown on stdout.
     """
     return {
         "user_visible_status": full_response.get("user_visible_status", "AUTO_REPAIRING"),
@@ -246,12 +295,7 @@ def build_user_visible_response(full_response, evidence_path):
 
 
 def add_user_report_fields(response):
-    """Post-process responses to add user_visible_status and message.
-
-    Internal stage details remain in the JSON for evidence purposes
-    but are tagged as hidden from user-facing output.
-    """
-    # Remove forbidden claims from user-visible output (keep in evidence)
+    """Post-process responses to add user_visible_status and message."""
     resp = dict(response)
     resp["internal_stage_evidence_hidden_from_user"] = True
 
@@ -269,7 +313,6 @@ def add_user_report_fields(response):
         resp["user_visible_status"] = "AUTO_REPAIRING"
         resp["user_visible_message"] = "发现问题，系统已打回对应环节自动修复，无需用户处理。"
     elif status == STATUS_BLOCK:
-        # Check if this is a user-escalation type block
         user_block_keywords = ["push failed", "no upstream", "upstream not configured",
                                "forbidden directories", "git push failed",
                                "HMAC secret", "permission denied",
@@ -282,7 +325,6 @@ def add_user_report_fields(response):
             resp["user_visible_status"] = "AUTO_REPAIRING"
             resp["user_visible_message"] = "发现问题，系统已打回对应环节自动修复，无需用户处理。"
     elif status == "ARCHIVED":
-        # Archived without github sync — check if this is a user block
         if push_completed is True:
             resp["user_visible_status"] = "COMPLETE"
             resp["user_visible_message"] = "CCRT 全流程已完成，已归档，已提交 GitHub。"
@@ -303,7 +345,10 @@ def add_user_report_fields(response):
     return resp
 
 
-def orchestrate(args):
+def orchestrate(args, output_context=None):
+    if output_context is None:
+        output_context = prepare_output_context(args.output_dir, args.run_id)
+
     policy_data, policy = load_policy(args.release_policy)
     ok, blocked_actions = verify_policy(policy, args.user_confirmed_release)
     if not ok:
@@ -315,17 +360,14 @@ def orchestrate(args):
             "user_escalation": True,
         }
 
-    ok_dir, dir_reason = validate_output_dir(args.output_dir)
-    if not ok_dir:
+    # If requested output_dir is invalid, BLOCK early but still write internal evidence to fallback
+    if not output_context["output_dir_valid"]:
         return {
             "task_id": args.run_id,
             "status": STATUS_BLOCK,
-            "reason": dir_reason,
+            "reason": output_context["output_dir_issue"],
             "user_escalation": False,
         }
-
-    out_dir = Path(args.output_dir).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
 
     if args.mode == "signoff":
         role_spec = policy_data["role_signoff"][args.gate]
@@ -336,14 +378,14 @@ def orchestrate(args):
             Path(args.state_file),
             role_spec["role"],
             args.comment or f"{args.gate} automatic role signoff",
-            out_dir,
+            output_context,
         )
 
     if args.mode == "archive":
         archive_path, record = make_archive_record(
             args.run_id,
             Path(args.g6_signoff),
-            out_dir,
+            output_context,
             args.release_policy,
             policy,
         )
@@ -373,7 +415,7 @@ def orchestrate(args):
                 "scripts/github_sync_after_archive.py",
                 "--archive-record", str(archive_path),
                 "--run-id", args.run_id,
-                "--output-dir", str(out_dir),
+                "--output-dir", str(output_context["safe_output_dir"]),
             ])
             if gsync_proc["returncode"] == 0:
                 gsync_data = json.loads(gsync_proc["stdout"])
@@ -421,7 +463,6 @@ def orchestrate(args):
                 "user_escalation": False,
             }
 
-        # For policies without auto_github_sync (e.g. audit_archive_only)
         return {
             "task_id": args.run_id,
             "status": STATUS_ARCHIVED,
@@ -441,33 +482,43 @@ def orchestrate(args):
 
 def self_test():
     failures = []
-    # 1. Default policy must be archive_and_github_sync
     default_data = load_json(POLICY_PATH)
     if default_data.get("default_policy") != "archive_and_github_sync":
         failures.append({"case": "default policy should be archive_and_github_sync", "got": default_data.get("default_policy")})
 
-    # 2. archive_and_github_sync policy has auto_github_sync and auto_push
     _, gsync_policy = load_policy("archive_and_github_sync")
     if gsync_policy.get("auto_github_sync") is not True:
         failures.append({"case": "archive_and_github_sync should auto_github_sync"})
     if gsync_policy.get("auto_push") is not True:
         failures.append({"case": "archive_and_github_sync should auto_push"})
 
-    # 3. audit_archive_only still works
     policy_data, policy = load_policy("audit_archive_only")
     ok, blocked = verify_policy(policy, False)
     if not ok or blocked:
         failures.append({"case": "audit archive policy should not need user", "blocked": blocked})
 
-    # 4. Signoff dispatch
     dispatch = build_signoff_dispatch("UT", "G5", "旧影", "missing actor")
     if dispatch["required_role"] != "旧影" or dispatch["user_escalation"] is not False:
         failures.append({"case": "signoff dispatch", "dispatch": dispatch})
 
+    # Test prepare_output_context with valid dir
+    import tempfile
+    with tempfile.TemporaryDirectory(dir="/private/tmp") as td:
+        ctx = prepare_output_context(td, "UT-CTX-VALID")
+        if not ctx["output_dir_valid"]:
+            failures.append({"case": "valid tmp dir should be valid", "ctx": ctx})
+
+    # Test with relative dir
+    ctx2 = prepare_output_context("relative_dir", "UT-CTX-INVALID")
+    if ctx2["output_dir_valid"]:
+        failures.append({"case": "relative dir should be invalid", "ctx": ctx2})
+    if not str(ctx2["safe_output_dir"]).startswith("/private/tmp/ccrt_release_orchestrator_blocked/"):
+        failures.append({"case": "invalid dir should use blocked fallback", "ctx": ctx2})
+
     if failures:
         print(json.dumps({"self_test": "BLOCK", "failures": failures}, ensure_ascii=False, indent=2))
         return 1
-    print(json.dumps({"self_test": "PASS", "cases": 4}, ensure_ascii=False, indent=2))
+    print(json.dumps({"self_test": "PASS", "cases": 7}, ensure_ascii=False, indent=2))
     return 0
 
 
@@ -495,13 +546,14 @@ def main():
         print("BLOCK: --run-id is required", file=sys.stderr)
         return 2
 
-    response = orchestrate(args)
+    # Unified output context — all writes go through this
+    output_context = prepare_output_context(args.output_dir, args.run_id)
+
+    response = orchestrate(args, output_context=output_context)
     full_response = add_user_report_fields(response)
 
-    out_dir = Path(args.output_dir).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
-    internal_path = out_dir / f"{args.run_id}_internal_orchestrator_response.json"
-    write_json(internal_path, full_response)
+    # All evidence writes go through write_internal_evidence (uses safe_output_dir)
+    internal_path = write_internal_evidence(full_response, output_context)
 
     if args.internal_json:
         print(json.dumps(full_response, ensure_ascii=False, indent=2))

@@ -293,6 +293,51 @@ class TestStageGateReleaseOrchestrator(unittest.TestCase):
             ], expect_code=2)
             self.assertEqual(json.loads(proc.stdout)["status"], "BLOCK")
 
+    def test_unsafe_output_dir_does_not_write_requested_dir(self):
+        """Unsafe --output-dir must not create the requested dir; internal evidence goes to tmp fallback."""
+        # Ensure relative_output does not exist beforehand
+        rel_dir = Path("relative_output")
+        if rel_dir.exists():
+            for f in rel_dir.glob("*"):
+                f.unlink()
+            rel_dir.rmdir()
+
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as td:
+            checklist = Path(td) / "cl.json"
+            state = Path(td) / "st.json"
+            checklist.write_text('{"run_id":"UT-REL","signoffs":{}}')
+            state.write_text('{"runs":{"UT-REL":{"current_stage":"audit"}}}')
+
+            proc = self.run_py([
+                "scripts/stage_gate_release_orchestrator.py",
+                "--mode", "signoff",
+                "--run-id", "UT-REL",
+                "--gate", "G5",
+                "--checklist", str(checklist),
+                "--state-file", str(state),
+                "--output-dir", "relative_output",
+            ], expect_code=2)
+            data = json.loads(proc.stdout)
+            stdout_text = proc.stdout
+
+            # Must return BLOCK
+            self.assertIn("user_visible_status", data)
+            self.assertEqual(data["user_visible_status"], "BLOCK")
+
+            # relative_output must NOT exist
+            self.assertFalse(Path("relative_output").exists(), "relative_output must not be created")
+
+            # Default stdout must not leak internal fields
+            for forbidden in ["forbidden_claims", "dispatch_action", "required_role",
+                              "candidate_only", "archive_not_executed"]:
+                self.assertNotIn(forbidden, stdout_text, f"stdout leaked: {forbidden}")
+
+            # Must have internal_evidence_record pointing to fallback
+            self.assertIn("internal_evidence_record", data)
+            internal_path = Path(data["internal_evidence_record"])
+            self.assertTrue(internal_path.exists(), f"internal evidence missing: {internal_path}")
+            self.assertIn("/private/tmp/ccrt_release_orchestrator_blocked/", str(internal_path))
+
 
 if __name__ == "__main__":
     unittest.main()
