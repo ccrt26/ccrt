@@ -29,7 +29,7 @@ def main():
     args = ap.parse_args()
 
     date_str = args.date or today_shanghai()
-    cmd = [sys.executable, str(ROOT / "scripts" / "run_daily_data_retry_once.py"), "--date", date_str, "--attempt", str(args.attempt)]
+    cmd = [sys.executable, str(ROOT / "scripts" / "run_daily_production_pipeline.py"), "--date", date_str]
     payload = {"date": date_str, "trading_day": is_trading_day(date_str), "command": cmd, "cwd": str(ROOT)}
 
     if args.dry_run:
@@ -40,11 +40,7 @@ def main():
         print(json.dumps({"skip": "non_trading_day", **payload}, ensure_ascii=False))
         return 0
 
-    data_rc = subprocess.run(cmd, cwd=str(ROOT)).returncode
-    if data_rc != 0:
-        return data_rc
-    report_cmd = [sys.executable, str(ROOT / "scripts" / "run_daily_report_html_only.py"), "--date", date_str, "--write"]
-    return subprocess.run(report_cmd, cwd=str(ROOT)).returncode
+    return subprocess.run(cmd, cwd=str(ROOT)).returncode
 
 if __name__ == "__main__":
     raise SystemExit(main())

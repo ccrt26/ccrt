@@ -1514,7 +1514,7 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "33278507358f66f15509366e8e3ca4cec426ab264259b05173883c38faba45a6",
+      "sha256": "0cde93e40435f11bb2ebf85b34e4690938938e3183f61dbf586dce0b286b112f",
       "line_count": 844,
       "updated_at": "2026-06-12"
     },
@@ -1610,8 +1610,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "b29a458f6ef9c74210eaab369e9c28a525b5a029fbf1e6a6d9a0d8653e55c53b",
-      "line_count": 440,
+      "sha256": "2e43dc179a1f45bf7c7933c9d648784c88391c833e816b09e507303d3d9bc3b6",
+      "line_count": 446,
       "updated_at": "2026-06-12"
     },
     {
@@ -1622,8 +1622,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "cf574d0ab09640c894725a260cdfe1032898f51c45d0ea47a0ef50d27f49ba0a",
-      "line_count": 273,
+      "sha256": "b03e9f9eef59a8524183661ffb3c5a04c8932312cc19a8c3c2b0d6bec5dc8ca3",
+      "line_count": 282,
       "updated_at": "2026-06-12"
     },
     {
@@ -1682,8 +1682,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "db9c887e09c37802360625fb11e7e4e2bd388e74b01c52c2fc83a39a3fbbb6ff",
-      "line_count": 217,
+      "sha256": "a656179fd19d5df768b5b3d2b15f2b97ae72901504fed602d9f735a66dcd7de1",
+      "line_count": 236,
       "updated_at": "2026-06-12"
     },
     {
@@ -1706,8 +1706,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "f922fe298f08445547d00d6683a7374e017ff28992c1f9729cf0190fc035c744",
-      "line_count": 97,
+      "sha256": "0ad878a6e7838d045af13584a19fcaf3f73d6712de5ea0421751b06a205f1040",
+      "line_count": 117,
       "updated_at": "2026-06-12"
     },
     {
@@ -1742,7 +1742,7 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "6dccc320373554e40befba788e4f3e87ea2f327eff60009d13cf23469dcc9090",
+      "sha256": "0ab1248218c8968d906c094dc0162782e6670e832a22b2c368aa1e63e582c15c",
       "line_count": 40,
       "updated_at": "2026-06-12"
     },
@@ -1778,8 +1778,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "8ee88b5af54df0a72891b19be8563d3509955e83b5d9e8a4f03306b8d8441b65",
-      "line_count": 53,
+      "sha256": "c2c81db97f1dbceacb5ccd5ed2252ed7bde98998484a00cc5312f099e56df72d",
+      "line_count": 59,
       "updated_at": "2026-06-12"
     },
     {
@@ -1898,8 +1898,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "8036824576fe8f817157dff9f9f00d619698049a73ac66fdf8dc365bbd6fcda5",
-      "line_count": 44,
+      "sha256": "477fcefe18ed32e33246e4bd430d6da1a2542d19318d5fafddf1d110a845f143",
+      "line_count": 50,
       "updated_at": "2026-06-12"
     },
     {
@@ -1958,8 +1958,8 @@
       "status": "active",
       "version": "1.0",
       "stage": "G3-KB-REAL-RUN-TO-PRE-ADOPTION-v1.0",
-      "sha256": "7f132d50c0033b790203faa2c41b05637b776146ce748bb2a076ec6f53361e64",
-      "line_count": 27,
+      "sha256": "854683954770434d8be35bcce90a1b28fcf6c4666245a94efe51cc5bce04f416",
+      "line_count": 29,
       "updated_at": "2026-06-12"
     },
     {

@@ -1,0 +1,30 @@
+{
+  "flow": "F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3",
+  "stage": "G6_ARCHIVE_RECORD",
+  "created_at": "2026-06-14T01:09:48.558430",
+  "release_candidate": "/Users/ccrt/ccrt/00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_release_candidate.json",
+  "archive_status": "ARCHIVED",
+  "archive_statement": "DQ-W7/DQ-W9 非阻断 WARN 分级展示修复完成并归档。",
+  "final_state": {
+    "display_overall": "WARN_NON_BLOCKING",
+    "overall_gate": "PASS_WITH_NON_BLOCKING_WARNINGS",
+    "release_blocking": false,
+    "required_missing": 0,
+    "optional_missing": 159,
+    "closure_verify": "PASS"
+  },
+  "not_in_scope": [
+    "代码文件/监督机制/data_quality_tracker.md",
+    "trading executor",
+    "capability registry",
+    "D07_v1.2 methodology",
+    "historical report rewrite"
+  ],
+  "evidence_files": [
+    "logs/daily_production/20260612_check_data_quality.json",
+    "logs/daily_production/20260612_closure_verify.json",
+    "configs/data_quality_issue_policy.json",
+    "代码文件/监督机制/dq_issue_classifier.py",
+    "代码文件/监督机制/check_data_quality.py"
+  ]
+}

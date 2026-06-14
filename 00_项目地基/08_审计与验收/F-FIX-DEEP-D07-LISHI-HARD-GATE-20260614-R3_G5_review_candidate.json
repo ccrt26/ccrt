@@ -1,0 +1,28 @@
+{
+  "flow": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3",
+  "date": "20260612",
+  "created_at": "2026-06-14T01:28:49.008797",
+  "changed_files": [
+    "scripts/check_deep_d07_lishi_gate.py (U-9/U-10 拆分为独立必检项, 缺失必 BLOCK)",
+    "tests/test_deep_d07_lishi_gate.py (新增缺U-9 BLOCK, 缺U-10 BLOCK, 完整样例加入U-9+U-10)"
+  ],
+  "forbidden_scope_check": {
+    "trading_executor_touched": false,
+    "capability_registry_touched": false,
+    "D07_v1_2_methodology_changed": false,
+    "historical_reports_rewritten": false,
+    "signal_alert_json_diff": false
+  },
+  "stage": "G5_REVIEW_CANDIDATE",
+  "overall": "PASS",
+  "findings": {
+    "P0": [],
+    "P1": []
+  },
+  "review_basis": [
+    "U-9/U-10 从联合正则拆分为两个独立必检项，BLOCK 优先级高于数量阈值",
+    "新增 test_missing_u9_blocks 和 test_missing_u10_blocks",
+    "完整样例已包含 U-9 + U-10 双字段",
+    "signal_alert.json 已绕过并恢复，确认无 diff"
+  ]
+}

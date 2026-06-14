@@ -68,6 +68,38 @@ def main():
     ap.add_argument("--skip-report", action="store_true", help="跳过日报生成")
     args = ap.parse_args()
     date_str = args.date
+
+    PY = sys.executable
+    planned_steps = [
+        "tushare_sync",
+        "build_dynamic_pool",
+        "batch_data_collector",
+        "scoring_engine",
+        "nan_cleanup_and_meta",
+        "materialize_cache",
+        "daily_report" if not args.skip_report else "daily_report(SKIP)",
+        "canonical_shadow_build" if not args.skip_report else "canonical_shadow_build(SKIP)",
+        "canonical_shadow_gate" if not args.skip_report else "canonical_shadow_gate(SKIP)",
+        "archive",
+        "data_quality_gate",
+        "data_chain_health",
+        "inspect_data_health",
+        "strict_json_check",
+        "archive_verify",
+        "closure_verify",
+    ]
+
+    if args.dry_run:
+        print(json.dumps({
+            "flow": "run_daily_production_pipeline",
+            "date": date_str,
+            "dry_run": True,
+            "would_run": planned_steps,
+            "would_write": [],
+            "guarantee": "dry-run returns before token loading, subprocess execution, ready/manifest writes, data/archive/report writes"
+        }, ensure_ascii=False, indent=2))
+        return 0
+
     os.makedirs(PRODUCTION_DIR, exist_ok=True)
     os.makedirs(STATUS_DIR, exist_ok=True)
     os.makedirs(MANIFEST_DIR, exist_ok=True)
@@ -78,7 +110,6 @@ def main():
         print(json.dumps({"flow": "run_daily_production_pipeline", "date": date_str, "error": err}, ensure_ascii=False))
         sys.exit(2)
 
-    PY = sys.executable
     steps = []
 
     # Step 1: tushare 历史数据同步
@@ -150,7 +181,46 @@ def main():
     # Step 6: 日报生成（可选）
     if not args.skip_report:
         report_cmd = [PY, str(ROOT/"scripts"/"run_daily_report_html_only.py"), "--date", date_str, "--write"]
-        steps.append(run_step("daily_report", report_cmd, timeout_s=300))
+        report_step = run_step("daily_report", report_cmd, timeout_s=300)
+        steps.append(report_step)
+
+        if report_step.get("status") == "PASS":
+            shadow_dir = ROOT / "logs" / "canonical_shadow" / date_str
+            steps.append(run_step(
+                "canonical_shadow_build",
+                [PY, str(ROOT/"scripts"/"build_canonical_report.py"), "--all", "--date", date_str, "--out-dir", str(shadow_dir)],
+                timeout_s=120
+            ))
+            steps.append(run_step(
+                "canonical_shadow_gate",
+                [PY, str(ROOT/"scripts"/"check_canonical_report_shadow.py"), "--all", "--date", date_str, "--canonical-dir", str(shadow_dir), "--json"],
+                timeout_s=120
+            ))
+        else:
+            steps.append({
+                "step": "canonical_shadow_build",
+                "command": "SKIP: daily_report not PASS",
+                "started_at": now(),
+                "finished_at": now(),
+                "duration_sec": 0,
+                "returncode": 0,
+                "status": "SKIP",
+                "stdout_tail": ["daily_report not PASS"],
+                "stderr_tail": [],
+                "output_files": []
+            })
+            steps.append({
+                "step": "canonical_shadow_gate",
+                "command": "SKIP: daily_report not PASS",
+                "started_at": now(),
+                "finished_at": now(),
+                "duration_sec": 0,
+                "returncode": 0,
+                "status": "SKIP",
+                "stdout_tail": ["daily_report not PASS"],
+                "stderr_tail": [],
+                "output_files": []
+            })
 
     # Step 9: 归档（带 --date）
     steps.append(run_step("archive", [PY, str(ROOT/"代码文件"/"每日荐股"/"scripts"/"archive_data.py"), "--date", date_str], timeout_s=30))
@@ -236,6 +306,10 @@ def main():
     report_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "daily_report")
     archive_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "archive")
     av_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "archive_verify")
+    canonical_ready = True if args.skip_report else all(
+        any(s["step"] == step and s["status"] == "PASS" for s in steps)
+        for step in ["canonical_shadow_build", "canonical_shadow_gate"]
+    )
 
     dq_status = next((s["status"] for s in steps if s["step"] == "data_quality_gate"), "BLOCK")
     dc_status = next((s["status"] for s in steps if s["step"] == "data_chain_health"), "BLOCK")
@@ -247,7 +321,7 @@ def main():
     cv_status = next((s["status"] for s in steps if s["step"] == "closure_verify"), "BLOCK")
     closure_ready = "PASS" if cv_status == "PASS" else "BLOCK"
 
-    all_pass = data_ready and report_ready and archive_ready and av_ready and (quality_ready == "PASS") and (closure_ready == "PASS")
+    all_pass = data_ready and report_ready and archive_ready and av_ready and canonical_ready and (quality_ready == "PASS") and (closure_ready == "PASS")
     manifest = {
         "flow": "run_daily_production_pipeline",
         "date": date_str,
@@ -259,6 +333,7 @@ def main():
             "data_ready": "PASS" if data_ready else "BLOCK",
             "report_ready": "PASS" if report_ready else "BLOCK",
             "archive_ready": "PASS" if archive_ready else "BLOCK",
+            "canonical_ready": "PASS" if canonical_ready else "BLOCK",
             "quality_ready": quality_ready,
             "closure_ready": closure_ready,
         }
@@ -273,8 +348,9 @@ def main():
         "ready_at": now(),
         "pipeline_status": manifest["overall"],
         "data_ready": "PASS" if data_ready else "BLOCK",
-        "report_ready": "PASS" if report_ready else "BLOCK" if not args.skip_report else "SKIP",
+        "report_ready": "SKIP" if args.skip_report else ("PASS" if report_ready else "BLOCK"),
         "archive_ready": "PASS" if archive_ready else "BLOCK",
+        "canonical_ready": "SKIP" if args.skip_report else ("PASS" if canonical_ready else "BLOCK"),
         "quality_ready": quality_ready,
         "closure_ready": closure_ready,
         "blocker": [s["step"] for s in steps if s["status"] == "BLOCK"]

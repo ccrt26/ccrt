@@ -1,0 +1,730 @@
+{
+  "run_id": "F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R1",
+  "generated_at": "2026-06-14T15:57:40",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope": "worktree classification only; no code/data/report mutation",
+  "verdict": "PASS",
+  "blocking_errors": [],
+  "summary": {
+    "EXCLUDED_OR_PREEXISTING_REVIEW": 6,
+    "MAINLINE_CODE_AND_REGISTRY": 12,
+    "KRM_VALIDATOR_READONLY_AND_REPORTS": 8,
+    "DEEP_D07_LISHI_FIX": 4,
+    "DQ_WARN_CLASSIFICATION_FIX": 3,
+    "R4_MAINLINE_EVIDENCE": 14,
+    "DEEP_D07_LISHI_EVIDENCE": 13,
+    "DQ_WARN_CLASSIFICATION_EVIDENCE": 4,
+    "EVAL_HOOK_EVIDENCE": 6,
+    "KRM_MAINLINE_EVIDENCE": 6,
+    "KRM_MANIFEST_FIX_R1": 3,
+    "MAINLINE_CLOSURE_EVIDENCE": 4,
+    "OLD_CANDIDATE_ARCHIVE_EVIDENCE": 12,
+    "THIS_AUDIT_EVIDENCE": 1,
+    "OLD_SCOPE_CLEAN_EVIDENCE": 4
+  },
+  "total_paths": 100,
+  "unknown_paths": [],
+  "rows": [
+    {
+      "status": " M",
+      "path": ".claude/commands/深度分析.md",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": ".claude/signal_alert.json",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/02_权威注册表/capability_registry.json",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/manifest.json",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/reports/knowledge_workflow_foundation_validation_v1.0.json",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/reports/scenario_trace_templates_validation_v1.0.json",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/scripts/validate_knowledge_workflow_foundation_v1_0.py",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/scripts/validate_rule_candidate_validation_tasks_v1_0.py",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "00_项目地基/07_知识进化/knowledge/scripts/validate_scenario_trace_templates_v1_0.py",
+      "group": "KRM_VALIDATOR_READONLY_AND_REPORTS",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "scripts/check_runtime_entry_authority.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "scripts/knowledge_evolution.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "scripts/run_daily_data_pipeline_today.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "scripts/run_daily_production_pipeline.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/tools/launch_deep_analysis.sh",
+      "group": "DEEP_D07_LISHI_FIX",
+      "package": "deep_d07",
+      "disposition": "keep_for_deep_d07_candidate"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/数据/data_final.json",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/每日荐股/scripts/archive_data.py",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/每日荐股/scripts/batch_data_collector.py",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/深度分析/parse_deep_analysis_report.py",
+      "group": "DEEP_D07_LISHI_FIX",
+      "package": "deep_d07",
+      "disposition": "keep_for_deep_d07_candidate"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/监督机制/check_data_quality.py",
+      "group": "DQ_WARN_CLASSIFICATION_FIX",
+      "package": "dq",
+      "disposition": "keep_for_dq_candidate"
+    },
+    {
+      "status": " M",
+      "path": "代码文件/监督机制/data_quality_tracker.md",
+      "group": "DQ_WARN_CLASSIFICATION_FIX",
+      "package": "dq",
+      "disposition": "keep_for_dq_candidate"
+    },
+    {
+      "status": " M",
+      "path": "历史数据/manifest/20260612_archive_manifest.json",
+      "group": "EXCLUDED_OR_PREEXISTING_REVIEW",
+      "package": "excluded",
+      "disposition": "do_not_touch_in_current_scope"
+    },
+    {
+      "status": " M",
+      "path": "统一解读/knowledge_entries.jsonl",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G4_self_check_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G5_review_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G6_release_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G4_self_check_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G5_review_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G6_release_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G4_self_check_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G5_review_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_archive_record.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_release_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G4_self_check_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G5_review_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G6_release_candidate.json",
+      "group": "R4_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_archive_record.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G4_self_check_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G5_review_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G6_release_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json",
+      "group": "DEEP_D07_LISHI_EVIDENCE",
+      "package": "deep_d07",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_archive_record.json",
+      "group": "DQ_WARN_CLASSIFICATION_EVIDENCE",
+      "package": "dq",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G4_self_check_candidate.json",
+      "group": "DQ_WARN_CLASSIFICATION_EVIDENCE",
+      "package": "dq",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G5_review_candidate.json",
+      "group": "DQ_WARN_CLASSIFICATION_EVIDENCE",
+      "package": "dq",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G6_release_candidate.json",
+      "group": "DQ_WARN_CLASSIFICATION_EVIDENCE",
+      "package": "dq",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614-R6_G4_self_check_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614-R6_G5_review_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614-R6_G6_release_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614_G4_self_check_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614_G5_review_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-EVAL-HOOK-PENDING-CLOSURE-20260614_G6_release_candidate.json",
+      "group": "EVAL_HOOK_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614-R5_G4_self_check_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614-R5_G5_review_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614-R5_G6_release_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614_G4_self_check_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614_G5_review_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KB-READONLY-PENDING-KRM-20260614_G6_release_candidate.json",
+      "group": "KRM_MAINLINE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KRM-MANIFEST-FINGERPRINT-20260614-R1_G4_self_check_candidate.json",
+      "group": "KRM_MANIFEST_FIX_R1",
+      "package": "krm_manifest",
+      "disposition": "current_candidate"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KRM-MANIFEST-FINGERPRINT-20260614-R1_G5_review_candidate.json",
+      "group": "KRM_MANIFEST_FIX_R1",
+      "package": "krm_manifest",
+      "disposition": "current_candidate"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-KRM-MANIFEST-FINGERPRINT-20260614-R1_G6_release_candidate.json",
+      "group": "KRM_MANIFEST_FIX_R1",
+      "package": "krm_manifest",
+      "disposition": "current_candidate"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G4_self_check_candidate.json",
+      "group": "MAINLINE_CLOSURE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G5_review_candidate.json",
+      "group": "MAINLINE_CLOSURE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G6_release_candidate.json",
+      "group": "MAINLINE_CLOSURE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_scope_report.json",
+      "group": "MAINLINE_CLOSURE_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R2_G4_self_check_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R2_G5_review_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R2_G6_release_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R2_scope_report.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3_G4_self_check_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3_G5_review_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3_G6_release_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614-R3_scope_report.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614_G4_self_check_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614_G5_review_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614_G6_release_candidate.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614_scope_report.json",
+      "group": "OLD_CANDIDATE_ARCHIVE_EVIDENCE",
+      "package": "old_candidate_archive",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R1_scope_report.json",
+      "group": "THIS_AUDIT_EVIDENCE",
+      "package": "F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R1",
+      "disposition": "current_candidate"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-CLEAN-20260614_G4_self_check_candidate.json",
+      "group": "OLD_SCOPE_CLEAN_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-CLEAN-20260614_G5_review_candidate.json",
+      "group": "OLD_SCOPE_CLEAN_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-CLEAN-20260614_G6_release_candidate.json",
+      "group": "OLD_SCOPE_CLEAN_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-CLEAN-20260614_scope_report.json",
+      "group": "OLD_SCOPE_CLEAN_EVIDENCE",
+      "package": "mainline",
+      "disposition": "candidate_evidence"
+    },
+    {
+      "status": "??",
+      "path": "scripts/check_deep_d07_lishi_gate.py",
+      "group": "DEEP_D07_LISHI_FIX",
+      "package": "deep_d07",
+      "disposition": "keep_for_deep_d07_candidate"
+    },
+    {
+      "status": "??",
+      "path": "scripts/close_eval_hooks_pending.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": "??",
+      "path": "tests/test_daily_production_dry_run.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": "??",
+      "path": "tests/test_deep_d07_lishi_gate.py",
+      "group": "DEEP_D07_LISHI_FIX",
+      "package": "deep_d07",
+      "disposition": "keep_for_deep_d07_candidate"
+    },
+    {
+      "status": "??",
+      "path": "tests/test_knowledge_registry_integrity.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": "??",
+      "path": "tests/test_runtime_entry_authority.py",
+      "group": "MAINLINE_CODE_AND_REGISTRY",
+      "package": "mainline",
+      "disposition": "keep_for_mainline_candidate"
+    },
+    {
+      "status": "??",
+      "path": "代码文件/监督机制/dq_issue_classifier.py",
+      "group": "DQ_WARN_CLASSIFICATION_FIX",
+      "package": "dq",
+      "disposition": "keep_for_dq_candidate"
+    }
+  ]
+}

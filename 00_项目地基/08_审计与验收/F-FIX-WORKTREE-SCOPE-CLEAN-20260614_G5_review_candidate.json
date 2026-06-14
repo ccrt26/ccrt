@@ -1,0 +1,9 @@
+{
+  "run_id": "F-FIX-WORKTREE-SCOPE-CLEAN-20260614",
+  "gate": "G5_review_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "source_scope_report": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-CLEAN-20260614_scope_report.json",
+  "verdict": "PASS",
+  "note": "执行模型只生成候选证据，不替代旧影/腰子/用户确认。"
+}

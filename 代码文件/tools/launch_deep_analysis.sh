@@ -38,9 +38,10 @@ fi
 LAUNCHED=0
 PIDS=""
 while IFS=: read -r code name; do
-    echo "[$(date '+%H:%M:%S')] Launching deep analysis for $code $name"
+    echo "[$(date '+%H:%M:%S')] Launching deep analysis for $code $name (date=$DATE, D07_v1.2+砺石)"
     # 每只股票独立会话，后台运行
-    claude run "/深度分析 $code $name" \
+    # 约束：D07_v1.2 强制 + 砺石 method_review + MD+HTML 默认 + 禁止 PDF + 禁止 G5/G6 冒签
+    claude run "基于 $DATE 数据生成 $code $name 深度分析周报。强制: (1) D07_v1.2 必检 (多假设/反证/证据缺口/结论强度/长期机构资金); (2) 砺石 method_review 必含 (D1-D5 五项审查); (3) 默认输出 MD+HTML, 不生成 PDF; (4) 禁止冒签 G5/G6/formal pipeline PASS。输出后运行 python3 scripts/check_deep_d07_lishi_gate.py --report <MD路径> 和 python3 代码文件/深度分析/parse_deep_analysis_report.py --validate <MD路径> 验证。" \
         --cwd "$ROOT" \
         --allowedTools "Bash,Read,Write,Edit,WebFetch,WebSearch,Agent" &
     pid=$!

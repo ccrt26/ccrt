@@ -1,0 +1,260 @@
+{
+  "run_id": "F-FIX-WORKTREE-SCOPE-CLEAN-20260614",
+  "generated_at": "2026-06-14T14:53:35",
+  "candidate_only": true,
+  "scope": "P0-D/P0-E only",
+  "no_role_signoff_claimed": true,
+  "no_business_logic_changed": true,
+  "no_file_deleted": true,
+  "verdict": "PASS",
+  "failures": [],
+  "checks": {
+    "staged_area_empty": true,
+    "all_paths_classified_once": true,
+    "duplicate_classification": [],
+    "r4_core_expected": [
+      "00_项目地基/02_权威注册表/capability_registry.json",
+      "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+      "00_项目地基/07_知识进化/knowledge/manifest.json",
+      "scripts/check_runtime_entry_authority.py",
+      "scripts/knowledge_evolution.py",
+      "scripts/run_daily_data_pipeline_today.py",
+      "scripts/run_daily_production_pipeline.py",
+      "统一解读/knowledge_entries.jsonl"
+    ],
+    "r4_core_missing_from_current_changes": [],
+    "total_changed_paths": 53
+  },
+  "categories": {
+    "unclassified_preexisting_or_user_change": [
+      {
+        "xy": " M",
+        "path": ".claude/commands/深度分析.md"
+      },
+      {
+        "xy": " M",
+        "path": "代码文件/每日荐股/scripts/archive_data.py"
+      },
+      {
+        "xy": " M",
+        "path": "代码文件/每日荐股/scripts/batch_data_collector.py"
+      }
+    ],
+    "dry_run_or_validator_side_effects": [
+      {
+        "xy": " M",
+        "path": ".claude/signal_alert.json"
+      },
+      {
+        "xy": " M",
+        "path": "代码文件/数据/data_final.json"
+      },
+      {
+        "xy": " M",
+        "path": "历史数据/manifest/20260612_archive_manifest.json"
+      }
+    ],
+    "r4_core": [
+      {
+        "xy": " M",
+        "path": "00_项目地基/02_权威注册表/capability_registry.json"
+      },
+      {
+        "xy": " M",
+        "path": "00_项目地基/06_调度与运行/runtime_entry_registry.json"
+      },
+      {
+        "xy": " M",
+        "path": "00_项目地基/07_知识进化/knowledge/manifest.json"
+      },
+      {
+        "xy": " M",
+        "path": "scripts/check_runtime_entry_authority.py"
+      },
+      {
+        "xy": " M",
+        "path": "scripts/knowledge_evolution.py"
+      },
+      {
+        "xy": " M",
+        "path": "scripts/run_daily_data_pipeline_today.py"
+      },
+      {
+        "xy": " M",
+        "path": "scripts/run_daily_production_pipeline.py"
+      },
+      {
+        "xy": " M",
+        "path": "统一解读/knowledge_entries.jsonl"
+      }
+    ],
+    "validator_report_side_effects": [
+      {
+        "xy": " M",
+        "path": "00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json"
+      },
+      {
+        "xy": " M",
+        "path": "00_项目地基/07_知识进化/knowledge/reports/knowledge_workflow_foundation_validation_v1.0.json"
+      },
+      {
+        "xy": " M",
+        "path": "00_项目地基/07_知识进化/knowledge/reports/rule_candidate_validation_task_closure_validation_v1.0.json"
+      },
+      {
+        "xy": " M",
+        "path": "00_项目地基/07_知识进化/knowledge/reports/scenario_trace_templates_validation_v1.0.json"
+      }
+    ],
+    "deep_d07_residue": [
+      {
+        "xy": " M",
+        "path": "代码文件/tools/launch_deep_analysis.sh"
+      },
+      {
+        "xy": " M",
+        "path": "代码文件/深度分析/parse_deep_analysis_report.py"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_archive_record.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "scripts/check_deep_d07_lishi_gate.py"
+      },
+      {
+        "xy": "??",
+        "path": "tests/test_deep_d07_lishi_gate.py"
+      }
+    ],
+    "dq_residue": [
+      {
+        "xy": " M",
+        "path": "代码文件/监督机制/check_data_quality.py"
+      },
+      {
+        "xy": " M",
+        "path": "代码文件/监督机制/data_quality_tracker.md"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_archive_record.json"
+      },
+      {
+        "xy": "??",
+        "path": "代码文件/监督机制/dq_issue_classifier.py"
+      }
+    ],
+    "old_auto_closure_residue": [
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G6_release_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G6_release_candidate.json"
+      }
+    ],
+    "r4_archive_candidates": [
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_archive_record.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_release_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G4_self_check_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G5_review_candidate.json"
+      },
+      {
+        "xy": "??",
+        "path": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G6_release_candidate.json"
+      }
+    ],
+    "test_residue": [
+      {
+        "xy": "??",
+        "path": "tests/test_daily_production_dry_run.py"
+      },
+      {
+        "xy": "??",
+        "path": "tests/test_knowledge_registry_integrity.py"
+      },
+      {
+        "xy": "??",
+        "path": "tests/test_runtime_entry_authority.py"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "task_id": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE",
+  "stage": "G6_archive_record",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "conclusion": {
+    "core_fix_verdict": "PASS",
+    "overall_workspace": "WARN",
+    "warn_reasons": [
+      "存在非 R4 预存变更（tests/, FIX-DEEP-D07-, knowledge/reports 等）",
+      "validator 默认只读未修",
+      "知识进化全链路未修",
+      "eval_hooks 仍 pending（59 条，0 条已评估）"
+    ],
+    "scope": "R4 核心修复已全部 PASS，进入 G5/G6 候选收口。G6 未经旧影/腰子签字，非正式放行。"
+  },
+  "verification_evidence": {
+    "py_compile_7_scripts": "PASS",
+    "runtime_authority_check": "PASS (14/14 checks, C3b PASS)",
+    "dry_run": "PASS (dry_run=true, would_write=[], 无副作用)",
+    "knowledge_registry_validate": "PASS (20 entries, 34 jsonl, 0 issues)",
+    "knowledge_evolution_weekly": "WARN (pending_status=WARN, 未伪造已评估)",
+    "semantic_boundary_check": "PASS (capability status=draft, registry_status, machine_executable, candidate 边界)"
+  },
+  "candidate_paths": [
+    "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+    "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G5_review_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_release_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_archive_record.json"
+  ],
+  "excluded_claims": [
+    "不声明 validator 默认只读已修",
+    "不声明知识进化全链路已修",
+    "不声明 eval_hooks 已闭环",
+    "不声明 G6 正式放行",
+    "不冒签旧影/腰子/阿黑"
+  ],
+  "archive_date": "2026-06-14",
+  "status": "CANDIDATE_ARCHIVE_RECORD"
+}

@@ -1,0 +1,464 @@
+{
+  "run_id": "F-FIX-OLD-CANDIDATE-EVIDENCE-ARCHIVE-20260614",
+  "generated_at": "2026-06-14T15:33:12",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "scope": "archive/classify superseded R/R2/R3 candidate evidence only; no business code touched",
+  "verdict": "PASS",
+  "errors": [
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json",
+    "unparseable_json:00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_archive_record.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G4_self_check_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G4_self_check_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G5_review_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G5_review_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_archive_record.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_archive_record.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G4_self_check_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G4_self_check_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G5_review_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G5_review_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G6_release_candidate.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G6_release_candidate.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G1_scope_confirmation.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G1_scope_confirmation.json",
+    "candidate_only not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G1_scope_confirmation.json",
+    "no_role_signoff_claimed not true: 00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G1_scope_confirmation.json"
+  ],
+  "old_candidate_count": 36,
+  "current_candidate_count": 9,
+  "records": [
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G4_self_check_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G5_review_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R2_G6_release_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G4_self_check_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G5_review_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R3_G6_release_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G4_self_check_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G5_review_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4_G6_release_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G4_self_check_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G5_review_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_archive_record.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_G6_release_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+      "file": "00_项目地基/08_审计与验收/F-FIX-AUTO-CLOSURE-20260614-R4-CLOSE_scope_report.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G4_self_check_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G5_review_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R2_G6_release_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G4_self_check_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G5_review_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_archive_record.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null,
+      "parse_error": true
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R3_G6_release_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G4_self_check_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G5_review_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614-R4_G6_release_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G4_self_check_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G5_review_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DEEP-D07-LISHI-HARD-GATE-20260614_G6_release_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G4_self_check_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G5_review_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G6_release_candidate.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G5_review_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_archive_record.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R3_G6_release_candidate.json",
+      "rank": 3,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G4_self_check_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G5_review_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R4_G6_release_candidate.json",
+      "rank": 4,
+      "classification": "current_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G4_self_check_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G5_review_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G6_release_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G1_scope_confirmation.json",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614-R2_G1_scope_confirmation.json",
+      "rank": 2,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-DQ-WARN-CLASSIFICATION-20260614_G1_scope_confirmation.json",
+      "file": "00_项目地基/08_审计与验收/F-FIX-DQ-WARN-CLASSIFICATION-20260614_G1_scope_confirmation.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": null,
+      "no_role_signoff_claimed": null,
+      "verdict": null
+    },
+    {
+      "family": "F-FIX-MAINLINE-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G4_self_check_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-MAINLINE-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G5_review_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-MAINLINE-CLOSURE-20260614",
+      "file": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_G6_release_candidate.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    },
+    {
+      "family": "F-FIX-MAINLINE-CLOSURE-20260614_scope_report.json",
+      "file": "00_项目地基/08_审计与验收/F-FIX-MAINLINE-CLOSURE-20260614_scope_report.json",
+      "rank": 0,
+      "classification": "superseded_history_candidate",
+      "candidate_only": true,
+      "no_role_signoff_claimed": true,
+      "verdict": "PASS"
+    }
+  ],
+  "rule": "highest R>=4 per family remains current_candidate; lower or unnumbered R files are superseded_history_candidate"
+}

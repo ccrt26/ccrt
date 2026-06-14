@@ -1,0 +1,10 @@
+{
+  "run_id": "F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R2",
+  "gate": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "source_scope_report": "00_项目地基/08_审计与验收/F-FIX-WORKTREE-SCOPE-AUDIT-20260614-R2_scope_report.json",
+  "verdict": "PASS",
+  "blocking_errors": [],
+  "note": "candidate only; does not claim role signoff"
+}

@@ -20,6 +20,9 @@ LIT_CARDS_DIR = KNOWLEDGE / "literature_cards"
 REPORTS_DIR = KNOWLEDGE / "reports"
 MANIFEST_PATH = KNOWLEDGE / "manifest.json"
 ROUTER_PATH = ROUTING_DIR / "krm_task_router_v1.0.json"
+WRITE_REPORT = "--write-report" in sys.argv
+if WRITE_REPORT:
+    sys.argv = [x for x in sys.argv if x != "--write-report"]
 
 FINANCIAL_ROLES_CN = ["玉夜", "青山", "流金", "信鸽", "山猫", "腰子"]
 FINANCIAL_ROLES_LATIN = ["yuye", "qingshan", "liujin", "xinge", "shanmao", "yaozi"]
@@ -435,6 +438,9 @@ if __name__ == "__main__":
     if bad_rc:
         print(f"  bad_rule_candidates = {bad_rc}")
 
-    rpt_path = REPORTS_DIR / "global_krm_restore_after_qingshan_flow_validation_v1.1.2.json"
-    rpt_path.write_text(json.dumps(rpt, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"\nreport: {rpt_path}")
+    if WRITE_REPORT:
+        REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        rpt_path = REPORTS_DIR / "global_krm_restore_after_qingshan_flow_validation_v1.1.2.json"
+        rpt_path.write_text(json.dumps(rpt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"\nreport: {rpt_path}")
+    print(json.dumps(rpt, ensure_ascii=False, indent=2))

@@ -125,6 +125,39 @@ def check_all():
     else:
         checks.append(make_check("C3", "registry_entries", "PASS", str(required_entries), str(required_entries), ""))
 
+    # ── C3b: Daily production wrapper authority ────────────
+    prod_entry = next((e for e in entries if e.get("entry") == "run_daily_production_pipeline.py"), None)
+    wrapper_entry = next((e for e in entries if e.get("entry") == "run_daily_data_pipeline_today.py"), None)
+    c3b_errors = []
+    if prod_entry is None:
+        c3b_errors.append("run_daily_production_pipeline.py missing")
+    else:
+        if prod_entry.get("authority") != "daily_production_pipeline_entry":
+            c3b_errors.append(f"production authority={prod_entry.get('authority')}")
+        if prod_entry.get("status") != "active":
+            c3b_errors.append(f"production status={prod_entry.get('status')}")
+        prod_path = PROJECT_ROOT / prod_entry.get("path", "")
+        if not prod_path.exists():
+            c3b_errors.append(f"production path missing: {prod_entry.get('path')}")
+    if wrapper_entry is None:
+        c3b_errors.append("run_daily_data_pipeline_today.py missing")
+    else:
+        if wrapper_entry.get("status") != "active_wrapper":
+            c3b_errors.append(f"wrapper status={wrapper_entry.get('status')}")
+        if wrapper_entry.get("delegates_to") != "run_daily_production_pipeline.py":
+            c3b_errors.append(f"wrapper delegates_to={wrapper_entry.get('delegates_to')}")
+    if c3b_errors:
+        result = "BLOCK"
+        checks.append(make_check("C3b", "daily_production_authority", "BLOCK",
+                                  "production active + wrapper delegates",
+                                  "; ".join(c3b_errors),
+                                  "日报生产闭环入口权威关系不成立"))
+    else:
+        checks.append(make_check("C3b", "daily_production_authority", "PASS",
+                                  "production active + wrapper delegates",
+                                  "ok",
+                                  ""))
+
     # ── C4: Forbidden scheduler scripts marked in registry ──
     c4_blocked = False
     for sched_ps1 in KNOWN_FORBIDDEN_SCHEDULER_PS1:

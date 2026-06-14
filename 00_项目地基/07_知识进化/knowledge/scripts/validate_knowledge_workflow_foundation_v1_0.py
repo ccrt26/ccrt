@@ -7,6 +7,9 @@ from pathlib import Path
 ROOT = Path("/Users/ccrt/ccrt")
 KB = ROOT / "00_项目地基/07_知识进化/knowledge"
 REPORT = KB / "reports/knowledge_workflow_foundation_validation_v1.0.json"
+WRITE_REPORT = "--write-report" in sys.argv
+if WRITE_REPORT:
+    sys.argv = [x for x in sys.argv if x != "--write-report"]
 
 required_files = [
     KB / "policies/validation_policy_matrix_v1.0.json",
@@ -185,29 +188,33 @@ unregistered_candidates = sorted(x for x in candidate_ids if x and x not in regi
 
 global_report = KB / "reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json"
 global_validator_script = KB / "scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py"
-global_report_exists = global_report.exists()
 global_script_exists = global_validator_script.exists()
 global_result = "NOT_CHECKED"
 global_report_result = None
 global_stdout = ""
-if global_report_exists and global_script_exists:
-    try:
-        gr = load_json(global_report)
-        global_report_result = gr.get("result", "UNKNOWN")
-        global_result = "PASS" if global_report_result == "PASS" else global_report_result
-        global_stdout = f"script_exists={global_script_exists} report_exists={global_report_exists} result={global_report_result}"
-    except Exception as exc:
-        global_result = "PARSE_FAIL"
-        global_report_result = "PARSE_FAIL"
-        global_stdout = str(exc)
-elif not global_report_exists:
-    global_result = "MISSING"
-    global_report_result = "MISSING"
-    global_stdout = "KRM report not found (must run KRM validator first)"
-elif not global_script_exists:
+
+def parse_child_result(proc):
+    text = (proc.stdout or "").strip()
+    for i, ch in enumerate(text):
+        if ch == "{":
+            try:
+                return json.loads(text[i:]).get("result", "MISSING_RESULT")
+            except Exception:
+                pass
+    return None
+
+if not global_script_exists:
     global_result = "NO_SCRIPT"
     global_report_result = "NO_SCRIPT"
     global_stdout = "KRM script not found"
+else:
+    cmd = [sys.executable, str(global_validator_script)]
+    if WRITE_REPORT:
+        cmd.append("--write-report")
+    proc = subprocess.run(cmd, cwd=str(ROOT), text=True, capture_output=True)
+    global_report_result = parse_child_result(proc) or "PARSE_FAIL"
+    global_result = global_report_result
+    global_stdout = (proc.stdout + proc.stderr)[-2000:]
 
 checks = {
     "required_files_ok": not missing,
@@ -267,7 +274,9 @@ report = {
     }
 }
 
-REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+if WRITE_REPORT:
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
+    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=2))
 raise SystemExit(0 if result == "PASS" else 1)
 

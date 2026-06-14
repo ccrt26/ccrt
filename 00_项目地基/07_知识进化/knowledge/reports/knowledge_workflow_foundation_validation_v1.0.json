@@ -26,8 +26,8 @@
   "transition_errors": [],
   "policy_state_errors": [],
   "manifest_check": {
-    "entry_count": 182,
-    "counts_total_entries": 182,
+    "entry_count": 184,
+    "counts_total_entries": 184,
     "missing_required_ids": [],
     "bad_entries": [],
     "absolute_paths": [],
@@ -43,7 +43,7 @@
   "global_krm_validator": {
     "result": "PASS",
     "report_result": "PASS",
-    "tail": "script_exists=True report_exists=True result=PASS"
+    "tail": "k = True\n  rules_without_source_evidence = 0\n  source_coverage = 64/64\n  stage = G3-QINGSHAN-FIRST-LITERATURE-CARD-VALIDATOR-FIX-v1.0\n\nreport: /Users/ccrt/ccrt/00_项目地基/07_知识进化/knowledge/reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json\n{\n  \"stage\": \"G3-QINGSHAN-FIRST-LITERATURE-CARD-VALIDATOR-FIX-v1.0\",\n  \"result\": \"PASS\",\n  \"role_path_residue_count\": 0,\n  \"role_path_residue_files\": [],\n  \"role_chinese_paths_exist\": true,\n  \"legacy_role_kb_file_count\": 64,\n  \"legacy_role_kb_sha_match\": true,\n  \"router_route_count\": 10,\n  \"router_paths_exist\": true,\n  \"router_no_placeholders\": true,\n  \"active_rule_count\": 128,\n  \"draft_rule_count\": 0,\n  \"source_coverage\": \"64/64\",\n  \"rules_without_source_evidence\": 0,\n  \"bad_evidence_paths\": 0,\n  \"bad_evidence_lines\": 0,\n  \"json_jsonl_consistent\": true,\n  \"manifest_entry_count\": 184,\n  \"manifest_integrity_ok\": true,\n  \"qingshan_three_steps_preserved\": true,\n  \"literature_cards_allowed\": true,\n  \"literature_card_count\": 1,\n  \"literature_cards_registered\": true,\n  \"literature_cards_status_ok\": true,\n  \"literature_cards_boundary_ok\": true,\n  \"literature_cards_validation_ok\": true,\n  \"bad_literature_cards\": [],\n  \"rule_candidates_allowed\": true,\n  \"rule_candidate_count\": 1,\n  \"rule_candidates_registered\": true,\n  \"rule_candidates_status_ok\": true,\n  \"rule_candidates_boundary_ok\": true,\n  \"bad_rule_candidates\": [],\n  \"active_rule_touched_by_candidate\": false,\n  \"rule_candidates_created\": true,\n  \"forbidden_downstream_created\": false,\n  \"old_quality_phrase_exists\": false,\n  \"result_reason\": \"roles_residue=0_chinese_paths=True_legacy=64_sha=True_router=10_paths=True_noplaceholder=True_active=128_draft=0_cov=64/64_noev=0_badpath=0_badline=0_jsonl=True_manifest=184_integrity=True_qs=True_lit_cards_allowed=True_count=1_registered=True_status_ok=True_boundary_ok=True_val_ok=True_bad_lit=0_rc_allowed=True_rc_count=1_rc_registered=True_rc_status_ok=True_rc_boundary_ok=True_bad_rc=0_active_rule_touched=False_forbidden=False\"\n}\n"
   },
   "boundary_check": {
     "no_active_rule_promotion_claimed": true,

@@ -1,0 +1,10 @@
+{
+  "run_id": "F-FIX-KRM-MANIFEST-FINGERPRINT-20260614-R1",
+  "gate": "G6_release_candidate",
+  "candidate_only": true,
+  "no_role_signoff_claimed": true,
+  "source_g4": "00_项目地基/08_审计与验收/F-FIX-KRM-MANIFEST-FINGERPRINT-20260614-R1_G4_self_check_candidate.json",
+  "verdict": "PASS",
+  "errors": [],
+  "note": "candidate only; does not claim 旧影/腰子 role signoff"
+}

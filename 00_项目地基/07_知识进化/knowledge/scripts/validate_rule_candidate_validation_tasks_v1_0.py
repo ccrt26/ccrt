@@ -7,6 +7,9 @@ from pathlib import Path
 ROOT = Path("/Users/ccrt/ccrt")
 KB = ROOT / "00_项目地基/07_知识进化/knowledge"
 REPORT = KB / "reports/rule_candidate_validation_task_closure_validation_v1.0.json"
+WRITE_REPORT = "--write-report" in sys.argv
+if WRITE_REPORT:
+    sys.argv = [x for x in sys.argv if x != "--write-report"]
 
 TASK_ID = "VT-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001"
 CANDIDATE_ID = "RC-QS-FF1993-FACTOR-VALIDITY-BOUNDARY-001"
@@ -32,6 +35,30 @@ def line_count(path):
         return 0
     return len(path.read_text(encoding="utf-8").splitlines())
 
+def child_cmd(script):
+    cmd = [sys.executable, str(script)]
+    if WRITE_REPORT:
+        cmd.append("--write-report")
+    return cmd
+
+def parse_child_result(proc):
+    text = (proc.stdout or "").strip()
+    for i, ch in enumerate(text):
+        if ch == "{":
+            try:
+                return json.loads(text[i:]).get("result", "MISSING_RESULT")
+            except Exception:
+                pass
+    return None
+
+def report_result(path):
+    if not path.exists():
+        return "MISSING"
+    try:
+        return load_json(path).get("result", "MISSING_RESULT")
+    except Exception:
+        return "PARSE_FAIL"
+
 missing = [str(p) for p in required_files if not p.exists()]
 json_errors = []
 for p in required_files:
@@ -42,13 +69,13 @@ for p in required_files:
             json_errors.append({"path": str(p), "error": str(exc)})
 
 foundation_proc = subprocess.run(
-    [sys.executable, str(KB / "scripts/validate_knowledge_workflow_foundation_v1_0.py")],
+    child_cmd(KB / "scripts/validate_knowledge_workflow_foundation_v1_0.py"),
     cwd=str(ROOT),
     text=True,
     capture_output=True
 )
 global_proc = subprocess.run(
-    [sys.executable, str(KB / "scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py")],
+    child_cmd(KB / "scripts/validate_global_krm_restore_after_qingshan_flow_v1_0.py"),
     cwd=str(ROOT),
     text=True,
     capture_output=True
@@ -57,18 +84,8 @@ global_proc = subprocess.run(
 foundation_report_path = KB / "reports/knowledge_workflow_foundation_validation_v1.0.json"
 krm_report_path = KB / "reports/global_krm_restore_after_qingshan_flow_validation_v1.1.2.json"
 
-foundation_report_result = "MISSING"
-krm_report_result = "MISSING"
-if foundation_report_path.exists():
-    try:
-        foundation_report_result = load_json(foundation_report_path).get("result", "MISSING_RESULT")
-    except Exception:
-        foundation_report_result = "PARSE_FAIL"
-if krm_report_path.exists():
-    try:
-        krm_report_result = load_json(krm_report_path).get("result", "MISSING_RESULT")
-    except Exception:
-        krm_report_result = "PARSE_FAIL"
+foundation_report_result = parse_child_result(foundation_proc) or report_result(foundation_report_path)
+krm_report_result = parse_child_result(global_proc) or report_result(krm_report_path)
 
 task_path = KB / "validation_tasks/qingshan/VT_QINGSHAN_FAMA_FRENCH_1993_FACTOR_VALIDITY_BOUNDARY_v1.0.json"
 registry_path = KB / "validation_modules/validation_module_registry_v1.0.json"
@@ -211,7 +228,9 @@ report = {
     "formal_pipeline_note": "This is a CCRT relay-package validation record, not actor/HMAC formal pipeline PASS."
 }
 
-REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+if WRITE_REPORT:
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
+    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False, indent=2))
 raise SystemExit(0 if result == "PASS" else 1)
 
