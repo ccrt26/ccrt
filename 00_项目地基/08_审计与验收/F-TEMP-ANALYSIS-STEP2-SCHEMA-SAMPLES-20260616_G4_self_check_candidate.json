@@ -1,0 +1,75 @@
+{
+  "flow": "F-TEMP-ANALYSIS-STEP2-SCHEMA-SAMPLES-20260616",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "landing_steps_total": 5,
+  "current_step": 2,
+  "step_goal": "schema_and_samples_landing",
+  "changed_files_expected": [
+    "00_项目地基/03_报告对象/temporary_analysis_brief_v0.1.schema.json",
+    "临时分析/样例/temporary_analysis_normal_fluctuation_600114_20260616.json",
+    "临时分析/样例/temporary_analysis_false_breakout_600114_20260616.json",
+    "临时分析/样例/temporary_analysis_breakdown_weakness_600114_20260616.json",
+    "00_项目地基/08_审计与验收/F-TEMP-ANALYSIS-STEP2-SCHEMA-SAMPLES-20260616_G4_self_check_candidate.json"
+  ],
+  "schema": {
+    "path": "00_项目地基/03_报告对象/temporary_analysis_brief_v0.1.schema.json",
+    "exists": true,
+    "json_legal": true
+  },
+  "samples": {
+    "paths": [
+      "临时分析/样例/temporary_analysis_normal_fluctuation_600114_20260616.json",
+      "临时分析/样例/temporary_analysis_false_breakout_600114_20260616.json",
+      "临时分析/样例/temporary_analysis_breakdown_weakness_600114_20260616.json"
+    ],
+    "all_exist": true,
+    "structure_check": "PASS",
+    "sample_count": 3
+  },
+  "no_markdown_created": true,
+  "self_checks": [
+    "STEP1_CONTRACT_PRECHECK: PASS",
+    "STEP2_JSON_LEGALITY_CHECK: PASS",
+    "STEP2_SAMPLE_STRUCTURE_CHECK: PASS"
+  ],
+  "pre_existing_dirty_files": [
+    " M scripts/check_daily_data_completeness.py",
+    " M scripts/check_runtime_entry_authority.py",
+    " M scripts/github_sync_after_archive.py",
+    " M scripts/materialize_daily_authoritative_cache.py",
+    " M scripts/pipeline_engine.py",
+    " M scripts/run_daily_data_pipeline_today.py",
+    " M scripts/run_daily_production_pipeline.py",
+    " M scripts/run_daily_report_html_only.py",
+    " M scripts/run_daily_report_one_by_one.py",
+    " M scripts/stage_gate_auto_advance.py",
+    " M scripts/verify_daily_production_closure.py",
+    " M tests/test_daily_production_dry_run.py",
+    " M tests/test_github_sync_after_archive.py",
+    " M tests/test_stage_gate_auto_advance.py",
+    "?? scripts/check_ccrt_flow_routing.py",
+    "?? scripts/check_ccrt_role_boundary.py",
+    "?? scripts/check_ccrt_stage_contract.py",
+    "?? scripts/check_ccrt_standard_flow.py",
+    "?? scripts/check_daily_d07_v12_contract.py",
+    "?? scripts/check_runtime_dependency_readiness.py",
+    "?? scripts/check_runtime_secret_readiness.py",
+    "?? scripts/git_workspace_hygiene.py",
+    "?? scripts/runtime_secret_loader.py",
+    "?? tests/test_batch_data_collector_contract.py",
+    "?? tests/test_ccrt_flow_routing.py",
+    "?? tests/test_ccrt_role_boundary.py",
+    "?? tests/test_ccrt_stage_contract.py",
+    "?? tests/test_ccrt_standard_flow.py",
+    "?? tests/test_daily_report_html_only.py",
+    "?? tests/test_git_autosweep_index_hygiene.py",
+    "?? tests/test_git_workspace_hygiene.py",
+    "?? tests/test_orchestrator_preflight_block.py",
+    "?? tests/test_runtime_dependency_readiness.py",
+    "?? tests/test_runtime_secret_readiness.py"
+  ],
+  "forbidden_scope_claim": "No step2-intended writes to scripts/tests/统一解读/重点股票/每日荐股/代码文件.",
+  "final_status_candidate": "PASS"
+}

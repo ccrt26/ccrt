@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tielv-quant.ccrt/schemas/temporary_analysis_brief_v0.1.schema.json",
+  "title": "TemporaryAnalysisBrief v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scene",
+    "framework_version",
+    "stock_code",
+    "stock_name",
+    "query_time",
+    "intraday_state",
+    "action_bias",
+    "conclusion_strength",
+    "data_quality",
+    "key_levels",
+    "trigger_actions",
+    "hypotheses",
+    "counter_evidence",
+    "evidence_gap_requests",
+    "method_review",
+    "eval_hook",
+    "non_goals_confirmed"
+  ],
+  "properties": {
+    "scene": {
+      "const": "临时分析"
+    },
+    "framework_version": {
+      "const": "D07_v1.2"
+    },
+    "stock_code": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "stock_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "query_time": {
+      "type": "string",
+      "minLength": 10
+    },
+    "intraday_state": {
+      "type": "string",
+      "enum": [
+        "normal_fluctuation",
+        "strength_confirmation",
+        "false_breakout",
+        "breakdown_weakness",
+        "event_driven",
+        "data_insufficient"
+      ]
+    },
+    "action_bias": {
+      "type": "string",
+      "enum": [
+        "WATCH",
+        "HOLD",
+        "REDUCE",
+        "EXIT",
+        "CONDITIONAL_ADD",
+        "T_CONDITION",
+        "NEUTRAL"
+      ]
+    },
+    "conclusion_strength": {
+      "type": "string",
+      "enum": [
+        "可定性",
+        "倾向判断",
+        "风险假设",
+        "数据不足"
+      ]
+    },
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_quote",
+        "market_context",
+        "baseline_context"
+      ],
+      "properties": {
+        "current_quote": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing"
+          ]
+        },
+        "market_context": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing"
+          ]
+        },
+        "baseline_context": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing"
+          ]
+        },
+        "event_context": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing",
+            "not_applicable"
+          ]
+        },
+        "user_position_context": {
+          "type": "string",
+          "enum": [
+            "present",
+            "missing",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "key_levels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confirm_above",
+        "invalidate_below",
+        "intraday_reference"
+      ],
+      "properties": {
+        "confirm_above": {
+          "type": "string"
+        },
+        "invalidate_below": {
+          "type": "string"
+        },
+        "intraday_reference": {
+          "type": "string"
+        }
+      }
+    },
+    "trigger_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "condition",
+          "action",
+          "price_range",
+          "position_boundary",
+          "time_window"
+        ],
+        "properties": {
+          "condition": {
+            "type": "string",
+            "minLength": 5
+          },
+          "action": {
+            "type": "string",
+            "minLength": 2
+          },
+          "price_range": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position_boundary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "time_window": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hypothesis_id",
+          "statement",
+          "type",
+          "conclusion_strength"
+        ],
+        "properties": {
+          "hypothesis_id": {
+            "type": "string",
+            "minLength": 2
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 10
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "main",
+              "counter",
+              "risk"
+            ]
+          },
+          "conclusion_strength": {
+            "type": "string",
+            "enum": [
+              "可定性",
+              "倾向判断",
+              "风险假设",
+              "数据不足"
+            ]
+          }
+        }
+      }
+    },
+    "counter_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence",
+          "source",
+          "type"
+        ],
+        "properties": {
+          "evidence": {
+            "type": "string",
+            "minLength": 5
+          },
+          "source": {
+            "type": "string",
+            "minLength": 2
+          },
+          "type": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
+    },
+    "evidence_gap_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gap_id",
+          "description",
+          "status",
+          "impact"
+        ],
+        "properties": {
+          "gap_id": {
+            "type": "string",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string",
+            "minLength": 5
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "resolved",
+              "not_applicable"
+            ]
+          },
+          "impact": {
+            "type": "string",
+            "minLength": 2
+          }
+        }
+      }
+    },
+    "method_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_code",
+        "result",
+        "main_challenge",
+        "calibration_note"
+      ],
+      "properties": {
+        "role_code": {
+          "const": "LISHI"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "WARN",
+            "BLOCK",
+            "NOT_REQUIRED"
+          ]
+        },
+        "main_challenge": {
+          "type": "string"
+        },
+        "calibration_note": {
+          "type": "string"
+        }
+      }
+    },
+    "eval_hook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "close_check",
+        "t1_check",
+        "t3_check"
+      ],
+      "properties": {
+        "close_check": {
+          "type": "string",
+          "minLength": 2
+        },
+        "t1_check": {
+          "type": "string",
+          "minLength": 2
+        },
+        "t3_check": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    },
+    "non_goals_confirmed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_daily_report",
+        "no_deep_baseline_recalc",
+        "no_trade_executor_write"
+      ],
+      "properties": {
+        "no_daily_report": {
+          "const": true
+        },
+        "no_deep_baseline_recalc": {
+          "const": true
+        },
+        "no_trade_executor_write": {
+          "const": true
+        }
+      }
+    }
+  }
+}

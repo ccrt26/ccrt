@@ -1,0 +1,30 @@
+{
+  "trial_id": "trial-600114-20260616-demo",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T10:12:00+08:00",
+  "current_quote": {
+    "change_pct": 0.8,
+    "volume_ratio": 1.1,
+    "intraday_vwap": "39.20",
+    "intraday_reference": "分时均价线",
+    "above_reference": true,
+    "below_key_level": false,
+    "reclaimed_key_level": false
+  },
+  "market_context": {
+    "index_state": "neutral",
+    "sector_state": "neutral"
+  },
+  "baseline_context": {
+    "confirm_above": "40.00",
+    "invalidate_below": "38.80"
+  },
+  "user_position_context": {
+    "has_position": true
+  },
+  "post_eval": {
+    "observed_close_state": "closed_in_range",
+    "expected_action_bias": "HOLD"
+  }
+}

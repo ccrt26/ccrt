@@ -1,0 +1,76 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T10:28:00+08:00",
+  "intraday_state": "false_breakout",
+  "action_bias": "WATCH",
+  "conclusion_strength": "风险假设",
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "missing",
+    "user_position_context": "missing"
+  },
+  "key_levels": {
+    "confirm_above": "重新放量站回冲高高点附近并维持 15 分钟",
+    "invalidate_below": "跌回分时均价下方且反抽无力",
+    "intraday_reference": "冲高高点、分时均价线"
+  },
+  "trigger_actions": [
+    {
+      "condition": "未重新站回冲高高点且事件原因未确认",
+      "action": "不追涨，等待回踩或事件确认",
+      "price_range": "冲高回落区间",
+      "position_boundary": "无持仓上下文时不给仓位比例",
+      "time_window": "10:30 与午盘复核"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "盘中冲高可能是假突破，资金或板块未形成持续确认。",
+      "type": "main",
+      "conclusion_strength": "风险假设"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "若重新放量站回冲高高点并维持，假突破判断需要撤销。",
+      "type": "counter",
+      "conclusion_strength": "倾向判断"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "事件原因未确认，冲高后回落不支持立即追涨。",
+      "source": "event_context",
+      "type": "事件反证"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-EVENT-20260616-AM",
+      "description": "盘中异动原因或公告来源未确认。",
+      "status": "open",
+      "impact": "结论强度限制为风险假设，不允许输出追涨动作。"
+    }
+  ],
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "WARN",
+    "main_challenge": "事件未确认时，不能把冲高直接解释为趋势确认。",
+    "calibration_note": "维持 WATCH，等待事件或回踩确认。"
+  },
+  "eval_hook": {
+    "close_check": "收盘检查是否回落至分时均价下方",
+    "t1_check": "T+1 检查冲高高点是否被有效收复",
+    "t3_check": "T+3 检查假突破是否演化为区间上沿"
+  },
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "landing_steps_total": 5,
+  "current_step": 4,
+  "fix_target": "temporary_analysis_generator_identity_validation",
+  "changed_files_expected": [
+    "scripts/generate_temp_analysis_brief.py",
+    "scripts/check_temp_analysis_brief_gate.py",
+    "tests/test_generate_temp_analysis_brief.py",
+    "tests/test_temp_analysis_brief_gate.py",
+    "00_项目地基/08_审计与验收/F-TEMP-ANALYSIS-STEP4-GENERATOR-20260616_FIX_G4_self_check_candidate.json"
+  ],
+  "forbidden_scope_not_touched": [
+    "00_项目地基/05_流程与角色/temp_analysis_scene_contract_v0.1.json",
+    "00_项目地基/03_报告对象/temporary_analysis_brief_v0.1.schema.json",
+    "临时分析/样例/",
+    "重点股票/",
+    "每日荐股/",
+    "代码文件/",
+    ".md files",
+    "production runtime"
+  ],
+  "checks": [
+    {
+      "name": "py_compile",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m py_compile scripts/generate_temp_analysis_brief.py scripts/check_temp_analysis_brief_gate.py tests/test_generate_temp_analysis_brief.py tests/test_temp_analysis_brief_gate.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "unit_tests",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m unittest tests/test_generate_temp_analysis_brief.py tests/test_temp_analysis_brief_gate.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.072s\n\nOK\n"
+    },
+    {
+      "name": "demo_sidecar_gate",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_brief_gate.py --input 临时分析/sidecar/temporary_analysis_generated_600114_20260616_demo.json --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"results\": [\n    {\n      \"path\": \"临时分析/sidecar/temporary_analysis_generated_600114_20260616_demo.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T00:53:55+08:00"
+}

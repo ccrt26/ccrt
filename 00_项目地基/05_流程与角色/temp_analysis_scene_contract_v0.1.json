@@ -1,0 +1,189 @@
+{
+  "contract_id": "TEMP_ANALYSIS_SCENE_CONTRACT",
+  "version": "0.1",
+  "status": "draft_for_step1",
+  "landing_steps_total": 5,
+  "current_step": 1,
+  "authority_note": "Programmatic scene contract. Markdown files are human notes only.",
+  "scene": "临时分析",
+  "purpose": "开盘/盘中时段，对单只股票进行临时操作辅助分析。",
+  "non_goals": [
+    "不生成正式日报",
+    "不重算深度分析基线",
+    "不写入交易执行器",
+    "不直接下单",
+    "不把长期机构资金直接转成盘中交易指令",
+    "不在数据缺失时输出确定性结论"
+  ],
+  "business_output_root": "临时分析",
+  "business_output_dirs": [
+    "临时分析/样例",
+    "临时分析/会话记录",
+    "临时分析/sidecar",
+    "临时分析/后评估"
+  ],
+  "capability_domains": {
+    "D01": "当前行情、盘口、分时、指数、板块快照",
+    "D02": "公告、新闻、行业事件、板块突发信息",
+    "D03": "数据新鲜度、缺口、冲突检查",
+    "D04": "最近基线、日报、深度分析、历史关键价位",
+    "D05": "有效证据抽取",
+    "D06": "盘中量价、均价线、关键位、资金、板块相位",
+    "D07": "D07_v1.2 统一解读：多假设、反证、证据缺口、结论强度",
+    "D08": "仓位边界、止损线、加减仓条件",
+    "D09": "开盘/上午/午后/尾盘/异动场景路由",
+    "D10": "TemporaryAnalysisBrief 输出",
+    "D11": "收盘、T+1、T+3 后评估钩子",
+    "D12": "误判原因与规则改进候选"
+  },
+  "required_inputs": [
+    "stock_code",
+    "stock_name",
+    "query_time",
+    "current_quote",
+    "market_context",
+    "baseline_context"
+  ],
+  "conditional_inputs": [
+    "event_context",
+    "user_position_context"
+  ],
+  "intraday_state_enum": [
+    "normal_fluctuation",
+    "strength_confirmation",
+    "false_breakout",
+    "breakdown_weakness",
+    "event_driven",
+    "data_insufficient"
+  ],
+  "action_bias_enum": [
+    "WATCH",
+    "HOLD",
+    "REDUCE",
+    "EXIT",
+    "CONDITIONAL_ADD",
+    "T_CONDITION",
+    "NEUTRAL"
+  ],
+  "strong_actions": [
+    "REDUCE",
+    "EXIT",
+    "CONDITIONAL_ADD",
+    "T_CONDITION"
+  ],
+  "strong_action_required_fields": [
+    "trigger_condition",
+    "price_range",
+    "position_boundary",
+    "time_window"
+  ],
+  "d07_v1_2_requirements": {
+    "framework_version": "D07_v1.2",
+    "min_hypotheses": 2,
+    "requires_counter_hypothesis": true,
+    "requires_counter_evidence": true,
+    "requires_evidence_gap_requests_when_gap_exists": true,
+    "requires_conclusion_strength": true,
+    "requires_invalidation_condition": true,
+    "requires_eval_hook": true
+  },
+  "conclusion_strength_enum": [
+    "可定性",
+    "倾向判断",
+    "风险假设",
+    "数据不足"
+  ],
+  "degradation_rules": [
+    {
+      "condition": "current_quote_missing",
+      "max_action": [
+        "WATCH",
+        "NEUTRAL"
+      ],
+      "conclusion_strength": "数据不足"
+    },
+    {
+      "condition": "market_context_missing",
+      "max_action": [
+        "WATCH",
+        "NEUTRAL"
+      ],
+      "conclusion_strength": "风险假设"
+    },
+    {
+      "condition": "baseline_context_missing",
+      "max_action": [
+        "WATCH",
+        "NEUTRAL"
+      ],
+      "conclusion_strength": "风险假设"
+    },
+    {
+      "condition": "single_evidence_only",
+      "forbidden_actions": [
+        "REDUCE",
+        "EXIT",
+        "CONDITIONAL_ADD",
+        "T_CONDITION"
+      ]
+    },
+    {
+      "condition": "user_position_context_missing",
+      "forbidden_output": "specific_position_ratio"
+    }
+  ],
+  "lishi_method_review": {
+    "role_code": "LISHI",
+    "decision_boundary": "只审查方法质量，不输出投资方向，不替代腰子裁决。",
+    "required_when": [
+      "strong_action_output",
+      "intraday_abnormal_move",
+      "event_unverified",
+      "user_asks_immediate_buy_or_sell",
+      "long_term_logic_conflicts_with_intraday_signal"
+    ],
+    "dimensions": [
+      "D1_reasoning_chain_integrity",
+      "D2_data_reliability",
+      "D3_logic_consistency",
+      "D4_counter_evidence_sufficiency",
+      "D5_timeframe_consistency"
+    ],
+    "forbidden_expressions": [
+      "BUY",
+      "SELL",
+      "买入",
+      "卖出",
+      "加仓",
+      "减仓",
+      "止损"
+    ]
+  },
+  "temporary_analysis_brief_fields": [
+    "scene",
+    "framework_version",
+    "stock_code",
+    "stock_name",
+    "query_time",
+    "intraday_state",
+    "action_bias",
+    "conclusion_strength",
+    "key_levels",
+    "trigger_actions",
+    "hypotheses",
+    "counter_evidence",
+    "evidence_gap_requests",
+    "method_review",
+    "eval_hook"
+  ],
+  "acceptance_checks_for_step1": [
+    "contract_json_exists",
+    "business_dirs_exist",
+    "no_new_markdown_file",
+    "landing_steps_total_equals_5",
+    "intraday_state_enum_nonempty",
+    "action_bias_enum_nonempty",
+    "d07_v1_2_requirements_present",
+    "lishi_method_review_present"
+  ]
+}

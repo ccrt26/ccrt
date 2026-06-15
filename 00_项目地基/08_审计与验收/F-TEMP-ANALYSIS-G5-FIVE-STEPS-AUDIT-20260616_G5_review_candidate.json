@@ -1,0 +1,103 @@
+{
+  "flow": "F-GATE",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "landing_steps_total": 5,
+  "audit_scope": "temporary_analysis_five_steps_integrated_review",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "required_paths",
+      "detail": "all required five-step files exist"
+    },
+    {
+      "result": "PASS",
+      "check": "markdown_minimized",
+      "detail": "no temporary-analysis markdown artifacts found"
+    },
+    {
+      "result": "PASS",
+      "check": "g5_integrated_audit",
+      "detail": "five-step temporary-analysis chain passed integrated audit"
+    }
+  ],
+  "command_results": [
+    {
+      "name": "py_compile_all",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m py_compile scripts/check_temp_analysis_brief_gate.py scripts/generate_temp_analysis_brief.py scripts/run_temp_analysis_trial.py tests/test_temp_analysis_brief_gate.py tests/test_generate_temp_analysis_brief.py tests/test_run_temp_analysis_trial.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "unit_tests_all",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m unittest tests/test_temp_analysis_brief_gate.py tests/test_generate_temp_analysis_brief.py tests/test_run_temp_analysis_trial.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ".........................\n----------------------------------------------------------------------\nRan 25 tests in 0.149s\n\nOK\n"
+    },
+    {
+      "name": "gate_samples",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_brief_gate.py --sample-dir 临时分析/样例 --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"results\": [\n    {\n      \"path\": \"临时分析/样例/temporary_analysis_breakdown_weakness_600114_20260616.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    },\n    {\n      \"path\": \"临时分析/样例/temporary_analysis_false_breakout_600114_20260616.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    },\n    {\n      \"path\": \"临时分析/样例/temporary_analysis_normal_fluctuation_600114_20260616.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate_step4_demo",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_brief_gate.py --input 临时分析/sidecar/temporary_analysis_generated_600114_20260616_demo.json --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"results\": [\n    {\n      \"path\": \"临时分析/sidecar/temporary_analysis_generated_600114_20260616_demo.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate_step5_trial_brief",
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_brief_gate.py --input 临时分析/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"results\": [\n    {\n      \"path\": \"临时分析/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json\",\n      \"overall\": \"PASS\",\n      \"findings\": [\n        {\n          \"result\": \"PASS\",\n          \"check\": \"temporary_analysis_gate\",\n          \"detail\": \"all checks passed\"\n        }\n      ]\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "trial_normal_e2e",
+      "cmd": "run_temp_analysis_trial normal demo",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"status\": \"PASS\",\n  \"brief_output\": \"/tmp/claude-501/tmpw_2_jy5y/normal_brief.json\",\n  \"eval_output\": \"/tmp/claude-501/tmpw_2_jy5y/normal_eval.json\",\n  \"gate_overall\": \"PASS\",\n  \"eval_result\": \"PASS\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "trial_warn_eval_e2e",
+      "cmd": "run_temp_analysis_trial warn eval",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"status\": \"PASS\",\n  \"brief_output\": \"/tmp/claude-501/tmpw_2_jy5y/warn_brief.json\",\n  \"eval_output\": \"/tmp/claude-501/tmpw_2_jy5y/warn_eval.json\",\n  \"gate_overall\": \"PASS\",\n  \"eval_result\": \"WARN\"\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "trial_bad_identity",
+      "cmd": "run_temp_analysis_trial bad stock_code",
+      "returncode": 2,
+      "stdout_tail": "{\n  \"status\": \"BLOCK\",\n  \"error_type\": \"ValueError\",\n  \"error\": \"stock_code must be six digits\"\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "related_git_status": [
+    "?? \"00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/03_\\346\\212\\245\\345\\221\\212\\345\\257\\271\\350\\261\\241/temporary_analysis_brief_v0.1.schema.json\"",
+    "?? \"00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/05_\\346\\265\\201\\347\\250\\213\\344\\270\\216\\350\\247\\222\\350\\211\\262/temp_analysis_scene_contract_v0.1.json\"",
+    "?? scripts/check_temp_analysis_brief_gate.py",
+    "?? scripts/generate_temp_analysis_brief.py",
+    "?? scripts/run_temp_analysis_trial.py",
+    "?? tests/test_generate_temp_analysis_brief.py",
+    "?? tests/test_run_temp_analysis_trial.py",
+    "?? tests/test_temp_analysis_brief_gate.py",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/sidecar/temporary_analysis_generated_600114_20260616_demo.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/\\344\\274\\232\\350\\257\\235\\350\\256\\260\\345\\275\\225/temporary_analysis_trial_context_600114_20260616_demo.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/\\345\\220\\216\\350\\257\\204\\344\\274\\260/temporary_analysis_trial_eval_600114_20260616_demo.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/\\346\\240\\267\\344\\276\\213/temporary_analysis_breakdown_weakness_600114_20260616.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/\\346\\240\\267\\344\\276\\213/temporary_analysis_false_breakout_600114_20260616.json\"",
+    "?? \"\\344\\270\\264\\346\\227\\266\\345\\210\\206\\346\\236\\220/\\346\\240\\267\\344\\276\\213/temporary_analysis_normal_fluctuation_600114_20260616.json\""
+  ],
+  "next_allowed_action": "Codex independent review of this G5 candidate; no G6 until user confirms after review",
+  "generated_at": "2026-06-16T01:10:53+08:00"
+}

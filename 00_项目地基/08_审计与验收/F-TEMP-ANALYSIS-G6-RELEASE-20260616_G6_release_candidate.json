@@ -1,0 +1,25 @@
+{
+  "flow": "F-GATE",
+  "stage": "G6_release_candidate",
+  "landing_steps_total": 5,
+  "release_scope": "temporary_analysis_intraday_scene",
+  "g5_review": "PASS",
+  "archive_completed": true,
+  "github_sync_required": true,
+  "push_required": true,
+  "no_extra_step_added": true,
+  "release_files_expected": [
+    "00_项目地基/05_流程与角色/temp_analysis_scene_contract_v0.1.json",
+    "00_项目地基/03_报告对象/temporary_analysis_brief_v0.1.schema.json",
+    "scripts/check_temp_analysis_brief_gate.py",
+    "scripts/generate_temp_analysis_brief.py",
+    "scripts/run_temp_analysis_trial.py",
+    "tests/test_temp_analysis_brief_gate.py",
+    "tests/test_generate_temp_analysis_brief.py",
+    "tests/test_run_temp_analysis_trial.py",
+    "临时分析/",
+    "00_项目地基/08_审计与验收/F-TEMP-ANALYSIS-*.json"
+  ],
+  "commit_before": "5755b389fcbedeea4eff360238f4baa2c5e388f0",
+  "generated_at": "2026-06-16T01:15:54+08:00"
+}

@@ -1,0 +1,69 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T10:12:00+08:00",
+  "intraday_state": "normal_fluctuation",
+  "action_bias": "HOLD",
+  "conclusion_strength": "倾向判断",
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "not_applicable",
+    "user_position_context": "present"
+  },
+  "key_levels": {
+    "confirm_above": "放量站稳昨收上方并维持 15 分钟",
+    "invalidate_below": "跌破盘中分时均价且 15 分钟不能收回",
+    "intraday_reference": "分时均价线与昨日收盘价"
+  },
+  "trigger_actions": [
+    {
+      "condition": "未跌破分时均价且量能无异常放大",
+      "action": "持有观察，不新增仓位",
+      "price_range": "当前关键区间内",
+      "position_boundary": "维持原仓位",
+      "time_window": "午盘前复核"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "当前属于正常盘中波动，尚未触发趋势或风控变化。",
+      "type": "main",
+      "conclusion_strength": "倾向判断"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "若后续跌破分时均价且不能收回，正常波动假设会转弱。",
+      "type": "counter",
+      "conclusion_strength": "风险假设"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "盘中量能没有形成明确放量上攻，暂不支持追加强动作。",
+      "source": "current_quote",
+      "type": "量价反证"
+    }
+  ],
+  "evidence_gap_requests": [],
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "NOT_REQUIRED",
+    "main_challenge": "未输出强动作，暂不强制砺石审查。",
+    "calibration_note": "保持观察结论，不将正常波动误判为趋势。"
+  },
+  "eval_hook": {
+    "close_check": "收盘检查是否仍在关键区间内",
+    "t1_check": "T+1 检查是否延续正常波动",
+    "t3_check": "T+3 检查区间是否被突破或跌破"
+  },
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}
