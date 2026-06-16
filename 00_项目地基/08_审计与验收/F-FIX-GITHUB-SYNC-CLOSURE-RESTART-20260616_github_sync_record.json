@@ -1,17 +1,24 @@
 {
   "artifact_type": "github_sync_record",
-  "result": "BLOCK",
+  "result": "PUSHED",
   "run_id": "F-FIX-GITHUB-SYNC-CLOSURE-RESTART-20260616",
   "archive_record": "00_项目地基/08_审计与验收/F-FIX-GITHUB-SYNC-CLOSURE-RESTART-20260616_G6_archive_record.json",
   "branch": "codex/phase1-backend-mvp-g6-20260616",
   "upstream": "origin/codex/phase1-backend-mvp-g6-20260616",
   "archive_valid": true,
-  "reason": "dirty files outside allowed paths: ['cripts/github_sync_after_archive.py']",
-  "commit_created": false,
-  "push_completed": false,
-  "github_sync_completed": false,
+  "commit_created": true,
+  "push_completed": true,
+  "github_sync_completed": true,
+  "before_head": "6d283f06602433ca22691a1c6167808689a610c4",
+  "after_head": "12bfd0aef49c8e08a61bc40e440a690450f6606d",
+  "pushed_to": "origin/codex/phase1-backend-mvp-g6-20260616",
+  "tag_completed": false,
+  "merge_completed": false,
   "workspace_dirty": true,
-  "violations": [
-    "cripts/github_sync_after_archive.py"
-  ]
+  "output_in_repo": true,
+  "workspace_clean_final": true,
+  "ahead_count": "0",
+  "behind_count": "0",
+  "head_equals_upstream": true,
+  "workspace_hygiene_passed": true
 }
