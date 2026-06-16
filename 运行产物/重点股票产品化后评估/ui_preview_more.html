@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>重点股票驾驶舱 UI 预览 2</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b10;
+      --text: #eef4ff;
+      --muted: #91a0b8;
+      --line: rgba(255,255,255,.12);
+      --panel: #10141d;
+      --panel2: #151b27;
+      --green: #20d192;
+      --red: #ff5573;
+      --blue: #58a6ff;
+      --amber: #f4b84a;
+      --violet: #9b7cff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button { font: inherit; }
+
+    .top {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9,11,16,.92);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .hint {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tabs button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+      padding: 8px 11px;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      color: var(--text);
+      border-color: rgba(88,166,255,.55);
+      background: rgba(88,166,255,.14);
+    }
+
+    .page {
+      display: none;
+      min-height: calc(100vh - 68px);
+      padding: 18px;
+    }
+
+    .page.active { display: block; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: 0 18px 44px rgba(0,0,0,.3);
+    }
+
+    .head {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      color: rgba(238,244,255,.8);
+      font-size: 13px;
+    }
+
+    .body { padding: 14px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: rgba(238,244,255,.82);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .green { color: var(--green); }
+    .red { color: var(--red); }
+    .blue { color: var(--blue); }
+    .amber { color: var(--amber); }
+    .violet { color: var(--violet); }
+
+    .grid-terminal {
+      display: grid;
+      grid-template-columns: 220px minmax(460px, 1fr) 300px;
+      gap: 12px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .quote-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .quote {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 9px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid transparent;
+    }
+
+    .quote.active {
+      border-color: rgba(88,166,255,.45);
+      background: rgba(88,166,255,.1);
+    }
+
+    .name { font-weight: 760; font-size: 13px; }
+    .sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    .terminal-chart {
+      height: 392px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
+        #080b11;
+      background-size: 42px 42px;
+      padding: 10px;
+    }
+
+    svg { width: 100%; height: 100%; display: block; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .value {
+      font-size: 22px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    .note {
+      line-height: 1.65;
+      color: rgba(238,244,255,.76);
+      font-size: 14px;
+    }
+
+    .glass-bg {
+      background:
+        linear-gradient(135deg, rgba(88,166,255,.18), transparent 34%),
+        linear-gradient(225deg, rgba(155,124,255,.16), transparent 38%),
+        #0a0c12;
+    }
+
+    .grid-glass {
+      display: grid;
+      grid-template-columns: minmax(420px, 1.1fr) minmax(320px, .9fr);
+      grid-template-rows: auto 1fr;
+      gap: 16px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .glass-card {
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 8px;
+      background: rgba(255,255,255,.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 24px 56px rgba(0,0,0,.24);
+      backdrop-filter: blur(18px);
+    }
+
+    .decision {
+      padding: 24px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .decision h2 {
+      margin: 0;
+      font-size: 44px;
+      line-height: 1;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .advisor-layout {
+      display: grid;
+      grid-template-columns: 270px minmax(450px, 1fr) 340px;
+      gap: 14px;
+      min-height: calc(100vh - 104px);
+      background: #0f1117;
+    }
+
+    .assistant-card {
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #141822;
+    }
+
+    .chat {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bubble {
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(88,166,255,.1);
+      border: 1px solid rgba(88,166,255,.2);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    .matrix-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 7px;
+    }
+
+    .cell {
+      height: 52px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+    }
+
+    .cell.g { background: rgba(32,209,146,.22); }
+    .cell.y { background: rgba(244,184,74,.23); }
+    .cell.r { background: rgba(255,85,115,.24); }
+    .cell.b { background: rgba(88,166,255,.23); }
+
+    @media (max-width: 1120px) {
+      .grid-terminal,
+      .grid-glass,
+      .advisor-layout,
+      .matrix-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stats,
+      .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>重点股票驾驶舱 UI 预览 2</h1>
+      <div class="hint">继续保留上一版，再补 4 个方向 · 模拟数据 · 不接生产链路</div>
+    </div>
+    <nav class="tabs">
+      <button class="active" data-view="terminal">金融终端</button>
+      <button data-view="glass">现代 SaaS</button>
+      <button data-view="advisor">AI 助手</button>
+      <button data-view="matrix">规则矩阵</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page active" data-page="terminal">
+      <div class="grid-terminal">
+        <aside class="panel">
+          <div class="head">行情列表 <span class="badge blue">Terminal</span></div>
+          <div class="body quote-list">
+            <div class="quote active"><div><div class="name">东睦股份</div><div class="sub">600114 · 持有观察</div></div><strong class="red">+2.4%</strong></div>
+            <div class="quote"><div><div class="name">中科曙光</div><div class="sub">603019 · 等待确认</div></div><strong class="green">-0.8%</strong></div>
+            <div class="quote"><div><div class="name">招商银行</div><div class="sub">600036 · 防御持有</div></div><strong class="red">+0.6%</strong></div>
+            <div class="quote"><div><div class="name">拓普集团</div><div class="sub">601689 · 禁止追高</div></div><strong class="red">+3.1%</strong></div>
+          </div>
+        </aside>
+
+        <section class="panel">
+          <div class="head">东睦股份 · 分时/K线决策台 <span class="badge amber">参考 TradingView lightweight-charts</span></div>
+          <div class="body">
+            <div class="terminal-chart">
+              <svg viewBox="0 0 860 360" aria-label="金融终端风格图表">
+                <polyline points="24,260 82,248 140,276 198,210 256,188 314,228 372,172 430,154 488,176 546,126 604,146 662,94 720,132 812,86" fill="none" stroke="#58a6ff" stroke-width="4"/>
+                <polyline points="24,252 812,252" stroke="#20d192" stroke-dasharray="8 8" stroke-width="2"/>
+                <polyline points="24,118 812,118" stroke="#f4b84a" stroke-dasharray="8 8" stroke-width="2"/>
+                <g fill="#ff5573">
+                  <rect x="88" y="282" width="13" height="44"/><rect x="245" y="270" width="13" height="56"/><rect x="488" y="234" width="13" height="92"/><rect x="688" y="204" width="13" height="122"/>
+                </g>
+                <g fill="#20d192">
+                  <rect x="150" y="292" width="13" height="34"/><rect x="360" y="278" width="13" height="48"/><rect x="600" y="248" width="13" height="78"/>
+                </g>
+              </svg>
+            </div>
+            <div class="stats">
+              <div class="stat"><div class="label">现价</div><div class="value red">33.42</div></div>
+              <div class="stat"><div class="label">MA20</div><div class="value blue">31.86</div></div>
+              <div class="stat"><div class="label">止损</div><div class="value">31.20</div></div>
+              <div class="stat"><div class="label">压力</div><div class="value amber">35.80</div></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <div class="head">次日策略</div>
+          <div class="body note">
+            <strong>持有观察。</strong><br>
+            适合你需要“像看交易终端一样看股票”的场景。优点是专业、紧凑、行情感强；缺点是第一眼会比较硬，解释内容要做得克制，否则容易像交易软件。
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page glass-bg" data-page="glass">
+      <div class="grid-glass">
+        <section class="glass-card decision">
+          <div class="label">东睦股份 600114 · 今日驾驶舱</div>
+          <h2>持有观察</h2>
+          <div class="note">现代 SaaS 风更像 shadcn/ui 的气质：留白多、层级清楚、审美耐看。适合做日常首页，不会被科技装饰抢走注意力。</div>
+          <div>
+            <span class="badge green">风险灯 GREEN</span>
+            <span class="badge blue">证据完整</span>
+            <span class="badge amber">不追高</span>
+          </div>
+        </section>
+        <section class="glass-card">
+          <div class="head">持仓与盈亏</div>
+          <div class="body summary-cards">
+            <div class="stat"><div class="label">成本</div><div class="value">30.78</div></div>
+            <div class="stat"><div class="label">现价</div><div class="value red">33.42</div></div>
+            <div class="stat"><div class="label">浮盈</div><div class="value red">+8.6%</div></div>
+          </div>
+        </section>
+        <section class="glass-card">
+          <div class="head">走势与技术</div>
+          <div class="body terminal-chart">
+            <svg viewBox="0 0 760 300">
+              <path d="M30 210 C120 180, 140 240, 230 160 S410 190, 500 104 S650 140, 725 82" fill="none" stroke="#9b7cff" stroke-width="5"/>
+              <path d="M30 222 L725 222" stroke="#20d192" stroke-dasharray="9 9" stroke-width="2"/>
+              <path d="M30 110 L725 110" stroke="#f4b84a" stroke-dasharray="9 9" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+        <section class="glass-card">
+          <div class="head">证据链</div>
+          <div class="body note">
+            1. 收盘仍在支撑区上方。<br>
+            2. 量能放大但未失控。<br>
+            3. 明日若放量跌破 MA20，动作切换为减仓观察。
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="page" data-page="advisor">
+      <div class="advisor-layout">
+        <aside class="panel">
+          <div class="head">股票队列</div>
+          <div class="body quote-list">
+            <div class="quote active"><div><div class="name">东睦股份</div><div class="sub">待看：支撑是否有效</div></div><span class="badge amber">观察</span></div>
+            <div class="quote"><div><div class="name">招商银行</div><div class="sub">防御资产跟踪</div></div><span class="badge green">稳</span></div>
+            <div class="quote"><div><div class="name">拓普集团</div><div class="sub">冲高回落风险</div></div><span class="badge red">慎</span></div>
+          </div>
+        </aside>
+        <section class="panel">
+          <div class="head">AI 决策摘要 <span class="badge violet">解释优先</span></div>
+          <div class="body chat">
+            <div class="bubble"><strong>结论：</strong>明天先持有观察，不追涨。只有放量跌破 31.80，才触发减仓或止损讨论。</div>
+            <div class="bubble"><strong>为什么：</strong>价格仍在 MA20 和支撑线上方，今天不是破位结构；但离压力区也不远，追高性价比不够。</div>
+            <div class="bubble"><strong>你需要盯：</strong>开盘 30 分钟量能、31.80 是否被有效跌破、35.80 附近是否冲高回落。</div>
+          </div>
+        </section>
+        <aside class="panel">
+          <div class="head">关键证据</div>
+          <div class="body note">
+            这个方向适合把“人话分析”做成核心体验：更像一个会解释的投研助手。缺点是图表冲击弱一些，适合和现代 SaaS 风结合。
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page" data-page="matrix">
+      <div class="matrix-layout">
+        <section class="panel">
+          <div class="head">规则健康矩阵 <span class="badge blue">参考 ECharts / Grafana / Recharts</span></div>
+          <div class="body">
+            <div class="heatmap" aria-label="规则健康矩阵">
+              <div class="cell g"></div><div class="cell g"></div><div class="cell y"></div><div class="cell b"></div><div class="cell g"></div><div class="cell y"></div><div class="cell g"></div><div class="cell r"></div>
+              <div class="cell g"></div><div class="cell b"></div><div class="cell y"></div><div class="cell y"></div><div class="cell g"></div><div class="cell g"></div><div class="cell b"></div><div class="cell g"></div>
+              <div class="cell y"></div><div class="cell g"></div><div class="cell g"></div><div class="cell r"></div><div class="cell b"></div><div class="cell g"></div><div class="cell y"></div><div class="cell g"></div>
+              <div class="cell b"></div><div class="cell g"></div><div class="cell y"></div><div class="cell g"></div><div class="cell g"></div><div class="cell y"></div><div class="cell g"></div><div class="cell b"></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="head">一眼判断</div>
+          <div class="body note">
+            规则矩阵风不适合作为股票每日第一屏，但非常适合第二层“规则健康页”。绿色继续信任，黄色降低权重，灰蓝观察，红色阻断，不让你在细节里迷路。
+            <div class="stats">
+              <div class="stat"><div class="label">绿色</div><div class="value green">17</div></div>
+              <div class="stat"><div class="label">黄色</div><div class="value amber">8</div></div>
+              <div class="stat"><div class="label">观察</div><div class="value blue">6</div></div>
+              <div class="stat"><div class="label">阻断</div><div class="value red">2</div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('[data-view]');
+    const pages = document.querySelectorAll('[data-page]');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const view = button.dataset.view;
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        pages.forEach((page) => page.classList.toggle('active', page.dataset.page === view));
+      });
+    });
+  </script>
+</body>
+</html>

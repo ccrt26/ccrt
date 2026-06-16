@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>重点股票驾驶舱 UI 预览</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080a0f;
+      --panel: #11141b;
+      --panel-2: #171b24;
+      --line: rgba(255,255,255,.12);
+      --text: #f2f6fb;
+      --muted: #96a3b5;
+      --cyan: #30d5ff;
+      --green: #36d399;
+      --amber: #f5b84b;
+      --red: #ff5c7a;
+      --violet: #9c7cff;
+      --white-soft: rgba(255,255,255,.74);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, rgba(48,213,255,.14), transparent 38%),
+        var(--bg);
+      background-size: 42px 42px, 42px 42px, 100% 100%, 100% 100%;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button, input { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8,10,15,.86);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(48,213,255,.5);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--cyan);
+      background: rgba(48,213,255,.08);
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: 16px;
+      line-height: 1.2;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+      white-space: nowrap;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.04);
+    }
+
+    .tabs button {
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      color: var(--text);
+      background: rgba(48,213,255,.14);
+      box-shadow: inset 0 0 0 1px rgba(48,213,255,.34);
+    }
+
+    .workspace {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .screen {
+      display: none;
+      min-height: calc(100vh - 104px);
+    }
+
+    .screen.active { display: block; }
+
+    .grid-tech {
+      display: grid;
+      grid-template-columns: 280px minmax(420px, 1fr) 320px;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .grid-clean {
+      display: grid;
+      grid-template-columns: 248px minmax(460px, 1fr) 330px;
+      gap: 16px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .grid-monitor {
+      display: grid;
+      grid-template-columns: minmax(460px, 1.1fr) minmax(380px, .9fr);
+      gap: 16px;
+      min-height: calc(100vh - 104px);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(17,20,27,.9);
+      box-shadow: 0 16px 50px rgba(0,0,0,.28);
+      overflow: hidden;
+    }
+
+    .panel.tech {
+      border-color: rgba(48,213,255,.28);
+      background: linear-gradient(180deg, rgba(14,22,30,.94), rgba(12,14,20,.92));
+    }
+
+    .panel.clean {
+      background: #101318;
+      border-color: rgba(255,255,255,.1);
+    }
+
+    .panel.monitor {
+      background: #0d1016;
+      border-color: rgba(156,124,255,.24);
+    }
+
+    .panel-head {
+      height: 48px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      color: var(--white-soft);
+      font-size: 13px;
+    }
+
+    .panel-body { padding: 14px; }
+
+    .span-all { grid-column: 1 / -1; }
+
+    .hero-decision {
+      display: grid;
+      grid-template-columns: minmax(260px, .9fr) minmax(360px, 1.1fr) minmax(260px, .8fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .decision-card {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(54,211,153,.35);
+      background: linear-gradient(135deg, rgba(54,211,153,.16), rgba(48,213,255,.08));
+      min-height: 154px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .big-action {
+      font-size: 34px;
+      line-height: 1;
+      margin: 0 0 12px;
+      font-weight: 800;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--white-soft);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .badge.green { color: var(--green); border-color: rgba(54,211,153,.38); background: rgba(54,211,153,.09); }
+    .badge.amber { color: var(--amber); border-color: rgba(245,184,75,.4); background: rgba(245,184,75,.09); }
+    .badge.red { color: var(--red); border-color: rgba(255,92,122,.42); background: rgba(255,92,122,.09); }
+    .badge.cyan { color: var(--cyan); border-color: rgba(48,213,255,.38); background: rgba(48,213,255,.08); }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 74px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .metric .value {
+      font-size: 24px;
+      font-weight: 760;
+      margin-top: 6px;
+    }
+
+    .up { color: var(--red); }
+    .down { color: var(--green); }
+    .neutral { color: var(--cyan); }
+
+    .spark {
+      height: 150px;
+      width: 100%;
+      display: block;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .evidence {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(48,213,255,.35);
+      color: var(--cyan);
+      font-size: 12px;
+    }
+
+    .evidence strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .evidence p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .stock-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .stock-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: rgba(255,255,255,.035);
+    }
+
+    .stock-row.active {
+      border-color: rgba(48,213,255,.4);
+      background: rgba(48,213,255,.08);
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .code {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .chart-wrap {
+      min-height: 270px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 10px;
+    }
+
+    .kline-area {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
+        rgba(255,255,255,.025);
+      background-size: 38px 38px;
+      padding: 12px;
+    }
+
+    .decision-text {
+      color: var(--white-soft);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .health-item {
+      display: grid;
+      grid-template-columns: 70px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .health-item:last-child { border-bottom: 0; }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    .tick {
+      height: 38px;
+      border-radius: 5px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid transparent;
+    }
+
+    .tick.ok { background: rgba(54,211,153,.2); border-color: rgba(54,211,153,.25); }
+    .tick.warn { background: rgba(245,184,75,.2); border-color: rgba(245,184,75,.25); }
+    .tick.stop { background: rgba(255,92,122,.2); border-color: rgba(255,92,122,.25); }
+    .tick.observe { background: rgba(150,163,181,.18); border-color: rgba(150,163,181,.25); }
+
+    .clean-shell {
+      background: #f6f7fb;
+      color: #172033;
+    }
+
+    .clean-shell .topbar {
+      background: rgba(255,255,255,.9);
+      color: #172033;
+      border-bottom-color: rgba(23,32,51,.1);
+    }
+
+    .clean-shell .sub,
+    .clean-shell .label,
+    .clean-shell .code,
+    .clean-shell .evidence p {
+      color: #647086;
+    }
+
+    .clean-shell .panel {
+      background: #fff;
+      border-color: rgba(23,32,51,.1);
+      box-shadow: 0 10px 28px rgba(23,32,51,.08);
+    }
+
+    .clean-shell .panel-head {
+      border-bottom-color: rgba(23,32,51,.08);
+      color: #172033;
+    }
+
+    .clean-shell .metric,
+    .clean-shell .evidence,
+    .clean-shell .stock-row,
+    .clean-shell .kline-area {
+      border-color: rgba(23,32,51,.08);
+      background: #f8fafc;
+    }
+
+    .clean-shell .tabs {
+      background: #eef2f7;
+      border-color: rgba(23,32,51,.08);
+    }
+
+    .clean-shell .tabs button { color: #647086; }
+    .clean-shell .tabs button.active { color: #0e1728; background: #fff; box-shadow: 0 1px 8px rgba(23,32,51,.08); }
+
+    .clean-shell .decision-text { color: #293449; }
+
+    .monitor-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .monitor-title h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .large-number {
+      font-size: 46px;
+      font-weight: 820;
+      line-height: 1;
+      margin: 8px 0 10px;
+    }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 1100px) {
+      .grid-tech,
+      .grid-clean,
+      .grid-monitor,
+      .hero-decision,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        height: auto;
+        gap: 14px;
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px;
+      }
+
+      h1, .sub { white-space: normal; }
+      .workspace { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">S</div>
+        <div>
+          <h1>重点股票驾驶舱 UI 预览</h1>
+          <div class="sub">本地静态预览 · 模拟数据 · 不接生产链路</div>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="风格切换">
+        <button class="active" data-view="tech">科技大屏</button>
+        <button data-view="clean">企业后台</button>
+        <button data-view="monitor">指标监控</button>
+      </nav>
+    </header>
+
+    <section class="workspace">
+      <section class="screen active" data-screen="tech">
+        <div class="grid-tech">
+          <section class="panel tech span-all">
+            <div class="panel-body hero-decision">
+              <div class="decision-card">
+                <div class="label">东睦股份 600114 · 次日主决策</div>
+                <h2 class="big-action">持有观察</h2>
+                <div class="badge-row">
+                  <span class="badge green">风险灯 GREEN</span>
+                  <span class="badge cyan">信心 0.72</span>
+                  <span class="badge amber">不追高</span>
+                </div>
+              </div>
+              <div class="panel clean">
+                <div class="panel-head">人话分析</div>
+                <div class="panel-body decision-text">
+                  今日收盘仍在支撑区上方，量能没有明显失控，属于强势震荡后的观察状态。明天优先看 31.80 支撑是否有效；若放量跌破，则把动作从持有切到减仓或止损。
+                </div>
+              </div>
+              <div class="metric-grid">
+                <div class="metric">
+                  <div class="label">现价</div>
+                  <div class="value up">33.42</div>
+                </div>
+                <div class="metric">
+                  <div class="label">浮盈亏</div>
+                  <div class="value up">+8.6%</div>
+                </div>
+                <div class="metric">
+                  <div class="label">止损位</div>
+                  <div class="value neutral">31.20</div>
+                </div>
+                <div class="metric">
+                  <div class="label">压力位</div>
+                  <div class="value">35.80</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel tech">
+            <div class="panel-head">股票池</div>
+            <div class="panel-body stock-list">
+              <div class="stock-row active"><div><div class="name">东睦股份</div><div class="code">600114 · 持有观察</div></div><span class="up">+2.4%</span></div>
+              <div class="stock-row"><div><div class="name">中科曙光</div><div class="code">603019 · 等待确认</div></div><span class="down">-0.8%</span></div>
+              <div class="stock-row"><div><div class="name">招商银行</div><div class="code">600036 · 防御持有</div></div><span class="up">+0.6%</span></div>
+              <div class="stock-row"><div><div class="name">拓普集团</div><div class="code">601689 · 禁止追高</div></div><span class="up">+3.1%</span></div>
+            </div>
+          </section>
+
+          <section class="panel tech">
+            <div class="panel-head">走势与技术</div>
+            <div class="panel-body chart-wrap">
+              <div class="kline-area">
+                <svg class="spark" viewBox="0 0 720 180" role="img" aria-label="模拟K线趋势">
+                  <polyline points="20,124 70,118 120,132 170,100 220,88 270,112 320,86 370,74 420,80 470,58 520,66 570,46 620,64 680,42" fill="none" stroke="#30d5ff" stroke-width="4"/>
+                  <polyline points="20,132 680,132" stroke="#36d399" stroke-dasharray="8 8" stroke-width="2"/>
+                  <polyline points="20,68 680,68" stroke="#f5b84b" stroke-dasharray="8 8" stroke-width="2"/>
+                  <g fill="#ff5c7a">
+                    <rect x="92" y="132" width="12" height="28"/><rect x="210" y="120" width="12" height="42"/><rect x="410" y="105" width="12" height="58"/><rect x="606" y="92" width="12" height="70"/>
+                  </g>
+                  <g fill="#36d399">
+                    <rect x="50" y="142" width="12" height="20"/><rect x="260" y="132" width="12" height="30"/><rect x="520" y="118" width="12" height="44"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="badge-row">
+                <span class="badge cyan">MA20 31.86</span>
+                <span class="badge green">收盘高于支撑</span>
+                <span class="badge amber">量能温和</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel tech">
+            <div class="panel-head">证据链</div>
+            <div class="panel-body evidence-list">
+              <div class="evidence"><div class="dot">1</div><div><strong>支撑未破</strong><p>收盘价仍位于 31.80 上方，未触发破位止损。</p></div></div>
+              <div class="evidence"><div class="dot">2</div><div><strong>量能未失控</strong><p>成交量放大但未出现连续恐慌，暂不判定筹码松动。</p></div></div>
+              <div class="evidence"><div class="dot">3</div><div><strong>反证条件</strong><p>明日放量跌破 MA20，则主动作切换为减仓观察。</p></div></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen clean-shell" data-screen="clean">
+        <div class="grid-clean">
+          <section class="panel">
+            <div class="panel-head">重点股票</div>
+            <div class="panel-body stock-list">
+              <div class="stock-row active"><div><div class="name">东睦股份</div><div class="code">持有观察 · 600114</div></div><span class="up">+2.4%</span></div>
+              <div class="stock-row"><div><div class="name">中科曙光</div><div class="code">等待确认 · 603019</div></div><span class="down">-0.8%</span></div>
+              <div class="stock-row"><div><div class="name">招商银行</div><div class="code">防御持有 · 600036</div></div><span class="up">+0.6%</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">东睦股份 · 今日驾驶舱</div>
+            <div class="panel-body">
+              <div class="split">
+                <div class="decision-card">
+                  <div class="label">次日主动作</div>
+                  <h2 class="big-action">持有观察</h2>
+                  <div class="badge-row">
+                    <span class="badge green">完整可用</span>
+                    <span class="badge amber">禁止追高</span>
+                  </div>
+                </div>
+                <div class="metric-grid">
+                  <div class="metric"><div class="label">成本</div><div class="value">30.78</div></div>
+                  <div class="metric"><div class="label">现价</div><div class="value up">33.42</div></div>
+                  <div class="metric"><div class="label">持仓</div><div class="value">12%</div></div>
+                  <div class="metric"><div class="label">浮盈</div><div class="value up">+8.6%</div></div>
+                </div>
+              </div>
+              <div class="panel-body decision-text">
+                第一屏更像日常工作台：信息密度高、少装饰、适合每天反复看。点击证据链可进入详情，但默认不把后评估历史塞进首页。
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">证据摘要</div>
+            <div class="panel-body evidence-list">
+              <div class="evidence"><div class="dot">A</div><div><strong>关键价位</strong><p>31.80 支撑，35.80 压力，31.20 止损。</p></div></div>
+              <div class="evidence"><div class="dot">B</div><div><strong>技术状态</strong><p>价格站上 MA20，RSI 未过热。</p></div></div>
+              <div class="evidence"><div class="dot">C</div><div><strong>明日触发</strong><p>上攻不追，跌破支撑先降风险。</p></div></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="monitor">
+        <div class="grid-monitor">
+          <section class="panel monitor">
+            <div class="panel-body">
+              <div class="monitor-title">
+                <div>
+                  <div class="label">规则健康 · TECH_MA20_BREAK_STOP_LOSS</div>
+                  <h2>MA20 破位止损</h2>
+                </div>
+                <span class="badge amber">观察中</span>
+              </div>
+              <div class="status-strip">
+                <div class="metric"><div class="label">样本数</div><div class="value">28</div></div>
+                <div class="metric"><div class="label">命中</div><div class="value neutral">61%</div></div>
+                <div class="metric"><div class="label">近期衰减</div><div class="value amber">轻微</div></div>
+                <div class="metric"><div class="label">阻断风险</div><div class="value green">无</div></div>
+              </div>
+              <div class="timeline" aria-label="规则健康时间线">
+                <div class="tick ok"></div><div class="tick ok"></div><div class="tick warn"></div><div class="tick ok"></div>
+                <div class="tick observe"></div><div class="tick ok"></div><div class="tick warn"></div><div class="tick ok"></div>
+                <div class="tick ok"></div><div class="tick warn"></div><div class="tick ok"></div><div class="tick observe"></div>
+              </div>
+              <div class="panel-body decision-text">
+                这个方向适合规则健康页：像 Grafana 一样直接展示指标、趋势、异常和影响范围。它不适合作为你的每日第一屏，但很适合回答“这条规则现在还值不值得信”。
+              </div>
+            </div>
+          </section>
+
+          <section class="panel monitor">
+            <div class="panel-head">影响股票</div>
+            <div class="health-item">
+              <span class="badge amber">观察</span>
+              <div><strong>东睦股份</strong><div class="label">今日使用该规则作为止损辅助</div></div>
+              <span>600114</span>
+            </div>
+            <div class="health-item">
+              <span class="badge green">稳定</span>
+              <div><strong>招商银行</strong><div class="label">规则仅作辅助，不改变主决策</div></div>
+              <span>600036</span>
+            </div>
+            <div class="health-item">
+              <span class="badge red">阻断</span>
+              <div><strong>某样本</strong><div class="label">未来函数风险，不进入结论</div></div>
+              <span>BLOCK</span>
+            </div>
+            <div class="panel-body">
+              <div class="label">命中/偏离比例</div>
+              <div class="bar"><span style="width: 61%"></span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const app = document.getElementById('app');
+    const buttons = document.querySelectorAll('[data-view]');
+    const screens = document.querySelectorAll('[data-screen]');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const view = button.dataset.view;
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        screens.forEach((screen) => screen.classList.toggle('active', screen.dataset.screen === view));
+        app.classList.toggle('clean-shell', view === 'clean');
+      });
+    });
+  </script>
+</body>
+</html>

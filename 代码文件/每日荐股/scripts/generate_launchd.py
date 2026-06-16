@@ -4,12 +4,20 @@
 macOS 当前唯一调度注册器。禁止使用 crontab、GitHub Actions schedule、PS1 注册。
 所有定时任务通过本脚本注册到 launchd。
 
+真实状态模型: 不再仅凭 plist 文件存在判定 INSTALLED，
+而是综合 plist 存在 + launchd 加载状态 -> MISSING / PLIST_ONLY / LOADED / BROKEN。
+
 Usage:
-    python3 generate_launchd.py --list                  # list all scheduled tasks
-    python3 generate_launchd.py --install all            # install all tasks
-    python3 generate_launchd.py --install <task_name>    # install a specific task
-    python3 generate_launchd.py --uninstall <task_name>  # uninstall a task
-    python3 generate_launchd.py --status                 # show status of all tasks
+    python3 generate_launchd.py --list                      # list all scheduled tasks
+    python3 generate_launchd.py --install all                # install all tasks
+    python3 generate_launchd.py --install <task_name>        # install a specific task
+    python3 generate_launchd.py --uninstall <task_name>      # uninstall a task
+    python3 generate_launchd.py --status                     # show real status of all tasks
+    python3 generate_launchd.py --verify <task_name>         # verify task installed & loaded
+
+--verify 退出码:
+  0 = plist 存在 + launchd 已加载 + 参数正确
+  2 = 任一条件不满足
 
 Code level: L1
 Design: ADR-3 (launchd not cron)
@@ -188,33 +196,192 @@ def uninstall_task(task_name, task_def):
         emit(f"  SKIP: {label} not installed")
 
 
+def _expected_args(task_def):
+    """Return the full expected ProgramArguments list for a task definition."""
+    return [task_def["command"]] + task_def["args"]
+
+
+def _check_program_arguments_match(plist, task_def):
+    """Check if plist ProgramArguments match task definition. Returns (bool, reason)."""
+    installed_args = plist.get("ProgramArguments", [])
+    expected = _expected_args(task_def)
+    installed_str = " ".join(installed_args)
+    expected_str = " ".join(expected)
+    for exp in expected:
+        if exp not in installed_str:
+            return False, (
+                f"ProgramArguments mismatch\n"
+                f"  installed: {installed_str}\n"
+                f"  expected:  {expected_str}"
+            )
+    return True, ""
+
+
+def _launchctl_print(label):
+    """Run launchctl print gui/<uid>/<label> to check if job is loaded.
+
+    Returns (returncode, stdout, stderr).
+    launchctl print is more authoritative than launchctl list for confirm loading.
+    """
+    uid = os.getuid()
+    return subprocess.run(
+        ["launchctl", "print", f"gui/{uid}/{label}"],
+        capture_output=True, text=True
+    )
+
+
+def get_real_status(label, task_name=None):
+    """Get real status of a launchd task.
+
+    Uses `launchctl print gui/<uid>/<label>` for loading check — more authoritative
+    than `launchctl list <label>`.
+
+    If task_name is provided, validates ProgramArguments against TASK_DEFS.
+
+    Returns one of:
+      LOADED     — plist exists, launchd has loaded it, ProgramArguments match
+      PLIST_ONLY — plist file exists but launchd has NOT loaded it
+      MISSING    — plist file does not exist
+      BROKEN     — plist exists but args don't match definition, or plist unparseable
+    """
+    plist_path = PLIST_DIR / f"{label}.plist"
+    if not plist_path.exists():
+        return "MISSING"
+
+    # Check if plist is parseable
+    try:
+        with open(plist_path, "rb") as f:
+            plist = plistlib.load(f)
+    except Exception:
+        return "BROKEN"
+
+    # If task_name provided, validate ProgramArguments
+    if task_name is not None and task_name in TASK_DEFS:
+        match, _ = _check_program_arguments_match(plist, TASK_DEFS[task_name])
+        if not match:
+            return "BROKEN"
+
+    # Check if loaded in launchd via launchctl print (gui domain)
+    result = _launchctl_print(label)
+    if result.returncode == 0:
+        return "LOADED"
+    return "PLIST_ONLY"
+
+
+def main_verify(task_name):
+    """Verify a task is properly installed, loaded, and has correct arguments.
+
+    Outputs JSON with detailed status fields. Exits 0 on pass, 2 on failure.
+    """
+    if task_name not in TASK_DEFS:
+        emit(json.dumps({
+            "task": task_name,
+            "error": "unknown_task",
+            "status": "UNKNOWN",
+            "reason": f"Unknown task: {task_name}",
+        }, ensure_ascii=False))
+        sys.exit(2)
+
+    defn = TASK_DEFS[task_name]
+    label = f"{LABEL_PREFIX}{defn['label_suffix']}"
+    plist_path = PLIST_DIR / f"{label}.plist"
+
+    plist_exists = plist_path.exists()
+    launchd_loaded = False
+    program_arguments_match = False
+    status = "MISSING"
+    reason = ""
+
+    if not plist_exists:
+        status = "MISSING"
+        reason = f"plist not found at {plist_path}"
+    else:
+        # Check ProgramArguments
+        try:
+            with open(plist_path, "rb") as f:
+                plist = plistlib.load(f)
+            match, mismatch_reason = _check_program_arguments_match(plist, defn)
+            program_arguments_match = match
+            if not match:
+                status = "BROKEN"
+                reason = mismatch_reason
+        except Exception as e:
+            status = "BROKEN"
+            reason = f"plist unparseable: {e}"
+
+        # Check launchd loading (only if plist is structurally valid)
+        if not reason:
+            result = _launchctl_print(label)
+            launchd_loaded = result.returncode == 0
+            if launchd_loaded:
+                status = "LOADED"
+                reason = ""
+            else:
+                status = "PLIST_ONLY"
+                reason = f"plist exists but NOT loaded in launchd"
+
+    output = {
+        "task": task_name,
+        "label": label,
+        "uid": os.getuid(),
+        "plist_exists": plist_exists,
+        "launchd_loaded": launchd_loaded,
+        "program_arguments_match": program_arguments_match,
+        "status": status,
+        "reason": reason,
+    }
+    emit(json.dumps(output, ensure_ascii=False, indent=2))
+
+    if status == "LOADED":
+        sys.exit(0)
+    else:
+        sys.exit(2)
+
+
+def main_repair(task_name):
+    """Repair a task by reinstalling plist and loading into launchd.
+
+    After repair, runs verify. If verify still fails, exits 2.
+    """
+    if task_name not in TASK_DEFS:
+        emit(json.dumps({"task": task_name, "error": "unknown_task", "status": "UNKNOWN"}))
+        sys.exit(2)
+
+    defn = TASK_DEFS[task_name]
+    path = install_task(task_name, defn)
+
+    emit(f"\nVerifying after repair...")
+    main_verify(task_name)
+    # main_verify exits 0 or 2
+
+
 def show_status():
-    """Display status of all defined tasks."""
+    """Display real status (MISSING/PLIST_ONLY/LOADED/BROKEN) of all tasks."""
     emit(f"{'Task':<25} {'Status':<12} {'Schedule'}")
     emit("-" * 65)
     for name, defn in TASK_DEFS.items():
         label = f"{LABEL_PREFIX}{defn['label_suffix']}"
-        plist_path = PLIST_DIR / f"{label}.plist"
         if defn.get("interval"):
             sched_desc = f"每 {defn['interval']}s"
         elif defn.get("schedule"):
             sched_desc = str(defn["schedule"][:2])
         else:
             sched_desc = "-"
-        status = "INSTALLED" if plist_path.exists() else "not installed"
+        status = get_real_status(label, task_name=name)
         emit(f"{name:<25} {status:<12} {sched_desc}")
 
-    # Also check launchctl list
+    # Summary: count jobs per status
     emit()
-    result = subprocess.run(["launchctl", "list"],
-                            capture_output=True, text=True)
-    tielv_jobs = [l for l in result.stdout.split("\n") if LABEL_PREFIX in l]
-    if tielv_jobs:
-        emit(f"Active launchd jobs ({len(tielv_jobs)}):")
-        for job in tielv_jobs:
-            emit(f"  {job}")
-    else:
-        emit("No active tielv launchd jobs")
+    counts = {"LOADED": 0, "PLIST_ONLY": 0, "MISSING": 0, "BROKEN": 0}
+    for name, defn in TASK_DEFS.items():
+        label = f"{LABEL_PREFIX}{defn['label_suffix']}"
+        s = get_real_status(label, task_name=name)
+        counts[s] = counts.get(s, 0) + 1
+    emit(f"Total: {sum(counts.values())} | "
+         f"LOADED={counts['LOADED']} "
+         f"PLIST_ONLY={counts['PLIST_ONLY']} "
+         f"MISSING={counts['MISSING']} "
+         f"BROKEN={counts['BROKEN']}")
 
 
 def list_tasks():
@@ -254,12 +421,22 @@ def main():
     parser.add_argument("--list", action="store_true", help="List all defined tasks")
     parser.add_argument("--install", default="", help="Task name to install, or 'all'")
     parser.add_argument("--uninstall", default="", help="Task name to uninstall")
-    parser.add_argument("--status", action="store_true", help="Show status of all tasks")
+    parser.add_argument("--status", action="store_true", help="Show real status of all tasks")
+    parser.add_argument("--verify", default="", help="Verify a task is installed & loaded (JSON output, exits 0 or 2)")
+    parser.add_argument("--repair", default="", help="Reinstall and verify a task (exits 0 if OK, 2 if repair fails)")
     args = parser.parse_args()
 
     if args.list:
         list_tasks()
         return
+
+    if args.verify:
+        main_verify(args.verify)
+        return  # main_verify calls sys.exit internally
+
+    if args.repair:
+        main_repair(args.repair)
+        return  # main_repair calls sys.exit via main_verify
 
     if args.status:
         show_status()
@@ -287,7 +464,7 @@ def main():
             emit(f"ERROR: Unknown task: {args.uninstall}")
             sys.exit(1)
 
-    if not args.install and not args.uninstall and not args.status and not args.list:
+    if not args.install and not args.uninstall and not args.status and not args.list and not args.verify and not args.repair:
         parser.print_help()
 
 

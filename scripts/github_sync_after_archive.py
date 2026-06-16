@@ -84,7 +84,46 @@ def get_branch_info(cwd=None):
     return branch["stdout"], upstream["stdout"]
 
 
-def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
+def check_workspace_vs_allowed(allowed_paths, cwd=None):
+    """Check if all dirty files are within the allowed set. Returns (ok, violations).
+
+    *allowed_paths* is a list of file paths that are expected to have changes.
+    Any dirty file outside this list is a violation.
+
+    Uses -c core.quotepath=false so Chinese/UTF-8 paths are not escaped.
+    """
+    if allowed_paths is None:
+        allowed_paths = []
+
+    status = run_git(["-c", "core.quotepath=false", "status", "--porcelain"], cwd=cwd)
+    if not status["stdout"].strip():
+        return True, []
+
+    violations = []
+    for line in status["stdout"].splitlines():
+        line = line.rstrip()
+        if not line:
+            continue
+        # Format: XY <path> where XY = index status + worktree status (2 chars)
+        # Leading space means "nothing in index". Strip would break the offset.
+        # Path starts at index 3 (after XY + separator space)
+        path = line[3:].strip()
+        if " -> " in path:
+            path = path.split(" -> ")[-1]
+        # Check if this dirty file is within allowed paths
+        is_allowed = False
+        for ap in allowed_paths:
+            ap_str = str(ap)
+            if path == ap_str or path.startswith(ap_str + "/"):
+                is_allowed = True
+                break
+        if not is_allowed:
+            violations.append(path)
+
+    return len(violations) == 0, violations
+
+
+def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None, allowed_paths=None):
     # 1. Validate archive_record
     valid, result = validate_archive_record(archive_path)
     if not valid:
@@ -160,12 +199,32 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
             "dry_run": True,
         }
 
-    # 4. Get before HEAD and workspace state before any "already synced" decision.
+    # 4. Get before HEAD and workspace state
     before = run_git(["rev-parse", "HEAD"], cwd=cwd)
     before_head = before["stdout"]
-    status_result = run_git(["status", "--porcelain"], cwd=cwd)
+    status_result = run_git(["-c", "core.quotepath=false", "status", "--porcelain"], cwd=cwd)
     workspace_dirty = bool(status_result["stdout"].strip())
     no_push = os.environ.get("GITHUB_SYNC_NO_PUSH") == "1"
+
+    # 5. If workspace dirty, validate against allowed paths — do NOT use git add -A
+    if workspace_dirty:
+        ok, violations = check_workspace_vs_allowed(allowed_paths, cwd=cwd)
+        if not ok:
+            return {
+                "artifact_type": "github_sync_record",
+                "result": RESULT_BLOCK,
+                "run_id": run_id,
+                "archive_record": str(archive_path),
+                "branch": branch,
+                "upstream": upstream,
+                "archive_valid": True,
+                "reason": f"dirty files outside allowed paths: {violations}",
+                "commit_created": False,
+                "push_completed": False,
+                "github_sync_completed": False,
+                "workspace_dirty": workspace_dirty,
+                "violations": violations,
+            }
 
     if no_push:
         return {
@@ -188,7 +247,7 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
             "workspace_dirty": workspace_dirty,
         }
 
-    # 5. Check remote equality only after proving workspace cleanliness.
+    # 6. Check remote equality only after proving workspace cleanliness.
     skip_fetch = os.environ.get("GITHUB_SYNC_SKIP_FETCH") == "1"
     if not skip_fetch:
         fetch_result = run_git(["fetch", "origin", branch], cwd=cwd)
@@ -215,9 +274,10 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
                 "workspace_dirty": False,
             }
 
-    # 6. Commit actual uncommitted changes; dirty workspace must never be treated as already synced.
+    # 7. Commit changes — only stage allowed paths, NEVER git add -A
     if workspace_dirty:
-        run_git(["add", "-A"], cwd=cwd)
+        for ap in (allowed_paths or []):
+            run_git(["add", "--", str(ap)], cwd=cwd)
         commit_result = run_git(
             ["commit", "-m", f"[CCRT] {run_id} — G6 archive auto-sync"], cwd=cwd
         )
@@ -236,7 +296,7 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
                 "github_sync_completed": False,
             }
 
-    # 7. Push (skip if no_push flag is set)
+    # 8. Push (skip if no_push flag is set)
     if no_push:
         after = run_git(["rev-parse", "HEAD"], cwd=cwd)
         return {
@@ -274,14 +334,14 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
             "github_sync_completed": False,
         }
 
-    # 8. Verify push
+    # 9. Verify push + run git_workspace_hygiene --quiet
     after = run_git(["rev-parse", "HEAD"], cwd=cwd)
     after_head = after["stdout"]
 
     if not skip_fetch:
         run_git(["fetch", "origin", branch], cwd=cwd)
     remote_head = run_git(["rev-parse", f"{upstream.split('/')[0]}/{branch}"], cwd=cwd)
-    post_status = run_git(["status", "--porcelain"], cwd=cwd)
+    post_status = run_git(["-c", "core.quotepath=false", "status", "--porcelain"], cwd=cwd)
     if remote_head["returncode"] != 0 or remote_head["stdout"].strip() != after_head or post_status["stdout"].strip():
         return {
             "artifact_type": "github_sync_record",
@@ -300,6 +360,27 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
             "workspace_dirty_after_push": bool(post_status["stdout"].strip()),
         }
 
+    # Post-push hygiene check
+    hygiene_proc = subprocess.run(
+        [sys.executable, "scripts/git_workspace_hygiene.py", "--quiet"],
+        cwd=cwd or str(ROOT), capture_output=True, text=True, timeout=30,
+    )
+    if hygiene_proc.returncode != 0:
+        return {
+            "artifact_type": "github_sync_record",
+            "result": RESULT_BLOCK,
+            "run_id": run_id,
+            "archive_record": str(archive_path),
+            "branch": branch,
+            "upstream": upstream,
+            "archive_valid": True,
+            "reason": f"workspace hygiene failed after push: {hygiene_proc.stdout.strip()}",
+            "commit_created": True,
+            "push_completed": True,
+            "github_sync_completed": False,
+            "workspace_hygiene_output": hygiene_proc.stdout.strip(),
+        }
+
     return {
         "artifact_type": "github_sync_record",
         "result": RESULT_PUSHED,
@@ -316,6 +397,7 @@ def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
         "pushed_to": f"origin/{branch}",
         "tag_completed": False,
         "merge_completed": False,
+        "workspace_hygiene_passed": True,
     }
 
 
@@ -372,6 +454,8 @@ def main():
     parser.add_argument("--output-dir", default=str(AUDIT_DIR), help="Output directory for github_sync_record")
     parser.add_argument("--self-test", action="store_true", help="Run self-test")
     parser.add_argument("--dry-run", action="store_true", help="Validate only, don't push")
+    parser.add_argument("--allowed-paths-json", default="",
+                        help="Path to JSON file containing list of allowed file paths to stage")
     args = parser.parse_args()
 
     if args.self_test:
@@ -384,7 +468,15 @@ def main():
         print("BLOCK: --run-id is required unless --self-test", file=sys.stderr)
         return 2
 
-    result = sync(args.archive_record, args.run_id, args.output_dir, dry_run=args.dry_run)
+    allowed_paths = None
+    if args.allowed_paths_json:
+        allowed_paths = load_json(args.allowed_paths_json)
+        if not isinstance(allowed_paths, list):
+            print("BLOCK: --allowed-paths-json must contain a JSON array", file=sys.stderr)
+            return 2
+
+    result = sync(args.archive_record, args.run_id, args.output_dir,
+                  dry_run=args.dry_run, allowed_paths=allowed_paths)
 
     # Write output
     out_name = f"{args.run_id}_github_sync_record.json"

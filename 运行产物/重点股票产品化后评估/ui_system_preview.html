@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>重点股票产品化页面体系预览</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0e14;
+      --panel: #111722;
+      --panel2: #151c28;
+      --panel3: #f7f8fb;
+      --text: #edf3fb;
+      --text-dark: #172033;
+      --muted: #93a0b4;
+      --muted-dark: #667085;
+      --line: rgba(255,255,255,.12);
+      --line-dark: rgba(23,32,51,.11);
+      --blue: #58a6ff;
+      --green: #28d49a;
+      --red: #ff5b74;
+      --amber: #f5b84c;
+      --violet: #a78bfa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0e14;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 236px 1fr;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--line);
+      background: #090c12;
+      padding: 18px 14px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(88,166,255,.45);
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      background: rgba(88,166,255,.08);
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .small {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav button {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--muted);
+      background: transparent;
+      text-align: left;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    .nav button.active {
+      color: var(--text);
+      border-color: rgba(88,166,255,.36);
+      background: rgba(88,166,255,.1);
+    }
+
+    .main {
+      min-width: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(88,166,255,.12), transparent 28%),
+        #0b0e14;
+    }
+
+    .topbar {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(11,14,20,.86);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .page {
+      display: none;
+      padding: 18px 22px 26px;
+    }
+
+    .page.active { display: block; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(17,23,34,.94);
+      overflow: hidden;
+      box-shadow: 0 18px 44px rgba(0,0,0,.24);
+    }
+
+    .panel.light {
+      background: #fff;
+      color: var(--text-dark);
+      border-color: var(--line-dark);
+      box-shadow: 0 10px 28px rgba(23,32,51,.08);
+    }
+
+    .panel-head {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      color: rgba(237,243,251,.78);
+      font-size: 13px;
+    }
+
+    .light .panel-head {
+      border-bottom-color: var(--line-dark);
+      color: #1f2937;
+    }
+
+    .body { padding: 14px; }
+
+    .grid-home {
+      display: grid;
+      grid-template-columns: minmax(500px, 1.25fr) minmax(320px, .75fr);
+      gap: 14px;
+    }
+
+    .decision-hero {
+      display: grid;
+      grid-template-columns: minmax(250px, .85fr) minmax(320px, 1.15fr);
+      gap: 12px;
+    }
+
+    .primary-card {
+      min-height: 188px;
+      border-radius: 8px;
+      border: 1px solid rgba(40,212,154,.34);
+      background: linear-gradient(135deg, rgba(40,212,154,.15), rgba(88,166,255,.09));
+      padding: 18px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .light .label { color: var(--muted-dark); }
+
+    .action {
+      margin: 0 0 14px;
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 820;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: rgba(237,243,251,.8);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .light .badge {
+      border-color: var(--line-dark);
+      color: #334155;
+      background: #f8fafc;
+    }
+
+    .badge.green { color: var(--green); border-color: rgba(40,212,154,.35); background: rgba(40,212,154,.08); }
+    .badge.blue { color: var(--blue); border-color: rgba(88,166,255,.35); background: rgba(88,166,255,.08); }
+    .badge.amber { color: var(--amber); border-color: rgba(245,184,76,.36); background: rgba(245,184,76,.08); }
+    .badge.red { color: var(--red); border-color: rgba(255,91,116,.36); background: rgba(255,91,116,.08); }
+    .badge.violet { color: var(--violet); border-color: rgba(167,139,250,.36); background: rgba(167,139,250,.08); }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      min-height: 76px;
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .light .metric {
+      border-color: var(--line-dark);
+      background: #f8fafc;
+    }
+
+    .value {
+      margin-top: 7px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .red-text { color: var(--red); }
+    .green-text { color: var(--green); }
+    .blue-text { color: var(--blue); }
+    .amber-text { color: var(--amber); }
+
+    .note {
+      color: rgba(237,243,251,.76);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .light .note { color: #344054; }
+
+    .chart {
+      height: 230px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        rgba(0,0,0,.13);
+      background-size: 36px 36px;
+      padding: 10px;
+    }
+
+    .light .chart {
+      border-color: var(--line-dark);
+      background:
+        linear-gradient(rgba(23,32,51,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23,32,51,.04) 1px, transparent 1px),
+        #fbfcff;
+      background-size: 36px 36px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .evidence {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+    }
+
+    .light .evidence {
+      border-color: var(--line-dark);
+      background: #f8fafc;
+    }
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(88,166,255,.35);
+      color: var(--blue);
+      font-size: 12px;
+    }
+
+    .evidence strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .evidence p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 12px;
+    }
+
+    .light .evidence p { color: var(--muted-dark); }
+
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(480px, 1fr) 300px;
+      gap: 14px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 84px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .toc-item {
+      padding: 9px 10px;
+      border-radius: 8px;
+      color: var(--muted-dark);
+      background: #f8fafc;
+      border: 1px solid transparent;
+      font-size: 13px;
+    }
+
+    .toc-item.active {
+      color: #0f172a;
+      border-color: rgba(88,166,255,.28);
+      background: rgba(88,166,255,.1);
+    }
+
+    .article {
+      padding: 22px;
+    }
+
+    .article h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      color: #111827;
+    }
+
+    .article h3 {
+      margin: 24px 0 10px;
+      font-size: 17px;
+      color: #172033;
+    }
+
+    .article p {
+      color: #344054;
+      line-height: 1.75;
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+
+    .side-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .daily-layout {
+      display: grid;
+      grid-template-columns: minmax(500px, 1fr) 340px;
+      gap: 14px;
+    }
+
+    .delta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line-dark);
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+
+    .eval-layout {
+      display: grid;
+      grid-template-columns: minmax(520px, 1fr) 360px;
+      gap: 14px;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 7px;
+    }
+
+    .cell {
+      height: 48px;
+      border-radius: 6px;
+      border: 1px solid rgba(23,32,51,.08);
+      background: #eef2f7;
+    }
+
+    .cell.g { background: rgba(40,212,154,.26); }
+    .cell.y { background: rgba(245,184,76,.28); }
+    .cell.r { background: rgba(255,91,116,.26); }
+    .cell.b { background: rgba(88,166,255,.22); }
+
+    .table {
+      display: grid;
+      border: 1px solid var(--line-dark);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .tr {
+      display: grid;
+      grid-template-columns: 1.1fr .8fr .8fr 1fr;
+      min-height: 40px;
+      align-items: center;
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .tr:last-child { border-bottom: 0; }
+
+    .tr > div { padding: 9px 10px; }
+
+    .tr.head-row {
+      background: #f1f5f9;
+      font-weight: 760;
+      color: #334155;
+    }
+
+    .chart-layout {
+      display: grid;
+      grid-template-columns: minmax(520px, 1fr) 340px;
+      gap: 14px;
+    }
+
+    .chart.tall { height: 380px; }
+
+    .chart-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini-chart { height: 116px; }
+
+    .rule-matrix {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rule-row {
+      display: grid;
+      grid-template-columns: 118px repeat(8, 1fr);
+      gap: 6px;
+      align-items: center;
+    }
+
+    .rule-name {
+      color: #344054;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .sample-cell {
+      min-height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      border: 1px solid rgba(23,32,51,.08);
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .sample-cell.hit { color: #047857; background: rgba(40,212,154,.2); }
+    .sample-cell.miss { color: #be123c; background: rgba(255,91,116,.2); }
+    .sample-cell.observe { color: #0369a1; background: rgba(88,166,255,.18); }
+    .sample-cell.warn { color: #a16207; background: rgba(245,184,76,.22); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 1120px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .doc-layout, .daily-layout, .eval-layout, .grid-home, .decision-hero {
+        grid-template-columns: 1fr;
+      }
+      .metric-grid, .delta-grid { grid-template-columns: repeat(2, 1fr); }
+      .rule-row { grid-template-columns: 1fr repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <h1>页面体系预览</h1>
+          <div class="small">清晰优先 · 图表增强</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="页面切换">
+        <button class="active" data-page-btn="home">驾驶舱首页</button>
+        <button data-page-btn="deep">深度分析</button>
+        <button data-page-btn="daily">每日分析</button>
+        <button data-page-btn="eval">后评估/规则</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">驾驶舱首页</h1>
+          <div class="small" id="page-subtitle">极简决策信息，只保留今天必须看的内容</div>
+        </div>
+        <div class="badges">
+          <span class="badge green">模拟数据</span>
+          <span class="badge blue">本地预览</span>
+          <span class="badge amber">不接生产</span>
+        </div>
+      </header>
+
+      <section class="page active" data-page="home">
+        <div class="grid-home">
+          <section class="panel">
+            <div class="panel-head">东睦股份 600114 · 今日第一屏 <span class="badge green">COMPLETE</span></div>
+            <div class="body">
+              <div class="decision-hero">
+                <div class="primary-card">
+                  <div class="label">次日主决策</div>
+                  <h2 class="action">持有观察</h2>
+                  <div class="badges">
+                    <span class="badge green">风险灯 GREEN</span>
+                    <span class="badge blue">信心 0.72</span>
+                    <span class="badge amber">禁止追高</span>
+                  </div>
+                </div>
+                <div class="note">
+                  今日收盘仍在支撑区上方，量能没有明显失控，属于强势震荡后的观察状态。明天优先看 31.80 支撑是否有效；若放量跌破，则把动作从持有切到减仓或止损。
+                </div>
+              </div>
+              <div class="metric-grid">
+                <div class="metric"><div class="label">现价</div><div class="value red-text">33.42</div></div>
+                <div class="metric"><div class="label">成本</div><div class="value">30.78</div></div>
+                <div class="metric"><div class="label">浮盈亏</div><div class="value red-text">+8.6%</div></div>
+                <div class="metric"><div class="label">止损位</div><div class="value blue-text">31.20</div></div>
+              </div>
+            </div>
+          </section>
+          <aside class="panel">
+            <div class="panel-head">证据链</div>
+            <div class="body evidence-list">
+              <div class="evidence"><div class="dot">1</div><div><strong>支撑未破</strong><p>收盘价仍位于 31.80 上方。</p></div></div>
+              <div class="evidence"><div class="dot">2</div><div><strong>量能未失控</strong><p>没有连续恐慌放量。</p></div></div>
+              <div class="evidence"><div class="dot">3</div><div><strong>反证条件</strong><p>放量跌破 MA20 切换减仓观察。</p></div></div>
+            </div>
+          </aside>
+          <section class="panel" style="grid-column: 1 / -1;">
+            <div class="panel-head">走势与技术图</div>
+            <div class="body chart">
+              <svg viewBox="0 0 900 240" aria-label="驾驶舱首页K线摘要">
+                <polyline points="24,162 90,154 156,178 222,126 288,112 354,140 420,100 486,86 552,98 618,70 684,84 750,54 816,72 876,46" fill="none" stroke="#58a6ff" stroke-width="4"/>
+                <polyline points="24,168 876,168" stroke="#28d49a" stroke-dasharray="8 8" stroke-width="2"/>
+                <polyline points="24,84 876,84" stroke="#f5b84c" stroke-dasharray="8 8" stroke-width="2"/>
+                <g fill="#ff5b74"><rect x="104" y="186" width="12" height="34"/><rect x="300" y="174" width="12" height="46"/><rect x="564" y="148" width="12" height="72"/><rect x="770" y="132" width="12" height="88"/></g>
+                <g fill="#28d49a"><rect x="180" y="194" width="12" height="26"/><rect x="430" y="180" width="12" height="40"/><rect x="688" y="160" width="12" height="60"/></g>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" data-page="deep">
+        <div class="doc-layout">
+          <aside class="toc">
+            <div class="toc-item active">核心结论</div>
+            <div class="toc-item">公司逻辑</div>
+            <div class="toc-item">关键假设</div>
+            <div class="toc-item">估值与空间</div>
+            <div class="toc-item">反证条件</div>
+            <div class="toc-item">风险边界</div>
+          </aside>
+          <article class="panel light article">
+            <h2>东睦股份深度分析摘要</h2>
+            <p>深度分析页建议采用“研报阅读器”风格，而不是大屏风。中间正文保证可读，左侧目录快速定位，右侧固定展示关键假设、支撑压力、反证条件和风险灯。</p>
+            <h3>核心结论</h3>
+            <p>公司中期逻辑仍围绕折叠屏、MIM 与消费电子复苏展开。当前价格没有给出明显低估，但趋势尚未破坏，适合在支撑区观察，不适合追高。</p>
+            <h3>关键假设</h3>
+            <p>折叠屏铰链需求持续释放，毛利率稳定改善，资金面没有持续恶化。若二季度订单落空或资金连续流出，原有判断需要降权。</p>
+            <h3>反证条件</h3>
+            <p>放量跌破 MA20、基本面订单数据落空、板块相位明显转弱，任一条件触发都应回到每日分析重新评估。</p>
+          </article>
+          <aside class="side-card">
+            <section class="panel light">
+              <div class="panel-head">关键对象</div>
+              <div class="body evidence-list">
+                <div class="evidence"><div class="dot">B</div><div><strong>baseline</strong><p>baseline_600114_2026W25</p></div></div>
+                <div class="evidence"><div class="dot">S</div><div><strong>支撑/压力</strong><p>31.80 / 35.80</p></div></div>
+                <div class="evidence"><div class="dot">R</div><div><strong>风险灯</strong><p>GREEN，资金未失控。</p></div></div>
+              </div>
+            </section>
+            <section class="panel light">
+              <div class="panel-head">业务图表：中期位置</div>
+              <div class="body chart" style="height: 160px;">
+                <svg viewBox="0 0 320 150">
+                  <path d="M18 104 C74 80, 96 116, 142 70 S232 86, 300 42" fill="none" stroke="#58a6ff" stroke-width="4"/>
+                  <path d="M18 108 L300 108" stroke="#28d49a" stroke-dasharray="7 7" stroke-width="2"/>
+                </svg>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" data-page="daily">
+        <div class="daily-layout">
+          <section class="panel light">
+            <div class="panel-head">每日分析 · baseline → delta → trigger</div>
+            <div class="body">
+              <div class="delta-grid">
+                <div class="metric"><div class="label">Baseline</div><div class="value">中期逻辑未破</div></div>
+                <div class="metric"><div class="label">Delta</div><div class="value red-text">+2.4%</div></div>
+                <div class="metric"><div class="label">Trigger</div><div class="value amber-text">观察支撑</div></div>
+              </div>
+              <div class="body note">
+                每日分析页建议像“投研时间线”：不重复深度分析，只解释今天相对 baseline 发生了什么、哪些触发条件接近、明天要盯什么。
+              </div>
+              <div class="timeline">
+                <div class="time-row"><strong>09:45</strong><div>开盘冲高，未触及压力位，量能温和。</div></div>
+                <div class="time-row"><strong>13:30</strong><div>回落但仍在 MA20 上方，未触发破位。</div></div>
+                <div class="time-row"><strong>15:00</strong><div>收盘保持强势震荡，次日继续观察支撑。</div></div>
+              </div>
+            </div>
+          </section>
+          <aside class="panel light">
+            <div class="panel-head">业务图表：今日相对 baseline 的变化</div>
+            <div class="body chart" style="height: 300px;">
+              <svg viewBox="0 0 360 300">
+                <path d="M20 190 C70 160, 96 210, 144 138 S230 158, 334 92" fill="none" stroke="#58a6ff" stroke-width="4"/>
+                <path d="M20 206 L334 206" stroke="#28d49a" stroke-dasharray="7 7" stroke-width="2"/>
+                <path d="M20 118 L334 118" stroke="#f5b84c" stroke-dasharray="7 7" stroke-width="2"/>
+                <rect x="48" y="226" width="12" height="40" fill="#ff5b74"/>
+                <rect x="146" y="236" width="12" height="30" fill="#28d49a"/>
+                <rect x="244" y="198" width="12" height="68" fill="#ff5b74"/>
+              </svg>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" data-page="eval">
+        <div class="eval-layout">
+          <section class="panel light">
+            <div class="panel-head">后评估/规则健康 <span class="badge amber">独立验证页</span></div>
+            <div class="body">
+              <div class="metric-grid">
+                <div class="metric"><div class="label">规则状态</div><div class="value amber-text">OBSERVE</div></div>
+                <div class="metric"><div class="label">样本数</div><div class="value">28</div></div>
+                <div class="metric"><div class="label">命中率</div><div class="value blue-text">61%</div></div>
+                <div class="metric"><div class="label">阻断风险</div><div class="value green-text">无</div></div>
+              </div>
+              <div class="body rule-matrix" aria-label="规则健康矩阵">
+                <div class="note" style="color:#344054;">下面不是装饰格子，而是“规则 × 最近 8 次验证样本”。每个格子代表一次已到期验证：命中、偏离、样本不足或需复查。它用来快速判断某条规则最近是否还可信。</div>
+                <div class="rule-row">
+                  <div class="rule-name">MA20 破位止损</div>
+                  <div class="sample-cell hit">HIT</div><div class="sample-cell hit">HIT</div><div class="sample-cell warn">WARN</div><div class="sample-cell observe">OBS</div><div class="sample-cell hit">HIT</div><div class="sample-cell miss">MISS</div><div class="sample-cell hit">HIT</div><div class="sample-cell observe">OBS</div>
+                </div>
+                <div class="rule-row">
+                  <div class="rule-name">支撑位跌破</div>
+                  <div class="sample-cell hit">HIT</div><div class="sample-cell warn">WARN</div><div class="sample-cell hit">HIT</div><div class="sample-cell hit">HIT</div><div class="sample-cell hit">HIT</div><div class="sample-cell observe">OBS</div><div class="sample-cell warn">WARN</div><div class="sample-cell hit">HIT</div>
+                </div>
+                <div class="rule-row">
+                  <div class="rule-name">事件落空风险</div>
+                  <div class="sample-cell observe">OBS</div><div class="sample-cell observe">OBS</div><div class="sample-cell warn">WARN</div><div class="sample-cell miss">MISS</div><div class="sample-cell observe">OBS</div><div class="sample-cell hit">HIT</div><div class="sample-cell observe">OBS</div><div class="sample-cell warn">WARN</div>
+                </div>
+                <div class="legend">
+                  <span class="badge green">HIT：判断被验证支持</span>
+                  <span class="badge red">MISS：判断明显偏离</span>
+                  <span class="badge blue">OBS：样本不足/继续观察</span>
+                  <span class="badge amber">WARN：需要复查但不阻断</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <aside class="panel light">
+            <div class="panel-head">规则样本表</div>
+            <div class="body table">
+              <div class="tr head-row"><div>规则</div><div>状态</div><div>样本</div><div>动作</div></div>
+              <div class="tr"><div>MA20 破位</div><div class="amber-text">OBSERVE</div><div>28</div><div>降低权重</div></div>
+              <div class="tr"><div>支撑破位</div><div class="green-text">PASS</div><div>42</div><div>继续使用</div></div>
+              <div class="tr"><div>事件落空</div><div class="blue-text">样本不足</div><div>6</div><div>继续观察</div></div>
+              <div class="tr"><div>未来函数</div><div class="red-text">BLOCK</div><div>1</div><div>不得入结论</div></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    const titles = {
+      home: ['驾驶舱首页', '极简决策信息，只保留今天必须看的内容'],
+      deep: ['深度分析', '研报阅读器风格：正文可读，关键假设固定可见'],
+      daily: ['每日分析', '投研时间线风格：只讲今天相对 baseline 的变化'],
+      eval: ['后评估/规则', '独立验证页：指标、样本、规则健康、阻断风险']
+    };
+
+    const buttons = document.querySelectorAll('[data-page-btn]');
+    const pages = document.querySelectorAll('[data-page]');
+    const title = document.getElementById('page-title');
+    const subtitle = document.getElementById('page-subtitle');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const page = button.dataset.pageBtn;
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        pages.forEach((item) => item.classList.toggle('active', item.dataset.page === page));
+        title.textContent = titles[page][0];
+        subtitle.textContent = titles[page][1];
+      });
+    });
+  </script>
+</body>
+</html>

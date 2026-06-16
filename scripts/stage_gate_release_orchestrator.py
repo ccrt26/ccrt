@@ -23,6 +23,9 @@ POLICY_PATH = ROOT / "00_项目地基" / "05_流程与角色" / "stage_gate_rele
 AUDIT_DIR = ROOT / "00_项目地基" / "08_审计与验收"
 FALLBACK_BLOCKED_DIR = Path("/private/tmp/ccrt_release_orchestrator_blocked")
 
+# Post-sync evidence MUST go outside the repo — never writes to repo after push.
+POST_SYNC_EVIDENCE_DIR = Path("/private/tmp/ccrt_release_orchestrator_post_sync")
+
 STATUS_ADVANCED = "ADVANCED"
 STATUS_WAITING_ROLE_SIGNOFF = "WAITING_ROLE_SIGNOFF"
 STATUS_ARCHIVED = "ARCHIVED"
@@ -96,8 +99,44 @@ def prepare_output_context(requested_output_dir, run_id):
         }
 
 
+G6_HYGIENE_SKIP_VAR = "CCRT_SKIP_G6_WORKSPACE_HYGIENE"
+
+
+def check_g6_workspace_hygiene():
+    """Run git_workspace_hygiene.py --quiet to enforce clean workspace before G6 COMPLETE.
+
+    Skips the check if CCRT_SKIP_G6_WORKSPACE_HYGIENE=true env var is set.
+    Returns None if pass, or a BLOCK response dict if fail.
+    """
+    if os.environ.get(G6_HYGIENE_SKIP_VAR, "").lower() in ("true", "1"):
+        return None
+
+    proc = run_cmd([sys.executable, "scripts/git_workspace_hygiene.py", "--quiet"])
+    if proc["returncode"] != 0:
+        return {
+            "status": STATUS_BLOCK,
+            "reason": "workspace not clean — git_workspace_hygiene --quiet returned non-zero",
+            "workspace_hygiene_report": proc,
+            "user_escalation": False,
+        }
+    return None
+
+
+def post_sync_output_context():
+    """Return an output context routed to POST_SYNC_EVIDENCE_DIR.
+
+    After push, no files may be written inside the repo.
+    """
+    return {
+        "output_dir_valid": True,
+        "output_dir_issue": "",
+        "safe_output_dir": POST_SYNC_EVIDENCE_DIR,
+        "requested_output_dir": POST_SYNC_EVIDENCE_DIR,
+    }
+
+
 def write_internal_evidence(full_response, output_context):
-    """Write full internal evidence JSON to safe output dir.
+    """Full internal evidence JSON to safe output dir.
 
     Always writes even when output_dir_valid=false (writes to fallback).
     Never writes to invalid requested dir.
@@ -307,8 +346,13 @@ def add_user_report_fields(response):
     reason = resp.get("reason", "")
 
     if status == STATUS_G6_COMPLETE:
-        resp["user_visible_status"] = "COMPLETE"
-        resp["user_visible_message"] = "CCRT 全流程已完成，已归档，已提交 GitHub。"
+        final_pass = resp.get("final_hygiene_pass", False)
+        if final_pass is True:
+            resp["user_visible_status"] = "COMPLETE"
+            resp["user_visible_message"] = "CCRT 全流程已完成，已归档，已提交 GitHub。"
+        else:
+            resp["user_visible_status"] = "BLOCK"
+            resp["user_visible_message"] = "BLOCK: archive+github sync complete but final hygiene check failed."
     elif status in (STATUS_WAITING_ROLE_SIGNOFF, "WAITING_FORMAL_SIGNOFF"):
         resp["user_visible_status"] = "AUTO_REPAIRING"
         resp["user_visible_message"] = "发现问题，系统已打回对应环节自动修复，无需用户处理。"
@@ -404,10 +448,71 @@ def orchestrate(args, output_context=None):
                 "user_escalation": False,
             }
 
+        # Prepare all evidence paths.
+        # Pre-sync evidence (archive_record, allowed_paths) may be in the repo.
+        # Post-sync evidence (final hygiene, post-push internal) MUST go outside
+        # the repo — always under POST_SYNC_EVIDENCE_DIR (/private/tmp).
+        safe_dir = output_context["safe_output_dir"]
+        post_sync_dir = POST_SYNC_EVIDENCE_DIR
+        post_sync_dir.mkdir(parents=True, exist_ok=True)
+
+        github_sync_record_path = safe_dir / f"{args.run_id}_github_sync_record.json"
+        internal_evidence_path = safe_dir / f"{args.run_id}_internal_orchestrator_response.json"
+        final_hygiene_path = post_sync_dir / f"{args.run_id}_final_hygiene.json"
+
+        # Construct allowed_paths_json for github_sync.
+        # IMPORTANT: only repo-relative paths are valid for git add.
+        # Evidence files outside the repo (/private/tmp) are NOT in the
+        # git working tree and must NOT appear in allowed_paths.
+        allowed_paths = []
+
+        # Include evidence files only if inside the repo
+        for path_obj in [archive_path, github_sync_record_path]:
+            try:
+                rel = path_obj.relative_to(ROOT)
+                allowed_paths.append(str(rel))
+            except ValueError:
+                pass  # Outside repo — not a git file
+
+        # Merge payload paths as repo-relative paths
+        if hasattr(args, 'payload_paths_json') and args.payload_paths_json:
+            try:
+                payload_list = load_json(args.payload_paths_json)
+                if isinstance(payload_list, list):
+                    for p in payload_list:
+                        p_str = str(p).replace("\\", "/")
+                        # Normalize absolute repo paths to relative
+                        try:
+                            rel = Path(p).resolve().relative_to(ROOT)
+                            allowed_paths.append(str(rel))
+                        except (ValueError, RuntimeError):
+                            # Already relative or outside repo
+                            if not p_str.startswith("/") and not p_str.startswith(".."):
+                                allowed_paths.append(p_str)
+            except Exception as e:
+                return {
+                    "task_id": args.run_id,
+                    "status": STATUS_BLOCK,
+                    "reason": f"failed to load --payload-paths-json: {e}",
+                    "user_escalation": False,
+                }
+
+        # De-duplicate and filter
+        seen = set()
+        deduped = []
+        for p in allowed_paths:
+            if p and p not in seen:
+                seen.add(p)
+                deduped.append(p)
+        allowed_paths = deduped
+
+        allowed_paths_file = safe_dir / f"{args.run_id}_allowed_paths.json"
+        write_json(allowed_paths_file, allowed_paths)
+
         # After archive, perform github sync if policy requires it
         github_sync_completed = False
         push_completed = False
-        github_sync_path = None
+        github_sync_path = ""
 
         if policy.get("auto_github_sync") is True:
             gsync_proc = run_cmd([
@@ -415,7 +520,8 @@ def orchestrate(args, output_context=None):
                 "scripts/github_sync_after_archive.py",
                 "--archive-record", str(archive_path),
                 "--run-id", args.run_id,
-                "--output-dir", str(output_context["safe_output_dir"]),
+                "--output-dir", str(safe_dir),
+                "--allowed-paths-json", str(allowed_paths_file),
             ])
             if gsync_proc["returncode"] == 0:
                 gsync_data = json.loads(gsync_proc["stdout"])
@@ -446,6 +552,54 @@ def orchestrate(args, output_context=None):
                 "reason": "archive completed but github sync failed — G6 PASS requires both",
                 "user_escalation": False,
             }
+
+        # Update final hygiene evidence with actual post-push result
+        if policy.get("auto_github_sync") is True and push_completed:
+            hygiene_result = check_g6_workspace_hygiene()
+            hygiene_passed = hygiene_result is None
+            hygiene_evidence = {
+                "status": "PASS" if hygiene_passed else "BLOCK",
+                "check_type": "final_hygiene",
+                "details": hygiene_result.get("reason", "") if hygiene_result else "workspace clean",
+            }
+            write_json(final_hygiene_path, hygiene_evidence)
+
+            if not hygiene_passed:
+                # Write internal evidence after all files synced
+                full_response = {
+                    "task_id": args.run_id,
+                    "status": STATUS_BLOCK,
+                    "release_policy": args.release_policy,
+                    "archive_record": str(archive_path),
+                    "github_sync_record": str(github_sync_record_path),
+                    "archive_completed": True,
+                    "github_sync_completed": github_sync_completed,
+                    "push_completed": push_completed,
+                    "reason": f"final hygiene check failed after push: {hygiene_evidence['details']}",
+                    "user_escalation": False,
+                }
+                write_internal_evidence(full_response, post_sync_output_context())
+                return full_response
+
+            # All evidence is now committed and clean. Write final internal evidence.
+            full_response = {
+                "task_id": args.run_id,
+                "status": STATUS_G6_COMPLETE,
+                "release_policy": args.release_policy,
+                "archive_record": str(archive_path),
+                "github_sync_record": str(github_sync_record_path),
+                "hygiene_evidence": str(final_hygiene_path),
+                "archive_completed": True,
+                "github_sync_completed": github_sync_completed,
+                "push_completed": push_completed,
+                "final_hygiene_pass": True,
+                "tag_completed": False,
+                "merge_completed": False,
+                "production_switched": False,
+                "user_escalation": False,
+            }
+            write_internal_evidence(full_response, post_sync_output_context())
+            return full_response
 
         if policy.get("auto_github_sync") is True:
             return {
@@ -535,6 +689,8 @@ def main():
     parser.add_argument("--user-confirmed-release", action="store_true")
     parser.add_argument("--output-dir", default="/private/tmp/ccrt_release_orchestrator")
     parser.add_argument("--comment", default="")
+    parser.add_argument("--payload-paths-json", default="",
+                        help="Path to JSON file listing repo-relative paths to stage as G6 commit payload")
     parser.add_argument("--internal-json", action="store_true",
                         help="Print full internal JSON to stdout (default: user-only package)")
     args = parser.parse_args()
@@ -552,8 +708,11 @@ def main():
     response = orchestrate(args, output_context=output_context)
     full_response = add_user_report_fields(response)
 
-    # All evidence writes go through write_internal_evidence (uses safe_output_dir)
-    internal_path = write_internal_evidence(full_response, output_context)
+    # All evidence writes go through write_internal_evidence
+    # Archive mode: post-push evidence must go outside repo.
+    # Other modes (signoff): use the original output context.
+    post_ctx = post_sync_output_context() if args.mode == "archive" else output_context
+    internal_path = write_internal_evidence(full_response, post_ctx)
 
     if args.internal_json:
         print(json.dumps(full_response, ensure_ascii=False, indent=2))

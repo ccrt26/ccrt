@@ -1,0 +1,145 @@
+{
+  "flow": "archive_data",
+  "archive_date": "20260616",
+  "generated_at": "2026-06-16T16:32:16.221486",
+  "archive_root": "/Users/ccrt/ccrt/历史数据",
+  "files": [
+    {
+      "name": "data_full.json",
+      "required": true,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/data_full.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_data_full.json",
+      "subdir": "04_原始数据",
+      "source_sha256": "4a3323a62b34e79672280fa028272656abdc7da4d282c271c5701d660a0f663b",
+      "destination_sha256": "4a3323a62b34e79672280fa028272656abdc7da4d282c271c5701d660a0f663b",
+      "bytes": 2418075,
+      "copied": true
+    },
+    {
+      "name": "data_scored.json",
+      "required": true,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/data_scored.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_data_scored.json",
+      "subdir": "04_原始数据",
+      "source_sha256": "4d4fd0289fcd4f73b731f2be9ff6b43f811c066be21f1bd96abc8a504a3ccefb",
+      "destination_sha256": "4d4fd0289fcd4f73b731f2be9ff6b43f811c066be21f1bd96abc8a504a3ccefb",
+      "bytes": 247325,
+      "copied": true
+    },
+    {
+      "name": "data_final.json",
+      "required": true,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/data_final.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_data_final.json",
+      "subdir": "04_原始数据",
+      "source_sha256": "29da27d2fdef9d6ae647afd7c6959d155f1ffe3ed2299a3a881a6f5a63a08be4",
+      "destination_sha256": "29da27d2fdef9d6ae647afd7c6959d155f1ffe3ed2299a3a881a6f5a63a08be4",
+      "bytes": 13965,
+      "copied": true
+    },
+    {
+      "name": "score_history.jsonl",
+      "required": true,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/score_history.jsonl",
+      "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_score_history.jsonl",
+      "subdir": "04_原始数据",
+      "source_sha256": "f8de60d1be45969c0609621b572ce58f5e9bcd97b160f3a781e6536bd8df9837",
+      "destination_sha256": "f8de60d1be45969c0609621b572ce58f5e9bcd97b160f3a781e6536bd8df9837",
+      "bytes": 366434,
+      "copied": true
+    },
+    {
+      "name": "dynamic_pool.json",
+      "required": true,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/dynamic_pool.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260616_dynamic_pool.json",
+      "subdir": "05_参考数据",
+      "source_sha256": "a1e24c56e1a238afe79b4655ccd18ff63db02a89d2a90c5100713e0f3806a66a",
+      "destination_sha256": "a1e24c56e1a238afe79b4655ccd18ff63db02a89d2a90c5100713e0f3806a66a",
+      "bytes": 8448,
+      "copied": true
+    },
+    {
+      "name": "sector_data.json",
+      "required": false,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/sector_data.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260616_sector_data.json",
+      "subdir": "05_参考数据",
+      "source_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
+      "destination_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
+      "bytes": 3013,
+      "copied": true
+    },
+    {
+      "name": "industry_map.json",
+      "required": false,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/industry_map.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260616_industry_map.json",
+      "subdir": "05_参考数据",
+      "source_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
+      "destination_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
+      "bytes": 1133,
+      "copied": true
+    },
+    {
+      "name": "eastmoney_sector_map.json",
+      "required": false,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/代码文件/数据/eastmoney_sector_map.json",
+      "destination": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260616_eastmoney_sector_map.json",
+      "subdir": "05_参考数据",
+      "source_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
+      "destination_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
+      "bytes": 1312,
+      "copied": true
+    },
+    {
+      "name": "../../每日荐股/事后评估/eval_result_20260616.json",
+      "required": false,
+      "status": "SKIP",
+      "source": "/Users/ccrt/ccrt/每日荐股/事后评估/eval_result_20260616.json",
+      "destination": "",
+      "subdir": "02_评估数据",
+      "source_sha256": "",
+      "destination_sha256": "",
+      "bytes": 0
+    },
+    {
+      "name": "../../每日荐股/事后评估/records.csv",
+      "required": false,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/每日荐股/事后评估/records.csv",
+      "destination": "/Users/ccrt/ccrt/历史数据/02_评估数据/20260616_records.csv",
+      "subdir": "02_评估数据",
+      "source_sha256": "16d972743fccd6561ba2f65123a90f9b7e86686d6664d32f790069d8a40ef02a",
+      "destination_sha256": "16d972743fccd6561ba2f65123a90f9b7e86686d6664d32f790069d8a40ef02a",
+      "bytes": 44330,
+      "copied": true
+    },
+    {
+      "name": "../../每日荐股/事后评估/summary.csv",
+      "required": false,
+      "status": "PASS",
+      "source": "/Users/ccrt/ccrt/每日荐股/事后评估/summary.csv",
+      "destination": "/Users/ccrt/ccrt/历史数据/02_评估数据/20260616_summary.csv",
+      "subdir": "02_评估数据",
+      "source_sha256": "58cb07d1e76a216e6834f8ef117a21d13141478facdf23815bb9d5453ec0e33f",
+      "destination_sha256": "58cb07d1e76a216e6834f8ef117a21d13141478facdf23815bb9d5453ec0e33f",
+      "bytes": 1515,
+      "copied": true
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "pass": 10,
+    "required_missing": 0,
+    "optional_missing": 1
+  }
+}
