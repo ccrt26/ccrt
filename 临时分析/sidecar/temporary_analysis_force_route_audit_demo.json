@@ -1,0 +1,12 @@
+{
+  "request": "看一下今天东睦股份的量价，分析情况",
+  "route_decision": "TEMP_ANALYSIS_REQUIRED",
+  "direct_role_answer": false,
+  "d07_version": "D07_v1.2",
+  "lishi_integrated": true,
+  "backend_artifacts": {
+    "brief_path": "临时分析/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json",
+    "gate_overall": "PASS",
+    "rendered_output_path": "临时分析/sidecar/temporary_analysis_rendered_600114_20260616_demo.txt"
+  }
+}

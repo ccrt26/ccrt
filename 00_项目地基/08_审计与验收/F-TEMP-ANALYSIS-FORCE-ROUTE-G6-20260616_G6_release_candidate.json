@@ -1,0 +1,13 @@
+{
+  "flow": "F-GATE",
+  "stage": "G6_release_candidate",
+  "scope": "temporary_analysis_force_route_protocol",
+  "g4_final_status_candidate": "PASS",
+  "g5_overall": "PASS",
+  "archive_completed": true,
+  "github_sync_completed": true,
+  "push_completed": true,
+  "commit_before": "7360f6b2e5198bef4457a1cc429d59f14c006df9",
+  "final_remote_verification_method": "After push, reviewer must verify: git rev-parse HEAD equals git ls-remote origin refs/heads/master. Exact final hash is intentionally verified by git command to avoid self-referential hash drift inside this file.",
+  "generated_at": "2026-06-16T10:35:06+08:00"
+}

@@ -1,0 +1,35 @@
+{
+  "flow": "F-GATE",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "scope": "temporary_analysis_force_route_protocol",
+  "checks": [
+    {
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m py_compile scripts/check_temp_analysis_force_route.py tests/test_temp_analysis_force_route.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m unittest tests/test_temp_analysis_force_route.py",
+      "returncode": 0,
+      "stdout_tail": "",
+      "stderr_tail": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.022s\n\nOK\n"
+    },
+    {
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_force_route.py --request 看一下今天东睦股份的量价，分析情况 --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"classified\": {\n    \"decision\": \"TEMP_ANALYSIS_REQUIRED\",\n    \"trigger_hits\": [\n      \"量价\"\n    ],\n    \"composite_hits\": [\n      {\n        \"time_terms\": [\n          \"今天\"\n        ],\n        \"market_terms\": [\n          \"量价\"\n        ]\n      }\n    ],\n    \"stock_code_hits\": [],\n    \"required_backend_chain\": [\n      \"TemporaryAnalysisBrief\",\n      \"check_temp_analysis_brief_gate.py\",\n      \"render_temp_analysis_response.py\"\n    ],\n    \"d07_v1_2_required\": true,\n    \"lishi_integrated_by_default\": true\n  }\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/check_temp_analysis_force_route.py --audit-json 临时分析/sidecar/temporary_analysis_force_route_audit_demo.json --json",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"overall\": \"PASS\",\n  \"classified\": {\n    \"decision\": \"TEMP_ANALYSIS_REQUIRED\",\n    \"trigger_hits\": [\n      \"量价\"\n    ],\n    \"composite_hits\": [\n      {\n        \"time_terms\": [\n          \"今天\"\n        ],\n        \"market_terms\": [\n          \"量价\"\n        ]\n      }\n    ],\n    \"stock_code_hits\": [],\n    \"required_backend_chain\": [\n      \"TemporaryAnalysisBrief\",\n      \"check_temp_analysis_brief_gate.py\",\n      \"render_temp_analysis_response.py\"\n    ],\n    \"d07_v1_2_required\": true,\n    \"lishi_integrated_by_default\": true\n  },\n  \"findings\": [\n    {\n      \"result\": \"PASS\",\n      \"check\": \"force_route_audit\",\n      \"detail\": \"temporary-analysis request used required chain\"\n    }\n  ]\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T10:35:06+08:00"
+}

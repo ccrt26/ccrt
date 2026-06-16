@@ -1,0 +1,15 @@
+{
+  "flow": "F-GATE",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "scope": "temporary_analysis_force_route_protocol",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "force_route_protocol",
+      "detail": "temporary-analysis force route, D07_v1.2, LISHI default integration, gate and renderer constraints are verified"
+    }
+  ]
+}
