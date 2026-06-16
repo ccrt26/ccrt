@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RuleHealthSummary",
+  "description": "规则健康总览和明细。包含规则矩阵（行=规则，列=样本/交易日，格子=HIT/MISS/OBS/WARN）以及规则详情。",
+  "type": "object",
+  "required": ["rule_id", "rule_name", "rule_status"],
+  "properties": {
+    "rule_id": {"type": "string"},
+    "rule_name": {"type": "string"},
+    "rule_status": {"type": "string", "enum": ["HEALTHY", "WARN", "DEGRADED", "OBSERVE", "BLOCKED"]},
+    "sample_count": {"type": "integer", "minimum": 0},
+    "hit_count": {"type": "integer", "minimum": 0},
+    "miss_count": {"type": "integer", "minimum": 0},
+    "observe_count": {"type": "integer", "minimum": 0},
+    "decay_score": {"type": ["number", "null"], "description": "衰减分数 0-1，越高越需要关注"},
+    "future_leakage_risk": {"type": "boolean"},
+    "affected_stocks": {"type": "array", "items": {"type": "string"}},
+    "recent_cells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sample_id", "trade_date", "stock_code", "state"],
+        "properties": {
+          "sample_id": {"type": "string"},
+          "trade_date": {"type": "string", "pattern": "^[0-9]{8}$"},
+          "stock_code": {"type": "string"},
+          "state": {"type": "string", "enum": ["HIT", "MISS", "OBS", "WARN"]},
+          "reason": {"type": "string"},
+          "evidence_ref": {"type": "string"}
+        }
+      }
+    },
+    "explanation": {"type": "string"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -121,17 +121,23 @@ class TestFeatureSnapshotKlineCache(unittest.TestCase):
             self.assertEqual(ff["as_of_check"], "BLOCK")
 
     def test_008_date_rollback_when_no_exact_date(self):
-        """无精确交易日时使用最近可用 + STALE。"""
+        """无精确交易日时使用最近可用 + STALE。
+
+        kline_cache/600114.json 最大日期为 20260616，
+        用 trade_date=20260617（未来日期）测试回退逻辑。
+        """
         snapshot = self.service.get_features(
             stock_code="600114",
-            trade_date="20260616",
-            as_of_date="20260616",
+            trade_date="20260617",
+            as_of_date="20260617",
         )
         tech = snapshot["feature_values"]["technical"]
-        self.assertIn("quality_flags", snapshot)
+        quality_flags = snapshot.get("quality_flags", [])
         self.assertEqual(snapshot["freshness_status"]["overall"],
                          "STALE",
                          "无精确交易日应标记 STALE")
+        self.assertIn("TRADE_DATE_ROLLBACK_TO_LAST_AVAILABLE", quality_flags,
+                      "应标记 TRADE_DATE_ROLLBACK")
         self.assertIsNotNone(tech.get("close"), "回退后 close 必须非空")
 
     def test_009_label_status_not_in_feature(self):

@@ -1,0 +1,47 @@
+{
+  "request_id": "RW-20260616-600114-d3d296",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260616",
+  "reason": "phase2_3_productization_smoke",
+  "dry_run": true,
+  "workflow_status": "DRY_RUN",
+  "steps": [
+    {
+      "step_name": "重新运行分析",
+      "status": "PASS",
+      "description": "重新生成该股票今日分析",
+      "estimated_impact": "更新分析结论"
+    },
+    {
+      "step_name": "刷新持仓/成本/盈亏",
+      "status": "PASS",
+      "description": "重新读取持仓数据",
+      "estimated_impact": "更新盈亏计算"
+    },
+    {
+      "step_name": "重建证据链",
+      "status": "PASS",
+      "description": "重新生成证据索引",
+      "estimated_impact": "更新证据展示"
+    },
+    {
+      "step_name": "重新生成产品 API",
+      "status": "PASS",
+      "description": "重新打包前端数据",
+      "estimated_impact": "更新驾驶舱"
+    },
+    {
+      "step_name": "提交规则候选",
+      "status": "SKIPPED",
+      "description": "如需修改规则则提交候选",
+      "estimated_impact": "规则治理"
+    }
+  ],
+  "blocking_reasons": [],
+  "warning_reasons": [
+    "dry-run 模式：不会实际修改任何数据"
+  ],
+  "created_at": "2026-06-16T09:05:32.128158+00:00",
+  "completed_at": "2026-06-16T09:05:32.128274+00:00"
+}

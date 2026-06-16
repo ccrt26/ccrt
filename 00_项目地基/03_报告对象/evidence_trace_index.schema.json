@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvidenceTraceIndex",
+  "description": "每只股票的每条决策/结论所依赖的证据索引。支持 UI 展示证据链。",
+  "type": "object",
+  "required": ["decision_id", "stock_code", "trade_date", "evidence_items"],
+  "properties": {
+    "decision_id": {"type": "string"},
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string", "pattern": "^[0-9]{8}$"},
+    "evidence_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_type", "source_path", "summary"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "source_type": {"type": "string", "enum": ["market_data", "technical", "fundamental", "baseline", "report", "eval_hook", "ledger", "backtest", "forward_eval", "external"]},
+          "source_path": {"type": "string"},
+          "summary": {"type": "string"},
+          "chart_hint": {"type": "string", "enum": ["kline", "macd", "rsi", "ma", "volume", "fund_flow", "heatmap", "matrix", "table", "none"]},
+          "freshness_status": {"type": "string", "enum": ["FRESH", "STALE", "MISSING", "UNKNOWN"]},
+          "created_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重点股票产品化驾驶舱</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="app-header">
+  <h1>📊 重点股票驾驶舱</h1>
+  <span style="font-size:12px;color:var(--text-dim)">Phase 2/3 静态版</span>
+  <nav>
+    <a data-view="dashboard" class="active" onclick="showView('dashboard')">驾驶舱</a>
+    <a data-view="stocks" onclick="showView('stocks')">股票列表</a>
+    <a data-view="deep" onclick="showView('deep');renderDeepAnalysis()">深度分析</a>
+    <a data-view="daily" onclick="showView('daily');renderDailyAnalysis()">每日分析</a>
+    <a data-view="rules" onclick="showView('rules');renderRuleHealth()">后评估/规则</a>
+  </nav>
+</header>
+
+<div id="view-dashboard" class="main active"></div>
+<div id="view-stocks" class="main"></div>
+<div id="view-detail" class="main"></div>
+<div id="view-deep" class="main"></div>
+<div id="view-daily" class="main"></div>
+<div id="view-rules" class="main"></div>
+
+<script src="app.js"></script>
+<script>init();</script>
+</body>
+</html>

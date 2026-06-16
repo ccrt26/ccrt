@@ -1,0 +1,17 @@
+{
+  "overall_status": "COMPLETE",
+  "generated_at": "2026-06-16T09:05:26.749196+00:00",
+  "inventory": "50 sidecars",
+  "stocks_tracked": 5,
+  "feature_snapshot": {
+    "close": 42.22,
+    "ma20": 38.681500000000014,
+    "rsi14": 58.844045839561524,
+    "actual_trade_date": "20260615"
+  },
+  "stock_codes": [
+    "600114",
+    "600519",
+    "000858"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnalysisResetWorkflow",
+  "description": "分析重置工作流状态和请求。支持 dry-run 模式。禁止默认删除历史证据。",
+  "type": "object",
+  "required": ["request_id", "stock_code", "trade_date", "dry_run", "workflow_status"],
+  "properties": {
+    "request_id": {"type": "string"},
+    "stock_code": {"type": "string"},
+    "stock_name": {"type": "string"},
+    "trade_date": {"type": "string", "pattern": "^[0-9]{8}$"},
+    "reason": {"type": "string"},
+    "dry_run": {"type": "boolean"},
+    "workflow_status": {"type": "string", "enum": ["DRY_RUN", "QUEUED", "RUNNING", "PASS", "WARN", "BLOCK"]},
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_name": {"type": "string"},
+          "status": {"type": "string", "enum": ["PENDING", "RUNNING", "PASS", "WARN", "BLOCK", "SKIPPED"]},
+          "description": {"type": "string"},
+          "estimated_impact": {"type": "string"}
+        }
+      }
+    },
+    "blocking_reasons": {"type": "array", "items": {"type": "string"}},
+    "warning_reasons": {"type": "array", "items": {"type": "string"}},
+    "created_at": {"type": "string", "format": "date-time"},
+    "completed_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}
