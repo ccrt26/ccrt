@@ -2,7 +2,7 @@
   "stock_code": "600114",
   "stock_name": "",
   "trade_date": "20260616",
-  "run_id": "RS-20260616-600114-55a70d",
+  "run_id": "RS-20260616-600114-882b04",
   "run_status": "PASS",
   "data_status": "FRESH",
   "decision_status": "AVAILABLE",
@@ -12,5 +12,5 @@
   "blocking_reasons": [],
   "warning_reasons": [],
   "last_success_at": "",
-  "updated_at": "2026-06-16T09:45:54.250126+00:00"
+  "updated_at": "2026-06-16T09:57:11.303184+00:00"
 }

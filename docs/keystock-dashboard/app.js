@@ -57,6 +57,12 @@ function renderDashboard() {
   const warnings = d.warnings || [];
   if (warnings.length > 0) warnHtml = `<div class="card warn"><p>⚠ ${warnings.join('; ')}</p></div>`;
 
+  // Date divergence warning
+  const ddw = dec.date_divergence_warning || cd.date_divergence_warning || '';
+  if (ddw) {
+    warnHtml += `<div class="card dim"><p>⚠ 数据日期差异: ${ddw}。本页仅作观察，不生成强动作。</p></div>`;
+  }
+
   const missingFlags = d.missing_data_flags || [];
   let missHtml = '';
   if (missingFlags.length > 0) missHtml = `<div class="card dim"><p>缺失数据: ${missingFlags.join(', ')}</p></div>`;

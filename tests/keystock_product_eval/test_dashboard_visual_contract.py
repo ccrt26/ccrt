@@ -34,13 +34,19 @@ class TestDashboardVisualContract(unittest.TestCase):
         self.assertNotIn("CDN", html, "不应引用外部 CDN")
         self.assertNotIn("https://", html, "不应联网")
 
-    def test_no_topbar_nav_only(self):
-        """不应只有顶部导航（应使用侧边导航）。"""
+    def test_has_sidebar_nav(self):
+        """必须有侧边导航。"""
         html = open(self.html_path, encoding="utf-8").read()
-        top_nav = bool(re.search(r'header.*nav.*a.*data-view', html, re.DOTALL))
         sidebar_nav = bool(re.search(r'sidebar.*a.*data-view', html, re.DOTALL))
-        if not sidebar_nav:
-            self.fail("页面缺少侧边导航")
+        self.assertTrue(sidebar_nav, "页面必须使用侧边导航")
+
+    def test_checker_not_unconditional_pass(self):
+        """checker 不得无条件返回 visual_contract_status: PASS。"""
+        checker_path = "scripts/check_keystock_dashboard_productization.py"
+        if os.path.exists(checker_path):
+            src = open(checker_path, encoding="utf-8").read()
+            self.assertNotIn('"visual_contract_status": "PASS"', src,
+                             "visual_contract_status 不得写死 PASS")
 
     def test_css_no_placeholder(self):
         """CSS 不应包含占位符样式。"""

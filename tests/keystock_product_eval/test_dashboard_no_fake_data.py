@@ -49,6 +49,20 @@ class TestDashboardNoFakeData(unittest.TestCase):
             self.assertFalse(pos.get("has_position", True), "持仓应显示未接入")
             self.assertIsNone(pos.get("cost_price"), "cost_price 应显示不可用")
 
+    def test_primary_action_degraded(self):
+        """数据缺失/规则WARN/持仓缺失时 primary_action=observe, confidence<=0.3。"""
+        path = os.path.join(self.data_dir, "today_decisions.json")
+        if os.path.exists(path):
+            dec = json.load(open(path, encoding="utf-8"))
+            action = dec.get("primary_action", "")
+            self.assertEqual(action, "observe",
+                             f"当前条件下降级动作应为 observe，实际 {action}")
+            self.assertLessEqual(dec.get("confidence", 1.0), 0.3,
+                                 "confidence 应 <= 0.3")
+            blockers = dec.get("decision_blockers", [])
+            self.assertIn("POSITION_UNAVAILABLE", blockers,
+                          "decision_blockers 应包含 POSITION_UNAVAILABLE")
+
     def test_chart_data_has_real_ohlc(self):
         """chart_data.json 必须包含真实 K 线数据 (>20 行)。"""
         path = os.path.join(self.data_dir, "chart_data.json")

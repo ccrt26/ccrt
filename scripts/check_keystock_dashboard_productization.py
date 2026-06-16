@@ -84,7 +84,7 @@ def check_dashboard_productization(docs_dir: str, data_dir: str) -> dict:
         has_app_shell = "view-dashboard" in html and "view-stocks" in html
         has_five_views = all(f"view-{v}" in html for v in ["dashboard", "stocks", "deep", "daily", "rules"])
 
-        if not has_app_shell or not has_five_views:
+        if not has_sidebar or not has_app_shell or not has_five_views:
             findings.append({
                 "check": "ui_structure",
                 "path": html_path,
@@ -164,13 +164,17 @@ def check_dashboard_productization(docs_dir: str, data_dir: str) -> dict:
     warns = [f for f in findings if f.get("status") == "WARN"]
     overall = "PASS" if not blocks else "BLOCK"
 
+    # 计算 visual_contract_status
+    ui_findings = [f for f in findings if f["check"] == "ui_structure"]
+    visual_contract_status = "PASS" if not ui_findings else "BLOCK"
+
     return {
         "overall": overall,
         "findings": findings,
         "checked_files": checked_files,
         "fake_data_hits": fake_data_hits,
         "hardcoded_decision_hits": hardcoded_decision_hits,
-        "visual_contract_status": "PASS",
+        "visual_contract_status": visual_contract_status,
         "data_truth_status": "PASS" if not fake_data_hits else "BLOCK",
         "recommended_user_visible_status": "COMPLETE" if overall == "PASS" else "BLOCK",
     }

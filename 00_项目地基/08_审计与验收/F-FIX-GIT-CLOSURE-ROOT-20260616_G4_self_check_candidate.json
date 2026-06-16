@@ -3,13 +3,20 @@
   "gate": "G4",
   "artifact_type": "self_check_candidate",
   "result": "PASS",
-  "generated_at": "2026-06-16T09:51:00.710166+00:00",
-  "tests_passed": true,
-  "tests_count": 55,
-  "launchd_verify_result": "LOADED",
-  "hygiene_expected_block": true,
-  "no_git_add_A_confirmed": true,
-  "no_reset_clean_force_push": true,
-  "payload_snapshot_total": 28,
-  "payload_scan_pass": true
+  "generated_at": "2026-06-16T09:58:23.229245+00:00",
+  "is_candidate": true,
+  "does_not_claim_G5_or_G6": true,
+  "evidence": {
+    "g0_payload_count": 26,
+    "payload_scan_pass": true,
+    "tests_all": 55,
+    "tests_pass": 55,
+    "no_git_add_A": true,
+    "no_reset_clean_force_push": true,
+    "git_autosweep_report_only_pass": true,
+    "github_sync_self_test_pass": true,
+    "orchestrator_self_test_pass": true,
+    "launchd_repair_executed": true,
+    "launchd_verify_status": "LOADED"
+  }
 }

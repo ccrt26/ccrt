@@ -132,7 +132,7 @@ class ProductApiBundleService:
         }
 
     # ------------------------------------------------------------------
-    # _build_stocks — 仅 600114
+    # _build_stocks — 仅 600114, change_pct 来自 kline pct_chg 或前一日 close
     # ------------------------------------------------------------------
 
     def _build_stocks(self, snap: Optional[dict], bt: Optional[dict]) -> dict:
@@ -140,30 +140,67 @@ class ProductApiBundleService:
         if snap:
             tech = snap.get("feature_values", {}).get("technical", {})
 
-        change_pct = None
-        if snap:
-            close = tech.get("close")
-            prev = snap.get("feature_values", {}).get("technical", {}).get("ma5")
-            if close and prev:
-                change_pct = round((close - prev) / prev * 100, 2)
+        actual_date = tech.get("actual_trade_date", "")
+        # 从 kline_cache 读取真实 change_pct
+        change_pct = self._get_change_pct_from_kline(actual_date)
+        missing_fields = []
+
+        if change_pct is None:
+            missing_fields.append("change_pct")
 
         stock = {
             "stock_code": self.primary_code,
             "stock_name": self.primary_name,
             "close": tech.get("close"),
             "change_pct": change_pct,
-            "actual_trade_date": tech.get("actual_trade_date"),
+            "close_vs_ma5_pct": self._calc_vs_ma5(tech),
+            "actual_trade_date": actual_date,
             "data_freshness_status": (snap or {}).get("freshness_status", {}).get("overall", "UNKNOWN"),
             "run_status": "PASS" if snap else "WARN",
             "user_visible_status": "COMPLETE" if snap else "BLOCK",
             "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
-            "source_field_refs": ["feature_values.technical.close", "feature_values.technical.ma5"],
-            "missing_fields": [],
+            "source_field_refs": ["feature_values.technical.close", "kline_cache.pct_chg"],
+            "missing_fields": missing_fields,
         }
         return {"generated_at": datetime.now(timezone.utc).isoformat(), "stocks": [stock]}
 
+    def _get_change_pct_from_kline(self, actual_date: str) -> Optional[float]:
+        """从 kline_cache 获取真实涨跌幅（pct_chg 或前一日 close 计算）。"""
+        kline = self._load_kline_cache()
+        for i, r in enumerate(kline):
+            nd = r.get("_date_norm", "")
+            if nd == actual_date:
+                pct = r.get("pct_chg")
+                if pct is not None:
+                    return round(float(pct), 2)
+                prev_close = r.get("pre_close")
+                close_val = r.get("close")
+                if prev_close and close_val and float(prev_close) > 0:
+                    return round((float(close_val) - float(prev_close)) / float(prev_close) * 100, 2)
+                break
+        # 尝试前一日 close
+        if len(kline) >= 2:
+            c2 = kline[-1].get("close")
+            c1 = kline[-2].get("close")
+            if c1 and c2 and float(c1) > 0:
+                return round((float(c2) - float(c1)) / float(c1) * 100, 2)
+        return None
+
+    def _calc_vs_ma5(self, tech: dict) -> Optional[float]:
+        c = tech.get("close")
+        m5 = tech.get("ma5")
+        if c and m5:
+            return round((c - m5) / m5 * 100, 2)
+        return None
+
+    def _load_kline_cache(self) -> list:
+        try:
+            return ds.get_kline_until(self.primary_code, "20260616")
+        except Exception:
+            return []
+
     # ------------------------------------------------------------------
-    # _build_today_decisions — 不硬编码结论
+    # _build_today_decisions — 不硬编码结论，遵守降级规则
     # ------------------------------------------------------------------
 
     def _build_today_decisions(self, snap: Optional[dict], bt: Optional[dict], dash: Optional[dict]) -> dict:
@@ -175,11 +212,29 @@ class ProductApiBundleService:
         if bt:
             rule_status = bt.get("overall_status", "OBSERVE")
 
+        freshness = (snap or {}).get("freshness_status", {}).get("overall", "UNKNOWN")
+
         close = tech.get("close")
         ma20 = tech.get("ma20")
         ma5 = tech.get("ma5")
 
-        # 决策生成规则（非硬编码）
+        # 计算 date_divergence
+        chart = self._build_chart_data()
+        date_divergence = chart.get("data_date_divergence", False)
+
+        # 降级条件
+        decision_blockers = []
+        if freshness != "FRESH":
+            decision_blockers.append("DATA_STALE")
+        if date_divergence:
+            decision_blockers.append("DATA_DATE_DIVERGENCE")
+        if rule_status in ("WARN", "DEGRADED", "BLOCKED"):
+            decision_blockers.append("RULE_HEALTH_WARN")
+        decision_blockers.append("POSITION_UNAVAILABLE")
+
+        needs_downgrade = len(decision_blockers) > 0
+
+        # 基础动作
         if close is None or ma20 is None:
             primary_action = "observe"
             confidence = 0.0
@@ -197,8 +252,11 @@ class ProductApiBundleService:
             confidence = 0.6
             reasoning = f"收盘价({close})在MA5({ma5})和MA20({ma20})上方，趋势偏强"
 
-        if rule_status == "WARN" and confidence > 0.3:
-            confidence = round(confidence * 0.6, 2)
+        # 降级
+        if needs_downgrade:
+            primary_action = "observe"
+            confidence = min(confidence, 0.3)
+            reasoning += f"（降级原因: {', '.join(decision_blockers)}。仅作观察，不生成强动作。）"
 
         return {
             "stock_code": self.primary_code,
@@ -224,6 +282,8 @@ class ProductApiBundleService:
             "primary_action": primary_action,
             "confidence": confidence,
             "reasoning": reasoning,
+            "decision_blockers": decision_blockers,
+            "date_divergence_warning": chart.get("date_divergence_warning", "") if date_divergence else "",
             "data_sources": {
                 "feature_snapshot": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
                 "rule_health": "运行产物/重点股票产品化后评估/product_api/rule_health_summary.json",

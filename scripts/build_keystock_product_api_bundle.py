@@ -53,7 +53,10 @@ def main():
         args.docs_data_dir,
     )
 
-    has_block = any(f.get("severity") == "BLOCK" for f in checker_result.get("findings", []))
+    has_block = (
+        checker_result.get("overall", "ERROR") != "PASS"
+        or any(f.get("status") == "BLOCK" for f in checker_result.get("findings", []))
+    )
 
     if args.evidence_out:
         ev = {

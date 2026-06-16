@@ -2,7 +2,7 @@
   "stock_code": "600114",
   "stock_name": "东睦股份",
   "trade_date": "20260615",
-  "generated_at": "2026-06-16T09:45:54.250844+00:00",
+  "generated_at": "2026-06-16T09:57:11.305480+00:00",
   "user_position": {
     "has_position": false,
     "position_source": "UNAVAILABLE",
@@ -19,9 +19,16 @@
     "ma60": 33.61133333333333,
     "rsi14": 58.844045839561524
   },
-  "primary_action": "hold",
-  "confidence": 0.36,
-  "reasoning": "收盘价(42.22)在MA5(39.858)和MA20(38.681500000000014)上方，趋势偏强",
+  "primary_action": "observe",
+  "confidence": 0.3,
+  "reasoning": "收盘价(42.22)在MA5(39.858)和MA20(38.681500000000014)上方，趋势偏强（降级原因: DATA_STALE, DATA_DATE_DIVERGENCE, RULE_HEALTH_WARN, POSITION_UNAVAILABLE。仅作观察，不生成强动作。）",
+  "decision_blockers": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "date_divergence_warning": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)",
   "data_sources": {
     "feature_snapshot": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
     "rule_health": "运行产物/重点股票产品化后评估/product_api/rule_health_summary.json"

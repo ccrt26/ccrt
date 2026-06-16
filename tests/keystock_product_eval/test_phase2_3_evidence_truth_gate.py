@@ -43,13 +43,21 @@ class TestPhase23EvidenceTruthGate(unittest.TestCase):
 
     def test_g6_block_if_block_status(self):
         """G6 archive 若 block_status=true 则 archive_status 应为 BLOCK。"""
-        for pattern in ["phase2_3_productization_g6_archive.json",
-                        "phase2_3_productization_repair_g6_archive.json"]:
-            path = os.path.join(self.ev_dir, pattern)
-            if os.path.exists(path):
-                data = json.load(open(path, encoding="utf-8"))
+        for fname in os.listdir(self.ev_dir):
+            if "g6_archive" in fname and fname.startswith("phase2_3"):
+                data = json.load(open(os.path.join(self.ev_dir, fname), encoding="utf-8"))
                 if data.get("block_status") and data.get("archive_status") == "COMPLETE":
-                    self.fail(f"{pattern}: block_status=true 但 archive_status=COMPLETE")
+                    self.fail(f"{fname}: block_status=true 但 archive_status=COMPLETE")
+
+    def test_g6_checker_not_pass_cannot_complete(self):
+        """checker overall != PASS 时 archive 不能 COMPLETE。"""
+        for fname in os.listdir(self.ev_dir):
+            if "g6_archive" in fname and fname.startswith("phase2_3"):
+                data = json.load(open(os.path.join(self.ev_dir, fname), encoding="utf-8"))
+                checker = data.get("checker_overall", data.get("checker_result", {}).get("overall", ""))
+                if data.get("archive_status") == "COMPLETE":
+                    if checker not in ("PASS", ""):
+                        self.fail(f"{fname}: checker_overall={checker} 但 archive_status=COMPLETE")
 
     def test_g4_evidence_has_fake_data_hits(self):
         """G4 证据应包含 fake_data_hits 检查结果。"""
