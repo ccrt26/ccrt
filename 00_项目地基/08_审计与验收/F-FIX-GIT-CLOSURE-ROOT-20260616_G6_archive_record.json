@@ -3,14 +3,13 @@
   "stage": "G6_archive_record",
   "artifact_type": "archive_record",
   "result": "CLOSED",
-  "generated_at": "2026-06-16T09:59:16.843884+00:00",
+  "generated_at": "2026-06-16T10:04:01.940411+00:00",
   "release_policy": "archive_and_github_sync",
   "commit_a": {
-    "sha": "36f6004b074db4caaf5031bbb57fecf5a8a75e5c",
+    "sha": "0473d53b08b34371ba7b3edba209734ad9713570",
     "pushed": true,
     "push_target": "origin/codex/phase1-backend-mvp-g6-20260616",
-    "payload_count": 26,
-    "files_staged": 28
+    "payload_count": 22
   },
   "verification_at_commit_a": {
     "git_status_empty": true,
@@ -23,6 +22,6 @@
   },
   "commit_b": {
     "status": "pending",
-    "note": "This archive record IS Commit B. After this push, write post_g6_runtime_evidence to /private/tmp."
+    "note": "This record IS Commit B. Written after Commit A push."
   }
 }
