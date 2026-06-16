@@ -3,57 +3,26 @@
   "stage": "G6_archive_record",
   "artifact_type": "archive_record",
   "result": "CLOSED",
-  "generated_at": "2026-06-16T09:52:11.981479+00:00",
+  "generated_at": "2026-06-16T09:59:16.843884+00:00",
   "release_policy": "archive_and_github_sync",
-  "commit_a_sha": "00f2131205f5e6fef05f8d7e6497f82bc90d850a",
-  "commit_a_push_target": "origin/codex/phase1-backend-mvp-g6-20260616",
-  "commit_b_sha": "00f2131205f5e6fef05f8d7e6497f82bc90d850a",
-  "payload": {
-    "total_entries_in_snapshot": 28,
-    "modified": [
-      "docs/keystock-dashboard/app.css",
-      "docs/keystock-dashboard/app.js",
-      "docs/keystock-dashboard/data/dashboard.json",
-      "docs/keystock-dashboard/data/evidence_index.json",
-      "docs/keystock-dashboard/data/rule_health.json",
-      "docs/keystock-dashboard/data/run_state.json",
-      "docs/keystock-dashboard/data/stocks.json",
-      "docs/keystock-dashboard/index.html",
-      "tests/keystock_product_eval/test_product_api_bundle.py",
-      "运行产物/重点股票产品化后评估/product_api/dashboard.json",
-      "运行产物/重点股票产品化后评估/product_api/evidence_index.json",
-      "运行产物/重点股票产品化后评估/product_api/rule_health_summary.json",
-      "运行产物/重点股票产品化后评估/product_api/run_state.json",
-      "运行产物/重点股票产品化后评估/product_api/stocks.json"
-    ],
-    "deleted": [
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_g4_self_check_candidate.json",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_g5_review_candidate.json",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_g6_archive.json"
-    ],
-    "untracked": [
-      "docs/keystock-dashboard/data/chart_data.json",
-      "docs/keystock-dashboard/data/today_decisions.json",
-      "tests/keystock_product_eval/test_dashboard_no_fake_data.py",
-      "tests/keystock_product_eval/test_dashboard_visual_contract.py",
-      "tests/keystock_product_eval/test_phase2_3_evidence_truth_gate.py",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_repair_block_audit.json",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_repair_g4_self_check_candidate.json",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_repair_g5_review_candidate.json",
-      "运行产物/重点股票产品化后评估/evidence/phase2_3_productization_repair_g6_archive.json",
-      "运行产物/重点股票产品化后评估/product_api/chart_data.json",
-      "运行产物/重点股票产品化后评估/product_api/today_decisions.json"
-    ]
+  "commit_a": {
+    "sha": "36f6004b074db4caaf5031bbb57fecf5a8a75e5c",
+    "pushed": true,
+    "push_target": "origin/codex/phase1-backend-mvp-g6-20260616",
+    "payload_count": 26,
+    "files_staged": 28
   },
-  "verification": {
-    "git_status_short_empty": true,
-    "ahead_behind": "0\t0",
-    "ahead_behind_zero": true,
+  "verification_at_commit_a": {
+    "git_status_empty": true,
+    "ahead_behind": [
+      "0",
+      "0"
+    ],
     "hygiene_pass": true,
-    "launchd_status": "LOADED",
-    "archive_completed": true,
-    "github_sync_completed": true,
-    "push_completed": true,
-    "final_hygiene_pass": true
+    "launchd_loaded": true
+  },
+  "commit_b": {
+    "status": "pending",
+    "note": "This archive record IS Commit B. After this push, write post_g6_runtime_evidence to /private/tmp."
   }
 }
