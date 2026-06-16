@@ -1,22 +1,22 @@
 {
   "phase": "Phase 1 backend MVP",
   "stage": "G5 review candidate",
-  "generated_at": "2026-06-16T07:33:06.113817+00:00",
+  "generated_at": "2026-06-16T08:08:36.495734+00:00",
   "overall": "PASS_WITH_ALLOWED_WARN",
   "findings": [
     {
       "gate": "full_jsonschema_validation",
       "status": "WARN",
-      "detail": "jsonschema not installed",
+      "detail": "jsonschema not installed; key schema validation passed",
       "severity": "WARN"
     }
   ],
   "blocks": [],
   "regression_surfaces": [
     "ledger duplicate write or status overwrite",
-    "fixture pollution",
-    "FeatureSnapshot future function/label leakage",
-    "dashboard/alert schema drift",
+    "fixture pollution into formal ledger",
+    "FeatureSnapshot future function or label leakage",
+    "dashboard_status / alert_center schema drift",
     "MA20 WARN misread as rule release"
   ],
   "not_formal_jiuying_signature": true,

@@ -1,11 +1,11 @@
 {
   "phase": "Phase 1 backend MVP",
   "stage": "G6 archive",
-  "generated_at": "2026-06-16T07:33:06.113817+00:00",
+  "generated_at": "2026-06-16T08:08:36.495736+00:00",
   "archive_status": "COMPLETE",
   "basis": {
-    "g4": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g4_recheck_evidence.json",
-    "g5": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json",
+    "g4_evidence": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g4_recheck_evidence.json",
+    "g5_evidence": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json",
     "gate_summary": [
       {
         "gate": "gate_results_initialized",
@@ -16,7 +16,7 @@
       {
         "gate": "forbidden_scope_current_diff",
         "status": "PASS",
-        "detail": "no forbidden diff",
+        "detail": "no forbidden current diff",
         "severity": "BLOCK"
       },
       {
@@ -28,13 +28,13 @@
       {
         "gate": "key_schema_validation",
         "status": "PASS",
-        "detail": "constraints checked",
+        "detail": "all constraints checked",
         "severity": "BLOCK"
       },
       {
         "gate": "full_jsonschema_validation",
         "status": "WARN",
-        "detail": "jsonschema not installed",
+        "detail": "jsonschema not installed; key schema validation passed",
         "severity": "WARN"
       },
       {
@@ -46,19 +46,19 @@
       {
         "gate": "pytest",
         "status": "PASS",
-        "detail": "  warnings.warn(",
+        "detail": "66 passed in 0.19s",
         "severity": "BLOCK"
       },
       {
         "gate": "ledger_idempotency",
         "status": "PASS",
-        "detail": "cmp zero",
+        "detail": "second build unchanged",
         "severity": "BLOCK"
       },
       {
         "gate": "feature_snapshot_no_future_function",
         "status": "PASS",
-        "detail": "PASS",
+        "detail": "PASS; labels not in feature_values",
         "severity": "BLOCK"
       },
       {
@@ -70,7 +70,7 @@
       {
         "gate": "status_alert_machine_readable",
         "status": "PASS",
-        "detail": "machine readable",
+        "detail": "dashboard+alerts machine readable",
         "severity": "BLOCK"
       },
       {
@@ -91,7 +91,7 @@
     {
       "gate": "full_jsonschema_validation",
       "status": "WARN",
-      "detail": "jsonschema not installed",
+      "detail": "jsonschema not installed; key schema validation passed",
       "severity": "WARN"
     }
   ],

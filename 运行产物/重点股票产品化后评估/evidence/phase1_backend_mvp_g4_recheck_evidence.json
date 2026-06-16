@@ -1,7 +1,7 @@
 {
   "phase": "Phase 1 backend MVP",
   "stage": "G4 self-check candidate",
-  "generated_at": "2026-06-16T07:33:06.113817+00:00",
+  "generated_at": "2026-06-16T08:08:36.495572+00:00",
   "overall": "PASS_WITH_ALLOWED_WARN",
   "gate_results": [
     {
@@ -13,7 +13,7 @@
     {
       "gate": "forbidden_scope_current_diff",
       "status": "PASS",
-      "detail": "no forbidden diff",
+      "detail": "no forbidden current diff",
       "severity": "BLOCK"
     },
     {
@@ -25,13 +25,13 @@
     {
       "gate": "key_schema_validation",
       "status": "PASS",
-      "detail": "constraints checked",
+      "detail": "all constraints checked",
       "severity": "BLOCK"
     },
     {
       "gate": "full_jsonschema_validation",
       "status": "WARN",
-      "detail": "jsonschema not installed",
+      "detail": "jsonschema not installed; key schema validation passed",
       "severity": "WARN"
     },
     {
@@ -43,19 +43,19 @@
     {
       "gate": "pytest",
       "status": "PASS",
-      "detail": "  warnings.warn(",
+      "detail": "66 passed in 0.19s",
       "severity": "BLOCK"
     },
     {
       "gate": "ledger_idempotency",
       "status": "PASS",
-      "detail": "cmp zero",
+      "detail": "second build unchanged",
       "severity": "BLOCK"
     },
     {
       "gate": "feature_snapshot_no_future_function",
       "status": "PASS",
-      "detail": "PASS",
+      "detail": "PASS; labels not in feature_values",
       "severity": "BLOCK"
     },
     {
@@ -67,7 +67,7 @@
     {
       "gate": "status_alert_machine_readable",
       "status": "PASS",
-      "detail": "machine readable",
+      "detail": "dashboard+alerts machine readable",
       "severity": "BLOCK"
     },
     {
@@ -81,7 +81,7 @@
     {
       "gate": "full_jsonschema_validation",
       "status": "WARN",
-      "detail": "jsonschema not installed",
+      "detail": "jsonschema not installed; key schema validation passed",
       "severity": "WARN"
     }
   ],
