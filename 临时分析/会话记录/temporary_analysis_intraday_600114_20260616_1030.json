@@ -1,0 +1,102 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T10:30:00+08:00",
+  "intraday_state": "grinding_higher",
+  "action_bias": "WATCH",
+  "conclusion_strength": "倾向判断",
+
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "present",
+    "user_position_context": "present"
+  },
+
+  "intraday_summary": {
+    "open": "41.94",
+    "low": "41.88",
+    "high": "42.60",
+    "current": "42.55",
+    "change_vs_yesterday": "+0.78%",
+    "volume_1h": "11.1 万手",
+    "yesterday_full_day": "46.6 万手",
+    "pace_projection": "全天约 30-35 万手（缩量）"
+  },
+
+  "intraday_state_rationale": "低开 41.94 后缓慢爬升，前 50 分钟在 42.08-42.28 极窄区间横盘。10:25 出现一次放量（7,445 股）拉到 42.56。当前在 42.55 接近前高 42.60。但整体量能较昨天大幅萎缩，不是标准的放量突破形态。",
+
+  "market_context": {
+    "shanghai": "4093 -0.07%",
+    "chuanbei": "4080 +1.16%",
+    "eston": "33.87 +1.93%",
+    "interpretation": "大盘横盘，创业板仍强，机器人板块温和反弹，为东睦提供 beta 支撑但非强驱动"
+  },
+
+  "key_levels": {
+    "confirm_above": "42.88",
+    "invalidate_below": "41.88（今低）",
+    "intraday_reference": "42.00",
+    "position_1": "42.60（今高，微压力）",
+    "position_2": "42.88（前高，关键突破位）",
+    "support_1": "42.08-42.28（上午横盘区）",
+    "support_2": "41.88（今低）"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "放量突破 42.88（量>5,000股/分且站稳 15 分钟）",
+      "action": "可追 200 股",
+      "price_range": "42.88-43.00",
+      "position_boundary": "200 股，止损 41.50",
+      "time_window": "今日剩余时间"
+    },
+    {
+      "condition": "在 42.0-42.6 缩量震荡至收盘",
+      "action": "不动，等 FOMC",
+      "price_range": "42.0-42.6",
+      "position_boundary": "空仓等待",
+      "time_window": "今日"
+    },
+    {
+      "condition": "跌破 41.88（今低）且放量",
+      "action": "放弃任何买入想法",
+      "price_range": "41.88 以下",
+      "position_boundary": "空仓等待",
+      "time_window": "今日"
+    }
+  ],
+
+  "breakout_assessment": {
+    "is_breaking_out": false,
+    "reason": "价格接近 42.60 但不等于突破。10:25 那根 7,445 的放量仅是 5 分钟级别的脉冲，不是大级别突破放量。前 50 分钟横盘区（42.08-42.28）的平均量只有 500-1,500 股/分，7,445 相对它确实大，但绝对量不足以突破 42.88。",
+    "needs_to_see": "需要连续 3-5 分钟量 >5,000 股+价格站稳 42.60 以上+突破 42.88。三个条件全部满足才算真突破。",
+    "most_likely": "上午剩余时间在 42.2-42.6 之间震荡，等下午或明天 FOMC 后才有方向"
+  },
+
+  "position_advice": {
+    "current_status": "空仓",
+    "today_focus": "今天不像要突破——缩量、横盘、等 FOMC。42.60 只是接近前高，不是真突破。等 42.88 放量站上再追，或者回踩 41 以下再买。现在这个位置不上不下，不适合动手。"
+  },
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS",
+    "main_challenge": "对突破的判定有明确量化条件（量>5,000+站上 42.88+15 分钟），不是感觉判断。当前状态判断为 grinding_higher 而非 breakout 是合适的——量没跟上。"
+  },
+
+  "eval_hook": [
+    { "check": "上午能否站上 42.60", "time": "11:30" },
+    { "check": "全天量能是否超过 35 万手", "time": "15:00" },
+    { "check": "收盘是否站稳 42.00 以上", "time": "15:00" }
+  ],
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

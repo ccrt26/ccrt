@@ -10,6 +10,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TZ_SHANGHAI = timezone(timedelta(hours=8))
 
+def production_python():
+    venv_python = ROOT / ".venv" / "bin" / "python"
+    if venv_python.exists():
+        return str(venv_python)
+    return sys.executable
+
 def today_shanghai():
     return datetime.now(TZ_SHANGHAI).strftime("%Y%m%d")
 
@@ -29,7 +35,7 @@ def main():
     args = ap.parse_args()
 
     date_str = args.date or today_shanghai()
-    cmd = [sys.executable, str(ROOT / "scripts" / "run_daily_production_pipeline.py"), "--date", date_str]
+    cmd = [production_python(), str(ROOT / "scripts" / "run_daily_production_pipeline.py"), "--date", date_str]
     payload = {"date": date_str, "trading_day": is_trading_day(date_str), "command": cmd, "cwd": str(ROOT)}
 
     if args.dry_run:

@@ -7,6 +7,7 @@ It does not sign for roles, write dispatch files, archive, tag, merge, or push.
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -98,6 +99,7 @@ def classify_issue(registry, issue):
 
 
 ISSUE_PRIORITY = [
+    "codex_implementation_detected",
     "role_substitution",
     "actual_actor_role_mismatch",
     "missing_actual_actor",
@@ -108,6 +110,7 @@ ISSUE_PRIORITY = [
     "missing_hmac",
     "BLOCK_in_G5_review",
     "BLOCK",
+    "missing_implementation_evidence",
     "missing_evidence",
     "registry_rule_conflict",
 ]
@@ -118,6 +121,73 @@ def choose_primary_issue(issues):
         if issue in issues:
             return issue
     return issues[0] if issues else "missing_evidence"
+
+
+def _is_codex_actor(actor_str):
+    """Check if an actor string contains 'codex' (case-insensitive).
+
+    Catches exact 'codex', 'Codex', 'CODEX', and variants like
+    'codex_app', 'codex-agent', 'CodexAgent', etc.
+    """
+    return "codex" in (actor_str or "").lower()
+
+
+def validate_role_boundary(evidence):
+    """Validate G3/G4 implementation actor role boundary.
+
+    Checks that the G3 implementation was performed by an authorized actor
+    (deepseek_live / Claude Code live), not by the Codex planning layer.
+    Returns a list of issue strings (empty = PASS).
+    """
+    issues = []
+
+    gate = evidence.get("gate", "")
+    if gate not in ("G3", "G4"):
+        return issues
+
+    # Check codex_write_detected flag
+    if evidence.get("codex_write_detected") is True:
+        issues.append("codex_implementation_detected")
+
+    # Check implementation_actor field (case-insensitive, catches variants)
+    impl_actor = evidence.get("implementation_actor", "")
+    if _is_codex_actor(impl_actor) and "codex_implementation_detected" not in issues:
+        issues.append("codex_implementation_detected")
+
+    # Check actual_actor field (top-level, not signoff)
+    actual_actor = evidence.get("actual_actor", "")
+    if _is_codex_actor(actual_actor) and "codex_implementation_detected" not in issues:
+        issues.append("codex_implementation_detected")
+
+    # Override: G3_IMPL_ALLOWED_BY_USER env var suppresses codex_implementation_detected.
+    # Only the process environment variable is trusted, NOT a self-filled evidence field.
+    if os.environ.get("G3_IMPL_ALLOWED_BY_USER", "").lower() == "true":
+        if "codex_implementation_detected" in issues:
+            issues.remove("codex_implementation_detected")
+
+    # Check required implementation evidence fields
+    # actual_actor must be present and non-empty
+    if not actual_actor:
+        issues.append("missing_implementation_evidence")
+    # implementation_actor must be present and non-empty
+    if not impl_actor:
+        issues.append("missing_implementation_evidence")
+    # changed_files must be present and be a list
+    changed = evidence.get("changed_files")
+    if changed is None or not isinstance(changed, list):
+        issues.append("missing_implementation_evidence")
+    # changed_files must not be empty
+    if isinstance(changed, list) and len(changed) == 0:
+        issues.append("missing_implementation_evidence")
+    # tool_calls must be present and non-empty
+    tool_calls = evidence.get("tool_calls")
+    if not tool_calls or not isinstance(tool_calls, list) or len(tool_calls) == 0:
+        issues.append("missing_implementation_evidence")
+    # live_model_call must be true for G3/G4 implementation evidence
+    if evidence.get("live_model_call") is not True:
+        issues.append("missing_implementation_evidence")
+
+    return issues
 
 
 def normalize_evidence(data):
@@ -165,6 +235,10 @@ def detect_issues(rule, evidence):
         issues.append("production_action_without_user_confirmation")
     if "scope_expansion" in evidence.get("issues", []):
         issues.append("scope_expansion")
+
+    # G3/G4 implementation role boundary check
+    role_boundary_issues = validate_role_boundary(evidence)
+    issues.extend(role_boundary_issues)
 
     deduped = []
     for issue in issues:
@@ -343,14 +417,17 @@ def run_self_test():
 
     cases = [
         (
-            "G4 candidate advances",
+            "G4 candidate with empty evidence is repair",
             {
                 "task_id": "SELFTEST-G4",
                 "gate": "G4",
                 "artifact_type": "candidate",
                 "result": "PASS",
+                "actual_actor": "deepseek_live",
+                "implementation_actor": "deepseek_live",
+                "changed_files": [],
             },
-            RESULT_ADVANCE_READY,
+            RESULT_REPAIR_DISPATCH_REQUIRED,
         ),
         (
             "G4 candidate claiming formal is repaired",
@@ -408,13 +485,98 @@ def run_self_test():
             },
             RESULT_REPAIR_DISPATCH_REQUIRED,
         ),
+        (
+            "G4 codex implementation detected is repair",
+            {
+                "task_id": "SELFTEST-G4-CODEX",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex",
+                "actual_actor": "deepseek_live",
+                "changed_files": [],
+            },
+            RESULT_REPAIR_DISPATCH_REQUIRED,
+        ),
+        (
+            "G4 codex_write_detected true is repair",
+            {
+                "task_id": "SELFTEST-G4-CODEX-WRITE",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "codex_write_detected": True,
+                "actual_actor": "deepseek_live",
+                "changed_files": [],
+            },
+            RESULT_REPAIR_DISPATCH_REQUIRED,
+        ),
+        (
+            "G4 missing implementation evidence is repair",
+            {
+                "task_id": "SELFTEST-G4-MISSING-EVIDENCE",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+            },
+            RESULT_REPAIR_DISPATCH_REQUIRED,
+        ),
+        (
+            "G4 deepseek live advances",
+            {
+                "task_id": "SELFTEST-G4-DEEPSEEK-OK",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "actual_actor": "deepseek_live",
+                "implementation_actor": "deepseek_live",
+                "execution_model": "deepseek-via-claude-code",
+                "live_model_call": True,
+                "changed_files": ["test.py"],
+                "tool_calls": [
+                    {"name": "Read", "count": 3},
+                    {"name": "Edit", "count": 1},
+                ],
+            },
+            RESULT_ADVANCE_READY,
+        ),
+        (
+            "G4 codex with self-filled g3_impl_allowed_by_user (no env var) is repair",
+            {
+                "task_id": "SELFTEST-G4-CODEX-NOENV",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex",
+                "actual_actor": "codex",
+                "g3_impl_allowed_by_user": True,
+                "changed_files": ["test.py"],
+                "tool_calls": [{"name": "Read", "count": 2}],
+                "live_model_call": True,
+            },
+            RESULT_REPAIR_DISPATCH_REQUIRED,
+        ),
     ]
+
+    expected_dispatch_actions = {
+        "G4 codex implementation detected is repair": "invalidate_implementation_and_request_deepseek_rerun",
+        "G4 codex_write_detected true is repair": "invalidate_implementation_and_request_deepseek_rerun",
+        "G4 missing implementation evidence is repair": "create_evidence_completion_dispatch",
+    }
 
     failures = []
     for name, evidence, expected in cases:
         actual = evaluate(registry, evidence)
         if actual["status"] != expected:
             failures.append({"case": name, "expected": expected, "actual": actual})
+        if name in expected_dispatch_actions:
+            expected_action = expected_dispatch_actions[name]
+            if actual.get("dispatch_action") != expected_action:
+                failures.append({
+                    "case": f"{name} (dispatch_action)",
+                    "expected": expected_action,
+                    "actual": actual.get("dispatch_action"),
+                })
         if name == "G5 wrong role is security repair even when hmac is missing":
             expected_action = "invalidate_artifact_and_request_correct_role_resign"
             if actual.get("dispatch_action") != expected_action:

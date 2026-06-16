@@ -25,6 +25,7 @@ from pathlib import Path
 PLIST_DIR = Path.home() / "Library" / "LaunchAgents"
 LABEL_PREFIX = "com.tielv."
 PROJECT_ROOT = Path("/Users/ccrt/ccrt")
+PROJECT_PYTHON = str(PROJECT_ROOT / ".venv" / "bin" / "python")
 
 # ── Weekday helpers ──────────────────────────────────
 WEEKDAYS = [1, 2, 3, 4, 5]  # 周一至周五
@@ -48,7 +49,7 @@ TASK_DEFS = {
         "label_suffix": "git-autosweep",
         "description": "自动 Git 同步清扫（每小时 :07）",
         "schedule": [{"Minute": 7}],
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "git_autosweep.py"), "--commit", "--push"],
         "run_at_load": True,
     },
@@ -56,7 +57,7 @@ TASK_DEFS = {
         "label_suffix": "pigeon",
         "description": "信鸽事件采集（交易日 19:07，周一至周五）",
         "schedule": weekday_schedules(19, 7),
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "daily_orchestrator.py"), "--mode", "pigeon"],
         "run_at_load": False,
     },
@@ -64,7 +65,7 @@ TASK_DEFS = {
         "label_suffix": "daily-signal",
         "description": "日报数据链与信号（交易日 16:30，周一至周五）",
         "schedule": weekday_schedules(16, 30),
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "scripts" / "run_daily_data_pipeline_today.py")],
         "run_at_load": False,
     },
@@ -72,7 +73,7 @@ TASK_DEFS = {
         "label_suffix": "deep-signal",
         "description": "深度分析信号（周五 20:30）",
         "schedule": [{"Hour": 20, "Minute": 30, "Weekday": 5}],
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "daily_orchestrator.py"), "--mode", "deep"],
         "run_at_load": False,
     },
@@ -80,7 +81,7 @@ TASK_DEFS = {
         "label_suffix": "post-eval",
         "description": "后评估正式链路（交易日 17:20，周一至周五）",
         "schedule": weekday_schedules(17, 20),
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "每日荐股" / "scripts" / "daily_workflow.py"), "--mode", "eval"],
         "run_at_load": False,
     },
@@ -88,7 +89,7 @@ TASK_DEFS = {
         "label_suffix": "scheduler-health",
         "description": "调度心跳监控（每小时 :03、:33）",
         "schedule": [{"Minute": 3}, {"Minute": 33}],
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "scheduler_health_check.py")],
         "run_at_load": True,
     },
@@ -96,7 +97,7 @@ TASK_DEFS = {
         "label_suffix": "sim-trading",
         "description": "模拟交易引擎开盘执行（交易日 09:45，周一至周五）",
         "schedule": weekday_schedules(9, 45),
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "模拟交易" / "sim_orchestrator.py")],
         "run_at_load": False,
     },
@@ -104,7 +105,7 @@ TASK_DEFS = {
         "label_suffix": "feishu-bridge",
         "description": "飞书消息桥接（每 30 秒轮询）",
         "interval": 30,
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "feishu_bridge.py"), "--once"],
         "run_at_load": True,
     },
@@ -112,7 +113,7 @@ TASK_DEFS = {
         "label_suffix": "im-consumer",
         "description": "IM 消息消费（每 30 秒轮询）",
         "interval": 30,
-        "command": "python3",
+        "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "代码文件" / "tools" / "im_consumer.py"), "--once"],
         "run_at_load": True,
     },

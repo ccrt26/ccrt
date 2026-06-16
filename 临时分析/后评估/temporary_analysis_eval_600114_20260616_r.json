@@ -1,0 +1,32 @@
+{
+  "scene": "临时分析",
+  "trial_id": "",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "brief_action_bias": "HOLD",
+  "brief_intraday_state": "normal_fluctuation",
+  "brief_conclusion_strength": "倾向判断",
+  "gate_overall": "PASS",
+  "gate_findings": [
+    {
+      "result": "PASS",
+      "check": "temporary_analysis_gate",
+      "detail": "all checks passed"
+    }
+  ],
+  "observed_close_state": "pending",
+  "expected_action_bias": "HOLD",
+  "action_bias_matched_expectation": true,
+  "eval_result": "PENDING",
+  "review_points": [
+    "收盘后核对触发条件是否真实发生",
+    "T+1 核对盘中判断是否延续或被证伪",
+    "T+3 核对动作是否降低风险或错过机会"
+  ],
+  "non_goals_confirmed": {
+    "no_trade_execution": true,
+    "no_daily_report_write": true,
+    "no_deep_baseline_recalc": true
+  },
+  "generated_at": "2026-06-16T09:32:46+08:00"
+}

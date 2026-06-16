@@ -23,6 +23,12 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parent.parent.parent)
+SCRIPTS_DIR = os.path.join(ROOT, "scripts")
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+
+from runtime_secret_loader import TUSHARE_TOKEN, check_secret_readiness
+
 TZ_SHANGHAI = timezone(timedelta(hours=8))
 LOG_DIR = os.path.join(ROOT, "每日荐股", "运营记录")
 DATA_DIR = os.path.join(ROOT, "代码文件", "数据")
@@ -69,6 +75,15 @@ def check_disk_space():
     if free_gb < 5.0:
         return "WARN", f"Disk space: {free_gb:.1f}GB free"
     return "PASS", f"Disk: {free_gb:.1f}GB free"
+
+
+@check("runtime_secret_readiness")
+def check_runtime_secret_readiness():
+    """Check launchd-visible secrets before scheduled production runs."""
+    status = check_secret_readiness(TUSHARE_TOKEN, launchd_compatible=True)
+    if status.get("status") == "PASS":
+        return "PASS", f"{TUSHARE_TOKEN} available via {status.get('source')}"
+    return "FAIL", status.get("reason", f"{TUSHARE_TOKEN} unavailable for launchd")
 
 
 @check("data_cache_freshness")
@@ -123,7 +138,9 @@ def check_signal_stale():
         return "SKIP", "Signal dir not found"
 
     now = datetime.now(TZ_SHANGHAI)
+    today = now.strftime("%Y%m%d")
     stale_signals = []
+    ignored_historical = 0
     for entry in os.listdir(SIGNAL_DIR):
         if not entry.startswith("signal_") or not entry.endswith(".json"):
             continue
@@ -131,10 +148,22 @@ def check_signal_stale():
         mtime = os.path.getmtime(fpath)
         age_hours = (now.timestamp() - mtime) / 3600
         if age_hours > 4:
+            signal_date = ""
+            try:
+                with open(fpath, "r", encoding="utf-8") as f:
+                    payload = json.load(f)
+                signal_date = str(payload.get("date") or payload.get("trade_date") or "")
+            except (OSError, json.JSONDecodeError):
+                signal_date = ""
+            if signal_date and signal_date != today:
+                ignored_historical += 1
+                continue
             stale_signals.append(f"{entry} ({age_hours:.0f}h)")
 
     if stale_signals:
         return "WARN", f"Stale signals: {', '.join(stale_signals)}"
+    if ignored_historical:
+        return "PASS", f"No current stale signals; ignored {ignored_historical} historical signal(s)"
     return "PASS", "No stale signals"
 
 

@@ -73,6 +73,20 @@
   ],
   "repair_rules": [
     {
+      "issue": "codex_implementation_detected",
+      "classification": "security_repair",
+      "return_to_gate": "G4",
+      "dispatch_action": "invalidate_implementation_and_request_deepseek_rerun",
+      "user_escalation": false
+    },
+    {
+      "issue": "missing_implementation_evidence",
+      "classification": "recoverable_block",
+      "return_to_gate": "G4",
+      "dispatch_action": "create_evidence_completion_dispatch",
+      "user_escalation": false
+    },
+    {
       "issue": "missing_evidence",
       "classification": "recoverable_block",
       "return_to_gate": "G4",

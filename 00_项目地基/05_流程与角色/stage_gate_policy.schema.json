@@ -46,6 +46,29 @@
     "relationship_to_acceptance_policy": {
       "type": "string",
       "description": "本文件与 04_一致性闸门/stage_acceptance_policy.json 的关系说明"
+    },
+    "g0_g6_stage_contract": {
+      "type": "object",
+      "required": ["version", "purpose", "stages", "global_rules", "allowed_final_status"],
+      "properties": {
+        "version": {"type": "string"},
+        "purpose": {"type": "string"},
+        "stages": {
+          "type": "object",
+          "required": ["G0", "G1", "G2", "G3", "G4", "G5", "G6"],
+          "properties": {
+            "G0": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G1": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G2": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G3": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G4": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G5": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] },
+            "G6": { "type": "object", "required": ["name", "primary_owner", "participants", "required_outputs", "required_evidence", "pass_conditions", "block_conditions"] }
+          }
+        },
+        "global_rules": {"type": "array"},
+        "allowed_final_status": {"type": "array", "items": {"type": "string"}}
+      }
     }
   }
 }

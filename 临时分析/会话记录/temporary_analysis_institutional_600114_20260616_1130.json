@@ -1,0 +1,104 @@
+{
+  "scene": "临时分析（午间）",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T11:30:00+08:00",
+  "intraday_state": "spike_and_fade",
+  "action_bias": "WATCH",
+  "conclusion_strength": "倾向判断",
+
+  "morning_structure": [
+    { "phase": "A——缩量横盘", "time": "09:30-10:25", "range": "42.08-42.28", "avg_vol_per_min": "500-1,500", "interpretation": "无人交易，多空都在等" },
+    { "phase": "B——脉冲突破", "time": "10:25-10:27（3 分钟）", "range": "42.55→42.95→42.82", "peak_vol": "9,857", "interpretation": "一根放量打穿 42.88 新高" },
+    { "phase": "C——持续回落", "time": "10:28-11:00", "range": "42.72→42.33", "avg_vol_per_min": "逐渐缩至 286", "interpretation": "突破后无人跟进，自由滑落" }
+  ],
+
+  "institutional_behavior_assessment": {
+    "pattern": "lure_and_fade（诱多出货）",
+    "confidence": "中等偏高",
+    "explanation": "上午的全部分时结构指向一个经典的机构打法：先用最低成本（横盘段只需要垫几百股/分的卖单）把价格维持在 42.08-42.28 区间，然后在 10:25-10:27 用 2-3 笔大单（7,544+9,857+6,326≈23,727 股）快速推过 42.88 创出 42.95 的新高。新高吸引跟风盘和空头回补后，买盘迅速消失，价格在 30 分钟内匀速滑落回 42.33。在这个过程中，早盘在 42.08-42.28 横盘区建仓的短线资金全部被套。",
+    "sold_or_bought": "机构更大可能是利用流动性冲高时减仓/出货，而非建仓。如果机构要建仓，应该在新高 42.95 之后继续买入维持价格。实际是创了新高后立刻撤单，让价格自由落体。",
+    "key_evidence": [
+      "横盘 55 分钟消耗时间→等散户忘记关注",
+      "3 分钟暴力拉穿新高→吸引注意力+触发追涨",
+      "之后 32 分钟缩量回落→说明没有真实买盘愿意在 42.5+ 持有",
+      "上午最高 42.95 但收在 42.35——从最高点回落 0.60 元"
+    ]
+  },
+
+  "alternate_hypothesis": {
+    "pattern": "试探性上攻（上方抛压测试）",
+    "confidence": "偏低",
+    "explanation": "另一种可能是机构想突破但发现 42.88 上方卖压太大，选择暂时撤退等 FOMC 后再来。但这种解释的问题是：如果真想突破，应该用连续的大单吃掉卖压，而不是打一枪就停手。只打了 3 分钟就放弃，更像是有意为之的诱多。"
+  },
+
+  "yesterday_vs_today": {
+    "yesterday_615": {"action": "+9.46% 大涨", "main_force": "-8,233 万流出", "volume": "46.6 万手"},
+    "today_616": {"action": "+0.31% 冲高回落", "main_force": "待龙虎榜", "volume_am": "16.3 万手，全天预估约 25-30 万手（大幅缩量）"}
+  },
+
+  "intraday_summary": {
+    "open": "41.94",
+    "high": "42.95（突破前高 42.88）",
+    "low": "41.88",
+    "current": "42.35",
+    "am_change": "+0.31%",
+    "am_volume": "16.3 万手",
+    "estimated_full_day": "25-30 万手（缩量）",
+    "am_range": "41.88-42.95"
+  },
+
+  "key_levels": {
+    "am_high": "42.95",
+    "am_low": "41.88",
+    "mid_point": "42.35（当前）",
+    "afternoon_reference": "42.00 整数关口"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "下午再次放量过 42.88 并站稳",
+      "action": "轻仓追 200 股",
+      "price_range": "42.88 以上",
+      "position_boundary": "200 股，止损 41.50",
+      "time_window": "下午"
+    },
+    {
+      "condition": "下午继续回落至 41.8-42.0",
+      "action": "不动，等 FOMC",
+      "price_range": "41.8-42.0",
+      "position_boundary": "空仓等待",
+      "time_window": "今天下午+明天 FOMC"
+    },
+    {
+      "condition": "跌破 41.88（今低）+ 放量",
+      "action": "放弃任何买入，本周不再考虑",
+      "price_range": "41.88 以下",
+      "position_boundary": "空仓，等下周",
+      "time_window": "本周"
+    }
+  ],
+
+  "position_advice": {
+    "current_status": "空仓",
+    "verdict": "今天上午的走法很像诱多出货——先横盘消耗耐心，突然拉新高吸引注意力，然后让价格自由回落。机构借 42.88 突破这个"技术信号"完成了减仓。目前 42.35 不上不下，下午最好的情况是再次冲击 42.88，但概率不大。FOMC 明天出结果，今天下午大概率继续缩量。空仓耐心等。"
+  },
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS"
+  },
+
+  "eval_hook": [
+    { "check": "下午能否再次放量", "time": "14:00" },
+    { "check": "收在 42.00 之上还是之下", "time": "15:00" },
+    { "check": "明天 FOMC 结果", "time": "6/17 凌晨" }
+  ],
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

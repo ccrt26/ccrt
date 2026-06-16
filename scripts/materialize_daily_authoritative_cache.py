@@ -75,11 +75,32 @@ def check_kline_date(s, target_date, date_dash):
     return None, None
 
 
+def existing_kline_has_date(code, date_str):
+    """Return True when kline_cache already contains the target trading date."""
+    date_dash = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:8]}"
+    path = os.path.join(KLINE_DIR, f"{code}.json")
+    if not os.path.exists(path):
+        return False
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            rows = json.load(f)
+    except Exception:
+        return False
+    for row in rows if isinstance(rows, list) else []:
+        d = str(row.get("date") or row.get("trade_date") or "").replace("-", "")
+        if d == date_str or row.get("date") == date_dash:
+            return True
+    return False
+
+
 def upsert_kline(code, name, date_str, s):
     """Upsert kline_cache/{code}.json from data_full stock data."""
     date_dash = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:8]}"
     idx, close_val = check_kline_date(s, date_str, date_dash)
     if idx is None:
+        if existing_kline_has_date(code, date_str):
+            log(f"  KLINE_UPSERT PASS: {code} {name} — {date_dash} already in kline_cache")
+            return True
         log(f"  KLINE_UPSERT SKIP: {code} {name} — 缺{date_dash}", "WARN")
         return False
 
@@ -214,8 +235,12 @@ def main():
             else:
                 kline_fail += 1
         else:
-            log(f"  KLINE_UPSERT SKIP: {code} — 不在 data_full.Stocks 中", "WARN")
-            kline_fail += 1
+            if existing_kline_has_date(code, date_str):
+                log(f"  KLINE_UPSERT PASS: {code} — already in kline_cache")
+                kline_pass += 1
+            else:
+                log(f"  KLINE_UPSERT SKIP: {code} — 不在 data_full.Stocks 中", "WARN")
+                kline_fail += 1
 
         if upsert_fund_flow(code, name or code, date_str, flows):
             ff_pass += 1

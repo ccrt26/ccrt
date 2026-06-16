@@ -20,7 +20,8 @@
       "bin": "/usr/local/bin/claude",
       "non_interactive_command": ["-p"],
       "default_args": ["--output-format", "text"],
-      "stream_args": ["--output-format", "stream-json"],
+      "stream_args": ["--output-format", "stream-json", "--include-partial-messages", "--verbose"],
+      "live_args": ["--permission-mode", "acceptEdits", "--allowedTools", "Read,Edit,Bash"],
       "notes": "Claude Code CLI is the execution bridge to the configured DeepSeek model."
     }
   },
@@ -29,7 +30,15 @@
     "mode": "terminal_and_log",
     "log_root": "/private/tmp/ccrt_langgraph_streams",
     "real_model_stream_requires_explicit_flag": true,
-    "mock_stream_available": true
+    "mock_stream_available": true,
+    "live_preflight": {
+      "required": true,
+      "command": "claude -p <preflight> --output-format text",
+      "expected_substring": "OK",
+      "failure_status": "BLOCK",
+      "failure_reason": "live_model_bridge_network_unavailable_or_sandbox_blocked",
+      "codex_execution_note": "When running live mode from Codex tools, execute with network-enabled/escalated permissions; dry-run/mock output must not be reported as G3 DeepSeek completion."
+    }
   },
   "ccrt_rules": {
     "flow_routes": "00_项目地基/05_流程与角色/flow_routes.json",
@@ -41,7 +50,8 @@
   "orchestration_tools": {
     "ccrt_langgraph_orchestrator": "代码文件/tools/ccrt_langgraph_orchestrator.py",
     "ccrt_langgraph_smoke": "代码文件/tools/ccrt_langgraph_smoke.py",
-    "ccrt_terminal_stream_adapter": "代码文件/tools/ccrt_terminal_stream_adapter.py"
+    "ccrt_terminal_stream_adapter": "代码文件/tools/ccrt_terminal_stream_adapter.py",
+    "git_workspace_hygiene": "scripts/git_workspace_hygiene.py"
   },
   "stage_gate_tools": {
     "stage_gate_auto_advance": "scripts/stage_gate_auto_advance.py",
@@ -62,6 +72,7 @@
   "safety": {
     "default_mode": "smoke_only",
     "orchestrator_default_mode": "dry_run",
+    "orchestrator_live_mode": "enabled_explicitly",
     "model_calls_enabled_by_default": false,
     "terminal_stream_enabled_by_default": true,
     "production_actions_enabled_by_default": false,

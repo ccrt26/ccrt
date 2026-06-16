@@ -343,6 +343,10 @@ def main():
         if args.code and code != args.code:
             continue
 
+        if args.date:
+            rec = dict(rec)
+            rec["date"] = args.date[:10]
+
         baseline = build_baseline(rec, holidays)
         week = get_week_number(rec.get("date", ""))
         fname = f"{rec.get('name', code)}({code})_baseline_{week}.json"

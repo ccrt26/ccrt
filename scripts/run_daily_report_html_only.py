@@ -87,6 +87,11 @@ def fmt_money(x):
         return "0万"
     return f"{x:+.0f}万"
 
+def fmt_num(value, fmt=".2f", fallback="—"):
+    if value is None:
+        return fallback
+    return f"{value:{fmt}}"
+
 def risk_light_display(value):
     text = str(value or "").strip().lower()
     mapping = {
@@ -157,18 +162,18 @@ def generate_one(date, code, name):
     shares, cost = (600, 39.42) if held else (0, 0)
     pos_text = f"{shares}股@{cost}" if held else "0%（未录入持仓）"
     t1 = "持有观察，不主动加仓" if held else "观察，不主动新开"
-    one_line = f"{name}收{k['close']}，低于关键压力{pressure:.2f}；主力{fmt_money(f.get('main_force_net'))}，先看{support:.2f}能否收回，再看{pressure:.2f}能否站稳。"
+    one_line = f"{name}收{k['close']}，低于关键压力{fmt_num(pressure)}；主力{fmt_money(f.get('main_force_net'))}，先看{fmt_num(support)}能否收回，再看{fmt_num(pressure)}能否站稳。"
     overall_light = "yellow"
     overall_light_display = risk_light_display(overall_light)
 
     p0 = {
         "t1_action": t1,
         "current_position_cap": pos_text,
-        "triggered_position_cap": f"站稳{pressure:.2f}且主力流出收窄后再评估",
-        "key_buy_point": f"先看{support:.2f}能否收回，再看{pressure:.2f}能否站稳",
+        "triggered_position_cap": f"站稳{fmt_num(pressure)}且主力流出收窄后再评估",
+        "key_buy_point": f"先看{fmt_num(support)}能否收回，再看{fmt_num(pressure)}能否站稳",
         "new_position_stop_loss": f"{k['low']:.2f}下破不新开",
-        "held_position_stop_loss": f"短线{k['low']:.2f}；中线{stop:.2f}",
-        "forbidden_actions": [f"{pressure:.2f}以上不追高", "主力流出未收窄不加仓", f"跌破{k['low']:.2f}不补仓", f"跌破{stop:.2f}或核心反证出现则移出/否决"],
+        "held_position_stop_loss": f"短线{k['low']:.2f}；中线{fmt_num(stop)}",
+        "forbidden_actions": [f"{fmt_num(pressure)}以上不追高", "主力流出未收窄不加仓", f"跌破{k['low']:.2f}不补仓", f"跌破{fmt_num(stop)}或核心反证出现则移出/否决"],
         "confidence_level": "中",
         "action_change": "maintain",
         "one_line_conclusion": one_line,
@@ -178,8 +183,8 @@ def generate_one(date, code, name):
         "山猫_宏观": {"板块相位": phase, "解读": f"{industry}板块相位为{phase}，对{name}是背景支撑，买卖仍服从价格和资金。"},
         "信鸽_事件": {"解读": f"{name}当日未触发强制否决事件，事件线只作为后续验证项。"},
         "玉夜_数据": {"解读": f"{date[4:6]}月{date[6:8]}日收{k['close']}，成交量{vol}万手，主力{fmt_money(f.get('main_force_net'))}。"},
-        "流金_风控": {"综合灯": overall_light, "综合灯显示": overall_light_display, "解读": f"未站稳{pressure:.2f}前不扩大仓位，跌破{k['low']:.2f}先控风险。"},
-        "青山_信号": {"解读": f"价格低于{pressure:.2f}，信号只支持跟踪，不支持追高。"},
+        "流金_风控": {"综合灯": overall_light, "综合灯显示": overall_light_display, "解读": f"未站稳{fmt_num(pressure)}前不扩大仓位，跌破{k['low']:.2f}先控风险。"},
+        "青山_信号": {"解读": f"价格低于{fmt_num(pressure)}，信号只支持跟踪，不支持追高。"},
         "腰子_整合": {"解读": one_line},
         "daily_discussion": {"山猫_大盘板块": {"sector_phase": phase}}
     }
@@ -189,10 +194,10 @@ def generate_one(date, code, name):
     for obj in objs:
         daily_synthesis[obj] = {
             "data_fact": f"{name} {date} 收{k['close']}，板块相位{phase}，主力{fmt_money(f.get('main_force_net'))}",
-            "interpretation": f"价格未站稳{pressure:.2f}，资金结构要求先守纪律。",
+            "interpretation": f"价格未站稳{fmt_num(pressure)}，资金结构要求先守纪律。",
             "action_impact": t1,
-            "trigger_condition": f"收回{support:.2f}并站稳{pressure:.2f}",
-            "invalidation_condition": f"跌破{k['low']:.2f}或跌破{stop:.2f}",
+            "trigger_condition": f"收回{fmt_num(support)}并站稳{fmt_num(pressure)}",
+            "invalidation_condition": f"跌破{k['low']:.2f}或跌破{fmt_num(stop)}",
             "confidence": "中"
         }
 
@@ -223,8 +228,8 @@ def generate_one(date, code, name):
         },
         "role_interpretations": roles,
         "yaozi_integration": {"final_action": t1, "position_rule": p0["triggered_position_cap"], "reason": one_line, "risk_boundary": p0["held_position_stop_loss"], "daily_synthesis": daily_synthesis},
-        "signal_winrate": {"available": swr_usable, "total_samples": swr_samples, "avg_t1_winrate": swr_t1, "avg_t5_winrate": swr_t5, "low_sample": swr_low, "note": f"低于{pressure:.2f}时不追高"},
-        "eval_hooks": {"t1_verify": f"次日验证是否收回{support:.2f}并靠近{pressure:.2f}", "t5_verify": f"5个交易日验证{pressure:.2f}能否转支撑，跌破{stop:.2f}则否决"},
+        "signal_winrate": {"available": swr_usable, "total_samples": swr_samples, "avg_t1_winrate": swr_t1, "avg_t5_winrate": swr_t5, "low_sample": swr_low, "note": f"低于{fmt_num(pressure)}时不追高"},
+        "eval_hooks": {"t1_verify": f"次日验证是否收回{fmt_num(support)}并靠近{fmt_num(pressure)}", "t5_verify": f"5个交易日验证{fmt_num(pressure)}能否转支撑，跌破{fmt_num(stop)}则否决"},
         "audit_u9": {"status": "PASS", "note": "行情、资金、板块、baseline均已披露"},
         "audit_u10": {"status": "PASS", "note": f"HTML作为正式展示产物，baseline={baseline_id}"}
     }
@@ -268,14 +273,14 @@ def generate_one(date, code, name):
 
 | 指标 | 当前基线 |
 |:--|:--:|
-| 短线支撑 | {support:.2f} |
-| 关键压力 | {pressure:.2f} |
-| MA20支撑 | {ma20:.2f} |
-| 否决线 | {stop:.2f} |
-| 目标观察价 | {target:.2f} |
+| 短线支撑 | {fmt_num(support)} |
+| 关键压力 | {fmt_num(pressure)} |
+| MA20支撑 | {fmt_num(ma20, fallback="未提供")} |
+| 否决线 | {fmt_num(stop)} |
+| 目标观察价 | {fmt_num(target)} |
 
-**这说明**：{name}仍在当前权威基线内运行，但收盘没有站稳{pressure:.2f}，动作要服从基线纪律。
-**对明日影响**：先看{support:.2f}能否收回，再看{pressure:.2f}能否转成支撑。
+**这说明**：{name}仍在当前权威基线内运行，但收盘没有站稳{fmt_num(pressure)}，动作要服从基线纪律。
+**对明日影响**：先看{fmt_num(support)}能否收回，再看{fmt_num(pressure)}能否转成支撑。
 
 ## 三、今天行情
 
@@ -285,8 +290,8 @@ def generate_one(date, code, name):
 |:--|--:|--:|--:|--:|--:|
 | {date[:4]}-{date[4:6]}-{date[6:8]} | {k['open']:.2f} | {k['close']:.2f} | {k['high']:.2f} | {k['low']:.2f} | {vol}万手 |
 
-**这说明**：收盘{k['close']:.2f}低于压力{pressure:.2f}，短线还不是强确认。
-**对明日影响**：若放量跌破{k['low']:.2f}，先降风险；若收回{support:.2f}，继续看{pressure:.2f}。
+**这说明**：收盘{k['close']:.2f}低于压力{fmt_num(pressure)}，短线还不是强确认。
+**对明日影响**：若放量跌破{k['low']:.2f}，先降风险；若收回{fmt_num(support)}，继续看{fmt_num(pressure)}。
 
 ## 四、资金
 
@@ -312,7 +317,7 @@ def generate_one(date, code, name):
 
 行业：{industry}；板块相位：{phase}。
 
-**这说明**：板块背景支持继续跟踪，但买点仍由{support:.2f}/{pressure:.2f}决定。
+**这说明**：板块背景支持继续跟踪，但买点仍由{fmt_num(support)}/{fmt_num(pressure)}决定。
 **对明日影响**：板块走弱时，跌破{k['low']:.2f}的风险要优先处理。
 
 ## 七、消息事件
@@ -321,22 +326,22 @@ def generate_one(date, code, name):
 
 ## 八、信号胜率
 
-信号结论：低于{pressure:.2f}时不追高，收回{support:.2f}后再看强度。
+信号结论：低于{fmt_num(pressure)}时不追高，收回{fmt_num(support)}后再看强度。
 {swr_line}
 
 ## 九、风控红黄绿灯与持仓折扣
 
-综合灯：{overall_light_display}。跌破{k['low']:.2f}先控风险，跌破{stop:.2f}进入否决流程。
+综合灯：{overall_light_display}。跌破{k['low']:.2f}先控风险，跌破{fmt_num(stop)}进入否决流程。
 
 ## 十、明日情景应对与T+5展望
 
 | 情景 | 条件 | 动作 |
 |:--|:--|:--|
-| 修复 | 收回{support:.2f}并靠近{pressure:.2f} | {t1} |
+| 修复 | 收回{fmt_num(support)}并靠近{fmt_num(pressure)} | {t1} |
 | 转弱 | 跌破{k['low']:.2f} | 先控风险 |
-| 否决 | 跌破{stop:.2f} | 移出/否决 |
+| 否决 | 跌破{fmt_num(stop)} | 移出/否决 |
 
-**T+5展望**：5个交易日内看{pressure:.2f}能否转支撑；若跌破{stop:.2f}，中线逻辑需要重评。
+**T+5展望**：5个交易日内看{fmt_num(pressure)}能否转支撑；若跌破{fmt_num(stop)}，中线逻辑需要重评。
 """
 
     sd = REPORT_DIR / f"{name}({code})"

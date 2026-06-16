@@ -155,11 +155,14 @@ def check_one(code, name, date_str):
         if "融资T+1延迟" in all_text and str(mg.get("trade_date","")) not in all_text:
             issues.append(f"融资有记录但报告只写T+1延迟未披露最新日期: {mgpath}")
     else:
-        if code == "300736":
-            if "margin_detail/300736.json缺失" not in all_text and "margin_detail/300736.json 缺失" not in all_text:
-                issues.append("300736融资文件缺失但未明确披露缺失路径")
-        else:
-            issues.append(f"融资数据文件缺失或为空: {mgpath}")
+        missing_markers = [
+            f"margin_detail/{code}.json缺失",
+            f"margin_detail/{code}.json 缺失",
+        ]
+        declared_missing = any(marker in all_text for marker in missing_markers)
+        declared_delay = "融资数据延迟" in all_text or "预计T+2" in all_text
+        if not (declared_missing and declared_delay):
+            issues.append(f"融资数据文件缺失或为空且未按降级披露: {mgpath}")
 
     sector = stock_sector_phase(code)
     if sector and sector.get("phase"):

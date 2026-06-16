@@ -67,6 +67,29 @@
           "description": { "type": "string" }
         }
       }
+    },
+    "role_boundary_contract": {
+      "type": "object",
+      "required": ["version", "purpose", "stage_owners", "role_rules", "hard_block_rules"],
+      "properties": {
+        "version": {"type": "string"},
+        "purpose": {"type": "string"},
+        "stage_owners": {
+          "type": "object",
+          "required": ["G0", "G1", "G2", "G3", "G4", "G5", "G6"],
+          "properties": {
+            "G0": {"type": "array", "items": {"type": "string"}},
+            "G1": {"type": "array", "items": {"type": "string"}},
+            "G2": {"type": "array", "items": {"type": "string"}},
+            "G3": {"type": "array", "items": {"type": "string"}},
+            "G4": {"type": "array", "items": {"type": "string"}},
+            "G5": {"type": "array", "items": {"type": "string"}},
+            "G6": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "role_rules": {"type": "object"},
+        "hard_block_rules": {"type": "array"}
+      }
     }
   }
 }

@@ -229,7 +229,7 @@ def write_pass_status(code, name, date_str):
         "date": date_str, "code": code, "name": name,
         "passed_at": datetime.now(timezone.utc).isoformat(),
         "command": f"--render-only --only {code} --incremental-dedupe",
-        "checks": {"file_exists": True, "p0h": True, "p0i": True, "md_sidecar": True, "incremental_p0i": True},
+        "checks": {"file_exists": True, "p0h": True, "p0i": True, "p0j_d07": True, "md_sidecar": True, "incremental_p0i": True},
     }
     sp = os.path.join(STATUS_DIR, f"{date_str}_{code}.pass.json")
     with open(sp, "w", encoding="utf-8") as f:
@@ -367,22 +367,28 @@ def check_single_stock(date_str, code, name):
     if not p:
         all_ok = False
 
-    # 4. MD/Sidecar consistency single-stock check
+    # 4. P0-J: D07_v1.2 contract single-stock check
+    d07_script = os.path.join("scripts", "check_daily_d07_v12_contract.py")
+    p, _ = run_check(d07_script, ["--date", date_str, "--code", code, "--name", name], f"P0-J({code})")
+    if not p:
+        all_ok = False
+
+    # 5. MD/Sidecar consistency single-stock check
     mc_script = os.path.join("scripts", "check_md_sidecar_consistency.py")
     p, _ = run_check(mc_script, ["--code", code, "--name", name, "--date", date_str], f"MD-SC({code})")
     if not p:
         all_ok = False
 
-    # 5. P0-B: Numeric source consistency single-stock check (shift-left)
+    # 6. P0-B: Numeric source consistency single-stock check (shift-left)
     nb_script = os.path.join("scripts", "check_numeric_source_consistency.py")
     p, _ = run_check(nb_script, ["--code", code, "--name", name, "--date", date_str], f"P0-B({code})")
     if not p:
         all_ok = False
 
-    # 6. P0-F: Collaborative interpretation single-stock check (shift-left)
+    # 7. P0-F: Collaborative interpretation single-stock check (shift-left)
     # HTML-only mode: P0-F full-pool check is release-level only; single-stock mode skips.
 
-    # 7. P0-G: Data completeness single-stock check (shift-left)
+    # 8. P0-G: Data completeness single-stock check (shift-left)
     dg_script = os.path.join("scripts", "check_daily_data_completeness.py")
     p, _ = run_check(dg_script, ["--code", code, "--name", name, "--date", date_str], f"P0-G({code})")
     if not p:

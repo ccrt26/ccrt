@@ -1,0 +1,107 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T01:18:00+08:00",
+  "intraday_state": "rally_breakout",
+  "action_bias": "WATCH",
+  "conclusion_strength": "倾向判断",
+
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "present",
+    "user_position_context": "present"
+  },
+
+  "key_levels": {
+    "confirm_above": "42.88",
+    "invalidate_below": "40.00",
+    "intraday_reference": "42.00"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "回踩 40.5-41.5 区间企稳且不破 40.00",
+      "action": "可轻仓试多 200 股",
+      "price_range": "40.50-41.50",
+      "position_boundary": "≤200 股，止损 39.50",
+      "time_window": "6/16（周二）日内"
+    },
+    {
+      "condition": "直接高开在 42.50 以上且不回补",
+      "action": "放弃，不追涨",
+      "price_range": "42.50 以上",
+      "position_boundary": "空仓等待",
+      "time_window": "6/16 早盘 30 分钟"
+    }
+  ],
+
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "42 第三次站上，量价配合良好，受中东和平+科技股情绪共振推动，短期仍有上行动能。",
+      "type": "main",
+      "conclusion_strength": "倾向判断"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "+9.46% 单日涨幅过大，FOMC(6/17)前避险资金可能获利了结，明后日有修复回踩需求。",
+      "type": "counter",
+      "conclusion_strength": "风险假设"
+    }
+  ],
+
+  "counter_evidence": [
+    {
+      "evidence": "主力净流出 -1.39 亿+散户净流入 +1.39 亿（Level-1 口径），与股价背离。但无法排除拆单可能性。",
+      "source": "tushare moneyflow [9]",
+      "type": "资金结构反证"
+    },
+    {
+      "evidence": "前两次站上 42（6/9 和 6/10）均在 1-2 天内被砸回，今天第三次是否站住尚在窗口中。",
+      "source": "kline_cache [2]",
+      "type": "技术反证"
+    },
+    {
+      "evidence": "东睦机构目标均价 38.2 元，当前 42.22 已超出 10.5%，短期估值处于偏高区间。",
+      "source": "外部研报数据",
+      "type": "估值反证"
+    },
+    {
+      "evidence": "FOMC 6/17 决议在即，如果意外鹰派则成长股全线承压，东睦难以独善其身。",
+      "source": "宏观日历",
+      "type": "宏观反证"
+    }
+  ],
+
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-LONGBANG-20260615",
+      "description": "6/15 龙虎榜尚未发布，机构是真卖还是拆单买无法确认。",
+      "status": "open",
+      "impact": "龙虎榜如显示机构净买入则 H1 置信度上调，H2 置信度下降；反之则 H2 置信度上调。"
+    }
+  ],
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS",
+    "main_challenge": "WATCH 的入场条件已绑定 40.5-41.5 具体区间和 39.5 止损位，不是模糊观望。空仓状态下不追高是合理的。龙虎榜是 EG-1 核心，开盘前必须检查。",
+    "calibration_note": "四层反证（资金+技术+估值+宏观）充分，没有刻意忽略空方因素。"
+  },
+
+  "eval_hook": {
+    "close_check": "收盘检查 42.00 是否再次跌破",
+    "t1_check": "T+1（6/16）检查回踩是否回到 41 以下",
+    "t3_check": "T+3（6/17 FOMC 后）检查方向是否明朗"
+  },
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

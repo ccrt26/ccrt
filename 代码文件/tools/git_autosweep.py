@@ -24,6 +24,7 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
+_TEST_REPO = None  # Override for isolated-repo unit tests; set before calling run_git
 LOCK_FILE = ROOT / ".claude" / "sweep.lock"
 LOG_FILE = ROOT / "临时报告" / "git_autocommit.log"
 PIPELINE_TOKEN = ROOT / ".claude" / "pipeline_active.json"
@@ -94,12 +95,23 @@ def release_lock():
         pass
 
 
-def run_git(args, timeout=30):
+def run_git(args, timeout=30, _cwd=None):
+    """Run a git command.  * _cwd* overrides the repo root for testing."""
+    repo = _cwd or _TEST_REPO or ROOT
     result = subprocess.run(
-        ["git"] + args, cwd=str(ROOT),
+        ["git"] + args, cwd=str(repo),
         capture_output=True, text=True, timeout=timeout
     )
     return result
+
+
+def unstage_files(files, _cwd=None):
+    """Restore *files* from the staging area without touching the working tree.
+
+    Calling this on files not currently staged is a safe no-op.
+    """
+    for f in files:
+        run_git(["restore", "--staged", "--", f], _cwd=_cwd)
 
 
 def get_changed_files():
@@ -237,6 +249,7 @@ def commit_auto_files(files, dry_run):
     ts = datetime.now().strftime("%Y%m%d-%H%M")
     result = run_git(["commit", "-m", f"auto: sweep — 数据/报告/配置自动同步 [{ts}]"], timeout=60)
     if result.returncode != 0:
+        unstage_files(safe)
         write_log("FAILED", category="auto", error=result.stderr.strip())
         return []
 
@@ -272,6 +285,7 @@ def commit_pipeline_files(files, dry_run):
     ts = datetime.now().strftime("%Y%m%d-%H%M")
     result = run_git(["commit", "-m", f"auto: sweep — 代码文件管线提交 [{ts}]"], timeout=60)
     if result.returncode != 0:
+        unstage_files(files)
         write_log("FAILED", category="pipeline", error=result.stderr.strip())
         return []
 

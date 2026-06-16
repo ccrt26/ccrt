@@ -1,0 +1,9 @@
+# 铁律量化 — 生产运行依赖清单
+# 本文件记录 run_daily_production_pipeline.py 所需的 Python 包。
+# check_runtime_dependency_readiness.py 据此验证 import 可达性。
+#
+# 用法: pip install -r requirements-production.txt
+#
+
+tushare>=1.4,<2.0
+markdown>=3.0,<4.0

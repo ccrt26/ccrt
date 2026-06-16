@@ -1,6 +1,6 @@
 {
   "registry_version": "1.0",
-  "generated_at": "2026-06-12T09:17:01",
+  "generated_at": "2026-06-15T21:53:48",
   "source_dir": "重点股票/基线",
   "entries": [
     {
@@ -94,7 +94,7 @@
       "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W24_deep.json",
       "baseline_date": "2026-06-10",
       "valid_until": "2026-06-12",
-      "status": "active",
+      "status": "expired",
       "source_type": "deep_analysis_report",
       "source_deep_report_path": "重点股票/深度分析/深度分析报告/东睦股份(600114)/东睦股份(600114)深度分析报告_20260610.md",
       "generated_from": "deep_analysis_report",
@@ -106,6 +106,27 @@
         "target_price": 42.0
       },
       "core_thesis": "短线状态明显修复，中期逻辑未证伪；42元能否转支撑为后续验证重点。"
+    },
+    {
+      "stock_code": "600114",
+      "stock_name": "东睦股份",
+      "baseline_id": "600114_W2026W25",
+      "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W25.json",
+      "baseline_date": "2026-06-15",
+      "valid_until": "2026-06-18",
+      "status": "active",
+      "source_type": "weekly_baseline",
+      "source_deep_report_path": "",
+      "generated_from": "score_history.jsonl + data_full.json + tushare",
+      "strategy_version": "v1.0",
+      "key_fields": {
+        "key_support_price": 38.0,
+        "key_pressure_price": 46.44,
+        "stop_loss_price": 37.15,
+        "target_price": 48.55
+      },
+      "core_thesis": "评分55分(T12/M10/F11)，风险等级low",
+      "overall_risk_level": "low"
     },
     {
       "stock_code": "601318",

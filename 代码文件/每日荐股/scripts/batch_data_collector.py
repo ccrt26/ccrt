@@ -238,7 +238,27 @@ def main():
     parser.add_argument("--pool", default="", help="Dynamic pool JSON path")
     parser.add_argument("--output", default="", help="Output data_full.json path")
     parser.add_argument("--skip-kline", action="store_true")
+    parser.add_argument("--date", default="", help="Target date: YYYYMMDD or YYYY-MM-DD (falls back to env DAILY_TARGET_DATE, then K-line detection)")
     args = parser.parse_args()
+
+    # Resolve --date: CLI arg > env DAILY_TARGET_DATE > empty (K-line detection later)
+    date_arg = args.date or os.environ.get("DAILY_TARGET_DATE", "")
+    date_compact = ""
+    date_source = "kline_detection"  # tracks which source was effectively used
+    if date_arg:
+        date_compact = date_arg.replace("-", "")
+        if len(date_compact) == 8 and date_compact.isdigit():
+            if args.date:
+                date_source = "cli_arg"
+            else:
+                date_source = "env_DAILY_TARGET_DATE"
+        else:
+            if args.date:
+                print(f"ERROR: --date={args.date} is not valid YYYYMMDD or YYYY-MM-DD format")
+                sys.exit(1)
+            print(f"WARNING: DAILY_TARGET_DATE={date_arg} not YYYYMMDD/YYYY-MM-DD, ignoring")
+            date_compact = ""
+            # date_source stays "kline_detection" — invalid env was ignored
 
     pool_file = args.pool or os.path.join(DATA_DIR, "dynamic_pool.json")
     output_file = args.output or os.path.join(DATA_DIR, "data_full.json")
@@ -291,14 +311,17 @@ def main():
             entry["KVolume"] = [d["volume"] for d in kl]
         engine_stocks.append(entry)
 
-    # 从K线数据推导 trade_date（取最后一根K线的日期）
+    # 从K线数据推导 trade_date（取最后一根K线的日期）；
+    # 当显式 --date 提供时优先使用，K线推导作为 fallback
     trade_date = ""
+    if date_compact:
+        trade_date = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:8]}"
     for s in engine_stocks:
         kdate = s.get("KDate", [])
         if kdate and kdate[-1]:
-            trade_date = kdate[-1].replace("-", "") if "-" in str(kdate[-1]) else str(kdate[-1])
-            if len(trade_date) == 8:
-                trade_date = f"{trade_date[:4]}-{trade_date[4:6]}-{trade_date[6:8]}"
+            k_trade_date = kdate[-1].replace("-", "") if "-" in str(kdate[-1]) else str(kdate[-1])
+            if len(k_trade_date) == 8:
+                trade_date = trade_date or f"{k_trade_date[:4]}-{k_trade_date[4:6]}-{k_trade_date[6:8]}"
             break
 
     output = {
@@ -307,7 +330,10 @@ def main():
             "collect_time": time.strftime("%Y-%m-%d %H:%M:%S"),
             "collection_completed_at": time.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             "trade_date": trade_date,
+            "target_date": f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:8]}" if date_compact else "",
+            "data_date": f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:8]}" if date_compact else trade_date,
             "stock_count": len(codes),
+            "date_source": date_source,
             "quotes_source": "tencent[1]" if args.skip_kline else "tushare-local+tencent[1]",
             "kline_source": "tushare-local+sina[2]",
             "financial_source": "tushare-local+ths",

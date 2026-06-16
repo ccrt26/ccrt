@@ -1,0 +1,151 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T08:38:00+08:00",
+  "intraday_state": "pre_market_post_rally",
+  "action_bias": "WATCH",
+  "conclusion_strength": "风险假设",
+
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "present",
+    "user_position_context": "present"
+  },
+
+  "market_context": {
+    "us_overnight": {
+      "nasdaq": "确认 +2.2~2.4%",
+      "dow": "历史新高 +1.1~1.2%",
+      "philly_semi": "+4.2~5.0% 逼近历史新高",
+      "trigger": "中东和平协议正式落地，油价暴跌 5%"
+    },
+    "capital_flow_615": {
+      "main_force": "净流出 8233 万 🔴",
+      "retail": "净流入 1.10 亿 🟢",
+      "structure": "主力借大涨减仓，散户接盘",
+      "caveat": "龙虎榜未出，拆单假设无法排除"
+    },
+    "fomc_tomorrow": {
+      "date": "明天 6/17",
+      "expectation": "维持利率不变 >90%",
+      "key_risk": "新主席 Warsh 首次决议，措辞不确定"
+    }
+  },
+
+  "intraday_state_rationale": "大涨次日 + 美股强势 + FOMC 前一日。三种力量博弈：①美股强势带动的追涨情绪 ②+9.46%后的获利了结压力 ③FOMC前资金不敢重仓。今日大概率高开后震荡消化。",
+
+  "key_levels": {
+    "confirm_above": "42.88",
+    "invalidate_below": "40.00",
+    "intraday_reference": "42.00",
+    "support_1": "41.00-41.50",
+    "support_2": "40.00-40.50",
+    "pressure_1": "42.50-42.88"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "今日高开 42.5 以上且不回补",
+      "action": "放弃，不追涨",
+      "price_range": "42.50 以上",
+      "position_boundary": "空仓等待",
+      "time_window": "早盘 30 分钟"
+    },
+    {
+      "condition": "回踩 40.5-41.5 企稳 + 15 分钟不破 40.00",
+      "action": "买入 200 股",
+      "price_range": "40.50-41.50",
+      "position_boundary": "200 股，止损 39.50",
+      "time_window": "今日或明日 FOMC 前"
+    },
+    {
+      "condition": "尾盘站稳 42.00 以上且量能配合",
+      "action": "可轻仓试多 100 股跟踪",
+      "price_range": "42.00 附近",
+      "position_boundary": "100 股，止损 40.50",
+      "time_window": "尾盘 14:30 后"
+    }
+  ],
+
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "美股强势+中东红利延续→东睦今日在 41.5-43 震荡偏强，消化昨日涨幅后尾盘站稳 42",
+      "type": "main",
+      "conclusion_strength": "倾向判断"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "+9.46% 后获利盘兑现 + FOMC 前避险 + 主力净流出 8233 万 → 今日高开低走，收 40.5-41.5",
+      "type": "counter",
+      "conclusion_strength": "风险假设"
+    }
+  ],
+
+  "daily_probability": [
+    { "scenario": "高开后窄幅震荡，收 41.5-42.5，量缩", "probability": "45%", "解读": "最正常的涨次日剧本" },
+    { "scenario": "美股带动继续冲高，收 42.5-43.5", "probability": "25%", "解读": "需要量能配合，概率偏低" },
+    { "scenario": "获利回吐，收 40.5-41.5", "probability": "30%", "解读": "主力净流出 8233 万，不能忽视" }
+  ],
+
+  "counter_evidence": [
+    {
+      "evidence": "6/15 主力净流出 8233 万，散户净流入 1.1 亿——Level-1 口径显示资金背离",
+      "source": "证券之星/东方财富 [9]",
+      "type": "资金结构反证"
+    },
+    {
+      "evidence": "42 前两次站上都失败，第三次仍在窗口内",
+      "source": "kline_cache [2]",
+      "type": "技术反证"
+    },
+    {
+      "evidence": "机构目标均价 38.2，当前价已超出 10.5%",
+      "source": "外部研报",
+      "type": "估值反证"
+    },
+    {
+      "evidence": "FOMC 明日，大资金在决议前通常不会重仓做多",
+      "source": "宏观日历",
+      "type": "宏观反证"
+    }
+  ],
+
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-LONGBANG-20260615",
+      "description": "6/15 龙虎榜尚未发布，机构真实买卖方向未确认",
+      "status": "open",
+      "impact": "影响资金结构反证的置信度"
+    }
+  ],
+
+  "position_advice": {
+    "current_status": "空仓",
+    "today_focus": "今天关键是看量。如果缩量（<40万手）→ 说明追涨意愿不强，继续观望等 FOMC。如果放量且站稳 42 → 可轻仓尾盘试多 100 股。回踩 41 以下试多 200 股的机会条件不变。",
+    "best_approach": "今天不建议主动开仓。美股虽强但 FOMC 在明天，今天大概率是"大涨次日消化日"。回踩 41 以下才值得动手，否则就等 FOMC 后右侧确认。"
+  },
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS",
+    "main_challenge": "WATCH 在这个位置是合理的。空仓状态+大涨次日+FOMC 前一日+主力净流出——四个条件都不支持主动进攻。三条触发条件都有明确价位、仓位、止损。",
+    "calibration_note": "conclusion_strength=风险假设合适。H1（45% 震荡）和 H2（30% 回踩）的概率差距不大，方向不明确。"
+  },
+
+  "eval_hook": [
+    { "check": "集合竞价是否高开 42.5 以上", "time": "9:25" },
+    { "check": "前 30 分钟量能是否放量", "time": "10:00" },
+    { "check": "收盘价守住 41.5 还是跌破 41", "time": "15:00" }
+  ],
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

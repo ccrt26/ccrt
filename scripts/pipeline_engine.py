@@ -13,7 +13,7 @@ pipeline_engine.py — 流程状态机引擎 (fix3)
 P0启动必填: --incident-id --p0-reason --impact-scope --risk-level --temp-fix
               --rollback-point --post-audit-deadline [--user-confirmed-p0]
 """
-import sys, json, os, hashlib, argparse
+import sys, json, os, hashlib, argparse, subprocess
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -926,6 +926,27 @@ def cmd_block(args):
     print(f"✓ 已阻断 {rid}: {reason}")
 
 
+def cmd_hygiene_check(args):
+    """--hygiene-check: run git workspace hygiene preflight."""
+    script = os.path.join(PROJECT_ROOT, "scripts", "git_workspace_hygiene.py")
+    if not os.path.exists(script):
+        print(f"FAIL: hygiene script not found: {script}")
+        sys.exit(1)
+    result = subprocess.run(
+        [sys.executable, script, "--verify"],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    print(result.stdout)
+    if result.stderr:
+        print(result.stderr)
+    if result.returncode != 0:
+        sys.exit(result.returncode)
+    sys.exit(0)
+
+
 def cmd_validate(args):
     cl_path = args.validate
     if not os.path.exists(cl_path):
@@ -1250,6 +1271,8 @@ def main():
                    help="继续流程判定：检查pipeline状态并路由到当前阶段负责人")
     p.add_argument("--check-coding-gate", metavar="RUN_ID",
                    help="红结入场门禁全检查(C1-C8)，通过exit0，不通过exit1")
+    p.add_argument("--hygiene-check", action="store_true",
+                   help="Git workspace hygiene preflight (检查 ahead/staged/unstaged/untracked)")
     # Token (A3-A5)
     p.add_argument("--issue-auth-token", metavar="RUN_ID",
                    help="签发工程鉴权 token (coding gate PASS 后)")
@@ -1282,6 +1305,8 @@ def main():
         cmd_list_auth_tokens(args)
     elif args.check_coding_gate:
         cmd_check_coding_gate(args)
+    elif args.hygiene_check:
+        cmd_hygiene_check(args)
     elif args.advance:
         if not args.actor or not args.role:
             print("错误: --advance 需要 --actor 和 --role"); sys.exit(1)

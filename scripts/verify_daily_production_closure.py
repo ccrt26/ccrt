@@ -15,6 +15,9 @@ TZ = timezone(timedelta(hours=8))
 def sha256(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
+def norm_date(value):
+    return str(value or "").replace("-", "")[:8]
+
 def main():
     ap = argparse.ArgumentParser(description="每日数据生产闭环总闸门")
     ap.add_argument("--date", required=True, help="YYYYMMDD")
@@ -97,7 +100,7 @@ def main():
         meta = df.get("_Meta", {})
         evidence["data_full_target_date"] = meta.get("target_date", "")
         evidence["data_full_trade_date"] = meta.get("trade_date", "")
-        if meta.get("target_date") != ds:
+        if norm_date(meta.get("target_date")) != norm_date(ds):
             findings.append(f"data_full target_date={meta.get('target_date')}, expected {ds}")
 
     # 6. DQ check

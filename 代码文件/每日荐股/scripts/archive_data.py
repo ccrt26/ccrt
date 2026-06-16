@@ -7,6 +7,8 @@
 Code level: L0
 """
 import argparse
+import hashlib
+import json
 import os
 import shutil
 import sys
@@ -40,6 +42,14 @@ ARCHIVE_MAP = [
 ]
 
 
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def log(msg, level="INFO"):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{ts}][ARCHIVE][{level}] {msg}"
@@ -63,7 +73,17 @@ def archive_file(src_name, subdir, date_label, required=True):
     if not src.exists():
         if required:
             log(f"文件不存在，跳过: {src}", "WARN")
-        return False
+        return {
+            "name": src_name_resolved,
+            "required": required,
+            "status": "MISSING" if required else "SKIP",
+            "source": str(src),
+            "destination": "",
+            "subdir": subdir,
+            "source_sha256": "",
+            "destination_sha256": "",
+            "bytes": 0,
+        }
     
     dst_dir = ARCHIVE_ROOT / subdir
     dst_dir.mkdir(parents=True, exist_ok=True)
@@ -71,13 +91,57 @@ def archive_file(src_name, subdir, date_label, required=True):
     dst_name = f"{date_label}_{stem}{ext}"
     dst = dst_dir / dst_name
     
-    # If destination already exists and same size, skip
-    if dst.exists() and dst.stat().st_size == src.stat().st_size:
-        return True
-    
-    shutil.copy2(src, dst)
-    log(f"归档: {os.path.basename(src_name_resolved)} → {subdir}/{dst_name}")
-    return True
+    src_sha = sha256_file(src)
+    if dst.exists() and sha256_file(dst) == src_sha:
+        copied = False
+    else:
+        shutil.copy2(src, dst)
+        copied = True
+        log(f"归档: {os.path.basename(src_name_resolved)} → {subdir}/{dst_name}")
+
+    dst_sha = sha256_file(dst)
+    return {
+        "name": src_name_resolved,
+        "required": required,
+        "status": "PASS" if src_sha == dst_sha else "HASH_MISMATCH",
+        "source": str(src),
+        "destination": str(dst),
+        "subdir": subdir,
+        "source_sha256": src_sha,
+        "destination_sha256": dst_sha,
+        "bytes": src.stat().st_size,
+        "copied": copied,
+    }
+
+
+def write_archive_manifest(date_label, file_records):
+    manifest_dir = ARCHIVE_ROOT / "manifest"
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = manifest_dir / f"{date_label}_archive_manifest.json"
+    manifest = {
+        "flow": "archive_data",
+        "archive_date": date_label,
+        "generated_at": datetime.now().isoformat(),
+        "archive_root": str(ARCHIVE_ROOT),
+        "files": file_records,
+        "summary": {
+            "total": len(file_records),
+            "pass": sum(1 for r in file_records if r.get("status") == "PASS"),
+            "required_missing": sum(1 for r in file_records if r.get("required") is True and r.get("status") != "PASS"),
+            "optional_missing": sum(1 for r in file_records if r.get("required") is False and r.get("status") == "SKIP"),
+        },
+    }
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    return manifest_path
+
+
+def manifest_is_pass(file_records):
+    return all(
+        r.get("status") == "PASS"
+        for r in file_records
+        if r.get("required") is True
+    )
 
 
 def trim_to_latest(subdir, keep=KEEP_LATEST):
@@ -117,19 +181,22 @@ def main():
     date_label = args.date.replace("-", "")
     log(f"===== 开始归档 ({args.date}) =====")
 
-    archived = 0
+    file_records = []
     for src_name, subdir, required in ARCHIVE_MAP:
-        if archive_file(src_name, subdir, date_label, required):
-            archived += 1
+        file_records.append(archive_file(src_name, subdir, date_label, required))
 
     # 裁剪+清理
     for subdir in set(sd for _, sd, _ in ARCHIVE_MAP):
         trim_to_latest(subdir, args.keep)
         clean_old(subdir, args.retention)
 
+    manifest_path = write_archive_manifest(date_label, file_records)
+    archived = sum(1 for r in file_records if r.get("status") == "PASS")
+
     log(f"归档完成: {archived}个文件 → {ARCHIVE_ROOT}")
+    log(f"归档manifest: {manifest_path}")
     log("===== 归档结束 =====")
-    return 0 if archived >= 4 else 1
+    return 0 if manifest_is_pass(file_records) else 1
 
 
 if __name__ == "__main__":

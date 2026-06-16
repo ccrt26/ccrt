@@ -64,6 +64,48 @@
           "description": { "type": "string" }
         }
       }
+    },
+    "g0_g6_routing_contract": {
+      "type": "object",
+      "required": [
+        "version",
+        "purpose",
+        "default_langgraph",
+        "langgraph_enable_condition",
+        "priority_order",
+        "issue_routes",
+        "decision_states",
+        "routing_output_required_fields"
+      ],
+      "properties": {
+        "version": {"type": "string"},
+        "purpose": {"type": "string"},
+        "default_langgraph": {"type": "boolean"},
+        "langgraph_enable_condition": {"type": "string"},
+        "priority_order": {"type": "array", "items": {"type": "string"}},
+        "issue_routes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["flow_code", "keywords", "required_roles", "must_have_gates", "block_if_missing_roles"],
+            "properties": {
+              "flow_code": {"type": "string"},
+              "keywords": {"type": "array", "items": {"type": "string"}},
+              "required_roles": {"type": "array", "items": {"type": "string"}},
+              "must_have_gates": {"type": "array", "items": {"type": "string"}},
+              "block_if_missing_roles": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "decision_states": {
+          "type": "object",
+          "required": ["PASS", "WARN", "BLOCK"]
+        },
+        "routing_output_required_fields": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
     }
   }
 }

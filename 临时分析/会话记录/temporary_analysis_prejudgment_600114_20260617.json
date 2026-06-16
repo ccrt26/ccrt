@@ -1,0 +1,163 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T01:18:00+08:00",
+  "intraday_state": "pre_fomc",
+  "action_bias": "WATCH",
+  "conclusion_strength": "风险假设",
+
+  "data_quality": {
+    "current_quote": "present",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "present",
+    "user_position_context": "present"
+  },
+
+  "market_context": {
+    "us_overnight": {
+      "nasdaq": "+2.2~2.4%",
+      "dow": "历史新高 +1.1~1.2%",
+      "philly_semi": "+4.2~5.0% 逼近历史新高",
+      "trigger": "中东和平协议落地，油价暴跌 5%，10Y 收益率回落"
+    },
+    "a_previous": {
+      "shanghai": "4096 +1.61%",
+      "chuanbei": "4033 +5.30%",
+      "kechuang50": "1748 +5.12%",
+      "dongmu": "42.22 +9.46% 放量 47 万手"
+    },
+    "fomc": {
+      "date": "2026-06-17",
+      "rate_expectation": "维持不变 >90%",
+      "key_risk": "新主席 Warsh 首次决议，措辞不确定性大",
+      "dovish_case": "成长股加速，东睦冲 43-45",
+      "hawkish_case": "成长股回 3-5%，东睦回 38-39"
+    }
+  },
+
+  "key_levels": {
+    "confirm_above": "42.88",
+    "invalidate_below": "40.00",
+    "intraday_reference": "42.00",
+    "fomc_pivot": {
+      "dovish_target": "44-45",
+      "hawkish_support": "38-39"
+    }
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "6/16-6/17 回踩 40.5-41.5 且 15 分钟不破 40.00",
+      "action": "买入 200 股",
+      "price_range": "40.50-41.50",
+      "position_boundary": "200 股，止损 39.50",
+      "time_window": "FOMC 决议前"
+    },
+    {
+      "condition": "FOMC 鸽派 + 东睦站稳 42.00 以上维持 30 分钟",
+      "action": "买入 200 股",
+      "price_range": "42.00-43.00",
+      "position_boundary": "200 股，止损 40.50",
+      "time_window": "FOMC 决议后 1 小时内"
+    },
+    {
+      "condition": "FOMC 鹰派 + 东睦回调至 39.00-40.00 企稳",
+      "action": "买入 200 股",
+      "price_range": "39.00-40.00",
+      "position_boundary": "200 股，止损 37.50",
+      "time_window": "6/17 下午至 6/18"
+    },
+    {
+      "condition": "直接高开 42.50 以上且 30 分钟不回补",
+      "action": "放弃，不追涨",
+      "price_range": "42.50 以上",
+      "position_boundary": "空仓等待",
+      "time_window": "6/16 早盘 30 分钟"
+    }
+  ],
+
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "FOMC 鸽派 + 中东红利延续 + 科技股强势 → 东睦站稳 42 后冲 44-45",
+      "type": "main",
+      "conclusion_strength": "风险假设"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "+9.46% 已提前定价利好 + FOMC 前资金避险 + 42 前两次失败 → 回踩 40-41",
+      "type": "counter",
+      "conclusion_strength": "倾向判断"
+    }
+  ],
+
+  "counter_evidence": [
+    {
+      "evidence": "6/15 主力净流出 -1.39 亿 vs 小单净流入 +1.39 亿（Level-1 口径），量价背离",
+      "source": "tushare moneyflow [9]",
+      "type": "资金结构反证"
+    },
+    {
+      "evidence": "42 前两次站上都失败（6/9→6/10 被砸回 40.21），历史胜率 0%",
+      "source": "kline_cache [2]",
+      "type": "技术反证"
+    },
+    {
+      "evidence": "机构目标均价 38.2，当前 42.22 已超出 10.5%",
+      "source": "外部研报",
+      "type": "估值反证"
+    },
+    {
+      "evidence": "FOMC 新主席首次决议，鹰派不确定性无法排除",
+      "source": "宏观日历",
+      "type": "宏观事件反证"
+    }
+  ],
+
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-600114-LONGBANG-20260615",
+      "description": "6/15 龙虎榜未发布，机构是真卖还是拆单无法确认",
+      "status": "open",
+      "impact": "龙虎榜出后：机构净买入→H1置信度上调；机构净卖出→H2置信度上调"
+    },
+    {
+      "gap_id": "GAP-600114-FOMC-20260617",
+      "description": "FOMC 6/17 利率决议与声明措辞",
+      "status": "open",
+      "impact": "鸽派→三条路径中走"右侧追多"；鹰派→走"抄底路径""
+    }
+  ],
+
+  "probability_table": [
+    { "scenario": "获利回吐+横盘消化，东睦 40-42 震荡", "probability": "40%", "action": "路径 A：回踩 40.5-41.5 试多" },
+    { "scenario": "FOMC 鸽派+科技延续，东睦冲 43-45", "probability": "30%", "action": "路径 B：右侧站稳 42 追多" },
+    { "scenario": "FOMC 鹰派+大盘回调，东睦回 38-39.5", "probability": "30%", "action": "路径 C：39 以下低于卖出价买入" }
+  ],
+
+  "position_advice": {
+    "current_status": "空仓",
+    "best_approach": "FOMC 前轻仓试错（回踩 40.5-41.5），FOMC 后右侧加码。三条路径对应三种结果——你不需要今天动手，信号出现再进。空仓有选择权。"
+  },
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS",
+    "main_challenge": "四种触发条件都有明确的价位区间+仓位上限+止损位，WATCH 被准确定义为"不满足条件就不动"。conclusion_strength=风险假设是诚实的——FOMC 结果不可预测。"
+  },
+
+  "eval_hook": {
+    "close_check": "6/16 收盘检查东睦是否在 42 附近",
+    "fomc_result": "6/17 凌晨检查 FOMC 决议",
+    "t1_check": "6/17 收盘检查方向是否明朗"
+  },
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

@@ -15,6 +15,7 @@
   10. install_crontab.sh 必须是废弃保护脚本，不得包含 crontab "$TMPFILE"
   11. 当前用户 crontab 如可读取，不得包含 /Users/ccrt/ccrt
   12. ~/Library/LaunchAgents/com.tielv.*.plist 中的 tielv 服务必须在 registry 登记
+  13. daily production 的 launchd 可见运行时密钥必须可用
 
 用法:
   python3 scripts/check_runtime_entry_authority.py --all
@@ -27,14 +28,21 @@
 """
 
 import argparse
+import importlib.util
 import json
 import os
+import plistlib
 import re
 import subprocess
 import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+
+from runtime_secret_loader import TUSHARE_TOKEN, check_secret_readiness
+
 REGISTRY_PATH = PROJECT_ROOT / "00_项目地基" / "06_调度与运行" / "runtime_entry_registry.json"
 LEGACY_REG_PATH = PROJECT_ROOT / "00_项目地基" / "06_调度与运行" / "win_legacy_migration_register.json"
 WORKFLOW_PY = PROJECT_ROOT / "代码文件" / "每日荐股" / "scripts" / "daily_workflow.py"
@@ -43,6 +51,7 @@ SIM_TRADING_YML = PROJECT_ROOT / ".github" / "workflows" / "sim_trading.yml"
 INSTALL_CRONTAB_SH = PROJECT_ROOT / "代码文件" / "tools" / "install_crontab.sh"
 PLIST_DIR = Path.home() / "Library" / "LaunchAgents"
 LABEL_PREFIX = "com.tielv."
+PROJECT_PYTHON = PROJECT_ROOT / ".venv" / "bin" / "python"
 
 # Known PS1 files with Python replacements (active dirs)
 KNOWN_FORBIDDEN_PS1 = [
@@ -67,6 +76,13 @@ def load_json(path):
 def make_check(check_id, field, status, expected, actual, message):
     return {"check_id": check_id, "field": field, "status": status,
             "expected": expected, "actual": actual, "message": message}
+
+
+def load_generate_launchd_module():
+    spec = importlib.util.spec_from_file_location("ccrt_generate_launchd", str(GENERATE_LAUNCHD_PY))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def check_all():
@@ -358,6 +374,106 @@ def check_all():
             checks.append(make_check("C12", "launchd_registration", "PASS", f"全部 {len(plist_files)} 个已登记", f"全部已登记", ""))
     else:
         checks.append(make_check("C12", "launchd_registration", "PASS", "无 launchd plist", "无 plist 目录", ""))
+
+    # ── C13: launchd-visible runtime secret readiness ─────
+    secret_status = check_secret_readiness(TUSHARE_TOKEN, launchd_compatible=True)
+    if secret_status.get("status") != "PASS":
+        result = "BLOCK"
+        checks.append(make_check("C13", "daily_production_runtime_secret", "BLOCK",
+                                  "launchd 可见 TUSHARE_TOKEN",
+                                  secret_status.get("source", "missing"),
+                                  secret_status.get("reason", f"{TUSHARE_TOKEN} 不可用于 launchd 生产任务")))
+    else:
+        checks.append(make_check("C13", "daily_production_runtime_secret", "PASS",
+                                  "launchd 可见 TUSHARE_TOKEN",
+                                  f"source={secret_status.get('source')}",
+                                  ""))
+
+    # ── C13b: daily production launchd must use project .venv ─────
+    WRAPPER_PY = PROJECT_ROOT / "scripts" / "run_daily_data_pipeline_today.py"
+    c13b_errors = []
+    expected_python = str(PROJECT_PYTHON)
+    if not PROJECT_PYTHON.exists():
+        c13b_errors.append(f".venv python 不存在: {expected_python}")
+    if GENERATE_LAUNCHD_PY.exists():
+        try:
+            generate_launchd = load_generate_launchd_module()
+            task_def = generate_launchd.TASK_DEFS.get("daily_signal", {})
+            actual_command = task_def.get("command")
+            if actual_command != expected_python:
+                c13b_errors.append(f"generate_launchd daily_signal command={actual_command}")
+        except Exception as e:
+            c13b_errors.append(f"generate_launchd.py 无法加载: {e}")
+    else:
+        c13b_errors.append("generate_launchd.py 不存在")
+    if WRAPPER_PY.exists():
+        wrapper_text = WRAPPER_PY.read_text(encoding="utf-8", errors="ignore")
+        if "def production_python" not in wrapper_text or '".venv"' not in wrapper_text:
+            c13b_errors.append("run_daily_data_pipeline_today.py 未固定 production_python 到 .venv")
+        if "production_python()" not in wrapper_text:
+            c13b_errors.append("run_daily_data_pipeline_today.py 未使用 production_python()")
+    else:
+        c13b_errors.append("run_daily_data_pipeline_today.py 不存在")
+
+    daily_signal_plist = PLIST_DIR / "com.tielv.daily-signal.plist"
+    if daily_signal_plist.exists():
+        try:
+            with daily_signal_plist.open("rb") as f:
+                plist = plistlib.load(f)
+            program_args = plist.get("ProgramArguments", [])
+            installed_command = program_args[0] if program_args else ""
+            if installed_command != expected_python:
+                c13b_errors.append(f"installed daily-signal ProgramArguments[0]={installed_command}")
+        except Exception as e:
+            c13b_errors.append(f"installed daily-signal plist 无法读取: {e}")
+    else:
+        c13b_errors.append("installed daily-signal plist 不存在")
+
+    if c13b_errors:
+        result = "BLOCK"
+        checks.append(make_check("C13b", "daily_production_runtime_python", "BLOCK",
+                                  f"daily_signal 使用 {expected_python}",
+                                  "; ".join(c13b_errors),
+                                  "日报生产链必须使用项目 .venv，禁止回退到系统 python3"))
+    else:
+        checks.append(make_check("C13b", "daily_production_runtime_python", "PASS",
+                                  f"daily_signal 使用 {expected_python}",
+                                  "generate_launchd + wrapper + installed plist 全部通过",
+                                  ""))
+
+    # ── C14: Date contract — collector 支持 --date 且 production 传 --date ──
+    COLLECTOR_PY = PROJECT_ROOT / "代码文件" / "每日荐股" / "scripts" / "batch_data_collector.py"
+    PIPELINE_PY = PROJECT_ROOT / "scripts" / "run_daily_production_pipeline.py"
+    c14_errors = []
+    if COLLECTOR_PY.exists():
+        collector_text = COLLECTOR_PY.read_text(encoding="utf-8", errors="ignore")
+        if 'parser.add_argument("--date"' not in collector_text:
+            c14_errors.append("batch_data_collector.py 缺少 --date 参数定义")
+        if 'date_compact = date_arg.replace("-", "")' not in collector_text:
+            c14_errors.append("batch_data_collector.py 缺少 --date 日期标准化逻辑")
+        if 'if args.date:' not in collector_text:
+            c14_errors.append("batch_data_collector.py 缺少无效 --date 硬失败 (显式传入无效日期应 sys.exit)")
+    else:
+        c14_errors.append("batch_data_collector.py 不存在")
+    if PIPELINE_PY.exists():
+        pipeline_text = PIPELINE_PY.read_text(encoding="utf-8", errors="ignore")
+        if '"--date", date_str' not in pipeline_text and "'--date', date_str" not in pipeline_text:
+            c14_errors.append("run_daily_production_pipeline.py Step 3 未传 --date 给 collector")
+        if 'planned_commands' not in pipeline_text:
+            c14_errors.append("run_daily_production_pipeline.py dry-run 未暴露 planned_commands")
+    else:
+        c14_errors.append("run_daily_production_pipeline.py 不存在")
+    if c14_errors:
+        result = "BLOCK"
+        checks.append(make_check("C14", "date_contract", "BLOCK",
+                                  "collector 支持 --date + production 传 --date + dry-run 暴露命令",
+                                  "; ".join(c14_errors),
+                                  f"日期合同不一致: {c14_errors}"))
+    else:
+        checks.append(make_check("C14", "date_contract", "PASS",
+                                  "collector 支持 --date + production 传 --date + dry-run 暴露命令",
+                                  "全部通过",
+                                  ""))
 
     return {"result": result, "checks": checks}
 

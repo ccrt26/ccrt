@@ -1,0 +1,76 @@
+{
+  "scene": "临时分析",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T09:25:00+08:00",
+  "intraday_state": "data_insufficient",
+  "action_bias": "NEUTRAL",
+  "conclusion_strength": "数据不足",
+  "data_quality": {
+    "current_quote": "missing",
+    "market_context": "present",
+    "baseline_context": "present",
+    "event_context": "present",
+    "user_position_context": "present"
+  },
+  "key_levels": {
+    "confirm_above": "46.44",
+    "invalidate_below": "38.00",
+    "intraday_reference": "分时均价线"
+  },
+  "trigger_actions": [
+    {
+      "condition": "补齐行情、市场和基线数据后再判断",
+      "action": "仅观察，不输出强动作",
+      "price_range": "无有效价格区间",
+      "position_boundary": "不调整仓位",
+      "time_window": "数据补齐后复核"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "关键数据缺失，当前不能形成可执行盘中判断。",
+      "type": "main",
+      "conclusion_strength": "数据不足"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "若行情、市场和基线数据补齐，可重新判断盘中状态。",
+      "type": "counter",
+      "conclusion_strength": "数据不足"
+    }
+  ],
+  "counter_evidence": [
+    {
+      "evidence": "行情、市场或基线数据缺失，无法支持强动作。",
+      "source": "data_quality",
+      "type": "数据反证"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-CURRENT-QUOTE",
+      "description": "current_quote 缺失。",
+      "status": "open",
+      "impact": "只能输出 WATCH/NEUTRAL 与 数据不足。"
+    }
+  ],
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "NOT_REQUIRED",
+    "main_challenge": "未输出强动作，暂不强制砺石审查。",
+    "calibration_note": "保持观察结论，不将正常波动误判为趋势。"
+  },
+  "eval_hook": {
+    "close_check": "收盘检查是否仍在关键区间内",
+    "t1_check": "T+1 检查是否延续正常波动",
+    "t3_check": "T+3 检查区间是否被突破或跌破"
+  },
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

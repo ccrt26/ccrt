@@ -9,6 +9,9 @@ from collections import defaultdict
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE, '数据')
 GATE_LOG = os.path.join(BASE, '..', 'logs', 'gates', 'gate_check.jsonl')
+PROJECT_ROOT = os.path.dirname(BASE)
+DAILY_TARGETS = os.path.join(PROJECT_ROOT, '00_项目地基', '02_权威注册表', 'daily_report_targets.json')
+KLINE_CACHE_DIR = os.path.join(DATA_DIR, 'kline_cache')
 
 THRESHOLDS = {
     'quote_coverage': 80,      # 行情覆盖率 ≥80%，否则FAIL
@@ -32,6 +35,38 @@ def load_json(path):
     except Exception:
         return None
 
+def norm_date(value):
+    return str(value or '').replace('-', '')[:8]
+
+def load_quality_scope_codes():
+    targets = load_json(DAILY_TARGETS)
+    if not isinstance(targets, dict):
+        return set()
+    return {
+        str(t.get('code', ''))
+        for t in targets.get('active_targets', [])
+        if t.get('enabled') and t.get('code')
+    }
+
+def kline_cache_rows(code):
+    path = os.path.join(KLINE_CACHE_DIR, f'{code}.json')
+    rows = load_json(path)
+    return rows if isinstance(rows, list) else []
+
+def kline_cache_has_date(code, target_date):
+    target = norm_date(target_date)
+    for row in kline_cache_rows(code):
+        if not isinstance(row, dict):
+            continue
+        d = norm_date(row.get('date') or row.get('trade_date'))
+        if d == target:
+            return True
+    return False
+
+def kline_cache_has_min_bars(code, min_bars, target_date):
+    rows = kline_cache_rows(code)
+    return len(rows) >= min_bars and kline_cache_has_date(code, target_date)
+
 def check_data_full():
     """检查 data_full.json 数据完整性"""
     issues = []
@@ -46,19 +81,42 @@ def check_data_full():
     stocks = data.get('Stocks', [])
     financials = data.get('Financials', {})
     fundflows = data.get('FundFlows', {})
+    scope_codes = load_quality_scope_codes()
+    if scope_codes:
+        scoped_stocks = [s for s in stocks if str(s.get('Code') or s.get('code', '')) in scope_codes]
+    else:
+        scoped_stocks = stocks
+    target_date = norm_date(meta.get('target_date') or meta.get('trade_date') or meta.get('data_date'))
+    metrics['quality_scope'] = 'daily_report_targets' if scope_codes else 'data_full_stocks'
+    metrics['quality_scope_count'] = len(scoped_stocks)
 
     # 行情覆盖率
-    total = len(stocks)
-    has_price = sum(1 for s in stocks if s.get('Price') and s.get('Price') > 0)
+    total = len(scoped_stocks)
+    has_price = sum(
+        1 for s in scoped_stocks
+        if (s.get('Price') and s.get('Price') > 0)
+        or kline_cache_has_date(str(s.get('Code') or s.get('code', '')), target_date)
+    )
     metrics['quote_coverage'] = round(has_price / total * 100, 1) if total else 0
     if metrics['quote_coverage'] < THRESHOLDS['quote_coverage']:
         issues.append({'id': 'DQ-F1', 'severity': 'FAIL',
                        'desc': f"行情覆盖率{metrics['quote_coverage']}% < {THRESHOLDS['quote_coverage']}%"})
 
     # K线完整性
-    kline_ok = sum(1 for s in stocks if s.get('KClose') and len(s.get('KClose', [])) >= THRESHOLDS['kline_min_bars'])
+    kline_ok = sum(
+        1 for s in scoped_stocks
+        if (s.get('KClose') and len(s.get('KClose', [])) >= THRESHOLDS['kline_min_bars'])
+        or kline_cache_has_min_bars(str(s.get('Code') or s.get('code', '')), THRESHOLDS['kline_min_bars'], target_date)
+    )
     metrics['kline_completeness'] = round(kline_ok / total * 100, 1) if total else 0
-    missing_kline = [s['Code'] for s in stocks if not s.get('KClose') or len(s.get('KClose', [])) < THRESHOLDS['kline_min_bars']]
+    missing_kline = [
+        str(s.get('Code') or s.get('code', ''))
+        for s in scoped_stocks
+        if not (
+            (s.get('KClose') and len(s.get('KClose', [])) >= THRESHOLDS['kline_min_bars'])
+            or kline_cache_has_min_bars(str(s.get('Code') or s.get('code', '')), THRESHOLDS['kline_min_bars'], target_date)
+        )
+    ]
     if missing_kline:
         issues.append({'id': 'DQ-F2', 'severity': 'FAIL',
                        'desc': f"K线数据不足({THRESHOLDS['kline_min_bars']}根): {missing_kline[:5]}"})
@@ -80,14 +138,14 @@ def check_data_full():
                        'desc': 'Tushare本地缓存命中=0，Tier 2/3缓存可能全部失效'})
 
     # 财务覆盖率
-    fin_count = len(financials) if isinstance(financials, dict) else 0
+    fin_count = len(set(financials.keys()) & scope_codes) if scope_codes and isinstance(financials, dict) else (len(financials) if isinstance(financials, dict) else 0)
     metrics['financial_coverage'] = round(fin_count / total * 100, 1) if total else 0
     if metrics['financial_coverage'] < THRESHOLDS['financial_coverage']:
         issues.append({'id': 'DQ-W2', 'severity': 'WARN',
                        'desc': f"财务覆盖率{metrics['financial_coverage']}% < {THRESHOLDS['financial_coverage']}%"})
 
     # 资金流覆盖率
-    ff_count = len(fundflows) if isinstance(fundflows, dict) else 0
+    ff_count = len(set(fundflows.keys()) & scope_codes) if scope_codes and isinstance(fundflows, dict) else (len(fundflows) if isinstance(fundflows, dict) else 0)
     metrics['fundflow_coverage'] = round(ff_count / total * 100, 1) if total else 0
     if metrics['fundflow_coverage'] < THRESHOLDS['fundflow_coverage']:
         issues.append({'id': 'DQ-W3', 'severity': 'WARN',

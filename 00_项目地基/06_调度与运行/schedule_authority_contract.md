@@ -44,13 +44,23 @@
 | 飞书桥接 | 如保留，必须登记到 runtime_entry_registry.json，并由 generate_launchd.py 统一管理 |
 | check_runtime_entry_authority.py | 必须能查出 crontab、GitHub schedule、LaunchAgents、占位任务、unsupported mode |
 
-## 四、generate_launchd.py 调度任务清单
+## 四、运行时密钥规则
+
+| 规则 | 内容 |
+|:-----|:------|
+| 生产密钥来源 | launchd 生产任务必须能从 `/Users/ccrt/.ccrt/tielv.env` 读取所需密钥 |
+| shell 配置限制 | `.zshrc` / `.zprofile` 只属于交互 shell，不得视为 launchd 生产运行时凭证来源 |
+| 日报数据链密钥 | `daily_signal` → `run_daily_data_pipeline_today.py` → `run_daily_production_pipeline.py` 必须具备 launchd 可见 `TUSHARE_TOKEN` |
+| 验收闸门 | `check_runtime_secret_readiness.py --runtime daily_production` 与 `check_runtime_entry_authority.py --all` 必须 PASS |
+| 日志约束 | 闸门和健康检查只允许输出密钥是否存在及来源，不得输出密钥值 |
+
+## 五、generate_launchd.py 调度任务清单
 
 | 任务名 | 调度 | 命令 |
 |:-------|:-----|:------|
 | `git_autosweep` | 每小时 :07 | `代码文件/tools/git_autosweep.py` |
 | `pigeon` | 交易日 19:07 | `daily_orchestrator.py --mode pigeon` |
-| `daily_signal` | 交易日 16:15 | `daily_orchestrator.py --mode daily` |
+| `daily_signal` | 交易日 16:30 | `scripts/run_daily_data_pipeline_today.py` |
 | `deep_signal` | 周五 20:30 | `daily_orchestrator.py --mode deep` |
 | `post_eval` | 交易日 17:20 | `daily_workflow.py --mode eval` |
 | `scheduler_health` | 每小时 :03、:33 | `scheduler_health_check.py` |
@@ -58,7 +68,7 @@
 | `feishu_bridge` | 每 30 秒 | `feishu_bridge.py --once` |
 | `im_consumer` | 每 30 秒 | `im_consumer.py --once` |
 
-## 五、数据采集顺序
+## 六、数据采集顺序
 
 | 顺序 | 步骤 | 约束 |
 |:----:|:-----|:------|
@@ -69,22 +79,22 @@
 
 禁止绕过数据采集顺序直接生成日报。
 
-## 六、source_snapshot 要求
+## 七、source_snapshot 要求
 
 日报生成时必须记录：
 - `report_generated_at`：报告生成时间（ISO 8601, Asia/Shanghai）
 - `source_snapshot.margin`：融资数据快照（latest_trade_date, report_trade_date, lag_days, degraded, declared_in, source_path）
 
-## 七、运行时入口注册表
+## 八、运行时入口注册表
 
 `runtime_entry_registry.json` 为运行时入口的权威注册表。所有新增运行时入口必须注册后方可运行。
 crontab、install_crontab.sh、cron_runner.sh、GitHub Actions schedule 均标记为 forbidden_current_runtime。
 
-## 八、Win Legacy 迁移注册
+## 九、Win Legacy 迁移注册
 
 `win_legacy_migration_register.json` 登记已有 Python 替代的 PS1 脚本的迁移状态。已登记的 E 级脚本禁止在当前运行时调用。
 
-## 九、禁止事项（完整版）
+## 十、禁止事项（完整版）
 
 | 禁止 | 说明 |
 |:-----|:------|

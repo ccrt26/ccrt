@@ -91,10 +91,9 @@ class TestStageGateAutoAdvance(unittest.TestCase):
 
             proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(g4)])
             data = json.loads(proc.stdout)
-            self.assertEqual(data["status"], "ADVANCE_READY")
-            self.assertEqual(data["to_gate"], "G5")
-            self.assertTrue(data["dry_run"])
-            self.assertEqual(data["writes"], [])
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "G4 without actual_actor/changed_files should repair")
+            self.assertIn("missing_implementation_evidence", data["issues"])
 
             wrong_role = td_path / "g5_wrong_role.json"
             wrong_role.write_text(json.dumps({
@@ -158,9 +157,24 @@ class TestStageGateAutoAdvance(unittest.TestCase):
             self.assertFalse(data["user_escalation"])
 
             out_dir = td_path / "dispatch"
+            g4_with_evidence = td_path / "g4_with_evidence.json"
+            g4_with_evidence.write_text(json.dumps({
+                "task_id": "UT-G4-DISPATCH",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "actual_actor": "deepseek_live",
+                "execution_model": "deepseek-via-claude-code",
+                "implementation_actor": "deepseek_live",
+                "live_model_call": True,
+                "codex_write_detected": False,
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+                "tool_calls": [{"name": "terminal_stream_adapter", "mode": "mock", "returncode": 0}],
+            }), encoding="utf-8")
             proc = self.run_py([
                 "scripts/stage_gate_auto_advance.py",
-                "--evidence", str(g4),
+                "--evidence", str(g4_with_evidence),
                 "--write-dispatch",
                 "--output-dir", str(out_dir),
             ])
@@ -269,6 +283,14 @@ class TestStageGateAutoAdvance(unittest.TestCase):
                 "gate": "G4",
                 "artifact_type": "candidate",
                 "result": "PASS",
+                "actual_actor": "deepseek_live",
+                "execution_model": "deepseek-via-claude-code",
+                "implementation_actor": "deepseek_live",
+                "live_model_call": True,
+                "codex_write_detected": False,
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+                "tool_calls": [{"name": "terminal_stream_adapter", "mode": "mock", "returncode": 0}],
             }), encoding="utf-8")
 
             self.run_py(
@@ -308,6 +330,213 @@ class TestStageGateAutoAdvance(unittest.TestCase):
                     "scripts/stage_gate_auto_advance.py",
                     "scripts/archive_after_g6.py",
                 })
+
+    def test_g4_role_boundary_validation(self):
+        """Verify G4 role boundary validation: codex → REPAIR, deepseek → ADVANCE."""
+        with tempfile.TemporaryDirectory() as td:
+            td_path = Path(td)
+
+            # Case 1: implementation_actor=codex → REPAIR
+            codex_evidence = td_path / "g4_codex.json"
+            codex_evidence.write_text(json.dumps({
+                "task_id": "UT-CODEX-G4",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex",
+                "actual_actor": "codex",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_evidence)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED")
+            self.assertIn("codex_implementation_detected", data["issues"])
+            self.assertEqual(data["dispatch_action"], "invalidate_implementation_and_request_deepseek_rerun")
+
+            # Case 2: codex_write_detected=True → REPAIR
+            codex_write = td_path / "g4_codex_write.json"
+            codex_write.write_text(json.dumps({
+                "task_id": "UT-CODEX-WRITE",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "codex_write_detected": True,
+                "actual_actor": "deepseek_live",
+                "changed_files": ["test.py"],
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_write)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 3: missing actual_actor and changed_files → REPAIR
+            missing_evidence = td_path / "g4_missing.json"
+            missing_evidence.write_text(json.dumps({
+                "task_id": "UT-MISSING-G4",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(missing_evidence)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED")
+            self.assertIn("missing_implementation_evidence", data["issues"])
+
+            # Case 4: codex with self-filled g3_impl_allowed_by_user but NO env var → REPAIR
+            override_evidence = td_path / "g4_override.json"
+            override_evidence.write_text(json.dumps({
+                "task_id": "UT-OVERRIDE-G4",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex",
+                "actual_actor": "codex",
+                "g3_impl_allowed_by_user": True,
+                "changed_files": ["test.py"],
+                "tool_calls": [{"name": "Read", "count": 2}],
+                "live_model_call": True,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(override_evidence)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "self-filled g3_impl_allowed_by_user without env var should not suppress codex detection")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 5: deepseek_live full evidence → ADVANCE_READY
+            deepseek_evidence = td_path / "g4_deepseek.json"
+            deepseek_evidence.write_text(json.dumps({
+                "task_id": "UT-DEEPSEEK-G4",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "actual_actor": "deepseek_live",
+                "execution_model": "deepseek-via-claude-code",
+                "implementation_actor": "deepseek_live",
+                "live_model_call": True,
+                "codex_write_detected": False,
+                "changed_files": ["test.py"],
+                "tool_calls": [{"name": "Read", "count": 2}, {"name": "Edit", "count": 1}],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(deepseek_evidence)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "ADVANCE_READY", f"deepseek evidence should advance: {data}")
+            self.assertEqual(data["to_gate"], "G5")
+            self.assertEqual(data["issues"], [])
+
+            # Case 6: "Codex" capitalized → REPAIR (case-insensitive)
+            codex_cap = td_path / "g4_codex_cap.json"
+            codex_cap.write_text(json.dumps({
+                "task_id": "UT-CODEX-CAP",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "Codex",
+                "actual_actor": "deepseek_live",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_cap)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "'Codex' capitalized should trigger codex_implementation_detected")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 7: "CODEX" all caps → REPAIR (case-insensitive)
+            codex_uc = td_path / "g4_codex_uc.json"
+            codex_uc.write_text(json.dumps({
+                "task_id": "UT-CODEX-UC",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "CODEX",
+                "actual_actor": "deepseek_live",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_uc)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "'CODEX' all caps should trigger codex_implementation_detected")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 8: "codex_app" variant → REPAIR
+            codex_app = td_path / "g4_codex_app.json"
+            codex_app.write_text(json.dumps({
+                "task_id": "UT-CODEX-APP",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex_app",
+                "actual_actor": "deepseek_live",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_app)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "'codex_app' variant should trigger codex_implementation_detected")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 9: "codex-agent" variant → REPAIR
+            codex_agent = td_path / "g4_codex_agent.json"
+            codex_agent.write_text(json.dumps({
+                "task_id": "UT-CODEX-AGENT",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex-agent",
+                "actual_actor": "deepseek_live",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_agent)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "'codex-agent' variant should trigger codex_implementation_detected")
+            self.assertIn("codex_implementation_detected", data["issues"])
+
+            # Case 10: codex with actual env var G3_IMPL_ALLOWED_BY_USER=true → ADVANCE_READY
+            env_override = td_path / "g4_env_override.json"
+            env_override.write_text(json.dumps({
+                "task_id": "UT-ENV-OVERRIDE",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "codex",
+                "actual_actor": "codex",
+                "g3_impl_allowed_by_user": False,
+                "changed_files": ["test.py"],
+                "tool_calls": [{"name": "Read", "count": 2}],
+                "live_model_call": True,
+            }), encoding="utf-8")
+            proc = self.run_py(
+                ["scripts/stage_gate_auto_advance.py", "--evidence", str(env_override)],
+                env={"G3_IMPL_ALLOWED_BY_USER": "true"},
+            )
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "ADVANCE_READY",
+                             "codex with env G3_IMPL_ALLOWED_BY_USER=true should advance")
+            self.assertNotIn("codex_implementation_detected", data["issues"])
+
+            # Case 11: actual_actor="CodexAgent" → REPAIR (variant via actual_actor field)
+            codex_agent_actual = td_path / "g4_codex_agent_actual.json"
+            codex_agent_actual.write_text(json.dumps({
+                "task_id": "UT-CODEX-AGENT-ACTUAL",
+                "gate": "G4",
+                "artifact_type": "candidate",
+                "result": "PASS",
+                "implementation_actor": "deepseek_live",
+                "actual_actor": "CodexAgent",
+                "changed_files": ["test.py"],
+                "g3_impl_allowed_by_user": False,
+            }), encoding="utf-8")
+            proc = self.run_py(["scripts/stage_gate_auto_advance.py", "--evidence", str(codex_agent_actual)])
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["status"], "REPAIR_DISPATCH_REQUIRED",
+                             "actual_actor='CodexAgent' should trigger codex_implementation_detected")
+            self.assertIn("codex_implementation_detected", data["issues"])
 
     def test_runtime_entry_authority_gate_passes(self):
         proc = self.run_py(["scripts/check_runtime_entry_authority.py", "--all", "--json"])

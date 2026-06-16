@@ -1,0 +1,65 @@
+{
+  "scene": "临时分析（盘中更新）",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T10:35:00+08:00",
+  "intraday_state": "breakout_testing",
+  "action_bias": "WATCH",
+  "conclusion_strength": "倾向判断",
+
+  "intraday_summary": {
+    "previous_high": "42.88（6/10）",
+    "today_high": "42.96（✅ 已突破）",
+    "current": "42.73（回落至 42.88 下方）",
+    "breakout_minute": "10:26 放量 9,857 股拉到 42.95",
+    "status": "盘中突破，尚未站稳"
+  },
+
+  "breakout_assessment": {
+    "did_break": true,
+    "breakout_volume": "9,857 股/分 — 有效放量",
+    "held_above": false,
+    "current_vs_level": "42.73 < 42.88，目前回落至突破位下方",
+    "judgment": "true_breakout_not_confirmed",
+    "explanation": "10:26 那根 9,857 的量打穿 42.88 是真实的突破动作。但下一分钟量缩到 2,373 并回落至 42.73——突破后没有买盘跟进。现在需要观察的是：今天剩余时间能否再次站稳 42.88 之上。如果再次放量站上 → 突破确认。如果一直在 42.88 下方震荡 → 今天的突破只是盘中扎空，不是有效突破。"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "再次放量（>5,000/分）站上 42.88 并维持 15 分钟以上",
+      "action": "买入 200 股，追突破确认",
+      "price_range": "42.88-43.00",
+      "position_boundary": "200 股，止损 41.50",
+      "time_window": "今日剩余时间"
+    },
+    {
+      "condition": "一直回落到 42.0-42.4 区间缩量震荡",
+      "action": "不动，等 FOMC 或回踩 41 以下",
+      "price_range": "42.0-42.4",
+      "position_boundary": "空仓等待",
+      "time_window": "今日"
+    },
+    {
+      "condition": "回踩 41.5 以下",
+      "action": "买入 200 股试多",
+      "price_range": "41.0-41.5",
+      "position_boundary": "200 股，止损 39.5",
+      "time_window": "今日或明日"
+    }
+  ],
+
+  "user_decision_guide": "今天盘中突破了 42.88，但没站稳。两种情况：如果今天收盘前再次放量站上 42.88 → 真突破，可追 200 股。如果今天收在 42.88 以下 → 和 6/9、6/10 一样，42 突破再次失败，继续观望。现在是第一次验证中，不出手是合理的。",
+
+  "eval_hook": [
+    { "check": "上午收盘能否站回 42.88 以上", "time": "11:30" },
+    { "check": "下午是否再次冲击 42.96", "time": "14:00" },
+    { "check": "收盘在 42.88 之上还是之下", "time": "15:00" }
+  ],
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "scene": "临时分析（盘中）",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T13:15:00+08:00",
+  "intraday_state": "double_spike_fade",
+  "action_bias": "WATCH",
+  "conclusion_strength": "倾向判断",
+
+  "afternoon_spike_detail": {
+    "time": "13:04-13:05",
+    "price": "42.62→42.96（最高43.02）",
+    "spike_volume": "6,207 股",
+    "morning_spike_peak": "42.95（量9,857）",
+    "current_price": "42.54",
+    "status": "已回落至42.54，从43.02回落0.48元"
+  },
+
+  "both_spikes_compared": {
+    "first_spike_1026": { "high": "42.95", "peak_vol": "9,857", "duration": "3分钟拉升→32分钟回落", "fade_to": "42.08" },
+    "second_spike_1305": { "high": "43.02", "peak_vol": "6,207", "duration": "2分钟拉升→10分钟回落", "fade_to": "42.52" },
+    "trend": "第二次脉冲量更小(6,207 vs 9,857)、高度略高(43.02 vs 42.95)、回落更快(10分钟 vs 32分钟)"
+  },
+
+  "institutional_assessment": {
+    "pattern": "重复诱多——同一个手法做了两次",
+    "confidence": "较高",
+    "explanation": "上午10:26用9,857股打穿42.88到42.95，下午13:05用6,207股打穿42.95到43.02。同一个手法在同一个关键位做了两次。两次的共同特征：拉新高只用1-2分钟，然后价格自由落体。区别是第二次的量更小、回落更快——说明吸引跟风盘的能力在下降，第一次还有人信，第二次没人跟了。",
+    "key_evidence": [
+      "两次突破42.88后都没有买盘跟进",
+      "第二次脉冲量比第一次少37%（6,207 vs 9,857）",
+      "第二次从高点回落速度是第一次的3倍",
+      "全天总成交仅20万手（昨天46万手的43%），极度缩量中"
+    ],
+    "interpretation": "机构不是要突破，是要在43附近制造"突破假象"来吸引买单。如果他们真想突破，第一次失败后第二次应该加量（>9,857）而不是减量（6,207）。越拉量越小、越站不住——这是多头衰竭的信号。"
+  },
+
+  "daily_summary": {
+    "open": "41.94",
+    "high": "43.02",
+    "low": "41.88",
+    "current": "42.54",
+    "volume": "201,318 手",
+    "projected_full_volume": "约28万手",
+    "yesterday_volume": "465,572 手"
+  },
+
+  "key_levels": {
+    "double_top_today": ["42.95（上午）", "43.02（下午）"],
+    "key_level": "42.88",
+    "below_reference": "42.00-42.50（大部分成交在此区间）"
+  },
+
+  "trigger_actions": [
+    {
+      "condition": "第三次放量（量>10,000/分）站稳42.88以上",
+      "action": "买入200股",
+      "price_range": "42.88-43.00",
+      "position_boundary": "200股，止损41.50",
+      "time_window": "今天剩余时间"
+    },
+    {
+      "condition": "缩量回落至42.0-42.5收盘",
+      "action": "不动，等FOMC",
+      "price_range": "42.0-42.5",
+      "position_boundary": "空仓等待",
+      "time_window": "明天FOMC后"
+    },
+    {
+      "condition": "放量跌破41.88（今低）",
+      "action": "本周不考虑买入",
+      "price_range": "41.88以下",
+      "position_boundary": "空仓，下周再看",
+      "time_window": "本周"
+    }
+  ],
+
+  "position_advice": {
+    "current_status": "空仓",
+    "verdict": "下午这次冲击更加暴露了机构的意图——不是真心要突破，而是利用43这个整数关口制造突破假象来吸引买盘。第一次还给了9,857的量，第二次只给了6,207，说明他们不愿意投入更多资金。一天内两次冲43两次被砸回，43以上的抛压比预想的大。今天不会再有第三次了——量已经缩到139/分，没人了。"
+  },
+
+  "method_review": {
+    "role_code": "LISHI",
+    "result": "PASS",
+    "main_challenge": "两次脉冲数据对比有具体量价支撑，不是感觉判断。"
+  },
+
+  "eval_hook": [
+    { "check": "下午是否出现第三次脉冲", "time": "14:30" },
+    { "check": "收盘价能否守住42.00以上", "time": "15:00" },
+    { "check": "全天量对比昨日缩量比例", "time": "15:00" }
+  ],
+
+  "non_goals_confirmed": {
+    "no_daily_report": true,
+    "no_deep_baseline_recalc": true,
+    "no_trade_executor_write": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-16T09:25:00+08:00",
+  "current_quote": {
+    "change_pct": -0.66,
+    "change": -0.28,
+    "price": 41.94,
+    "open": 41.94,
+    "high": 41.94,
+    "low": 41.94,
+    "volume_shares": 17600,
+    "volume_hands": 1760,
+    "amount": 7381440,
+    "intraday_vwap": "41.94",
+    "intraday_reference": "41.94（开盘价）",
+    "above_reference": false,
+    "below_key_level": false,
+    "reclaimed_key_level": false,
+    "yesterday_close": 42.22,
+    "yesterday_change_pct": 9.46,
+    "note": "集合竞价后全部价格同价41.94，尚未产生实际波动"
+  },
+  "event_context": {
+    "verified": true,
+    "note": "昨日程序性延期公告，方向中性"
+  },
+  "market_context": {
+    "index_state": "neutral",
+    "sector_state": "latent",
+    "sector_name": "机械设备",
+    "sector_phase": "潜伏期"
+  },
+  "baseline_context": {
+    "confirm_above": "46.44",
+    "invalidate_below": "38.00",
+    "short_stop": "38.91",
+    "baseline_id": "600114_W2026W25",
+    "valid_until": "2026-06-18"
+  },
+  "user_position_context": {
+    "has_position": null,
+    "note": "用户未提供持仓信息"
+  }
+}
