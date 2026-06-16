@@ -1,11 +1,16 @@
 {
   "stock_code": "600114",
-  "generated_at": "2026-06-16T10:01:49.472547+00:00",
+  "generated_at": "2026-06-16T15:55:37.235506+00:00",
   "source_path": "代码文件/数据/kline_cache/600114.json",
+  "source_field_refs": [
+    "close",
+    "volume",
+    "pct_chg"
+  ],
   "source_last_date": "20260616",
   "feature_snapshot_actual_date": "20260615",
   "data_date_divergence": true,
-  "date_divergence_warning": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)",
+  "date_divergence_warning": "snap(20260615)!=kline(20260616)",
   "ohlc": [
     {
       "date": "20251216",
@@ -2448,5 +2453,216 @@
       "ma60": 33.8422
     }
   ],
-  "total_kline_rows": 326
+  "total_kline_rows": 326,
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616155537-e5ec8d",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "legacy_compat": true,
+  "canonical_path": "bundles/bundle-20260616155537-e5ec8d/chart_data.json",
+  "deprecated_fields": [],
+  "compatibility_notes": "legacy 镜像文件，仅兼容旧引用。新引用请读 canonical 对应文件。",
+  "field_evidence": {
+    "stock_code": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "stock_code"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "stock_code"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "stock_code"
+          ]
+        }
+      ]
+    },
+    "source_last_date": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "source_last_date"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "source_last_date"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "source_last_date"
+          ]
+        }
+      ]
+    },
+    "feature_snapshot_actual_date": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "feature_snapshot_actual_date"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "feature_snapshot_actual_date"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "feature_snapshot_actual_date"
+          ]
+        }
+      ]
+    },
+    "data_date_divergence": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "data_date_divergence"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "data_date_divergence"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "data_date_divergence"
+          ]
+        }
+      ]
+    },
+    "ohlc": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "ohlc"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ohlc"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ohlc"
+          ]
+        }
+      ]
+    },
+    "ma5": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "ma5"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma5"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma5"
+          ]
+        }
+      ]
+    },
+    "ma20": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "ma20"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma20"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma20"
+          ]
+        }
+      ]
+    },
+    "ma60": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "ma60"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma60"
+          ]
+        },
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "ma60"
+          ]
+        }
+      ]
+    }
+  }
 }

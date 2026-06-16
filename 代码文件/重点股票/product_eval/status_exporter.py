@@ -151,6 +151,51 @@ class StatusExporter:
                 "status": "WARN", "detail": "前向评估未执行",
             })
 
+        # 6) 检查 chart_data 日期分歧
+        product_api_dir = os.path.join(base, "product_api")
+        chart_path = os.path.join(product_api_dir, "chart_data.json")
+        if os.path.exists(chart_path):
+            try:
+                with open(chart_path, "r") as f:
+                    chart = json.load(f)
+                if chart.get("data_date_divergence"):
+                    task_statuses.append({
+                        "task_id": "data_date_divergence", "task_type": "data_freshness",
+                        "status": "BLOCK",
+                        "detail": chart.get("date_divergence_warning", "K线日期与特征快照日期不一致"),
+                    })
+                    alerts.append(self._make_alert(
+                        "data_date_divergence", "BLOCK",
+                        chart.get("date_divergence_warning", "feature_snapshot 日期与 kline_cache 日期不一致"),
+                        user_visible=True,
+                        decision_impact="阻断正式决策，仅可观察",
+                    ))
+            except Exception:
+                pass
+
+        # 7) 检查 today_decisions 判定状态
+        dec_path = os.path.join(product_api_dir, "today_decisions.json")
+        if os.path.exists(dec_path):
+            try:
+                with open(dec_path, "r") as f:
+                    dec = json.load(f)
+                blockers = dec.get("decision_blockers", [])
+                if blockers:
+                    for b in blockers:
+                        task_statuses.append({
+                            "task_id": f"blocker_{b.lower()}", "task_type": "status_gate",
+                            "status": "BLOCK",
+                            "detail": f"决策阻断: {b}",
+                        })
+                        alerts.append(self._make_alert(
+                            f"blocker_{b.lower()}", "BLOCK",
+                            f"结论闸门阻断: {b}",
+                            user_visible=True,
+                            decision_impact="阻断正式决策",
+                        ))
+            except Exception:
+                pass
+
         # 推导总体状态
         overall = self._resolve_overall(task_statuses, alerts)
         return overall, task_statuses, alerts
@@ -160,24 +205,38 @@ class StatusExporter:
     # ------------------------------------------------------------------
 
     def _resolve_overall(self, task_statuses: List[dict], alerts: List[dict]) -> str:
-        status_order = {"BLOCK": 0, "ALERT": 1, "WARN": 2, "OBSERVE": 2, "PASS": 3, "PENDING": 4, "RUNNING": 4}
+        """根据任务状态和告警推导总体状态。
+
+        严格规则：
+        - 任一任务状态为 BLOCK → BLOCK
+        - 任一告警严重度为 BLOCK → BLOCK
+        - 任一任务状态为 WARN 且类型为 status_gate → BLOCK
+        - 其余 WARN → AUTO_REPAIRING
+        - 所有 PASS → COMPLETE
+        """
+        for ts in task_statuses:
+            s = ts.get("status", "PASS")
+            ttype = ts.get("task_type", "")
+            if s == "BLOCK":
+                return VISIBLE_BLOCK
+            if s == "WARN" and ttype == "status_gate":
+                return VISIBLE_BLOCK
+
+        for a in alerts:
+            if a.get("severity") == "BLOCK":
+                return VISIBLE_BLOCK
+
         worst = "PASS"
+        status_order = {"BLOCK": 0, "ALERT": 1, "WARN": 2, "OBSERVE": 2, "PASS": 3, "PENDING": 4, "RUNNING": 4}
         for ts in task_statuses:
             s = ts.get("status", "PASS")
             if status_order.get(s, 5) < status_order.get(worst, 5):
                 worst = s
 
-        if worst == "BLOCK":
-            return VISIBLE_BLOCK
-        if any(a.get("severity") == "BLOCK" for a in alerts):
-            return VISIBLE_BLOCK
         if worst in ("ALERT",):
             return VISIBLE_AUTO_REPAIRING
         if worst == "WARN":
-            return VISIBLE_BLOCK if any(
-                ts.get("status") == "WARN" and "sidecar" in ts.get("task_id", "")
-                and ts.get("status") == "BLOCK" for ts in task_statuses
-            ) else VISIBLE_COMPLETE
+            return VISIBLE_BLOCK  # 非 status_gate 的 WARN 仍视为 BLOCK
         return VISIBLE_COMPLETE
 
     # ------------------------------------------------------------------

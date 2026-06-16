@@ -1,0 +1,18 @@
+{
+  "stage": "G6 archive candidate",
+  "session": "session3_product_api_bundle_v3",
+  "generated_at": "2026-06-16T15:55:37.306604+00:00",
+  "g6_archive_candidate_only": true,
+  "g6_pass": false,
+  "production_release": false,
+  "shadow_only": true,
+  "baseline_registry_touched": false,
+  "runtime_entry_registry_touched": false,
+  "launchd_touched": false,
+  "real_position_connected": false,
+  "formal_rule_changed": false,
+  "stock_pool_only": "600114",
+  "engineering_status": "PASS",
+  "business_user_visible_status": "BLOCK",
+  "data_date_divergence_remains_block": true
+}

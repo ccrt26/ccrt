@@ -57,7 +57,23 @@ class AnalysisRunStateService:
         }
 
     def derive_from_inventory(self, stock_code: str, trade_date: str,
-                                inventory_path: Optional[str] = None) -> dict:
+                                inventory_path: Optional[str] = None,
+                                gate_override: Optional[dict] = None) -> dict:
+        """派生运行状态。若传入 gate_override，使用状态闸门结果覆盖。"""
+        if gate_override:
+            return self.build_run_state(
+                stock_code=stock_code,
+                stock_name=gate_override.get("stock_name", ""),
+                trade_date=trade_date,
+                run_status=gate_override.get("user_visible_status", "BLOCK"),
+                data_status=gate_override.get("data_status", "UNKNOWN"),
+                decision_status=gate_override.get("decision_status", "UNKNOWN"),
+                evidence_status=gate_override.get("status_gate_source_refs", {}).get(
+                    "evidence_status", "UNKNOWN"),
+                stale_flags=gate_override.get("decision_blockers", []),
+                blocking_reasons=gate_override.get("blocking_reasons", []),
+                warning_reasons=gate_override.get("warning_reasons", []),
+            )
         try:
             if inventory_path and os.path.exists(inventory_path):
                 with open(inventory_path, encoding="utf-8") as f:

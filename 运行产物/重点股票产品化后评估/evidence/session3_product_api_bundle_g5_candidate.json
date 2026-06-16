@@ -1,0 +1,47 @@
+{
+  "stage": "G5 review candidate",
+  "session": "session3_product_api_bundle_v3",
+  "generated_at": "2026-06-16T15:55:37.306604+00:00",
+  "g5_review_candidate_only": true,
+  "g5_pass_claimed": false,
+  "role_signature_claimed": false,
+  "engineering_status": "PASS",
+  "business_user_visible_status": "BLOCK",
+  "scope_review": {
+    "allowed_scope_only": true,
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false
+  },
+  "diff_review": {
+    "status": "candidate",
+    "note": "执行模型只提交候选证据，不冒充 G5 角色签署。"
+  },
+  "evidence_review": {
+    "checker_engineering_status": "PASS",
+    "checker_business_user_visible_status": "BLOCK",
+    "field_evidence_contract": "PASS",
+    "canonical_bundle_contract": "PASS"
+  },
+  "regression_surfaces": [
+    "run_id 一致性",
+    "legacy 证据缺失",
+    "业务BLOCK→COMPLETE"
+  ],
+  "per_file_status": {
+    "product_api_bundle.py": "PASS_CANDIDATE",
+    "build_keystock_product_api_bundle.py": "PASS_CANDIDATE",
+    "check_keystock_dashboard_productization.py": "PASS_CANDIDATE",
+    "tests/keystock_product_eval/session3_v3": "PASS_CANDIDATE",
+    "docs/keystock-dashboard/data": "PASS_CANDIDATE",
+    "运行产物/重点股票产品化后评估/product_api": "PASS_CANDIDATE"
+  },
+  "remaining_business_blocks": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ]
+}
