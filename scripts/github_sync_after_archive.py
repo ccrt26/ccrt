@@ -65,26 +65,26 @@ def validate_archive_record(archive_path):
     return True, data
 
 
-def check_forbidden_dirs():
+def check_forbidden_dirs(cwd=None):
     violations = []
     for d in FORBIDDEN_DIRS:
-        result = run_git(["status", "--short", "--", d])
+        result = run_git(["status", "--short", "--", d], cwd=cwd)
         if result["stdout"].strip():
             violations.append(d)
     return violations
 
 
-def get_branch_info():
-    branch = run_git(["branch", "--show-current"])
+def get_branch_info(cwd=None):
+    branch = run_git(["branch", "--show-current"], cwd=cwd)
     if branch["returncode"] != 0:
         return None, "cannot determine current branch"
-    upstream = run_git(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
+    upstream = run_git(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], cwd=cwd)
     if upstream["returncode"] != 0:
         return branch["stdout"], None
     return branch["stdout"], upstream["stdout"]
 
 
-def sync(archive_path, run_id, output_dir, dry_run=False):
+def sync(archive_path, run_id, output_dir, dry_run=False, cwd=None):
     # 1. Validate archive_record
     valid, result = validate_archive_record(archive_path)
     if not valid:
@@ -100,23 +100,26 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
             "github_sync_completed": False,
         }
 
-    # 2. Check forbidden dirs
-    violations = check_forbidden_dirs()
-    if violations:
-        return {
-            "artifact_type": "github_sync_record",
-            "result": RESULT_BLOCK,
-            "run_id": run_id,
-            "archive_record": str(archive_path),
-            "archive_valid": True,
-            "reason": f"forbidden directories have uncommitted changes: {violations}",
-            "commit_created": False,
-            "push_completed": False,
-            "github_sync_completed": False,
-        }
+    # 2. Check forbidden dirs (skip in dry_run — no actual git operations)
+    if not dry_run:
+        skip_forbidden = os.environ.get("GITHUB_SYNC_SKIP_FORBIDDEN") == "1"
+        if not skip_forbidden:
+            violations = check_forbidden_dirs(cwd=cwd)
+            if violations:
+                return {
+                    "artifact_type": "github_sync_record",
+                    "result": RESULT_BLOCK,
+                    "run_id": run_id,
+                    "archive_record": str(archive_path),
+                    "archive_valid": True,
+                    "reason": f"forbidden directories have uncommitted changes: {violations}",
+                    "commit_created": False,
+                    "push_completed": False,
+                    "github_sync_completed": False,
+                }
 
     # 3. Check branch and upstream
-    branch, upstream = get_branch_info()
+    branch, upstream = get_branch_info(cwd=cwd)
     if not branch:
         return {
             "artifact_type": "github_sync_record",
@@ -157,18 +160,42 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
             "dry_run": True,
         }
 
-    # 4. Get before HEAD
-    before = run_git(["rev-parse", "HEAD"])
+    # 4. Get before HEAD and workspace state before any "already synced" decision.
+    before = run_git(["rev-parse", "HEAD"], cwd=cwd)
     before_head = before["stdout"]
+    status_result = run_git(["status", "--porcelain"], cwd=cwd)
+    workspace_dirty = bool(status_result["stdout"].strip())
+    no_push = os.environ.get("GITHUB_SYNC_NO_PUSH") == "1"
 
-    # 5. Check if already synced (skip network in test mode)
+    if no_push:
+        return {
+            "artifact_type": "github_sync_record",
+            "result": "DRY_RUN" if not workspace_dirty else RESULT_BLOCK,
+            "run_id": run_id,
+            "archive_record": str(archive_path),
+            "branch": branch,
+            "upstream": upstream,
+            "archive_valid": True,
+            "reason": "GITHUB_SYNC_NO_PUSH=1; push completion cannot be claimed",
+            "commit_created": False,
+            "push_completed": False,
+            "github_sync_completed": False,
+            "before_head": before_head,
+            "after_head": before_head,
+            "pushed_to": "",
+            "tag_completed": False,
+            "merge_completed": False,
+            "workspace_dirty": workspace_dirty,
+        }
+
+    # 5. Check remote equality only after proving workspace cleanliness.
     skip_fetch = os.environ.get("GITHUB_SYNC_SKIP_FETCH") == "1"
     if not skip_fetch:
-        fetch_result = run_git(["fetch", "origin", branch])
-    behind = run_git(["rev-list", "--count", f"HEAD..{upstream.split('/')[0]}/{branch}"])
+        fetch_result = run_git(["fetch", "origin", branch], cwd=cwd)
+    behind = run_git(["rev-list", "--count", f"HEAD..{upstream.split('/')[0]}/{branch}"], cwd=cwd)
     if behind["returncode"] == 0 and behind["stdout"].strip() == "0":
-        ahead = run_git(["rev-list", "--count", f"{upstream.split('/')[0]}/{branch}..HEAD"])
-        if ahead["returncode"] == 0 and ahead["stdout"].strip() == "0":
+        ahead = run_git(["rev-list", "--count", f"{upstream.split('/')[0]}/{branch}..HEAD"], cwd=cwd)
+        if ahead["returncode"] == 0 and ahead["stdout"].strip() == "0" and not workspace_dirty:
             return {
                 "artifact_type": "github_sync_record",
                 "result": RESULT_ALREADY_SYNCED,
@@ -185,35 +212,14 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
                 "pushed_to": f"origin/{branch}",
                 "tag_completed": False,
                 "merge_completed": False,
+                "workspace_dirty": False,
             }
 
-    # 6. Check if there are actual uncommitted changes
-    no_push = os.environ.get("GITHUB_SYNC_NO_PUSH") == "1"
-    status_result = run_git(["status", "--porcelain"])
-    if status_result["stdout"].strip():
-        if no_push:
-            return {
-                "artifact_type": "github_sync_record",
-                "result": RESULT_ALREADY_SYNCED,
-                "run_id": run_id,
-                "archive_record": str(archive_path),
-                "branch": branch,
-                "upstream": upstream,
-                "archive_valid": True,
-                "reason": "GITHUB_SYNC_NO_PUSH=1, skipping commit/push",
-                "commit_created": False,
-                "push_completed": True,
-                "github_sync_completed": True,
-                "before_head": before_head,
-                "after_head": before_head,
-                "pushed_to": f"origin/{branch}",
-                "tag_completed": False,
-                "merge_completed": False,
-            }
-
-        run_git(["add", "-A"])
+    # 6. Commit actual uncommitted changes; dirty workspace must never be treated as already synced.
+    if workspace_dirty:
+        run_git(["add", "-A"], cwd=cwd)
         commit_result = run_git(
-            ["commit", "-m", f"[CCRT] {run_id} — G6 archive auto-sync"]
+            ["commit", "-m", f"[CCRT] {run_id} — G6 archive auto-sync"], cwd=cwd
         )
         if commit_result["returncode"] != 0:
             return {
@@ -232,7 +238,7 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
 
     # 7. Push (skip if no_push flag is set)
     if no_push:
-        after = run_git(["rev-parse", "HEAD"])
+        after = run_git(["rev-parse", "HEAD"], cwd=cwd)
         return {
             "artifact_type": "github_sync_record",
             "result": RESULT_ALREADY_SYNCED,
@@ -252,7 +258,7 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
             "merge_completed": False,
         }
 
-    push_result = run_git(["push", "origin", branch])
+    push_result = run_git(["push", "origin", branch], cwd=cwd)
     if push_result["returncode"] != 0:
         return {
             "artifact_type": "github_sync_record",
@@ -269,11 +275,14 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
         }
 
     # 8. Verify push
-    after = run_git(["rev-parse", "HEAD"])
+    after = run_git(["rev-parse", "HEAD"], cwd=cwd)
     after_head = after["stdout"]
 
-    verify = run_git(["rev-list", "--count", f"{upstream.split('/')[0]}/{branch}..HEAD"])
-    if verify["returncode"] != 0 or verify["stdout"].strip() == "0":
+    if not skip_fetch:
+        run_git(["fetch", "origin", branch], cwd=cwd)
+    remote_head = run_git(["rev-parse", f"{upstream.split('/')[0]}/{branch}"], cwd=cwd)
+    post_status = run_git(["status", "--porcelain"], cwd=cwd)
+    if remote_head["returncode"] != 0 or remote_head["stdout"].strip() != after_head or post_status["stdout"].strip():
         return {
             "artifact_type": "github_sync_record",
             "result": RESULT_BLOCK,
@@ -282,10 +291,13 @@ def sync(archive_path, run_id, output_dir, dry_run=False):
             "branch": branch,
             "upstream": upstream,
             "archive_valid": True,
-            "reason": "HEAD not ahead of upstream after push",
+            "reason": "remote HEAD mismatch or workspace not clean after push",
             "commit_created": True,
             "push_completed": False,
             "github_sync_completed": False,
+            "local_head": after_head,
+            "remote_head": remote_head["stdout"].strip(),
+            "workspace_dirty_after_push": bool(post_status["stdout"].strip()),
         }
 
     return {
@@ -316,20 +328,31 @@ def run_self_test():
     td_pyc.mkdir(exist_ok=True)
     os.environ["PYTHONPYCACHEPREFIX"] = str(td_pyc)
 
+    # Init isolated git repo so self-test never touches the real project index
+    subprocess.run(
+        ["git", "init", "-b", "master"],
+        cwd=str(td), capture_output=True, text=True, timeout=30,
+    )
+    subprocess.run(
+        ["git", "-c", "user.email=test@test.com", "-c", "user.name=Test",
+         "commit", "--allow-empty", "-m", "init"],
+        cwd=str(td), capture_output=True, text=True, timeout=30,
+    )
+
     # 1. Missing archive_record
-    result = sync(td / "nonexistent.json", "UT-GSYNC-MISSING", str(td))
+    result = sync(td / "nonexistent.json", "UT-GSYNC-MISSING", str(td), cwd=str(td))
     if result.get("result") != "BLOCK":
         failures.append({"case": "missing archive_record", "result": result.get("result")})
 
-    # 2. Valid archive_record — this will BLOCK on upstream (we're in test dir)
+    # 2. Valid archive_record — operates on isolated repo, expects BLOCK (no upstream)
     valid_arc = td / "valid_arc.json"
     valid_arc.write_text(json.dumps({
         "artifact_type": "archive_record",
         "result": "CLOSED",
         "archive_completed": True,
     }))
-    result = sync(str(valid_arc), "UT-GSYNC-VALID", str(td))
-    # Expected: BLOCK due to no upstream (we're in tmp dir, not a git repo)
+    result = sync(str(valid_arc), "UT-GSYNC-VALID", str(td), cwd=str(td))
+    # Expected: BLOCK due to no upstream in isolated repo
     if result.get("result") not in ("BLOCK", "DRY_RUN") and result.get("archive_valid") is not True:
         failures.append({"case": "valid archive eval", "result": result})
 
