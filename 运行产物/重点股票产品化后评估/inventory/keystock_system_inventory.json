@@ -1,0 +1,1854 @@
+{
+  "generated_at": "2026-06-16T05:59:36.172736+00:00",
+  "scan_root": "/Users/ccrt/ccrt",
+  "analysis_production_contract_refs": [],
+  "analysis_pipeline_status_refs": {
+    "运行产物/重点股票产品化后评估/inventory": {
+      "status": "FOUND",
+      "files": []
+    },
+    "运行产物/重点股票产品化后评估/ledger": {
+      "status": "FOUND",
+      "files": []
+    }
+  },
+  "baseline_registry": {
+    "status": "FOUND",
+    "path": "00_项目地基/02_权威注册表/baseline_registry.json",
+    "entries": 4,
+    "data": {
+      "registry_version": "1.0",
+      "generated_at": "2026-06-15T21:53:48",
+      "source_dir": "重点股票/基线",
+      "entries": [
+        {
+          "stock_code": "600703",
+          "stock_name": "三安光电",
+          "baseline_id": "600703_W2026W22",
+          "baseline_file": "重点股票/基线/三安光电(600703)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 14.08,
+            "key_pressure_price": 17.2,
+            "stop_loss_price": 13.76,
+            "target_price": 17.99
+          },
+          "core_thesis": "评分61分(T12/M16/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601727",
+          "stock_name": "上海电气",
+          "baseline_id": "601727_W2026W22",
+          "baseline_file": "重点股票/基线/上海电气(601727)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 7.25,
+            "key_pressure_price": 8.87,
+            "stop_loss_price": 7.09,
+            "target_price": 9.27
+          },
+          "core_thesis": "评分46分(T4/M10/F8)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "600114",
+          "stock_name": "东睦股份",
+          "baseline_id": "600114_W2026W22",
+          "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 32.96,
+            "key_pressure_price": 40.28,
+            "stop_loss_price": 32.23,
+            "target_price": 42.11
+          },
+          "core_thesis": "评分41分(T6/M6/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600114",
+          "stock_name": "东睦股份",
+          "baseline_id": "600114_W2026W23",
+          "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W23.json",
+          "baseline_date": "2026-06-05",
+          "valid_until": "2026-06-11",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 36.35,
+            "key_pressure_price": 44.43,
+            "stop_loss_price": 35.54,
+            "target_price": 46.45
+          },
+          "core_thesis": "评分52分(T10/M8/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600114",
+          "stock_name": "东睦股份",
+          "baseline_id": "600114_2026W24_deep",
+          "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W24_deep.json",
+          "baseline_date": "2026-06-10",
+          "valid_until": "2026-06-12",
+          "status": "expired",
+          "source_type": "deep_analysis_report",
+          "source_deep_report_path": "重点股票/深度分析/深度分析报告/东睦股份(600114)/东睦股份(600114)深度分析报告_20260610.md",
+          "generated_from": "deep_analysis_report",
+          "strategy_version": "",
+          "key_fields": {
+            "key_support_price": 40.25,
+            "key_pressure_price": 42.0,
+            "stop_loss_price": 32.0,
+            "target_price": 42.0
+          },
+          "core_thesis": "短线状态明显修复，中期逻辑未证伪；42元能否转支撑为后续验证重点。"
+        },
+        {
+          "stock_code": "600114",
+          "stock_name": "东睦股份",
+          "baseline_id": "600114_W2026W25",
+          "baseline_file": "重点股票/基线/东睦股份(600114)_baseline_2026W25.json",
+          "baseline_date": "2026-06-15",
+          "valid_until": "2026-06-18",
+          "status": "active",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 38.0,
+            "key_pressure_price": 46.44,
+            "stop_loss_price": 37.15,
+            "target_price": 48.55
+          },
+          "core_thesis": "评分55分(T12/M10/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601318",
+          "stock_name": "中国平安",
+          "baseline_id": "601318_W2026W22",
+          "baseline_file": "重点股票/基线/中国平安(601318)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 47.22,
+            "key_pressure_price": 57.72,
+            "stop_loss_price": 46.17,
+            "target_price": 60.34
+          },
+          "core_thesis": "评分51分(T10/M9/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688012",
+          "stock_name": "中微公司",
+          "baseline_id": "688012_W2026W22",
+          "baseline_file": "重点股票/基线/中微公司(688012)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 267.91,
+            "key_pressure_price": 327.45,
+            "stop_loss_price": 261.96,
+            "target_price": 342.33
+          },
+          "core_thesis": "评分61分(T13/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "603019",
+          "stock_name": "中科曙光",
+          "baseline_id": "603019_W2026W22",
+          "baseline_file": "重点股票/基线/中科曙光(603019)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 79.4,
+            "key_pressure_price": 97.04,
+            "stop_loss_price": 77.63,
+            "target_price": 101.45
+          },
+          "core_thesis": "评分48分(T6/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000758",
+          "stock_name": "中色股份",
+          "baseline_id": "000758_W2026W21",
+          "baseline_file": "重点股票/基线/中色股份(000758)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 6.39,
+            "key_pressure_price": 7.81,
+            "stop_loss_price": 6.25,
+            "target_price": 8.16
+          },
+          "core_thesis": "评分60分(T9/M14/F9)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688981",
+          "stock_name": "中芯国际",
+          "baseline_id": "688981_W2026W22",
+          "baseline_file": "重点股票/基线/中芯国际(688981)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 138.33,
+            "key_pressure_price": 169.07,
+            "stop_loss_price": 135.26,
+            "target_price": 176.75
+          },
+          "core_thesis": "评分48分(T10/M10/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000060",
+          "stock_name": "中金岭南",
+          "baseline_id": "000060_W2026W21",
+          "baseline_file": "重点股票/基线/中金岭南(000060)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 6.81,
+            "key_pressure_price": 8.33,
+            "stop_loss_price": 6.66,
+            "target_price": 8.71
+          },
+          "core_thesis": "评分63分(T8/M13/F13)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000858",
+          "stock_name": "五粮液",
+          "baseline_id": "000858_W2026W22",
+          "baseline_file": "重点股票/基线/五粮液(000858)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 73.34,
+            "key_pressure_price": 89.64,
+            "stop_loss_price": 71.71,
+            "target_price": 93.71
+          },
+          "core_thesis": "评分55分(T10/M9/F15)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "603986",
+          "stock_name": "兆易创新",
+          "baseline_id": "603986_W2026W22",
+          "baseline_file": "重点股票/基线/兆易创新(603986)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 434.7,
+            "key_pressure_price": 531.3,
+            "stop_loss_price": 425.04,
+            "target_price": 555.45
+          },
+          "core_thesis": "评分51分(T10/M13/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300450",
+          "stock_name": "先导智能",
+          "baseline_id": "300450_W2026W22",
+          "baseline_file": "重点股票/基线/先导智能(300450)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 45.73,
+            "key_pressure_price": 55.89,
+            "stop_loss_price": 44.71,
+            "target_price": 58.43
+          },
+          "core_thesis": "评分51分(T7/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002371",
+          "stock_name": "北方华创",
+          "baseline_id": "002371_W2026W22",
+          "baseline_file": "重点股票/基线/北方华创(002371)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 566.88,
+            "key_pressure_price": 692.86,
+            "stop_loss_price": 554.29,
+            "target_price": 724.35
+          },
+          "core_thesis": "评分57分(T13/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601702",
+          "stock_name": "华峰铝业",
+          "baseline_id": "601702_W2026W21",
+          "baseline_file": "重点股票/基线/华峰铝业(601702)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 18.06,
+            "key_pressure_price": 22.08,
+            "stop_loss_price": 17.66,
+            "target_price": 23.08
+          },
+          "core_thesis": "评分60分(T10/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688120",
+          "stock_name": "华海清科",
+          "baseline_id": "688120_W2026W22",
+          "baseline_file": "重点股票/基线/华海清科(688120)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 235.16,
+            "key_pressure_price": 287.42,
+            "stop_loss_price": 229.94,
+            "target_price": 300.48
+          },
+          "core_thesis": "评分60分(T12/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601020",
+          "stock_name": "华钰矿业",
+          "baseline_id": "601020_W2026W22",
+          "baseline_file": "重点股票/基线/华钰矿业(601020)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 22.1,
+            "key_pressure_price": 27.02,
+            "stop_loss_price": 21.61,
+            "target_price": 28.24
+          },
+          "core_thesis": "评分47分(T5/M14/F8)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300782",
+          "stock_name": "卓胜微",
+          "baseline_id": "300782_W2026W22",
+          "baseline_file": "重点股票/基线/卓胜微(300782)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 97.29,
+            "key_pressure_price": 118.91,
+            "stop_loss_price": 95.13,
+            "target_price": 124.31
+          },
+          "core_thesis": "评分55分(T10/M16/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300033",
+          "stock_name": "同花顺",
+          "baseline_id": "300033_W2026W22",
+          "baseline_file": "重点股票/基线/同花顺(300033)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 204.98,
+            "key_pressure_price": 250.54,
+            "stop_loss_price": 200.43,
+            "target_price": 261.92
+          },
+          "core_thesis": "评分63分(T11/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300661",
+          "stock_name": "圣邦股份",
+          "baseline_id": "300661_W2026W22",
+          "baseline_file": "重点股票/基线/圣邦股份(300661)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 109.35,
+            "key_pressure_price": 133.65,
+            "stop_loss_price": 106.92,
+            "target_price": 139.72
+          },
+          "core_thesis": "评分58分(T10/M19/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "301075",
+          "stock_name": "多瑞医药",
+          "baseline_id": "301075_W2026W22",
+          "baseline_file": "重点股票/基线/多瑞医药(301075)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 67.13,
+            "key_pressure_price": 82.05,
+            "stop_loss_price": 65.64,
+            "target_price": 85.78
+          },
+          "core_thesis": "评分46分(T4/M10/F8)，风险等级high",
+          "overall_risk_level": "high"
+        },
+        {
+          "stock_code": "002236",
+          "stock_name": "大华股份",
+          "baseline_id": "002236_W2026W22",
+          "baseline_file": "重点股票/基线/大华股份(002236)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 15.58,
+            "key_pressure_price": 19.04,
+            "stop_loss_price": 15.23,
+            "target_price": 19.91
+          },
+          "core_thesis": "评分59分(T10/M19/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688561",
+          "stock_name": "奇安信",
+          "baseline_id": "688561_W2026W22",
+          "baseline_file": "重点股票/基线/奇安信(688561)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 24.11,
+            "key_pressure_price": 29.47,
+            "stop_loss_price": 23.58,
+            "target_price": 30.81
+          },
+          "core_thesis": "评分43分(T5/M11/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300750",
+          "stock_name": "宁德时代",
+          "baseline_id": "300750_W2026W22",
+          "baseline_file": "重点股票/基线/宁德时代(300750)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 374.11,
+            "key_pressure_price": 457.25,
+            "stop_loss_price": 365.8,
+            "target_price": 478.03
+          },
+          "core_thesis": "评分54分(T10/M12/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600845",
+          "stock_name": "宝信软件",
+          "baseline_id": "600845_W2026W22",
+          "baseline_file": "重点股票/基线/宝信软件(600845)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 18.13,
+            "key_pressure_price": 22.16,
+            "stop_loss_price": 17.73,
+            "target_price": 23.17
+          },
+          "core_thesis": "评分41分(T4/M10/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688256",
+          "stock_name": "寒武纪",
+          "baseline_id": "688256_W2026W22",
+          "baseline_file": "重点股票/基线/寒武纪(688256)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 1179.0,
+            "key_pressure_price": 1441.0,
+            "stop_loss_price": 1152.8,
+            "target_price": 1506.5
+          },
+          "core_thesis": "评分62分(T11/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "603092",
+          "stock_name": "德力佳",
+          "baseline_id": "603092_W2026W22",
+          "baseline_file": "重点股票/基线/德力佳(603092)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 60.7,
+            "key_pressure_price": 74.18,
+            "stop_loss_price": 59.35,
+            "target_price": 77.56
+          },
+          "core_thesis": "评分46分(T5/M12/F9)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "600276",
+          "stock_name": "恒瑞医药",
+          "baseline_id": "600276_W2026W22",
+          "baseline_file": "重点股票/基线/恒瑞医药(600276)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 43.2,
+            "key_pressure_price": 52.8,
+            "stop_loss_price": 42.24,
+            "target_price": 55.2
+          },
+          "core_thesis": "评分61分(T10/M14/F15)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600570",
+          "stock_name": "恒生电子",
+          "baseline_id": "600570_W2026W22",
+          "baseline_file": "重点股票/基线/恒生电子(600570)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 21.84,
+            "key_pressure_price": 26.7,
+            "stop_loss_price": 21.36,
+            "target_price": 27.91
+          },
+          "core_thesis": "评分45分(T5/M11/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688786",
+          "stock_name": "悦安新材",
+          "baseline_id": "688786_W2026W21",
+          "baseline_file": "重点股票/基线/悦安新材(688786)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 32.92,
+            "key_pressure_price": 40.24,
+            "stop_loss_price": 32.19,
+            "target_price": 42.07
+          },
+          "core_thesis": "评分60分(T14/M10/F8)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601689",
+          "stock_name": "拓普集团",
+          "baseline_id": "601689_W2026W22",
+          "baseline_file": "重点股票/基线/拓普集团(601689)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 56.16,
+            "key_pressure_price": 68.64,
+            "stop_loss_price": 54.91,
+            "target_price": 71.76
+          },
+          "core_thesis": "评分53分(T8/M14/F11)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "688072",
+          "stock_name": "拓荆科技",
+          "baseline_id": "688072_W2026W22",
+          "baseline_file": "重点股票/基线/拓荆科技(688072)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 605.35,
+            "key_pressure_price": 739.87,
+            "stop_loss_price": 591.9,
+            "target_price": 773.5
+          },
+          "core_thesis": "评分55分(T10/M16/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600036",
+          "stock_name": "招商银行",
+          "baseline_id": "600036_W2026W22",
+          "baseline_file": "重点股票/基线/招商银行(600036)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 33.41,
+            "key_pressure_price": 40.83,
+            "stop_loss_price": 32.67,
+            "target_price": 42.69
+          },
+          "core_thesis": "评分55分(T10/M9/F15)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300502",
+          "stock_name": "新易盛",
+          "baseline_id": "300502_W2026W22",
+          "baseline_file": "重点股票/基线/新易盛(300502)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 635.81,
+            "key_pressure_price": 777.1,
+            "stop_loss_price": 621.68,
+            "target_price": 812.42
+          },
+          "core_thesis": "评分53分(T11/M13/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600888",
+          "stock_name": "新疆众和",
+          "baseline_id": "600888_W2026W21",
+          "baseline_file": "重点股票/基线/新疆众和(600888)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 9.28,
+            "key_pressure_price": 11.34,
+            "stop_loss_price": 9.07,
+            "target_price": 11.86
+          },
+          "core_thesis": "评分69分(T13/M12/F15)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300418",
+          "stock_name": "昆仑万维",
+          "baseline_id": "300418_W2026W22",
+          "baseline_file": "重点股票/基线/昆仑万维(300418)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 39.53,
+            "key_pressure_price": 48.31,
+            "stop_loss_price": 38.65,
+            "target_price": 50.51
+          },
+          "core_thesis": "评分45分(T5/M13/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601677",
+          "stock_name": "明泰铝业",
+          "baseline_id": "601677_W2026W21",
+          "baseline_file": "重点股票/基线/明泰铝业(601677)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 17.29,
+            "key_pressure_price": 21.13,
+            "stop_loss_price": 16.9,
+            "target_price": 22.09
+          },
+          "core_thesis": "评分67分(T11/M14/F13)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688188",
+          "stock_name": "柏楚电子",
+          "baseline_id": "688188_W2026W22",
+          "baseline_file": "重点股票/基线/柏楚电子(688188)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 146.56,
+            "key_pressure_price": 179.12,
+            "stop_loss_price": 143.3,
+            "target_price": 187.27
+          },
+          "core_thesis": "评分54分(T10/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600961",
+          "stock_name": "株冶集团",
+          "baseline_id": "600961_W2026W21",
+          "baseline_file": "重点股票/基线/株冶集团(600961)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 24.42,
+            "key_pressure_price": 29.84,
+            "stop_loss_price": 23.87,
+            "target_price": 31.2
+          },
+          "core_thesis": "评分55分(T9/M13/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002594",
+          "stock_name": "比亚迪",
+          "baseline_id": "002594_W2026W22",
+          "baseline_file": "重点股票/基线/比亚迪(002594)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 86.29,
+            "key_pressure_price": 105.47,
+            "stop_loss_price": 84.37,
+            "target_price": 110.26
+          },
+          "core_thesis": "评分49分(T10/M9/F9)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300124",
+          "stock_name": "汇川技术",
+          "baseline_id": "300124_W2026W22",
+          "baseline_file": "重点股票/基线/汇川技术(300124)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 66.56,
+            "key_pressure_price": 81.36,
+            "stop_loss_price": 65.08,
+            "target_price": 85.05
+          },
+          "core_thesis": "评分54分(T12/M10/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002463",
+          "stock_name": "沪电股份",
+          "baseline_id": "002463_W2026W22",
+          "baseline_file": "重点股票/基线/沪电股份(002463)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 118.84,
+            "key_pressure_price": 145.24,
+            "stop_loss_price": 116.2,
+            "target_price": 151.85
+          },
+          "core_thesis": "评分64分(T15/M15/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000977",
+          "stock_name": "浪潮信息",
+          "baseline_id": "000977_W2026W22",
+          "baseline_file": "重点股票/基线/浪潮信息(000977)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 58.17,
+            "key_pressure_price": 71.09,
+            "stop_loss_price": 56.87,
+            "target_price": 74.32
+          },
+          "core_thesis": "评分39分(T5/M6/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002203",
+          "stock_name": "海亮股份",
+          "baseline_id": "002203_W2026W21",
+          "baseline_file": "重点股票/基线/海亮股份(002203)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 19.28,
+            "key_pressure_price": 23.56,
+            "stop_loss_price": 18.85,
+            "target_price": 24.63
+          },
+          "core_thesis": "评分61分(T8/M14/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688041",
+          "stock_name": "海光信息",
+          "baseline_id": "688041_W2026W22",
+          "baseline_file": "重点股票/基线/海光信息(688041)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 264.51,
+            "key_pressure_price": 323.29,
+            "stop_loss_price": 258.63,
+            "target_price": 337.98
+          },
+          "core_thesis": "评分58分(T12/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002415",
+          "stock_name": "海康威视",
+          "baseline_id": "002415_W2026W22",
+          "baseline_file": "重点股票/基线/海康威视(002415)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 27.68,
+            "key_pressure_price": 33.84,
+            "stop_loss_price": 27.07,
+            "target_price": 35.37
+          },
+          "core_thesis": "评分50分(T10/M12/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002916",
+          "stock_name": "深南电路",
+          "baseline_id": "002916_W2026W22",
+          "baseline_file": "重点股票/基线/深南电路(002916)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 358.45,
+            "key_pressure_price": 438.11,
+            "stop_loss_price": 350.49,
+            "target_price": 458.02
+          },
+          "core_thesis": "评分58分(T10/M19/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688008",
+          "stock_name": "澜起科技",
+          "baseline_id": "688008_W2026W22",
+          "baseline_file": "重点股票/基线/澜起科技(688008)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 234.88,
+            "key_pressure_price": 287.08,
+            "stop_loss_price": 229.66,
+            "target_price": 300.13
+          },
+          "core_thesis": "评分56分(T10/M17/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300697",
+          "stock_name": "电工合金",
+          "baseline_id": "300697_W2026W22",
+          "baseline_file": "重点股票/基线/电工合金(300697)_baseline_2026W22.json",
+          "baseline_date": "2026-05-26",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 15.58,
+            "key_pressure_price": 19.04,
+            "stop_loss_price": 15.23,
+            "target_price": 19.91
+          },
+          "core_thesis": "评分57分(T10/M13/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300736",
+          "stock_name": "百邦科技",
+          "baseline_id": "300736_W2026W22",
+          "baseline_file": "重点股票/基线/百邦科技(300736)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 30.68,
+            "key_pressure_price": 37.5,
+            "stop_loss_price": 30.0,
+            "target_price": 39.2
+          },
+          "core_thesis": "评分46分(T4/M10/F8)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "000967",
+          "stock_name": "盈峰环境",
+          "baseline_id": "000967_W2026W22",
+          "baseline_file": "重点股票/基线/盈峰环境(000967)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 9.62,
+            "key_pressure_price": 11.76,
+            "stop_loss_price": 9.41,
+            "target_price": 12.29
+          },
+          "core_thesis": "评分44分(T4/M14/F7)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "002230",
+          "stock_name": "科大讯飞",
+          "baseline_id": "002230_W2026W22",
+          "baseline_file": "重点股票/基线/科大讯飞(002230)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 43.11,
+            "key_pressure_price": 52.69,
+            "stop_loss_price": 42.15,
+            "target_price": 55.08
+          },
+          "core_thesis": "评分49分(T7/M10/F8)，风险等级medium",
+          "overall_risk_level": "medium"
+        },
+        {
+          "stock_code": "002475",
+          "stock_name": "立讯精密",
+          "baseline_id": "002475_W2026W22",
+          "baseline_file": "重点股票/基线/立讯精密(002475)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 65.96,
+            "key_pressure_price": 80.62,
+            "stop_loss_price": 64.5,
+            "target_price": 84.28
+          },
+          "core_thesis": "评分65分(T14/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "601899",
+          "stock_name": "紫金矿业",
+          "baseline_id": "601899_W2026W22",
+          "baseline_file": "重点股票/基线/紫金矿业(601899)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 27.4,
+            "key_pressure_price": 33.48,
+            "stop_loss_price": 26.79,
+            "target_price": 35.01
+          },
+          "core_thesis": "评分51分(T7/M10/F13)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000333",
+          "stock_name": "美的集团",
+          "baseline_id": "000333_W2026W22",
+          "baseline_file": "重点股票/基线/美的集团(000333)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 71.06,
+            "key_pressure_price": 86.85,
+            "stop_loss_price": 69.48,
+            "target_price": 90.79
+          },
+          "core_thesis": "评分55分(T10/M9/F15)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688521",
+          "stock_name": "芯原股份",
+          "baseline_id": "688521_W2026W22",
+          "baseline_file": "重点股票/基线/芯原股份(688521)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 222.16,
+            "key_pressure_price": 271.52,
+            "stop_loss_price": 217.22,
+            "target_price": 283.87
+          },
+          "core_thesis": "评分56分(T11/M15/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600338",
+          "stock_name": "西藏珠峰",
+          "baseline_id": "600338_W2026W21",
+          "baseline_file": "重点股票/基线/西藏珠峰(600338)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 18.41,
+            "key_pressure_price": 22.51,
+            "stop_loss_price": 18.0,
+            "target_price": 23.53
+          },
+          "core_thesis": "评分53分(T4/M15/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "603501",
+          "stock_name": "豪威集团",
+          "baseline_id": "603501_W2026W22",
+          "baseline_file": "重点股票/基线/豪威集团(603501)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 85.5,
+            "key_pressure_price": 104.5,
+            "stop_loss_price": 83.6,
+            "target_price": 109.25
+          },
+          "core_thesis": "评分64分(T15/M18/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600531",
+          "stock_name": "豫光金铅",
+          "baseline_id": "600531_W2026W21",
+          "baseline_file": "重点股票/基线/豫光金铅(600531)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 12.53,
+            "key_pressure_price": 15.31,
+            "stop_loss_price": 12.25,
+            "target_price": 16.01
+          },
+          "core_thesis": "评分52分(T5/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600519",
+          "stock_name": "贵州茅台",
+          "baseline_id": "600519_W2026W22",
+          "baseline_file": "重点股票/基线/贵州茅台(600519)_baseline_2026W22.json",
+          "baseline_date": "2026-05-28",
+          "valid_until": "2026-05-29",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 1148.38,
+            "key_pressure_price": 1403.58,
+            "stop_loss_price": 1122.86,
+            "target_price": 1467.38
+          },
+          "core_thesis": "评分52分(T10/M9/F12)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "002156",
+          "stock_name": "通富微电",
+          "baseline_id": "002156_W2026W22",
+          "baseline_file": "重点股票/基线/通富微电(002156)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 59.4,
+            "key_pressure_price": 72.6,
+            "stop_loss_price": 58.08,
+            "target_price": 75.9
+          },
+          "core_thesis": "评分30分(T6/M2/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "688111",
+          "stock_name": "金山办公",
+          "baseline_id": "688111_W2026W22",
+          "baseline_file": "重点股票/基线/金山办公(688111)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 214.65,
+            "key_pressure_price": 262.35,
+            "stop_loss_price": 209.88,
+            "target_price": 274.27
+          },
+          "core_thesis": "评分49分(T5/M14/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300811",
+          "stock_name": "铂科新材",
+          "baseline_id": "300811_W2026W21",
+          "baseline_file": "重点股票/基线/铂科新材(300811)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 106.99,
+            "key_pressure_price": 130.77,
+            "stop_loss_price": 104.61,
+            "target_price": 136.71
+          },
+          "core_thesis": "评分62分(T15/M11/F8)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000630",
+          "stock_name": "铜陵有色",
+          "baseline_id": "000630_W2026W21",
+          "baseline_file": "重点股票/基线/铜陵有色(000630)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 5.72,
+            "key_pressure_price": 7.0,
+            "stop_loss_price": 5.6,
+            "target_price": 7.31
+          },
+          "core_thesis": "评分60分(T8/M14/F9)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "000751",
+          "stock_name": "锌业股份",
+          "baseline_id": "000751_W2026W21",
+          "baseline_file": "重点股票/基线/锌业股份(000751)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 4.96,
+            "key_pressure_price": 6.06,
+            "stop_loss_price": 4.85,
+            "target_price": 6.34
+          },
+          "core_thesis": "评分51分(T4/M15/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300604",
+          "stock_name": "长川科技",
+          "baseline_id": "300604_W2026W22",
+          "baseline_file": "重点股票/基线/长川科技(300604)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 189.71,
+            "key_pressure_price": 231.87,
+            "stop_loss_price": 185.5,
+            "target_price": 242.41
+          },
+          "core_thesis": "评分31分(T5/M4/F7)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "300274",
+          "stock_name": "阳光电源",
+          "baseline_id": "300274_W2026W22",
+          "baseline_file": "重点股票/基线/阳光电源(300274)_baseline_2026W22.json",
+          "baseline_date": "2026-05-29",
+          "valid_until": "2026-06-04",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 160.19,
+            "key_pressure_price": 195.79,
+            "stop_loss_price": 156.63,
+            "target_price": 204.69
+          },
+          "core_thesis": "评分58分(T11/M13/F11)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600497",
+          "stock_name": "驰宏锌锗",
+          "baseline_id": "600497_W2026W21",
+          "baseline_file": "重点股票/基线/驰宏锌锗(600497)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 9.14,
+            "key_pressure_price": 11.18,
+            "stop_loss_price": 8.94,
+            "target_price": 11.68
+          },
+          "core_thesis": "评分61分(T9/M14/F10)，风险等级low",
+          "overall_risk_level": "low"
+        },
+        {
+          "stock_code": "600490",
+          "stock_name": "鹏欣资源",
+          "baseline_id": "600490_W2026W21",
+          "baseline_file": "重点股票/基线/鹏欣资源(600490)_baseline_2026W21.json",
+          "baseline_date": "2026-05-22",
+          "valid_until": "2026-05-28",
+          "status": "expired",
+          "source_type": "weekly_baseline",
+          "source_deep_report_path": "",
+          "generated_from": "score_history.jsonl + data_full.json + tushare",
+          "strategy_version": "v1.0",
+          "key_fields": {
+            "key_support_price": 7.32,
+            "key_pressure_price": 8.94,
+            "stop_loss_price": 7.15,
+            "target_price": 9.35
+          },
+          "core_thesis": "评分56分(T6/M14/F9)，风险等级low",
+          "overall_risk_level": "low"
+        }
+      ]
+    }
+  },
+  "baseline_files": [],
+  "daily_report_sidecars": {
+    "count": 50,
+    "files": [
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_2026-05-28.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_2026-05-28.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260526.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260526.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260527.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260527.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260528.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260528.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260529.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260529.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260601.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260601.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260602.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260602.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260603.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260603.json"
+      },
+      {
+        "stock_dir": "上海电气(601727)",
+        "file": "上海电气(601727)日报_20260604.json",
+        "path": "重点股票/股票报告/上海电气(601727)/上海电气(601727)日报_20260604.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_2026-05-28.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_2026-05-28.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260526.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260526.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260527.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260527.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260528.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260528.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260529.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260529.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260601.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260601.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260602.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260602.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260603.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260603.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260604.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260604.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260611.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260611.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260612.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260612.json"
+      },
+      {
+        "stock_dir": "东睦股份(600114)",
+        "file": "东睦股份(600114)日报_20260615.json",
+        "path": "重点股票/股票报告/东睦股份(600114)/东睦股份(600114)日报_20260615.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_2026-05-28.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_2026-05-28.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260526.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260526.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260527.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260527.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260528.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260528.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260529.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260529.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260601.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260601.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260602.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260602.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260603.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260603.json"
+      },
+      {
+        "stock_dir": "中科曙光(603019)",
+        "file": "中科曙光(603019)日报_20260604.json",
+        "path": "重点股票/股票报告/中科曙光(603019)/中科曙光(603019)日报_20260604.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260528.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260528.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260529.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260529.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260601.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260601.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260602.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260602.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260603.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260603.json"
+      },
+      {
+        "stock_dir": "先导智能(300450)",
+        "file": "先导智能(300450)日报_20260604.json",
+        "path": "重点股票/股票报告/先导智能(300450)/先导智能(300450)日报_20260604.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_2026-05-28.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_2026-05-28.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260526.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260526.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260527.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260527.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260528.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260528.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260529.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260529.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260601.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260601.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260602.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260602.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260603.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260603.json"
+      },
+      {
+        "stock_dir": "多瑞医药(301075)",
+        "file": "多瑞医药(301075)日报_20260604.json",
+        "path": "重点股票/股票报告/多瑞医药(301075)/多瑞医药(301075)日报_20260604.json"
+      },
+      {
+        "stock_dir": "德力佳(603092)",
+        "file": "德力佳(603092)日报_2026-05-28.json",
+        "path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_2026-05-28.json"
+      },
+      {
+        "stock_dir": "德力佳(603092)",
+        "file": "德力佳(603092)日报_20260526.json",
+        "path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_20260526.json"
+      },
+      {
+        "stock_dir": "德力佳(603092)",
+        "file": "德力佳(603092)日报_20260527.json",
+        "path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_20260527.json"
+      },
+      {
+        "stock_dir": "德力佳(603092)",
+        "file": "德力佳(603092)日报_20260528.json",
+        "path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_20260528.json"
+      },
+      {
+        "stock_dir": "德力佳(603092)",
+        "file": "德力佳(603092)日报_20260529.json",
+        "path": "重点股票/股票报告/德力佳(603092)/德力佳(603092)日报_20260529.json"
+      }
+    ]
+  },
+  "deep_analysis_reports": {
+    "count": 5,
+    "files": [
+      {
+        "stock_dir": "后评估逻辑",
+        "file": "深度分析后评估逻辑_v1.0.md",
+        "path": "重点股票/深度分析/后评估逻辑/深度分析后评估逻辑_v1.0.md"
+      },
+      {
+        "stock_dir": "深度分析逻辑",
+        "file": "深度分析_v1.2.md",
+        "path": "重点股票/深度分析/深度分析逻辑/深度分析_v1.2.md"
+      },
+      {
+        "stock_dir": "深度分析逻辑",
+        "file": "深度分析_v1.3.md",
+        "path": "重点股票/深度分析/深度分析逻辑/深度分析_v1.3.md"
+      },
+      {
+        "stock_dir": "深度分析逻辑",
+        "file": "深度分析_v1.4.md",
+        "path": "重点股票/深度分析/深度分析逻辑/深度分析_v1.4.md"
+      },
+      {
+        "stock_dir": "深度分析逻辑",
+        "file": "深度分析_v1.5.md",
+        "path": "重点股票/深度分析/深度分析逻辑/深度分析_v1.5.md"
+      }
+    ]
+  },
+  "eval_scripts": {
+    "count": 6,
+    "files": [
+      {
+        "file": "build_keystock_product_eval_inventory.py",
+        "path": "scripts/build_keystock_product_eval_inventory.py"
+      },
+      {
+        "file": "close_eval_hooks_pending.py",
+        "path": "scripts/close_eval_hooks_pending.py"
+      },
+      {
+        "file": "eval_backfill.py",
+        "path": "scripts/eval_backfill.py"
+      },
+      {
+        "file": "eval_hook_backfill_refs.py",
+        "path": "scripts/eval_hook_backfill_refs.py"
+      },
+      {
+        "file": "export_keystock_product_eval_status.py",
+        "path": "scripts/export_keystock_product_eval_status.py"
+      },
+      {
+        "file": "run_forward_eval_scan.py",
+        "path": "scripts/run_forward_eval_scan.py"
+      }
+    ]
+  },
+  "data_assets": {
+    "count": 0,
+    "files": []
+  },
+  "rule_assets": {
+    "count": 0,
+    "description": "Phase 1 只读，不枚举正式规则资产"
+  },
+  "runtime_entries": {
+    "status": "FOUND",
+    "path": "00_项目地基/06_调度与运行/runtime_entry_registry.json"
+  },
+  "detected_gaps": [],
+  "candidate_pilot_rules": [
+    {
+      "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+      "description": "MA20 破位止损",
+      "status": "candidate",
+      "phase": "Phase 1"
+    }
+  ],
+  "no_production_write_evidence": "所有扫描均为只读，未修改任何生产文件。"
+}

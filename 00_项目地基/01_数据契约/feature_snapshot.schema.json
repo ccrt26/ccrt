@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "feature_snapshot.schema.json",
+  "title": "FeatureSnapshot",
+  "description": "为后评估和回测提供统一输入特征快照。必须防未来函数：as_of_date 之后的数据不得进入特征。",
+  "type": "object",
+  "required": [
+    "snapshot_id", "stock_code", "trade_date", "as_of_date",
+    "generated_at", "feature_values", "label_values",
+    "baseline_id", "data_lineage_refs", "quality_flags",
+    "freshness_status", "future_function_check"
+  ],
+  "properties": {
+    "snapshot_id": {
+      "type": "string",
+      "description": "快照唯一 ID，格式：FS-{YYYYMMDD}-{CODE}-{UUID 前 6 位}"
+    },
+    "stock_code": {
+      "type": "string",
+      "description": "股票代码"
+    },
+    "stock_name": {
+      "type": "string",
+      "description": "股票名称"
+    },
+    "trade_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "交易日 YYYYMMDD"
+    },
+    "as_of_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "数据可见性截止日期，as_of_date 之后的数据不得入特征"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "快照生成时间"
+    },
+    "feature_values": {
+      "type": "object",
+      "description": "核心特征值",
+      "properties": {
+        "technical": {
+          "type": "object",
+          "description": "技术特征",
+          "properties": {
+            "close": { "type": ["number", "null"] },
+            "volume": { "type": ["number", "null"] },
+            "ma5": { "type": ["number", "null"] },
+            "ma20": { "type": ["number", "null"] },
+            "ma60": { "type": ["number", "null"] },
+            "rsi14": { "type": ["number", "null"] },
+            "macd": {
+              "type": ["object", "null"],
+              "properties": {
+                "dif": { "type": ["number", "null"] },
+                "dea": { "type": ["number", "null"] },
+                "hist": { "type": ["number", "null"] }
+              }
+            },
+            "turnover_rate": { "type": ["number", "null"] },
+            "volume_ratio": { "type": ["number", "null"] },
+            "actual_trade_date": { "type": ["string", "null"] },
+            "source_row_date": { "type": ["string", "null"] },
+            "used_last_available_trade_date": { "type": "boolean" }
+          },
+          "required": ["close", "volume"]
+        },
+        "baseline": {
+          "type": "object",
+          "description": "baseline 特征",
+          "properties": {
+            "baseline_id": { "type": "string" },
+            "support": { "type": ["number", "null"] },
+            "pressure": { "type": ["number", "null"] },
+            "stop_loss": { "type": ["number", "null"] },
+            "valid_until": { "type": ["string", "null"] }
+          }
+        },
+        "risk_flags": {
+          "type": "object",
+          "description": "风险标识特征",
+          "properties": {
+            "overall_risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL", "UNKNOWN"] },
+            "pledge": { "type": ["number", "null"] },
+            "unlock": { "type": ["number", "null"] },
+            "margin": { "type": ["number", "null"] },
+            "northbound": { "type": ["number", "null"] }
+          }
+        }
+      },
+      "required": ["technical"]
+    },
+    "label_values": {
+      "type": "object",
+      "description": "收益标签（回测用），按 trade_date 后实际行情计算",
+      "properties": {
+        "ret_t1": { "type": ["number", "null"] },
+        "ret_t5": { "type": ["number", "null"] },
+        "ret_t20": { "type": ["number", "null"] },
+        "ret_t60": { "type": ["number", "null"] },
+        "max_drawdown": { "type": ["number", "null"] },
+        "relative_return": { "type": ["number", "null"] }
+      }
+    },
+    "baseline_id": {
+      "type": "string",
+      "description": "引用权威 baseline ID"
+    },
+    "data_lineage_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "数据来源引用路径"
+    },
+    "quality_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "数据质量标记"
+    },
+    "freshness_status": {
+      "type": "object",
+      "description": "数据新鲜度状态",
+      "properties": {
+        "overall": { "type": "string", "enum": ["FRESH", "STALE", "MISSING", "UNKNOWN"] },
+        "details": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "required": ["overall"]
+    },
+    "reconstructed_snapshot": {
+      "type": "boolean",
+      "description": "是否为重建的历史快照（非原始生成）"
+    },
+    "future_function_check": {
+      "type": "object",
+      "description": "未来函数检查结果",
+      "properties": {
+        "passed": { "type": "boolean" },
+        "max_data_date": { "type": "string", "pattern": "^[0-9]{8}$" },
+        "as_of_check": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BLOCK"]
+        },
+        "details": { "type": "string" }
+      },
+      "required": ["passed", "max_data_date", "as_of_check"]
+    },
+    "deferred_feature_refs": {
+      "type": "object",
+      "description": "延期特征引用（财务/事件/拥挤度等 Phase 2+ 实现）",
+      "properties": {
+        "financial_feature_ref": { "type": "string" },
+        "event_feature_ref": { "type": "string" },
+        "crowding_feature_ref": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

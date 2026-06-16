@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "prediction_ledger.schema.json",
+  "title": "PredictionLedger",
+  "description": "统一记录深度分析和日报中的可验证判断。JSONL-first 主存储，Phase 1 不用 SQLite。",
+  "type": "object",
+  "required": [
+    "ledger_id", "source_type", "source_report_path", "stock_code",
+    "stock_name", "trade_date", "baseline_id", "rule_version",
+    "data_snapshot_id", "prediction_type", "assertion", "horizon",
+    "confidence", "verification_windows", "status", "created_at"
+  ],
+  "properties": {
+    "ledger_id": {
+      "type": "string",
+      "description": "全局唯一 ID，格式：PL-{YYYYMMDD}-{UUID 前 8 位}"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["deep_analysis", "daily_report"],
+      "description": "来源类型：深度分析或日报"
+    },
+    "source_report_path": {
+      "type": "string",
+      "description": "来源报告的相对路径"
+    },
+    "source_sidecar_path": {
+      "type": "string",
+      "description": "来源 sidecar 的相对路径，可为空"
+    },
+    "stock_code": {
+      "type": "string",
+      "description": "股票代码，六位数字"
+    },
+    "stock_name": {
+      "type": "string",
+      "description": "股票名称"
+    },
+    "trade_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "交易日，YYYYMMDD"
+    },
+    "baseline_id": {
+      "type": "string",
+      "description": "权威 baseline ID，引用 baseline_registry.json"
+    },
+    "rule_version": {
+      "type": "string",
+      "description": "规则版本号"
+    },
+    "data_snapshot_id": {
+      "type": "string",
+      "description": "当时数据快照 ID"
+    },
+    "prediction_type": {
+      "type": "string",
+      "enum": [
+        "directional", "range", "trigger_condition",
+        "risk_warning", "event"
+      ],
+      "description": "判断类型：方向性/区间/触发条件/风险预警/事件"
+    },
+    "assertion": {
+      "type": "string",
+      "description": "可验证判断的原文或摘要"
+    },
+    "assertion_hash": {
+      "type": "string",
+      "description": "assertion 的 SHA256 哈希，用于幂等键"
+    },
+    "horizon": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "验证窗口天数"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "置信度 0-1"
+    },
+    "verification_windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "offset_days": { "type": "integer" }
+        },
+        "required": ["label", "offset_days"]
+      },
+      "description": "验证窗口数组，如 [T+5, T+20, T+60]"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "DUE", "HIT", "MISS", "PARTIAL",
+               "INSUFFICIENT_DATA", "OBSERVE", "BLOCK"],
+      "description": "验证状态"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "验证证据引用路径"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "创建时间 ISO 8601"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "最后更新时间 ISO 8601"
+    },
+    "superseded_by": {
+      "type": "string",
+      "description": "被新记录替代时的新 ledger_id"
+    },
+    "analysis_run_id": {
+      "type": "string",
+      "description": "关联的分析生产线 run_id"
+    },
+    "analysis_status_ref": {
+      "type": "string",
+      "description": "关联的分析生产线状态 JSON 路径"
+    }
+  },
+  "additionalProperties": false
+}

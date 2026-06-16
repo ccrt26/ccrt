@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "rule_update_candidate.schema.json",
+  "title": "RuleUpdateCandidate",
+  "description": "把后评估/回测发现的问题转成规则候选，不直接修改正式规则资产。",
+  "type": "object",
+  "required": [
+    "candidate_id", "source_eval_ids", "affected_rule_ids",
+    "problem_statement", "evidence_summary", "status", "created_at"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "description": "候选唯一 ID，格式：RC-{YYYYMMDD}-{序号}"
+    },
+    "source_eval_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "来源后评估 ID 列表"
+    },
+    "source_backtest_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "来源回测 ID 列表"
+    },
+    "affected_rule_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "涉及的规则 ID"
+    },
+    "problem_statement": {
+      "type": "string",
+      "description": "问题描述"
+    },
+    "evidence_summary": {
+      "type": "string",
+      "description": "证据摘要"
+    },
+    "proposed_change": {
+      "type": "string",
+      "description": "建议的规则变更"
+    },
+    "required_backtest": {
+      "type": "string",
+      "description": "需要的专项回测描述"
+    },
+    "shadow_plan": {
+      "type": "string",
+      "description": "Shadow 验证计划"
+    },
+    "rollback_plan": {
+      "type": "string",
+      "description": "回滚计划"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "backtest_required", "observe_only",
+               "blocked_by_data", "rejected"],
+      "description": "候选状态"
+    },
+    "risk_assessment": {
+      "type": "string"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "review_required_by": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

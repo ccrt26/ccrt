@@ -1,0 +1,30 @@
+[
+  {
+    "eval_id": "EV-20260616-60616-600114",
+    "ledger_id": "PL-FIXTURE-20260616-600114",
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "20260520",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — forward_eval_fixture_600114_20260520",
+    "horizon": 5,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-600114-097436",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:11:39.368656+00:00",
+    "fixture_only": true,
+    "source_fixture_ref": "PL-FIXTURE-20260616-600114"
+  }
+]

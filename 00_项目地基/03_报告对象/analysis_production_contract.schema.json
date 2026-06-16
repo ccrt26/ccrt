@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "analysis_production_contract.schema.json",
+  "title": "AnalysisProductionContract",
+  "description": "统一深度分析和日报生产线的运行对象、状态、输入输出和失败处理。",
+  "type": "object",
+  "required": [
+    "run_id", "run_type", "stock_code", "stock_name",
+    "trade_date", "status", "created_at", "updated_at"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "description": "运行唯一 ID"
+    },
+    "run_type": {
+      "type": "string",
+      "enum": ["deep_analysis", "daily_report"]
+    },
+    "stock_code": {
+      "type": "string"
+    },
+    "stock_name": {
+      "type": "string"
+    },
+    "trade_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$"
+    },
+    "baseline_id": {
+      "type": "string"
+    },
+    "input_refs": {
+      "type": "object",
+      "description": "输入引用",
+      "properties": {
+        "report_path": { "type": "string" },
+        "data_snapshot_path": { "type": "string" },
+        "baseline_ref": { "type": "string" }
+      }
+    },
+    "output_report_path": {
+      "type": "string"
+    },
+    "output_sidecar_path": {
+      "type": "string"
+    },
+    "canonical_report_ref": {
+      "type": "string"
+    },
+    "quality_gate_status": {
+      "type": "string",
+      "enum": ["NOT_CHECKED", "PASS", "WARN", "BLOCK"]
+    },
+    "eval_hook_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "ledger_write_status": {
+      "type": "string",
+      "enum": ["NOT_REQUIRED", "PASS", "WARN", "BLOCK"]
+    },
+    "data_freshness_status": {
+      "type": "string",
+      "enum": ["FRESH", "STALE", "MISSING", "NOT_CHECKED"]
+    },
+    "stock_today_view_ref": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "RUNNING", "PASS", "WARN", "ALERT", "BLOCK"]
+    },
+    "self_healing_status": {
+      "type": "string",
+      "enum": ["NOT_REQUIRED", "QUEUED", "RUNNING", "FIXED", "ESCALATED", "FAILED"]
+    },
+    "retry_policy": {
+      "type": "object",
+      "properties": {
+        "max_retries": { "type": "integer", "default": 3 },
+        "retry_delay_seconds": { "type": "integer", "default": 60 }
+      }
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "failure_reason": {
+      "type": "string"
+    },
+    "failure_impact": {
+      "type": "string"
+    },
+    "user_visible_status": {
+      "type": "string",
+      "enum": ["COMPLETE", "AUTO_REPAIRING", "BLOCK"]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

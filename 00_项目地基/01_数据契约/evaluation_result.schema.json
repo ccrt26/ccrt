@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "evaluation_result.schema.json",
+  "title": "EvaluationResult",
+  "description": "前向验证到期判断的结果记录。HIT/MISS/PARTIAL/INSUFFICIENT_DATA/OBSERVE/BLOCK。",
+  "type": "object",
+  "required": [
+    "eval_id", "ledger_id", "stock_code", "trade_date",
+    "eval_date", "prediction_type", "assertion", "horizon",
+    "outcome", "feature_snapshot_id", "generated_at"
+  ],
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "description": "评估唯一 ID"
+    },
+    "ledger_id": {
+      "type": "string",
+      "description": "关联的账本记录 ID"
+    },
+    "stock_code": {
+      "type": "string"
+    },
+    "stock_name": {
+      "type": "string"
+    },
+    "trade_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "判断发出的交易日"
+    },
+    "eval_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "评估执行的日期"
+    },
+    "prediction_type": {
+      "type": "string",
+      "enum": ["directional", "range", "trigger_condition",
+               "risk_warning", "event"]
+    },
+    "assertion": {
+      "type": "string",
+      "description": "判断原文"
+    },
+    "horizon": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["HIT", "MISS", "PARTIAL", "INSUFFICIENT_DATA",
+               "PENDING", "OBSERVE", "BLOCK"]
+    },
+    "outcome_detail": {
+      "type": "string",
+      "description": "结论的详细说明"
+    },
+    "attribution": {
+      "type": "object",
+      "description": "偏差归因",
+      "properties": {
+        "primary": {
+          "type": "string",
+          "enum": ["data_gap", "rule_weakness", "hypothesis_error",
+                   "market_noise", "execution_carryover_error",
+                   "event_delay", "sample_insufficient",
+                   "future_function_risk",
+                   "prediction_assertion_placeholder"]
+        },
+        "secondary": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "detail": { "type": "string" }
+      }
+    },
+    "feature_snapshot_id": {
+      "type": "string"
+    },
+    "actual_metrics": {
+      "type": "object",
+      "description": "实际指标",
+      "properties": {
+        "actual_return": { "type": ["number", "null"] },
+        "max_drawdown": { "type": ["number", "null"] },
+        "relative_return": { "type": ["number", "null"] }
+      }
+    },
+    "label_status": {
+      "type": "string",
+      "enum": ["AVAILABLE", "INSUFFICIENT_FORWARD_DATA", "NOT_REQUESTED"],
+      "description": "标签数据可用状态"
+    },
+    "label_visibility": {
+      "type": "string",
+      "enum": ["POST_OUTCOME_NOT_FEATURE"],
+      "description": "标签数据仅用于后验评估，不得作为特征输入"
+    },
+    "data_gap_reason": {
+      "type": "string",
+      "description": "数据不足原因（outcome 为 INSUFFICIENT_DATA 时必填）"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

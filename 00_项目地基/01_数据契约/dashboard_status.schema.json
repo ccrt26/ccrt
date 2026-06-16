@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dashboard_status.schema.json",
+  "title": "DashboardStatus",
+  "description": "后评估/回测系统的整体状态和告警输出，供未来前端直接消费。用户可见状态仅三类：COMPLETE / AUTO_REPAIRING / BLOCK。",
+  "type": "object",
+  "required": [
+    "generated_at", "overall_status", "task_statuses",
+    "alerts", "next_required_action"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": ["COMPLETE", "AUTO_REPAIRING", "BLOCK"],
+      "description": "用户可见总状态"
+    },
+    "task_statuses": {
+      "type": "array",
+      "description": "各任务状态",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "string" },
+          "task_type": { "type": "string", "enum": [
+            "inventory", "prediction_ledger", "feature_snapshot",
+            "backtest", "forward_eval", "status_export"
+          ]},
+          "status": {
+            "type": "string",
+            "enum": ["PASS", "WARN", "ALERT", "BLOCK", "OBSERVE", "PENDING", "RUNNING"]
+          },
+          "stock_code": { "type": "string" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "detail": { "type": "string" }
+        },
+        "required": ["task_id", "task_type", "status"]
+      }
+    },
+    "alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "alert_id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["INFO", "WARN", "ALERT", "BLOCK"] },
+          "stock_code": { "type": "string" },
+          "category": { "type": "string" },
+          "message": { "type": "string" },
+          "user_visible": { "type": "boolean" },
+          "created_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["alert_id", "severity", "message", "user_visible"]
+      }
+    },
+    "auto_repairing_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": { "type": "string" },
+          "repair_action": { "type": "string" },
+          "retry_count": { "type": "integer" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "blocked_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": { "type": "string" },
+          "block_reason": { "type": "string" },
+          "required_action": { "type": "string" }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "next_required_action": {
+      "type": "string",
+      "description": "下一步必须执行的操作"
+    }
+  },
+  "additionalProperties": false
+}

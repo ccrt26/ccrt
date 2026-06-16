@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "alert_center.schema.json",
+  "title": "AlertCenter",
+  "description": "后台告警和用户可见告警管理。顶层为数组，每项为告警对象。user_visible=false 只进入后台；user_visible=true 只在影响决策时暴露。",
+  "type": "array",
+  "items": {
+    "title": "AlertItem",
+    "type": "object",
+    "required": [
+      "alert_id", "stock_code", "trade_date", "severity",
+      "category", "technical_reason", "user_visible", "created_at"
+    ],
+    "properties": {
+      "alert_id": {
+        "type": "string",
+        "description": "告警唯一 ID"
+      },
+      "stock_code": {
+        "type": "string"
+      },
+      "stock_name": {
+        "type": "string"
+      },
+      "trade_date": {
+        "type": "string",
+        "pattern": "^[0-9]{8}$"
+      },
+      "source_run_id": {
+        "type": "string"
+      },
+      "severity": {
+        "type": "string",
+        "enum": ["INFO", "WARN", "ALERT", "BLOCK"]
+      },
+      "category": {
+        "type": "string",
+        "description": "告警类别，如 data_freshness, sidecar_inconsistency, baseline_missing, 等"
+      },
+      "technical_reason": {
+        "type": "string",
+        "description": "技术原因详细描述"
+      },
+      "decision_impact": {
+        "type": "string",
+        "description": "对用户决策的影响评估"
+      },
+      "self_healing_action": {
+        "type": "string"
+      },
+      "self_healing_status": {
+        "type": "string",
+        "enum": ["NOT_REQUIRED", "QUEUED", "RUNNING", "FIXED", "ESCALATED", "FAILED"]
+      },
+      "assigned_route": {
+        "type": "string",
+        "description": "通知路由目标角色"
+      },
+      "user_visible": {
+        "type": "boolean",
+        "description": "是否对用户可见"
+      },
+      "user_message": {
+        "type": "string",
+        "description": "用户可见的消息（user_visible=true 时必填）"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "resolved_at": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "additionalProperties": false
+  }
+}

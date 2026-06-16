@@ -1,0 +1,436 @@
+{
+  "backtest_id": "BT-20260616-600114-8c20fd",
+  "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+  "rule_version": "v1.0",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "as_of_date": "20260616",
+  "windows": {
+    "3Y": {
+      "backtest_id": "BT-20260616-600114-3Y",
+      "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+      "rule_version": "v1.0",
+      "stock_code": "600114",
+      "window_label": "3Y",
+      "window_start": "20230617",
+      "window_end": "20260616",
+      "sample_count": 14,
+      "min_samples_required": 5,
+      "hit_count": 3,
+      "miss_count": 9,
+      "partial_count": 2,
+      "win_rate": 0.2143,
+      "avg_return": 6.5684,
+      "excess_return": null,
+      "max_drawdown": -10.5148,
+      "reverse_return": null,
+      "weak_rule_reasons": [
+        "胜率 0.2143 偏低"
+      ],
+      "quality_gates": {
+        "data_visibility_proven": true,
+        "sample_sufficient": true,
+        "has_rule_version": true,
+        "has_control_group": false,
+        "has_time_stratification": false,
+        "future_function_risk": false,
+        "output_reproducible": true,
+        "deferred_features": [
+          "financial_feature_ref",
+          "event_feature_ref",
+          "crowding_feature_ref"
+        ]
+      },
+      "overall_status": "WARN",
+      "feature_snapshot_refs": [],
+      "signals": [
+        {
+          "signal_date": "20250320",
+          "trigger_close": 21.66,
+          "trigger_ma20": 21.869500000000002,
+          "prev_close": 23.03,
+          "prev_ma20": 21.7945,
+          "index_in_full": 24
+        },
+        {
+          "signal_date": "20250424",
+          "trigger_close": 18.83,
+          "trigger_ma20": 18.9025,
+          "prev_close": 19.2,
+          "prev_ma20": 18.941,
+          "index_in_full": 48
+        },
+        {
+          "signal_date": "20250527",
+          "trigger_close": 19.56,
+          "trigger_ma20": 20.259,
+          "prev_close": 20.4,
+          "prev_ma20": 20.222499999999997,
+          "index_in_full": 68
+        },
+        {
+          "signal_date": "20250722",
+          "trigger_close": 20.4,
+          "trigger_ma20": 20.515499999999996,
+          "prev_close": 20.59,
+          "prev_ma20": 20.508000000000003,
+          "index_in_full": 107
+        },
+        {
+          "signal_date": "20250904",
+          "trigger_close": 27.73,
+          "trigger_ma20": 27.842000000000002,
+          "prev_close": 28.23,
+          "prev_ma20": 27.8225,
+          "index_in_full": 139
+        },
+        {
+          "signal_date": "20250910",
+          "trigger_close": 27.84,
+          "trigger_ma20": 28.269000000000005,
+          "prev_close": 28.66,
+          "prev_ma20": 28.21,
+          "index_in_full": 143
+        },
+        {
+          "signal_date": "20251016",
+          "trigger_close": 31.7,
+          "trigger_ma20": 32.30200000000001,
+          "prev_close": 33.04,
+          "prev_ma20": 32.108999999999995,
+          "index_in_full": 163
+        },
+        {
+          "signal_date": "20251204",
+          "trigger_close": 27.46,
+          "trigger_ma20": 27.504,
+          "prev_close": 27.91,
+          "prev_ma20": 27.615,
+          "index_in_full": 198
+        },
+        {
+          "signal_date": "20260113",
+          "trigger_close": 30.21,
+          "trigger_ma20": 30.426500000000004,
+          "prev_close": 30.85,
+          "prev_ma20": 30.442499999999995,
+          "index_in_full": 224
+        },
+        {
+          "signal_date": "20260202",
+          "trigger_close": 31.2,
+          "trigger_ma20": 32.7955,
+          "prev_close": 33.15,
+          "prev_ma20": 32.763999999999996,
+          "index_in_full": 238
+        }
+      ],
+      "forward_returns": [
+        {
+          "signal": "20250320",
+          "ret_t5": -9.3721,
+          "ret_t20": -16.3435
+        },
+        {
+          "signal": "20250424",
+          "ret_t5": 12.2677,
+          "ret_t20": 3.8768
+        },
+        {
+          "signal": "20250527",
+          "ret_t5": -2.5051,
+          "ret_t20": 3.9366
+        },
+        {
+          "signal": "20250722",
+          "ret_t5": 20.8824,
+          "ret_t20": 37.1569
+        },
+        {
+          "signal": "20250904",
+          "ret_t5": 6.2027,
+          "ret_t20": 19.1489
+        },
+        {
+          "signal": "20250910",
+          "ret_t5": 20.3305,
+          "ret_t20": 13.8649
+        },
+        {
+          "signal": "20251016",
+          "ret_t5": -8.1073,
+          "ret_t20": -11.1356
+        },
+        {
+          "signal": "20251204",
+          "ret_t5": 9.5412,
+          "ret_t20": 11.3256
+        },
+        {
+          "signal": "20260113",
+          "ret_t5": 13.6048,
+          "ret_t20": 6.852
+        },
+        {
+          "signal": "20260202",
+          "ret_t5": 2.8205,
+          "ret_t20": 3.7821
+        }
+      ],
+      "generated_at": "2026-06-16T05:59:36.271950+00:00"
+    },
+    "1Y": {
+      "backtest_id": "BT-20260616-600114-1Y",
+      "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+      "rule_version": "v1.0",
+      "stock_code": "600114",
+      "window_label": "1Y",
+      "window_start": "20250616",
+      "window_end": "20260616",
+      "sample_count": 11,
+      "min_samples_required": 5,
+      "hit_count": 0,
+      "miss_count": 6,
+      "partial_count": 5,
+      "win_rate": 0.0,
+      "avg_return": 14.6944,
+      "excess_return": null,
+      "max_drawdown": -9.5307,
+      "reverse_return": null,
+      "weak_rule_reasons": [
+        "胜率 0.0 偏低"
+      ],
+      "quality_gates": {
+        "data_visibility_proven": true,
+        "sample_sufficient": true,
+        "has_rule_version": true,
+        "has_control_group": false,
+        "has_time_stratification": false,
+        "future_function_risk": false,
+        "output_reproducible": true,
+        "deferred_features": [
+          "financial_feature_ref",
+          "event_feature_ref",
+          "crowding_feature_ref"
+        ]
+      },
+      "overall_status": "WARN",
+      "feature_snapshot_refs": [],
+      "signals": [
+        {
+          "signal_date": "20250722",
+          "trigger_close": 20.4,
+          "trigger_ma20": 20.515499999999996,
+          "prev_close": 20.59,
+          "prev_ma20": 20.508000000000003,
+          "index_in_full": 107
+        },
+        {
+          "signal_date": "20250904",
+          "trigger_close": 27.73,
+          "trigger_ma20": 27.842000000000002,
+          "prev_close": 28.23,
+          "prev_ma20": 27.8225,
+          "index_in_full": 139
+        },
+        {
+          "signal_date": "20250910",
+          "trigger_close": 27.84,
+          "trigger_ma20": 28.269000000000005,
+          "prev_close": 28.66,
+          "prev_ma20": 28.21,
+          "index_in_full": 143
+        },
+        {
+          "signal_date": "20251016",
+          "trigger_close": 31.7,
+          "trigger_ma20": 32.30200000000001,
+          "prev_close": 33.04,
+          "prev_ma20": 32.108999999999995,
+          "index_in_full": 163
+        },
+        {
+          "signal_date": "20251204",
+          "trigger_close": 27.46,
+          "trigger_ma20": 27.504,
+          "prev_close": 27.91,
+          "prev_ma20": 27.615,
+          "index_in_full": 198
+        },
+        {
+          "signal_date": "20260113",
+          "trigger_close": 30.21,
+          "trigger_ma20": 30.426500000000004,
+          "prev_close": 30.85,
+          "prev_ma20": 30.442499999999995,
+          "index_in_full": 224
+        },
+        {
+          "signal_date": "20260202",
+          "trigger_close": 31.2,
+          "trigger_ma20": 32.7955,
+          "prev_close": 33.15,
+          "prev_ma20": 32.763999999999996,
+          "index_in_full": 238
+        },
+        {
+          "signal_date": "20260303",
+          "trigger_close": 32.19,
+          "trigger_ma20": 33.2005,
+          "prev_close": 34.72,
+          "prev_ma20": 33.298500000000004,
+          "index_in_full": 253
+        },
+        {
+          "signal_date": "20260518",
+          "trigger_close": 32.11,
+          "trigger_ma20": 33.349,
+          "prev_close": 33.37,
+          "prev_ma20": 33.2975,
+          "index_in_full": 303
+        },
+        {
+          "signal_date": "20260520",
+          "trigger_close": 33.19,
+          "trigger_ma20": 33.541,
+          "prev_close": 33.77,
+          "prev_ma20": 33.469,
+          "index_in_full": 305
+        }
+      ],
+      "forward_returns": [
+        {
+          "signal": "20250722",
+          "ret_t5": 42.7941,
+          "ret_t20": 38.0882
+        },
+        {
+          "signal": "20250904",
+          "ret_t5": 4.4356,
+          "ret_t20": 9.6286
+        },
+        {
+          "signal": "20250910",
+          "ret_t5": 9.6624,
+          "ret_t20": 9.1954
+        },
+        {
+          "signal": "20251016",
+          "ret_t5": -4.7003,
+          "ret_t20": 1.2303
+        },
+        {
+          "signal": "20251204",
+          "ret_t5": 17.043,
+          "ret_t20": 4.0058
+        },
+        {
+          "signal": "20260113",
+          "ret_t5": 5.0976,
+          "ret_t20": 16.3853
+        },
+        {
+          "signal": "20260202",
+          "ret_t5": 12.5,
+          "ret_t20": 24.3269
+        }
+      ],
+      "generated_at": "2026-06-16T05:59:36.272149+00:00"
+    },
+    "6M": {
+      "backtest_id": "BT-20260616-600114-6M",
+      "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+      "rule_version": "v1.0",
+      "stock_code": "600114",
+      "window_label": "6M",
+      "window_start": "20251218",
+      "window_end": "20260616",
+      "sample_count": 6,
+      "min_samples_required": 5,
+      "hit_count": 0,
+      "miss_count": 0,
+      "partial_count": 6,
+      "win_rate": 0.0,
+      "avg_return": null,
+      "excess_return": null,
+      "max_drawdown": null,
+      "reverse_return": null,
+      "weak_rule_reasons": [
+        "所有样本数据不足，仅 OBSERVE"
+      ],
+      "quality_gates": {
+        "data_visibility_proven": true,
+        "sample_sufficient": true,
+        "has_rule_version": true,
+        "has_control_group": false,
+        "has_time_stratification": false,
+        "future_function_risk": false,
+        "output_reproducible": true,
+        "deferred_features": [
+          "financial_feature_ref",
+          "event_feature_ref",
+          "crowding_feature_ref"
+        ]
+      },
+      "overall_status": "OBSERVE",
+      "feature_snapshot_refs": [],
+      "signals": [
+        {
+          "signal_date": "20260113",
+          "trigger_close": 30.21,
+          "trigger_ma20": 30.426500000000004,
+          "prev_close": 30.85,
+          "prev_ma20": 30.442499999999995,
+          "index_in_full": 224
+        },
+        {
+          "signal_date": "20260202",
+          "trigger_close": 31.2,
+          "trigger_ma20": 32.7955,
+          "prev_close": 33.15,
+          "prev_ma20": 32.763999999999996,
+          "index_in_full": 238
+        },
+        {
+          "signal_date": "20260303",
+          "trigger_close": 32.19,
+          "trigger_ma20": 33.2005,
+          "prev_close": 34.72,
+          "prev_ma20": 33.298500000000004,
+          "index_in_full": 253
+        },
+        {
+          "signal_date": "20260518",
+          "trigger_close": 32.11,
+          "trigger_ma20": 33.349,
+          "prev_close": 33.37,
+          "prev_ma20": 33.2975,
+          "index_in_full": 303
+        },
+        {
+          "signal_date": "20260520",
+          "trigger_close": 33.19,
+          "trigger_ma20": 33.541,
+          "prev_close": 33.77,
+          "prev_ma20": 33.469,
+          "index_in_full": 305
+        },
+        {
+          "signal_date": "20260601",
+          "trigger_close": 35.26,
+          "trigger_ma20": 35.491,
+          "prev_close": 36.62,
+          "prev_ma20": 35.364,
+          "index_in_full": 313
+        }
+      ],
+      "forward_returns": [],
+      "generated_at": "2026-06-16T05:59:36.272274+00:00"
+    }
+  },
+  "overall_status": "WARN",
+  "feature_snapshot_refs": [
+    "FS-20260616-600114-8d6624"
+  ],
+  "generated_at": "2026-06-16T05:59:36.272286+00:00"
+}

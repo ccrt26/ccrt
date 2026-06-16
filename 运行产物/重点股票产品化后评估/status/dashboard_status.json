@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-06-16T06:13:25.517313+00:00",
+  "overall_status": "COMPLETE",
+  "task_statuses": [
+    {
+      "task_id": "sidecar_scan",
+      "task_type": "inventory",
+      "status": "PASS",
+      "detail": "sidecar 50 条"
+    },
+    {
+      "task_id": "prediction_ledger",
+      "task_type": "prediction_ledger",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "task_id": "feature_snapshot",
+      "task_type": "feature_snapshot",
+      "status": "PASS",
+      "detail": "1 个快照，行情正常"
+    },
+    {
+      "task_id": "backtest_backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json",
+      "task_type": "backtest",
+      "status": "WARN",
+      "stock_code": "600114",
+      "detail": "总体状态=WARN"
+    }
+  ],
+  "alerts": [],
+  "auto_repairing_items": [],
+  "blocked_items": [],
+  "evidence_refs": [],
+  "next_required_action": "正常监控"
+}

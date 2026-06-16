@@ -1,0 +1,64 @@
+{
+  "phase": "Phase 1 backend MVP",
+  "flow": "F-FIX + F-EVAL + F-GATE",
+  "generated_at": "2026-06-16T06:11:49.721646+00:00",
+  "feature_snapshot": {
+    "stock_code": "600114",
+    "close": 42.22,
+    "volume": 46557214.0,
+    "ma20": 38.6815,
+    "actual_trade_date": "20260615",
+    "market_data_missing": false
+  },
+  "backtest": {
+    "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+    "overall_status": "WARN",
+    "windows": {
+      "3Y": {
+        "sample_count": 14,
+        "status": "WARN"
+      },
+      "1Y": {
+        "sample_count": 11,
+        "status": "WARN"
+      },
+      "6M": {
+        "sample_count": 6,
+        "status": "OBSERVE"
+      }
+    }
+  },
+  "ledger": {
+    "sidecar_count": 50,
+    "ledger_count": 45,
+    "status": "PASS"
+  },
+  "dashboard": {
+    "overall_status": "COMPLETE",
+    "alerts_match_alert_center": true
+  },
+  "forward_eval": {
+    "fixture_generated": true,
+    "fixture_only": true,
+    "result_count": 1,
+    "placeholder_assertions_observe": true,
+    "no_market_data_missing_wording": true,
+    "output_path": "运行产物/重点股票产品化后评估/forward_eval/forward_eval_20260616.json"
+  },
+  "production_no_touch": {
+    "stock_reports_diff_empty": true,
+    "deep_analysis_diff_empty": true,
+    "baseline_registry_diff_empty": true,
+    "runtime_registry_diff_empty": true
+  },
+  "out_of_scope_untracked": {
+    "path": "临时分析/会话记录/temporary_analysis_doubao_v2_review_600114_20260616_close.json",
+    "exists": true,
+    "valid_json": false,
+    "sha256": "eb17d7a7fabe36bc0569d1b0bd678f8f048935a837de9cc1b452cf523d6efbd4",
+    "mtime": "2026-06-16T05:41:49.450398+00:00",
+    "included_in_phase_changes": false,
+    "action": "excluded_from_phase_scope",
+    "source_disposition": "requires_ahei_or_user_court_before_g6"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "snapshot_id": "FS-20260616-600114-af9be3",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260616",
+  "as_of_date": "20260616",
+  "generated_at": "2026-06-16T05:59:36.241024+00:00",
+  "feature_values": {
+    "technical": {
+      "actual_trade_date": "20260615",
+      "source_row_date": "20260615",
+      "close": 42.22,
+      "volume": 46557214.0,
+      "ma5": 39.858,
+      "ma20": 38.681500000000014,
+      "ma60": 33.61133333333333,
+      "rsi14": 58.844045839561524,
+      "macd": {
+        "dif": 1.6207106729930558,
+        "dea": -2.5972948997465437,
+        "hist": 8.436011145479199
+      },
+      "turnover_rate": null,
+      "volume_ratio": null,
+      "used_last_available_trade_date": true
+    },
+    "baseline": {
+      "baseline_id": "",
+      "support": null,
+      "pressure": null,
+      "stop_loss": null,
+      "valid_until": null
+    },
+    "risk_flags": {
+      "overall_risk_level": "UNKNOWN",
+      "pledge": null,
+      "unlock": null,
+      "margin": null,
+      "northbound": null
+    }
+  },
+  "label_values": {
+    "ret_t1": null,
+    "ret_t5": null,
+    "ret_t20": null,
+    "ret_t60": null,
+    "max_drawdown": null,
+    "relative_return": null,
+    "label_status": "INSUFFICIENT_FORWARD_DATA",
+    "label_visibility": "POST_OUTCOME_NOT_FEATURE"
+  },
+  "baseline_id": "",
+  "data_lineage_refs": [
+    "kline_cache:600114",
+    "daily_basic:600114"
+  ],
+  "quality_flags": [
+    "TRADE_DATE_ROLLBACK_TO_LAST_AVAILABLE"
+  ],
+  "freshness_status": {
+    "overall": "STALE",
+    "details": {
+      "reason": "最近可用交易日"
+    }
+  },
+  "reconstructed_snapshot": false,
+  "future_function_check": {
+    "passed": true,
+    "max_data_date": "20260615",
+    "as_of_check": "PASS",
+    "details": "最大 kline 日期(20260615) <= cutoff(20260616)，PASS"
+  },
+  "deferred_feature_refs": {
+    "financial_feature_ref": "DEFERRED_PHASE_2",
+    "event_feature_ref": "DEFERRED_PHASE_2",
+    "crowding_feature_ref": "DEFERRED_PHASE_3"
+  }
+}

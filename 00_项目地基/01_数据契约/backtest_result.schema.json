@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "backtest_result.schema.json",
+  "title": "BacktestResult",
+  "description": "统一后评估和回测的输出结果。顶层为回测运行聚合，windows 字段包含各窗口明细。样本不足时只能输出 OBSERVE，不得伪造 HIT/MISS。",
+  "type": "object",
+  "required": [
+    "backtest_id", "rule_id", "rule_version", "stock_code",
+    "as_of_date", "windows", "overall_status", "generated_at"
+  ],
+  "properties": {
+    "backtest_id": {
+      "type": "string",
+      "description": "回测运行唯一 ID"
+    },
+    "rule_id": {
+      "type": "string",
+      "description": "规则 ID，如 TECH_MA20_BREAK_STOP_LOSS"
+    },
+    "rule_version": {
+      "type": "string",
+      "description": "规则版本号"
+    },
+    "stock_code": {
+      "type": "string",
+      "description": "股票代码"
+    },
+    "stock_name": {
+      "type": "string",
+      "description": "股票名称"
+    },
+    "as_of_date": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$",
+      "description": "回溯截止日期"
+    },
+    "windows": {
+      "type": "object",
+      "description": "各时间窗口的回测结果（key 为窗口标签如 3Y/1Y/6M）",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "backtest_id": { "type": "string" },
+          "rule_id": { "type": "string" },
+          "rule_version": { "type": "string" },
+          "stock_code": { "type": "string" },
+          "window_label": { "type": "string", "description": "窗口标签：3Y / 1Y / 6M" },
+          "window_start": { "type": "string", "pattern": "^[0-9]{8}$" },
+          "window_end": { "type": "string", "pattern": "^[0-9]{8}$" },
+          "sample_count": { "type": "integer", "minimum": 0 },
+          "min_samples_required": { "type": "integer", "default": 5 },
+          "hit_count": { "type": "integer", "minimum": 0 },
+          "miss_count": { "type": "integer", "minimum": 0 },
+          "partial_count": { "type": "integer", "minimum": 0 },
+          "win_rate": { "type": ["number", "null"] },
+          "avg_return": { "type": ["number", "null"] },
+          "excess_return": { "type": ["number", "null"] },
+          "max_drawdown": { "type": ["number", "null"] },
+          "reverse_return": { "type": ["number", "null"] },
+          "weak_rule_reasons": { "type": "array", "items": { "type": "string" } },
+          "quality_gates": {
+            "type": "object",
+            "properties": {
+              "data_visibility_proven": { "type": "boolean" },
+              "sample_sufficient": { "type": "boolean" },
+              "has_rule_version": { "type": "boolean" },
+              "has_control_group": { "type": "boolean" },
+              "has_time_stratification": { "type": "boolean" },
+              "future_function_risk": { "type": "boolean" },
+              "output_reproducible": { "type": "boolean" },
+              "deferred_features": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["data_visibility_proven", "sample_sufficient",
+                         "has_rule_version", "future_function_risk",
+                         "output_reproducible"]
+          },
+          "overall_status": {
+            "type": "string",
+            "enum": ["PASS", "WARN", "ALERT", "BLOCK", "OBSERVE"]
+          },
+          "feature_snapshot_refs": { "type": "array", "items": { "type": "string" } },
+          "generated_at": { "type": "string", "format": "date-time" }
+        },
+        "required": ["window_label", "sample_count", "overall_status"]
+      }
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": ["PASS", "WARN", "ALERT", "BLOCK", "OBSERVE"]
+    },
+    "feature_snapshot_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "superseded_by": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

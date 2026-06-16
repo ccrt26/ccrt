@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-06-16T05:59:36.210020+00:00",
+  "sidecar_count": 50,
+  "parsed_count": 50,
+  "ledger_count": 45,
+  "status": "PASS",
+  "reason": "",
+  "ledger_path": "运行产物/重点股票产品化后评估/ledger/prediction_ledger.jsonl"
+}
