@@ -1,0 +1,16 @@
+{
+  "flow": "F-FIX",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "scope": "temporary_analysis_force_route_gate_closure_fix",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "force_route_closure",
+      "detail": "force route is wired into policy, role boundary, G0 stage gate, orchestrator precheck, and natural-language route coverage"
+    }
+  ],
+  "generated_at": "2026-06-16T10:43:21+08:00"
+}

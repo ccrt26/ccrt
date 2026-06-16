@@ -27,6 +27,14 @@ def contains_any(text, terms):
     return [term for term in terms if term and term in text]
 
 
+def stock_name_suffix_hits(text, suffixes):
+    hits = []
+    for suffix in suffixes:
+        if suffix and re.search(r"[\\u4e00-\\u9fff]{2,8}" + re.escape(suffix), text):
+            hits.append(suffix)
+    return hits
+
+
 def classify_request(text, policy):
     raw = text or ""
     compact = normalize(raw)
@@ -39,13 +47,25 @@ def classify_request(text, policy):
         if time_hits and market_hits:
             composite_hits.append({"time_terms": time_hits, "market_terms": market_hits})
 
-    stock_code_hits = re.findall(r"(?<!\d)\d{6}(?!\d)", raw)
-    decision = "TEMP_ANALYSIS_REQUIRED" if hits or composite_hits else "NOT_TEMP_ANALYSIS"
+    stock_rule = policy.get("stock_context_route_rule", {})
+    stock_code_pattern = stock_rule.get("stock_code_pattern", r"(?<!\\d)\\d{6}(?!\\d)")
+    stock_code_hits = re.findall(stock_code_pattern, raw)
+    stock_name_hits = stock_name_suffix_hits(compact, stock_rule.get("stock_name_suffix_any", []))
+    stock_market_hits = contains_any(compact, stock_rule.get("market_terms_any", []))
+    stock_context_hits = {
+        "stock_code_hits": stock_code_hits,
+        "stock_name_suffix_hits": stock_name_hits,
+        "market_terms": stock_market_hits,
+    }
+    stock_context_required = bool((stock_code_hits or stock_name_hits) and stock_market_hits)
+
+    decision = "TEMP_ANALYSIS_REQUIRED" if hits or composite_hits or stock_context_required else "NOT_TEMP_ANALYSIS"
 
     return {
         "decision": decision,
         "trigger_hits": hits,
         "composite_hits": composite_hits,
+        "stock_context_hits": stock_context_hits,
         "stock_code_hits": stock_code_hits,
         "required_backend_chain": policy.get("required_backend_chain", []) if decision == "TEMP_ANALYSIS_REQUIRED" else [],
         "d07_v1_2_required": decision == "TEMP_ANALYSIS_REQUIRED",
@@ -87,6 +107,12 @@ def audit_route_record(record, policy):
         value = artifacts.get(field)
         if not isinstance(value, str) or not value.strip():
             findings.append(issue("BLOCK", field, detail))
+            continue
+        artifact_path = Path(value)
+        if not artifact_path.is_absolute():
+            artifact_path = ROOT / artifact_path
+        if not artifact_path.exists():
+            findings.append(issue("BLOCK", field + "_exists", f"{detail}; path does not exist: {value}"))
 
     if artifacts.get("gate_overall") != "PASS":
         findings.append(issue("BLOCK", "gate_overall", "TemporaryAnalysisBrief gate must PASS before frontend response"))

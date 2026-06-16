@@ -1,0 +1,41 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "scope": "temporary_analysis_force_route_gate_closure_fix",
+  "natural_language_route_results": [
+    {
+      "request": "让腰子看一下今天东睦股份的量价，分析情况",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    },
+    {
+      "request": "东睦股份今天放量上涨怎么看",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    },
+    {
+      "request": "600114 今天放量滞涨怎么办",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    },
+    {
+      "request": "东睦股份高开低走怎么看",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    },
+    {
+      "request": "东睦股份拉升后承接怎么样",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    },
+    {
+      "request": "东睦股份现在换手和成交量怎么样",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED"
+    }
+  ],
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T10:43:20+08:00"
+}

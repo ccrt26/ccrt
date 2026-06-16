@@ -36,6 +36,38 @@ class TestTemporaryAnalysisForceRoute(unittest.TestCase):
         result = classify_request("请写东睦股份长期深度分析报告", POLICY)
         self.assertEqual(result["decision"], "NOT_TEMP_ANALYSIS")
 
+    def test_intraday_natural_language_routes(self):
+        cases = [
+            "东睦股份今天放量上涨怎么看",
+            "600114 今天放量滞涨怎么办",
+            "东睦股份高开低走怎么看",
+            "东睦股份拉升后承接怎么样",
+            "东睦股份现在换手和成交量怎么样",
+            "600114 今天盘口强不强",
+        ]
+        for text in cases:
+            result = classify_request(text, POLICY)
+            self.assertEqual(result["decision"], "TEMP_ANALYSIS_REQUIRED", text)
+
+    def test_fake_artifact_paths_block(self):
+        record = {
+            "request": "东睦股份今天放量上涨怎么看",
+            "route_decision": "TEMP_ANALYSIS_REQUIRED",
+            "direct_role_answer": False,
+            "d07_version": "D07_v1.2",
+            "lishi_integrated": True,
+            "backend_artifacts": {
+                "brief_path": "/private/tmp/nonexistent_brief.json",
+                "gate_overall": "PASS",
+                "rendered_output_path": "/private/tmp/nonexistent_render.txt"
+            }
+        }
+        overall, findings, _ = audit_route_record(record, POLICY)
+        self.assertEqual(overall, "BLOCK")
+        checks = {f["check"] for f in findings}
+        self.assertIn("brief_path_exists", checks)
+        self.assertIn("rendered_output_path_exists", checks)
+
     def test_valid_audit_record_passes(self):
         record = {
             "request": "看一下今天东睦股份的量价，分析情况",

@@ -3,44 +3,1069 @@
   "description": "流程路由表 — 承接 FLOW_流程路由与阶段门_v1.0.md",
   "source_md": "00_项目地基/05_流程与角色/FLOW_流程路由与阶段门_v1.0.md",
   "flows": [
-    {"flow_code": "F-ARCH",  "name": "地基/架构变更", "applicable_scenes": ["目录变更","契约变更","总账变更","阶段制度变更"], "priority": 7, "stages": {"required_gates": ["G0","G1","G2","G3","G4","G5","G6"], "default_path": "G0→G1→G2→G3→G4→G5→G6", "can_skip": ["G2"]}},
-    {"flow_code": "F-DATA",  "name": "数据事实变更", "applicable_scenes": ["数值字段变更","日期字段变更","来源变更","sidecar事实字段变更"], "priority": 6, "stages": {"required_gates": ["G0","G1","G3","G4","G5","G6"], "default_path": "G0→G1→G3→G4→G5→G6", "can_skip": ["G2"]}},
-    {"flow_code": "F-REPORT","name": "报告生成/日报逻辑变更", "applicable_scenes": ["日报模板变更","MD/JSON生成逻辑变更","报告格式调整"], "priority": 5, "stages": {"required_gates": ["G0","G1","G2","G3","G4","G5","G6"], "default_path": "G0→G1→G2→G3→G4→G5→G6"}},
-    {"flow_code": "F-ANALYSIS","name": "金融分析逻辑变更", "applicable_scenes": ["分析白皮书变更","操作规则变更","风控规则变更","修改分析逻辑"], "priority": 8, "stages": {"required_gates": ["G0","G1","G2","G3","G4","G5","G6"], "default_path": "G0→G1→G2→G3→G4→G5→G6"}},
-    {"flow_code": "F-ROLE",  "name": "角色协作/统一解读变更", "applicable_scenes": ["13角色变更","解释对象变更","协作协议变更","统一解读角色协作"], "priority": 8, "stages": {"required_gates": ["G0","G1","G2","G3","G4","G5","G6"], "default_path": "G0→G1→G2→G3→G4→G5→G6"}},
-    {"flow_code": "F-EVAL",  "name": "后评估/eval_hooks变更", "applicable_scenes": ["T+1/T+5变更","回填逻辑变更","评分标准变更","复盘流程变更"], "priority": 4, "stages": {"required_gates": ["G0","G2","G3","G4","G5","G6"], "default_path": "G0→G2→G3→G4→G5→G6", "can_skip": ["G1"]}},
-    {"flow_code": "F-KNOW",  "name": "知识库/信号库进化", "applicable_scenes": ["六库变更","信号沉淀","L5→L2升级","知识条目更新"], "priority": 4, "stages": {"required_gates": ["G0","G1","G3","G4","G5","G6"], "default_path": "G0→G1→G3→G4→G5→G6", "can_skip": ["G2"]}},
-    {"flow_code": "F-GATE",  "name": "闸门/验收脚本变更", "applicable_scenes": ["check_*.py变更","schema变更","policy变更","新增检查脚本"], "priority": 6, "stages": {"required_gates": ["G0","G2","G3","G4","G5","G6"], "default_path": "G0→G2→G3→G4→G5→G6", "can_skip": ["G1"]}},
-    {"flow_code": "F-FIX",   "name": "定点问题修复", "applicable_scenes": ["闸门已抓到的具体数据修复","闸门已抓到的文档修复","修数据不一致"], "priority": 9, "stages": {"required_gates": ["G0","G3","G4","G5","G6"], "default_path": "G0→G3→G4→G5→G6", "can_skip": ["G1","G2"], "skip_note": "G1/G2可简化但必须在派单中注明跳过理由"}},
-    {"flow_code": "F-MIGRATE","name": "目录迁移/归档", "applicable_scenes": ["文件搬家","索引更新","历史资产治理","目录整理"], "priority": 3, "stages": {"required_gates": ["G0","G2","G3","G4","G5","G6"], "default_path": "G0→G2→G3→G4→G5→G6", "can_skip": ["G1"]}},
-    {"flow_code": "F-FEATURE","name": "分析功能新增/修改", "applicable_scenes": ["新增分析能力","新增指标","新增模块"], "priority": 5, "stages": {"required_gates": ["G0","G1","G2","G3","G4","G5","G6"], "default_path": "G0→G1→G2→G3→G4→G5→G6"}},
-    {"flow_code": "F-SCHEDULE","name": "调度/运行入口/跨平台迁移", "applicable_scenes": ["调度权威锁定","运行时入口注册","跨平台迁移","调度乱/定时任务"], "priority": 4, "stages": {"required_gates": ["G0","G2","G3","G4","G5","G6"], "default_path": "G0→G2→G3→G4→G5→G6", "can_skip": ["G1"]}}
+    {
+      "flow_code": "F-ARCH",
+      "name": "地基/架构变更",
+      "applicable_scenes": [
+        "目录变更",
+        "契约变更",
+        "总账变更",
+        "阶段制度变更"
+      ],
+      "priority": 7,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G2→G3→G4→G5→G6",
+        "can_skip": [
+          "G2"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-DATA",
+      "name": "数据事实变更",
+      "applicable_scenes": [
+        "数值字段变更",
+        "日期字段变更",
+        "来源变更",
+        "sidecar事实字段变更"
+      ],
+      "priority": 6,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G3→G4→G5→G6",
+        "can_skip": [
+          "G2"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-REPORT",
+      "name": "报告生成/日报逻辑变更",
+      "applicable_scenes": [
+        "日报模板变更",
+        "MD/JSON生成逻辑变更",
+        "报告格式调整"
+      ],
+      "priority": 5,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G2→G3→G4→G5→G6"
+      }
+    },
+    {
+      "flow_code": "F-ANALYSIS",
+      "name": "金融分析逻辑变更",
+      "applicable_scenes": [
+        "分析白皮书变更",
+        "操作规则变更",
+        "风控规则变更",
+        "修改分析逻辑"
+      ],
+      "priority": 8,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G2→G3→G4→G5→G6"
+      }
+    },
+    {
+      "flow_code": "F-ROLE",
+      "name": "角色协作/统一解读变更",
+      "applicable_scenes": [
+        "13角色变更",
+        "解释对象变更",
+        "协作协议变更",
+        "统一解读角色协作"
+      ],
+      "priority": 8,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G2→G3→G4→G5→G6"
+      }
+    },
+    {
+      "flow_code": "F-EVAL",
+      "name": "后评估/eval_hooks变更",
+      "applicable_scenes": [
+        "T+1/T+5变更",
+        "回填逻辑变更",
+        "评分标准变更",
+        "复盘流程变更"
+      ],
+      "priority": 4,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G2→G3→G4→G5→G6",
+        "can_skip": [
+          "G1"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-KNOW",
+      "name": "知识库/信号库进化",
+      "applicable_scenes": [
+        "六库变更",
+        "信号沉淀",
+        "L5→L2升级",
+        "知识条目更新"
+      ],
+      "priority": 4,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G3→G4→G5→G6",
+        "can_skip": [
+          "G2"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-GATE",
+      "name": "闸门/验收脚本变更",
+      "applicable_scenes": [
+        "check_*.py变更",
+        "schema变更",
+        "policy变更",
+        "新增检查脚本"
+      ],
+      "priority": 6,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G2→G3→G4→G5→G6",
+        "can_skip": [
+          "G1"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-FIX",
+      "name": "定点问题修复",
+      "applicable_scenes": [
+        "闸门已抓到的具体数据修复",
+        "闸门已抓到的文档修复",
+        "修数据不一致"
+      ],
+      "priority": 9,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G3→G4→G5→G6",
+        "can_skip": [
+          "G1",
+          "G2"
+        ],
+        "skip_note": "G1/G2可简化但必须在派单中注明跳过理由"
+      }
+    },
+    {
+      "flow_code": "F-MIGRATE",
+      "name": "目录迁移/归档",
+      "applicable_scenes": [
+        "文件搬家",
+        "索引更新",
+        "历史资产治理",
+        "目录整理"
+      ],
+      "priority": 3,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G2→G3→G4→G5→G6",
+        "can_skip": [
+          "G1"
+        ]
+      }
+    },
+    {
+      "flow_code": "F-FEATURE",
+      "name": "分析功能新增/修改",
+      "applicable_scenes": [
+        "新增分析能力",
+        "新增指标",
+        "新增模块"
+      ],
+      "priority": 5,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G1→G2→G3→G4→G5→G6"
+      }
+    },
+    {
+      "flow_code": "F-SCHEDULE",
+      "name": "调度/运行入口/跨平台迁移",
+      "applicable_scenes": [
+        "调度权威锁定",
+        "运行时入口注册",
+        "跨平台迁移",
+        "调度乱/定时任务"
+      ],
+      "priority": 4,
+      "stages": {
+        "required_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "default_path": "G0→G2→G3→G4→G5→G6",
+        "can_skip": [
+          "G1"
+        ]
+      }
+    }
   ],
   "routing_rules": {
-    "priority_order": ["F-FIX", "F-DATA and F-ANALYSIS", "F-REPORT and F-FEATURE", "F-ARCH", "F-MIGRATE"],
+    "priority_order": [
+      "F-FIX",
+      "F-DATA and F-ANALYSIS",
+      "F-REPORT and F-FEATURE",
+      "F-ARCH",
+      "F-MIGRATE"
+    ],
     "natural_language_examples": [
-      {"user_input": "修改分析逻辑", "route_to": "F-ANALYSIS", "confidence": "high"},
-      {"user_input": "修数据不一致", "route_to": "F-DATA or F-FIX", "confidence": "high"},
-      {"user_input": "新增检查脚本", "route_to": "F-GATE", "confidence": "high"},
-      {"user_input": "目录整理", "route_to": "F-MIGRATE", "confidence": "high"},
-      {"user_input": "统一解读角色协作", "route_to": "F-ROLE", "confidence": "high"},
-      {"user_input": "报告格式调整", "route_to": "F-REPORT", "confidence": "high"},
-      {"user_input": "架构调整/目录重构", "route_to": "F-ARCH", "confidence": "high"},
-      {"user_input": "调度乱/定时任务", "route_to": "F-SCHEDULE", "confidence": "high"}
+      {
+        "user_input": "修改分析逻辑",
+        "route_to": "F-ANALYSIS",
+        "confidence": "high"
+      },
+      {
+        "user_input": "修数据不一致",
+        "route_to": "F-DATA or F-FIX",
+        "confidence": "high"
+      },
+      {
+        "user_input": "新增检查脚本",
+        "route_to": "F-GATE",
+        "confidence": "high"
+      },
+      {
+        "user_input": "目录整理",
+        "route_to": "F-MIGRATE",
+        "confidence": "high"
+      },
+      {
+        "user_input": "统一解读角色协作",
+        "route_to": "F-ROLE",
+        "confidence": "high"
+      },
+      {
+        "user_input": "报告格式调整",
+        "route_to": "F-REPORT",
+        "confidence": "high"
+      },
+      {
+        "user_input": "架构调整/目录重构",
+        "route_to": "F-ARCH",
+        "confidence": "high"
+      },
+      {
+        "user_input": "调度乱/定时任务",
+        "route_to": "F-SCHEDULE",
+        "confidence": "high"
+      }
     ]
   },
   "directory_permissions": [
-    {"flow_code": "F-ARCH", "allowed_dirs": ["00_项目地基/"], "forbidden_dirs": ["重点股票/","每日荐股/","统一解读/","交易/","风控/"]},
-    {"flow_code": "F-DATA", "allowed_dirs": ["报告/sidecar/","日报/","缓存/"], "forbidden_dirs": ["baseline_registry/","流程脚本/","架构文档/"]},
-    {"flow_code": "F-REPORT", "allowed_dirs": ["代码文件/tools/","报告生成/"], "forbidden_dirs": ["数据缓存/","金融规则/","角色定义/"]},
-    {"flow_code": "F-ANALYSIS", "allowed_dirs": ["金融铁律/","分析逻辑/","白皮书/"], "forbidden_dirs": ["数据缓存/","流程脚本/","日报/"]},
-    {"flow_code": "F-FIX", "allowed_dirs": ["按指定范围"], "forbidden_dirs": ["范围外不得修改"]},
-    {"flow_code": "F-MIGRATE", "allowed_dirs": ["指定迁移目录"], "forbidden_dirs": ["非迁移目标目录"]}
+    {
+      "flow_code": "F-ARCH",
+      "allowed_dirs": [
+        "00_项目地基/"
+      ],
+      "forbidden_dirs": [
+        "重点股票/",
+        "每日荐股/",
+        "统一解读/",
+        "交易/",
+        "风控/"
+      ]
+    },
+    {
+      "flow_code": "F-DATA",
+      "allowed_dirs": [
+        "报告/sidecar/",
+        "日报/",
+        "缓存/"
+      ],
+      "forbidden_dirs": [
+        "baseline_registry/",
+        "流程脚本/",
+        "架构文档/"
+      ]
+    },
+    {
+      "flow_code": "F-REPORT",
+      "allowed_dirs": [
+        "代码文件/tools/",
+        "报告生成/"
+      ],
+      "forbidden_dirs": [
+        "数据缓存/",
+        "金融规则/",
+        "角色定义/"
+      ]
+    },
+    {
+      "flow_code": "F-ANALYSIS",
+      "allowed_dirs": [
+        "金融铁律/",
+        "分析逻辑/",
+        "白皮书/"
+      ],
+      "forbidden_dirs": [
+        "数据缓存/",
+        "流程脚本/",
+        "日报/"
+      ]
+    },
+    {
+      "flow_code": "F-FIX",
+      "allowed_dirs": [
+        "按指定范围"
+      ],
+      "forbidden_dirs": [
+        "范围外不得修改"
+      ]
+    },
+    {
+      "flow_code": "F-MIGRATE",
+      "allowed_dirs": [
+        "指定迁移目录"
+      ],
+      "forbidden_dirs": [
+        "非迁移目标目录"
+      ]
+    }
   ],
   "non_bypass_rules": [
-    {"rule": "金融分析逻辑变更必须经过 G1", "severity": "BLOCK", "description": "技术团队不得反向决定金融口径", "applicable_flows": ["F-ANALYSIS","F-ROLE"]},
-    {"rule": "角色协作变更必须经过 G1", "severity": "BLOCK", "description": "解释对象、角色边界调整必须先定口径", "applicable_flows": ["F-ROLE"]},
-    {"rule": "闸门/脚本变更必须经过 G2", "severity": "BLOCK", "description": "必须设计字段映射和检查逻辑", "applicable_flows": ["F-GATE","F-EVAL"]},
-    {"rule": "任何变更不得默认直接进入 G3", "severity": "BLOCK", "description": "必须先走 G0 路由", "applicable_flows": ["*"]}
-  ]
+    {
+      "rule": "金融分析逻辑变更必须经过 G1",
+      "severity": "BLOCK",
+      "description": "技术团队不得反向决定金融口径",
+      "applicable_flows": [
+        "F-ANALYSIS",
+        "F-ROLE"
+      ]
+    },
+    {
+      "rule": "角色协作变更必须经过 G1",
+      "severity": "BLOCK",
+      "description": "解释对象、角色边界调整必须先定口径",
+      "applicable_flows": [
+        "F-ROLE"
+      ]
+    },
+    {
+      "rule": "闸门/脚本变更必须经过 G2",
+      "severity": "BLOCK",
+      "description": "必须设计字段映射和检查逻辑",
+      "applicable_flows": [
+        "F-GATE",
+        "F-EVAL"
+      ]
+    },
+    {
+      "rule": "任何变更不得默认直接进入 G3",
+      "severity": "BLOCK",
+      "description": "必须先走 G0 路由",
+      "applicable_flows": [
+        "*"
+      ]
+    }
+  ],
+  "g0_g6_routing_contract": {
+    "version": "1.0",
+    "purpose": "固化 CCRT 标准流程的问题路由、角色唤醒、PASS/WARN/BLOCK 判定。G0-G6 是项目团队流程；LangGraph 仅在用户明确要求时作为自动协作工具启用。",
+    "default_langgraph": false,
+    "langgraph_enable_condition": "仅当用户明确说走 LangGraph / LangGraph 自动流程 / 自动协作时启用；普通 CCRT 标准流程不得默认启用。",
+    "priority_order": [
+      "F-FIX",
+      "F-DATA",
+      "F-ANALYSIS",
+      "F-REPORT",
+      "F-FEATURE",
+      "F-GATE",
+      "F-SCHEDULE",
+      "F-ROLE",
+      "F-ARCH",
+      "F-EVAL",
+      "F-KNOW",
+      "F-MIGRATE"
+    ],
+    "issue_routes": {
+      "data_fetch_or_data_integrity": {
+        "flow_code": "F-DATA",
+        "keywords": [
+          "数据获取",
+          "数据完整性",
+          "缓存",
+          "ready.json",
+          "manifest",
+          "行情",
+          "Tushare",
+          "日报数据链"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "玉夜",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "玉夜",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "schedule_or_automation": {
+        "flow_code": "F-SCHEDULE",
+        "keywords": [
+          "调度",
+          "自动化",
+          "launchd",
+          "定时任务",
+          "运行入口",
+          "自动推进",
+          "CI",
+          "环境"
+        ],
+        "required_roles": [
+          "阿黑",
+          "情墨",
+          "千光",
+          "红枫",
+          "红结",
+          "新安",
+          "旧影",
+          "腰子"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "daily_report": {
+        "flow_code": "F-REPORT",
+        "keywords": [
+          "日报",
+          "报告生成",
+          "报告模板",
+          "HTML报告",
+          "JSON报告",
+          "日报产物"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "玉夜",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "玉夜",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "financial_strategy_or_analysis": {
+        "flow_code": "F-ANALYSIS",
+        "keywords": [
+          "金融分析",
+          "策略",
+          "风控",
+          "操作规则",
+          "白皮书",
+          "分析逻辑",
+          "买卖规则"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "青山",
+          "流金",
+          "山猫",
+          "信鸽",
+          "玉夜",
+          "砺石",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "青山",
+          "流金",
+          "旧影"
+        ]
+      },
+      "gate_or_validation": {
+        "flow_code": "F-GATE",
+        "keywords": [
+          "闸门",
+          "验收脚本",
+          "check_",
+          "schema",
+          "policy",
+          "PASS",
+          "WARN",
+          "BLOCK"
+        ],
+        "required_roles": [
+          "阿黑",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "role_process": {
+        "flow_code": "F-ROLE",
+        "keywords": [
+          "角色",
+          "G0-G6",
+          "标准流程",
+          "职责",
+          "代签",
+          "越权",
+          "协作协议"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "architecture": {
+        "flow_code": "F-ARCH",
+        "keywords": [
+          "架构",
+          "地基",
+          "目录",
+          "契约",
+          "制度",
+          "总账"
+        ],
+        "required_roles": [
+          "阿黑",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影",
+          "腰子"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "情墨",
+          "旧影",
+          "腰子"
+        ]
+      },
+      "eval_or_backfill": {
+        "flow_code": "F-EVAL",
+        "keywords": [
+          "后评估",
+          "T+1",
+          "T+5",
+          "回填",
+          "复盘",
+          "eval"
+        ],
+        "required_roles": [
+          "阿黑",
+          "青山",
+          "玉夜",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "青山",
+          "新安",
+          "旧影"
+        ]
+      },
+      "knowledge_or_signal": {
+        "flow_code": "F-KNOW",
+        "keywords": [
+          "知识库",
+          "信号库",
+          "六库",
+          "L5",
+          "L2",
+          "信号沉淀"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "青山",
+          "玉夜",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "青山",
+          "旧影"
+        ]
+      },
+      "migration_or_archive": {
+        "flow_code": "F-MIGRATE",
+        "keywords": [
+          "迁移",
+          "归档",
+          "搬家",
+          "索引",
+          "历史资产"
+        ],
+        "required_roles": [
+          "阿黑",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "情墨",
+          "旧影"
+        ]
+      },
+      "feature_delivery": {
+        "flow_code": "F-FEATURE",
+        "keywords": [
+          "新增功能",
+          "新增指标",
+          "新增模块",
+          "能力新增"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "targeted_fix": {
+        "flow_code": "F-FIX",
+        "keywords": [
+          "修复",
+          "报错",
+          "失败",
+          "补修",
+          "定点问题",
+          "闸门已抓到"
+        ],
+        "required_roles": [
+          "阿黑",
+          "问题所属角色",
+          "红结",
+          "新安",
+          "旧影",
+          "腰子"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "红结",
+          "新安",
+          "旧影"
+        ]
+      },
+      "temporary_analysis_force_route": {
+        "flow_code": "F-ANALYSIS",
+        "keywords": [
+          "临时分析",
+          "盘中",
+          "分时",
+          "开盘",
+          "午盘",
+          "尾盘",
+          "现在怎么看",
+          "当前怎么看",
+          "此刻怎么看",
+          "今天走势",
+          "今日走势",
+          "当日操作",
+          "日内",
+          "量价",
+          "冲高",
+          "破位",
+          "跌破",
+          "能不能追",
+          "追不追",
+          "要不要卖",
+          "卖不卖",
+          "要不要买",
+          "买不买",
+          "加仓",
+          "减仓",
+          "降仓",
+          "做T",
+          "异动",
+          "涨跌",
+          "操作判断",
+          "放量",
+          "缩量",
+          "量能",
+          "成交量",
+          "换手",
+          "换手率",
+          "高开低走",
+          "低开高走",
+          "拉升",
+          "承接",
+          "滞涨",
+          "回落",
+          "跳水",
+          "放量上涨",
+          "放量滞涨",
+          "盘口强不强",
+          "强不强",
+          "支撑",
+          "压力",
+          "站稳",
+          "收回",
+          "回踩",
+          "杀跌",
+          "砸盘",
+          "放量",
+          "缩量",
+          "量能",
+          "成交量",
+          "换手",
+          "换手率",
+          "走势",
+          "量价",
+          "高开低走",
+          "低开高走",
+          "拉升",
+          "承接",
+          "滞涨",
+          "回落",
+          "跳水",
+          "冲高",
+          "破位",
+          "跌破",
+          "支撑",
+          "压力",
+          "站稳",
+          "收回",
+          "回踩",
+          "追",
+          "卖",
+          "买",
+          "加仓",
+          "减仓",
+          "降仓",
+          "做T",
+          "盘口",
+          "异动",
+          "强不强",
+          "怎么办",
+          "怎么看",
+          "怎么样"
+        ],
+        "required_roles": [
+          "阿黑",
+          "腰子",
+          "玉夜",
+          "砺石",
+          "情墨",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "must_have_gates": [
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5",
+          "G6"
+        ],
+        "required_precheck": "scripts/check_temp_analysis_force_route.py",
+        "required_backend_chain": [
+          "TemporaryAnalysisBrief",
+          "check_temp_analysis_brief_gate.py",
+          "render_temp_analysis_response.py"
+        ],
+        "block_if_missing_roles": [
+          "阿黑",
+          "腰子",
+          "砺石",
+          "红结",
+          "新安",
+          "旧影"
+        ],
+        "block_if_precheck_not_used": true,
+        "d07_v1_2_lishi_integrated_by_default": true
+      }
+    },
+    "decision_states": {
+      "PASS": {
+        "meaning": "证据完整，阶段主责角色输出完整，没有阻断项，可进入下一阶段。",
+        "required": [
+          "primary_owner_output",
+          "required_evidence",
+          "no_block_condition"
+        ]
+      },
+      "WARN": {
+        "meaning": "可以继续，但存在非阻塞风险，必须列明风险和后续处理点。",
+        "allowed_cases": [
+          "可选角色已说明跳过原因",
+          "非关键证据延迟但不影响当前阶段",
+          "历史脏工作树已隔离说明"
+        ]
+      },
+      "BLOCK": {
+        "meaning": "不得继续推进，必须补齐或修复。",
+        "conditions": [
+          "缺 G0 路由",
+          "缺阶段 primary_owner 输出",
+          "缺必需角色输出",
+          "缺 required_evidence",
+          "阿黑代签",
+          "自写自审",
+          "G3/G4/G5/G6 角色互相代签",
+          "工具名被写成项目角色",
+          "未明确需要 LangGraph 却默认启用 LangGraph"
+        ]
+      }
+    },
+    "routing_output_required_fields": [
+      "flow_code",
+      "matched_issue_route",
+      "route_reason",
+      "required_roles",
+      "required_gates",
+      "langgraph_required",
+      "allowed_final_status"
+    ]
+  }
 }

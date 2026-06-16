@@ -184,5 +184,302 @@
         "*"
       ]
     }
-  ]
+  ],
+  "g0_g6_stage_contract": {
+    "version": "1.0",
+    "purpose": "固化 CCRT 标准流程 G0-G6。每个阶段必须有主责角色、参与角色、必交产物、证据要求和阻断条件。",
+    "stages": {
+      "G0": {
+        "name": "需求识别与流程路由",
+        "primary_owner": "阿黑",
+        "participants": [],
+        "required_outputs": [
+          "original_requirement",
+          "flow_code",
+          "route_reason",
+          "required_gates",
+          "required_roles",
+          "allowed_scope",
+          "forbidden_scope"
+        ],
+        "required_evidence": [
+          "flow_routes.json",
+          "role_matrix.json",
+          "stage_gate_policy.json",
+          "00_项目地基/05_流程与角色/temp_analysis_force_route_policy_v0.1.json",
+          "scripts/check_temp_analysis_force_route.py"
+        ],
+        "pass_conditions": [
+          "已给出流程编号",
+          "已给出必经阶段门",
+          "已给出必唤醒角色",
+          "已说明是否需要 G1",
+          "已说明是否需要 LangGraph；未明确需要时不得默认启用",
+          "用户请求命中临时分析强制路由时，已输出 TEMP_ANALYSIS_REQUIRED 并绑定 TemporaryAnalysisBrief/gate/renderer 链路"
+        ],
+        "block_conditions": [
+          "缺 flow_code",
+          "缺 required_roles",
+          "阿黑越权给出 G3 实施结论",
+          "未路由直接进入 G3",
+          "命中临时分析强制路由但未执行 check_temp_analysis_force_route.py",
+          "TEMP_ANALYSIS_REQUIRED 时角色直接输出个人盘中判断",
+          "临时分析未使用 D07_v1.2 内置砺石校准"
+        ]
+      },
+      "G1": {
+        "name": "业务/金融/数据口径",
+        "primary_owner": "腰子",
+        "participants": [
+          "玉夜",
+          "山猫",
+          "信鸽",
+          "流金",
+          "青山",
+          "砺石"
+        ],
+        "required_outputs": [
+          "business_position",
+          "data_position",
+          "risk_boundary",
+          "strategy_impact",
+          "roles_required_or_skipped",
+          "skip_reason_if_any"
+        ],
+        "required_evidence": [
+          "role_output:腰子",
+          "role_output:required_finance_roles_or_skip_reasons"
+        ],
+        "pass_conditions": [
+          "金融/数据/策略/风控相关任务已给出口径",
+          "被跳过的金融角色有明确跳过理由",
+          "没有技术角色反向决定金融口径"
+        ],
+        "block_conditions": [
+          "金融变更缺腰子输出",
+          "数据问题缺玉夜输出或跳过理由",
+          "风控问题缺流金输出或跳过理由",
+          "策略问题缺青山/砺石输出或跳过理由"
+        ]
+      },
+      "G2": {
+        "name": "技术方案设计",
+        "primary_owner": "情墨",
+        "participants": [
+          "千光",
+          "红枫",
+          "新安",
+          "红结",
+          "玉夜"
+        ],
+        "required_outputs": [
+          "technical_plan",
+          "changed_file_plan",
+          "acceptance_commands",
+          "rollback_plan",
+          "risk_points",
+          "implementation_owner"
+        ],
+        "required_evidence": [
+          "role_output:情墨",
+          "acceptance_command_list",
+          "allowed_files",
+          "forbidden_files"
+        ],
+        "pass_conditions": [
+          "已列出允许修改范围",
+          "已列出禁止修改范围",
+          "已列出验收命令",
+          "已指定 G3 为红结实施",
+          "已指定 G4 为新安验收"
+        ],
+        "block_conditions": [
+          "缺技术方案",
+          "缺文件范围",
+          "缺验收命令",
+          "G3 主责不是红结",
+          "G4 主责不是新安"
+        ]
+      },
+      "G3": {
+        "name": "实施执行",
+        "primary_owner": "红结",
+        "participants": [
+          "千光",
+          "红枫"
+        ],
+        "required_outputs": [
+          "changed_files",
+          "implementation_summary",
+          "commands_run",
+          "files_intentionally_not_touched",
+          "known_risks"
+        ],
+        "required_evidence": [
+          "git_diff",
+          "git_status_path_limited",
+          "command_outputs"
+        ],
+        "pass_conditions": [
+          "只有允许范围内文件被修改",
+          "有 changed_files",
+          "有执行命令记录",
+          "没有 G5/G6 结论"
+        ],
+        "block_conditions": [
+          "阿黑执行实施",
+          "旧影执行实施",
+          "缺 changed_files",
+          "修改范围外文件未说明",
+          "G3 输出自称 G5/G6 通过"
+        ]
+      },
+      "G4": {
+        "name": "执行自检与测试验收",
+        "primary_owner": "新安",
+        "participants": [
+          "红结",
+          "千光",
+          "红枫",
+          "玉夜"
+        ],
+        "required_outputs": [
+          "test_commands",
+          "test_results",
+          "regression_scope",
+          "failed_items",
+          "g4_self_check_candidate"
+        ],
+        "required_evidence": [
+          "py_compile_or_equivalent",
+          "unit_tests_or_gate_tests",
+          "domain_specific_checks",
+          "git_status_path_limited"
+        ],
+        "pass_conditions": [
+          "验收命令已执行",
+          "测试结果可复核",
+          "失败项为 0 或已明确 BLOCK",
+          "红结只给自检候选，新安给验收结论"
+        ],
+        "block_conditions": [
+          "缺测试命令",
+          "缺测试输出",
+          "失败项被隐藏",
+          "G3 实施者代替新安验收"
+        ]
+      },
+      "G5": {
+        "name": "独立审计",
+        "primary_owner": "旧影",
+        "participants": [
+          "玉夜",
+          "流金",
+          "情墨"
+        ],
+        "required_outputs": [
+          "audit_findings",
+          "scope_review",
+          "evidence_review",
+          "role_boundary_review",
+          "regression_risks",
+          "g5_result"
+        ],
+        "required_evidence": [
+          "git_diff_review",
+          "command_output_review",
+          "role_output_review",
+          "risk_review"
+        ],
+        "pass_conditions": [
+          "旧影独立审计完成",
+          "审计覆盖文件范围、命令证据、角色边界",
+          "结论为 PASS 或 WARN 且 WARN 不阻塞"
+        ],
+        "block_conditions": [
+          "缺旧影审计",
+          "G3/G4 人员自审",
+          "发现阿黑代签",
+          "发现范围外修改未说明",
+          "发现缺验收证据"
+        ]
+      },
+      "G6": {
+        "name": "放行归档",
+        "primary_owner": "腰子",
+        "participants": [
+          "阿黑",
+          "旧影",
+          "新安",
+          "情墨"
+        ],
+        "required_outputs": [
+          "release_decision",
+          "archive_record",
+          "final_status",
+          "sync_status",
+          "remaining_risks"
+        ],
+        "required_evidence": [
+          "G5_PASS_or_allowed_WARN",
+          "腰子放行结论",
+          "阿黑归档汇总",
+          "archive_or_sync_record"
+        ],
+        "pass_conditions": [
+          "G5 已通过",
+          "腰子已放行",
+          "阿黑只做归档汇总",
+          "最终状态为 COMPLETE / AUTO_REPAIRING / BLOCK 之一"
+        ],
+        "block_conditions": [
+          "缺 G5 审计",
+          "缺腰子放行",
+          "阿黑代替腰子放行",
+          "缺归档或同步证据却声称 COMPLETE"
+        ]
+      }
+    },
+    "global_rules": [
+      {
+        "condition": "任何任务必须先有 G0",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "缺当前阶段 primary_owner 输出",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "阿黑代签任一角色",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "G3/G4/G5/G6 角色互相代签",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "缺证据却 PASS",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "工具名被当作项目角色",
+        "action": "BLOCK"
+      },
+      {
+        "condition": "未明确需要 LangGraph 却默认启用 LangGraph",
+        "action": "BLOCK"
+      },
+      {
+        "rule": "临时分析强制路由不可绕过",
+        "severity": "BLOCK",
+        "check": "scripts/check_temp_analysis_force_route.py",
+        "applies_when": "classify_request.decision == TEMP_ANALYSIS_REQUIRED"
+      }
+    ],
+    "allowed_final_status": [
+      "COMPLETE",
+      "AUTO_REPAIRING",
+      "BLOCK"
+    ]
+  }
 }
