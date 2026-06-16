@@ -1,0 +1,22 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "task_id": "F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616",
+  "scope": "final_git_clean_close",
+  "handled_files": [
+    "00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md",
+    "00_项目地基/08_审计与验收/F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616_temp_report_restore_audit.json",
+    "00_项目地基/08_审计与验收/F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616_G4_self_check_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616_G5_review_candidate.json",
+    "00_项目地基/08_审计与验收/F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616_G6_release_candidate.json"
+  ],
+  "temp_report_dirty_status": "clean",
+  "tracked_dirty_before_commit": [
+    "00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md"
+  ],
+  "untracked_before_commit": [],
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T05:28:38.654651+00:00"
+}

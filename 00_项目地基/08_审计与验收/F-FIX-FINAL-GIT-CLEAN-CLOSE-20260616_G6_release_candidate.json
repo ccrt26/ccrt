@@ -1,0 +1,13 @@
+{
+  "flow": "F-FIX",
+  "stage": "G6_release_candidate",
+  "candidate_only": true,
+  "task_id": "F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616",
+  "g4_final_status_candidate": "PASS",
+  "g5_overall": "PASS",
+  "archive_completed": true,
+  "github_sync_completed": false,
+  "push_completed": false,
+  "release_note": "candidate only; final push verification happens after commit and push in this command packet",
+  "generated_at": "2026-06-16T05:28:38.654651+00:00"
+}

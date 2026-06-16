@@ -1,0 +1,26 @@
+{
+  "flow": "F-FIX",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "task_id": "F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "temp_report_clean",
+      "detail": "临时报告/ has no dirty status; PDF deletion was not committed."
+    },
+    {
+      "result": "PASS",
+      "check": "single_dirty_plan_committed",
+      "detail": "Only the tracked v0.2 plan file is allowed into this final close commit."
+    },
+    {
+      "result": "PASS",
+      "check": "evidence_complete",
+      "detail": "Restore audit, G4, G5, and G6 candidate evidence are generated."
+    }
+  ],
+  "generated_at": "2026-06-16T05:28:38.654651+00:00"
+}

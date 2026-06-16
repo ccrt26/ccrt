@@ -291,6 +291,7 @@ stock_code + trade_date + source_type + baseline_id + prediction_type + horizon 
 | baseline | baseline_id、support、pressure、stop_loss、valid_until |
 | risk_flags | overall_risk_level、pledge、unlock、margin、northbound |
 | labels | ret_t1、ret_t5、ret_t20、ret_t60、max_drawdown、relative_return |
+| extension_refs | financial_feature_ref、event_feature_ref、crowding_feature_ref |
 
 入口建议：
 
@@ -314,6 +315,7 @@ quality_flags
 freshness_status
 reconstructed_snapshot
 future_function_check
+deferred_feature_refs
 ```
 
 质量规则：
@@ -321,6 +323,8 @@ future_function_check
 1. `as_of_date` 之后的数据不得进入特征。
 2. 财务和事件数据必须按披露日可见性处理。
 3. 历史快照缺失时可重建，但必须标记 `reconstructed_snapshot=true`。
+4. Phase 1 不计算财务、事件、拥挤度特征；对应字段只能为空、缺失或指向后续扩展位。
+5. 财务、事件、拥挤度字段缺失不得影响 `TECH_MA20_BREAK_STOP_LOSS` 主链路，但不得被填成 0 或伪造默认值。
 
 ### 6.4 BacktestEngine
 
@@ -335,9 +339,9 @@ rule_id: TECH_MA20_BREAK_STOP_LOSS
 规则定义草案：
 
 ```text
-触发：收盘价跌破 MA20
+触发：收盘价从不低于 MA20 转为跌破 MA20
 验证：T+5/T+20 是否继续跑输基准、最大回撤是否扩大、是否存在假破位反向收益
-输出：样本数、胜率、平均收益、超额收益、最大回撤、反向收益、弱规则原因
+输出：样本数、胜率、平均收益、超额收益、最大回撤、反向收益、弱规则原因、样本不足状态
 ```
 
 回测窗口：
@@ -357,6 +361,7 @@ rule_id: TECH_MA20_BREAK_STOP_LOSS
 | 无时间分层 | WARN |
 | 未来函数风险 | BLOCK |
 | 输出不可复现 | BLOCK |
+| 财务/事件/拥挤度缺失 | 不阻塞 Phase 1 MA20 主链路，记录为 DEFERRED |
 
 ### 6.5 ForwardEval
 
@@ -545,6 +550,16 @@ evidence_refs
 next_required_action
 ```
 
+与分析生产线状态映射：
+
+| 后评估/回测内部状态 | 用户可见状态 | 说明 |
+|:--|:--|:--|
+| PASS | COMPLETE | 主链路可用 |
+| WARN | COMPLETE 或 AUTO_REPAIRING | 不影响用户第一屏决策时可 COMPLETE |
+| OBSERVE | COMPLETE | 样本不足或观察项，不生成正式规则结论 |
+| ALERT | AUTO_REPAIRING | 需要后台处理或补数 |
+| BLOCK | BLOCK | 会误导分析、回测或次日决策 |
+
 ---
 
 ## 9. 第一阶段验收标准
@@ -552,15 +567,17 @@ next_required_action
 Phase 1 完成时，必须满足：
 
 1. 有机器可读资产盘点。
-2. 有 PredictionLedger 最小 schema 和幂等写入。
-3. 有 FeatureSnapshot 核心特征输出。
-4. 有单规则 `MA20 破位止损` 回测结果。
-5. 有未来函数 BLOCK 负向测试。
-6. 有样本不足 `OBSERVE` 表达。
-7. 有前向后评估到期扫描雏形。
-8. 有 `dashboard_status.json` 和 `alert_center.json`。
-9. 所有结果能追溯到 baseline、sidecar、数据快照、规则版本。
-10. 不修改生产规则、不切换生产调度、不生成 G6 放行。
+2. 能只读承接分析生产线状态、sidecar、EvalHook 和质量闸门结果。
+3. 有 PredictionLedger 最小 schema 和幂等写入。
+4. 有 FeatureSnapshot 核心特征输出。
+5. 有单规则 `MA20 破位止损` 回测结果。
+6. 有未来函数 BLOCK 负向测试。
+7. 有样本不足 `OBSERVE` 表达。
+8. 有前向后评估到期扫描雏形。
+9. 有 `dashboard_status.json` 和 `alert_center.json`。
+10. 所有结果能追溯到 baseline、sidecar、数据快照、规则版本。
+11. 不修改生产规则、不切换生产调度、不生成 G6 放行。
+12. 财务特征、事件研究、拥挤度指标仅保留扩展位，不纳入 Phase 1 验收。
 
 ---
 
@@ -659,18 +676,23 @@ git diff -- 重点股票/股票报告 重点股票/深度分析 00_项目地基/
 
 ## 13. 技术团队确认点
 
-进入 G3 前，需要确认：
+第 4 步已由用户确认：
 
 1. 第一阶段主试点规则是否确定为 `MA20 破位止损`。
-2. FeatureSnapshot 是否挂靠 D04 `UnifiedDataSource`。
-3. 第一阶段主账本采用 JSONL 还是 SQLite。
-4. 产物目录是否使用 `运行产物/重点股票产品化后评估/`。
-5. 是否新增 D11 schema 但暂不注册 `C-D11-0001`。
-6. 是否把 `predictions.csv` 仅作为历史兼容输入。
-7. 是否允许第一阶段只输出 JSON，不做人读报告。
-8. 测试目录和 pytest 是否符合当前项目习惯。
-9. 是否需要接入现有 `canonical_report` 影子对象，或 Phase 2 再接。
-10. 是否保留现有后评估报告生成逻辑作为展示层兼容。
+2. Phase 1 是否暂缓实现财务特征、事件研究、拥挤度指标。
+
+进入 G3 前，仍需确认：
+
+1. FeatureSnapshot 是否挂靠 D04 `UnifiedDataSource`。
+2. 第一阶段主账本采用 JSONL 还是 SQLite。
+3. 产物目录是否使用 `运行产物/重点股票产品化后评估/`。
+4. 是否新增 D11 schema 但暂不注册 `C-D11-0001`。
+5. 是否把 `predictions.csv` 仅作为历史兼容输入。
+6. 是否允许第一阶段只输出 JSON，不做人读报告。
+7. 测试目录和 pytest 是否符合当前项目习惯。
+8. 是否需要接入现有 `canonical_report` 影子对象，或 Phase 2 再接。
+9. 是否保留现有后评估报告生成逻辑作为展示层兼容。
+10. 是否允许新增 `analysis_run_id`、`analysis_status_ref` 字段用于承接分析生产线状态。
 
 ---
 
@@ -686,9 +708,16 @@ v0.2 将原 v0.1 的完整大架构收窄为后端子方案：
 当前状态：
 
 ```text
-G2 子方案候选完成
+G2 子方案第 4 步对齐定版完成
 未进入 G3 实施
 未修改生产规则
 未切换生产入口
 未放行回测结论
 ```
+
+第 4 步定版结论：
+
+1. 后评估/回测不作为孤立系统实施，必须承接分析生产线状态、sidecar、EvalHook、账本和质量闸门。
+2. Phase 1 主链路锁定为 `PredictionLedger -> FeatureSnapshot -> TECH_MA20_BREAK_STOP_LOSS -> ForwardEval -> dashboard_status / alert_center`。
+3. 财务特征、事件研究、拥挤度指标延期到后续阶段，仅保留扩展字段，不纳入 Phase 1 验收。
+4. 下一步应生成覆盖分析生产线 + 后评估/回测的 Phase 1 后端 MVP 执行包；进入 G3 前必须再次取得用户显式授权。

@@ -1,0 +1,51 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_restore_audit",
+  "task_id": "F-FIX-FINAL-GIT-CLEAN-CLOSE-20260616",
+  "source_tasks": [
+    "F-FIX-TEMP-REPORT-DELETE-RESTORE-20260616",
+    "F-FIX-GIT-BACKLOG-CLOSURE-20260616"
+  ],
+  "result": "PASS",
+  "temp_report_dirty_status": "clean",
+  "pdf_deletion_committed": false,
+  "redline_pdf_delete_bypassed": false,
+  "restored_effect_verified_by": "git status --short -- 临时报告 returned empty",
+  "original_expected_deleted_count": 64,
+  "current_temp_report_dirty_count": 0,
+  "remaining_dirty_plan": "00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md",
+  "remaining_dirty_plan_sha256": "37fd235cf569e289f15528fb1f3441fbed4fea121316ba145f1363cb56e6aa81",
+  "commands": [
+    {
+      "cmd": "git -c core.quotePath=false status --short -- 临时报告",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c core.quotePath=false diff --name-only",
+      "returncode": 0,
+      "stdout": "00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md",
+      "stderr": ""
+    },
+    {
+      "cmd": "git -c core.quotePath=false ls-files --others --exclude-standard",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cmd": "git diff -- 00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md",
+      "returncode": 0,
+      "stdout": "diff --git \"a/00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/06_\\345\\220\\216\\350\\257\\204\\344\\274\\260\\351\\227\\255\\347\\216\\257/PLAN_\\351\\207\\215\\347\\202\\271\\350\\202\\241\\347\\245\\250\\344\\272\\247\\345\\223\\201\\345\\214\\226\\345\\220\\216\\350\\257\\204\\344\\274\\260\\345\\233\\236\\346\\265\\213\\345\\220\\216\\347\\253\\257\\346\\236\\266\\346\\236\\204_v0.2.md\" \"b/00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/06_\\345\\220\\216\\350\\257\\204\\344\\274\\260\\351\\227\\255\\347\\216\\257/PLAN_\\351\\207\\215\\347\\202\\271\\350\\202\\241\\347\\245\\250\\344\\272\\247\\345\\223\\201\\345\\214\\226\\345\\220\\216\\350\\257\\204\\344\\274\\260\\345\\233\\236\\346\\265\\213\\345\\220\\216\\347\\253\\257\\346\\236\\266\\346\\236\\204_v0.2.md\"\nindex ddd9795d..af9d94ac 100644\n--- \"a/00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/06_\\345\\220\\216\\350\\257\\204\\344\\274\\260\\351\\227\\255\\347\\216\\257/PLAN_\\351\\207\\215\\347\\202\\271\\350\\202\\241\\347\\245\\250\\344\\272\\247\\345\\223\\201\\345\\214\\226\\345\\220\\216\\350\\257\\204\\344\\274\\260\\345\\233\\236\\346\\265\\213\\345\\220\\216\\347\\253\\257\\346\\236\\266\\346\\236\\204_v0.2.md\"\n+++ \"b/00_\\351\\241\\271\\347\\233\\256\\345\\234\\260\\345\\237\\272/06_\\345\\220\\216\\350\\257\\204\\344\\274\\260\\351\\227\\255\\347\\216\\257/PLAN_\\351\\207\\215\\347\\202\\271\\350\\202\\241\\347\\245\\250\\344\\272\\247\\345\\223\\201\\345\\214\\226\\345\\220\\216\\350\\257\\204\\344\\274\\260\\345\\233\\236\\346\\265\\213\\345\\220\\216\\347\\253\\257\\346\\236\\266\\346\\236\\204_v0.2.md\"\n@@ -291,6 +291,7 @@ stock_code + trade_date + source_type + baseline_id + prediction_type + horizon\n | baseline | baseline_id、support、pressure、stop_loss、valid_until |\n | risk_flags | overall_risk_level、pledge、unlock、margin、northbound |\n | labels | ret_t1、ret_t5、ret_t20、ret_t60、max_drawdown、relative_return |\n+| extension_refs | financial_feature_ref、event_feature_ref、crowding_feature_ref |\n \n 入口建议：\n \n@@ -314,6 +315,7 @@ quality_flags\n freshness_status\n reconstructed_snapshot\n future_function_check\n+deferred_feature_refs\n ```\n \n 质量规则：\n@@ -321,6 +323,8 @@ future_function_check\n 1. `as_of_date` 之后的数据不得进入特征。\n 2. 财务和事件数据必须按披露日可见性处理。\n 3. 历史快照缺失时可重建，但必须标记 `reconstructed_snapshot=true`。\n+4. Phase 1 不计算财务、事件、拥挤度特征；对应字段只能为空、缺失或指向后续扩展位。\n+5. 财务、事件、拥挤度字段缺失不得影响 `TECH_MA20_BREAK_STOP_LOSS` 主链路，但不得被填成 0 或伪造默认值。\n \n ### 6.4 BacktestEngine\n \n@@ -335,9 +339,9 @@ rule_id: TECH_MA20_BREAK_STOP_LOSS\n 规则定义草案：\n \n ```text\n-触发：收盘价跌破 MA20\n+触发：收盘价从不低于 MA20 转为跌破 MA20\n 验证：T+5/T+20 是否继续跑输基准、最大回撤是否扩大、是否存在假破位反向收益\n-输出：样本数、胜率、平均收益、超额收益、最大回撤、反向收益、弱规则原因\n+输出：样本数、胜率、平均收益、超额收益、最大回撤、反向收益、弱规则原因、样本不足状态\n ```\n \n 回测窗口：\n@@ -357,6 +361,7 @@ rule_id: TECH_MA20_BREAK_STOP_LOSS\n | 无时间分层 | WARN |\n | 未来函数风险 | BLOCK |\n | 输出不可复现 | BLOCK |\n+| 财务/事件/拥挤度缺失 | 不阻塞 Phase 1 MA20 主链路，记录为 DEFERRED |\n \n ### 6.5 ForwardEval\n \n@@ -545,6 +550,16 @@ evidence_refs\n next_required_action\n ```\n \n+与分析生产线状态映射：\n+\n+| 后评估/回测内部状态 | 用户可见状态 | 说明 |\n+|:--|:--|:--|\n+| PASS | COMPLETE | 主链路可用 |\n+| WARN | COMPLETE 或 AUTO_REPAIRING | 不影响用户第一屏决策时可 COMPLETE |\n+| OBSERVE | COMPLETE | 样本不足或观察项，不生成正式规则结论 |\n+| ALERT | AUTO_REPAIRING | 需要后台处理或补数 |\n+| BLOCK | BLOCK | 会误导分析、回测或次日决策 |\n+\n ---\n \n ## 9. 第一阶段验收标准\n@@ -552,15 +567,17 @@ next_required_action\n Phase 1 完成时，必须满足：\n \n 1. 有机器可读资产盘点。\n-2. 有 PredictionLedger 最小 schema 和幂等写入。\n-3. 有 FeatureSnapshot 核心特征输出。\n-4. 有单规则 `MA20 破位止损` 回测结果。\n-5. 有未来函数 BLOCK 负向测试。\n-6. 有样本不足 `OBSERVE` 表达。\n-7. 有前向后评估到期扫描雏形。\n-8. 有 `dashboard_status.json` 和 `alert_center.json`。\n-9. 所有结果能追溯到 baseline、sidecar、数据快照、规则版本。\n-10. 不修改生产规则、不切换生产调度、不生成 G6 放行。\n+2. 能只读承接分析生产线状态、sidecar、EvalHook 和质量闸门结果。\n+3. 有 PredictionLedger 最小 schema 和幂等写入。\n+4. 有 FeatureSnapshot 核心特征输出。\n+5. 有单规则 `MA20 破位止损` 回测结果。\n+6. 有未来函数 BLOCK 负向测试。\n+7. 有样本不足 `OBSERVE` 表达。\n+8. 有前向后评估到期扫描雏形。\n+9. 有 `dashboard_status.json` 和 `alert_center.json`。\n+10. 所有结果能追溯到 baseline、sidecar、数据快照、规则版本。\n+11. 不修改生产规则、不切换生产调度、不生成 G6 放行。\n+12. 财务特征、事件研究、拥挤度指标仅保留扩展位，不纳入 Phase 1 验收。\n \n ---\n \n@@ -659,18 +676,23 @@ git diff -- 重点股票/股票报告 重点股票/深度分析 00_项目地基/\n \n ## 13. 技术团队确认点\n \n-进入 G3 前，需要确认：\n+第 4 步已由用户确认：\n \n 1. 第一阶段主试点规则是否确定为 `MA20 破位止损`。\n-2. FeatureSnapshot 是否挂靠 D04 `UnifiedDataSource`。\n-3. 第一阶段主账本采用 JSONL 还是 SQLite。\n-4. 产物目录是否使用 `运行产物/重点股票产品化后评估/`。\n-5. 是否新增 D11 schema 但暂不注册 `C-D11-0001`。\n-6. 是否把 `predictions.csv` 仅作为历史兼容输入。\n-7. 是否允许第一阶段只输出 JSON，不做人读报告。\n-8. 测试目录和 pytest 是否符合当前项目习惯。\n-9. 是否需要接入现有 `canonical_report` 影子对象，或 Phase 2 再接。\n-10. 是否保留现有后评估报告生成逻辑作为展示层兼容。\n+2. Phase 1 是否暂缓实现财务特征、事件研究、拥挤度指标。\n+\n+进入 G3 前，仍需确认：\n+\n+1. FeatureSnapshot 是否挂靠 D04 `UnifiedDataSource`。\n+2. 第一阶段主账本采用 JSONL 还是 SQLite。\n+3. 产物目录是否使用 `运行产物/重点股票产品化后评估/`。\n+4. 是否新增 D11 schema 但暂不注册 `C-D11-0001`。\n+5. 是否把 `predictions.csv` 仅作为历史兼容输入。\n+6. 是否允许第一阶段只输出 JSON，不做人读报告。\n+7. 测试目录和 pytest 是否符合当前项目习惯。\n+8. 是否需要接入现有 `canonical_report` 影子对象，或 Phase 2 再接。\n+9. 是否保留现有后评估报告生成逻辑作为展示层兼容。\n+10. 是否允许新增 `analysis_run_id`、`analysis_status_ref` 字段用于承接分析生产线状态。\n \n ---\n \n@@ -686,9 +708,16 @@ v0.2 将原 v0.1 的完整大架构收窄为后端子方案：\n 当前状态：\n \n ```text\n-G2 子方案候选完成\n+G2 子方案第 4 步对齐定版完成\n 未进入 G3 实施\n 未修改生产规则\n 未切换生产入口\n 未放行回测结论\n ```\n+\n+第 4 步定版结论：\n+\n+1. 后评估/回测不作为孤立系统实施，必须承接分析生产线状态、sidecar、EvalHook、账本和质量闸门。\n+2. Phase 1 主链路锁定为 `PredictionLedger -> FeatureSnapshot -> TECH_MA20_BREAK_STOP_LOSS -> ForwardEval -> dashboard_status / alert_center`。\n+3. 财务特征、事件研究、拥挤度指标延期到后续阶段，仅保留扩展字段，不纳入 Phase 1 验收。\n+4. 下一步应生成覆盖分析生产线 + 后评估/回测的 Phase 1 后端 MVP 执行包；进入 G3 前必须再次取得用户显式授权。",
+      "stderr": ""
+    },
+    {
+      "cmd": "python3 scripts/git_workspace_hygiene.py --report",
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"BLOCK\",\n  \"branch\": \"master\",\n  \"timestamp\": \"2026-06-16T05:28:38.769175+00:00\",\n  \"hygiene\": {\n    \"ahead_behind\": {\n      \"ahead_count\": 0,\n      \"behind_count\": 0,\n      \"upstream\": \"origin/master\",\n      \"error\": null\n    },\n    \"staged\": {\n      \"count\": 0,\n      \"files\": [],\n      \"added\": [],\n      \"modified\": [],\n      \"deleted\": [],\n      \"renamed\": []\n    },\n    \"unstaged\": {\n      \"count\": 1,\n      \"files\": [\n        \"00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md\"\n      ],\n      \"modified\": [\n        \"00_项目地基/06_后评估闭环/PLAN_重点股票产品化后评估回测后端架构_v0.2.md\"\n      ],\n      \"deleted\": []\n    },\n    \"untracked\": {\n      \"count\": 0,\n      \"files\": []\n    }\n  },\n  \"allow_dirty_index\": false,\n  \"blockers\": [\n    \"dirty_worktree: 1 tracked files have unstaged changes. BLOCK — commit, restore, or explicitly archive before claiming GitHub sync.\"\n  ],\n  \"warnings\": [],\n  \"summary\": {\n    \"ahead_count\": 0,\n    \"behind_count\": 0,\n    \"staged_count\": 0,\n    \"unstaged_count\": 1,\n    \"untracked_count\": 0\n  },\n  \"credits\": {\n    \"nondestructive_unstage\": \"git restore --staged -- .\",\n    \"verify_unstage\": \"git diff --cached --name-status\",\n    \"notes\": [\n      \"Run with --unstage to non-destructively clear staged index.\",\n      \"git restore --staged does NOT modify working tree files.\",\n      \"Staged deletions (D) are just index removals, file stays on disk.\"\n    ]\n  }\n}",
+      "stderr": ""
+    }
+  ],
+  "generated_at": "2026-06-16T05:28:38.654651+00:00"
+}
