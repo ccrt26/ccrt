@@ -5,10 +5,11 @@
   "g4_final_status_candidate": "PASS",
   "g5_overall": "PASS",
   "archive_completed": true,
-  "github_sync_completed": false,
-  "push_completed": false,
+  "github_sync_completed": true,
+  "push_completed": true,
   "commit_before": "1bdba2f9409133ec92665e8aa787fbac17be5354",
-  "commit_after": "",
-  "pushed_commit": "",
-  "generated_at": "2026-06-16T08:41:40+08:00"
+  "commit_after": "545f78872452880475985ef83160abf97aaecf55",
+  "pushed_commit": "545f78872452880475985ef83160abf97aaecf55",
+  "generated_at": "2026-06-16T08:41:40+08:00",
+  "completed_at": "2026-06-16T08:41:40+08:00"
 }
