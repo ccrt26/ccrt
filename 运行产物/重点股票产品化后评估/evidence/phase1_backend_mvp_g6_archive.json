@@ -1,12 +1,18 @@
 {
   "phase": "Phase 1 backend MVP",
   "stage": "G6 archive",
-  "generated_at": "2026-06-16T07:28:32.848276+00:00",
+  "generated_at": "2026-06-16T07:33:06.113817+00:00",
   "archive_status": "COMPLETE",
   "basis": {
-    "g4": "...g4_recheck_evidence.json",
-    "g5": "...g5_evidence.json",
+    "g4": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g4_recheck_evidence.json",
+    "g5": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json",
     "gate_summary": [
+      {
+        "gate": "gate_results_initialized",
+        "status": "PASS",
+        "detail": "initialized",
+        "severity": "BLOCK"
+      },
       {
         "gate": "forbidden_scope_current_diff",
         "status": "PASS",
@@ -16,8 +22,20 @@
       {
         "gate": "json_readable",
         "status": "PASS",
-        "detail": "all JSON files readable",
+        "detail": "11 JSON files readable",
         "severity": "BLOCK"
+      },
+      {
+        "gate": "key_schema_validation",
+        "status": "PASS",
+        "detail": "constraints checked",
+        "severity": "BLOCK"
+      },
+      {
+        "gate": "full_jsonschema_validation",
+        "status": "WARN",
+        "detail": "jsonschema not installed",
+        "severity": "WARN"
       },
       {
         "gate": "python_compile",
@@ -28,7 +46,7 @@
       {
         "gate": "pytest",
         "status": "PASS",
-        "detail": "66 passed in 0.21s",
+        "detail": "  warnings.warn(",
         "severity": "BLOCK"
       },
       {
@@ -40,7 +58,7 @@
       {
         "gate": "feature_snapshot_no_future_function",
         "status": "PASS",
-        "detail": "PASS; labels not in feature_values",
+        "detail": "PASS",
         "severity": "BLOCK"
       },
       {
@@ -52,7 +70,7 @@
       {
         "gate": "status_alert_machine_readable",
         "status": "PASS",
-        "detail": "dashboard+alerts machine readable",
+        "detail": "machine readable",
         "severity": "BLOCK"
       },
       {
@@ -69,11 +87,18 @@
     "baseline_registry_modified": false,
     "runtime_registry_or_launchd_modified": false
   },
-  "remaining_warns": [],
+  "remaining_warns": [
+    {
+      "gate": "full_jsonschema_validation",
+      "status": "WARN",
+      "detail": "jsonschema not installed",
+      "severity": "WARN"
+    }
+  ],
   "release_notes": [
-    "第 7 步只读验收完成",
+    "第 7 步验收完成",
     "Phase 1 白名单交付物与 G4/G5/G6 evidence 一并归档",
-    "不切生产入口，不修改规则，不修改 baseline/runtime/launchd"
+    "未切生产入口，未修改规则，未修改 baseline/runtime/launchd"
   ],
   "user_visible_status": "COMPLETE"
 }
