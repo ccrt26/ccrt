@@ -1,0 +1,27 @@
+{
+  "phase": "Phase 2/3 productization repair",
+  "stage": "G5 review candidate",
+  "generated_at": "2026-06-16T15:08:02.559989+00:00",
+  "checker_result": "BLOCK",
+  "data_truth_status": "REAL_EVIDENCE_ONLY",
+  "blocks": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)"
+    }
+  ],
+  "warns": [],
+  "session": "session2_data_status_gate",
+  "overall_verdict": "PASS",
+  "no_fake_complete": {
+    "dashboard_overall_is_block": true,
+    "today_decisions_conclusion_is_blocked": true,
+    "checker_recommended_is_block": true
+  },
+  "data_date_divergence_now_blocks": true,
+  "position_unavailable_no_leak": true,
+  "scope_no_violation": true,
+  "notes": "G5 复查候选 — 不得冒充旧影签字。checker BLOCK 为当前数据下的预期正确结果。"
+}

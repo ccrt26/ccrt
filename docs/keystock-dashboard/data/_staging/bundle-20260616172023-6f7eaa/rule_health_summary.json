@@ -1,0 +1,52 @@
+{
+  "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
+  "rule_name": "MA20 破位止损",
+  "rule_status": "WARN",
+  "sample_count": 31,
+  "hit_count": 3,
+  "miss_count": 15,
+  "observe_count": 13,
+  "decay_score": null,
+  "future_leakage_risk": false,
+  "affected_stocks": [
+    "600114"
+  ],
+  "recent_cells": [
+    {
+      "sample_id": "3Y-20260616",
+      "trade_date": "20260616",
+      "stock_code": "600114",
+      "state": "MISS",
+      "reason": "胜率 0.2143 偏低",
+      "evidence_ref": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json"
+    },
+    {
+      "sample_id": "1Y-20260616",
+      "trade_date": "20260616",
+      "stock_code": "600114",
+      "state": "MISS",
+      "reason": "胜率 0.0 偏低",
+      "evidence_ref": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json"
+    },
+    {
+      "sample_id": "6M-20260616",
+      "trade_date": "20260616",
+      "stock_code": "600114",
+      "state": "OBS",
+      "reason": "所有样本数据不足，仅 OBSERVE",
+      "evidence_ref": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json"
+    }
+  ],
+  "explanation": "规则存在衰减迹象（H/M=3/15），建议关注但暂不停用。",
+  "updated_at": "2026-06-16T17:20:23.373727+00:00",
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616172023-6f7eaa",
+  "generated_at": "2026-06-16T17:20:23.373733+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "legacy_compat": true,
+  "canonical_path": "bundles/bundle-20260616172023-6f7eaa/rule_health.json",
+  "deprecated_fields": [],
+  "compatibility_notes": "legacy 镜像文件，仅兼容旧引用。新引用请读 canonical 对应文件。"
+}

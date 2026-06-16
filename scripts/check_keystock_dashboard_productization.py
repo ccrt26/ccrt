@@ -35,6 +35,15 @@ ENGINEERING_BLOCK_CHECKS = {
     "legacy_compat_missing", "ui_structure",
     "required_field_evidence_missing", "source_refs_missing",
     "field_value_wrapped",
+    # 会话四前端契约（工程级）
+    "frontend_home_loader_contract",
+    "frontend_no_auto_detail_load",
+    "frontend_lazy_partition_contract",
+    "frontend_legacy_primary_source",
+    "frontend_formal_action_leak",
+    "frontend_position_sensitive_render",
+    "frontend_status_code_contract",
+    "frontend_bundle_priority_contract",
 }
 
 
@@ -386,6 +395,10 @@ def check_dashboard_productization(docs_dir: str, data_dir: str) -> dict:
     # ──── 证据白名单（补丁 A） ────
     _check_field_evidence_whitelist(data_dir, findings)
 
+    # ──── 会话四前端契约 ────
+    frontend_fe = _check_session4_frontend_contract(docs_dir, findings)
+    frontend_fe_items = [f for f in findings if f["check"].startswith("frontend_")]
+
     # ── 分离工程 / 业务 BLOCK ──
     blocks = [f for f in findings if f.get("status") == "BLOCK"]
     eng_blocks = [f for f in blocks if f["check"] in ENGINEERING_BLOCK_CHECKS]
@@ -408,6 +421,10 @@ def check_dashboard_productization(docs_dir: str, data_dir: str) -> dict:
     ui_findings = [f for f in findings if f["check"] == "ui_structure"]
     visual_contract_status = "PASS" if not ui_findings else "BLOCK"
 
+    # 前端契约状态
+    frontend_blk = [f for f in findings if f["check"].startswith("frontend_") and f.get("status") == "BLOCK"]
+    frontend_contract_status = "PASS" if not frontend_blk else "BLOCK"
+
     return {
         "overall": overall,
         "engineering_status": engineering_status,
@@ -427,7 +444,177 @@ def check_dashboard_productization(docs_dir: str, data_dir: str) -> dict:
         "run_id_consistency_status": "PASS" if not [f for f in eng_blocks if "run_id" in f["check"]] else "BLOCK",
         "evidence_contract_status": "PASS" if not [f for f in eng_blocks if "evidence" in f["check"]] else "BLOCK",
         "no_production_touch_status": "PASS" if not [f for f in eng_blocks if "no_production" in f["check"]] else "BLOCK",
+        # 会话四前端契约
+        "frontend_contract_status": frontend_contract_status,
+        "frontend_contract_findings": frontend_fe_items,
+        "home_loader_contract_status": frontend_fe.get("home_loader", "BLOCK"),
+        "lazy_loading_contract_status": frontend_fe.get("lazy_loading", "BLOCK"),
+        "no_sensitive_position_render_status": frontend_fe.get("no_sensitive_position", "BLOCK"),
+        "no_formal_action_leak_status": frontend_fe.get("no_formal_action_leak", "BLOCK"),
     }
+
+
+
+def _check_session4_frontend_contract(docs_dir: str, findings: list) -> dict:
+    """检查会话四前端契约。工程失败写入 findings，返回各项状态的 dict。"""
+    import re
+    js_path = os.path.join(docs_dir, "app.js")
+    result = {
+        "home_loader": "PASS",
+        "no_auto_detail": "PASS",
+        "lazy_loading": "PASS",
+        "no_legacy_primary": "PASS",
+        "no_formal_action_leak": "PASS",
+        "no_sensitive_position": "PASS",
+        "status_code": "PASS",
+        "bundle_priority": "PASS",
+    }
+    if not os.path.exists(js_path):
+        for k in result:
+            result[k] = "BLOCK"
+            findings.append({"check": f"frontend_{k}", "path": js_path,
+                             "status": "BLOCK", "detail": f"app.js 缺失"})
+        return result
+
+    js = open(js_path, encoding="utf-8").read()
+
+    # 1. home_loader_contract — loadHomeBundle 只能加载 4 JSON
+    lhb = re.search(r'async\s+function\s+loadHomeBundle\s*\([^)]*\)\s*{', js)
+    if lhb:
+        start = lhb.start()
+        brace = js.index('{', start) + 1
+        depth, i = 1, brace
+        while i < len(js) and depth > 0:
+            if js[i] == '{': depth += 1
+            elif js[i] == '}': depth -= 1
+            i += 1
+        body = js[brace:i-1] if depth == 0 else js[brace:]
+        loads = re.findall(r"loadJSON\s*\(\s*['\"]([^'\"]+\.json)['\"]\s*\)", body)
+        norm = [f.split("/")[-1] for f in loads]
+        expected = {"stock_pool.json", "stocks.json", "bundle_index.json", "run_manifest.json"}
+        actual = set(norm)
+        if actual != expected:
+            result["home_loader"] = "BLOCK"
+            findings.append({"check": "frontend_home_loader_contract", "path": js_path,
+                "status": "BLOCK",
+                "detail": f"loadHomeBundle 加载 JSON 不符: 期望{expected} 实际{actual}"})
+        forbidden = {"dashboard.json", "today_decisions.json", "chart_data.json",
+                     "evidence_index.json", "rule_health.json", "rule_health_summary.json"}
+        for fb in forbidden:
+            if fb in actual:
+                result["home_loader"] = "BLOCK"
+                findings.append({"check": "frontend_home_loader_contract", "path": js_path,
+                    "status": "BLOCK", "detail": f"loadHomeBundle 加载禁止文件: {fb}"})
+    else:
+        result["home_loader"] = "BLOCK"
+        findings.append({"check": "frontend_home_loader_contract", "path": js_path,
+            "status": "BLOCK", "detail": "loadHomeBundle 函数不存在"})
+
+    # 2. no_auto_detail_load — loadHomeBundle 不得调用 selectStock
+    if lhb:
+        body = None
+        lhb2 = re.search(r'async\s+function\s+loadHomeBundle\s*\([^)]*\)\s*{', js)
+        if lhb2:
+            start = lhb2.start()
+            brace = js.index('{', start) + 1
+            depth, i = 1, brace
+            while i < len(js) and depth > 0:
+                if js[i] == '{': depth += 1
+                elif js[i] == '}': depth -= 1
+                i += 1
+            body = js[brace:i-1] if depth == 0 else js[brace:]
+        if body:
+            call_select = re.search(r'\bselectStock\s*\(', body)
+            if call_select:
+                # 检查是否在字符串中（onclick模板）
+                line = body[max(0, call_select.start()-50):call_select.end()+50]
+                if '"selectStock' not in line and "'selectStock" not in line:
+                    result["no_auto_detail"] = "BLOCK"
+                    findings.append({"check": "frontend_no_auto_detail_load", "path": js_path,
+                        "status": "BLOCK", "detail": "loadHomeBundle 可能直接调用 selectStock()"})
+
+        # 检查是否有 detail.json/chart_data.json/evidence.json 字样（不含注释）
+        for suffix in ["detail.json", "chart_data.json", "evidence.json"]:
+            if suffix in body:
+                idx = body.find(suffix)
+                line = body[max(0, idx-40):idx+len(suffix)+10]
+                if not line.strip().startswith('//') and not line.strip().startswith('*'):
+                    result["no_auto_detail"] = "BLOCK"
+                    findings.append({"check": "frontend_no_auto_detail_load", "path": js_path,
+                        "status": "BLOCK", "detail": f"loadHomeBundle 中出现详情路径: {suffix}"})
+
+    # 3. lazy_partition_contract — selectStock 必须使用分片路径
+    ss = re.search(r'(?:async\s+)?function\s+selectStock\s*\([^)]*\)\s*{', js)
+    if ss:
+        start = ss.start()
+        brace = js.index('{', start) + 1
+        depth, i = 1, brace
+        while i < len(js) and depth > 0:
+            if js[i] == '{': depth += 1
+            elif js[i] == '}': depth -= 1
+            i += 1
+        body = js[brace:i-1] if depth == 0 else js[brace:]
+        for sf in ["detail.json", "chart_data.json", "evidence.json"]:
+            # Accept both template literal and string concatenation
+            tpl_pattern = f"stocks/${{stockCode}}/{sf}"
+            concat_pattern = f"/{sf}"  # just check the filename appears in the body
+            if tpl_pattern not in body and f"/{sf}" not in body:
+                result["lazy_loading"] = "BLOCK"
+                findings.append({"check": "frontend_lazy_partition_contract", "path": js_path,
+                    "status": "BLOCK", "detail": f"selectStock 缺少分片路径: {sf}"})
+                break
+        # 检查不使用 legacy JSON
+        for fb in ["data/dashboard.json", "data/today_decisions.json",
+                   "data/chart_data.json", "data/evidence_index.json",
+                   "data/rule_health.json", "data/run_state.json"]:
+            if fb in body:
+                result["lazy_loading"] = "BLOCK"
+                result["no_legacy_primary"] = "BLOCK"
+                findings.append({"check": "frontend_legacy_primary_source", "path": js_path,
+                    "status": "BLOCK", "detail": f"selectStock 使用 legacy JSON: {fb}"})
+                break
+    else:
+        result["lazy_loading"] = "BLOCK"
+        findings.append({"check": "frontend_lazy_partition_contract", "path": js_path,
+            "status": "BLOCK", "detail": "selectStock 函数不存在"})
+
+    # 4. formal_action_leak — canShowFormalAction + renderDecisionBoundary
+    if "function canShowFormalAction" not in js:
+        result["no_formal_action_leak"] = "BLOCK"
+        findings.append({"check": "frontend_formal_action_leak", "path": js_path,
+            "status": "BLOCK", "detail": "canShowFormalAction 函数不存在"})
+
+    # 5. position_sensitive — 不渲染敏感字段
+    sensitive = ["cost_price", "quantity", "unrealized_pnl", "real_pnl", "成本价", "数量", "盈亏"]
+    for sens in sensitive:
+        if sens in js:
+            idx = js.find(sens)
+            ctx = js[max(0, idx-300):idx+len(sens)+300]
+            if "UNAVAILABLE" not in ctx and "不可用" not in ctx and "未接入" not in ctx:
+                result["no_sensitive_position"] = "BLOCK"
+                findings.append({"check": "frontend_position_sensitive_render", "path": js_path,
+                    "status": "BLOCK", "detail": f"渲染敏感字段: {sens}"})
+                break
+
+    # 6. status_code_contract — 状态码可见
+    html_path = os.path.join(docs_dir, "index.html")
+    html_content = open(html_path, encoding="utf-8").read() if os.path.exists(html_path) else ""
+    all_text = js + "\n" + html_content
+    for code in ["FORMAL", "OBSERVATION", "SHADOW", "BLOCKED"]:
+        if code not in all_text:
+            result["status_code"] = "BLOCK"
+            findings.append({"check": "frontend_status_code_contract", "path": js_path,
+                "status": "BLOCK", "detail": f"缺少状态码: {code}"})
+            break
+
+    # 7. bundle_priority — resolveBundleStatus 存在
+    if "function resolveBundleStatus" not in js:
+        result["bundle_priority"] = "BLOCK"
+        findings.append({"check": "frontend_bundle_priority_contract", "path": js_path,
+            "status": "BLOCK", "detail": "resolveBundleStatus 函数不存在"})
+
+    return result
+
 
 
 def main():

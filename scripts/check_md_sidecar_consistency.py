@@ -32,7 +32,8 @@ from datetime import datetime, date
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-REPORT_DIR = PROJECT_ROOT / "重点股票" / "股票报告"
+_REPORT_OVERRIDE = os.environ.get("REPORT_ROOT_OVERRIDE")
+REPORT_DIR = Path(_REPORT_OVERRIDE) if _REPORT_OVERRIDE else PROJECT_ROOT / "重点股票" / "股票报告"
 PIGEON_CONFIG = PROJECT_ROOT / "代码文件" / "信鸽信息采集" / "pigeon_config.json"
 
 

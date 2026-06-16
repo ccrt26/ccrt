@@ -1,5 +1,6 @@
-"""验证驾驶舱 UI 结构和视觉契约"""
+"""验证驾驶舱 UI 结构和视觉契约（会话四增强）"""
 import os, unittest, re
+
 
 class TestDashboardVisualContract(unittest.TestCase):
     """驾驶舱 UI 结构验证"""
@@ -25,6 +26,13 @@ class TestDashboardVisualContract(unittest.TestCase):
         html = open(self.html_path, encoding="utf-8").read()
         for vid in ["view-dashboard", "view-stocks", "view-deep", "view-daily", "view-rules"]:
             self.assertIn(vid, html, f"视图 {vid} 缺失")
+
+    def test_has_detail_bundle_evidence_containers(self):
+        """HTML 必须包含详情、状态闸门、证据、bundle状态、图表容器。"""
+        html = open(self.html_path, encoding="utf-8").read()
+        for cid in ["view-detail", "bundle-status", "status-gate",
+                    "block-reasons", "position-public", "chart-area", "evidence"]:
+            self.assertIn(cid, html, f"HTML 缺少容器: {cid}")
 
     def test_has_css_js_links(self):
         """应有 app.css 和 app.js 引用。"""
@@ -54,6 +62,32 @@ class TestDashboardVisualContract(unittest.TestCase):
         if os.path.exists(css_path):
             css = open(css_path, encoding="utf-8").read()
             self.assertNotIn("chart-placeholder", css, "CSS 包含 chart-placeholder")
+
+    def test_css_overflow_wrap(self):
+        """CSS 应包含 overflow-wrap 或 word-break 以支持长路径。"""
+        css_path = "docs/keystock-dashboard/app.css"
+        if os.path.exists(css_path):
+            css = open(css_path, encoding="utf-8").read()
+            self.assertTrue("overflow-wrap" in css or "word-break" in css,
+                            "CSS 应包含 overflow-wrap 或 word-break 换行支持")
+
+    def test_css_mobile_media_query(self):
+        """CSS 应包含移动端 media query。"""
+        css_path = "docs/keystock-dashboard/app.css"
+        if os.path.exists(css_path):
+            css = open(css_path, encoding="utf-8").read()
+            self.assertIn("@media", css, "CSS 应包含媒体查询")
+            self.assertIn("max-width", css, "CSS 应包含 max-width 媒体查询")
+
+    def test_status_code_styles_present(self):
+        """CSS 应包含 FORMAL/OBSERVATION/SHADOW/BLOCKED 样式。"""
+        css_path = "docs/keystock-dashboard/app.css"
+        if os.path.exists(css_path):
+            css = open(css_path, encoding="utf-8").read()
+            for s in ["formal", "observation", "shadow", "blocked",
+                      "data-stale", "date-divergence", "rule-warn", "position-unavailable"]:
+                self.assertIn(s, css, f"CSS 缺少状态样式: {s}")
+
 
 if __name__ == "__main__":
     unittest.main()

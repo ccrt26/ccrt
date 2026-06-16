@@ -1,0 +1,26 @@
+{
+  "schema_version": "keystock.product_api_bundle.v3",
+  "pool_id": "keystock_product_pool",
+  "pool_name": "重点股票产品池",
+  "pool_version": "2026-06-16.v1",
+  "generated_at": "2026-06-16T15:17:48.377837+00:00",
+  "members": [
+    {
+      "stock_code": "600114",
+      "stock_name": "东睦股份",
+      "status": "active",
+      "join_reason": "current_product_scope",
+      "joined_at": "2026-06-16",
+      "primary_baseline_id": null,
+      "baseline_status": "readonly_external",
+      "evidence_status": "existing_product_eval_evidence",
+      "data_status": "existing_product_eval_data",
+      "display_order": 1,
+      "source_refs": []
+    }
+  ],
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616151748-73e2c2",
+  "producer_version": "product_api_bundle.py/3.0",
+  "min_frontend_version": "1.0.0"
+}

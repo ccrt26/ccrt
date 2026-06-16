@@ -1,24 +1,16 @@
 {
-  "alert": "daily_report_fail",
-  "severity": "P2",
-  "date": "20260528",
-  "failed_count": 2,
-  "failures": [
+  "alert": "api_degraded",
+  "timestamp": "2026-06-16T22:57:54.786730+08:00",
+  "severity": "WARN",
+  "sources": [
     {
-      "code": "多瑞医药(3",
-      "name": "多瑞医药",
-      "issues": [
-        "P0缺失: 盘面速读, 信号变化, 基本面/策略触发, 情景应对"
-      ]
-    },
-    {
-      "code": "百邦科技(3",
-      "name": "百邦科技",
-      "issues": [
-        "P0缺失: 信号变化, 基本面/策略触发, 情景应对"
-      ]
+      "source": "sina",
+      "source_id": "[2]",
+      "status": "down",
+      "consecutive_fails": 1,
+      "last_success": null
     }
   ],
-  "recommend": "腰子人工修复2只日报，下一交易日9:00前完成",
-  "timestamp": "2026-05-30T17:40:32.192347"
+  "summary": "DOWN: sina",
+  "recommend": "玉夜检查故障历史表，红枫排查网络/API状态"
 }

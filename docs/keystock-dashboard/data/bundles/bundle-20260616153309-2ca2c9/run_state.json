@@ -1,0 +1,31 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260616",
+  "run_id": "bundle-20260616153309-2ca2c9",
+  "run_status": "BLOCK",
+  "data_status": "DIVERGED",
+  "decision_status": "BLOCKED",
+  "evidence_status": "COMPLETE",
+  "rule_health_status": "UNKNOWN",
+  "stale_flags": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "blocking_reasons": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "warning_reasons": [],
+  "last_success_at": "",
+  "updated_at": "2026-06-16T15:33:09.629129+00:00",
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "generated_at": "2026-06-16T15:33:09.629132+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0"
+}

@@ -3,10 +3,12 @@
 检查每份日报HTML是否使用标准母版CSS。
 禁止极简CSS、禁止自定义样式、禁止绕过母版。
 """
-import argparse, re, sys
+import argparse, os, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+_REPORT_OVERRIDE = os.environ.get("REPORT_ROOT_OVERRIDE")
+REPORT_DIR = Path(_REPORT_OVERRIDE) if _REPORT_OVERRIDE else ROOT / "重点股票" / "股票报告"
 
 # 母版CSS关键片段
 REQUIRED = [
@@ -50,7 +52,7 @@ def main():
     args = ap.parse_args()
     date_compact = args.date.replace('-', '')
     
-    html_files = sorted(ROOT.glob(f'重点股票/股票报告/*/*日报_{date_compact}.html'))
+    html_files = sorted(REPORT_DIR.glob(f'*/*日报_{date_compact}.html'))
     if not html_files:
         print(f'日报_style_check: BLOCK — 未找到 {date_compact} HTML文件')
         return 2

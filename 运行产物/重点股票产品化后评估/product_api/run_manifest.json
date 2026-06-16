@@ -1,8 +1,8 @@
 {
-  "run_id": "bundle-20260616155537-e5ec8d",
+  "run_id": "bundle-20260616172042-8deb52",
   "run_type": "shadow",
-  "started_at": "2026-06-16T15:55:37.223998+00:00",
-  "finished_at": "2026-06-16T15:55:37.306604+00:00",
+  "started_at": "2026-06-16T17:20:42.672599+00:00",
+  "finished_at": "2026-06-16T17:20:42.738526+00:00",
   "publish_status": "PUBLISHED",
   "pool_ref": "keystock_product_pool",
   "generated_files": [
@@ -27,7 +27,7 @@
     "feature_snapshots": "feature_snapshot_600114_20260616.json",
     "status_gate": "conclusion_status.py"
   },
-  "rollback_ref": "bundles/bundle-20260616155537-e5ec8d",
+  "rollback_ref": "bundles/bundle-20260616172042-8deb52",
   "warnings": [],
   "blocks": [],
   "no_production_touch": {
@@ -41,7 +41,7 @@
   },
   "schema_version": "keystock.product_api_bundle.v3",
   "bundle_version": "2026-06-16.v3",
-  "generated_at": "2026-06-16T15:55:37.326040+00:00",
+  "generated_at": "2026-06-16T17:20:42.753142+00:00",
   "producer_version": "product_api_bundle.py/3.0.1",
   "min_frontend_version": "1.0.0",
   "engineering_status": "PASS",

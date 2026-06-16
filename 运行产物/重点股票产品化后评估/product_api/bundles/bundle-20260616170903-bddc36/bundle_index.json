@@ -1,0 +1,169 @@
+{
+  "pool_id": "keystock_product_pool",
+  "pool_name": "重点股票产品池",
+  "is_current_bundle_pointer": true,
+  "current_bundle_path": "bundles/bundle-20260616170903-bddc36/",
+  "publish_status": "STAGED",
+  "files": [
+    {
+      "path": "bundle_index.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/bundle_index.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "run_manifest.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/run_manifest.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "stock_pool.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/stock_pool.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "dashboard.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/dashboard.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "stocks.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/stocks.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "run_state.json",
+      "kind": "standard",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/run_state.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "evidence_index.json",
+      "kind": "legacy",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": true,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/evidence_index.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "rule_health.json",
+      "kind": "legacy",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": true,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/rule_health.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "rule_health_summary.json",
+      "kind": "legacy",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": true,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/rule_health_summary.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "today_decisions.json",
+      "kind": "legacy",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": true,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/today_decisions.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "chart_data.json",
+      "kind": "legacy",
+      "stock_code": null,
+      "required": true,
+      "legacy_compat": true,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/chart_data.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "stocks/600114/detail.json",
+      "kind": "stock_detail",
+      "stock_code": "600114",
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/stocks/600114/detail.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "stocks/600114/chart_data.json",
+      "kind": "stock_detail",
+      "stock_code": "600114",
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/stocks/600114/chart_data.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    },
+    {
+      "path": "stocks/600114/evidence.json",
+      "kind": "stock_detail",
+      "stock_code": "600114",
+      "required": true,
+      "legacy_compat": false,
+      "canonical_path": "bundles/bundle-20260616170903-bddc36/stocks/600114/evidence.json",
+      "schema_version": "keystock.product_api_bundle.v3",
+      "bundle_version": "2026-06-16.v3",
+      "run_id": "bundle-20260616170903-bddc36"
+    }
+  ],
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616170903-bddc36",
+  "generated_at": "2026-06-16T17:09:03.230885+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0"
+}

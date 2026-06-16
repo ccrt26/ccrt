@@ -10,17 +10,28 @@
 <div class="app-shell">
   <nav class="sidebar">
     <h1>📊 驾驶舱</h1>
-    <a data-view="dashboard" class="active" onclick="showView('dashboard')">🏠 驾驶舱</a>
+    <a data-view="dashboard" class="active" onclick="showView('dashboard')">🏠 首页</a>
     <a data-view="stocks" onclick="showView('stocks')">📋 股票列表</a>
-    <a data-view="deep" onclick="showView('deep');renderDeepAnalysis()">📘 深度分析</a>
-    <a data-view="daily" onclick="showView('daily');renderDailyAnalysis()">📅 每日分析</a>
-    <a data-view="rules" onclick="showView('rules');renderRuleHealth()">⚖ 规则健康</a>
-    <div class="version">Phase 2/3 v0.1</div>
+    <a data-view="deep" onclick="showView('deep')">📘 深度分析</a>
+    <a data-view="daily" onclick="showView('daily')">📅 每日分析</a>
+    <a data-view="rules" onclick="showView('rules')">⚖ 规则健康</a>
+    <div class="version">Phase 4 | session4</div>
   </nav>
   <main class="content">
-    <div id="view-dashboard" class="view active"></div>
+    <div id="view-dashboard" class="view active">
+      <div id="bundle-status"></div>
+      <div id="stock-pool-list"></div>
+      <div id="stock-summaries"></div>
+      <div id="view-detail-area">
+        <div id="view-detail" class="view-detail-section"></div>
+        <div id="status-gate"></div>
+        <div id="block-reasons"></div>
+        <div id="position-public"></div>
+        <div id="chart-area"></div>
+        <div id="evidence"></div>
+      </div>
+    </div>
     <div id="view-stocks" class="view"></div>
-    <div id="view-detail" class="view"></div>
     <div id="view-deep" class="view"></div>
     <div id="view-daily" class="view"></div>
     <div id="view-rules" class="view"></div>

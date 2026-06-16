@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """P4-E: 协作解读闸门 — 包含式伪解释检查 + MD模板归一化"""
-import argparse, json, sys, re
+import argparse, json, os, sys, re
 from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[1]
+_REPORT_OVERRIDE = os.environ.get("REPORT_ROOT_OVERRIDE")
+REPORT_DIR = Path(_REPORT_OVERRIDE) if _REPORT_OVERRIDE else ROOT / "重点股票" / "股票报告"
 
 OBJS = ["p0_action","baseline_interpretation","kline_interpretation",
         "market_sector_interpretation","fund_flow_interpretation",
@@ -33,16 +35,47 @@ def contains_pseudo(text, pseudo_list):
             return p
     return None
 
+def load_active_targets():
+    """Load enabled active targets from daily_report_targets.json."""
+    targets_path = ROOT / "00_项目地基" / "02_权威注册表" / "daily_report_targets.json"
+    if not targets_path.exists():
+        return []
+    try:
+        cfg = json.loads(targets_path.read_text(encoding="utf-8"))
+        return [
+            {"code": str(t["code"]), "name": t["name"]}
+            for t in cfg.get("active_targets", [])
+            if t.get("enabled", True)
+        ]
+    except (json.JSONDecodeError, OSError, KeyError):
+        return []
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", required=True)
+    ap.add_argument("--active-only", action="store_true",
+                    help="只检查 active targets，不检查全池")
     args = ap.parse_args()
     dc = args.date.replace("-", "")
     issues = []
-    jfiles = sorted((ROOT / "重点股票" / "股票报告").glob(f"*/*日报_{dc}.json"))
-    mdfiles = sorted((ROOT / "重点股票" / "股票报告").glob(f"*/*日报_{dc}.md"))
 
-    if len(jfiles) != 10:
+    if args.active_only:
+        targets = load_active_targets()
+        jfiles = []
+        mdfiles = []
+        for t in targets:
+            jp = REPORT_DIR / f"{t['name']}({t['code']})" / f"{t['name']}({t['code']})日报_{dc}.json"
+            if jp.exists():
+                jfiles.append(jp)
+            mp = REPORT_DIR / f"{t['name']}({t['code']})" / f"{t['name']}({t['code']})日报_{dc}.md"
+            if mp.exists():
+                mdfiles.append(mp)
+    else:
+        jfiles = sorted(REPORT_DIR.glob(f"*/*日报_{dc}.json"))
+        mdfiles = sorted(REPORT_DIR.glob(f"*/*日报_{dc}.md"))
+
+    if not args.active_only and len(jfiles) != 10:
         issues.append("JSON数量错误")
 
     # Phase 1: per-file checks + contains-based pseudo check
@@ -113,8 +146,8 @@ def main():
                     names = [x[0] for x in vals if x[1] == t][:3]
                     issues.append(f"同质化:{obj}.{field} x{cnt} 归一化后重复 ({','.join(names)})")
 
-    # Phase 3: MD template normalization
-    if len(mdfiles) == 10:
+    # Phase 3: MD template normalization (skip exact count check for active-only mode)
+    if len(mdfiles) >= 3:
         pats = {}
         for mp in mdfiles:
             text = mp.read_text(encoding="utf-8")

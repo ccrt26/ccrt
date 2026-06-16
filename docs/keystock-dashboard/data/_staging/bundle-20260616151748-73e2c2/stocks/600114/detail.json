@@ -1,0 +1,52 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260615",
+  "conclusion_status": "BLOCKED",
+  "user_visible_status": "BLOCK",
+  "data_freshness": "STALE",
+  "close": 42.22,
+  "change_pct": 0.31,
+  "close_vs_ma5_pct": 5.93,
+  "ma5": 39.858,
+  "ma20": 38.681500000000014,
+  "ma60": 33.61133333333333,
+  "rsi14": 58.844045839561524,
+  "rule_health_status": "WARN",
+  "user_position": {
+    "has_position": false,
+    "position_status": "UNAVAILABLE",
+    "position_source_type": "NONE",
+    "position_as_of": null,
+    "cost_price": null,
+    "quantity": null,
+    "market_value": null,
+    "market_price": 42.22,
+    "unrealized_pnl": null,
+    "unrealized_pnl_pct": null,
+    "display_note": "当前未接入真实持仓，不生成持仓盈亏判断",
+    "generated_at": "2026-06-16T15:17:48.385828+00:00"
+  },
+  "decision_blockers": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "source_refs": [
+    "feature_snapshot_600114_20260616.json",
+    "kline_cache/600114.json",
+    "backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json"
+  ],
+  "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+  "source_field_refs": [
+    "feature_values.technical.close",
+    "kline_cache.pct_chg"
+  ],
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616151748-73e2c2",
+  "generated_at": "2026-06-16T15:17:48.385834+00:00",
+  "producer_version": "product_api_bundle.py/3.0",
+  "min_frontend_version": "1.0.0"
+}

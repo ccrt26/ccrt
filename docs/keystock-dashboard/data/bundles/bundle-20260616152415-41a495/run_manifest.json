@@ -1,0 +1,55 @@
+{
+  "run_id": "bundle-20260616152415-41a495",
+  "run_type": "shadow",
+  "started_at": "2026-06-16T15:24:15.483930+00:00",
+  "finished_at": "2026-06-16T15:24:15.501821+00:00",
+  "publish_status": "PUBLISHED",
+  "pool_ref": "keystock_product_pool",
+  "generated_files": [
+    "bundle_index.json",
+    "run_manifest.json",
+    "stock_pool.json",
+    "dashboard.json",
+    "stocks.json",
+    "run_state.json",
+    "evidence_index.json",
+    "rule_health.json",
+    "rule_health_summary.json",
+    "today_decisions.json",
+    "chart_data.json",
+    "stocks/600114/detail.json",
+    "stocks/600114/chart_data.json",
+    "stocks/600114/evidence.json"
+  ],
+  "checker_result": "待 checker 确认",
+  "engineering_status": "UNKNOWN",
+  "business_user_visible_status": "BLOCK",
+  "input_refs": {
+    "inventory": "keystock_system_inventory.json",
+    "backtests": "backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json",
+    "feature_snapshots": "feature_snapshot_600114_20260616.json",
+    "status_gate": "conclusion_status.py"
+  },
+  "rollback_ref": "bundles/bundle-20260616152415-41a495",
+  "warnings": [],
+  "blocks": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false,
+    "formal_rule_changed": false,
+    "stock_pool_only": "600114"
+  },
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "generated_at": "2026-06-16T15:24:15.501826+00:00",
+  "producer_version": "product_api_bundle.py/3.0",
+  "min_frontend_version": "1.0.0"
+}

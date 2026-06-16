@@ -1,0 +1,97 @@
+{
+  "audit_id": "G5-20260616-session1-stock-pool",
+  "phase": "G5 独立复查",
+  "session": "会话一｜产品股票池与成员治理底座",
+  "auditor": "旧影",
+  "audited_at": "2026-06-16T14:35:00Z",
+  "overall_verdict": "PASS",
+  "findings": [
+    {
+      "severity": "INFO",
+      "file": "代码文件/重点股票/product_eval/stock_pool.py",
+      "status": "PASS",
+      "detail": "新增 ProductStockPoolService，作为600114/东睦股份唯一声明来源。600114 仅出现在 _POOL_MEMBERS 配置和注释中，符合契约。"
+    },
+    {
+      "severity": "INFO",
+      "file": "代码文件/重点股票/product_eval/product_api_bundle.py",
+      "status": "PASS",
+      "detail": "移除了 self.primary_code / self.primary_name 业务入口硬编码。所有股票信息通过 ProductStockPoolService 动态获取。rg 检查无 primary_code/primary_name/600114/东睦股份 字面量命中。"
+    },
+    {
+      "severity": "INFO",
+      "file": "docs/keystock-dashboard/app.js",
+      "status": "PASS",
+      "detail": "移除了 600114/东睦股份/kline_cache/600114.json 所有前端展示硬编码。股票代码/名称/source_path 从已加载 JSON 数据中动态读取。rg 检查零命中。"
+    },
+    {
+      "severity": "INFO",
+      "file": "scripts/build_keystock_product_api_bundle.py",
+      "status": "PASS",
+      "detail": "新增 stock_pool members count 摘要输出。构建成功生成 stock_pool.json 且旧兼容入口不损坏。"
+    },
+    {
+      "severity": "INFO",
+      "file": "tests/keystock_product_eval/test_stock_pool_contract.py",
+      "status": "PASS",
+      "detail": "8 个测试覆盖：members 长度、代码、名称、status、schema_version、pool_version、样例股票排除、validate_pool_contract。全部通过。"
+    },
+    {
+      "severity": "INFO",
+      "file": "tests/keystock_product_eval/test_schema_version_contract.py",
+      "status": "PASS",
+      "detail": "6 个测试覆盖：顶层 schema_version/pool_version、members 数组、成员必填字段、bundle 输出包含 stock_pool、legacy 兼容。全部通过。"
+    },
+    {
+      "severity": "INFO",
+      "file": "docs/keystock-dashboard/data/stock_pool.json",
+      "status": "PASS",
+      "detail": "契约验证：members=1, stock_code=600114, stock_name=东睦股份, schema_version/poool_version 均非空。无敏感持仓字段。"
+    }
+  ],
+  "scope_check": {
+    "status": "PASS",
+    "detail": "会话一变更文件全部在批准范围内。baseline_registry.json / runtime_entry_registry.json 零 diff。未触碰 launchd、生产调度、正式报告、正式基线、持仓数据。"
+  },
+  "hardcode_check": {
+    "product_api_bundle_py": {
+      "status": "PASS",
+      "evidence": "rg 返回码 1（无匹配）"
+    },
+    "app_js": {
+      "status": "PASS",
+      "evidence": "rg 返回码 1（无匹配）"
+    },
+    "stock_pool_py_as_single_source": {
+      "status": "PASS",
+      "evidence": "600114/东睦股份仅出现在 stock_pool.py 和测试 fixture 中"
+    }
+  },
+  "prohibited_files_check": {
+    "baseline_registry_json": {
+      "status": "PASS",
+      "evidence": "git diff 零输出"
+    },
+    "runtime_entry_registry_json": {
+      "status": "PASS",
+      "evidence": "git diff 零输出"
+    }
+  },
+  "production_boundary_check": {
+    "no_launchd": "PASS",
+    "no_position_data": "PASS",
+    "no_production_schedule": "PASS",
+    "no_production_page_release": "PASS",
+    "detail": "当前是产品页面 shadow/试运行底座，未切生产。stock_pool.json 仅含公开股票信息。"
+  },
+  "test_results": {
+    "compile_check": "PASS",
+    "unit_tests": "18/18 PASSED",
+    "build_check": "PASS (stock_pool.json + legacy 入口)",
+    "detail": "所有验收命令执行并保留关键输出。"
+  },
+  "g6_readiness": {
+    "verdict": "READY_FOR_G6",
+    "note": "G5 全部通过。建议经用户授权后进入 G6 归档/同步候选。不切生产。"
+  }
+}

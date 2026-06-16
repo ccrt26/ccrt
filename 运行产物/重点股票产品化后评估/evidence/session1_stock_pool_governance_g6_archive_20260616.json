@@ -1,0 +1,62 @@
+{
+  "phase": "session1_stock_pool_governance",
+  "stage": "G6 archive candidate",
+  "generated_at": "2026-06-16T14:38:00Z",
+  "g5_result": "PASS",
+  "user_visible_status": "COMPLETE",
+  "stock_pool_contract": {
+    "members_count": 1,
+    "only_member_stock_code": "600114",
+    "only_member_stock_name": "东睦股份",
+    "schema_version_present": true,
+    "pool_version_present": true
+  },
+  "hardcode_audit": {
+    "product_api_bundle_business_hardcode": "PASS",
+    "frontend_display_hardcode": "PASS",
+    "allowed_occurrences": [
+      "代码文件/重点股票/product_eval/stock_pool.py",
+      "tests/keystock_product_eval/test_stock_pool_contract.py",
+      "tests/keystock_product_eval/test_schema_version_contract.py"
+    ]
+  },
+  "verification": {
+    "compile": "PASS",
+    "tests": "PASS",
+    "test_count": "18/18",
+    "product_api_build": "PASS",
+    "acceptance_gates": "10/10"
+  },
+  "scope_guard": {
+    "baseline_registry_diff": "NONE",
+    "runtime_entry_registry_diff": "NONE",
+    "production_scheduler_touch": false,
+    "position_integration_touch": false,
+    "production_cutover": false
+  },
+  "changed_files": [
+    "代码文件/重点股票/product_eval/stock_pool.py",
+    "代码文件/重点股票/product_eval/product_api_bundle.py",
+    "docs/keystock-dashboard/app.js",
+    "scripts/build_keystock_product_api_bundle.py",
+    "tests/keystock_product_eval/test_stock_pool_contract.py",
+    "tests/keystock_product_eval/test_schema_version_contract.py"
+  ],
+  "generated_files": [
+    "docs/keystock-dashboard/data/stock_pool.json",
+    "运行产物/重点股票产品化后评估/product_api/stock_pool.json",
+    "运行产物/重点股票产品化后评估/g4_self_check_stock_pool.json",
+    "运行产物/重点股票产品化后评估/evidence/g5_audit_session1_stock_pool.json",
+    "运行产物/重点股票产品化后评估/evidence/session1_stock_pool_governance_g6_archive_20260616.json"
+  ],
+  "next_session": {
+    "recommended_next": "session2_data_status_gate_and_conclusion_layering",
+    "requires_new_g2": true,
+    "do_not_auto_enter_g3": true
+  },
+  "release_boundary": {
+    "production_release": false,
+    "shadow_only": true,
+    "notes": "会话一只完成产品股票池与成员治理底座，不代表产品页面生产放行。"
+  }
+}

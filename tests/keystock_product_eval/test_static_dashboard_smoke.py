@@ -1,5 +1,6 @@
-"""前端静态驾驶舱冒烟测试"""
+"""前端静态驾驶舱冒烟测试（会话四增强）"""
 import os, sys, unittest
+
 
 class TestStaticDashboardSmoke(unittest.TestCase):
     def test_index_exists(self):
@@ -15,6 +16,14 @@ class TestStaticDashboardSmoke(unittest.TestCase):
             html = f.read()
         for vid in ["view-dashboard", "view-stocks", "view-detail", "view-deep", "view-daily", "view-rules"]:
             self.assertIn(vid, html, f"视图 {vid} 在 HTML 中缺失")
+    def test_html_has_bundle_status(self):
+        with open("docs/keystock-dashboard/index.html") as f:
+            html = f.read()
+        self.assertIn("bundle-status", html, "缺少 bundle-status 容器")
+    def test_html_has_stock_pool_list(self):
+        with open("docs/keystock-dashboard/index.html") as f:
+            html = f.read()
+        self.assertIn("stock-pool-list", html, "缺少 stock-pool-list 容器")
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,52 @@
+{
+  "task_id": "F-GATE-KEYSTOCK-DASHBOARD-SHADOW-REFRESH-SESSION5-20260617",
+  "artifact_type": "archive_record",
+  "stage": "G6 archive",
+  "generated_at": "2026-06-16T17:21:10Z",
+  "result": "CLOSED",
+  "archive_completed": true,
+  "production_release": false,
+  "role_signature_claimed": false,
+  "formal_signoff_claimed": false,
+  "github_sync_completed": false,
+  "push_completed": false,
+  "run_id": "bundle-20260616172042-8deb52",
+  "archive_scope": "shadow_refresh_engineering_closure_only",
+  "production_state": {
+    "engineering_shadow_refresh_status": "PASS",
+    "business_production_readiness": "BLOCK",
+    "production_ready": false,
+    "blocking_reason": "DATA_DATE_DIVERGENCE"
+  },
+  "rollback_ref": "bundles/bundle-20260616172042-8deb52",
+  "archived_evidence": [
+    "运行产物/重点股票产品化后评估/evidence/session5_shadow_refresh_g4_self_check_candidate.json",
+    "运行产物/重点股票产品化后评估/evidence/session5_shadow_refresh_g5_review_candidate.json",
+    "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_refresh_bundle-20260616172042-8deb52.json",
+    "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_checker_bundle-20260616172042-8deb52.json",
+    "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_latest.json",
+    "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_checker_latest.json"
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "generate_launchd_called": false,
+    "real_position_connected": false,
+    "formal_rule_changed": false,
+    "production_cutover": false,
+    "formal_buy_sell_position_conclusion_generated": false
+  },
+  "future_production_cutover_minimum_conditions": [
+    "multiple_trading_days_shadow_pass",
+    "no_data_date_divergence",
+    "no_key_data_stale",
+    "checker_no_block",
+    "no_fake_complete",
+    "product_pool_governance_clear",
+    "position_source_clear_or_page_defined_as_no_position_analysis",
+    "g4_g5_g6_evidence_complete",
+    "user_authorized_runtime_launchd_change"
+  ],
+  "archive_note": "G6 archive closes the shadow refresh engineering loop only. It is not a production release and does not authorize runtime or launchd changes."
+}

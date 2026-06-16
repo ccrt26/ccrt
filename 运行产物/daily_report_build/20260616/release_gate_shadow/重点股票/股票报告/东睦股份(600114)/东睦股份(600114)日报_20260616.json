@@ -1,0 +1,455 @@
+{
+  "report_version": "3.7.0-html-only-auto",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "2026-06-16",
+  "baseline_id": "600114_W2026W25",
+  "baseline_valid_until": "2026-06-18",
+  "baseline_usage": "current_authoritative",
+  "data_readiness": "READY",
+  "degraded_items": [
+    "margin(T+1延迟,最新20260615)"
+  ],
+  "p0_decision_card": {
+    "t1_action": "持有待涨，不主动加仓",
+    "current_position_cap": "600股@39.42",
+    "triggered_position_cap": "站稳46.44且主力流出收窄后再评估",
+    "key_buy_point": "先看38.00能否收回，再看46.44能否站稳",
+    "new_position_stop_loss": "41.88下破不新开",
+    "held_position_stop_loss": "短线41.88；中线37.15",
+    "forbidden_actions": [
+      "46.44以上不追高",
+      "主力流出未收窄不加仓",
+      "跌破41.88不补仓",
+      "跌破37.15或核心反证出现则移出/否决"
+    ],
+    "confidence_level": "中",
+    "action_change": "maintain",
+    "one_line_conclusion": "东睦股份收42.35，低于关键压力46.44；主力+2420万，先看38.00能否收回，再看46.44能否站稳。"
+  },
+  "delta": {
+    "close": 42.35,
+    "open": 41.94,
+    "high": 43.02,
+    "low": 41.88,
+    "volume_wan_shou": 30.2
+  },
+  "fund_flow_4level": {
+    "date": "20260616",
+    "source": "data_full.json.FundFlows",
+    "raw_unit": "万元",
+    "display_unit": "万元",
+    "super_large_net": -1749.69,
+    "large_net": -1086.18,
+    "medium_net": -105.41,
+    "small_net": 2941.28,
+    "main_force_net": 2420.07,
+    "super_large_display": "-1750万",
+    "large_display": "-1086万",
+    "medium_display": "-105万",
+    "small_display": "+2941万",
+    "main_force_display": "+2420万",
+    "source_trace": "Tushare Pro moneyflow via data_full.json.权威派生",
+    "collected_at": ""
+  },
+  "sector_phase": {
+    "industry": "机械设备",
+    "phase": "主升调整"
+  },
+  "risk_light": {
+    "overall": "yellow",
+    "overall_display": "🟡 黄灯",
+    "pledge_light": "green",
+    "pledge_light_display": "🟩 绿灯",
+    "unlock_light": "green",
+    "unlock_light_display": "🟩 绿灯",
+    "margin_light": "yellow",
+    "margin_light_display": "🟡 黄灯",
+    "technical_light": "yellow",
+    "technical_light_display": "🟡 黄灯"
+  },
+  "role_interpretations": {
+    "山猫_宏观": {
+      "职责": "分析大盘板块相位对个股的宏观背景影响",
+      "解读": "机械设备板块相位为主升调整，对东睦股份是背景支撑，买卖仍服从价格和资金。",
+      "结论": "机械设备板块相位为主升调整，板块环境对东睦股份构成背景参考，买卖仍由价格与资金面决定。"
+    },
+    "信鸽_事件": {
+      "职责": "识别当日及近期强制否决事件与重要消息面变化",
+      "解读": "东睦股份当日未触发强制否决事件，事件线只作为后续验证项。",
+      "结论": "事件面未产生强制干预信号，后续跟踪公司事件线。"
+    },
+    "玉夜_数据": {
+      "职责": "核对价格、成交、资金与数据新鲜度",
+      "解读": "06月16日收42.35，成交量30.2万手，主力+2420万。",
+      "结论": "数据可用于日报判断。存在降级项时降低结论强度。"
+    },
+    "流金_风控": {
+      "职责": "计算仓位边界、止损位与风险灯",
+      "解读": "未站稳46.44前不扩大仓位，跌破41.88先控风险。",
+      "结论": "综合风控灯黄色。未站稳46.44前持仓不扩大；跌破37.15进入否决流程。"
+    },
+    "青山_信号": {
+      "职责": "信号系统对当前价格位置的匹配判断",
+      "解读": "价格低于46.44，信号只支持跟踪，不支持追高。",
+      "结论": "信号系统支持跟踪但触发条件不满足，不支持主动加仓。"
+    },
+    "腰子_整合": {
+      "职责": "综合六角色得出结论，生成P0明日决策卡",
+      "解读": "东睦股份收42.35，低于关键压力46.44；主力+2420万，先看38.00能否收回，再看46.44能否站稳。",
+      "结论": "东睦股份收42.35，低于关键压力46.44；主力+2420万，先看38.00能否收回，再看46.44能否站稳。"
+    },
+    "daily_discussion": {
+      "status": "materialized",
+      "participants": [
+        "山猫_宏观",
+        "信鸽_事件",
+        "玉夜_数据",
+        "流金_风控",
+        "青山_信号",
+        "腰子_整合"
+      ],
+      "summary": "东睦股份 2026-06-16 收42.35。板块主升调整，主力+2420万。压力46.44，支撑38.00。",
+      "decision": "持有待涨，不主动加仓"
+    }
+  },
+  "yaozi_integration": {
+    "final_action": "持有待涨，不主动加仓",
+    "position_rule": "站稳46.44且主力流出收窄后再评估",
+    "reason": "东睦股份收42.35，低于关键压力46.44；主力+2420万，先看38.00能否收回，再看46.44能否站稳。",
+    "risk_boundary": "短线41.88；中线37.15",
+    "daily_synthesis": {
+      "p0_action": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "baseline_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "kline_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "market_sector_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "fund_flow_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "risk_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "event_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "signal_interpretation": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "tomorrow_plan": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      },
+      "t5_outlook": {
+        "data_fact": "东睦股份 20260616 收42.35，板块相位主升调整，主力+2420万",
+        "interpretation": "价格未站稳46.44，资金结构要求先守纪律。",
+        "action_impact": "持有待涨，不主动加仓",
+        "trigger_condition": "收回38.00并站稳46.44",
+        "invalidation_condition": "跌破41.88或跌破37.15",
+        "confidence": "中"
+      }
+    }
+  },
+  "signal_winrate": {
+    "available": true,
+    "total_samples": 1043,
+    "avg_t1_winrate": 48.7,
+    "avg_t5_winrate": 59.8,
+    "low_sample": false,
+    "note": "低于46.44时不追高"
+  },
+  "eval_hooks": {
+    "t1_verify": "次日验证是否收回38.00并靠近46.44",
+    "t5_verify": "5个交易日验证46.44能否转支撑，跌破37.15则否决"
+  },
+  "audit_u9": {
+    "status": "PASS",
+    "note": "行情、资金、板块、baseline均已披露。"
+  },
+  "audit_u10": {
+    "status": "PASS",
+    "note": "HTML作为正式展示产物，baseline=600114_W2026W25。"
+  },
+  "framework_version": "D07_v1.2",
+  "logic_version": "v3.6.3",
+  "interpretation_id": "INT-20260616-003918-9f6a11",
+  "conclusion_strength": "数据不足",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1",
+      "statement": "东睦股份收回支撑位38.00并站稳压力位46.44后，短线进一步确认，资金配合时可转为主动持有。",
+      "status": "active",
+      "conclusion_strength": "倾向判断",
+      "missing_data": "需T+1确认主力资金流是否持续改善"
+    },
+    {
+      "hypothesis_id": "H2",
+      "statement": "东睦股份若跌破37.15或持续呈现主力净流出，则短线结构走弱，需要重新评估持仓逻辑。",
+      "status": "active",
+      "conclusion_strength": "倾向判断",
+      "counter_evidence_refs": [
+        "CE-close-below-stop",
+        "CE-net-outflow"
+      ]
+    },
+    {
+      "hypothesis_id": "H3-margin",
+      "statement": "融资融券数据T+1延迟，资金结构判断受样本时效影响，不作为加仓依据。",
+      "status": "pending_evidence",
+      "conclusion_strength": "数据不足",
+      "missing_data": "当日融资数据T+1延迟需等待次日补齐"
+    }
+  ],
+  "evidence_gap_requests": [
+    {
+      "gap_id": "GAP-20260616-600114-margin_detail",
+      "gap_type": "field_missing",
+      "description": "融资融券明细存在T+1延迟，日报仅作风险降级处理",
+      "requested_source": [
+        "margin_detail"
+      ],
+      "requested_fields": [
+        "融资余额",
+        "融券余额",
+        "融资买入额"
+      ],
+      "status": "open",
+      "impact": "降低结论强度，不作为加仓依据",
+      "owner_role_hint": "玉夜_数据"
+    }
+  ],
+  "rule_refs": [
+    "D07_v1.2",
+    "U-9",
+    "U-10"
+  ],
+  "knowledge_refs": [],
+  "d07_interpretation": {
+    "interpretation_id": "INT-20260616-003918-9f6a11",
+    "scene": "日报",
+    "stock_code": "600114",
+    "trade_date": "2026-06-16",
+    "role": "腰子",
+    "data_fact": {
+      "source": "daily_report_sidecar",
+      "freshness": "当日",
+      "completeness": "部分缺失",
+      "degradation": "L1降级",
+      "values": {
+        "code": "600114",
+        "name": "东睦股份",
+        "close": 42.35,
+        "open": 41.94,
+        "high": 43.02,
+        "low": 41.88,
+        "volume": 30240502,
+        "volume_wan_shou": "30.2万手",
+        "main_force_net": 2420.07,
+        "super_large_net": -1749.69,
+        "large_net": -1086.18,
+        "medium_net": -105.41,
+        "small_net": 2941.28,
+        "support": 38.0,
+        "pressure": 46.44,
+        "stop": 37.15,
+        "sector_phase": "主升调整",
+        "industry": "机械设备",
+        "baseline_id": "600114_W2026W25"
+      }
+    },
+    "interpretation_hypothesis": "东睦股份当前价格42.35处于支撑位38.00与压力位46.44之间，主力+2420万。短线需先观察能否收回38.00，再验证46.44能否转支撑。操作纪律以守为主。",
+    "supporting_evidence": [
+      {
+        "evidence": "东睦股份 2026-06-16 收42.35，成交量30.2万手。",
+        "source": "kline_cache",
+        "strength": "中",
+        "source_level": "L1",
+        "source_ref": "kline_cache/600114.json"
+      },
+      {
+        "evidence": "主力资金净+2420万，超大单净-1750万。",
+        "source": "fund_flow_cache",
+        "strength": "中",
+        "source_level": "L2",
+        "source_ref": "fund_flow_cache/600114.json"
+      },
+      {
+        "evidence": "权威基线压力46.44，支撑38.00，止损37.15。",
+        "source": "resolve_current_baseline",
+        "strength": "强",
+        "source_level": "L1",
+        "source_ref": "baseline_id=600114_W2026W25"
+      }
+    ],
+    "counter_evidence": [
+      {
+        "evidence": "收盘价42.35未站稳压力位46.44，短线尚未确认突破。",
+        "source": "kline_cache",
+        "type": "技术面反证"
+      },
+      {
+        "evidence": "当日最低价41.88，若持续走弱存在跌破37.15的止损风险。",
+        "source": "kline_cache",
+        "type": "资金面反证"
+      },
+      {
+        "evidence": "融资融券数据T+1延迟，当日筹码面判断受时效限制。",
+        "source": "margin_detail",
+        "type": "其他"
+      }
+    ],
+    "investment_implication": "价格未突破压力位46.44前以持有或观察为主，不主动加仓。若价格跌破37.15需启动否决流程。",
+    "action_bias": "HOLD",
+    "trigger_condition": "收回38.00并站稳46.44且主力转为净流入",
+    "confidence": "MEDIUM",
+    "invalidation_condition": "股价跌破37.15或连续3日主力合计净流出超过500万。",
+    "eval_window": {
+      "t1": "验证是否收回38.00并靠近46.44",
+      "t3": "3个交易日46.44能否触及",
+      "t5": "5个交易日46.44能否转支撑，跌破37.15则否决"
+    },
+    "rule_refs": [
+      "D07_v1.2",
+      "U-9",
+      "U-10"
+    ],
+    "knowledge_refs": [
+      "YAOZI-VAL-001",
+      "YUYE-DATA-001",
+      "LIUJIN-RISK-001"
+    ],
+    "framework_version": "D07_v1.2",
+    "hypotheses": [
+      {
+        "hypothesis_id": "H1",
+        "statement": "东睦股份收回支撑位38.00并站稳压力位46.44后，短线进一步确认，资金配合时可转为主动持有。",
+        "status": "active",
+        "conclusion_strength": "倾向判断",
+        "missing_data": "需T+1确认主力资金流是否持续改善"
+      },
+      {
+        "hypothesis_id": "H2",
+        "statement": "东睦股份若跌破37.15或持续呈现主力净流出，则短线结构走弱，需要重新评估持仓逻辑。",
+        "status": "active",
+        "conclusion_strength": "倾向判断",
+        "counter_evidence_refs": [
+          "CE-close-below-stop",
+          "CE-net-outflow"
+        ]
+      },
+      {
+        "hypothesis_id": "H3-margin",
+        "statement": "融资融券数据T+1延迟，资金结构判断受样本时效影响，不作为加仓依据。",
+        "status": "pending_evidence",
+        "conclusion_strength": "数据不足",
+        "missing_data": "当日融资数据T+1延迟需等待次日补齐"
+      }
+    ],
+    "evidence_gap_requests": [
+      {
+        "gap_id": "GAP-20260616-600114-margin_detail",
+        "gap_type": "field_missing",
+        "description": "融资融券明细存在T+1延迟，日报仅作风险降级处理",
+        "requested_source": [
+          "margin_detail"
+        ],
+        "requested_fields": [
+          "融资余额",
+          "融券余额",
+          "融资买入额"
+        ],
+        "status": "open",
+        "impact": "降低结论强度，不作为加仓依据",
+        "owner_role_hint": "玉夜_数据"
+      }
+    ]
+  },
+  "unified_interpretation": {
+    "interpretation_id": "INT-20260616-003918-9f6a11",
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "2026-06-16",
+    "scene": "日报",
+    "framework_version": "D07_v1.2",
+    "action_bias": "HOLD",
+    "conclusion_strength": "数据不足",
+    "summary": "东睦股份收42.35，低于关键压力46.44。主力合计+2420万。先看38.00能否收回，再看46.44能否站稳。融资T+1延迟，结论强度受时效限制。",
+    "trigger_condition": "收回38.00并站稳46.44",
+    "invalidation_condition": "跌破37.15",
+    "hypotheses_summary": [
+      {
+        "hypothesis_id": "H1",
+        "statement": "东睦股份收回支撑位38.00并站稳压力位46.44后，短线进一步确认，资金配合时可转为主动持有。",
+        "status": "active"
+      },
+      {
+        "hypothesis_id": "H2",
+        "statement": "东睦股份若跌破37.15或持续呈现主力净流出，则短线结构走弱，需要重新评估持仓逻辑。",
+        "status": "active"
+      },
+      {
+        "hypothesis_id": "H3-margin",
+        "statement": "融资融券数据T+1延迟，资金结构判断受样本时效影响，不作为加仓依据。",
+        "status": "pending_evidence"
+      }
+    ],
+    "evidence_gaps": [
+      {
+        "gap_id": "GAP-20260616-600114-margin_detail",
+        "status": "open",
+        "gap_type": "field_missing"
+      }
+    ]
+  }
+}

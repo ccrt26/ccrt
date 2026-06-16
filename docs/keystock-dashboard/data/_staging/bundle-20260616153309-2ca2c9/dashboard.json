@@ -1,0 +1,184 @@
+{
+  "overall_status": "BLOCK",
+  "conclusion_status": "BLOCKED",
+  "data_truth_status": "REAL_DATA",
+  "stocks_tracked": 1,
+  "primary_stock_code": "600114",
+  "primary_stock_name": "东睦股份",
+  "as_of_date": "20260615",
+  "source_summary": "kline_cache/600114.json + feature_snapshot",
+  "missing_data_flags": [],
+  "blocks": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "warnings": [
+    "持仓数据未接入"
+  ],
+  "status_gate": {
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "20260615",
+    "generated_at": "2026-06-16T15:33:09.625440+00:00",
+    "run_mode": "shadow",
+    "conclusion_status": "BLOCKED",
+    "user_visible_status": "BLOCK",
+    "data_status": "DIVERGED",
+    "decision_status": "BLOCKED",
+    "decision_blockers": [
+      "DATA_STALE",
+      "DATA_DATE_DIVERGENCE",
+      "RULE_HEALTH_WARN",
+      "POSITION_UNAVAILABLE"
+    ],
+    "warning_reasons": [],
+    "blocking_reasons": [
+      "DATA_STALE",
+      "DATA_DATE_DIVERGENCE",
+      "RULE_HEALTH_WARN",
+      "POSITION_UNAVAILABLE"
+    ],
+    "status_gate_source_refs": {
+      "freshness_status": "STALE",
+      "data_date_divergence": true,
+      "source_last_date": "20260616",
+      "feature_snapshot_actual_date": "20260615",
+      "rule_health_status": "WARN",
+      "evidence_status": "COMPLETE",
+      "position_status": "UNAVAILABLE"
+    }
+  },
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616153309-2ca2c9",
+  "generated_at": "2026-06-16T15:33:09.626051+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "field_evidence": {
+    "overall_status": {
+      "source_path": "运行产物/重点股票产品化后评估/status/dashboard_status.json",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/status/dashboard_status.json"
+        }
+      ]
+    },
+    "conclusion_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": "",
+          "source_field_refs": [
+            "conclusion_status"
+          ]
+        },
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "as_of_date": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.actual_trade_date"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.actual_trade_date"
+          ]
+        }
+      ]
+    },
+    "blocks": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": "",
+          "source_field_refs": [
+            "blocking_reasons"
+          ]
+        },
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "warnings": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "status_gate.data_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "status_gate.decision_blockers": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "status_gate.status_gate_source_refs": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    }
+  }
+}

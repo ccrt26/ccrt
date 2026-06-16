@@ -14,6 +14,7 @@ v2.1: 数据本地优先 + 资金流目标日新鲜度门禁
 """
 import argparse
 import json
+import logging
 import os
 import re
 import sys
@@ -29,6 +30,8 @@ from cached_data_source import CachedDataSource
 ROOT = detect_root()
 DATA_DIR = os.path.join(ROOT, "代码文件", "数据")
 SCRIPTS_DIR = os.path.join(ROOT, "代码文件", "每日荐股", "scripts")
+logging.basicConfig(level=logging.INFO, format="%(message)s", stream=sys.stdout)
+LOG = logging.getLogger(__name__)
 
 # 全局缓存实例（在 main 中传入 target_date 后重建）
 _cache = None
@@ -52,7 +55,7 @@ def norm_date(value):
 
 def collect_quotes(codes):
     """批量行情 — 腾讯API [1]"""
-    print(f"\n[1/5] 批量行情 — {len(codes)} stocks...")
+    LOG.info(f"\n[1/5] 批量行情 — {len(codes)} stocks...")
     market_codes = ["sh" + c if c.startswith(("6", "9")) else "sz" + c for c in codes]
     result = {}
     for i in range(0, len(market_codes), 50):
@@ -90,16 +93,16 @@ def collect_quotes(codes):
                         "QuoteTime": quote_time,
                     }
         except Exception as e:
-            print(f"  Tencent API error: {e}")
+            LOG.info(f"  Tencent API error: {e}")
         if i + 50 < len(market_codes):
             time.sleep(0.3)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    LOG.info(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_klines(codes, count=60):
     """K线数据 — Tushare本地优先 → 新浪API[2]降级"""
-    print(f"\n[2/5] K线数据({count}日) — {len(codes)} stocks...")
+    LOG.info(f"\n[2/5] K线数据({count}日) — {len(codes)} stocks...")
     result = {}
     api_codes = []
     for code in codes:
@@ -108,10 +111,10 @@ def collect_klines(codes, count=60):
             result[code] = cached["data"]
         else:
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    LOG.info(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if not api_codes:
         return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+    LOG.info(f"  需API获取: {len(api_codes)} stocks...")
     for code in api_codes:
         prefix = "sh" if code.startswith(("6", "9")) else "sz"
         url = (f"https://quotes.sina.cn/cn/api/jsonp_v2.php/"
@@ -130,15 +133,15 @@ def collect_klines(codes, count=60):
                     "close": float(d["close"]), "volume": int(d["volume"])
                 } for d in data]
         except Exception as e:
-            print(f"  {code}: Sina kline failed ({e})")
+            LOG.info(f"  {code}: Sina kline failed ({e})")
         time.sleep(0.3)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    LOG.info(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
 def collect_financials(codes):
     """财务数据 — Tushare本地优先 → THS降级"""
-    print(f"\n[3/5] 财务数据 — {len(codes)} stocks...")
+    LOG.info(f"\n[3/5] 财务数据 — {len(codes)} stocks...")
     result = {}
     api_codes = []
     for code in codes:
@@ -147,13 +150,13 @@ def collect_financials(codes):
             result[code] = cached["data"]
         else:
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    LOG.info(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if not api_codes:
         return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+    LOG.info(f"  需API获取: {len(api_codes)} stocks...")
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping remaining financials")
+        LOG.info("  THS fetcher not found, skipping remaining financials")
         return result
     for code in api_codes:
         try:
@@ -167,7 +170,7 @@ def collect_financials(codes):
         except Exception:
             pass
         time.sleep(0.35)
-    print(f"  成功: {len(result)}/{len(codes)}")
+    LOG.info(f"  成功: {len(result)}/{len(codes)}")
     return result
 
 
@@ -209,17 +212,17 @@ def _normalize_ths_fundflow(ths_data, target_date_compact):
             except (ValueError, TypeError):
                 return 0.0
         net = _to_wan(row.get("MainNetInflow") or row.get("net_mf_amount", 0))
-        # 拆解大单/中单/小单（有则用，无则0）
-        sl = _to_wan(row.get("SuperLargeNetInflow") or row.get("buy_elg_amount", 0))
-        lg = _to_wan(row.get("LargeNetInflow") or row.get("buy_lg_amount", 0))
-        md = _to_wan(row.get("MediumNetInflow") or row.get("buy_md_amount", 0))
-        sm = _to_wan(row.get("SmallNetInflow") or row.get("buy_sm_amount", 0))
+        # 拆解大单/中单/小单（兼容多种 THS 字段命名）
+        sl = _to_wan(row.get("SuperLargeNetInflow") or row.get("SuperLargeIn") or row.get("buy_elg_amount", 0))
+        lg = _to_wan(row.get("LargeNetInflow") or row.get("LargeIn") or row.get("buy_lg_amount", 0))
+        md = _to_wan(row.get("MediumNetInflow") or row.get("MediumIn") or row.get("buy_md_amount", 0))
+        sm = _to_wan(row.get("SmallNetInflow") or row.get("SmallIn") or row.get("buy_sm_amount", 0))
 
         result.append({
             "trade_date": rd,
             "net_mf_amount": net,
             "buy_elg_amount": sl,
-            "sell_elg_amount": 0,  # THS 一般不区分买卖拆解
+            "sell_elg_amount": 0,
             "buy_lg_amount": lg,
             "sell_lg_amount": 0,
             "buy_md_amount": md,
@@ -227,6 +230,7 @@ def _normalize_ths_fundflow(ths_data, target_date_compact):
             "buy_sm_amount": sm,
             "sell_sm_amount": 0,
             "source": "ths-stock_fund_flow",
+            "source_trace": "THS fallback approximate, not Tushare four-level net split",
             "raw_unit": "万元",
         })
     return result
@@ -238,7 +242,7 @@ def collect_fund_flows(codes, target_date=""):
     参数 target_date: YYYYMMDD，用于校验数据新鲜度。
     stale 的本地数据不会阻断 THS fallback。
     """
-    print(f"\n[4/6] 资金流向 — {len(codes)} stocks...")
+    LOG.info(f"\n[4/6] 资金流向 — {len(codes)} stocks...")
     result = {}
     api_codes = []
     fresh_count = 0
@@ -258,15 +262,15 @@ def collect_fund_flows(codes, target_date=""):
         else:
             missing_count += 1
             api_codes.append(code)
-    print(f"  Fresh: {fresh_count}, Stale: {stale_count}, Missing: {missing_count}")
-    print(f"  Tushare本地+缓存命中: {fresh_count}/{len(codes)}")
+    LOG.info(f"  Fresh: {fresh_count}, Stale: {stale_count}, Missing: {missing_count}")
+    LOG.info(f"  Tushare本地+缓存命中: {fresh_count}/{len(codes)}")
     if not api_codes:
         return result, fresh_count, stale_count, missing_count
-    print(f"  需fallback: {len(api_codes)} stocks...")
+    LOG.info(f"  需fallback: {len(api_codes)} stocks...")
 
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping remaining fund flows")
+        LOG.info("  THS fetcher not found, skipping remaining fund flows")
         return result, fresh_count, stale_count, missing_count
 
     for code in api_codes:
@@ -285,35 +289,35 @@ def collect_fund_flows(codes, target_date=""):
                     _cache.stats["fallback_hit"] = _cache.stats.get("fallback_hit", 0) + 1
                     _cache.stats["fallback_miss"] = max(0, _cache.stats.get("fallback_miss", 0) - 1)
                 else:
-                    print(f"  {code}: THS 返回无 target_date({target_date}) 数据")
+                    LOG.info(f"  {code}: THS 返回无 target_date({target_date}) 数据")
         except Exception as e:
-            print(f"  {code}: THS fallback failed ({e})")
+            LOG.info(f"  {code}: THS fallback failed ({e})")
         time.sleep(0.35)
-    print(f"  Fallback成功: {len(result) - fresh_count}/{(fresh_count + stale_count + missing_count) - fresh_count}")
+    LOG.info(f"  Fallback成功: {len(result) - fresh_count}/{(fresh_count + stale_count + missing_count) - fresh_count}")
     return result, fresh_count, stale_count, missing_count
 
 
 def collect_margins(codes):
     """融资融券 — Tushare本地优先"""
-    print(f"\n[5/6] 融资融券 — {len(codes)} stocks...")
+    LOG.info(f"\n[5/6] 融资融券 — {len(codes)} stocks...")
     result = {}
     for code in codes:
         cached = _cache.get_margin(code)
         if cached["data"] and cached["freshness"] == "fresh":
             result[code] = cached["data"]
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+    LOG.info(f"  Tushare本地命中: {len(result)}/{len(codes)}")
     if len(result) < len(codes):
-        print(f"  缺失: {len(codes) - len(result)} stocks (无本地缓存)")
+        LOG.info(f"  缺失: {len(codes) - len(result)} stocks (无本地缓存)")
     return result
 
 
 def collect_sectors():
     """板块数据 — 尝试THS, 失败静默"""
-    print("\n[6/6] 板块数据...")
+    LOG.info("\n[6/6] 板块数据...")
     result = {}
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
-        print("  THS fetcher not found, skipping sectors")
+        LOG.info("  THS fetcher not found, skipping sectors")
         return result
     try:
         import subprocess
@@ -325,8 +329,8 @@ def collect_sectors():
             if proc.returncode == 0 and proc.stdout.strip():
                 result[action] = json.loads(proc.stdout.strip().split("\n")[-1])
     except Exception as e:
-        print(f"  Sector collection failed: {e}")
-    print(f"  板块数据: {'OK' if result else 'FAILED (non-blocking)'}")
+        LOG.info(f"  Sector collection failed: {e}")
+    LOG.info(f"  板块数据: {'OK' if result else 'FAILED (non-blocking)'}")
     return result
 
 
@@ -353,9 +357,9 @@ def main():
                 date_source = "env_DAILY_TARGET_DATE"
         else:
             if args.date:
-                print(f"ERROR: --date={args.date} is not valid YYYYMMDD or YYYY-MM-DD format")
+                LOG.info(f"ERROR: --date={args.date} is not valid YYYYMMDD or YYYY-MM-DD format")
                 sys.exit(1)
-            print(f"WARNING: DAILY_TARGET_DATE={date_arg} not YYYYMMDD/YYYY-MM-DD, ignoring")
+            LOG.info(f"WARNING: DAILY_TARGET_DATE={date_arg} not YYYYMMDD/YYYY-MM-DD, ignoring")
             date_compact = ""
 
     # 创建带 target_date 的 CachedDataSource 实例
@@ -365,17 +369,17 @@ def main():
     output_file = args.output or os.path.join(DATA_DIR, "data_full.json")
 
     if not os.path.exists(pool_file):
-        print(f"ERROR: Dynamic pool file not found: {pool_file}")
+        LOG.info(f"ERROR: Dynamic pool file not found: {pool_file}")
         sys.exit(1)
 
     pool = load_json(pool_file)
     pool_stocks = pool.get("Stocks", pool.get("stocks", []))
     if not pool_stocks:
-        print("ERROR: Dynamic pool is empty")
+        LOG.info("ERROR: Dynamic pool is empty")
         sys.exit(1)
 
     codes = [s.get("Code", s.get("code", "")) for s in pool_stocks]
-    print(f"Dynamic pool: {len(codes)} stocks, starting data collection")
+    LOG.info(f"Dynamic pool: {len(codes)} stocks, starting data collection")
 
     start_time = time.time()
 
@@ -455,8 +459,8 @@ def main():
 
     save_json(output_file, output)
     elapsed = time.time() - start_time
-    print(f"\nData collection complete: {output_file} ({elapsed:.1f}s)")
-    print(f"  Stocks: {len(engine_stocks)}, with quotes: {sum(1 for s in engine_stocks if s.get('Price'))}, with K-line: {sum(1 for s in engine_stocks if s.get('KClose'))}")
+    LOG.info(f"\nData collection complete: {output_file} ({elapsed:.1f}s)")
+    LOG.info(f"  Stocks: {len(engine_stocks)}, with quotes: {sum(1 for s in engine_stocks if s.get('Price'))}, with K-line: {sum(1 for s in engine_stocks if s.get('KClose'))}")
 
 
 if __name__ == "__main__":

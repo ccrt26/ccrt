@@ -1,0 +1,55 @@
+{
+  "overall": "BLOCK",
+  "engineering_status": "PASS",
+  "business_user_visible_status": "BLOCK",
+  "findings": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "checked_files": [
+    "docs/keystock-dashboard/index.html",
+    "docs/keystock-dashboard/app.css",
+    "docs/keystock-dashboard/app.js",
+    "docs/keystock-dashboard/app.js",
+    "docs/keystock-dashboard/app.css",
+    "docs/keystock-dashboard/index.html",
+    "docs/keystock-dashboard/data/stocks.json",
+    "docs/keystock-dashboard/data/chart_data.json",
+    "docs/keystock-dashboard/data/today_decisions.json",
+    "docs/keystock-dashboard/data/stock_pool.json",
+    "docs/keystock-dashboard/data/bundle_index.json",
+    "docs/keystock-dashboard/data/run_manifest.json"
+  ],
+  "fake_data_hits": [],
+  "hardcoded_decision_hits": [],
+  "visual_contract_status": "PASS",
+  "data_truth_status": "PASS",
+  "recommended_user_visible_status": "BLOCK",
+  "status_gate_blocks": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "bundle_errors": [],
+  "bundle_contract_status": "PASS",
+  "run_manifest_status": "PASS",
+  "schema_contract_status": "PASS",
+  "run_id_consistency_status": "PASS",
+  "evidence_contract_status": "PASS",
+  "no_production_touch_status": "PASS",
+  "frontend_contract_status": "PASS",
+  "frontend_contract_findings": [],
+  "home_loader_contract_status": "PASS",
+  "lazy_loading_contract_status": "PASS",
+  "no_sensitive_position_render_status": "PASS",
+  "no_formal_action_leak_status": "PASS",
+  "_returncode": 0,
+  "_stderr_tail": ""
+}

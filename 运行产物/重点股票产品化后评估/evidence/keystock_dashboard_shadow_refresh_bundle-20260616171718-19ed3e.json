@@ -1,0 +1,120 @@
+{
+  "schema_version": "keystock.shadow_refresh_evidence.v1",
+  "run_type": "shadow_dry_run",
+  "dry_run_scope": "production_cutover_only",
+  "production_cutover": false,
+  "production_ready": false,
+  "engineering_shadow_refresh_status": "PASS",
+  "business_production_readiness": "BLOCK",
+  "writes_product_api": true,
+  "writes_docs_data": true,
+  "writes_runtime_or_launchd": false,
+  "commands_run": [
+    "python3 scripts/build_keystock_product_api_bundle.py --base-dir 运行产物/重点股票产品化后评估 --out-dir 运行产物/重点股票产品化后评估/product_api --docs-data-dir docs/keystock-dashboard/data",
+    "python3 scripts/check_keystock_dashboard_productization.py --docs-dir docs/keystock-dashboard --data-dir docs/keystock-dashboard/data"
+  ],
+  "allowed_commands_only": true,
+  "forbidden_commands_observed": [],
+  "started_at": "2026-06-16T17:17:18.611816+00:00",
+  "finished_at": "2026-06-16T17:17:18.793339+00:00",
+  "run_id": "bundle-20260616171718-19ed3e",
+  "stock_pool": {
+    "pool_id": "keystock_product_pool",
+    "members": [
+      "600114"
+    ],
+    "stock_pool_architecture_preserved": true,
+    "current_product_scope": "600114 东睦股份"
+  },
+  "build_result": {
+    "command": "python3 scripts/build_keystock_product_api_bundle.py ...",
+    "returncode": 0,
+    "stdout_tail": "ock-dashboard/data/rule_health_summary.json\n[API] 已写入: docs/keystock-dashboard/data/today_decisions.json\n[API] 已写入: docs/keystock-dashboard/data/chart_data.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/stock_pool.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/dashboard.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/stocks.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/run_state.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/evidence_index.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/rule_health_summary.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/today_decisions.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/chart_data.json\n[API] 已写入: docs/keystock-dashboard/data/run_manifest.json\n[API] 已写入: 运行产物/重点股票产品化后评估/product_api/run_manifest.json\n[API] publish: status=PUBLISHED, canonical=bundles/bundle-20260616171718-19ed3e/\n[API] G4: 运行产物/重点股票产品化后评估/evidence/s5_build_evidence.json\n[API] G5: 运行产物/重点股票产品化后评估/evidence/s5_build_review_candidate.json\n[API] G6: 运行产物/重点股票产品化后评估/evidence/s5_build_archive_candidate.json\n",
+    "stderr_tail": ""
+  },
+  "checker_summary": {
+    "command": "python3 scripts/check_keystock_dashboard_productization.py ...",
+    "returncode": 0,
+    "overall": "BLOCK",
+    "engineering_status": "PASS",
+    "business_user_visible_status": "BLOCK",
+    "status_gate_blocks": [
+      {
+        "check": "data_date_divergence",
+        "path": "docs/keystock-dashboard/data/chart_data.json",
+        "status": "BLOCK",
+        "detail": "snap(20260615)!=kline(20260616)"
+      }
+    ],
+    "checker_out": "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_checker_bundle-20260616171718-19ed3e.json"
+  },
+  "run_manifest_publish_result": {
+    "docs_run_id": "bundle-20260616171718-19ed3e",
+    "product_api_run_id": "bundle-20260616171718-19ed3e",
+    "publish_status": "PUBLISHED",
+    "rollback_ref": "bundles/bundle-20260616171718-19ed3e",
+    "fallback_rollback_ref": null,
+    "generated_files": [
+      "bundle_index.json",
+      "run_manifest.json",
+      "stock_pool.json",
+      "dashboard.json",
+      "stocks.json",
+      "run_state.json",
+      "evidence_index.json",
+      "rule_health.json",
+      "rule_health_summary.json",
+      "today_decisions.json",
+      "chart_data.json",
+      "stocks/600114/detail.json",
+      "stocks/600114/chart_data.json",
+      "stocks/600114/evidence.json"
+    ]
+  },
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "generate_launchd_called": false,
+    "real_position_connected": false,
+    "formal_rule_changed": false,
+    "production_cutover": false,
+    "formal_buy_sell_position_conclusion_generated": false
+  },
+  "readonly_registry_evidence": {
+    "runtime_entry_registry_path": "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "baseline_registry_path": "00_项目地基/02_权威注册表/baseline_registry.json",
+    "before_sha256": {
+      "runtime_entry_registry.json": "2d8eaf23c560eb8afb9ab4b6bc81d56b26ba4bea7e1e294851f2f4faedfc8579",
+      "baseline_registry.json": "ed2ea1a2315c42886f8a307c4ae682cc47742ca5b5dc3eb814ad4e51bc9e0283"
+    },
+    "after_sha256": {
+      "runtime_entry_registry.json": "2d8eaf23c560eb8afb9ab4b6bc81d56b26ba4bea7e1e294851f2f4faedfc8579",
+      "baseline_registry.json": "ed2ea1a2315c42886f8a307c4ae682cc47742ca5b5dc3eb814ad4e51bc9e0283"
+    },
+    "unchanged": true
+  },
+  "production_cutover_minimum_conditions": {
+    "multiple_trading_days_shadow_pass": false,
+    "no_data_date_divergence": false,
+    "no_key_data_stale": false,
+    "checker_no_block": false,
+    "no_fake_complete": true,
+    "product_pool_governance_clear": true,
+    "position_source_clear_or_page_defined_as_no_position_analysis": false,
+    "g4_g5_g6_evidence_complete": false,
+    "user_authorized_runtime_launchd_change": false
+  },
+  "known_blocks": [],
+  "known_warnings": [],
+  "files_intentionally_not_touched": [
+    "00_项目地基/02_权威注册表/baseline_registry.json",
+    "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "重点股票/股票报告/",
+    "重点股票/深度分析/",
+    "重点股票/基线/",
+    "launchd/*",
+    "真实持仓/成本/盈亏",
+    "正式规则资产"
+  ]
+}

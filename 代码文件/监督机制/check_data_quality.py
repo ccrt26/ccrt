@@ -191,11 +191,11 @@ def check_data_full():
                 detail += f" stale: {','.join(active_stale)}"
             if active_missing:
                 detail += f" missing: {','.join(active_missing)}"
-            # 对 active_targets 的缺失，升级为更严重的 WARN（留由 classifier 处理）
+            # 对 active_targets 的缺失：至少 FAIL + release_blocking=true
             if metrics['fundflow_fresh_coverage'] == 0:
-                # 0% 覆盖率直接标记为可能 FAIL（classifier 决定）
-                issues.append({'id': 'DQ-W3a', 'severity': 'WARN',
-                               'desc': f"active_targets 资金流全缺 target_date:{detail}"})
+                issues.append({'id': 'DQ-F-W3', 'severity': 'FAIL',
+                               'desc': f"active_targets 资金流全缺 target_date:{detail}",
+                               'release_blocking': True})
 
     return issues, metrics
 

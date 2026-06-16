@@ -1,0 +1,255 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260615",
+  "conclusion_status": "BLOCKED",
+  "user_visible_status": "BLOCK",
+  "data_freshness": "STALE",
+  "close": 42.22,
+  "change_pct": 0.31,
+  "close_vs_ma5_pct": 5.93,
+  "ma5": 39.858,
+  "ma20": 38.681500000000014,
+  "ma60": 33.61133333333333,
+  "rsi14": 58.844045839561524,
+  "rule_health_status": "WARN",
+  "user_position": {
+    "has_position": false,
+    "position_status": "UNAVAILABLE",
+    "position_source_type": "NONE",
+    "position_as_of": null,
+    "cost_price": null,
+    "quantity": null,
+    "market_value": null,
+    "market_price": 42.22,
+    "unrealized_pnl": null,
+    "unrealized_pnl_pct": null,
+    "display_note": "当前未接入真实持仓，不生成持仓盈亏判断",
+    "generated_at": "2026-06-16T17:17:18.656787+00:00"
+  },
+  "decision_blockers": [
+    "DATA_STALE",
+    "DATA_DATE_DIVERGENCE",
+    "RULE_HEALTH_WARN",
+    "POSITION_UNAVAILABLE"
+  ],
+  "market_today": {
+    "close": 42.22,
+    "ma5": 39.858,
+    "ma20": 38.681500000000014,
+    "ma60": 33.61133333333333,
+    "rsi14": 58.844045839561524
+  },
+  "status_gate": {
+    "data_status": "DIVERGED",
+    "decision_blockers": [
+      "DATA_STALE",
+      "DATA_DATE_DIVERGENCE",
+      "RULE_HEALTH_WARN",
+      "POSITION_UNAVAILABLE"
+    ]
+  },
+  "rule_health_summary": {
+    "overall_status": "WARN"
+  },
+  "position_public_view": {
+    "position_status": "UNAVAILABLE"
+  },
+  "evidence_summary": {
+    "kline_cache": "AVAILABLE",
+    "feature_snapshot": "AVAILABLE",
+    "backtest": "AVAILABLE",
+    "position": "UNAVAILABLE"
+  },
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616171718-19ed3e",
+  "generated_at": "2026-06-16T17:17:18.656799+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "field_evidence": {
+    "stock_code": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "stock_code"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "stock_code"
+          ]
+        }
+      ]
+    },
+    "stock_name": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "stock_name"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "stock_name"
+          ]
+        }
+      ]
+    },
+    "market_today.close": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.close"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616",
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.close"
+          ]
+        }
+      ]
+    },
+    "market_today.ma5": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.ma5"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.ma5"
+          ]
+        }
+      ]
+    },
+    "market_today.ma20": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.ma20"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.ma20"
+          ]
+        }
+      ]
+    },
+    "status_gate.data_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "status_gate.decision_blockers": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    },
+    "rule_health_summary.overall_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-rule-health-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "rule_health",
+          "source_path": ""
+        },
+        {
+          "source_type": "rule_health",
+          "source_path": ""
+        }
+      ]
+    },
+    "position_public_view.position_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-position-public-view-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "position_public_view",
+          "source_path": ""
+        },
+        {
+          "source_type": "position_public_view",
+          "source_path": ""
+        }
+      ]
+    },
+    "evidence_summary": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616",
+        "ev-600114-feature-snapshot-20260616",
+        "ev-600114-rule-health-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "computed",
+          "source_path": ""
+        },
+        {
+          "source_type": "computed",
+          "source_path": ""
+        }
+      ]
+    },
+    "decision_blockers": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "status_gate",
+          "source_path": ""
+        }
+      ]
+    }
+  }
+}

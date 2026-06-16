@@ -1,0 +1,98 @@
+{
+  "task_id": "F-GATE-KEYSTOCK-DASHBOARD-SHADOW-REFRESH-SESSION5-20260617",
+  "stage": "G4 self-check candidate",
+  "generated_at": "2026-06-16T17:21:10Z",
+  "candidate_only": true,
+  "role_signature_claimed": false,
+  "flow": "F-GATE",
+  "scope": "session5_shadow_refresh_acceptance_closure",
+  "run_id": "bundle-20260616172042-8deb52",
+  "changed_files": [
+    "scripts/run_keystock_dashboard_shadow_refresh.py",
+    "tests/keystock_product_eval/test_shadow_refresh_contract.py",
+    "docs/keystock-dashboard/data/",
+    "运行产物/重点股票产品化后评估/product_api/",
+    "运行产物/重点股票产品化后评估/evidence/"
+  ],
+  "commands_run": [
+    {
+      "cmd": "PYTHONPYCACHEPREFIX=/private/tmp/ccrt_pycache python3 -m py_compile scripts/run_keystock_dashboard_shadow_refresh.py",
+      "result": "PASS"
+    },
+    {
+      "cmd": "python3 -m pytest tests/keystock_product_eval/test_shadow_refresh_contract.py",
+      "result": "PASS",
+      "detail": "17 passed, 1 skipped"
+    },
+    {
+      "cmd": "python3 scripts/run_keystock_dashboard_shadow_refresh.py --dry-run",
+      "result": "PASS",
+      "detail": "engineering=PASS business=BLOCK"
+    },
+    {
+      "cmd": "python3 -m json.tool 运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_latest.json",
+      "result": "PASS"
+    },
+    {
+      "cmd": "python3 -m pytest tests/keystock_product_eval/test_shadow_refresh_contract.py tests/keystock_product_eval/test_checker_exit_contract.py tests/keystock_product_eval/test_run_manifest_contract.py tests/keystock_product_eval/test_atomic_publish_contract.py",
+      "result": "PASS",
+      "detail": "32 passed, 1 skipped"
+    },
+    {
+      "cmd": "python3 scripts/check_keystock_dashboard_productization.py --docs-dir docs/keystock-dashboard --data-dir docs/keystock-dashboard/data --out 运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_checker_latest.json",
+      "result": "PASS",
+      "detail": "engineering_status=PASS, business_user_visible_status=BLOCK"
+    },
+    {
+      "cmd": "git diff -- 00_项目地基/02_权威注册表/baseline_registry.json 00_项目地基/06_调度与运行/runtime_entry_registry.json",
+      "result": "PASS",
+      "detail": "no diff"
+    },
+    {
+      "cmd": "python3 -m pytest tests/keystock_product_eval",
+      "result": "PASS",
+      "detail": "217 passed, 1 skipped"
+    }
+  ],
+  "shadow_evidence": {
+    "path": "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_refresh_bundle-20260616172042-8deb52.json",
+    "engineering_shadow_refresh_status": "PASS",
+    "business_production_readiness": "BLOCK",
+    "production_ready": false,
+    "dry_run_scope": "production_cutover_only",
+    "writes_product_api": true,
+    "writes_docs_data": true,
+    "writes_runtime_or_launchd": false,
+    "allowed_commands_only": true,
+    "forbidden_commands_observed": [],
+    "rollback_ref": "bundles/bundle-20260616172042-8deb52"
+  },
+  "known_business_blocks": [
+    {
+      "check": "data_date_divergence",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "generate_launchd_called": false,
+    "real_position_connected": false,
+    "formal_rule_changed": false,
+    "production_cutover": false,
+    "formal_buy_sell_position_conclusion_generated": false
+  },
+  "files_intentionally_not_touched": [
+    "00_项目地基/02_权威注册表/baseline_registry.json",
+    "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "重点股票/股票报告/",
+    "重点股票/深度分析/",
+    "重点股票/基线/",
+    "launchd",
+    "真实持仓/成本/盈亏",
+    "正式规则资产"
+  ],
+  "executor_conclusion": "G4_SELF_CHECK_PASS_CANDIDATE_SHADOW_ONLY_PRODUCTION_READINESS_BLOCK"
+}

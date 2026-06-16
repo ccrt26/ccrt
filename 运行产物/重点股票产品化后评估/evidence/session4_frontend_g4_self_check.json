@@ -1,0 +1,71 @@
+{
+  "phase": "session4_interactive_frontend_product_page",
+  "stage": "G4 self-check candidate",
+  "generated_at": "2026-06-17T00:00:00Z",
+  "session": "会话四｜交互式前端产品页 G3 实施",
+  "changed_files": {
+    "修改": [
+      "docs/keystock-dashboard/app.js",
+      "docs/keystock-dashboard/index.html",
+      "docs/keystock-dashboard/app.css"
+    ],
+    "增强": [
+      "tests/keystock_product_eval/test_dashboard_no_fake_data.py",
+      "tests/keystock_product_eval/test_dashboard_visual_contract.py",
+      "tests/keystock_product_eval/test_static_dashboard_smoke.py"
+    ],
+    "新增": [
+      "tests/keystock_product_eval/test_dashboard_lazy_loading_contract.py"
+    ]
+  },
+  "commands_run": [
+    "python3 -m pytest tests/keystock_product_eval/ (196 passed)",
+    "python3 scripts/check_keystock_dashboard_productization.py (eng=PASS bus=BLOCK)",
+    "git diff -- 00_项目地基/02_权威注册表/baseline_registry.json (零 diff)",
+    "git status --short (仅允许范围文件)"
+  ],
+  "verification_results": {
+    "frontend_tests": "37/37 PASS",
+    "full_suite": "196/196 PASS",
+    "checker_engineering_status": "PASS",
+    "checker_business_user_visible_status": "BLOCK（真实数据日期分歧）",
+    "checker_no_production_touch_status": "PASS",
+    "baseline_registry_zero_diff": true
+  },
+  "session4_contracts_met": {
+    "home_only_loads_four_json": true,
+    "detail_uses_stock_partition_paths": true,
+    "no_business_hardcoded_600114": true,
+    "blocked_observation_no_formal_action": true,
+    "no_position_sensitive_fields_rendered": true,
+    "status_codes_visible": true,
+    "bundle_status_container_exists": true,
+    "bundle_index_run_manifest_as_priority": true,
+    "stock_pool_driven_selection": true,
+    "lazy_load_detail_on_select": true
+  },
+  "known_risks": [
+    "当前数据业务状态为 BLOCK，这是正确事实，不是缺陷。",
+    "详情懒加载在文件服务器场景下可能因 404 导致数据分片不可用。"
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false
+  },
+  "visual_verification_commands": [
+    "cd docs/keystock-dashboard && python3 -m http.server 8765",
+    "Open http://localhost:8765 and verify:",
+    "  - bundle 状态可见 (run_id, publish_status, engineering_status)",
+    "  - 股票池来自 stock_pool",
+    "  - 默认选中第一只股票",
+    "  - 详情/状态闸门/阻断原因/证据链区域可见",
+    "  - BLOCKED 状态展示阻断原因",
+    "  - 无正式买卖动作在 BLOCKED 下展示",
+    "  - 无持仓成本/数量/盈亏",
+    "  - 图表数据可见",
+    "  - 证据链 (evidence_ids, source_refs) 可见"
+  ]
+}

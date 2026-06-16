@@ -170,7 +170,7 @@ def _extract_fund_flow_row(flow_row, code, name, date_str):
         ln = to_f(flow_row.get("buy_lg_amount", 0))
         mn = to_f(flow_row.get("buy_md_amount", 0))
         sn = to_f(flow_row.get("buy_sm_amount", 0))
-        source_trace = "THS via batch_data_collector.标准化派生"
+        source_trace = "THS fallback approximate via batch_data_collector, not Tushare four-level net split"
     elif "super_large_net" in flow_row:
         # 已标准化格式（直接从 fund_flow_cache 或其他标准化源）
         mf = to_f(flow_row.get("main_force_net", 0))

@@ -1,0 +1,61 @@
+{
+  "task_id": "F-GATE-KEYSTOCK-DASHBOARD-SHADOW-REFRESH-SESSION5-20260617",
+  "stage": "G5 review candidate",
+  "generated_at": "2026-06-16T17:21:10Z",
+  "candidate_only": true,
+  "g5_pass_claimed": false,
+  "role_signature_claimed": false,
+  "review_scope": [
+    "scripts/run_keystock_dashboard_shadow_refresh.py",
+    "tests/keystock_product_eval/test_shadow_refresh_contract.py",
+    "运行产物/重点股票产品化后评估/evidence/keystock_dashboard_shadow_latest.json",
+    "docs/keystock-dashboard/data/",
+    "运行产物/重点股票产品化后评估/product_api/"
+  ],
+  "findings": [
+    {
+      "severity": "P0",
+      "status": "PASS",
+      "title": "No production scheduler touch",
+      "evidence": "no_production_touch all false; runtime/baseline git diff empty"
+    },
+    {
+      "severity": "P0",
+      "status": "PASS",
+      "title": "Engineering and business statuses are separated",
+      "evidence": "engineering_shadow_refresh_status=PASS; business_production_readiness=BLOCK"
+    },
+    {
+      "severity": "P1",
+      "status": "WARN",
+      "title": "Business production readiness remains blocked",
+      "evidence": "DATA_DATE_DIVERGENCE remains: snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "regression_surfaces": [
+    "forbidden scheduler command false positive or false negative",
+    "business BLOCK misread as production PASS",
+    "run_id mismatch between docs data and product_api",
+    "rollback_ref missing after publish",
+    "registry/baseline accidental touch"
+  ],
+  "command_evidence": {
+    "targeted_tests": "32 passed, 1 skipped",
+    "full_keystock_product_eval": "217 passed, 1 skipped",
+    "checker": "engineering_status=PASS, business_user_visible_status=BLOCK",
+    "shadow_dry_run": "exit 0, engineering=PASS business=BLOCK"
+  },
+  "per_file_status": {
+    "scripts/run_keystock_dashboard_shadow_refresh.py": "PASS_CANDIDATE",
+    "tests/keystock_product_eval/test_shadow_refresh_contract.py": "PASS_CANDIDATE",
+    "docs/keystock-dashboard/data": "PASS_CANDIDATE_SHADOW_OUTPUT",
+    "运行产物/重点股票产品化后评估/product_api": "PASS_CANDIDATE_SHADOW_OUTPUT",
+    "运行产物/重点股票产品化后评估/evidence": "PASS_CANDIDATE_SHADOW_OUTPUT"
+  },
+  "review_conclusion": "REVIEW_CANDIDATE_PASS_FOR_SHADOW_ENGINEERING_CLOSURE_WARN_FOR_PRODUCTION_READINESS",
+  "forbidden_claims": [
+    "G5 formal PASS",
+    "G6 production release",
+    "role signoff"
+  ]
+}

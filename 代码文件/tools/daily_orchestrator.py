@@ -304,18 +304,35 @@ def check_v36_data_readiness(target_date=None):
     sector_by_stock = {}
 
     for code in pool_codes:
-        # Kline
+        # Kline — search ALL records for target date, not just kd[-1]
+        # Cache may be unsorted; a record for target_date may exist at any position
         kf = os.path.join(kline_dir, f"{code}.json")
         if os.path.exists(kf):
             try:
                 with open(kf, "r", encoding="utf-8") as f:
                     kd = json.load(f)
                 if isinstance(kd, list) and kd:
-                    latest = kd[-1].get('date', '')
-                    kline_by_stock[code] = {'date': latest, 'match': latest == date_dash}
+                    # Search all records for the target date (YYYY-MM-DD format)
+                    matched_record = next(
+                        (r for r in kd if r.get('date', '') == date_dash),
+                        None
+                    )
+                    if matched_record:
+                        kline_by_stock[code] = {
+                            'date': date_dash,
+                            'match': True,
+                            'matched_date': date_dash
+                        }
+                    else:
+                        latest = kd[-1].get('date', '')
+                        kline_by_stock[code] = {
+                            'date': latest,
+                            'match': False,
+                            'reason': f'目标日期{date_dash}在{len(kd)}条记录中未找到'
+                        }
                 else:
                     kline_by_stock[code] = {'date': None, 'match': False}
-            except Exception:
+            except Exception as e:
                 kline_by_stock[code] = {'date': None, 'match': False}
         else:
             kline_by_stock[code] = {'date': None, 'match': False}
@@ -667,6 +684,9 @@ def extract_stock_daily_context(target_date_str):
         if not kd or len(kd) < 4:
             continue
 
+        # Sort by date ascending so kd[-4:] reliably gives the last 4 trading days
+        # even when the cache file is unsorted
+        kd.sort(key=lambda r: str(r.get('date', '')))
         # Take last 4 records as the 4-day window
         last4 = kd[-4:]
         days = []

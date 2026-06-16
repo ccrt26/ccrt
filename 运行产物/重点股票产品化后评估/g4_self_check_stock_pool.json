@@ -1,0 +1,47 @@
+{
+  "phase": "会话一｜产品股票池与成员治理底座",
+  "stage": "G4-self-check-candidate",
+  "generated_at": "2026-06-16T14:30:00Z",
+  "g4_scope_verification": {
+    "baseline_registry_unchanged": {
+      "status": "PASS",
+      "evidence": "git diff -- 00_项目地基/02_权威注册表/baseline_registry.json -> no diff"
+    },
+    "runtime_entry_registry_unchanged": {
+      "status": "PASS",
+      "evidence": "git diff -- 00_项目地基/06_调度与运行/runtime_entry_registry.json -> no diff"
+    },
+    "no_generate_launchd_called": {
+      "status": "PASS",
+      "evidence": "未调用 generate_launchd.py"
+    },
+    "no_launchd_loaded": {
+      "status": "PASS",
+      "evidence": "未加载 launchd"
+    },
+    "no_production_schedule_changed": {
+      "status": "PASS",
+      "evidence": "未新增或修改生产调度"
+    },
+    "no_real_position_cost_pnl_connected": {
+      "status": "PASS",
+      "evidence": "未接真实持仓、成本、盈亏"
+    },
+    "stock_pool_public_only": {
+      "status": "PASS",
+      "evidence": "stock_pool.json 仅包含公开股票代码/名称，无敏感持仓字段"
+    },
+    "shadow_product_page_not_production": {
+      "status": "PASS",
+      "evidence": "当前是产品页面 shadow/试运行底座，非生产页面放行"
+    }
+  },
+  "verification_summary": {
+    "tests_passed": 18,
+    "checks_passed": 10,
+    "overall": "PASS",
+    "note": "G4 自检候选。不得宣称 G5 PASS、G6 放行或生产完成。"
+  },
+  "supersedes": null,
+  "next_stage": "G5 — 旧影独立复查"
+}

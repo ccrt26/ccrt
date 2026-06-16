@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """P0-I: 日报数据完整性检测——禁止有数据却写缺失/待确认"""
-import argparse, json, re, sys
+import argparse, json, os, re, sys
 from pathlib import Path
 from datetime import datetime
 
 ROOT = Path(__file__).resolve().parents[1]
+_REPORT_OVERRIDE = os.environ.get("REPORT_ROOT_OVERRIDE")
+REPORT_DIR = Path(_REPORT_OVERRIDE) if _REPORT_OVERRIDE else ROOT / "重点股票" / "股票报告"
 
 BAD_PHRASES = [
     "待baseline确认", "待深度分析baseline确认", "深度分析baseline待引用",
@@ -28,7 +30,7 @@ def dashed(date):
     return f"{d[:4]}-{d[4:6]}-{d[6:8]}"
 
 def find_report_dir(code, name):
-    return ROOT / "重点股票" / "股票报告" / f"{name}({code})"
+    return REPORT_DIR / f"{name}({code})"
 
 def find_baseline(code, name, date):
     d = compact(date)

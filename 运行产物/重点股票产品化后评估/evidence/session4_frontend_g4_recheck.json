@@ -1,0 +1,76 @@
+{
+  "phase": "session4_frontend_g3_patch",
+  "stage": "G4 self-check candidate (final recheck)",
+  "generated_at": "2026-06-17T00:10:00Z",
+  "recheck_type": "final_patch_for_narrow_fixes",
+  "scope": "本轮仅改 3 个文件：checker 未定义变量修复 + test_checker_exit mock JS 修复 + 本证据文件",
+  "changed_files": {
+    "fixed": [
+      "scripts/check_keystock_dashboard_productization.py — 未定义变量 pattern → sf 修复",
+      "tests/keystock_product_eval/test_checker_exit_contract.py — mock JS 拼接语法修复"
+    ],
+    "evidence": [
+      "运行产物/重点股票产品化后评估/evidence/session4_frontend_g4_recheck.json — 本文件，更新结果"
+    ]
+  },
+  "commands_run": [
+    "python3 -m py_compile scripts/check_keystock_dashboard_productization.py",
+    "python3 -m pytest tests/keystock_product_eval/test_checker_exit_contract.py tests/keystock_product_eval/test_dashboard_lazy_loading_contract.py",
+    "python3 -m pytest tests/keystock_product_eval/ (全量 200 tests)",
+    "python3 scripts/check_keystock_dashboard_productization.py --docs-dir docs/keystock-dashboard --data-dir docs/keystock-dashboard/data",
+    "python3 -m json.tool 运行产物/重点股票产品化后评估/evidence/session4_frontend_g4_recheck.json",
+    "git diff -- 00_项目地基/02_权威注册表/baseline_registry.json"
+  ],
+  "results": {
+    "frontend_tests": "41/41 PASS",
+    "checker_exit_contract_test": "3/3 PASS",
+    "lazy_loading_test": "13/13 PASS",
+    "full_suite": "200/200 PASS",
+    "checker_engineering_status": "PASS",
+    "checker_frontend_contract_status": "PASS",
+    "checker_home_loader_contract_status": "PASS",
+    "checker_lazy_loading_contract_status": "PASS",
+    "checker_no_production_touch_status": "PASS",
+    "baseline_registry_zero_diff": true,
+    "git_status_scope_only_3_files": true
+  },
+  "frontend_contract_results": {
+    "home_only_four_json": "PASS",
+    "no_auto_detail_load_on_home": "PASS",
+    "lazy_detail_load_on_click_only": "PASS",
+    "bundle_run_manifest_priority": "PASS",
+    "no_legacy_frontend_primary_source": "PASS",
+    "no_formal_action_leak": "PASS",
+    "no_position_sensitive_render": "PASS"
+  },
+  "visual_verification_results": {
+    "desktop_layout_checked": "WARN",
+    "mobile_layout_checked": "WARN",
+    "home_first_screen_checked": "WARN",
+    "detail_click_flow_checked": "WARN",
+    "blocked_no_formal_action_checked": "WARN",
+    "evidence_refs_visible_checked": "WARN",
+    "note": "未执行浏览器级网络截图验收。所有 visual 项如实标记 WARN，不得冒充 PASS。静态代码与 checker 验收已全部通过。"
+  },
+  "known_risks": [
+    "visual_verification 全部 WARN — 未执行浏览器截图",
+    "当前业务状态 BLOCK 是正确数据事实，不是工程失败"
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false,
+    "formal_rule_changed": false
+  },
+  "files_intentionally_not_touched": [
+    "00_项目地基/02_权威注册表/baseline_registry.json",
+    "docs/keystock-dashboard/app.js — 未修改",
+    "docs/keystock-dashboard/app.css — 未修改",
+    "docs/keystock-dashboard/index.html — 未修改",
+    "docs/keystock-dashboard/data/* — 未修改",
+    "运行产物/重点股票产品化后评估/* — 未修改",
+    "launchd, 生产调度入口, 正式规则, 日报入口, runtime registry, 真实持仓源"
+  ]
+}

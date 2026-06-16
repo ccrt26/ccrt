@@ -23,9 +23,35 @@ class TestCheckerExitContract(unittest.TestCase):
         data_dir = os.path.join(docs_root, "data")
         os.makedirs(data_dir, exist_ok=True)
         with open(os.path.join(docs_root, "index.html"), "w") as f:
-            f.write("<div class='sidebar'></div><div id='view-dashboard'></div><div id='view-stocks'></div><div id='view-deep'></div><div id='view-daily'></div><div id='view-rules'></div>")
+            f.write("<div id='view-dashboard' class='sidebar'></div><div id='view-stocks'></div><div id='view-deep'></div><div id='view-daily'></div><div id='view-rules'></div><div id='view-detail'></div><div id='bundle-status'></div><div id='status-gate'></div><div id='block-reasons'></div><div id='position-public'></div><div id='chart-area'></div><div id='evidence'></div>")
         open(os.path.join(docs_root, "app.css"), "w").close()
-        open(os.path.join(docs_root, "app.js"), "w").close()
+
+        # Realistic mock app.js for session4 frontend contract checks
+        js = (
+            "// FORMAL OBSERVATION SHADOW BLOCKED\n"
+            "async function loadHomeBundle() {\n"
+            "  loadJSON('data/stock_pool.json');\n"
+            "  loadJSON('data/stocks.json');\n"
+            "  loadJSON('data/bundle_index.json');\n"
+            "  loadJSON('data/run_manifest.json');\n"
+            "  resolveBundleStatus();\n"
+            "  renderPoolList();\n"
+            "  renderStockSummaries();\n"
+            "}\n"
+            "function renderDetailPlaceholder(c) { }\n"
+            "function resolveBundleStatus() { var x={}; x.run_id=x.publish_status=x.business_user_visible_status=''; }\n"
+            "function canShowFormalAction(d) { return false; }\n"
+            "function renderDecisionBoundary() { var s='BLOCKED'; var r='阻断原因'; }\n"
+            "function selectStock(c) {\n"
+            "  loadJSON('data/stocks/'+c+'/detail.json');\n"
+            "  loadJSON('data/stocks/'+c+'/chart_data.json');\n"
+            "  loadJSON('data/stocks/'+c+'/evidence.json');\n"
+            "}\n"
+            "function renderPoolList() { }\n"
+            "function renderStockSummaries() { }\n"
+        )
+        with open(os.path.join(docs_root, "app.js"), "w") as f:
+            f.write(js)
 
         base = os.path.join(tmp, "base")
         out = os.path.join(tmp, "out")
@@ -57,6 +83,7 @@ class TestCheckerExitContract(unittest.TestCase):
             result = self._run_checker(docs_root, data_dir)
             payload = json.loads(result.stdout)
             self.assertEqual(payload["engineering_status"], "PASS")
+            self.assertEqual(payload["frontend_contract_status"], "PASS")
             self.assertEqual(payload["business_user_visible_status"], "BLOCK")
             self.assertEqual(result.returncode, 0)
 

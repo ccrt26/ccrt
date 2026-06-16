@@ -1,0 +1,67 @@
+{
+  "stage": "G4 self-check candidate",
+  "session": "session3_product_api_bundle_v3",
+  "generated_at": "2026-06-16T17:20:42.738526+00:00",
+  "g4_self_check_candidate_only": true,
+  "role_signature_claimed": false,
+  "engineering_status": "PASS",
+  "business_user_visible_status": "BLOCK",
+  "run_id": "bundle-20260616172042-8deb52",
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "changed_files": [
+    "代码文件/重点股票/product_eval/product_api_bundle.py",
+    "scripts/build_keystock_product_api_bundle.py",
+    "scripts/check_keystock_dashboard_productization.py",
+    "tests/keystock_product_eval/test_field_evidence_contract.py",
+    "tests/keystock_product_eval/test_canonical_bundle_publish_contract.py",
+    "tests/keystock_product_eval/test_checker_exit_contract.py",
+    "docs/keystock-dashboard/data/",
+    "运行产物/重点股票产品化后评估/product_api/"
+  ],
+  "commands_run": [
+    "python3 -m py_compile ...",
+    "python3 -m pytest tests/keystock_product_eval",
+    "python3 scripts/build_keystock_product_api_bundle.py ...",
+    "python3 scripts/check_keystock_dashboard_productization.py ..."
+  ],
+  "test_results": "179 passed in tests/keystock_product_eval; checker engineering_status=PASS",
+  "generated_bundle_files": [
+    "bundle_index.json",
+    "run_manifest.json",
+    "stock_pool.json",
+    "dashboard.json",
+    "stocks.json",
+    "run_state.json",
+    "evidence_index.json",
+    "rule_health.json",
+    "rule_health_summary.json",
+    "today_decisions.json",
+    "chart_data.json",
+    "stocks/600114/detail.json",
+    "stocks/600114/chart_data.json",
+    "stocks/600114/evidence.json"
+  ],
+  "known_business_blocks": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false
+  },
+  "files_intentionally_not_touched": [
+    "00_项目地基/02_权威注册表/baseline_registry.json",
+    "00_项目地基/06_调度与运行/runtime_entry_registry.json",
+    "launchd",
+    "真实持仓/成本/盈亏",
+    "正式规则资产"
+  ]
+}

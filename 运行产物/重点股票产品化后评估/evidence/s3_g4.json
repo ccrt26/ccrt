@@ -1,0 +1,27 @@
+{
+  "stage": "G4 self-check candidate",
+  "session": "session3_product_api_bundle_v3",
+  "generated_at": "2026-06-16T15:35:12.758495+00:00",
+  "g4_self_check_candidate_only": true,
+  "role_signature_claimed": false,
+  "engineering_status": "PASS",
+  "business_user_visible_status": "BLOCK",
+  "run_id": "bundle-20260616153512-94324f",
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "known_business_blocks": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "BLOCK",
+      "detail": "snap(20260615)!=kline(20260616)"
+    }
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false
+  }
+}

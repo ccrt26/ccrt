@@ -1,0 +1,70 @@
+{
+  "phase": "Phase 2/3 productization repair",
+  "stage": "G4 self-check candidate",
+  "generated_at": "2026-06-16T15:08:02.559989+00:00",
+  "checker_result": {
+    "overall": "BLOCK",
+    "findings": [
+      {
+        "check": "data_date_divergence",
+        "path": "docs/keystock-dashboard/data/chart_data.json",
+        "status": "BLOCK",
+        "detail": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)"
+      }
+    ],
+    "checked_files": [
+      "docs/keystock-dashboard/index.html",
+      "docs/keystock-dashboard/app.css",
+      "docs/keystock-dashboard/app.js",
+      "docs/keystock-dashboard/app.js",
+      "docs/keystock-dashboard/app.css",
+      "docs/keystock-dashboard/index.html",
+      "docs/keystock-dashboard/data/stocks.json",
+      "docs/keystock-dashboard/data/stock_pool.json"
+    ],
+    "fake_data_hits": [],
+    "hardcoded_decision_hits": [],
+    "visual_contract_status": "PASS",
+    "data_truth_status": "PASS",
+    "recommended_user_visible_status": "BLOCK",
+    "status_gate_blocks": [
+      {
+        "check": "data_date_divergence",
+        "path": "docs/keystock-dashboard/data/chart_data.json",
+        "status": "BLOCK",
+        "detail": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)"
+      }
+    ]
+  },
+  "test_results": "verification required: run pytest separately",
+  "fake_data_hits": [],
+  "hardcoded_decision_hits": [],
+  "block_status": true,
+  "session": "session2_data_status_gate",
+  "changed_files": [
+    "代码文件/重点股票/product_eval/conclusion_status.py",
+    "代码文件/重点股票/product_eval/position_adapter.py",
+    "代码文件/重点股票/product_eval/product_api_bundle.py",
+    "代码文件/重点股票/product_eval/analysis_run_state.py",
+    "代码文件/重点股票/product_eval/status_exporter.py",
+    "scripts/check_keystock_dashboard_productization.py",
+    "scripts/build_keystock_product_api_bundle.py",
+    "tests/keystock_product_eval/test_dashboard_status_truth_gate.py",
+    "tests/keystock_product_eval/test_conclusion_status_contract.py",
+    "tests/keystock_product_eval/test_position_data_redaction.py"
+  ],
+  "commands_run_summary": "compile PASS | 40/40 tests PASS | build PASS | checker BLOCK(预期)",
+  "known_risks": [
+    "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)",
+    "POSITION_UNAVAILABLE 为预期行为，非缺陷"
+  ],
+  "no_production_touch": {
+    "baseline_registry_touched": false,
+    "runtime_entry_registry_touched": false,
+    "launchd_touched": false,
+    "real_position_connected": false,
+    "production_cutover": false,
+    "stock_pool_only": "600114"
+  },
+  "notes": "checker 在当前数据下返回 BLOCK 是预期正确结果。修复目标是停止假 COMPLETE，不是强行制造 COMPLETE。"
+}

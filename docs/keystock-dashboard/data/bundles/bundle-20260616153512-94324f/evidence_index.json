@@ -1,0 +1,28 @@
+{
+  "decision_id": "DI-20260616-600114-1cefbe",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "trade_date": "20260616",
+  "evidence_items": [
+    {
+      "evidence_id": "ev-c3fbc9",
+      "source_type": "backtest",
+      "source_path": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json",
+      "summary": "MA20 破位回测: WARN",
+      "chart_hint": "matrix",
+      "freshness_status": "FRESH",
+      "created_at": "2026-06-16T15:35:12.704811+00:00"
+    }
+  ],
+  "created_at": "2026-06-16T15:35:12.704818+00:00",
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616153512-94324f",
+  "generated_at": "2026-06-16T15:35:12.704826+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "legacy_compat": true,
+  "canonical_path": "bundles/bundle-20260616153512-94324f/evidence_index.json",
+  "deprecated_fields": [],
+  "compatibility_notes": "legacy 镜像文件，仅兼容旧引用。新引用请读 canonical 对应文件。"
+}

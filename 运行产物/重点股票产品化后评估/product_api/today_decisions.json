@@ -16,7 +16,7 @@
     "unrealized_pnl": null,
     "unrealized_pnl_pct": null,
     "display_note": "当前未接入真实持仓，不生成持仓盈亏判断",
-    "generated_at": "2026-06-16T15:55:37.235060+00:00"
+    "generated_at": "2026-06-16T17:20:42.682844+00:00"
   },
   "market_today": {
     "close": 42.22,
@@ -39,7 +39,7 @@
     "stock_code": "600114",
     "stock_name": "东睦股份",
     "trade_date": "20260615",
-    "generated_at": "2026-06-16T15:55:37.230947+00:00",
+    "generated_at": "2026-06-16T17:20:42.679002+00:00",
     "run_mode": "shadow",
     "conclusion_status": "BLOCKED",
     "user_visible_status": "BLOCK",
@@ -70,12 +70,12 @@
   },
   "schema_version": "keystock.product_api_bundle.v3",
   "bundle_version": "2026-06-16.v3",
-  "run_id": "bundle-20260616155537-e5ec8d",
-  "generated_at": "2026-06-16T15:55:37.235065+00:00",
+  "run_id": "bundle-20260616172042-8deb52",
+  "generated_at": "2026-06-16T17:20:42.682847+00:00",
   "producer_version": "product_api_bundle.py/3.0.1",
   "min_frontend_version": "1.0.0",
   "legacy_compat": true,
-  "canonical_path": "bundles/bundle-20260616155537-e5ec8d/today_decisions.json",
+  "canonical_path": "bundles/bundle-20260616172042-8deb52/today_decisions.json",
   "deprecated_fields": [],
   "compatibility_notes": "legacy 镜像文件，仅兼容旧引用。新引用请读 canonical 对应文件。",
   "field_evidence": {

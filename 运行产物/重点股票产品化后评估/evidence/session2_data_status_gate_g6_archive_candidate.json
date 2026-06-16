@@ -1,0 +1,22 @@
+{
+  "phase": "Phase 2/3 productization repair",
+  "stage": "G6 archive",
+  "generated_at": "2026-06-16T15:08:02.559989+00:00",
+  "archive_status": "BLOCK",
+  "user_visible_status": "BLOCK",
+  "checker_overall": "BLOCK",
+  "data_truth_status": "REAL_EVIDENCE_ONLY",
+  "session": "session2_data_status_gate",
+  "archive_candidate_only": true,
+  "g6_pass": false,
+  "production_release": false,
+  "shadow_only": true,
+  "baseline_registry_touched": false,
+  "runtime_entry_registry_touched": false,
+  "launchd_touched": false,
+  "real_position_connected": false,
+  "formal_rule_changed": false,
+  "stock_pool_only": "600114",
+  "recommended_user_visible_status": "BLOCK",
+  "notes": "G6 归档候选 — 不生产放行，不注册调度。g6_pass=false 表示仅候选，非正式 G6 签署。"
+}

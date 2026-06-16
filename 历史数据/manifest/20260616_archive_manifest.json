@@ -1,7 +1,7 @@
 {
   "flow": "archive_data",
   "archive_date": "20260616",
-  "generated_at": "2026-06-16T16:32:16.221486",
+  "generated_at": "2026-06-17T00:39:18.933206",
   "archive_root": "/Users/ccrt/ccrt/历史数据",
   "files": [
     {
@@ -11,9 +11,9 @@
       "source": "/Users/ccrt/ccrt/代码文件/数据/data_full.json",
       "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_data_full.json",
       "subdir": "04_原始数据",
-      "source_sha256": "4a3323a62b34e79672280fa028272656abdc7da4d282c271c5701d660a0f663b",
-      "destination_sha256": "4a3323a62b34e79672280fa028272656abdc7da4d282c271c5701d660a0f663b",
-      "bytes": 2418075,
+      "source_sha256": "fd54df7b242ec375a129b317811925c9cf825661b9af39100f6f8a4908b63410",
+      "destination_sha256": "fd54df7b242ec375a129b317811925c9cf825661b9af39100f6f8a4908b63410",
+      "bytes": 1924095,
       "copied": true
     },
     {
@@ -23,8 +23,8 @@
       "source": "/Users/ccrt/ccrt/代码文件/数据/data_scored.json",
       "destination": "/Users/ccrt/ccrt/历史数据/04_原始数据/20260616_data_scored.json",
       "subdir": "04_原始数据",
-      "source_sha256": "4d4fd0289fcd4f73b731f2be9ff6b43f811c066be21f1bd96abc8a504a3ccefb",
-      "destination_sha256": "4d4fd0289fcd4f73b731f2be9ff6b43f811c066be21f1bd96abc8a504a3ccefb",
+      "source_sha256": "ff2a94d55f099fdec3b84a4b01a04a1f38f4805967340cf14004b2f903a4f36c",
+      "destination_sha256": "ff2a94d55f099fdec3b84a4b01a04a1f38f4805967340cf14004b2f903a4f36c",
       "bytes": 247325,
       "copied": true
     },
@@ -38,7 +38,7 @@
       "source_sha256": "29da27d2fdef9d6ae647afd7c6959d155f1ffe3ed2299a3a881a6f5a63a08be4",
       "destination_sha256": "29da27d2fdef9d6ae647afd7c6959d155f1ffe3ed2299a3a881a6f5a63a08be4",
       "bytes": 13965,
-      "copied": true
+      "copied": false
     },
     {
       "name": "score_history.jsonl",
@@ -50,7 +50,7 @@
       "source_sha256": "f8de60d1be45969c0609621b572ce58f5e9bcd97b160f3a781e6536bd8df9837",
       "destination_sha256": "f8de60d1be45969c0609621b572ce58f5e9bcd97b160f3a781e6536bd8df9837",
       "bytes": 366434,
-      "copied": true
+      "copied": false
     },
     {
       "name": "dynamic_pool.json",
@@ -59,8 +59,8 @@
       "source": "/Users/ccrt/ccrt/代码文件/数据/dynamic_pool.json",
       "destination": "/Users/ccrt/ccrt/历史数据/05_参考数据/20260616_dynamic_pool.json",
       "subdir": "05_参考数据",
-      "source_sha256": "a1e24c56e1a238afe79b4655ccd18ff63db02a89d2a90c5100713e0f3806a66a",
-      "destination_sha256": "a1e24c56e1a238afe79b4655ccd18ff63db02a89d2a90c5100713e0f3806a66a",
+      "source_sha256": "c3849748aff398f5f402f92beaab04ab484dbe614ac1aca5af31f2641b801e64",
+      "destination_sha256": "c3849748aff398f5f402f92beaab04ab484dbe614ac1aca5af31f2641b801e64",
       "bytes": 8448,
       "copied": true
     },
@@ -74,7 +74,7 @@
       "source_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
       "destination_sha256": "06a51fa08d8d342d0155e51e8720787e935c03cfc11c7f0d1913fa048e3b687a",
       "bytes": 3013,
-      "copied": true
+      "copied": false
     },
     {
       "name": "industry_map.json",
@@ -86,7 +86,7 @@
       "source_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
       "destination_sha256": "bbd9248e755192e6750eaad7c06b2d704e6190ec4ac43542c03998bd901741db",
       "bytes": 1133,
-      "copied": true
+      "copied": false
     },
     {
       "name": "eastmoney_sector_map.json",
@@ -98,7 +98,7 @@
       "source_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
       "destination_sha256": "59cce67a388f7006a788401d8d93599f4e5732512e9a40a5ab44065e4aa448cd",
       "bytes": 1312,
-      "copied": true
+      "copied": false
     },
     {
       "name": "../../每日荐股/事后评估/eval_result_20260616.json",
@@ -121,7 +121,7 @@
       "source_sha256": "16d972743fccd6561ba2f65123a90f9b7e86686d6664d32f790069d8a40ef02a",
       "destination_sha256": "16d972743fccd6561ba2f65123a90f9b7e86686d6664d32f790069d8a40ef02a",
       "bytes": 44330,
-      "copied": true
+      "copied": false
     },
     {
       "name": "../../每日荐股/事后评估/summary.csv",
@@ -133,7 +133,7 @@
       "source_sha256": "58cb07d1e76a216e6834f8ef117a21d13141478facdf23815bb9d5453ec0e33f",
       "destination_sha256": "58cb07d1e76a216e6834f8ef117a21d13141478facdf23815bb9d5453ec0e33f",
       "bytes": 1515,
-      "copied": true
+      "copied": false
     }
   ],
   "summary": {

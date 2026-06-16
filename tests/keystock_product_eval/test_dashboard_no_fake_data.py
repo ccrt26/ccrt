@@ -1,5 +1,6 @@
-"""验证驾驶舱无硬编码样例数据、无虚假业务结论"""
+"""验证驾驶舱无硬编码样例数据、无虚假业务结论、无正式动作泄露"""
 import json, os, sys, unittest, re
+
 
 class TestDashboardNoFakeData(unittest.TestCase):
     """验证驾驶舱无硬编码假数据"""
@@ -70,6 +71,39 @@ class TestDashboardNoFakeData(unittest.TestCase):
             chart = json.load(open(path, encoding="utf-8"))
             ohlc = chart.get("ohlc", [])
             self.assertGreater(len(ohlc), 20, f"K 线数据不足 (仅 {len(ohlc)} 行)")
+
+    # ── 会话四增强 ──
+
+    def test_blocked_observation_no_formal_actions(self):
+        """app.js 应确保 BLOCKED/OBSERVATION 下无正式买入/卖出/仓位。"""
+        if not os.path.exists(self.js_path):
+            return
+        js = open(self.js_path, encoding="utf-8").read()
+        formal_actions = ["买入", "卖出", "加仓", "减仓", "仓位比例", "止盈", "止损"]
+        rendered_in_blocked = False
+        for action in formal_actions:
+            if action in js:
+                idx = js.find(action)
+                surrounding = js[max(0, idx-300):idx+len(action)+300]
+                # Must be gated by canShowFormalAction or similar
+                if "canShowFormalAction" not in surrounding and "FORMAL" not in surrounding:
+                    rendered_in_blocked = True
+        self.assertFalse(rendered_in_blocked,
+                         "BLOCKED/OBSERVATION 下不应展示正式动作")
+
+    def test_no_position_sensitive_in_app_js(self):
+        """app.js 不应渲染成本、数量、真实盈亏。"""
+        if not os.path.exists(self.js_path):
+            return
+        js = open(self.js_path, encoding="utf-8").read()
+        sensitive_display = ["成本价", "成本", "数量", "盈亏"]
+        for sens in sensitive_display:
+            if sens in js:
+                idx = js.find(sens)
+                ctx = js[max(0, idx-150):idx+len(sens)+150]
+                self.assertTrue("UNAVAILABLE" in ctx or "不可用" in ctx or "未接入" in ctx,
+                                f"'{sens}' 未在安全上下文中")
+
 
 if __name__ == "__main__":
     unittest.main()

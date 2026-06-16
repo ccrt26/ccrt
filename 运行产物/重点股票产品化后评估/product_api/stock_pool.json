@@ -3,7 +3,7 @@
   "pool_id": "keystock_product_pool",
   "pool_name": "重点股票产品池",
   "pool_version": "2026-06-16.v1",
-  "generated_at": "2026-06-16T15:55:37.231153+00:00",
+  "generated_at": "2026-06-16T17:20:42.679184+00:00",
   "members": [
     {
       "stock_code": "600114",
@@ -20,7 +20,7 @@
     }
   ],
   "bundle_version": "2026-06-16.v3",
-  "run_id": "bundle-20260616155537-e5ec8d",
+  "run_id": "bundle-20260616172042-8deb52",
   "producer_version": "product_api_bundle.py/3.0.1",
   "min_frontend_version": "1.0.0",
   "field_evidence": {
@@ -171,5 +171,5 @@
     }
   },
   "legacy_compat": true,
-  "canonical_path": "bundles/bundle-20260616155537-e5ec8d/stock_pool.json"
+  "canonical_path": "bundles/bundle-20260616172042-8deb52/stock_pool.json"
 }

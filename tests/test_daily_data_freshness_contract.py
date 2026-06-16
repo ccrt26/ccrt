@@ -269,16 +269,16 @@ class TestDQFundFlowFreshCoverage(unittest.TestCase):
         self.assertEqual(metrics.get("fundflow_fresh_coverage"), 50.0)
 
     def test_fundflow_warn_when_stale_for_active_target(self):
-        """P1: stale fundflow for active target must produce DQ-W3 or DQ-W3a."""
+        """P1: stale fundflow for active target must produce DQ-F-W3 (FAIL)."""
         self._write_targets(["600114"])
         self._write_data_full({
             "600114": [{"trade_date": "20260615", "net_mf_amount": 100}],
         }, target_date="20260616")
         issues, _ = self.dq_mod.check_data_full()
-        warn_ids = [i["id"] for i in issues]
-        has_w3_warn = any("DQ-W3" in iid for iid in warn_ids)
-        self.assertTrue(has_w3_warn,
-                        "Stale fundflow for active target must produce DQ-W3 warning")
+        fail_ids = [i for i in issues if i.get("severity") == "FAIL"]
+        has_fw3 = any("DQ-F-W3" in i["id"] for i in fail_ids)
+        self.assertTrue(has_fw3,
+                        "Stale fundflow for active target must produce DQ-F-W3 (FAIL)")
 
 
 class TestClosureFundFlowGate(unittest.TestCase):

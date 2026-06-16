@@ -1,0 +1,150 @@
+{
+  "stocks": [
+    {
+      "stock_code": "600114",
+      "stock_name": "东睦股份",
+      "close": 42.22,
+      "change_pct": 0.31,
+      "close_vs_ma5_pct": 5.93,
+      "actual_trade_date": "20260615",
+      "data_freshness_status": "STALE",
+      "run_status": "WARN",
+      "user_visible_status": "BLOCK",
+      "conclusion_status": "BLOCKED",
+      "missing_fields": []
+    }
+  ],
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616153057-933e6c",
+  "generated_at": "2026-06-16T15:30:57.803513+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0",
+  "field_evidence": {
+    "stocks.600114.stock_code": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "stock_code"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "stock_code"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.stock_name": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "stock_name"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "stock_name"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.close": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.close"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616",
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.close"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.change_pct": {
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "source_field_refs": [
+        "pct_chg"
+      ],
+      "evidence_refs": [
+        "ev-600114-kline-cache-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "代码文件/数据/kline_cache/600114.json",
+          "source_field_refs": [
+            "pct_chg"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.actual_trade_date": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "feature_values.technical.actual_trade_date"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "feature_values.technical.actual_trade_date"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.data_freshness_status": {
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "source_field_refs": [
+        "freshness_status.overall"
+      ],
+      "evidence_refs": [
+        "ev-600114-feature-snapshot-20260616"
+      ],
+      "source_refs": [
+        {
+          "source_type": "file",
+          "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+          "source_field_refs": [
+            "freshness_status.overall"
+          ]
+        }
+      ]
+    },
+    "stocks.600114.conclusion_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": []
+    },
+    "stocks.600114.user_visible_status": {
+      "source_path": "",
+      "source_field_refs": [],
+      "evidence_refs": [
+        "ev-600114-status-gate-20260616"
+      ],
+      "source_refs": []
+    }
+  }
+}

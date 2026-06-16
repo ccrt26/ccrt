@@ -1,0 +1,75 @@
+{
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "evidence_items": [
+    {
+      "evidence_id": "ev-600114-kline-cache-20260616",
+      "source_type": "kline_cache",
+      "source_path": "代码文件/数据/kline_cache/600114.json",
+      "summary": "K 线行情数据",
+      "chart_hint": "kline",
+      "status": "AVAILABLE"
+    },
+    {
+      "evidence_id": "ev-600114-feature-snapshot-20260616",
+      "source_type": "feature_snapshot",
+      "source_path": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json",
+      "summary": "技术特征 MA20/RSI",
+      "chart_hint": "ma",
+      "status": "AVAILABLE"
+    },
+    {
+      "evidence_id": "ev-600114-rule-health-20260616",
+      "source_type": "rule_health",
+      "source_path": "运行产物/重点股票产品化后评估/product_api/rule_health_summary.json",
+      "summary": "规则健康 MA20 止损",
+      "chart_hint": "matrix",
+      "status": "AVAILABLE"
+    },
+    {
+      "evidence_id": "ev-600114-status-gate-20260616",
+      "source_type": "status_gate",
+      "source_path": "",
+      "summary": "状态闸门结论",
+      "status": "COMPUTED"
+    },
+    {
+      "evidence_id": "ev-600114-position-public-view-20260616",
+      "source_type": "position_public_view",
+      "source_path": "",
+      "summary": "公开持仓视图(status=UNAVAILABLE)",
+      "status": "UNAVAILABLE"
+    },
+    {
+      "evidence_id": "ev-600114-backtest-20260616",
+      "source_type": "backtest",
+      "source_path": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json",
+      "summary": "MA20 破位回测",
+      "chart_hint": "matrix",
+      "status": "AVAILABLE"
+    },
+    {
+      "evidence_id": "ev-600114-data-date-divergence-20260616",
+      "source_type": "data_date_divergence",
+      "source_path": "chart_data.json",
+      "summary": "snap(20260615)!=kline(20260616)",
+      "detail": "s=20260615 k=20260616",
+      "status": "BLOCKING"
+    }
+  ],
+  "evidence_ids": [
+    "ev-600114-kline-cache-20260616",
+    "ev-600114-feature-snapshot-20260616",
+    "ev-600114-rule-health-20260616",
+    "ev-600114-status-gate-20260616",
+    "ev-600114-position-public-view-20260616",
+    "ev-600114-backtest-20260616",
+    "ev-600114-data-date-divergence-20260616"
+  ],
+  "schema_version": "keystock.product_api_bundle.v3",
+  "bundle_version": "2026-06-16.v3",
+  "run_id": "bundle-20260616153057-933e6c",
+  "generated_at": "2026-06-16T15:30:57.814880+00:00",
+  "producer_version": "product_api_bundle.py/3.0.1",
+  "min_frontend_version": "1.0.0"
+}
