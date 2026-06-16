@@ -1,29 +1,29 @@
 {
-  "flow": "F-GATE",
+  "flow": "F-FIX",
   "stage": "G4_self_check_candidate",
   "candidate_only": true,
   "no_g5_or_g6_claim": true,
-  "scope": "temporary_analysis_front_response_renderer",
+  "scope": "temporary_analysis_front_response_renderer_evidence_repair",
   "checks": [
     {
       "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m py_compile scripts/render_temp_analysis_response.py tests/test_render_temp_analysis_response.py",
-      "returncode": 1,
+      "returncode": 0,
       "stdout_tail": "",
-      "stderr_tail": "  File \"scripts/render_temp_analysis_response.py\", line 181\n    return \"\n            ^\nSyntaxError: EOL while scanning string literal\n\n"
+      "stderr_tail": ""
     },
     {
       "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 -m unittest tests/test_render_temp_analysis_response.py",
-      "returncode": 1,
+      "returncode": 0,
       "stdout_tail": "",
-      "stderr_tail": "ework/Versions/3.9/lib/python3.9/runpy.py\", line 197, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py\", line 87, in _run_code\n    exec(code, run_globals)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/__main__.py\", line 18, in <module>\n    main(module=None)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 100, in __init__\n    self.parseArgs(argv)\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 147, in parseArgs\n    self.createTests()\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/main.py\", line 158, in createTests\n    self.test = self.testLoader.loadTestsFromNames(self.testNames,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 220, in loadTestsFromNames\n    suites = [self.loadTestsFromName(name, module) for name in names]\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 220, in <listcomp>\n    suites = [self.loadTestsFromName(name, module) for name in names]\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/loader.py\", line 154, in loadTestsFromName\n    module = __import__(module_name)\n  File \"/Users/ccrt/ccrt/tests/test_render_temp_analysis_response.py\", line 14, in <module>\n    from render_temp_analysis_response import render_response, load_json\n  File \"/Users/ccrt/ccrt/scripts/render_temp_analysis_response.py\", line 181\n    return \"\n            ^\nSyntaxError: EOL while scanning string literal\n"
+      "stderr_tail": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.026s\n\nOK\n"
     },
     {
-      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/render_temp_analysis_response.py --brief 临时分析/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json --question 现在能不能追 --output 临时分析/sidecar/temporary_analysis_rendered_600114_20260616_demo.txt",
-      "returncode": 1,
-      "stdout_tail": "",
-      "stderr_tail": "  File \"/Users/ccrt/ccrt/scripts/render_temp_analysis_response.py\", line 181\n    return \"\n            ^\nSyntaxError: EOL while scanning string literal\n"
+      "cmd": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3 scripts/render_temp_analysis_response.py --brief 临时分析/sidecar/temporary_analysis_trial_brief_600114_20260616_demo.json --question 现在能不能追 --output /Users/ccrt/ccrt/临时分析/sidecar/temporary_analysis_rendered_600114_20260616_demo.txt",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"status\": \"PASS\",\n  \"output\": \"/Users/ccrt/ccrt/临时分析/sidecar/temporary_analysis_rendered_600114_20260616_demo.txt\",\n  \"gate_overall\": \"PASS\"\n}\n",
+      "stderr_tail": ""
     }
   ],
-  "final_status_candidate": "BLOCK",
-  "generated_at": "2026-06-16T08:36:16+08:00"
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T08:41:40+08:00"
 }

@@ -1,11 +1,14 @@
 {
-  "flow": "F-GATE",
+  "flow": "F-FIX",
   "stage": "G6_release_candidate",
-  "scope": "temporary_analysis_front_response_renderer",
-  "g4_candidate": "PASS",
-  "g5_candidate": "PASS",
-  "archive_required": true,
-  "github_push_required": true,
-  "commit_before": "0c8bd7cad524e7d253747571091379fe0acde920",
-  "generated_at": "2026-06-16T08:36:17+08:00"
+  "scope": "temporary_analysis_front_response_renderer_evidence_repair",
+  "g4_final_status_candidate": "PASS",
+  "g5_overall": "PASS",
+  "archive_completed": true,
+  "github_sync_completed": false,
+  "push_completed": false,
+  "commit_before": "1bdba2f9409133ec92665e8aa787fbac17be5354",
+  "commit_after": "",
+  "pushed_commit": "",
+  "generated_at": "2026-06-16T08:41:40+08:00"
 }

@@ -1,15 +1,17 @@
 {
-  "flow": "F-GATE",
+  "flow": "F-FIX",
   "stage": "G5_review_candidate",
   "candidate_only": true,
   "no_g6_claim": true,
-  "scope": "temporary_analysis_front_response_renderer",
+  "scope": "temporary_analysis_front_response_renderer_evidence_repair",
   "overall": "PASS",
   "findings": [
     {
       "result": "PASS",
       "check": "render_policy",
-      "detail": "front output is concise, human-readable, question-aware, and backed by gated brief"
+      "detail": "renderer output is human-readable, question-aware, concise, and backed by gated TemporaryAnalysisBrief"
     }
-  ]
+  ],
+  "source_g4_final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T08:41:40+08:00"
 }
