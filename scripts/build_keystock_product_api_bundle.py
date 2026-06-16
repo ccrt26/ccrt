@@ -1,101 +1,110 @@
 #!/usr/bin/env python3
 """
-构建产品 API 包：从运行产物聚合为前端消费 API 包。
-
-用法：
-  python3 scripts/build_keystock_product_api_bundle.py \\
-    --base-dir "运行产物/重点股票产品化后评估" \\
-    --out-dir "运行产物/重点股票产品化后评估/product_api" \\
-    --docs-data-dir "docs/keystock-dashboard/data"
+构建产品 API 包。所有证据字段从真实校验结果生成，不得硬编码 PASS/COMPLETE。
 """
 
 import argparse
 import json
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import subprocess
+from datetime import datetime, timezone
 
-from 代码文件.重点股票.product_eval.product_api_bundle import ProductApiBundleService  # noqa: E402
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from 代码文件.重点股票.product_eval.product_api_bundle import ProductApiBundleService
+
+
+def run_checker(docs_dir: str, data_dir: str) -> dict:
+    """运行 productization checker 获取验证结果。"""
+    checker = os.path.join(os.path.dirname(__file__), "check_keystock_dashboard_productization.py")
+    if not os.path.exists(checker):
+        return {"overall": "SKIP", "findings": [], "reason": "checker script not found"}
+    result = subprocess.run(
+        [sys.executable, checker, "--docs-dir", docs_dir, "--data-dir", data_dir],
+        capture_output=True, text=True, cwd=os.path.join(os.path.dirname(__file__), ".."),
+    )
+    try:
+        return json.loads(result.stdout.strip())
+    except Exception:
+        return {"overall": "ERROR", "findings": [result.stdout[-500:]], "reason": "checker output parse failed"}
 
 
 def main():
     parser = argparse.ArgumentParser(description="构建产品 API 包")
-    parser.add_argument("--base-dir", required=True, help="运行产物根目录")
-    parser.add_argument("--out-dir", required=True, help="API 包输出目录")
-    parser.add_argument("--docs-data-dir", required=True, help="前端数据目录")
-    parser.add_argument("--evidence-out", default=None, help="G4 证据输出路径")
-    parser.add_argument("--review-candidate-out", default=None, help="G5 审计候选输出路径")
-    parser.add_argument("--archive-out", default=None, help="G6 归档输出路径")
+    parser.add_argument("--base-dir", required=True)
+    parser.add_argument("--out-dir", required=True)
+    parser.add_argument("--docs-data-dir", required=True)
+    parser.add_argument("--evidence-out", default=None)
+    parser.add_argument("--review-candidate-out", default=None)
+    parser.add_argument("--archive-out", default=None)
     args = parser.parse_args()
 
     svc = ProductApiBundleService()
     summary = svc.build_all(args.base_dir, args.out_dir, args.docs_data_dir)
 
-    print(f"[API] 产品 API 包构建完成")
-    print(f"[API]   dashboard_overall={summary.get('dashboard_overall')}")
-    print(f"[API]   stocks_count={summary.get('stocks_count')}")
-    print(f"[API]   files: {', '.join(summary.get('files', []))}")
+    print(f"[API] products: {summary.get('dashboard_overall')}, stocks={summary.get('stocks_count')}")
+    print(f"[API] data_truth={summary.get('data_truth_status')}")
 
-    now = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
+    now = datetime.now(timezone.utc).isoformat()
+
+    # 运行 checker
+    checker_result = run_checker(
+        os.path.dirname(args.docs_data_dir),
+        args.docs_data_dir,
+    )
+
+    has_block = any(f.get("severity") == "BLOCK" for f in checker_result.get("findings", []))
 
     if args.evidence_out:
-        evidence = {
-            "phase": "Phase 2/3 productization",
+        ev = {
+            "phase": "Phase 2/3 productization repair",
             "stage": "G4 self-check candidate",
             "generated_at": now,
-            "changed_files": [],
-            "test_commands": ["pytest", "py_compile", "json.tool"],
-            "test_results": "PASS",
-            "generated_product_api_files": [f"{args.out_dir}/{f}" for f in summary.get("files", [])],
-            "dashboard_entry": "docs/keystock-dashboard/index.html",
-            "forbidden_scope_diff_empty": True,
-            "known_warns": ["jsonschema 未安装，关键校验已通过"],
-            "block_status": False,
+            "checker_result": checker_result if checker_result.get("overall") != "SKIP" else "NOT_RUN",
+            "test_results": "verification required: run pytest separately",
+            "fake_data_hits": checker_result.get("fake_data_hits", []),
+            "hardcoded_decision_hits": checker_result.get("hardcoded_decision_hits", []),
+            "block_status": has_block,
+            "supersedes": "phase2_3_productization_g4_self_check_candidate.json",
         }
         os.makedirs(os.path.dirname(args.evidence_out), exist_ok=True)
         with open(args.evidence_out, "w", encoding="utf-8") as f:
-            json.dump(evidence, f, ensure_ascii=False, indent=2)
-        print(f"[API] G4 自检候选已写入: {args.evidence_out}")
+            json.dump(ev, f, ensure_ascii=False, indent=2)
+        print(f"[API] G4: {args.evidence_out}")
 
     if args.review_candidate_out:
         review = {
-            "phase": "Phase 2/3 productization",
+            "phase": "Phase 2/3 productization repair",
             "stage": "G5 review candidate",
             "generated_at": now,
-            "step8_goals_met": True,
-            "ui_design_adhered": True,
-            "production_entry_not_modified": True,
-            "formal_rule_weights_unchanged": True,
-            "all_frontend_data_from_api_bundle": True,
-            "dry_run_reset_supported": True,
-            "warns": ["jsonschema 未安装"],
-            "blocks": [],
+            "checker_result": checker_result.get("overall", "SKIP"),
+            "data_truth_status": summary.get("data_truth_status"),
+            "blocks": [f for f in checker_result.get("findings", []) if f.get("severity") == "BLOCK"],
+            "warns": [f for f in checker_result.get("findings", []) if f.get("severity") != "BLOCK"],
+            "supersedes": "phase2_3_productization_g5_review_candidate.json",
         }
         os.makedirs(os.path.dirname(args.review_candidate_out), exist_ok=True)
         with open(args.review_candidate_out, "w", encoding="utf-8") as f:
             json.dump(review, f, ensure_ascii=False, indent=2)
-        print(f"[API] G5 审计候选已写入: {args.review_candidate_out}")
+        print(f"[API] G5: {args.review_candidate_out}")
 
     if args.archive_out:
+        archive_status = "BLOCK" if has_block else "COMPLETE"
         archive = {
-            "phase": "Phase 2/3 productization",
+            "phase": "Phase 2/3 productization repair",
             "stage": "G6 archive",
             "generated_at": now,
-            "archive_status": "COMPLETE",
-            "user_visible_status": "COMPLETE",
-            "branch": "codex/phase2-3-productization-20260616",
-            "dashboard_url": "http://127.0.0.1:8787/docs/keystock-dashboard/index.html",
-            "product_api_files": [f"{args.out_dir}/{f}" for f in summary.get("files", [])],
-            "evidence_files": [args.evidence_out, args.review_candidate_out] if args.evidence_out and args.review_candidate_out else [],
-            "test_summary": "66 Phase1 + new Phase2/3 tests",
-            "block_status": False,
-            "warn_status": ["jsonschema 未安装"],
-            "next_steps": ["用户确认后进入第 8 步后续迭代"],
+            "archive_status": archive_status,
+            "user_visible_status": "BLOCK" if has_block else "COMPLETE",
+            "checker_overall": checker_result.get("overall", "SKIP"),
+            "data_truth_status": summary.get("data_truth_status"),
+            "supersedes": "phase2_3_productization_g6_archive.json",
+            "repo_status": "verify git diff before finalizing",
         }
         os.makedirs(os.path.dirname(args.archive_out), exist_ok=True)
         with open(args.archive_out, "w", encoding="utf-8") as f:
             json.dump(archive, f, ensure_ascii=False, indent=2)
-        print(f"[API] G6 归档候选已写入: {args.archive_out}")
+        print(f"[API] G6 ({archive_status}): {args.archive_out}")
 
 
 if __name__ == "__main__":
