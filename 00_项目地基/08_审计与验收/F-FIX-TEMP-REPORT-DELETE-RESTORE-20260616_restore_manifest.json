@@ -1,0 +1,14 @@
+{
+  "flow": "F-FIX",
+  "stage": "G3_restore_manifest",
+  "restored": true,
+  "counts": {
+    "deleted_total": 0,
+    "pdf_deleted": 0,
+    "restored_count": 0,
+    "pdf_restored": 0
+  },
+  "deleted_paths": [],
+  "pdf_deleted_paths": [],
+  "generated_at": "2026-06-16T05:21:37.169494+00:00"
+}

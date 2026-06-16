@@ -1,0 +1,13 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "task_id": "F-FIX-TEMP-REPORT-DELETE-RESTORE-20260616",
+  "scope": "restore_pending_temp_report_deletions",
+  "restored_count": 0,
+  "pdf_restored": 0,
+  "pdf_not_deleted_per_redline": true,
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T05:21:37.170130+00:00"
+}
