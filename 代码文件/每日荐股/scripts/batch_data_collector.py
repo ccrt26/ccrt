@@ -4,7 +4,13 @@
 Replaces batch_data_collector.ps1. macOS compatible.
 Input: dynamic_pool.json → Output: data_full.json (engine-compatible format)
 Code level: L1
-v2.0: 数据本地优先 — CachedDataSource集成, Tushare本地→PS缓存→管线快照→API→过期兜底
+v2.1: 数据本地优先 + 资金流目标日新鲜度门禁
+
+- CachedDataSource 在构造时传入 target_date
+- collect_fund_flows 只接受 target_date fresh 数据，stale 必须走 THS fallback
+- THS fallback 字段标准化：Date→trade_date, MainNetInflow→net_mf_amount
+- _Meta.cache_stats 增加 stale_count/fallback_hit/fallback_miss
+- _Meta 增加 fundflow_fresh_count/fundflow_stale_count/fundflow_missing_count
 """
 import argparse
 import json
@@ -24,8 +30,8 @@ ROOT = detect_root()
 DATA_DIR = os.path.join(ROOT, "代码文件", "数据")
 SCRIPTS_DIR = os.path.join(ROOT, "代码文件", "每日荐股", "scripts")
 
-# 全局缓存实例
-_cache = CachedDataSource()
+# 全局缓存实例（在 main 中传入 target_date 后重建）
+_cache = None
 
 
 def load_json(path):
@@ -37,6 +43,11 @@ def save_json(path, data):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def norm_date(value):
+    """标准化日期：YYYY-MM-DD / YYYYMMDD → YYYYMMDD"""
+    return str(value or "").replace("-", "").replace(" ", "").replace("/", "")[:8]
 
 
 def collect_quotes(codes):
@@ -62,7 +73,6 @@ def collect_quotes(codes):
                 vals = parts[1].strip('";').split("~")
                 code = key[4:]  # v_sh600114 → 600114
                 if len(vals) >= 35:
-                    # 腾讯时间戳: vals[30] = "20260529161408" → trade_date + trade_time
                     ts = vals[30] if len(vals) > 30 and vals[30].isdigit() and len(vals[30]) == 14 else ""
                     quote_time = f"{ts[:4]}-{ts[4:6]}-{ts[6:8]} {ts[8:10]}:{ts[10:12]}:{ts[12:14]}" if ts else ""
                     result[code] = {
@@ -161,25 +171,104 @@ def collect_financials(codes):
     return result
 
 
-def collect_fund_flows(codes):
-    """资金流向 — Tushare本地优先 → THS降级"""
+def _normalize_ths_fundflow(ths_data, target_date_compact):
+    """将 THS 个股资金流字段标准化为 Tushare moneyflow 兼容格式。
+
+    原始 ak.stock_fund_flow_individual() 返回示例（字段名可能变动）：
+    [
+        {
+            "Date": "2026-06-16",
+            "MainNetInflow": 123456.78,
+            "SuperLargeNetInflow": ...,
+            "LargeNetInflow": ...,
+            "MediumNetInflow": ...,
+            "SmallNetInflow": ...,
+        }
+    ]
+
+    标准化后字段：
+        trade_date, net_mf_amount, buy_elg_amount, sell_elg_amount,
+        buy_lg_amount, sell_lg_amount, buy_md_amount, sell_md_amount,
+        buy_sm_amount, sell_sm_amount
+
+    单位：THS 返回元，统一转为万元。
+    """
+    if not isinstance(ths_data, list) or len(ths_data) == 0:
+        return []
+    result = []
+    for row in ths_data:
+        if not isinstance(row, dict):
+            continue
+        rd = norm_date(row.get("Date") or row.get("trade_date") or row.get("date", ""))
+        if rd != target_date_compact:
+            continue
+        def _to_wan(v):
+            """元→万元"""
+            try:
+                return round(float(v or 0) / 10000, 2)
+            except (ValueError, TypeError):
+                return 0.0
+        net = _to_wan(row.get("MainNetInflow") or row.get("net_mf_amount", 0))
+        # 拆解大单/中单/小单（有则用，无则0）
+        sl = _to_wan(row.get("SuperLargeNetInflow") or row.get("buy_elg_amount", 0))
+        lg = _to_wan(row.get("LargeNetInflow") or row.get("buy_lg_amount", 0))
+        md = _to_wan(row.get("MediumNetInflow") or row.get("buy_md_amount", 0))
+        sm = _to_wan(row.get("SmallNetInflow") or row.get("buy_sm_amount", 0))
+
+        result.append({
+            "trade_date": rd,
+            "net_mf_amount": net,
+            "buy_elg_amount": sl,
+            "sell_elg_amount": 0,  # THS 一般不区分买卖拆解
+            "buy_lg_amount": lg,
+            "sell_lg_amount": 0,
+            "buy_md_amount": md,
+            "sell_md_amount": 0,
+            "buy_sm_amount": sm,
+            "sell_sm_amount": 0,
+            "source": "ths-stock_fund_flow",
+            "raw_unit": "万元",
+        })
+    return result
+
+
+def collect_fund_flows(codes, target_date=""):
+    """资金流向 — CachedDataSource 优先 → THS降级
+
+    参数 target_date: YYYYMMDD，用于校验数据新鲜度。
+    stale 的本地数据不会阻断 THS fallback。
+    """
     print(f"\n[4/6] 资金流向 — {len(codes)} stocks...")
     result = {}
     api_codes = []
+    fresh_count = 0
+    stale_count = 0
+    missing_count = 0
+
     for code in codes:
         cached = _cache.get_moneyflow(code)
         if cached["data"] and cached["freshness"] == "fresh":
             result[code] = cached["data"]
-        else:
+            fresh_count += 1
+        elif cached["data"] and cached["freshness"] == "stale":
+            # stale — 记录并走 fallback
+            stale_count += 1
             api_codes.append(code)
-    print(f"  Tushare本地命中: {len(result)}/{len(codes)}")
+            _cache.stats["fallback_miss"] += 1  # 初始记为 miss，fallback 成功再转 hit
+        else:
+            missing_count += 1
+            api_codes.append(code)
+    print(f"  Fresh: {fresh_count}, Stale: {stale_count}, Missing: {missing_count}")
+    print(f"  Tushare本地+缓存命中: {fresh_count}/{len(codes)}")
     if not api_codes:
-        return result
-    print(f"  需API获取: {len(api_codes)} stocks...")
+        return result, fresh_count, stale_count, missing_count
+    print(f"  需fallback: {len(api_codes)} stocks...")
+
     ths_script = os.path.join(SCRIPTS_DIR, "stock_data_fetcher_ths.py")
     if not os.path.exists(ths_script):
         print("  THS fetcher not found, skipping remaining fund flows")
-        return result
+        return result, fresh_count, stale_count, missing_count
+
     for code in api_codes:
         try:
             import subprocess
@@ -188,12 +277,20 @@ def collect_fund_flows(codes):
                 capture_output=True, text=True, timeout=30
             )
             if proc.returncode == 0 and proc.stdout.strip():
-                result[code] = json.loads(proc.stdout.strip().split("\n")[-1])
-        except Exception:
-            pass
+                # 将 THS 输出解析并标准化
+                raw_data = json.loads(proc.stdout.strip().split("\n")[-1])
+                normalized = _normalize_ths_fundflow(raw_data, target_date) if target_date else raw_data
+                if normalized:
+                    result[code] = normalized
+                    _cache.stats["fallback_hit"] = _cache.stats.get("fallback_hit", 0) + 1
+                    _cache.stats["fallback_miss"] = max(0, _cache.stats.get("fallback_miss", 0) - 1)
+                else:
+                    print(f"  {code}: THS 返回无 target_date({target_date}) 数据")
+        except Exception as e:
+            print(f"  {code}: THS fallback failed ({e})")
         time.sleep(0.35)
-    print(f"  成功: {len(result)}/{len(codes)}")
-    return result
+    print(f"  Fallback成功: {len(result) - fresh_count}/{(fresh_count + stale_count + missing_count) - fresh_count}")
+    return result, fresh_count, stale_count, missing_count
 
 
 def collect_margins(codes):
@@ -234,6 +331,8 @@ def collect_sectors():
 
 
 def main():
+    global _cache
+
     parser = argparse.ArgumentParser(description="Batch data collector")
     parser.add_argument("--pool", default="", help="Dynamic pool JSON path")
     parser.add_argument("--output", default="", help="Output data_full.json path")
@@ -244,7 +343,7 @@ def main():
     # Resolve --date: CLI arg > env DAILY_TARGET_DATE > empty (K-line detection later)
     date_arg = args.date or os.environ.get("DAILY_TARGET_DATE", "")
     date_compact = ""
-    date_source = "kline_detection"  # tracks which source was effectively used
+    date_source = "kline_detection"
     if date_arg:
         date_compact = date_arg.replace("-", "")
         if len(date_compact) == 8 and date_compact.isdigit():
@@ -258,7 +357,9 @@ def main():
                 sys.exit(1)
             print(f"WARNING: DAILY_TARGET_DATE={date_arg} not YYYYMMDD/YYYY-MM-DD, ignoring")
             date_compact = ""
-            # date_source stays "kline_detection" — invalid env was ignored
+
+    # 创建带 target_date 的 CachedDataSource 实例
+    _cache = CachedDataSource(target_date=date_compact)
 
     pool_file = args.pool or os.path.join(DATA_DIR, "dynamic_pool.json")
     output_file = args.output or os.path.join(DATA_DIR, "data_full.json")
@@ -284,7 +385,7 @@ def main():
 
     # Optional data (non-blocking)
     financials = collect_financials(codes)
-    fund_flows = collect_fund_flows(codes)
+    fund_flows, ff_fresh, ff_stale, ff_missing = collect_fund_flows(codes, target_date=date_compact)
     margins = collect_margins(codes)
     sectors = collect_sectors()
 
@@ -339,6 +440,9 @@ def main():
             "financial_source": "tushare-local+ths",
             "fundflow_source": "tushare-local+ths",
             "cache_stats": _cache.stats,
+            "fundflow_fresh_count": ff_fresh,
+            "fundflow_stale_count": ff_stale,
+            "fundflow_missing_count": ff_missing,
             "collector": "batch_data_collector.py",
             "categories_collected": ["quotes", "kline", "financials", "fundflow", "margins", "sectors"],
             "runtime_platform": "macOS" if sys.platform == "darwin" else sys.platform,

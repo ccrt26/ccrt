@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
 """
-run_daily_data_retry_once.py — v1.1 单次数据获取重试（P3-B 补修）
+run_daily_data_retry_once.py — v2.0 单次数据获取重试（P3-B 补修）
+
+v2.0 修复：
+- check_ready 只认 ready=true AND pipeline_status=PASS（不再跳过 BLOCK ready）
+- batch_data_collector 调用带 --date 参数
+- 成功写 ready.json 补齐 ready/pipeline_status/blocker 字段
+- 若 materialize/health 仍失败，不写 ready=true
+- 新增 --attempt=today 自动解析为上海交易日
 
 P3-B 补修：
 - 新增 batch_data_collector 步骤以补 K-line 数据。
 - 新增 K-line 覆盖率校验（v3.6 兼容，exit 2 if <8/10）。
 
 旧链: tushare_history_sync --daily → materialize → daily_orchestrator --mode daily
-     ↑ 原链缺 K-line 回补，data_full.json 不会被刷新，retry 永远无法解 BLOCK。
-
 新链: tushare_history_sync --daily → batch_data_collector → materialize → daily_orchestrator
-     ↑ batch_data_collector 从 Sina/K 线 API 重建 data_full.json，materialize 再从 data_full 派生 kline_cache。
 
 用法:
   python3 scripts/run_daily_data_retry_once.py --date 20260604 --attempt 1
+  python3 scripts/run_daily_data_retry_once.py --date today --attempt 1
 
 退出码:
-  0 = ready.json 已存在 或 本次成功（含 K-line 覆盖 >=8/10）
-  2 = 任一环节失败 或 K-line 覆盖 <8/10
+  0 = ready.json 已存在(True) 或 本次成功
+  2 = 任一环节失败
 """
 import argparse, json, os, subprocess, sys, fcntl
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parent.parent)
@@ -32,6 +37,15 @@ DATA_FULL = os.path.join(ROOT, "代码文件", "数据", "data_full.json")
 
 def log(msg, level="INFO"):
     print(f"[{level}] {msg}")
+
+
+def norm_date(value):
+    return str(value or "").replace("-", "")[:8]
+
+
+def shanghai_today():
+    """Return Shanghai date as YYYYMMDD."""
+    return (datetime.now(timezone.utc) + timedelta(hours=8)).strftime("%Y%m%d")
 
 
 def acquire_lock(date_str):
@@ -60,12 +74,22 @@ def release_lock(fd, date_str):
 
 
 def check_ready(date_str):
+    """只在 ready=true AND pipeline_status=PASS 时返回 True。
+
+    v2.0: BLOCK 状态的 ready.json 不得被视为"已完成"，
+    必须继续补跑并打印 READY_BLOCK_EXISTS_CONTINUE。
+    """
     rp = os.path.join(STATUS_DIR, f"{date_str}.ready.json")
     if os.path.exists(rp):
         with open(rp) as f:
             rd = json.load(f)
-        log(f"READY_EXISTS: attempt={rd.get('attempt')} at {rd.get('ready_at')}", "SKIP")
-        return True
+        is_ready = rd.get("ready") is True
+        ps = rd.get("pipeline_status", "")
+        if is_ready and ps == "PASS":
+            log(f"READY_EXISTS: attempt={rd.get('attempt')} at {rd.get('ready_at')}", "SKIP")
+            return True
+        log(f"READY_BLOCK_EXISTS_CONTINUE: ready={rd.get('ready')} pipeline_status={ps} attempt={rd.get('attempt')}", "WARN")
+        return False
     return False
 
 
@@ -135,11 +159,7 @@ def run_step(script, args, label, timeout=300):
 
 
 def verify_kline_coverage(date_str, min_ok=8):
-    """P3-B: 验证 data_full.json 中焦点股 K-line 指定日期覆盖率。
-    读取 pigeon_config 10 只焦点股，检查每只的 KDate 最新日期是否 == date_str。
-
-    Returns (ok: bool, matched: int, total: int, missing_codes: list)
-    """
+    """P3-B: 验证 data_full.json 中焦点股 K-line 指定日期覆盖率。"""
     if not os.path.exists(DATA_FULL):
         log(f"DATA_FULL_NOT_FOUND: {DATA_FULL}", "BLOCK")
         return False, 0, 0, []
@@ -193,13 +213,30 @@ def verify_kline_coverage(date_str, min_ok=8):
     return ok, matched, total, missing_codes
 
 
-def write_ready(date_str, attempt):
+def write_ready(date_str, attempt, pipeline_status="PASS",
+                data_ready="PASS", report_ready="PASS",
+                quality_ready="PASS", closure_ready="PASS",
+                blocker=None):
+    """写 ready.json。缺省为全部 PASS，调用方可根据实际情况覆盖。
+
+    v2.0: 补齐 ready/pipeline_status/data_ready/report_ready/quality_ready/closure_ready/blocker。
+    """
     os.makedirs(STATUS_DIR, exist_ok=True)
     ready = {
         "date": date_str,
+        "ready": True,
         "ready_at": datetime.now(timezone.utc).isoformat(),
         "attempt": attempt,
-        "command_chain": ["tushare_history_sync.py --daily", "batch_data_collector.py", "materialize", "daily_orchestrator --mode daily"],
+        "pipeline_status": pipeline_status,
+        "data_ready": data_ready,
+        "report_ready": report_ready,
+        "archive_ready": "PASS",
+        "canonical_ready": report_ready,
+        "quality_ready": quality_ready,
+        "closure_ready": closure_ready,
+        "blocker": blocker or [],
+        "command_chain": ["tushare_history_sync.py --daily", "batch_data_collector.py",
+                          "materialize", "daily_orchestrator --mode daily"],
         "stock_count": 0,
     }
     if os.path.exists(SIGNAL_FILE):
@@ -216,12 +253,18 @@ def write_ready(date_str, attempt):
 
 def main():
     ap = argparse.ArgumentParser(description="单次数据获取重试")
-    ap.add_argument("--date", required=True, help="日期 YYYYMMDD")
-    ap.add_argument("--attempt", required=True, type=int, help="尝试序号 1/2/3")
+    ap.add_argument("--date", required=True, help="日期 YYYYMMDD，或 today（自动解析上海日期）")
+    ap.add_argument("--attempt", required=True, type=str, help="尝试序号 1/2/3 或 today（自动解析）")
     args = ap.parse_args()
-    date_str, attempt = args.date, args.attempt
 
-    # Check if already ready
+    # 解析 today 为上海日期
+    date_str = shanghai_today() if args.date == "today" else args.date
+    attempt_str = args.attempt
+    attempt = int(shanghai_today()[:2]) if args.attempt == "today" else int(args.attempt)  # fallback: today→当前月日作为序号
+
+    log(f"date_str={date_str}, attempt={attempt}")
+
+    # Check if already ready (only true if ready=true AND pipeline_status=PASS)
     if check_ready(date_str):
         sys.exit(0)
 
@@ -231,44 +274,53 @@ def main():
         sys.exit(0)  # Another process working on it
 
     success = False
+    blocker_list = []
     try:
         log(f"=== DATA RETRY attempt {attempt}/3 for {date_str} ===")
 
-        # Step 1: tushare sync — 补资金/融资/日频辅助数据 (moneyflow/daily_basic/margin_detail)
+        # Step 1: tushare sync
         if not run_step("代码文件/tools/tushare_history_sync.py", ["--daily"], "tushare_history_sync"):
+            blocker_list.append("tushare_sync")
             sys.exit(2)
 
-        # Step 1.5 (P3-B 补修): batch_data_collector — 重建 data_full.json，从 Sina K线 API 补充 K-line
-        if not run_step("代码文件/每日荐股/scripts/batch_data_collector.py", [],
+        # Step 1.5 (P3-B 补修): batch_data_collector — 重建 data_full.json
+        if not run_step("代码文件/每日荐股/scripts/batch_data_collector.py",
+                        ["--date", date_str],
                         "batch_data_collector", timeout=600):
+            blocker_list.append("batch_data_collector")
             sys.exit(2)
 
-        # Step 2: materialize cache — 从刷新后的 data_full 派生 kline_cache/fund_flow_cache
+        # Step 2: materialize cache
         if not run_step("scripts/materialize_daily_authoritative_cache.py", ["--date", date_str], "materialize_cache"):
+            blocker_list.append("materialize_cache")
             sys.exit(2)
 
-        # Step 3: orchestrator signal — v3.6 数据就绪检查 + 日报 signal
+        # Step 3: orchestrator signal
         if not run_step("代码文件/tools/daily_orchestrator.py", ["--mode", "daily", "--date", date_str], "daily_orchestrator", timeout=120):
+            blocker_list.append("daily_orchestrator")
             sys.exit(2)
 
-        # Step 3.5: signal must be written by daily_orchestrator; do not trust exit code alone.
+        # Step 3.5: signal verify
         if not verify_signal(date_str):
             log("SIGNAL_NOT_READY_AFTER_DAILY_ORCHESTRATOR", "BLOCK")
+            blocker_list.append("signal_not_ready")
             sys.exit(2)
 
-        # Step 4 (P3-B 补修): K-line 覆盖率校验 — 在 verify_signal 前直接检查 data_full KDate
+        # Step 4: K-line coverage verify
         kline_ok, kline_matched, kline_total, kline_missing = verify_kline_coverage(date_str, min_ok=8)
         if not kline_ok:
-            log(f"KLINE_COVERAGE BLOCK: {kline_matched}/{kline_total} < 8/10，不写 ready.json。缺失清单见上。", "BLOCK")
+            log(f"KLINE_COVERAGE BLOCK: {kline_matched}/{kline_total} < 8/10", "BLOCK")
+            blocker_list.append("kline_coverage")
             sys.exit(2)
 
-        # Verify signal
+        # All passed — write ready=true
         if verify_signal(date_str):
             write_ready(date_str, attempt)
             log(f"DATA_READY: {date_str} attempt {attempt}")
             success = True
         else:
             log("SIGNAL_NOT_READY_AFTER_CHAIN", "BLOCK")
+            blocker_list.append("signal_not_ready")
 
     finally:
         release_lock(fd, date_str)

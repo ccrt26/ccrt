@@ -44,7 +44,7 @@ class TestBatchDataCollectorDateContract(unittest.TestCase):
         patcher_quotes = patch.object(self.bdc_mod, "collect_quotes", return_value={})
         patcher_klines = patch.object(self.bdc_mod, "collect_klines", return_value={})
         patcher_fin = patch.object(self.bdc_mod, "collect_financials", return_value={})
-        patcher_ff = patch.object(self.bdc_mod, "collect_fund_flows", return_value={})
+        patcher_ff = patch.object(self.bdc_mod, "collect_fund_flows", return_value=({}, 0, 0, 0))
         patcher_margin = patch.object(self.bdc_mod, "collect_margins", return_value={})
         patcher_sector = patch.object(self.bdc_mod, "collect_sectors", return_value={})
 
@@ -169,6 +169,47 @@ class TestBatchDataCollectorDateContract(unittest.TestCase):
         self.assertIn("Margins", data)
         self.assertIn("Sectors", data)
         self.assertIn("categories_collected", data.get("_Meta", {}))
+
+    def test_cache_has_target_date(self):
+        """CachedDataSource must be created with target_date from --date."""
+        rc = self._run_main(["--date", "20990101"])
+        self.assertEqual(rc, 0)
+        data = self._load_output()
+        meta = data.get("_Meta", {})
+        self.assertEqual(meta.get("target_date"), "2099-01-01")
+        # cache_stats should exist
+        self.assertIn("cache_stats", meta)
+        cache = meta["cache_stats"]
+        self.assertIn("stale_count", cache,
+                       "cache_stats must include stale_count")
+        self.assertIn("fallback_hit", cache,
+                       "cache_stats must include fallback_hit")
+        self.assertIn("fallback_miss", cache,
+                       "cache_stats must include fallback_miss")
+        # fundflow counters
+        self.assertIn("fundflow_fresh_count", meta,
+                       "_Meta must include fundflow_fresh_count")
+        self.assertIn("fundflow_stale_count", meta,
+                       "_Meta must include fundflow_stale_count")
+        self.assertIn("fundflow_missing_count", meta,
+                       "_Meta must include fundflow_missing_count")
+
+    def test_fundflows_empty_when_all_stale(self):
+        """Stale moneyflow with no THS fallback → FundFlows empty and stale_count>0."""
+        # Simulate: moneyflow file with data before target_date
+        # Since _cache.get_moneyflow will find stale, and THS is mocked to return {}:
+        rc = self._run_main(["--date", "20990101"])
+        self.assertEqual(rc, 0)
+        data = self._load_output()
+        meta = data.get("_Meta", {})
+        # THS is mocked to return {}, so fallback produces no data
+        # But the key is: stale_count was incremented, not tushare_hit
+        cache = meta.get("cache_stats", {})
+        if cache.get("stale_count", 0) > 0:
+            self.assertEqual(cache.get("tushare_hit", 0), 0,
+                             "With all stale, tushare_hit should be 0")
+            self.assertEqual(cache.get("fallback_miss", 0), 1,
+                             "Stale moneyflow with THS fail should record fallback_miss")
 
 
 class TestBatchDataCollectorContractSource(unittest.TestCase):

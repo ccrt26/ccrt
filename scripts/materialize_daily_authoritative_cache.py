@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
 """
-materialize_daily_authoritative_cache.py — v1.0
+materialize_daily_authoritative_cache.py — v2.0
 从 data_full.json 权威源派生补齐 kline_cache / fund_flow_cache。
 data_full.json 是单一权威源，缓存必须由它派生。
+
+v2.0: 支持多种资金流字段格式
+  - Tushare 原始字段: buy_elg_amount/sell_elg_amount/.../net_mf_amount
+  - 标准化字段: super_large_net/large_net/medium_net/small_net/main_force_net
+  - THS fallback 字段: net_mf_amount (从 batch_data_collector 标准化后)
+
+任何来源都必须先校验 row trade_date/date == --date。
+单位统一为万元；若源为元，须先除以 10000 并标注 source_trace。
+不允许全 0 伪通过。
 
 用法:
   python3 scripts/materialize_daily_authoritative_cache.py --date 20260604
@@ -41,6 +50,11 @@ def disp(v):
     return f"{v:+.0f}万"
 
 
+def norm_date(value):
+    """标准化日期：YYYY-MM-DD / YYYYMMDD → YYYYMMDD"""
+    return str(value or "").replace("-", "").replace(" ", "").replace("/", "")[:8]
+
+
 def load_pool():
     """Read dynamic stock pool from pigeon_config.json."""
     if not os.path.exists(PIGEON_CFG):
@@ -68,7 +82,6 @@ def check_kline_date(s, target_date, date_dash):
     if date_dash in kd:
         idx = kd.index(date_dash)
         return idx, (s.get("KClose") or [None] * len(kd))[idx]
-    # Also try compact YYYYMMDD format
     for idx, d in enumerate(kd):
         if d.replace("-", "") == target_date:
             return idx, (s.get("KClose") or [None] * len(kd))[idx]
@@ -119,10 +132,8 @@ def upsert_kline(code, name, date_str, s):
         with open(path, "r", encoding="utf-8") as f:
             existing = json.load(f)
 
-    # Remove any existing entry for the same date
     existing = [r for r in existing if r.get("date") != date_dash]
     existing.append(row)
-    # Keep sorted by date
     existing.sort(key=lambda r: r.get("date", ""))
 
     os.makedirs(KLINE_DIR, exist_ok=True)
@@ -133,35 +144,54 @@ def upsert_kline(code, name, date_str, s):
     return True
 
 
-def upsert_fund_flow(code, name, date_str, flows):
-    """Upsert fund_flow_cache/{code}.json from data_full FundFlows raw fields."""
-    frows = flows.get(code, [])
-    if not frows:
-        log(f"  FUND_FLOW_UPSERT SKIP: {code} {name} — FundFlows 无此股票", "WARN")
-        return False
+def _extract_fund_flow_row(flow_row, code, name, date_str):
+    """从一条资金流记录提取标准化字段。
 
-    target_row = None
-    for row in frows:
-        d = str(row.get("trade_date") or row.get("date", "")).replace("-", "")
-        if d == date_str:
-            target_row = row
-            break
+    支持三种格式：
+    1. Tushare 原始: buy_elg_amount, sell_elg_amount, ..., net_mf_amount
+    2. 标准化: super_large_net, large_net, medium_net, small_net, main_force_net
+    3. THS fallback 后标准化: net_mf_amount + source=ths-stock_fund_flow
 
-    if target_row is None:
-        log(f"  FUND_FLOW_UPSERT SKIP: {code} {name} — 缺{date_str}", "WARN")
-        return False
+    确保目标日匹配，单位统一为万元。
+    返回 (result_dict, source_trace) 或 (None, reason)。
+    """
+    row_date = norm_date(flow_row.get("trade_date") or flow_row.get("date", ""))
+    if row_date != date_str:
+        return None, f"trade_date={row_date} != target={date_str}"
 
-    # Map raw Tushare fields → standard 5-field format
-    sl = round(to_f(target_row.get("buy_elg_amount", 0)) - to_f(target_row.get("sell_elg_amount", 0)), 2)
-    ln = round(to_f(target_row.get("buy_lg_amount", 0)) - to_f(target_row.get("sell_lg_amount", 0)), 2)
-    mn = round(to_f(target_row.get("buy_md_amount", 0)) - to_f(target_row.get("sell_md_amount", 0)), 2)
-    sn = round(to_f(target_row.get("buy_sm_amount", 0)) - to_f(target_row.get("sell_sm_amount", 0)), 2)
-    mf = round(to_f(target_row.get("net_mf_amount", 0)), 2)
+    # 判断来源格式
+    source_tag = flow_row.get("source", "")
+    raw_unit = flow_row.get("raw_unit", "万元")
+
+    if source_tag == "ths-stock_fund_flow":
+        # THS 标准化格式（已在 batch_data_collector 转为万元）
+        mf = to_f(flow_row.get("net_mf_amount", 0))
+        sl = to_f(flow_row.get("buy_elg_amount", 0))
+        ln = to_f(flow_row.get("buy_lg_amount", 0))
+        mn = to_f(flow_row.get("buy_md_amount", 0))
+        sn = to_f(flow_row.get("buy_sm_amount", 0))
+        source_trace = "THS via batch_data_collector.标准化派生"
+    elif "super_large_net" in flow_row:
+        # 已标准化格式（直接从 fund_flow_cache 或其他标准化源）
+        mf = to_f(flow_row.get("main_force_net", 0))
+        sl = to_f(flow_row.get("super_large_net", 0))
+        ln = to_f(flow_row.get("large_net", 0))
+        mn = to_f(flow_row.get("medium_net", 0))
+        sn = to_f(flow_row.get("small_net", 0))
+        source_trace = flow_row.get("source_trace", "标准化字段.权威派生")
+    else:
+        # Tushare 原始格式
+        sl = round(to_f(flow_row.get("buy_elg_amount", 0)) - to_f(flow_row.get("sell_elg_amount", 0)), 2)
+        ln = round(to_f(flow_row.get("buy_lg_amount", 0)) - to_f(flow_row.get("sell_lg_amount", 0)), 2)
+        mn = round(to_f(flow_row.get("buy_md_amount", 0)) - to_f(flow_row.get("sell_md_amount", 0)), 2)
+        sn = round(to_f(flow_row.get("buy_sm_amount", 0)) - to_f(flow_row.get("sell_sm_amount", 0)), 2)
+        mf = round(to_f(flow_row.get("net_mf_amount", 0)), 2)
+        source_trace = "Tushare Pro moneyflow via data_full.json.权威派生"
 
     result = {
         "date": date_str,
-        "source": "data_full.json.FundFlows",
-        "raw_unit": "万元",
+        "source": source_tag if source_tag else "data_full.json.FundFlows",
+        "raw_unit": raw_unit,
         "display_unit": "万元",
         "super_large_net": sl,
         "large_net": ln,
@@ -173,9 +203,40 @@ def upsert_fund_flow(code, name, date_str, flows):
         "medium_display": disp(mn),
         "small_display": disp(sn),
         "main_force_display": disp(mf),
-        "source_trace": "Tushare Pro moneyflow via data_full.json.权威派生",
-        "collected_at": "",
+        "source_trace": source_trace,
+        "collected_at": flow_row.get("collected_at", ""),
     }
+    return result, source_trace
+
+
+def upsert_fund_flow(code, name, date_str, flows):
+    """Upsert fund_flow_cache/{code}.json from data_full FundFlows raw fields.
+
+    支持 Tushare 原始格式/标准化格式/THS fallback 格式。
+    先校验 row trade_date/date == --date。
+    单位统一为万元。
+    """
+    frows = flows.get(code, [])
+    if not frows:
+        log(f"  FUND_FLOW UPSERT SKIP: {code} {name} — FundFlows 无此股票", "WARN")
+        return False
+
+    # 找到目标日的记录
+    target_row = None
+    for row in frows:
+        d = norm_date(row.get("trade_date") or row.get("date", ""))
+        if d == date_str:
+            target_row = row
+            break
+
+    if target_row is None:
+        log(f"  FUND_FLOW UPSERT SKIP: {code} {name} — 缺{date_str}", "WARN")
+        return False
+
+    extracted, info = _extract_fund_flow_row(target_row, code, name, date_str)
+    if extracted is None:
+        log(f"  FUND_FLOW UPSERT SKIP: {code} {name} — {info}", "WARN")
+        return False
 
     path = os.path.join(FUND_FLOW_DIR, f"{code}.json")
     existing = []
@@ -183,16 +244,15 @@ def upsert_fund_flow(code, name, date_str, flows):
         with open(path, "r", encoding="utf-8") as f:
             existing = json.load(f)
 
-    # Remove any existing entry for the same date
     existing = [r for r in existing if str(r.get("date", "")) != date_str]
-    existing.append(result)
+    existing.append(extracted)
     existing.sort(key=lambda r: str(r.get("date", "")))
 
     os.makedirs(FUND_FLOW_DIR, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(existing, f, ensure_ascii=False, indent=2)
 
-    log(f"  FUND_FLOW_UPSERT PASS: {code} {name} — {date_str} main_force={result['main_force_display']} ({len(existing)}条)")
+    log(f"  FUND_FLOW UPSERT PASS: {code} {name} — {date_str} main_force={extracted['main_force_display']} ({len(existing)}条)")
     return True
 
 
@@ -215,7 +275,6 @@ def main():
 
     pool = load_pool()
     if not pool:
-        # Fall back to FundFlows keys
         pool = [(c, "") for c in dfull.get("FundFlows", {}).keys()]
         log(f"POOL: {len(pool)} stocks from FundFlows keys (pigeon_config unavailable)")
 
@@ -236,10 +295,10 @@ def main():
                 kline_fail += 1
         else:
             if existing_kline_has_date(code, date_str):
-                log(f"  KLINE_UPSERT PASS: {code} — already in kline_cache")
+                log(f"  KLINE UPSERT PASS: {code} — already in kline_cache")
                 kline_pass += 1
             else:
-                log(f"  KLINE_UPSERT SKIP: {code} — 不在 data_full.Stocks 中", "WARN")
+                log(f"  KLINE UPSERT SKIP: {code} — 不在 data_full.Stocks 中", "WARN")
                 kline_fail += 1
 
         if upsert_fund_flow(code, name or code, date_str, flows):

@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 """
-verify_daily_production_closure.py — 每日数据生产闭环总闸门
+verify_daily_production_closure.py — 每日数据生产闭环总闸门（v2.0）
 
-检查 manifest/ready/archive_manifest/DQ/inspect/哈希/日期 是否全部自洽。
+检查 manifest/ready/archive_manifest/DQ/inspect/哈希/日期/资金流缓存 是否全部自洽。
 只读，不修改任何文件。
+
+v2.0 新增硬闸：
+- ready.json 若存在且 ready is not True，且不是"当前 pipeline 内部预写状态"，最终闭包不得 PASS。
+- active target stocks 的 fund_flow_cache/{code}.json 必须含 --date。
+- data_full.FundFlows 对 active target stocks 必须含 --date。
+- 输出 evidence 增加 fund_flow_cache_match / data_full_fundflows_match / missing_fund_flow_codes。
+- 若缺目标日资金流，overall=BLOCK。
 """
 import argparse, hashlib, json, os, sys
 from datetime import datetime, timezone, timedelta
@@ -12,11 +19,99 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TZ = timezone(timedelta(hours=8))
 
+# 活跃日报目标路径
+DAILY_TARGETS = ROOT / "00_项目地基" / "02_权威注册表" / "daily_report_targets.json"
+FUND_FLOW_CACHE_DIR = ROOT / "代码文件" / "数据" / "fund_flow_cache"
+DATA_FULL_PATH = ROOT / "代码文件" / "数据" / "data_full.json"
+
+
 def sha256(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
+
 def norm_date(value):
     return str(value or "").replace("-", "")[:8]
+
+
+def load_active_target_codes():
+    """读取 daily_report_targets.json 中 enabled 的 active target codes."""
+    if not DAILY_TARGETS.exists():
+        return []
+    try:
+        with open(DAILY_TARGETS, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+        return [
+            str(t.get("code", ""))
+            for t in cfg.get("active_targets", [])
+            if t.get("enabled") and t.get("code")
+        ]
+    except Exception:
+        return []
+
+
+def check_fund_flow_cache_match(date_str, active_codes):
+    """检查 active target stocks 的 fund_flow_cache 是否含目标日记录。
+
+    Returns (match_count, total, missing_codes).
+    """
+    match = 0
+    missing = []
+    for code in active_codes:
+        path = FUND_FLOW_CACHE_DIR / f"{code}.json"
+        if not path.exists():
+            missing.append(code)
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                rows = json.load(f)
+        except Exception:
+            missing.append(code)
+            continue
+        has_target = False
+        for row in rows if isinstance(rows, list) else [rows]:
+            d = norm_date(row.get("date") or row.get("trade_date", ""))
+            if d == date_str:
+                has_target = True
+                break
+        if has_target:
+            match += 1
+        else:
+            missing.append(code)
+    return match, len(active_codes), missing
+
+
+def check_data_full_fundflows_match(date_str, active_codes):
+    """检查 data_full.FundFlows 对 active target stocks 是否含目标日记录。
+
+    Returns (match_count, total, missing_codes).
+    """
+    if not DATA_FULL_PATH.exists():
+        return 0, len(active_codes), active_codes[:]
+    try:
+        with open(DATA_FULL_PATH, "r", encoding="utf-8-sig") as f:
+            dfull = json.load(f)
+    except Exception:
+        return 0, len(active_codes), active_codes[:]
+    flows = dfull.get("FundFlows", {})
+    match = 0
+    missing = []
+    for code in active_codes:
+        rows = flows.get(code, [])
+        if not rows:
+            missing.append(code)
+            continue
+        has_target = False
+        for row in rows if isinstance(rows, list) else [rows]:
+            d = norm_date(row.get("trade_date") or row.get("date", ""))
+            if d == date_str:
+                has_target = True
+                break
+        if has_target:
+            match += 1
+        else:
+            missing.append(code)
+    return match, len(active_codes), missing
+
 
 def main():
     ap = argparse.ArgumentParser(description="每日数据生产闭环总闸门")
@@ -28,7 +123,7 @@ def main():
     findings = []
     evidence = {}
 
-    # 1. Manifest check (optional — may run inside pipeline before manifest written)
+    # 1. Manifest check
     mpath = ROOT / "logs" / "daily_production" / f"{ds}_manifest.json"
     evidence["manifest_path"] = str(mpath)
     if mpath.exists():
@@ -37,9 +132,8 @@ def main():
         evidence["manifest_status_split"] = m.get("status_split", {})
         if m.get("overall") != "PASS":
             evidence["manifest_note"] = "pre-existing manifest from prior run (this run still in progress)"
-            # Don't BLOCK on manifest — this runs inside the pipeline before manifest write
 
-    # 2. Ready check (optional — may run inside pipeline before ready written)
+    # 2. Ready check — v2.0 hard gate: ready is not True → BLOCK
     rpath = ROOT / "logs" / "daily_data_retry" / "status" / f"{ds}.ready.json"
     evidence["ready_path"] = str(rpath)
     if rpath.exists():
@@ -47,7 +141,11 @@ def main():
         evidence["ready_ready"] = r.get("ready")
         evidence["ready_pipeline_status"] = r.get("pipeline_status")
         if r.get("ready") is not True:
-            evidence["ready_note"] = "pre-existing ready from prior run (this run still in progress)"
+            # 如果 manifest 也不存在（该 run 还在进行中），可能是预写状态
+            if mpath.exists() and m.get("overall") == "PASS":
+                evidence["ready_note"] = "pre-existing ready from prior run (this run still in progress)"
+            else:
+                findings.append(f"ready.json ready={r.get('ready')} pipeline_status={r.get('pipeline_status')} — 未就绪")
 
     # 3. Archive manifest check
     apath = ROOT / "历史数据" / "manifest" / f"{ds}_archive_manifest.json"
@@ -136,8 +234,37 @@ def main():
             if "NaN" in txt or "Infinity" in txt or "-Infinity" in txt:
                 findings.append(f"NaN/Infinity found in {rel}")
 
-    # 9. Overall
-    overall = "PASS" if not findings else "BLOCK" if any("expected" in f or "missing" in f or "blocked" in f or "NaN" in f or "hash mismatch" in f for f in findings) else "WARN"
+    # 9 (NEW). Fund flow cache gate for active target stocks
+    active_codes = load_active_target_codes()
+    evidence["active_target_codes"] = active_codes
+    if active_codes:
+        ff_match, ff_total, ff_missing = check_fund_flow_cache_match(ds, active_codes)
+        evidence["fund_flow_cache_match"] = f"{ff_match}/{ff_total}"
+        evidence["missing_fund_flow_codes"] = ff_missing
+        if ff_missing:
+            findings.append(f"fund_flow_cache 缺目标日({ds}): {','.join(ff_missing)}")
+
+        df_match, df_total, df_ff_missing = check_data_full_fundflows_match(ds, active_codes)
+        evidence["data_full_fundflows_match"] = f"{df_match}/{df_total}"
+        if df_ff_missing:
+            if df_ff_missing != ff_missing:
+                # 只在 data_full 独特缺失时追加
+                extra_missing = [c for c in df_ff_missing if c not in ff_missing]
+                if extra_missing:
+                    findings.append(f"data_full.FundFlows 缺目标日({ds}): {','.join(extra_missing)}")
+    else:
+        evidence["fund_flow_cache_match"] = "N/A (no active targets)"
+        evidence["data_full_fundflows_match"] = "N/A (no active targets)"
+
+    # 10. Overall — v2.0: fund_flow_cache 缺失导致 BLOCK
+    overall = "PASS" if not findings else (
+        "BLOCK" if any(
+            "expected" in f or "missing" in f or "blocked" in f or "NaN" in f
+            or "hash mismatch" in f or "fund_flow_cache" in f or "ready.json" in f
+            or "FundFlows" in f or "未就绪" in f
+            for f in findings
+        ) else "WARN"
+    )
     evidence["overall"] = overall
     evidence["findings"] = findings
 
@@ -157,6 +284,7 @@ def main():
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
     sys.exit(0 if overall == "PASS" else (1 if overall == "WARN" else 2))
+
 
 if __name__ == "__main__":
     main()

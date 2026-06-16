@@ -1,0 +1,12 @@
+{
+  "task_id": "F-FIX-GITHUB-SYNC-CLOSURE-RESTART-20260616",
+  "stage": "G6_archive_record",
+  "artifact_type": "archive_record",
+  "result": "CLOSED",
+  "archive_completed": true,
+  "github_sync_completed": false,
+  "push_completed": false,
+  "release_policy": "archive_and_github_sync",
+  "generated_at": "2026-06-16T18:36:30+00:00",
+  "note": "archive_completed=true set before sync. github_sync_completed/push_completed will be updated after github_sync_after_archive.py runs."
+}

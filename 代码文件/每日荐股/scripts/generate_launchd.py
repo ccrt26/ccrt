@@ -71,10 +71,18 @@ TASK_DEFS = {
     },
     "daily_signal": {
         "label_suffix": "daily-signal",
-        "description": "日报数据链与信号（交易日 16:30，周一至周五）",
-        "schedule": weekday_schedules(16, 30),
+        "description": "日报数据链与信号（交易日 16:45，周一至周五）",
+        "schedule": weekday_schedules(16, 45),
         "command": PROJECT_PYTHON,
         "args": [str(PROJECT_ROOT / "scripts" / "run_daily_data_pipeline_today.py")],
+        "run_at_load": False,
+    },
+    "daily_data_retry": {
+        "label_suffix": "daily-data-retry",
+        "description": "数据获取自动重试兜底（交易日 17:00，周一至周五）：ready 非 True 时补跑 batch_data_collector + materialize",
+        "schedule": weekday_schedules(17, 0),
+        "command": PROJECT_PYTHON,
+        "args": [str(PROJECT_ROOT / "scripts" / "run_daily_data_retry_once.py"), "--date", "today", "--attempt", "1"],
         "run_at_load": False,
     },
     "deep_signal": {

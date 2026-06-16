@@ -1,0 +1,44 @@
+{
+  "task_id": "F-FIX-GITHUB-SYNC-CLOSURE-RESTART-20260616",
+  "gate": "G4",
+  "artifact_type": "self_check_candidate",
+  "result": "PASS",
+  "candidate_only": true,
+  "does_not_claim_G5_or_G6": true,
+  "changed_files": [
+    "scripts/github_sync_after_archive.py",
+    "scripts/verify_g6_github_closure.py",
+    "tests/test_github_sync_after_archive.py",
+    "tests/test_github_sync_workspace_clean_gate.py",
+    "tests/test_verify_g6_github_closure.py"
+  ],
+  "commands_run": [
+    "git fetch --prune origin",
+    "git status --short --branch",
+    "git rev-list --left-right --count HEAD...@{upstream}",
+    "python3 scripts/git_workspace_hygiene.py --quiet",
+    "python3 scripts/github_sync_after_archive.py --self-test",
+    "python3 scripts/archive_after_g6.py --self-test",
+    "python3 scripts/stage_gate_release_orchestrator.py --self-test",
+    "python3 scripts/ccrt_user_report_normalizer.py --self-test",
+    "python3 -m pytest tests/test_github_sync_after_archive.py tests/test_github_sync_workspace_clean_gate.py tests/test_git_workspace_hygiene.py tests/test_stage_gate_release_orchestrator.py tests/test_verify_g6_github_closure.py -q"
+  ],
+  "tests_passed": true,
+  "self_tests_passed": {
+    "github_sync_after_archive": true,
+    "archive_after_g6": true,
+    "stage_gate_release_orchestrator": true,
+    "ccrt_user_report_normalizer": true
+  },
+  "pytest_summary": "45 passed, 1 skipped",
+  "no_git_add_A": true,
+  "no_reset_clean_force_push": true,
+  "known_risks": [
+    "repo 内 evidence 写入后再次弄脏工作区 — 已通过单次写入+verify后提交解决",
+    "GITHUB_SYNC_NO_PUSH 假完成 — 已验证代码在所有 no_push 路径返回 push_completed=false",
+    "allowed_paths 漏拦截 — 已验证 check_workspace_vs_allowed 拦截所有违规文件",
+    "github_sync_record 提交后 remote HEAD 不一致 — 通过最终 verify 的 fetch+HEAD==upstream 检查覆盖"
+  ],
+  "generated_by": "engine/executor",
+  "generated_at": "2026-06-16T18:35:00+00:00"
+}

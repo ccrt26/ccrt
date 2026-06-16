@@ -114,6 +114,51 @@ class TestGithubSyncWorkspaceCleanGate(unittest.TestCase):
         self.assertIn("outside.txt", violations)
         self.assertNotIn("inside.txt", violations)
 
+    def test_output_in_repo_record_committed_and_workspace_clean(self):
+        """When output_dir is inside the repo, the github_sync_record must be
+        committed and pushed, and the final workspace must be clean."""
+        td, repo, arc = make_repo()
+        # Introduce an allowed dirty file to trigger phase 1 commit+push
+        (repo / "allowed_output.txt").write_text("allowed sync\n", encoding="utf-8")
+        # Set output_dir to repo (inside repo) and include the
+        # allowed file so it passes the dirty-files gate.
+        # Also include the future record name so the gate does not BLOCK on it.
+        record_name = "UT-OUTPUT-IN-REPO-20260616_github_sync_record.json"
+        result = MOD.sync(
+            str(arc), "UT-OUTPUT-IN-REPO-20260616",
+            str(repo),  # output_dir = repo (inside repo)
+            cwd=str(repo),
+            allowed_paths=["allowed_output.txt", record_name],
+        )
+        self.assertIn(result.get("result"), {"PUSHED", "ALREADY_SYNCED"},
+                      f"Expected PUSHED or ALREADY_SYNCED, got: {result.get('result')}: "
+                      f"{result.get('reason', '')}")
+        self.assertTrue(result.get("push_completed"), "push_completed must be True")
+        self.assertTrue(result.get("github_sync_completed"), "github_sync_completed must be True")
+        self.assertTrue(result.get("output_in_repo"), "output_in_repo must be True")
+
+        # Verify the record file exists
+        record_path = repo / record_name
+        self.assertTrue(record_path.exists(), f"Record file {record_path} must exist")
+
+        # Verify it was committed (the commit message contains the run_id)
+        log = run(["git", "log", "--oneline", "-5"], repo)
+        self.assertIn("UT-OUTPUT-IN-REPO-20260616", log.stdout,
+                      f"github_sync_record commit not found in log:\n{log.stdout}")
+
+        # Verify workspace is clean after sync
+        status = run(["git", "-c", "core.quotepath=false", "status", "--porcelain"], repo)
+        self.assertEqual(status.stdout.strip(), "",
+                         f"Workspace must be clean after sync, got:\n{status.stdout}")
+
+        # Verify ahead/behind = 0/0
+        ahead_behind = run(["git", "rev-list", "--left-right", "--count",
+                            "HEAD...@{upstream}"], repo)
+        parts = ahead_behind.stdout.strip().split()
+        self.assertEqual(len(parts), 2, f"Expected two counts, got: {parts}")
+        self.assertEqual(parts[0], "0", f"behind must be 0, got {parts[0]}")
+        self.assertEqual(parts[1], "0", f"ahead must be 0, got {parts[1]}")
+
 
 if __name__ == "__main__":
     unittest.main()

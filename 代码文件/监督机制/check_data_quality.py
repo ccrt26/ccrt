@@ -144,12 +144,58 @@ def check_data_full():
         issues.append({'id': 'DQ-W2', 'severity': 'WARN',
                        'desc': f"财务覆盖率{metrics['financial_coverage']}% < {THRESHOLDS['financial_coverage']}%"})
 
-    # 资金流覆盖率
-    ff_count = len(set(fundflows.keys()) & scope_codes) if scope_codes and isinstance(fundflows, dict) else (len(fundflows) if isinstance(fundflows, dict) else 0)
-    metrics['fundflow_coverage'] = round(ff_count / total * 100, 1) if total else 0
-    if metrics['fundflow_coverage'] < THRESHOLDS['fundflow_coverage']:
+    # 资金流覆盖率（目标日新鲜度）
+    # v2.0: 不再只看 FundFlows key 存在，改为检查 target_date 记录
+    ff_fresh_count = 0
+    ff_stale_codes = []
+    ff_missing_codes = []
+    target_codes = scope_codes if scope_codes else set()
+    if isinstance(fundflows, dict) and target_codes:
+        for code in target_codes:
+            rows = fundflows.get(code, [])
+            if not rows:
+                ff_missing_codes.append(code)
+                continue
+            has_target = False
+            for row in rows if isinstance(rows, list) else [rows]:
+                d = norm_date(row.get('trade_date') or row.get('date', ''))
+                if d == target_date:
+                    has_target = True
+                    break
+            if has_target:
+                ff_fresh_count += 1
+            else:
+                ff_stale_codes.append(code)
+    ff_total = len(target_codes) if target_codes else len(fundflows) if isinstance(fundflows, dict) else 0
+    metrics['fundflow_fresh_coverage'] = round(ff_fresh_count / ff_total * 100, 1) if ff_total else 0
+    metrics['fundflow_stale_codes'] = ff_stale_codes
+    metrics['fundflow_missing_codes'] = ff_missing_codes
+    # fundflow_coverage 兼容旧字段
+    metrics['fundflow_coverage'] = metrics['fundflow_fresh_coverage']
+
+    if metrics['fundflow_fresh_coverage'] < THRESHOLDS['fundflow_coverage']:
+        detail = ""
+        if ff_stale_codes:
+            detail = f" (stale: {','.join(ff_stale_codes[:5])})"
+        if ff_missing_codes:
+            detail += f" (missing: {','.join(ff_missing_codes[:5])})"
         issues.append({'id': 'DQ-W3', 'severity': 'WARN',
-                       'desc': f"资金流覆盖率{metrics['fundflow_coverage']}% < {THRESHOLDS['fundflow_coverage']}%"})
+                       'desc': f"资金流目标日覆盖率{metrics['fundflow_fresh_coverage']}% < {THRESHOLDS['fundflow_coverage']}%{detail}"})
+    # 若 active_targets 范围内任一目标股资金流无 target_date，视情况升级
+    if target_codes and (ff_stale_codes or ff_missing_codes):
+        active_stale = [c for c in ff_stale_codes if c in target_codes]
+        active_missing = [c for c in ff_missing_codes if c in target_codes]
+        if active_stale or active_missing:
+            detail = ""
+            if active_stale:
+                detail += f" stale: {','.join(active_stale)}"
+            if active_missing:
+                detail += f" missing: {','.join(active_missing)}"
+            # 对 active_targets 的缺失，升级为更严重的 WARN（留由 classifier 处理）
+            if metrics['fundflow_fresh_coverage'] == 0:
+                # 0% 覆盖率直接标记为可能 FAIL（classifier 决定）
+                issues.append({'id': 'DQ-W3a', 'severity': 'WARN',
+                               'desc': f"active_targets 资金流全缺 target_date:{detail}"})
 
     return issues, metrics
 

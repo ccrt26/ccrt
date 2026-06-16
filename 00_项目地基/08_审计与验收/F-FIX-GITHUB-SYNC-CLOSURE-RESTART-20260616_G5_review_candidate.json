@@ -1,0 +1,64 @@
+{
+  "task_id": "F-FIX-GITHUB-SYNC-CLOSURE-RESTART-20260616",
+  "gate": "G5",
+  "artifact_type": "review_candidate",
+  "result": "PASS",
+  "review_only": true,
+  "does_not_claim_old_shadow_or_G5_signoff": true,
+  "file_reviews": {
+    "scripts/github_sync_after_archive.py": {
+      "status": "PASS",
+      "notes": "validate_archive_record 强校验 archive_completed is True。sync() 在最终 verify 通过后单次写入 record。output_in_repo 分支 add+commit+push record 并返回 after_head。GITHUB_SYNC_NO_PUSH 路径返回 push_completed=false。hygiene 检查使用绝对路径+CCRT_GIT_ROOT 规避 cwd 问题。"
+    },
+    "scripts/verify_g6_github_closure.py": {
+      "status": "PASS",
+      "notes": "12 项检查全覆盖（archive_exists→HEAD==upstream）。--left-right 解析顺序正确：parts[0]=ahead。输出 PASS/BLOCK JSON。archive_record 引用比较使用 resolved 路径。"
+    },
+    "tests/test_github_sync_after_archive.py": {
+      "status": "PASS",
+      "notes": "现有 8 个测试全部通过。self_test 新增 case 3（缺 archive_completed 字段必须 BLOCK）。--self-test 不污染真实 repo index。"
+    },
+    "tests/test_github_sync_workspace_clean_gate.py": {
+      "status": "PASS",
+      "notes": "7 个测试覆盖 dirty workspace gate、allowed_paths 验证、NO_PUSH 安全、以及新增的 output_in_repo record 提交+工作区清洁验证。"
+    },
+    "tests/test_verify_g6_github_closure.py": {
+      "status": "PASS",
+      "notes": "新增 7 个测试覆盖 closure PASS、dirty workspace BLOCK、ahead commits BLOCK、missing push/sync/completed BLOCK、archive_record ref mismatch BLOCK。使用隔离 bare+clone repo。"
+    }
+  },
+  "regression_surfaces": [
+    {
+      "id": "RS-01",
+      "description": "repo 内 evidence 写入后再次弄脏工作区",
+      "fix": "sync() 在最终 verify 通过后单次写入 record，然后 add+commit+push。不重复写入。写入后不再修改 record 对象。",
+      "test": "test_output_in_repo_record_committed_and_workspace_clean"
+    },
+    {
+      "id": "RS-02",
+      "description": "GITHUB_SYNC_NO_PUSH 假完成（宣称 push_completed=true）",
+      "fix": "两个 no_push 路径均返回 push_completed=false + github_sync_completed=false。第二 no_push 块（dead code）同样保持一致语义。",
+      "test": "test_no_push_cannot_claim_push_completed"
+    },
+    {
+      "id": "RS-03",
+      "description": "allowed_paths 漏拦截导致误提交无关文件",
+      "fix": "check_workspace_vs_allowed 在 git add 前执行。git add 仅限 allowed_paths 列表，不使用 git add -A。",
+      "test": "test_dirty_without_allowed_paths_blocks + test_dirty_outside_allowed_paths_blocks"
+    },
+    {
+      "id": "RS-04",
+      "description": "push 后 remote HEAD 与 local HEAD 不一致",
+      "fix": "push 后 fetch + 验证 HEAD==upstream HEAD + ahead/behind==0/0。hygiene 脚本同做全面检查。",
+      "test": "test_full_closure_pass (ahead_count/behind_count/head_equals_upstream)"
+    },
+    {
+      "id": "RS-05",
+      "description": "archive_record 缺 archive_completed 仍被误放行",
+      "fix": "validate_archive_record 使用 `data.get('archive_completed') is not True` 强校验。None/False/缺失均 BLOCK。",
+      "test": "test_archive_not_completed_blocks + self_test case 3"
+    }
+  ],
+  "generated_by": "engine/executor",
+  "generated_at": "2026-06-16T18:36:00+00:00"
+}
