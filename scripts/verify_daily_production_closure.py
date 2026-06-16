@@ -12,7 +12,7 @@ v2.0 新增硬闸：
 - 输出 evidence 增加 fund_flow_cache_match / data_full_fundflows_match / missing_fund_flow_codes。
 - 若缺目标日资金流，overall=BLOCK。
 """
-import argparse, hashlib, json, os, sys
+import argparse, hashlib, json, os, subprocess, sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -117,11 +117,13 @@ def main():
     ap = argparse.ArgumentParser(description="每日数据生产闭环总闸门")
     ap.add_argument("--date", required=True, help="YYYYMMDD")
     ap.add_argument("--json-output", default="", help="输出JSON路径")
+    ap.add_argument("--pipeline-internal", action="store_true",
+                    help="pipeline内部预闭包检查：跳过ready.json自引用闸门")
     args = ap.parse_args()
     ds = args.date
 
     findings = []
-    evidence = {}
+    evidence = {"pipeline_internal": bool(args.pipeline_internal)}
 
     # 1. Manifest check
     mpath = ROOT / "logs" / "daily_production" / f"{ds}_manifest.json"
@@ -141,8 +143,11 @@ def main():
         evidence["ready_ready"] = r.get("ready")
         evidence["ready_pipeline_status"] = r.get("pipeline_status")
         if r.get("ready") is not True:
-            # 如果 manifest 也不存在（该 run 还在进行中），可能是预写状态
-            if mpath.exists() and m.get("overall") == "PASS":
+            if args.pipeline_internal:
+                evidence["ready_note"] = (
+                    "pipeline-internal check skips ready.json gate until final ready.json is written"
+                )
+            elif mpath.exists() and m.get("overall") == "PASS":
                 evidence["ready_note"] = "pre-existing ready from prior run (this run still in progress)"
             else:
                 findings.append(f"ready.json ready={r.get('ready')} pipeline_status={r.get('pipeline_status')} — 未就绪")
@@ -256,12 +261,31 @@ def main():
         evidence["fund_flow_cache_match"] = "N/A (no active targets)"
         evidence["data_full_fundflows_match"] = "N/A (no active targets)"
 
-    # 10. Overall — v2.0: fund_flow_cache 缺失导致 BLOCK
+    # 9.5 (NEW). Release gate check — release gate BLOCK → closure BLOCK
+    release_gate_script = ROOT / "scripts" / "check_daily_release_gate.py"
+    evidence["release_gate_check"] = "active-only"
+    if release_gate_script.exists():
+        rg_cmd = [sys.executable, str(release_gate_script), "--date", ds, "--active-only"]
+        try:
+            rg_proc = subprocess.run(rg_cmd, capture_output=True, text=True, timeout=120, cwd=str(ROOT))
+            rg_rc = rg_proc.returncode
+            evidence["release_gate_rc"] = rg_rc
+            if rg_rc != 0:
+                rg_tail = rg_proc.stdout.strip().split("\n")[-3:] if rg_proc.stdout else []
+                findings.append(f"release gate BLOCK (rc={rg_rc})")
+                evidence["release_gate_stdout_tail"] = rg_tail
+        except subprocess.TimeoutExpired:
+            findings.append("release gate timeout")
+            evidence["release_gate_rc"] = -1
+    else:
+        evidence["release_gate_check"] = "skipped (script not found)"
+
+    # 10. Overall — v2.0: fund_flow_cache 缺失导致 BLOCK; v3.0: release gate BLOCK → closure BLOCK
     overall = "PASS" if not findings else (
         "BLOCK" if any(
             "expected" in f or "missing" in f or "blocked" in f or "NaN" in f
             or "hash mismatch" in f or "fund_flow_cache" in f or "ready.json" in f
-            or "FundFlows" in f or "未就绪" in f
+            or "FundFlows" in f or "未就绪" in f or "release gate" in f
             for f in findings
         ) else "WARN"
     )

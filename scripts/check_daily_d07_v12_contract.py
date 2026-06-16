@@ -8,13 +8,15 @@ object with the project D07 validator.
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT_DIR = ROOT / "重点股票" / "股票报告"
+_REPORT_OVERRIDE = os.environ.get("REPORT_ROOT_OVERRIDE")
+REPORT_DIR = Path(_REPORT_OVERRIDE) if _REPORT_OVERRIDE else ROOT / "重点股票" / "股票报告"
 VALIDATOR = ROOT / "统一解读" / "validate_interpretation.py"
 PIGEON_CFG = ROOT / "代码文件" / "信鸽信息采集" / "pigeon_config.json"
 

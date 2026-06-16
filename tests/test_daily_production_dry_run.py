@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -80,6 +81,54 @@ class TestWritePreflightBlockBlocker(unittest.TestCase):
             ready = json.loads(ready_path.read_text())
             self.assertEqual(manifest["steps"][0]["step"], ready["blocker"][0])
             self.assertEqual(manifest["steps"][0]["step"], step_name)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+
+class TestSubprocessEnv(unittest.TestCase):
+    """Tests for subprocess_env() PYTHONPATH injection."""
+
+    def setUp(self):
+        self.tmpdir = Path(tempfile.mkdtemp())
+        scripts_dir = ROOT / "scripts"
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+
+    def test_subprocess_env_contains_pythonpath(self):
+        """subprocess_env() must inject PYTHONPATH with user site-packages."""
+        import run_daily_production_pipeline as mod
+        mod.RUNTIME_HOME = self.tmpdir / "runtime_home"
+        env = mod.subprocess_env()
+        self.assertIn("PYTHONPATH", env,
+                       "subprocess_env() must set PYTHONPATH")
+        self.assertIn("site-packages", env["PYTHONPATH"],
+                       "PYTHONPATH must point to user site-packages")
+        self.assertIn("HOME", env)
+        self.assertIn(str(mod.RUNTIME_HOME), env["HOME"])
+
+    def test_subprocess_env_pythonpath_is_valid(self):
+        """PYTHONPATH from subprocess_env() must be an importable directory."""
+        import run_daily_production_pipeline as mod
+        mod.RUNTIME_HOME = self.tmpdir / "runtime_home"
+        env = mod.subprocess_env()
+        pp = env["PYTHONPATH"]
+        path = pp.split(os.pathsep)[0]
+        self.assertTrue(Path(path).is_dir(),
+                        f"PYTHONPATH first entry must be a directory: {path}")
+
+    def test_dependency_readiness_works_with_pipeline_env(self):
+        """check_runtime_dependency_readiness with --pipeline-env must find installed packages."""
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "check_runtime_dependency_readiness.py"),
+             "--runtime", "daily_production", "--json", "--pipeline-env"],
+            capture_output=True, text=True, timeout=30, cwd=str(ROOT)
+        )
+        self.assertEqual(result.returncode, 0,
+                         f"Dependency check must PASS: {result.stdout}")
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["overall"], "PASS")
 
     def tearDown(self):
         import shutil
@@ -204,6 +253,24 @@ class TestBaselinePreflight(unittest.TestCase):
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+
+class TestClosureVerifySelfLockFix(unittest.TestCase):
+    """Verify closure_verify --pipeline-internal flag fixes self-lock."""
+
+    def test_closure_verifier_exposes_pipeline_internal_flag(self):
+        """--pipeline-internal must be a recognized argument."""
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_daily_production_closure.py"), "--help"],
+            cwd=str(ROOT), capture_output=True, text=True, timeout=30
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertIn("--pipeline-internal", proc.stdout)
+
+    def test_pipeline_uses_pipeline_internal_closure_verify(self):
+        """pipeline must pass --pipeline-internal to closure_verify."""
+        src = (ROOT / "scripts/run_daily_production_pipeline.py").read_text(encoding="utf-8")
+        self.assertIn("--pipeline-internal", src)
 
 
 class TestBaselinePreflightDryRun(unittest.TestCase):

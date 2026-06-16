@@ -8,7 +8,7 @@ run_daily_production_pipeline.py — 每日数据生产闭环入口 v1.0
   python3 scripts/run_daily_production_pipeline.py --date 20260612
   python3 scripts/run_daily_production_pipeline.py --date 20260612 --dry-run
 """
-import argparse, json, os, subprocess, sys, time, traceback
+import argparse, json, os, site, subprocess, sys, time, traceback
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -34,12 +34,31 @@ def now():
     return datetime.now(TZ_SHANGHAI).isoformat()
 
 def subprocess_env():
-    """Keep child process caches/temp files inside the workspace."""
+    """Keep child process caches/temp files inside the workspace.
+
+    Also inject PYTHONPATH with the user site-packages directory so that
+    subprocesses can find installed packages (markdown, tushare, etc.)
+    even though HOME is redirected to RUNTIME_HOME.
+    """
     env = os.environ.copy()
     RUNTIME_HOME.mkdir(parents=True, exist_ok=True)
     env["HOME"] = str(RUNTIME_HOME)
     env.setdefault("XDG_CACHE_HOME", str(RUNTIME_HOME / ".cache"))
     env.setdefault("TUSHARE_CACHE_DIR", str(RUNTIME_HOME / "tushare"))
+
+    # Inject real user site-packages into PYTHONPATH so subprocess
+    # can import packages despite the fake HOME.
+    try:
+        user_sp = site.getusersitepackages()
+        if user_sp and os.path.isdir(user_sp):
+            existing = env.get("PYTHONPATH", "")
+            if existing:
+                env["PYTHONPATH"] = user_sp + os.pathsep + existing
+            else:
+                env["PYTHONPATH"] = user_sp
+    except Exception:
+        pass
+
     return env
 
 def load_token():
@@ -362,7 +381,12 @@ def main():
         sys.exit(2)
 
     # Step 0b: 生产依赖预检 — 在进入生产步骤前检查所需 Python 包
-    dep_result = dep_run_check("daily_production")
+    # Use subprocess_env() so the check simulates pipeline child process env
+    dep_result = dep_run_check(
+        "daily_production",
+        python_executable=PY,
+        env=subprocess_env(),
+    )
     if dep_result["overall"] != "PASS":
         blocker = "; ".join(dep_result["findings"])
         manifest_path, ready_path = write_preflight_block(
@@ -499,11 +523,45 @@ def main():
                     "output_files": [],
                 })
         else:
-            report_cmd = [PY, str(ROOT/"scripts"/"run_daily_report_html_only.py"), "--date", date_str, "--write"]
-            report_step = run_step("daily_report", report_cmd, timeout_s=300)
+            # Step 8a: 日报 staging 生成
+            staging_dir = ROOT / "运行产物" / "daily_report_build" / date_str
+            staging_dir.mkdir(parents=True, exist_ok=True)
+            staging_cmd = [PY, str(ROOT/"scripts"/"run_daily_report_html_only.py"),
+                           "--date", date_str,
+                           "--staging-dir", str(staging_dir),
+                           "--require-pipeline-signal"]
+            report_step = run_step("daily_report_staging", staging_cmd, timeout_s=300)
             steps.append(report_step)
 
-            if report_step.get("status") == "PASS":
+            # Step 8b: 发布闸门 — release gate 检查 active targets
+            release_gate_cmd = [PY, str(ROOT/"scripts"/"check_daily_release_gate.py"),
+                                "--date", date_str, "--active-only"]
+            rg_step = run_step("release_gate", release_gate_cmd, timeout_s=120)
+            steps.append(rg_step)
+
+            # Step 8c: 闸门通过后 promote 到正式目录
+            if report_step.get("status") == "PASS" and rg_step.get("status") == "PASS":
+                promote_cmd = [PY, str(ROOT/"scripts"/"run_daily_report_html_only.py"),
+                               "--date", date_str,
+                               "--staging-dir", str(staging_dir),
+                               "--promote"]
+                promote_step = run_step("report_promote", promote_cmd, timeout_s=60)
+            else:
+                promote_step = {
+                    "step": "report_promote",
+                    "command": "SKIP: staging/release_gate not PASS",
+                    "started_at": now(),
+                    "finished_at": now(),
+                    "duration_sec": 0,
+                    "returncode": 0,
+                    "status": "SKIP",
+                    "stdout_tail": ["SKIP by staging or release gate"],
+                    "stderr_tail": [],
+                    "output_files": []
+                }
+            steps.append(promote_step)
+
+            if promote_step.get("status") == "PASS":
                 shadow_dir = ROOT / "logs" / "canonical_shadow" / date_str
                 build_step, gate_step = run_canonical_shadow_for_active_targets(date_str, PY, shadow_dir)
                 steps.append(build_step)
@@ -511,25 +569,25 @@ def main():
             else:
                 steps.append({
                     "step": "canonical_shadow_build",
-                    "command": "SKIP: daily_report not PASS",
+                    "command": "SKIP: promote not PASS",
                     "started_at": now(),
                     "finished_at": now(),
                     "duration_sec": 0,
                     "returncode": 0,
                     "status": "SKIP",
-                    "stdout_tail": ["daily_report not PASS"],
+                    "stdout_tail": ["SKIP by promote not PASS"],
                     "stderr_tail": [],
                     "output_files": []
                 })
                 steps.append({
                     "step": "canonical_shadow_gate",
-                    "command": "SKIP: daily_report not PASS",
+                    "command": "SKIP: promote not PASS",
                     "started_at": now(),
                     "finished_at": now(),
                     "duration_sec": 0,
                     "returncode": 0,
                     "status": "SKIP",
-                    "stdout_tail": ["daily_report not PASS"],
+                    "stdout_tail": ["SKIP by promote not PASS"],
                     "stderr_tail": [],
                     "output_files": []
                 })
@@ -608,14 +666,16 @@ def main():
 
     # Step 14: closure_verify — 总闸门
     cv_cmd = [PY, str(ROOT/"scripts"/"verify_daily_production_closure.py"), "--date", date_str,
-              "--json-output", str(PRODUCTION_DIR / f"{date_str}_closure_verify.json")]
+              "--json-output", str(PRODUCTION_DIR / f"{date_str}_closure_verify.json"),
+              "--pipeline-internal"]
     steps.append(run_step("closure_verify", cv_cmd, timeout_s=30))
 
     # 汇总 — 拆分 data_ready / report_ready / archive_ready / quality_ready / closure_ready
     data_steps_names = {"tushare_sync", "build_dynamic_pool", "batch_data_collector", "scoring_engine",
                         "nan_cleanup_and_meta", "materialize_cache"}
     data_ready = all(s["status"] == "PASS" for s in steps if s["step"] in data_steps_names)
-    report_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "daily_report")
+    # report_ready 必须 only 认 report_promote PASS（含 release gate 前置条件）
+    report_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "report_promote")
     archive_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "archive")
     av_ready = any(s["status"] == "PASS" for s in steps if s["step"] == "archive_verify")
     canonical_ready = True if args.skip_report else all(
@@ -633,22 +693,35 @@ def main():
     cv_status = next((s["status"] for s in steps if s["step"] == "closure_verify"), "BLOCK")
     closure_ready = "PASS" if cv_status == "PASS" else "BLOCK"
 
-    all_pass = data_ready and report_ready and archive_ready and av_ready and canonical_ready and (quality_ready == "PASS") and (closure_ready == "PASS")
+    # Build status_split dict
+    status_split = {
+        "data_ready": "PASS" if data_ready else "BLOCK",
+        "report_ready": "PASS" if report_ready else "BLOCK",
+        "release_gate_ready": next((s["status"] for s in steps if s["step"] == "release_gate"), "BLOCK"),
+        "canonical_ready": "PASS" if canonical_ready else "BLOCK",
+        "archive_ready": "PASS" if archive_ready else "BLOCK",
+        "quality_ready": quality_ready,
+        "closure_ready": closure_ready,
+    }
+
+    # overall = PASS only when ALL status_split items are "PASS"
+    all_pass = all(v == "PASS" for v in status_split.values())
+    all_pass = all_pass and (True if args.skip_report else canonical_ready)
+    # Also check that SKIP items (from skip_report) are accounted for — they're already PASS in the check above
+    if args.skip_report:
+        # When skip_report is set, report_ready/canonical_ready are not required
+        ov_report_checks = {k: v for k, v in status_split.items()
+                            if k not in ("report_ready", "canonical_ready", "release_gate_ready")}
+        all_pass = all(v == "PASS" for v in ov_report_checks.values())
+
     manifest = {
         "flow": "run_daily_production_pipeline",
         "date": date_str,
         "run_at": now(),
-        "overall": "PASS" if all_pass else "WARN" if any(s["status"] == "WARN" for s in steps) else "BLOCK",
+        "overall": "PASS" if all_pass else "BLOCK",
         "dry_run": args.dry_run,
         "steps": steps,
-        "status_split": {
-            "data_ready": "PASS" if data_ready else "BLOCK",
-            "report_ready": "PASS" if report_ready else "BLOCK",
-            "archive_ready": "PASS" if archive_ready else "BLOCK",
-            "canonical_ready": "PASS" if canonical_ready else "BLOCK",
-            "quality_ready": quality_ready,
-            "closure_ready": closure_ready,
-        }
+        "status_split": status_split,
     }
 
     # 写 ready.json — 仅当 manifest overall == PASS 才 ready:true
@@ -693,6 +766,54 @@ def main():
         except Exception as e:
             print(f"[WARN] data_full 读取失败: {e}")
 
+    # === Post-write non-pipeline-internal closure verification ===
+    # This runs AFTER manifest/ready are written, so closure_verify
+    # can check the full external-ready state without the --pipeline-internal skip.
+    # If this fails, downgrade overall and re-write manifest/ready.
+    if not args.dry_run:
+        cv_post_cmd = [PY, str(ROOT/"scripts"/"verify_daily_production_closure.py"),
+                       "--date", date_str]
+        try:
+            cv_post_proc = subprocess.run(
+                cv_post_cmd, capture_output=True, text=True, timeout=30,
+                cwd=str(ROOT), env=subprocess_env()
+            )
+            cv_post_rc = cv_post_proc.returncode
+            if cv_post_rc != 0:
+                print(f"[BLOCK] Post-write closure verify FAILED (rc={cv_post_rc})")
+                for line in (cv_post_proc.stdout or "").split("\n")[-5:]:
+                    if line.strip(): print(f"  {line.strip()}")
+                # Downgrade overall to BLOCK
+                manifest["overall"] = "BLOCK"
+                ready_data["ready"] = False
+                ready_data["pipeline_status"] = "BLOCK"
+                ready_data["closure_ready"] = "BLOCK"
+                # Re-write manifest and ready with downgraded status
+                with open(manifest_path, "w") as f:
+                    json.dump(manifest, f, ensure_ascii=False, indent=2)
+                with open(ready_path, "w") as f:
+                    json.dump(ready_data, f, ensure_ascii=False, indent=2)
+                overall_pass = False
+            else:
+                print(f"[OK] Post-write closure verify PASS")
+        except Exception as e:
+                print(f"[BLOCK] Post-write closure verify exception: {e}")
+                manifest["overall"] = "BLOCK"
+                ready_data["ready"] = False
+                ready_data["pipeline_status"] = "BLOCK"
+                ready_data["closure_ready"] = "BLOCK"
+                if "blocker" in ready_data and isinstance(ready_data["blocker"], list):
+                    ready_data["blocker"].append("post_write_closure_verify_exception")
+                # Re-write manifest and ready with downgraded status
+                try:
+                    with open(manifest_path, "w") as f:
+                        json.dump(manifest, f, ensure_ascii=False, indent=2)
+                    with open(ready_path, "w") as f:
+                        json.dump(ready_data, f, ensure_ascii=False, indent=2)
+                except OSError:
+                    pass
+                overall_pass = False
+
     # 输出
     output = {
         "date": date_str,
@@ -704,7 +825,7 @@ def main():
     }
     print(json.dumps(output, ensure_ascii=False, indent=2))
 
-    sys.exit(0 if all_pass else (2 if manifest["overall"] == "BLOCK" else 1))
+    sys.exit(0 if overall_pass else 2)
 
 if __name__ == "__main__":
     main()

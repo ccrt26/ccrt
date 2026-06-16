@@ -1,28 +1,21 @@
 #!/usr/bin/env python3
 """
-run_daily_data_retry_once.py — v2.0 单次数据获取重试（P3-B 补修）
+run_daily_data_retry_once.py — v3.0 单次数据重试（P3-B 补修）
 
-v2.0 修复：
-- check_ready 只认 ready=true AND pipeline_status=PASS（不再跳过 BLOCK ready）
-- batch_data_collector 调用带 --date 参数
-- 成功写 ready.json 补齐 ready/pipeline_status/blocker 字段
-- 若 materialize/health 仍失败，不写 ready=true
-- 新增 --attempt=today 自动解析为上海交易日
-
-P3-B 补修：
-- 新增 batch_data_collector 步骤以补 K-line 数据。
-- 新增 K-line 覆盖率校验（v3.6 兼容，exit 2 if <8/10）。
-
-旧链: tushare_history_sync --daily → materialize → daily_orchestrator --mode daily
-新链: tushare_history_sync --daily → batch_data_collector → materialize → daily_orchestrator
+v3.0 修复：
+- 完全删除旧链路（tushare_sync/batch_data_collector/materialize_cache/orchestrator）
+- retry 不再直接写 ready.json
+- retry 不再判断 D07/promote/closure，全部委托 run_daily_production_pipeline
+- retry 只做：日期解析→ready检查→锁→触发主闭包→继承退出码
+- check_ready 只认 ready=true AND pipeline_status=PASS
 
 用法:
   python3 scripts/run_daily_data_retry_once.py --date 20260604 --attempt 1
   python3 scripts/run_daily_data_retry_once.py --date today --attempt 1
 
 退出码:
-  0 = ready.json 已存在(True) 或 本次成功
-  2 = 任一环节失败
+  0 = ready.json 已存在(True,PASS) 或 主闭包 PASS
+  2 = 主闭包失败或异常
 """
 import argparse, json, os, subprocess, sys, fcntl
 from datetime import datetime, timezone, timedelta
@@ -30,17 +23,10 @@ from pathlib import Path
 
 ROOT = str(Path(__file__).resolve().parent.parent)
 STATUS_DIR = os.path.join(ROOT, "logs", "daily_data_retry", "status")
-SIGNAL_FILE = os.path.join(ROOT, ".claude", "signal_daily_report.json")
-PIGEON_CFG = os.path.join(ROOT, "代码文件", "信鸽信息采集", "pigeon_config.json")
-DATA_FULL = os.path.join(ROOT, "代码文件", "数据", "data_full.json")
 
 
 def log(msg, level="INFO"):
     print(f"[{level}] {msg}")
-
-
-def norm_date(value):
-    return str(value or "").replace("-", "")[:8]
 
 
 def shanghai_today():
@@ -76,8 +62,7 @@ def release_lock(fd, date_str):
 def check_ready(date_str):
     """只在 ready=true AND pipeline_status=PASS 时返回 True。
 
-    v2.0: BLOCK 状态的 ready.json 不得被视为"已完成"，
-    必须继续补跑并打印 READY_BLOCK_EXISTS_CONTINUE。
+    BLOCK 状态的 ready.json 不得被视为"已完成"。
     """
     rp = os.path.join(STATUS_DIR, f"{date_str}.ready.json")
     if os.path.exists(rp):
@@ -86,181 +71,22 @@ def check_ready(date_str):
         is_ready = rd.get("ready") is True
         ps = rd.get("pipeline_status", "")
         if is_ready and ps == "PASS":
-            log(f"READY_EXISTS: attempt={rd.get('attempt')} at {rd.get('ready_at')}", "SKIP")
+            log(f"READY_EXISTS: ready_at={rd.get('ready_at')}", "SKIP")
             return True
-        log(f"READY_BLOCK_EXISTS_CONTINUE: ready={rd.get('ready')} pipeline_status={ps} attempt={rd.get('attempt')}", "WARN")
+        log(f"READY_BLOCK_EXISTS_CONTINUE: ready={rd.get('ready')} pipeline_status={ps}", "WARN")
         return False
     return False
 
 
-def verify_signal(date_str):
-    """Check if signal is ready for the date."""
-    if not os.path.exists(SIGNAL_FILE):
-        log("SIGNAL_NOT_FOUND", "BLOCK")
-        return False
-    try:
-        with open(SIGNAL_FILE) as f:
-            sig = json.load(f)
-    except Exception as e:
-        log(f"SIGNAL_PARSE_FAIL: {e}", "BLOCK")
-        return False
-    if sig.get("date") != date_str:
-        log(f"SIGNAL_DATE_MISMATCH: signal={sig.get('date')} expected={date_str}", "BLOCK")
-        return False
-    if not sig.get("data_ready", False):
-        log(f"SIGNAL_NOT_READY: data_ready=false", "BLOCK")
-        return False
-    # Check stock coverage
-    try:
-        with open(PIGEON_CFG) as f:
-            cfg = json.load(f)
-    except Exception as e:
-        log(f"PIGEON_CFG_PARSE_FAIL: {e}", "BLOCK")
-        return False
-    targets = cfg.get("target_stocks", [])
-    pool_codes = set(str(s.get("code", "")) for s in targets if s.get("code"))
-    sig_codes = set(sig.get("stocks_daily_data", {}).keys())
-    missing = pool_codes - sig_codes
-    if missing:
-        log(f"SIGNAL_MISSING_STOCKS: signal缺 {missing}", "BLOCK")
-        return False
-    return True
-
-
-def run_step(script, args, label, timeout=300):
-    """Run a subprocess step."""
-    full_script = os.path.join(ROOT, script)
-    if not os.path.exists(full_script):
-        log(f"SCRIPT_NOT_FOUND: {full_script}", "BLOCK")
-        return False
-    cmd = [sys.executable, full_script] + args
-    try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=ROOT)
-        if proc.returncode == 0:
-            log(f"[OK] {label}")
-            for stream_name, output in (("stdout", proc.stdout), ("stderr", proc.stderr)):
-                for line in (output or "").split("\n")[-8:]:
-                    if line.strip():
-                        log(f"  {stream_name}: {line.strip()}", "INFO")
-            return True
-        else:
-            log(f"[BLOCK] {label} exit={proc.returncode}", "BLOCK")
-            for stream_name, output in (("stdout", proc.stdout), ("stderr", proc.stderr)):
-                for line in (output or "").split("\n")[-5:]:
-                    if line.strip():
-                        log(f"  {stream_name}: {line.strip()}", "FAIL")
-            return False
-    except subprocess.TimeoutExpired:
-        log(f"[TIMEOUT] {label} (timeout={timeout}s)", "BLOCK")
-        return False
-    except Exception as e:
-        log(f"[ERROR] {label}: {e}", "BLOCK")
-        return False
-
-
-def verify_kline_coverage(date_str, min_ok=8):
-    """P3-B: 验证 data_full.json 中焦点股 K-line 指定日期覆盖率。"""
-    if not os.path.exists(DATA_FULL):
-        log(f"DATA_FULL_NOT_FOUND: {DATA_FULL}", "BLOCK")
-        return False, 0, 0, []
-    try:
-        with open(DATA_FULL, "r", encoding="utf-8-sig") as f:
-            dfull = json.load(f)
-    except Exception as e:
-        log(f"DATA_FULL_PARSE_FAIL: {e}", "BLOCK")
-        return False, 0, 0, []
-
-    if not os.path.exists(PIGEON_CFG):
-        log(f"PIGEON_CFG_NOT_FOUND: {PIGEON_CFG}", "BLOCK")
-        return False, 0, 0, []
-
-    try:
-        with open(PIGEON_CFG, "r", encoding="utf-8") as f:
-            cfg = json.load(f)
-        targets = cfg.get("target_stocks", [])
-        pool_codes = [str(s.get("code", "")) for s in targets if s.get("code")]
-    except Exception as e:
-        log(f"PIGEON_CFG_PARSE_FAIL: {e}", "BLOCK")
-        return False, 0, 0, []
-
-    stocks_map = {}
-    for s in dfull.get("Stocks", []):
-        c = str(s.get("Code") or s.get("code", ""))
-        if c:
-            kd = s.get("KDate", [])
-            latest = str(kd[-1]).replace("-", "") if kd else ""
-            stocks_map[c] = {"name": s.get("Name", s.get("name", c)), "latest_kdate": latest}
-
-    matched = 0
-    missing_codes = []
-    for code in pool_codes:
-        info = stocks_map.get(code)
-        if info and info["latest_kdate"] == date_str:
-            matched += 1
-        else:
-            latest_disp = info["latest_kdate"] if info else "NO_DATA"
-            name = info["name"] if info else code
-            missing_codes.append(f"{code} {name} (latest KDate: {latest_disp})")
-
-    total = len(pool_codes)
-    ok = matched >= min_ok
-    if ok:
-        log(f"KLINE_COVERAGE PASS: {matched}/{total} >= {min_ok}", "OK")
-    else:
-        log(f"KLINE_COVERAGE FAIL: {matched}/{total} < {min_ok}", "BLOCK")
-        for mc in missing_codes:
-            log(f"  缺失: {mc}", "BLOCK")
-    return ok, matched, total, missing_codes
-
-
-def write_ready(date_str, attempt, pipeline_status="PASS",
-                data_ready="PASS", report_ready="PASS",
-                quality_ready="PASS", closure_ready="PASS",
-                blocker=None):
-    """写 ready.json。缺省为全部 PASS，调用方可根据实际情况覆盖。
-
-    v2.0: 补齐 ready/pipeline_status/data_ready/report_ready/quality_ready/closure_ready/blocker。
-    """
-    os.makedirs(STATUS_DIR, exist_ok=True)
-    ready = {
-        "date": date_str,
-        "ready": True,
-        "ready_at": datetime.now(timezone.utc).isoformat(),
-        "attempt": attempt,
-        "pipeline_status": pipeline_status,
-        "data_ready": data_ready,
-        "report_ready": report_ready,
-        "archive_ready": "PASS",
-        "canonical_ready": report_ready,
-        "quality_ready": quality_ready,
-        "closure_ready": closure_ready,
-        "blocker": blocker or [],
-        "command_chain": ["tushare_history_sync.py --daily", "batch_data_collector.py",
-                          "materialize", "daily_orchestrator --mode daily"],
-        "stock_count": 0,
-    }
-    if os.path.exists(SIGNAL_FILE):
-        try:
-            sig = json.loads(open(SIGNAL_FILE).read())
-            ready["stock_count"] = len(sig.get("stocks_daily_data", {}))
-        except Exception:
-            pass
-    rp = os.path.join(STATUS_DIR, f"{date_str}.ready.json")
-    with open(rp, "w") as f:
-        json.dump(ready, f, ensure_ascii=False, indent=2)
-    log(f"READY_WRITTEN: {rp}")
-
-
 def main():
-    ap = argparse.ArgumentParser(description="单次数据获取重试")
+    ap = argparse.ArgumentParser(description="单次数据重试（仅委托主闭包）")
     ap.add_argument("--date", required=True, help="日期 YYYYMMDD，或 today（自动解析上海日期）")
-    ap.add_argument("--attempt", required=True, type=str, help="尝试序号 1/2/3 或 today（自动解析）")
+    ap.add_argument("--attempt", required=True, type=int, help="尝试序号 1/2/3")
     args = ap.parse_args()
 
     # 解析 today 为上海日期
     date_str = shanghai_today() if args.date == "today" else args.date
-    attempt_str = args.attempt
-    attempt = int(shanghai_today()[:2]) if args.attempt == "today" else int(args.attempt)  # fallback: today→当前月日作为序号
+    attempt = args.attempt
 
     log(f"date_str={date_str}, attempt={attempt}")
 
@@ -273,59 +99,52 @@ def main():
     if fd is None:
         sys.exit(0)  # Another process working on it
 
-    success = False
-    blocker_list = []
     try:
         log(f"=== DATA RETRY attempt {attempt}/3 for {date_str} ===")
+        log("retry v3.0: 委托 run_daily_production_pipeline 为单一权威", "OK")
 
-        # Step 1: tushare sync
-        if not run_step("代码文件/tools/tushare_history_sync.py", ["--daily"], "tushare_history_sync"):
-            blocker_list.append("tushare_sync")
+        # Single authority: delegate to production pipeline.
+        # retry does NOT call tushare_sync, batch_data_collector, materialize,
+        # daily_orchestrator, verify_signal, verify_kline_coverage, or write_ready.
+        # D07 check, promote, release gate, closure, ready.json write are all
+        # handled internally by the production pipeline.
+        pipeline_script = "scripts/run_daily_production_pipeline.py"
+        pipeline_path = os.path.join(ROOT, pipeline_script)
+        if not os.path.exists(pipeline_path):
+            log(f"PRODUCTION_PIPELINE_NOT_FOUND: {pipeline_path}", "BLOCK")
             sys.exit(2)
 
-        # Step 1.5 (P3-B 补修): batch_data_collector — 重建 data_full.json
-        if not run_step("代码文件/每日荐股/scripts/batch_data_collector.py",
-                        ["--date", date_str],
-                        "batch_data_collector", timeout=600):
-            blocker_list.append("batch_data_collector")
-            sys.exit(2)
+        pipeline_cmd = [sys.executable, pipeline_path, "--date", date_str]
+        log(f"Invoking production pipeline: {' '.join(pipeline_cmd)}")
 
-        # Step 2: materialize cache
-        if not run_step("scripts/materialize_daily_authoritative_cache.py", ["--date", date_str], "materialize_cache"):
-            blocker_list.append("materialize_cache")
-            sys.exit(2)
+        pipeline_proc = subprocess.run(
+            pipeline_cmd,
+            capture_output=True, text=True, timeout=600, cwd=ROOT
+        )
+        pipeline_rc = pipeline_proc.returncode
+        # Print pipeline output for audit trail
+        for line in (pipeline_proc.stdout or "").split("\n"):
+            if line.strip():
+                log(f"  pipeline: {line.strip()}", "INFO")
+        for line in (pipeline_proc.stderr or "").split("\n")[-5:]:
+            if line.strip():
+                log(f"  pipeline_err: {line.strip()}", "INFO")
 
-        # Step 3: orchestrator signal
-        if not run_step("代码文件/tools/daily_orchestrator.py", ["--mode", "daily", "--date", date_str], "daily_orchestrator", timeout=120):
-            blocker_list.append("daily_orchestrator")
-            sys.exit(2)
-
-        # Step 3.5: signal verify
-        if not verify_signal(date_str):
-            log("SIGNAL_NOT_READY_AFTER_DAILY_ORCHESTRATOR", "BLOCK")
-            blocker_list.append("signal_not_ready")
-            sys.exit(2)
-
-        # Step 4: K-line coverage verify
-        kline_ok, kline_matched, kline_total, kline_missing = verify_kline_coverage(date_str, min_ok=8)
-        if not kline_ok:
-            log(f"KLINE_COVERAGE BLOCK: {kline_matched}/{kline_total} < 8/10", "BLOCK")
-            blocker_list.append("kline_coverage")
-            sys.exit(2)
-
-        # All passed — write ready=true
-        if verify_signal(date_str):
-            write_ready(date_str, attempt)
-            log(f"DATA_READY: {date_str} attempt {attempt}")
-            success = True
+        if pipeline_rc == 0:
+            log(f"PRODUCTION_PIPELINE_PASS: exit={pipeline_rc}", "OK")
+            sys.exit(0)
         else:
-            log("SIGNAL_NOT_READY_AFTER_CHAIN", "BLOCK")
-            blocker_list.append("signal_not_ready")
+            log(f"PRODUCTION_PIPELINE_BLOCK: exit={pipeline_rc}", "BLOCK")
+            sys.exit(pipeline_rc)  # inherit exit code directly
 
+    except subprocess.TimeoutExpired:
+        log("PRODUCTION_PIPELINE_TIMEOUT: 600s exceeded", "BLOCK")
+        sys.exit(2)
+    except Exception as e:
+        log(f"PRODUCTION_PIPELINE_ERROR: {e}", "BLOCK")
+        sys.exit(2)
     finally:
         release_lock(fd, date_str)
-
-    sys.exit(0 if success else 2)
 
 
 if __name__ == "__main__":
