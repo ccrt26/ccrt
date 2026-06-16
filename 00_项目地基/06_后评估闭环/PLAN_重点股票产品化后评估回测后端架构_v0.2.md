@@ -1,8 +1,9 @@
 # 重点股票产品化后评估/回测后端架构方案 v0.2
 
 > 日期：2026-06-16
-> 阶段：G2 技术子方案候选
+> 阶段：G2 技术子方案定版候选
 > 上位框架：`PLAN_重点股票产品化分析闭环总框架_v0.1.md`
+> 对应步骤：第 4 步，后评估/回测方案对齐定版
 > 定位：在重点股票产品化分析闭环下，定义后评估/回测后端能力的第一阶段落地方案。
 > 边界：本文不替代总框架，不直接修改生产规则，不切换日报/深度分析生产入口，不放行任何回测结论。
 
@@ -29,6 +30,28 @@ v0.2 的定位调整为：
 怎么验收可以进入 G3？
 ```
 
+### 1.1 第 4 步用户确认结论
+
+已按总框架第 12 节完成本步骤轻量确认。
+
+用户确认：
+
+1. Phase 1 第一条试点规则确定为 `MA20 破位止损`。
+2. Phase 1 暂缓实现财务特征、事件研究、拥挤度指标，只在契约中保留字段或后续扩展位。
+
+因此，本文件的第 4 步定版口径为：
+
+```text
+分析生产线输出可验证判断和状态
+  -> PredictionLedger 幂等入账
+  -> FeatureSnapshot 提供核心技术/风险/标签特征
+  -> TECH_MA20_BREAK_STOP_LOSS 单规则回测
+  -> ForwardEval 到期扫描
+  -> dashboard_status / alert_center JSON
+```
+
+本步骤仍停留在 G2。进入 G3、新增代码、修改生产入口、接入新数据源或生成正式回测结论，均需另行确认。
+
 ---
 
 ## 2. 与总框架的分工
@@ -36,10 +59,35 @@ v0.2 的定位调整为：
 | 文件 | 职责 |
 |:--|:--|
 | `PLAN_重点股票产品化分析闭环总框架_v0.1.md` | 定义深度分析、日报、后评估、规则治理、产品使用层的全局闭环 |
+| `PLAN_重点股票分析生产线产品化方案_v0.1.md` | 定义分析生产线、`AnalysisProductionContract`、`StockTodayDecisionView`、重跑幂等和告警口径 |
 | 本文件 v0.2 | 定义后评估/回测后端在 Phase 1/2 的技术落地 |
 | `后评估流程定义_v1.0.md` | 定义 EvalHook、到期验证、偏差归因、RuleUpdateCandidate 的流程边界 |
 
 本文件不再承载完整产品前端设计。前端只保留数据契约和状态输出，正式 UI 留到后续 Phase 3。
+
+### 2.1 与分析生产线方案的对齐边界
+
+后评估/回测后端不重新生产分析结论，只消费分析生产线已经形成的结构化对象。
+
+Phase 1 输入顺序：
+
+```text
+AnalysisProductionContract
+  -> ReportSidecar / EvalHook
+  -> PredictionLedger
+  -> FeatureSnapshot
+  -> BacktestResult / EvaluationResult
+  -> DashboardStatus / AlertCenter
+```
+
+对齐规则：
+
+1. `AnalysisProductionContract.ledger_write_status` 是分析生产线到后评估闭环是否完成的关键状态。
+2. `StockTodayDecisionView` 可读取后评估/回测的状态摘要，但不得直接依赖回测脚本日志。
+3. 账本写入失败时，分析报告可以保留为人读产物，但闭环状态不得标 `COMPLETE`。
+4. 后评估/回测只读 `baseline_registry.json`、日报 sidecar、深度分析报告、canonical shadow 产物和质量闸门结果。
+5. Phase 1 的 canonical 仍为 shadow-only，不作为后评估真实生产输入。
+6. 后评估/回测产生的告警必须映射到 `COMPLETE | AUTO_REPAIRING | BLOCK` 三类用户可见状态，不把内部技术细节推到用户第一屏。
 
 ---
 
@@ -83,6 +131,7 @@ Phase 1 的目标不是“完整产品上线”，而是跑通一条可信的后
 
 ```text
 资产盘点
+  -> AnalysisProductionStatus 只读承接
   -> PredictionLedger 最小账本
   -> FeatureSnapshot 核心特征
   -> MA20 破位止损单规则回测
@@ -93,10 +142,11 @@ Phase 1 的目标不是“完整产品上线”，而是跑通一条可信的后
 第一阶段必须证明：
 
 1. 系统能知道现有资产在哪里。
-2. 深度分析/日报里的可验证判断能结构化入账。
-3. 后评估/回测能读取同一套特征和数据可见性口径。
-4. 单规则回测能复现、能标样本不足、能防未来函数。
-5. 输出结果能被未来前端直接消费。
+2. 分析生产线状态能被只读承接，不重跑、不篡改生产报告。
+3. 深度分析/日报里的可验证判断能结构化入账。
+4. 后评估/回测能读取同一套特征和数据可见性口径。
+5. `TECH_MA20_BREAK_STOP_LOSS` 单规则回测能复现、能标样本不足、能防未来函数。
+6. 输出结果能被未来前端和 `StockTodayDecisionView` 直接消费。
 
 ---
 
@@ -127,6 +177,8 @@ Phase 1 的目标不是“完整产品上线”，而是跑通一条可信的后
 6. 生成 G5/G6 放行结论。
 7. 把回测结论写成投资建议。
 8. 正式启用前端 UI。
+9. 实现完整财务特征回测、事件研究体系或拥挤度模型。
+10. 因财务/事件/拥挤度字段缺失阻塞 MA20 单规则主链路。
 
 ---
 
@@ -147,6 +199,8 @@ keystock_system_inventory.json
 ```text
 generated_at
 scan_root
+analysis_production_contract_refs
+analysis_pipeline_status_refs
 baseline_registry
 baseline_files
 daily_report_sidecars
@@ -165,7 +219,8 @@ no_production_write_evidence
 1. 能识别 `baseline_registry.json`。
 2. 能识别重点股票日报 sidecar。
 3. 能识别现有后评估脚本。
-4. 能输出第一阶段候选规则。
+4. 能识别分析生产线状态或其候选输出位置。
+5. 能输出第一阶段候选规则，并确认主试点为 `TECH_MA20_BREAK_STOP_LOSS`。
 
 ### 6.2 PredictionLedger
 
@@ -176,7 +231,8 @@ no_production_write_evidence
 1. baseline registry。
 2. 日报 sidecar。
 3. 已有 `eval_hooks` 或机器字段。
-4. 可稳定抽取的支撑/压力/方向/止损字段。
+4. `AnalysisProductionContract` 中的 `output_report_path`、`output_sidecar_path`、`quality_gate_status`、`ledger_write_status`。
+5. 可稳定抽取的支撑/压力/方向/止损字段。
 
 主存储建议：
 
@@ -207,6 +263,8 @@ evidence_refs
 created_at
 updated_at
 superseded_by
+analysis_run_id
+analysis_status_ref
 ```
 
 幂等键建议：
