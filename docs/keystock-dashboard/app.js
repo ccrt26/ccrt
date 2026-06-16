@@ -1,207 +1,323 @@
-/* keystock-dashboard 驾驶舱 JS */
+/* keystock-dashboard 产品化驾驶舱 JS — 真实数据驱动，无硬编码业务结论 */
 let appData = {};
 
 async function loadJSON(path) {
   const r = await fetch(path);
+  if (!r.ok) throw new Error(`HTTP ${r.status}: ${path}`);
   return r.json();
 }
 
 function statusBadge(s) {
-  return `<span class="status-badge status-${s}">${s}</span>`;
+  return `<span class="badge badge-${(s || 'UNKNOWN').toLowerCase()}">${s || 'UNKNOWN'}</span>`;
 }
 
 async function init() {
+  const el = document.getElementById('view-dashboard');
   try {
-    appData.dashboard = await loadJSON('data/dashboard.json');
-    appData.stocks = await loadJSON('data/stocks.json');
-    appData.runState = await loadJSON('data/run_state.json');
-    appData.evidence = await loadJSON('data/evidence_index.json');
-    appData.ruleHealth = await loadJSON('data/rule_health.json');
+    const results = await Promise.allSettled([
+      loadJSON('data/dashboard.json').then(d => appData.dashboard = d),
+      loadJSON('data/stocks.json').then(d => appData.stocks = d),
+      loadJSON('data/today_decisions.json').then(d => appData.decisions = d),
+      loadJSON('data/chart_data.json').then(d => appData.chartData = d),
+      loadJSON('data/evidence_index.json').then(d => appData.evidence = d),
+      loadJSON('data/rule_health.json').then(d => appData.ruleHealth = d),
+    ]);
+    const failed = results.filter(r => r.status === 'rejected');
+    if (failed.length > 0) {
+      el.innerHTML = `<div class="card warn"><p>数据加载异常 (${failed.length}/${results.length} 失败)</p><ul>${failed.map(r => `<li>${r.reason.message}</li>`).join('')}</ul></div>`;
+    }
   } catch(e) {
-    document.getElementById('view-dashboard').innerHTML = `<div class="card"><p>数据加载失败: ${e.message}</p><p>请先运行 <code>scripts/build_keystock_product_api_bundle.py</code></p></div>`;
+    el.innerHTML = `<div class="card warn"><p>数据加载失败: ${e.message}</p></div>`;
   }
   renderDashboard();
   renderStocks();
   renderRuleHealth();
-  // Default view
-  showView('dashboard');
 }
 
+/* ── 视图切换 ── */
 function showView(name) {
-  document.querySelectorAll('.main').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-  let link = document.querySelector(`nav a[data-view="${name}"]`);
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + name);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  const link = document.querySelector(`.sidebar a[data-view="${name}"]`);
   if (link) link.classList.add('active');
 }
 
-/* ── Dashboard ── */
+/* ── 驾驶舱首页 ── */
 function renderDashboard() {
   const el = document.getElementById('view-dashboard');
-  const dash = appData.dashboard || {};
-  const stocks = appData.stocks?.stocks || [];
+  const d = appData.dashboard || {};
+  const dec = appData.decisions || {};
+  const pos = dec.user_position || {};
+  const mkt = dec.market_today || {};
+  const cd = appData.chartData || {};
 
-  let html = `<div class="grid-4">`;
-  html += `<div class="card metric"><div class="metric-value">${stocks.length}</div><div class="metric-label">跟踪股票</div></div>`;
-  html += `<div class="card metric"><div class="metric-value">${appData.runState?.run_status || '-'}</div><div class="metric-label">运行状态</div></div>`;
-  html += `<div class="card metric"><div class="metric-value ${dash.feature_snapshot?.close > dash.feature_snapshot?.ma20 ? 'up' : 'down'}">${dash.feature_snapshot?.close || '-'}</div><div class="metric-label">600114 收盘</div></div>`;
-  html += `<div class="card metric"><div class="metric-value">${dash.feature_snapshot?.ma20 || '-'}</div><div class="metric-label">MA20</div></div>`;
-  html += `</div>`;
+  let warnHtml = '';
+  const warnings = d.warnings || [];
+  if (warnings.length > 0) warnHtml = `<div class="card warn"><p>⚠ ${warnings.join('; ')}</p></div>`;
 
-  html += `<div class="card"><h2>股票概览</h2><table><tr><th>代码</th><th>名称</th><th>收盘</th><th>涨跌幅</th><th>状态</th></tr>`;
-  for (const s of stocks) {
-    const pct = s.change_pct;
-    const pctCls = pct > 0 ? 'up' : pct < 0 ? 'down' : '';
-    html += `<tr onclick="showStockDetail('${s.stock_code}')" style="cursor:pointer">
-      <td>${s.stock_code}</td><td>${s.stock_name}</td>
-      <td>${s.close}</td>
-      <td class="${pctCls}">${pct > 0 ? '+' : ''}${pct}%</td>
-      <td>${statusBadge(s.user_visible_status)}</td></tr>`;
-  }
-  html += `</table></div>`;
-  html += `<div class="card"><h2>技术特征</h2><div class="chart-placeholder">📈 K 线走势图区域 — 此处展示 600114 K 线+MA5/MA20+成本线</div></div>`;
-  el.innerHTML = html;
+  const missingFlags = d.missing_data_flags || [];
+  let missHtml = '';
+  if (missingFlags.length > 0) missHtml = `<div class="card dim"><p>缺失数据: ${missingFlags.join(', ')}</p></div>`;
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="stock-header">
+        <div>
+          <h2>${d.primary_stock_name || '-'} (${d.primary_stock_code || '-'})</h2>
+          <span class="meta">as_of: ${d.as_of_date || '-'} | 数据源: ${d.source_summary || '-'}</span>
+        </div>
+        <div>${statusBadge(d.overall_status)}</div>
+      </div>
+    </div>
+    ${warnHtml}
+    ${missHtml}
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>行情与状态</h3>
+        <table>
+          <tr><td>收盘价</td><td class="${mkt.close !== null && (dec.primary_action === 'observe' || (mkt.ma20 !== null && mkt.close < mkt.ma20)) ? 'down' : ''}">${mkt.close != null ? mkt.close.toFixed(2) : '—'}</td></tr>
+          <tr><td>MA5</td><td>${mkt.ma5 != null ? mkt.ma5.toFixed(2) : '—'}</td></tr>
+          <tr><td>MA20</td><td class="${mkt.ma20 != null && mkt.close < mkt.ma20 ? 'down' : ''}">${mkt.ma20 != null ? mkt.ma20.toFixed(2) : '—'}</td></tr>
+          <tr><td>MA60</td><td>${mkt.ma60 != null ? mkt.ma60.toFixed(2) : '—'}</td></tr>
+          <tr><td>RSI14</td><td>${mkt.rsi14 != null ? mkt.rsi14.toFixed(2) : '—'}</td></tr>
+          <tr><td>规则健康</td><td>${statusBadge(dec.rule_health_status)}</td></tr>
+          <tr><td>K线数</td><td>${cd.total_kline_rows || '—'}</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>持仓</h3>
+        <table>
+          <tr><td>持仓状态</td><td>${pos.has_position ? '有持仓' : '未接入持仓账本'}</td></tr>
+          <tr><td>成本价</td><td>${pos.cost_price != null ? pos.cost_price : '不可用'}</td></tr>
+          <tr><td>盈亏</td><td>${pos.unrealized_pnl != null ? pos.unrealized_pnl : '不可用'}</td></tr>
+          <tr><td colspan="2" class="dim-text">${pos.note || ''}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>今日判断</h3>
+      <p><strong>建议动作</strong>: ${dec.primary_action === 'observe' ? '观察' : dec.primary_action === 'hold' ? '持有' : '—'} (置信度: ${dec.confidence != null ? (dec.confidence * 100).toFixed(0) + '%' : '—'})</p>
+      <p><strong>依据</strong>: ${dec.reasoning || '数据不足'}</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card"><h3>收盘价走势与 MA</h3>
+        <canvas id="chart-kline" height="220" style="width:100%"></canvas>
+        <p class="dim-text">来源: 代码文件/数据/kline_cache/600114.json</p>
+      </div>
+      <div class="card"><h3>成交量</h3>
+        <canvas id="chart-volume" height="200" style="width:100%"></canvas>
+      </div>
+    </div>
+  `;
+  renderKlineChart('chart-kline', cd);
+  renderVolumeChart('chart-volume', cd);
 }
 
-/* ── Stocks / Detail ── */
+/* ── 股票列表 ── */
 function renderStocks() {
   const el = document.getElementById('view-stocks');
-  const stocks = appData.stocks?.stocks || [];
-  let html = `<div class="card"><h2>全部股票</h2><table><tr><th>代码</th><th>名称</th><th>收盘</th><th>涨跌幅</th><th>状态</th><th></th></tr>`;
+  const stocks = (appData.stocks || {}).stocks || [];
+  let html = `<div class="card"><h3>全部股票</h3><table><tr><th>代码</th><th>名称</th><th>收盘</th><th>日期</th><th>状态</th></tr>`;
   for (const s of stocks) {
-    const pct = s.change_pct;
-    const pctCls = pct > 0 ? 'up' : pct < 0 ? 'down' : '';
-    html += `<tr>
-      <td>${s.stock_code}</td><td>${s.stock_name}</td>
-      <td>${s.close}</td>
-      <td class="${pctCls}">${pct > 0 ? '+' : ''}${pct}%</td>
-      <td>${statusBadge(s.user_visible_status)}</td>
-      <td><a onclick="showStockDetail('${s.stock_code}')">详情 →</a></td></tr>`;
+    html += `<tr><td>${s.stock_code}</td><td>${s.stock_name}</td><td>${s.close != null ? s.close.toFixed(2) : '—'}</td><td>${s.actual_trade_date || '—'}</td><td>${statusBadge(s.user_visible_status)}</td></tr>`;
   }
-  html += `</table></div>`;
+  html += `</table><p class="dim-text">仅展示有真实证据链的股票。当前证据覆盖: 600114 (kline_cache + feature_snapshot + backtest)</p></div>`;
   el.innerHTML = html;
 }
 
-function showStockDetail(code) {
-  showView('detail');
-  const el = document.getElementById('view-detail');
-  const stocks = appData.stocks?.stocks || [];
-  const s = stocks.find(x => x.stock_code === code) || {stock_code: code, stock_name: code};
-
-  const ev = appData.evidence;
-  const items = ev?.evidence_items || [];
-
-  let html = `<span class="back-link" onclick="showView('dashboard')">← 返回驾驶舱</span>`;
-  html += `<div class="grid-2">`;
-  html += `<div class="card"><h2>${s.stock_name} (${s.stock_code}) — 今日决策</h2>`;
-  html += `<table><tr><td>收盘</td><td>${s.close}</td></tr>`;
-  html += `<tr><td>涨跌幅</td><td class="${s.change_pct > 0 ? 'up' : 'down'}">${s.change_pct > 0 ? '+' : ''}${s.change_pct}%</td></tr>`;
-  html += `<tr><td>状态</td><td>${statusBadge(s.user_visible_status)}</td></tr></table>`;
-  html += `<div class="chart-placeholder" style="margin-top:12px">📊 技术分析图表 — MA5/MA20/MACD/RSI</div>`;
-  html += `</div>`;
-
-  html += `<div class="card"><h2>证据链</h2><ul class="evidence-list">`;
-  for (const item of items) {
-    html += `<li><strong>${item.source_type}</strong>: ${item.summary} <span style="color:var(--text-dim);font-size:12px">[${item.chart_hint}]</span></li>`;
-  }
-  html += `</ul></div></div>`;
-
-  html += `<div class="card"><h2>次日决策</h2>
-    <p>主要动作: <strong>持有/观察</strong></p>
-    <p>触发条件: 若跌破 MA20 则减仓; 若放量突破压力位则加仓</p>
-    <p>禁止动作: 不要在无确认信号前提早止损</p>
-  </div>`;
-
-  el.innerHTML = html;
-}
-
-/* ── Deep Analysis ── */
-window.renderDeepAnalysis = function() {
+/* ── 深度分析 ── */
+function renderDeepAnalysis() {
   const el = document.getElementById('view-deep');
-  el.innerHTML = `<div class="grid-2">
-    <div class="card"><h2>深度分析 — 600114 东睦股份</h2>
-      <h3>核心结论</h3>
-      <p style="color:var(--text-dim);margin-bottom:12px">基于 Phase 1 本地 K 线缓存和 MA20 止损规则，当前走势偏弱，建议持有/观察。</p>
-      <h3>风险</h3>
-      <p style="color:var(--warn)">⚠ MA20 破位止损规则近期表现 WARN（3Y 胜率 21%）</p>
-      <h3>建议动作</h3>
-      <p>持有为主，若收盘跌破 MA20（38.68）考虑减仓。</p>
+  el.innerHTML = `
+    <div class="card">
+      <h2>深度分析 — 600114 东睦股份</h2>
+      <p class="dim-text">报告正文暂未结构化解析。以下信息来自 active baseline 和证据文件。</p>
     </div>
-    <div class="card"><h2>证据支持</h2>
-      <div class="chart-placeholder">📈 MA20 破位历史回测图表 — 3Y/1Y/6M 窗口对比</div>
-      <div style="margin-top:12px"><h3>来源与时间</h3>
-      <p class="evidence-list">数据来源: kline_cache/600114.json<br>最后更新: 20260615<br>规则版本: v1.0</p></div>
-    </div>
-  </div>`;
-};
-
-/* ── Daily Analysis ── */
-window.renderDailyAnalysis = function() {
-  const el = document.getElementById('view-daily');
-  el.innerHTML = `<div class="card"><h2>每日分析 — 2026-06-16 东睦股份</h2>
     <div class="grid-2">
-      <div><h3>今日走势</h3>
-        <div class="chart-placeholder" style="height:150px">📊 日内 K 线图</div>
-        <p style="margin-top:8px">开盘/最高/最低/收盘: 40.20 / 41.23 / 38.26 / 38.57</p>
-        <p>走势类型: 冲高回落</p>
+      <div class="card">
+        <h3>Active Baseline</h3>
+        <table>
+          <tr><td>baseline 文件</td><td>重点股票/基线/东睦股份(600114)_baseline_2026W25.json</td></tr>
+          <tr><td>支撑/压力/止损</td><td>见基线文件</td></tr>
+          <tr><td>数据新鲜度</td><td>可能需验证</td></tr>
+        </table>
+        <p class="dim-text" style="margin-top:8px">源文件只读，未作为本阶段交付物。</p>
       </div>
-      <div><h3>相对于 Baseline</h3>
-        <p>支撑: -</p>
-        <p>压力: -</p>
-        <p>止损: MA20 (38.68)</p>
-        <p style="color:var(--warn)">⚠ 当前价格 (38.57) 已跌破 MA20</p>
+      <div class="card">
+        <h3>证据链引用</h3>
+        <table>
+          <tr><td>feature_snapshot</td><td>运行产物/.../feature_snapshot_600114_20260616.json</td></tr>
+          <tr><td>backtest</td><td>运行产物/.../backtest_TECH_MA20_BREAK_STOP_LOSS_600114.json</td></tr>
+          <tr><td>kline_cache</td><td>代码文件/数据/kline_cache/600114.json</td></tr>
+        </table>
       </div>
     </div>
-    <h3 style="margin-top:16px">次日决策</h3>
-    <p>若明日反弹回 MA20 上方: 继续持有</p>
-    <p>若继续跌破前低: 考虑减仓至 50%</p>
-  </div>`;
-};
+  `;
+}
 
-/* ── Rule Health ── */
+/* ── 每日分析 ── */
+function renderDailyAnalysis() {
+  const el = document.getElementById('view-daily');
+  const cd = appData.chartData || {};
+  const ohlc = cd.ohlc || [];
+  const last = ohlc.length > 0 ? ohlc[ohlc.length - 1] : null;
+  const prev = ohlc.length > 1 ? ohlc[ohlc.length - 2] : null;
+
+  el.innerHTML = `
+    <div class="card">
+      <h2>每日分析 — ${last ? last.date : '—'} 600114 东睦股份</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>今日行情 (kline_cache)</h3>
+        <table>
+          <tr><td>日期</td><td>${last ? last.date : '—'}</td></tr>
+          <tr><td>开盘</td><td>${last ? last.open.toFixed(2) : '—'}</td></tr>
+          <tr><td>最高</td><td>${last ? last.high.toFixed(2) : '—'}</td></tr>
+          <tr><td>最低</td><td>${last ? last.low.toFixed(2) : '—'}</td></tr>
+          <tr><td>收盘</td><td class="${last && prev && last.close < prev.close ? 'down' : ''}">${last ? last.close.toFixed(2) : '—'}</td></tr>
+          <tr><td>数据源</td><td class="dim-text">代码文件/数据/kline_cache/600114.json</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>次日观察条件</h3>
+        <p>当前未生成强买卖动作。建议关注:</p>
+        <ul style="margin-left:16px;margin-top:8px;color:var(--text-dim)">
+          ${last && cd.ma20 && cd.ma20.length > 0 ? `<li>收盘价 (${last.close.toFixed(2)}) 相对 MA20 (${cd.ma20[cd.ma20.length-1].ma20.toFixed(2)})</li>` : ''}
+          <li>规则健康状态: ${statusBadge((appData.ruleHealth || {}).rule_status)}</li>
+          <li>持仓未接入, 不生成持仓比例建议</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card"><canvas id="chart-kline-daily" height="220" style="width:100%"></canvas></div>
+  `;
+  renderKlineChart('chart-kline-daily', cd);
+}
+
+/* ── 规则健康 ── */
 function renderRuleHealth() {
   const el = document.getElementById('view-rules');
   const rh = appData.ruleHealth || {};
   const cells = rh.recent_cells || [];
 
-  let html = `<div class="grid-2">`;
-  html += `<div class="card"><h2>${rh.rule_name || 'MA20 破位止损'}</h2>`;
-  html += `<table><tr><td>状态</td><td>${statusBadge(rh.rule_status)}</td></tr>`;
-  html += `<tr><td>样本数</td><td>${rh.sample_count}</td></tr>`;
-  html += `<tr><td>命中</td><td>${rh.hit_count}</td></tr>`;
-  html += `<tr><td>偏离</td><td>${rh.miss_count}</td></tr>`;
-  html += `<tr><td>观察</td><td>${rh.observe_count}</td></tr>`;
-  html += `<tr><td>衰减分数</td><td>${rh.decay_score ?? '-'}</td></tr>`;
-  html += `<tr><td>未来函数风险</td><td>${rh.future_leakage_risk ? '⚠ 是' : '✅ 否'}</td></tr>`;
-  html += `<tr><td>影响股票</td><td>${(rh.affected_stocks || []).join(', ') || '-'}</td></tr>`;
-  html += `</table></div>`;
-
-  html += `<div class="card"><h2>说明</h2><p>${rh.explanation || ''}</p>
-    <div style="margin-top:12px"><h3>格子状态含义</h3>
-    <p><span class="status-badge status-PASS" style="margin-right:4px">HIT</span> 规则判断被后续走势验证</p>
-    <p><span class="status-badge status-BLOCK" style="margin-right:4px">MISS</span> 规则判断与后续走势偏离</p>
-    <p><span class="status-badge status-OBSERVE" style="margin-right:4px">OBS</span> 样本不足，只观察不处罚</p>
-    <p><span class="status-badge status-WARN" style="margin-right:4px">WARN</span> 衰减/未来函数风险/证据缺失</p>
+  let html = `<div class="grid-2">
+    <div class="card"><h3>${rh.rule_name || 'MA20 破位止损'}</h3>
+      <table>
+        <tr><td>状态</td><td>${statusBadge(rh.rule_status)}</td></tr>
+        <tr><td>样本数</td><td>${rh.sample_count}</td></tr>
+        <tr><td>命中</td><td>${rh.hit_count} <span class="dim-text">(${rh.sample_count > 0 ? (rh.hit_count / rh.sample_count * 100).toFixed(0) : 0}%)</span></td></tr>
+        <tr><td>偏离</td><td>${rh.miss_count}</td></tr>
+        <tr><td>观察</td><td>${rh.observe_count}</td></tr>
+        <tr><td>衰减分数</td><td>${rh.decay_score ?? '—'}</td></tr>
+        <tr><td>未来函数风险</td><td>${rh.future_leakage_risk ? '⚠ 有风险' : '✅ 未检测到'}</td></tr>
+        <tr><td>影响股票</td><td>${(rh.affected_stocks || []).join(', ') || '—'}</td></tr>
+      </table>
     </div>
-  </div></div>`;
+    <div class="card"><h3>格子状态说明</h3>
+      <p><span class="badge badge-hit">HIT</span> 规则判断被后续走势验证</p>
+      <p><span class="badge badge-miss">MISS</span> 规则判断与后续走势偏离</p>
+      <p><span class="badge badge-obs">OBS</span> 样本不足，只观察不处罚</p>
+      <p><span class="badge badge-warn">WARN</span> 衰减/未来函数风险/证据缺失</p>
+      <p class="dim-text" style="margin-top:8px">${rh.explanation || ''}</p>
+    </div>
+  </div>`;
 
   if (cells.length > 0) {
-    html += `<div class="card"><h2>规则矩阵</h2><div class="matrix">`;
-    html += `<div class="matrix-row matrix-header"><span>样本</span>`;
-    for (const c of cells) html += `<span>${c.trade_date.slice(-4)}</span>`;
-    html += `</div>`;
-    html += `<div class="matrix-row"><span>${rh.rule_id}</span>`;
-    for (const c of cells) html += `<div class="matrix-cell ${c.state}">${c.state}</div>`;
-    html += `</div></div>`;
-    html += `<p style="color:var(--text-dim);font-size:12px;margin-top:8px">每列代表一个窗口样本。点击行可展开详情。</p>`;
-    html += `</div>`;
+    html += `<div class="card"><h3>规则矩阵</h3><div class="matrix"><div class="matrix-row matrix-header"><span>样本</span>${cells.map(c => `<span class="dim-text">${c.trade_date.slice(-4)}</span>`).join('')}</div>`;
+    html += `<div class="matrix-row"><span>${rh.rule_id}</span>${cells.map(c => `<div class="matrix-cell ${c.state}">${c.state}</div>`).join('')}</div></div></div>`;
   }
 
-  html += `<div class="card"><h2>影响股票详情</h2><table><tr><th>股票</th><th>窗口</th><th>状态</th><th>原因</th></tr>`;
-  for (const c of cells) {
-    html += `<tr><td>${c.stock_code}</td><td>${c.trade_date}</td><td>${statusBadge(c.state)}</td><td>${c.reason || '-'}</td></tr>`;
-  }
+  html += `<div class="card"><h3>影响股票</h3><table><tr><th>股票</th><th>窗口</th><th>状态</th><th>原因</th></tr>`;
+  for (const c of cells) html += `<tr><td>${c.stock_code}</td><td>${c.trade_date}</td><td>${statusBadge(c.state)}</td><td class="dim-text">${c.reason || '—'}</td></tr>`;
   html += `</table></div>`;
 
   el.innerHTML = html;
+}
+
+/* ── K 线图表 ── */
+function renderKlineChart(canvasId, cd) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 600;
+  canvas.height = canvas.height || 220;
+
+  const ohlc = cd.ohlc || [];
+  if (ohlc.length < 5) {
+    ctx.font = '14px sans-serif'; ctx.fillStyle = '#8899aa';
+    ctx.fillText('K 线数据不足 (≥5 根)', 20, 40); return;
+  }
+
+  const W = canvas.width, H = canvas.height;
+  const pad = {t: 20, r: 10, b: 30, l: 50};
+  const chartW = W - pad.l - pad.r;
+  const chartH = H - pad.t - pad.b;
+
+  const prices = ohlc.map(o => o.close);
+  const minP = Math.min(...prices) * 0.98, maxP = Math.max(...prices) * 1.02;
+  const xStep = chartW / (ohlc.length - 1);
+  const yScale = (v) => pad.t + chartH - (v - minP) / (maxP - minP) * chartH;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // grid
+  ctx.strokeStyle = '#2a3a4a'; ctx.lineWidth = 0.5;
+  for (let y = pad.t; y < pad.t + chartH; y += 40) { ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke(); }
+
+  // MA lines
+  for (const [key, color] of [['ma5','#4fc3f7'], ['ma20','#ff9800'], ['ma60','#ab47bc']]) {
+    const vals = cd[key] || [];
+    if (vals.length < 2) continue;
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    let first = true;
+    for (const v of vals) {
+      const idx = ohlc.findIndex(o => o.date === v.date);
+      if (idx < 0) continue;
+      const x = pad.l + idx * xStep;
+      const y = yScale(v[key]);
+      if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  // Legend
+  ctx.font = '11px sans-serif';
+  let lx = pad.l;
+  for (const [key, color, label] of [['close','#e0e8f0','收盘'], ['ma5','#4fc3f7','MA5'], ['ma20','#ff9800','MA20']]) {
+    ctx.fillStyle = color; ctx.fillRect(lx, 5, 12, 8);
+    ctx.fillStyle = '#8899aa'; ctx.fillText(label, lx + 16, 13);
+    lx += 50;
+  }
+}
+function renderVolumeChart(canvasId, cd) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 600;
+  canvas.height = canvas.height || 200;
+
+  const vols = cd.volume || [];
+  if (vols.length < 5) { ctx.font = '14px sans-serif'; ctx.fillStyle = '#8899aa'; ctx.fillText('量能数据不足', 20, 40); return; }
+
+  const W = canvas.width, H = canvas.height;
+  const pad = {t: 10, r: 10, b: 20, l: 50};
+  const chartW = W - pad.l - pad.r, chartH = H - pad.t - pad.b;
+  const maxVol = Math.max(...vols.map(v => v.volume));
+  const barW = Math.max(2, (chartW / vols.length) * 0.6);
+
+  ctx.clearRect(0, 0, W, H);
+  for (let i = 0; i < vols.length; i++) {
+    const x = pad.l + (chartW) * i / (vols.length - 1);
+    const h = (vols[i].volume / maxVol) * chartH;
+    ctx.fillStyle = '#2a5a8a';
+    ctx.fillRect(x - barW/2, pad.t + chartH - h, barW, h);
+  }
 }

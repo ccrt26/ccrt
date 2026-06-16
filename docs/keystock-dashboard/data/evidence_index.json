@@ -1,18 +1,18 @@
 {
-  "decision_id": "DI-20260616-600114-2c8929",
+  "decision_id": "DI-20260616-600114-d195a4",
   "stock_code": "600114",
   "stock_name": "东睦股份",
   "trade_date": "20260616",
   "evidence_items": [
     {
-      "evidence_id": "ev-d07905",
+      "evidence_id": "ev-c91a5b",
       "source_type": "backtest",
       "source_path": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json",
       "summary": "MA20 破位回测: WARN",
       "chart_hint": "matrix",
       "freshness_status": "FRESH",
-      "created_at": "2026-06-16T09:05:26.750482+00:00"
+      "created_at": "2026-06-16T09:45:54.250407+00:00"
     }
   ],
-  "created_at": "2026-06-16T09:05:26.750488+00:00"
+  "created_at": "2026-06-16T09:45:54.250413+00:00"
 }

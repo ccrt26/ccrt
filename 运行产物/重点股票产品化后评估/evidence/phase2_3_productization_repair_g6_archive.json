@@ -1,0 +1,11 @@
+{
+  "phase": "Phase 2/3 productization repair",
+  "stage": "G6 archive",
+  "generated_at": "2026-06-16T09:45:54.257562+00:00",
+  "archive_status": "COMPLETE",
+  "user_visible_status": "COMPLETE",
+  "checker_overall": "PASS",
+  "data_truth_status": "REAL_EVIDENCE_ONLY",
+  "supersedes": "phase2_3_productization_g6_archive.json",
+  "repo_status": "verify git diff before finalizing"
+}

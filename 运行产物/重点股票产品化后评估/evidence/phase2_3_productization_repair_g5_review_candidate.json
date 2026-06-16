@@ -1,0 +1,17 @@
+{
+  "phase": "Phase 2/3 productization repair",
+  "stage": "G5 review candidate",
+  "generated_at": "2026-06-16T09:45:54.257562+00:00",
+  "checker_result": "PASS",
+  "data_truth_status": "REAL_EVIDENCE_ONLY",
+  "blocks": [],
+  "warns": [
+    {
+      "check": "data_date_divergence",
+      "path": "docs/keystock-dashboard/data/chart_data.json",
+      "status": "WARN",
+      "detail": "feature_snapshot actual_trade_date(20260615) != kline_cache max_date(20260616)"
+    }
+  ],
+  "supersedes": "phase2_3_productization_g5_review_candidate.json"
+}

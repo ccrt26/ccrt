@@ -1,0 +1,15 @@
+{
+  "task_id": "F-FIX-GIT-CLOSURE-ROOT-20260616",
+  "gate": "G4",
+  "artifact_type": "self_check_candidate",
+  "result": "PASS",
+  "generated_at": "2026-06-16T09:51:00.710166+00:00",
+  "tests_passed": true,
+  "tests_count": 55,
+  "launchd_verify_result": "LOADED",
+  "hygiene_expected_block": true,
+  "no_git_add_A_confirmed": true,
+  "no_reset_clean_force_push": true,
+  "payload_snapshot_total": 28,
+  "payload_scan_pass": true
+}
