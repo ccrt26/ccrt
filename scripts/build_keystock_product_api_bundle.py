@@ -82,8 +82,8 @@ def main():
             "generated_at": now,
             "checker_result": checker_result.get("overall", "SKIP"),
             "data_truth_status": summary.get("data_truth_status"),
-            "blocks": [f for f in checker_result.get("findings", []) if f.get("severity") == "BLOCK"],
-            "warns": [f for f in checker_result.get("findings", []) if f.get("severity") != "BLOCK"],
+            "blocks": [f for f in checker_result.get("findings", []) if f.get("status") == "BLOCK"],
+            "warns": [f for f in checker_result.get("findings", []) if f.get("status") != "BLOCK"],
             "supersedes": "phase2_3_productization_g5_review_candidate.json",
         }
         os.makedirs(os.path.dirname(args.review_candidate_out), exist_ok=True)

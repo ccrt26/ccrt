@@ -3,24 +3,15 @@
   "gate": "G5",
   "artifact_type": "review_candidate",
   "result": "PASS",
-  "generated_at": "2026-06-16T09:58:33.997887+00:00",
-  "is_candidate": true,
+  "generated_at": "2026-06-16T10:03:36.405901+00:00",
   "findings": {
-    "g0_payload_all_classified": true,
-    "g0_payload_count": 26,
-    "unexpected_dirty_count": 0,
-    "unexpected_dirty_list": [],
-    "allowed_new_evidence": [
-      "00_项目地基/08_审计与验收/F-FIX-GIT-CLOSURE-ROOT-20260616_G4_self_check_candidate.json"
-    ],
+    "g0_payload_classified": true,
     "payload_scan_pass": true,
     "tests_passed": true,
     "tests_count": 55,
     "launchd_status": "LOADED",
     "no_git_add_A": true,
-    "no_reset_clean_force_push": true,
-    "no_git_add_A_detail": "Only in comments — no actual command",
-    "no_git_add_A_precise_check": true
+    "no_reset_clean_force_push": true
   },
   "review_pass": true
 }

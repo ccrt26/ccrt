@@ -1,0 +1,24 @@
+{
+  "phase": "Phase 2/3 productization",
+  "stage": "G4 self-check candidate",
+  "generated_at": "2026-06-16T09:05:26.750944+00:00",
+  "changed_files": [],
+  "test_commands": [
+    "pytest",
+    "py_compile",
+    "json.tool"
+  ],
+  "test_results": "PASS",
+  "generated_product_api_files": [
+    "运行产物/重点股票产品化后评估/product_api/dashboard.json",
+    "运行产物/重点股票产品化后评估/product_api/stocks.json",
+    "运行产物/重点股票产品化后评估/product_api/run_state.json",
+    "运行产物/重点股票产品化后评估/product_api/evidence_index.json"
+  ],
+  "dashboard_entry": "docs/keystock-dashboard/index.html",
+  "forbidden_scope_diff_empty": true,
+  "known_warns": [
+    "jsonschema 未安装，关键校验已通过"
+  ],
+  "block_status": false
+}

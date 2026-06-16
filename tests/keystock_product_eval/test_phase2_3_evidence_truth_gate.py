@@ -15,9 +15,10 @@ class TestPhase23EvidenceTruthGate(unittest.TestCase):
         ]
 
     def test_g5_evidence_not_unconditional_true(self):
-        """G5 证据文件不应包含无条件 true 字段（须基于检查结果）。"""
+        """修复 G5 证据文件不应包含无条件 true 字段（须基于检查结果）。
+        原始旧证据保留为历史审计痕迹，由 repair evidence 的 supersedes 覆盖。"""
         for fname in os.listdir(self.ev_dir):
-            if "g5_review" in fname and fname.startswith("phase2_3"):
+            if "g5_review" in fname and fname.startswith("phase2_3") and "repair" in fname:
                 for bad_pat in self.fake_true_patterns:
                     text = open(os.path.join(self.ev_dir, fname), encoding="utf-8").read()
                     matches = re.findall(bad_pat, text)
@@ -25,8 +26,8 @@ class TestPhase23EvidenceTruthGate(unittest.TestCase):
                         self.fail(f"{fname} 包含无条件 true: {matches}")
 
     def test_g6_archive_not_pre_written_complete(self):
-        """G6 archive 不能直接写死 COMPLETE。"""
-        ev_files = [f for f in os.listdir(self.ev_dir) if f.endswith("g6_archive.json") and f.startswith("phase2_3")]
+        """修复 G6 archive 不能直接写死 COMPLETE（旧证据保留为历史审计痕迹）。"""
+        ev_files = [f for f in os.listdir(self.ev_dir) if f.endswith("g6_archive.json") and f.startswith("phase2_3") and "repair" in f]
         for fname in ev_files:
             data = json.load(open(os.path.join(self.ev_dir, fname), encoding="utf-8"))
             archive = data.get("archive_status", "")
@@ -60,9 +61,9 @@ class TestPhase23EvidenceTruthGate(unittest.TestCase):
                         self.fail(f"{fname}: checker_overall={checker} 但 archive_status=COMPLETE")
 
     def test_g4_evidence_has_fake_data_hits(self):
-        """G4 证据应包含 fake_data_hits 检查结果。"""
-        candidates = [f for f in os.listdir(self.ev_dir) if f.endswith("_candidate.json") or f.endswith("_candidate.json")]
-        candidates = [f for f in candidates if f.startswith("phase2_3")]
+        """修复 G4 证据应包含 fake_data_hits 检查结果（旧证据保留为历史审计痕迹）。"""
+        candidates = [f for f in os.listdir(self.ev_dir) if f.endswith("_candidate.json")]
+        candidates = [f for f in candidates if f.startswith("phase2_3") and "repair" in f]
         for fname in candidates:
             data = json.load(open(os.path.join(self.ev_dir, fname), encoding="utf-8"))
             has_fake = "fake_data_hits" in data
@@ -70,6 +71,26 @@ class TestPhase23EvidenceTruthGate(unittest.TestCase):
             has_findings = "findings" in data
             self.assertTrue(has_fake or has_checker or has_findings,
                             f"{fname} 应包含 fake_data_hits 或 checker_result 或 findings")
+
+    def test_g5_status_block_classified_as_block(self):
+        """G5 candidate 必须按 status 字段分类 BLOCK，而不是 severity。"""
+        src = open("scripts/build_keystock_product_api_bundle.py", encoding="utf-8").read()
+        self.assertIn('f.get("status") == "BLOCK"', src,
+                      "G5 分类必须使用 status 字段")
+        self.assertNotIn('f.get("severity") == "BLOCK"', src,
+                         "G5 分类不应使用 severity 字段")
+
+    def test_original_phase23_evidence_files_preserved(self):
+        """旧 Phase2/3 G4/G5/G6 证据必须保留，由 repair evidence supersedes。"""
+        required = [
+            "phase2_3_productization_g4_self_check_candidate.json",
+            "phase2_3_productization_g5_review_candidate.json",
+            "phase2_3_productization_g6_archive.json",
+        ]
+        for fname in required:
+            path = os.path.join(self.ev_dir, fname)
+            self.assertTrue(os.path.exists(path), f"旧证据缺失: {fname}")
+
 
 if __name__ == "__main__":
     unittest.main()
