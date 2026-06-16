@@ -24,11 +24,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="重点股票产品化 — 特征快照构建"
     )
-    parser.add_argument("--code", required=True, help="股票代码")
-    parser.add_argument("--date", required=True, help="交易日 YYYYMMDD")
+    parser.add_argument("--code", "--stock-code", dest="code", required=True, help="股票代码")
+    parser.add_argument("--date", "--trade-date", dest="date", required=True, help="交易日 YYYYMMDD")
     parser.add_argument("--as-of-date", required=True, help="数据可见性截止日 YYYYMMDD")
     parser.add_argument(
-        "--out-dir",
+        "--out-dir", "--out", dest="out_dir",
         default="运行产物/重点股票产品化后评估/feature_snapshots",
         help="输出目录",
     )

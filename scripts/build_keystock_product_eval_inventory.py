@@ -25,7 +25,7 @@ def main():
         description="重点股票产品化 — 资产盘点"
     )
     parser.add_argument(
-        "--out-dir",
+        "--out-dir", "--out", dest="out_dir",
         default="运行产物/重点股票产品化后评估/inventory",
         help="输出目录（默认: 运行产物/重点股票产品化后评估/inventory）",
     )

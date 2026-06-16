@@ -24,7 +24,8 @@ def main():
     parser = argparse.ArgumentParser(
         description="重点股票产品化 — MA20 破位止损回测"
     )
-    parser.add_argument("--code", required=True, help="股票代码")
+    parser.add_argument("--code", "--stock-code", dest="code", required=True, help="股票代码")
+    parser.add_argument("--stock-name", default=None, help="股票名称（可选）")
     parser.add_argument("--as-of-date", required=True, help="回溯截止日期 YYYYMMDD")
     parser.add_argument(
         "--out-dir",

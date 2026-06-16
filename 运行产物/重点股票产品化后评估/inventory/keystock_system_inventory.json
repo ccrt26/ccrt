@@ -1,15 +1,17 @@
 {
-  "generated_at": "2026-06-16T05:59:36.172736+00:00",
+  "generated_at": "2026-06-16T06:30:44.290118+00:00",
   "scan_root": "/Users/ccrt/ccrt",
   "analysis_production_contract_refs": [],
   "analysis_pipeline_status_refs": {
     "运行产物/重点股票产品化后评估/inventory": {
-      "status": "FOUND",
-      "files": []
+      "status": "NOT_FOUND"
     },
     "运行产物/重点股票产品化后评估/ledger": {
       "status": "FOUND",
-      "files": []
+      "files": [
+        "ledger_status.json",
+        "prediction_ledger.jsonl"
+      ]
     }
   },
   "baseline_registry": {
@@ -1830,8 +1832,49 @@
     ]
   },
   "data_assets": {
-    "count": 0,
-    "files": []
+    "count": 10,
+    "files": [
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/ledger/prediction_ledger.jsonl"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/ledger/ledger_status.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g6_archive.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/backtests/backtest_TECH_MA20_BREAK_STOP_LOSS_600114_20260616.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/status/dashboard_status.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/status/alert_center.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/forward_eval/forward_eval_20260616.json"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/forward_eval/fixtures/placeholder_due_ledger.jsonl"
+      },
+      {
+        "root": "运行产物",
+        "file": "运行产物/重点股票产品化后评估/feature_snapshots/feature_snapshot_600114_20260616.json"
+      }
+    ]
   },
   "rule_assets": {
     "count": 0,

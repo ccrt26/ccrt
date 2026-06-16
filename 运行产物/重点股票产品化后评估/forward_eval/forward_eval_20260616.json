@@ -1,14 +1,14 @@
 [
   {
-    "eval_id": "EV-20260616-60616-600114",
-    "ledger_id": "PL-FIXTURE-20260616-600114",
-    "stock_code": "600114",
-    "stock_name": "东睦股份",
-    "trade_date": "20260520",
+    "eval_id": "EV-20260616-616-fb8ef8d4",
+    "ledger_id": "PL-20260616-fb8ef8d4",
+    "stock_code": "601727",
+    "stock_name": "上海电气",
+    "trade_date": "20260526",
     "eval_date": "20260616",
     "prediction_type": "directional",
-    "assertion": "Phase 1 占位记录 — forward_eval_fixture_600114_20260520",
-    "horizon": 5,
+    "assertion": "Phase 1 占位记录 — 601727 20260526",
+    "horizon": 20,
     "outcome": "OBSERVE",
     "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
     "attribution": {
@@ -16,15 +16,247 @@
       "secondary": [],
       "detail": "占位 assertion 缺少可判定方向/阈值/目标"
     },
-    "feature_snapshot_id": "FS-20260616-600114-097436",
+    "feature_snapshot_id": "FS-20260616-601727-2113fb",
     "actual_metrics": {
       "actual_return": null,
       "max_drawdown": null,
       "relative_return": null
     },
     "data_gap_reason": "",
-    "generated_at": "2026-06-16T06:11:39.368656+00:00",
-    "fixture_only": true,
-    "source_fixture_ref": "PL-FIXTURE-20260616-600114"
+    "generated_at": "2026-06-16T06:30:44.328180+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-361ad60a",
+    "ledger_id": "PL-20260616-361ad60a",
+    "stock_code": "601727",
+    "stock_name": "上海电气",
+    "trade_date": "20260527",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 601727 20260527",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-601727-89188b",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.331040+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-fc0203da",
+    "ledger_id": "PL-20260616-fc0203da",
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "20260526",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 600114 20260526",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-600114-f80d96",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.334970+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-3b8ca19e",
+    "ledger_id": "PL-20260616-3b8ca19e",
+    "stock_code": "600114",
+    "stock_name": "东睦股份",
+    "trade_date": "20260527",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 600114 20260527",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-600114-4b31e9",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.338488+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-655299b1",
+    "ledger_id": "PL-20260616-655299b1",
+    "stock_code": "603019",
+    "stock_name": "中科曙光",
+    "trade_date": "20260526",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 603019 20260526",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-603019-14986d",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.341562+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-65f07eaa",
+    "ledger_id": "PL-20260616-65f07eaa",
+    "stock_code": "603019",
+    "stock_name": "中科曙光",
+    "trade_date": "20260527",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 603019 20260527",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-603019-976371",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.344262+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-e49a7978",
+    "ledger_id": "PL-20260616-e49a7978",
+    "stock_code": "301075",
+    "stock_name": "多瑞医药",
+    "trade_date": "20260526",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 301075 20260526",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-301075-ff07b5",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.347610+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-649d3f1a",
+    "ledger_id": "PL-20260616-649d3f1a",
+    "stock_code": "301075",
+    "stock_name": "多瑞医药",
+    "trade_date": "20260527",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 301075 20260527",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-301075-c11079",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.350292+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-1b25bf11",
+    "ledger_id": "PL-20260616-1b25bf11",
+    "stock_code": "603092",
+    "stock_name": "德力佳",
+    "trade_date": "20260526",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 603092 20260526",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-603092-8f1061",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.352326+00:00"
+  },
+  {
+    "eval_id": "EV-20260616-616-28c625b9",
+    "ledger_id": "PL-20260616-28c625b9",
+    "stock_code": "603092",
+    "stock_name": "德力佳",
+    "trade_date": "20260527",
+    "eval_date": "20260616",
+    "prediction_type": "directional",
+    "assertion": "Phase 1 占位记录 — 603092 20260527",
+    "horizon": 20,
+    "outcome": "OBSERVE",
+    "outcome_detail": "Phase 1 账本记录为占位 assertion，缺少可判定方向/阈值/目标，暂不判 HIT/MISS",
+    "attribution": {
+      "primary": "prediction_assertion_placeholder",
+      "secondary": [],
+      "detail": "占位 assertion 缺少可判定方向/阈值/目标"
+    },
+    "feature_snapshot_id": "FS-20260616-603092-60994d",
+    "actual_metrics": {
+      "actual_return": null,
+      "max_drawdown": null,
+      "relative_return": null
+    },
+    "data_gap_reason": "",
+    "generated_at": "2026-06-16T06:30:44.354165+00:00"
   }
 ]

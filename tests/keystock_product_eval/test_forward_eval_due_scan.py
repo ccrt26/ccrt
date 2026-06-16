@@ -172,5 +172,58 @@ class TestForwardEvalDueScan(unittest.TestCase):
                     )
 
 
+class TestForwardEvalCLIFixtureIfEmpty(unittest.TestCase):
+    """CLI --fixture-if-empty 空账本兜底路径测试。
+
+    验证：
+      - 空 ledger 回退默认 fixture
+      - fixture_only 标记正确
+      - 正式 ledger 不被污染
+    """
+
+    def test_cli_fixture_if_empty_uses_default_fixture_without_polluting_formal_ledger(self):
+        import subprocess
+        from pathlib import Path
+
+        project_root = Path(__file__).resolve().parents[2]
+        fixture_path = (project_root /
+                        "运行产物/重点股票产品化后评估/forward_eval/fixtures/placeholder_due_ledger.jsonl")
+        self.assertTrue(fixture_path.exists(), "默认 fixture ledger 必须存在")
+
+        with tempfile.TemporaryDirectory() as ledger_dir, tempfile.TemporaryDirectory() as out_dir:
+            cmd = [
+                sys.executable,
+                str(project_root / "scripts/run_forward_eval_scan.py"),
+                "--as-of-date", "20260616",
+                "--ledger-dir", ledger_dir,
+                "--out-dir", out_dir,
+                "--fixture-if-empty",
+            ]
+            proc = subprocess.run(
+                cmd, cwd=str(project_root), text=True, capture_output=True, check=False,
+            )
+
+            self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
+            self.assertIn("回退 fixture ledger", proc.stdout)
+            self.assertIn("fixture=1", proc.stdout)
+
+            out_path = Path(out_dir) / "forward_eval_20260616.json"
+            self.assertTrue(out_path.exists(), "fixture-if-empty 应生成 forward_eval 输出")
+
+            results = json.loads(out_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].get("outcome"), "OBSERVE")
+            self.assertTrue(
+                results[0].get("fixture_only") or results[0].get("source_fixture_ref"),
+                "fixture 输出必须携带 fixture 标记",
+            )
+
+            formal_ledger_path = Path(ledger_dir) / "prediction_ledger.jsonl"
+            if formal_ledger_path.exists():
+                content = formal_ledger_path.read_text(encoding="utf-8").strip()
+                self.assertEqual(content, "",
+                                 "fixture fallback 不得污染传入的空正式 ledger")
+
+
 if __name__ == "__main__":
     unittest.main()

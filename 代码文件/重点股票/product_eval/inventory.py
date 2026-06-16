@@ -256,11 +256,19 @@ def build_inventory(
 # ---------------------------------------------------------------------------
 
 def main(out_dir: Optional[str] = None) -> dict:
-    """CLI 入口点。"""
+    """CLI 入口点。
+
+    Args:
+        out_dir: 输出目录（或完整文件路径）。若以 .json 结尾则视为完整路径。
+    """
     inventory = build_inventory(out_dir=out_dir)
     if out_dir:
-        os.makedirs(out_dir, exist_ok=True)
-        out_path = os.path.join(out_dir, "keystock_system_inventory.json")
+        if out_dir.endswith(".json"):
+            out_path = out_dir
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        else:
+            os.makedirs(out_dir, exist_ok=True)
+            out_path = os.path.join(out_dir, "keystock_system_inventory.json")
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(inventory, f, ensure_ascii=False, indent=2)
         print(f"[INVENTORY] 已写入: {out_path}")
