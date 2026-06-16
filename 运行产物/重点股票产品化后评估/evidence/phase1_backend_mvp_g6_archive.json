@@ -1,76 +1,22 @@
 {
   "phase": "Phase 1 backend MVP",
-  "step": "第 5 步：Phase 1 后端 MVP 执行包",
-  "flow": "F-FIX + F-EVAL + F-GATE",
-  "stage": "G6",
+  "stage": "G6 archive",
+  "generated_at": "2026-06-16T07:14:15.945337+00:00",
   "archive_status": "COMPLETE",
-  "generated_at": "2026-06-16T06:18:46.987774+00:00",
   "basis": {
-    "g5_evidence": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json",
-    "pytest": "tests/keystock_product_eval: 65 passed",
-    "py_compile": "PASS",
-    "json_validation": "PASS"
+    "g4_evidence": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g4_recheck_evidence.json",
+    "g5_evidence": "运行产物/重点股票产品化后评估/evidence/phase1_backend_mvp_g5_evidence.json"
   },
-  "delivery_summary": {
-    "ledger_status": {
-      "sidecar_count": 50,
-      "ledger_count": 45,
-      "status": "PASS"
-    },
-    "feature_snapshot": {
-      "stock_code": "600114",
-      "close": 42.22,
-      "volume": 46557214.0,
-      "ma20": 38.6815,
-      "actual_trade_date": "20260615",
-      "market_data_missing": false
-    },
-    "backtest": {
-      "rule_id": "TECH_MA20_BREAK_STOP_LOSS",
-      "overall_status": "WARN",
-      "windows": {
-        "3Y": {
-          "sample_count": 14,
-          "status": "WARN"
-        },
-        "1Y": {
-          "sample_count": 11,
-          "status": "WARN"
-        },
-        "6M": {
-          "sample_count": 6,
-          "status": "OBSERVE"
-        }
-      }
-    },
-    "dashboard": {
-      "overall_status": "COMPLETE",
-      "alerts_match_alert_center": true
-    },
-    "forward_eval": {
-      "fixture_generated": true,
-      "fixture_only": true,
-      "result_count": 1,
-      "placeholder_assertions_observe": true,
-      "no_market_data_missing_wording": true,
-      "output_path": "运行产物/重点股票产品化后评估/forward_eval/forward_eval_20260616.json"
-    }
+  "scope": {
+    "production_reports_modified": false,
+    "formal_rules_modified": false,
+    "baseline_registry_modified": false,
+    "runtime_registry_or_launchd_modified": false
   },
   "release_notes": [
-    "Phase 1 技术特征已接入本地 K 线缓存，非真实行情 API。",
-    "MA20 回测当前为 WARN，原因是规则表现偏弱，不是工程阻断。",
-    "forward_eval 当前仅归档 fixture-only OBSERVE，不产生真实 HIT/MISS。",
-    "财务/事件/拥挤度特征仍按 Phase 2/Phase 3 延期。",
-    "范围外临时文件已排除，不纳入本次 Phase 1 交付。"
+    "第 7 步只读验收完成",
+    "G4/G5 候选无 BLOCK 后进入 G6",
+    "G6 仅归档 evidence，不切生产入口、不修改规则、不修改 baseline/runtime"
   ],
-  "excluded_files": [
-    "临时分析/会话记录/temporary_analysis_doubao_v2_review_600114_20260616_close.json"
-  ],
-  "production_no_touch": {
-    "stock_reports_diff_empty": true,
-    "deep_analysis_diff_empty": true,
-    "baseline_registry_diff_empty": true,
-    "runtime_registry_diff_empty": true
-  },
   "user_visible_status": "COMPLETE"
 }

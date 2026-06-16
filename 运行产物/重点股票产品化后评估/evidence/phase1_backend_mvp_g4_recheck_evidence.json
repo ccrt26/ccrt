@@ -1,0 +1,26 @@
+{
+  "phase": "Phase 1 backend MVP",
+  "stage": "G4 self-check candidate",
+  "generated_at": "2026-06-16T07:14:15.945337+00:00",
+  "overall": "PASS_WITH_ALLOWED_WARN",
+  "read_only_validation": true,
+  "no_source_write": true,
+  "checks": [
+    "forbidden_scope",
+    "json_readable",
+    "py_compile",
+    "pytest",
+    "ledger_idempotency",
+    "feature_snapshot_no_future_function",
+    "observe_gate",
+    "status_alert_machine_readable",
+    "traceability",
+    "workspace_pollution_check"
+  ],
+  "known_allowed_warn": [
+    "第 5 步独立执行包未找到，已从 G6 archive 还原边界",
+    "完整 jsonschema 依赖缺失，关键 schema 校验已通过",
+    "MA20 回测规则表现 WARN，非工程阻断"
+  ],
+  "not_g5_or_g6": true
+}
