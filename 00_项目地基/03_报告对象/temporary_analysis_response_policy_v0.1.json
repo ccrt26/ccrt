@@ -1,0 +1,34 @@
+{
+  "scene": "临时分析",
+  "policy_version": "v0.1",
+  "frontend_goal": "盘中互动决策辅助",
+  "backend_must_use": [
+    "TemporaryAnalysisBrief",
+    "D07_v1.2",
+    "counter_evidence",
+    "key_levels",
+    "trigger_actions",
+    "LISHI method review",
+    "gate validation"
+  ],
+  "default_hidden_fields": [
+    "data_quality_when_normal",
+    "raw_hypotheses",
+    "raw_evidence_gap_requests_when_not_blocking",
+    "method_review_when_not_blocking",
+    "eval_hook_raw",
+    "non_goals_confirmed"
+  ],
+  "default_visible_sections": [
+    "一句话判断",
+    "现在怎么看",
+    "关键价位",
+    "哪些情况说明判断可能错了",
+    "操作计划",
+    "针对你的问题",
+    "下次复核点"
+  ],
+  "operation_plan_min_items": 5,
+  "counter_points_min_items": 4,
+  "interaction_rule": "前台回答可以按用户问题灵活裁剪，但必须先通过后台临时分析逻辑与 gate 校验。"
+}

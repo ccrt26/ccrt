@@ -1,0 +1,15 @@
+{
+  "flow": "F-GATE",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "scope": "temporary_analysis_front_response_renderer",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "render_policy",
+      "detail": "front output is concise, human-readable, question-aware, and backed by gated brief"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "flow": "F-GATE",
+  "stage": "G6_release_candidate",
+  "scope": "temporary_analysis_front_response_renderer",
+  "g4_candidate": "PASS",
+  "g5_candidate": "PASS",
+  "archive_required": true,
+  "github_push_required": true,
+  "commit_before": "0c8bd7cad524e7d253747571091379fe0acde920",
+  "generated_at": "2026-06-16T08:36:17+08:00"
+}
