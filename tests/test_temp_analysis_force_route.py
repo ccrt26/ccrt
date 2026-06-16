@@ -68,6 +68,17 @@ class TestTemporaryAnalysisForceRoute(unittest.TestCase):
         self.assertIn("brief_path_exists", checks)
         self.assertIn("rendered_output_path_exists", checks)
 
+    def test_stock_name_colloquial_question_routes(self):
+        cases = [
+            "东睦股份今天怎么样",
+            "东睦股份现在怎么样",
+            "东睦股份怎么看",
+        ]
+        for text in cases:
+            result = classify_request(text, POLICY)
+            self.assertEqual(result["decision"], "TEMP_ANALYSIS_REQUIRED", text)
+            self.assertTrue(result["stock_context_hits"]["stock_name_suffix_hits"], text)
+
     def test_valid_audit_record_passes(self):
         record = {
             "request": "看一下今天东睦股份的量价，分析情况",

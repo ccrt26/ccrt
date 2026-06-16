@@ -1,0 +1,13 @@
+{
+  "flow": "F-FIX",
+  "stage": "G6_release_candidate",
+  "scope": "temporary_analysis_stock_name_colloquial_route_fix",
+  "g4_final_status_candidate": "PASS",
+  "g5_overall": "PASS",
+  "archive_completed": true,
+  "github_sync_completed": true,
+  "push_completed": true,
+  "commit_before": "73de4e99628bee187c8c11081b7d38e6b01ad4d0",
+  "final_remote_verification_method": "reviewer verifies git rev-parse HEAD equals git ls-remote origin refs/heads/master",
+  "generated_at": "2026-06-16T12:24:30+08:00"
+}

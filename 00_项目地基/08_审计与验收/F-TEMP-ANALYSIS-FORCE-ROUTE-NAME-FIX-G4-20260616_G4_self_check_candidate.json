@@ -1,0 +1,56 @@
+{
+  "flow": "F-FIX",
+  "stage": "G4_self_check_candidate",
+  "candidate_only": true,
+  "no_g5_or_g6_claim": true,
+  "scope": "temporary_analysis_stock_name_colloquial_route_fix",
+  "route_results": [
+    {
+      "request": "东睦股份今天怎么样",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED",
+      "expected": "TEMP_ANALYSIS_REQUIRED",
+      "stock_name_suffix_hits": [
+        "股份"
+      ]
+    },
+    {
+      "request": "东睦股份现在怎么样",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED",
+      "expected": "TEMP_ANALYSIS_REQUIRED",
+      "stock_name_suffix_hits": [
+        "股份"
+      ]
+    },
+    {
+      "request": "东睦股份怎么看",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED",
+      "expected": "TEMP_ANALYSIS_REQUIRED",
+      "stock_name_suffix_hits": [
+        "股份"
+      ]
+    },
+    {
+      "request": "东睦股份今天放量上涨怎么看",
+      "returncode": 0,
+      "decision": "TEMP_ANALYSIS_REQUIRED",
+      "expected": "TEMP_ANALYSIS_REQUIRED",
+      "stock_name_suffix_hits": [
+        "股份"
+      ]
+    },
+    {
+      "request": "请写东睦股份长期深度分析报告",
+      "returncode": 0,
+      "decision": "NOT_TEMP_ANALYSIS",
+      "expected": "NOT_TEMP_ANALYSIS",
+      "stock_name_suffix_hits": [
+        "股份"
+      ]
+    }
+  ],
+  "final_status_candidate": "PASS",
+  "generated_at": "2026-06-16T12:24:29+08:00"
+}

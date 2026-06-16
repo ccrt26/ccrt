@@ -30,7 +30,7 @@ def contains_any(text, terms):
 def stock_name_suffix_hits(text, suffixes):
     hits = []
     for suffix in suffixes:
-        if suffix and re.search(r"[\\u4e00-\\u9fff]{2,8}" + re.escape(suffix), text):
+        if suffix and re.search(r"[\u4e00-\u9fff]{2,8}" + re.escape(suffix), text):
             hits.append(suffix)
     return hits
 

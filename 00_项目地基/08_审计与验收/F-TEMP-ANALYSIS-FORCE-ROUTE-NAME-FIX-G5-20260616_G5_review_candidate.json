@@ -1,0 +1,16 @@
+{
+  "flow": "F-FIX",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "scope": "temporary_analysis_stock_name_colloquial_route_fix",
+  "overall": "PASS",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "stock_name_route",
+      "detail": "stock-name colloquial requests route to TEMP_ANALYSIS_REQUIRED without forcing long deep analysis"
+    }
+  ],
+  "generated_at": "2026-06-16T12:24:30+08:00"
+}
