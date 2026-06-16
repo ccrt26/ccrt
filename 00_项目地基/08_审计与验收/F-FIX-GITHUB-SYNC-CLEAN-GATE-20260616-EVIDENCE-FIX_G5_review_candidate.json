@@ -1,0 +1,22 @@
+{
+  "flow": "F-FIX",
+  "stage": "G5_review_candidate",
+  "candidate_only": true,
+  "no_g6_claim": true,
+  "task_id": "F-FIX-GITHUB-SYNC-CLEAN-GATE-20260616-EVIDENCE-FIX",
+  "scope": "evidence_repair_only",
+  "findings": [
+    {
+      "result": "PASS",
+      "check": "g4_evidence_rewritten_after_successful_validation",
+      "detail": "py_compile and unittest passed; strict hygiene still blocks dirty backlog"
+    },
+    {
+      "result": "PASS",
+      "check": "no_backlog_commit",
+      "detail": "repair only rewrites G4 evidence and adds G5/G6 candidates; backlog remains uncommitted for separate classification"
+    }
+  ],
+  "overall": "PASS",
+  "generated_at": "2026-06-16T05:05:52.068206+00:00"
+}
