@@ -1,26 +1,103 @@
 {
   "phase": "Phase 1 backend MVP",
   "stage": "G4 self-check candidate",
-  "generated_at": "2026-06-16T07:14:15.945337+00:00",
+  "generated_at": "2026-06-16T07:21:05.074322+00:00",
   "overall": "PASS_WITH_ALLOWED_WARN",
   "read_only_validation": true,
-  "no_source_write": true,
-  "checks": [
-    "forbidden_scope",
-    "json_readable",
-    "py_compile",
-    "pytest",
-    "ledger_idempotency",
-    "feature_snapshot_no_future_function",
-    "observe_gate",
-    "status_alert_machine_readable",
-    "traceability",
-    "workspace_pollution_check"
+  "gate_results": [
+    {
+      "gate": "gate_results_initialized",
+      "status": "PASS",
+      "detail": "ok",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "step5_execution_package",
+      "status": "PASS",
+      "detail": "execution pack evidence located",
+      "severity": "WARN"
+    },
+    {
+      "gate": "forbidden_scope_diff",
+      "status": "PASS",
+      "detail": "no forbidden scope changes",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "json_readable",
+      "status": "PASS",
+      "detail": "all 11 JSON files readable",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "python_compile",
+      "status": "PASS",
+      "detail": "14 files",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "key_schema_validation",
+      "status": "PASS",
+      "detail": "all constraints check passed",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "full_jsonschema_validation",
+      "status": "WARN",
+      "detail": "jsonschema not installed",
+      "severity": "WARN"
+    },
+    {
+      "gate": "pytest",
+      "status": "PASS",
+      "detail": "66 passed",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "ledger_idempotency",
+      "status": "PASS",
+      "detail": "second build unchanged, cmp zero",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "feature_snapshot_no_future_function",
+      "status": "PASS",
+      "detail": "as_of_check PASS, labels not in feature_values",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "observe_gate",
+      "status": "PASS",
+      "detail": "statuses=['WARN', 'WARN', 'OBSERVE']",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "status_alert_machine_readable",
+      "status": "PASS",
+      "detail": "dashboard+alerts machine readable",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "traceability",
+      "status": "PASS",
+      "detail": "all refs present",
+      "severity": "BLOCK"
+    },
+    {
+      "gate": "workspace_pollution_check",
+      "status": "PASS",
+      "detail": "no __pycache__/pytest_cache pollution, dirty files are pre-existing",
+      "severity": "BLOCK"
+    }
   ],
-  "known_allowed_warn": [
-    "第 5 步独立执行包未找到，已从 G6 archive 还原边界",
-    "完整 jsonschema 依赖缺失，关键 schema 校验已通过",
-    "MA20 回测规则表现 WARN，非工程阻断"
+  "warns": [
+    {
+      "gate": "full_jsonschema_validation",
+      "status": "WARN",
+      "detail": "jsonschema not installed",
+      "severity": "WARN"
+    }
   ],
+  "blocks": [],
   "not_g5_or_g6": true
 }
