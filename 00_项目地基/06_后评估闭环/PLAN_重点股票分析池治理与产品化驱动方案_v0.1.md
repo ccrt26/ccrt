@@ -1084,6 +1084,134 @@ tests/keystock_product_eval/test_analysis_pool_product_api_contract.py
 
 ## 17. 验收命令候选
 
+验收必须先定义范围，再执行命令。仅有命令通过，不等于业务验收通过。
+
+### 17.1 验收范围定义
+
+本方案 G3 的验收范围应按五层定义：
+
+| 层级 | 验收对象 | 必须证明 | 不验收 |
+|:--|:--|:--|:--|
+| 契约层 | `keystock_analysis_pool.json`、schema、pool checker | active/user_override/candidate/paused/archived 结构合法，变更日志可追溯 | 不验证投资结论正确性 |
+| 范围层 | 当前分析池、daily targets、deep targets、data warmup targets | 当前默认 active 只含东睦股份；非池股票不会被 `--all` 带入 | 不删除或重写历史股票资产 |
+| 服务层 | `ProductStockPoolService`、`scripts/keystock_analysis_pool.py` | 服务读取注册表，输出目标范围稳定，旧脚本可通过 adapter 获取范围 | 不重构 D01-D12 数据采集能力 |
+| 产物层 | product API bundle、dashboard data、daily_report_targets mirror | `stock_pool.json`、`today_decisions.json`、`dashboard.json` 与 pool 一致 | 不切正式生产调度 |
+| 运维层 | pool health、change log、exit scan、dry-run export | 用户特例、暂停、出池建议均可 dry-run 和审计 | 不自动 archived 用户仍关注/持仓的股票 |
+
+### 17.2 股票范围
+
+正向验收：
+
+```text
+active 默认包含：
+  - 600114 东睦股份
+```
+
+负向验收：
+
+```text
+旧 pigeon_config.json 中其他股票不得因 --all、目录扫描、历史报告存在而进入：
+  - daily_analysis_targets
+  - deep_analysis_targets
+  - product dashboard active 列表
+  - daily_report_targets enabled=true mirror
+```
+
+用户特例验收：
+
+```text
+新增 user_override 时：
+  - 有 baseline 且数据 ready：可进入 daily targets
+  - 缺 baseline：进入 pending/data_warmup，不生成正式日报
+  - 数据 BLOCK：页面显示关注中但不可正式决策
+```
+
+### 17.3 文件范围
+
+允许作为验收对象：
+
+```text
+00_项目地基/02_权威注册表/keystock_analysis_pool.json
+00_项目地基/04_一致性闸门/keystock_analysis_pool.schema.json
+代码文件/重点股票/product_eval/stock_pool.py
+代码文件/重点股票/product_eval/product_api_bundle.py
+scripts/keystock_analysis_pool.py
+scripts/check_keystock_analysis_pool.py
+相关测试文件
+shadow/product API 输出
+```
+
+必须证明未触碰：
+
+```text
+baseline_registry.json
+正式日报正文/sidecar
+正式深度分析报告
+launchd/runtime production entry
+正式规则资产
+历史旧股票报告目录
+```
+
+### 17.4 日期与数据范围
+
+日期范围必须显式传入，不允许隐式使用“今天”：
+
+```text
+--date YYYYMMDD
+```
+
+验收只证明该日期对应的 pool scope、target export、product API scope 正确，不证明所有历史日期都正确。
+
+如需历史 replay，必须另建历史验收范围，不得混入本次 G3。
+
+### 17.5 证据范围
+
+G4/G5 至少需要以下证据：
+
+```text
+pool_validate_result.json
+pool_active_targets.json
+pool_daily_targets.json
+pool_data_warmup_targets.json
+daily_report_targets_export_dry_run.json
+product_api_pool_consistency_check.json
+pytest_output.txt
+git_diff_scope.txt
+no_production_touch_evidence.json
+```
+
+没有证据落盘的验收项只能算命令尝试，不能算 PASS。
+
+### 17.6 WARN/BLOCK 口径
+
+可接受 WARN：
+
+1. candidate 数据预热缺少非关键消息源，但未进入正式日报。
+2. user_override 缺持仓数据，但页面未伪造成本/盈亏。
+3. 历史 archived 股票存在旧报告，但没有进入当前 active 产品列表。
+
+必须 BLOCK：
+
+1. 任一非池股票进入 daily/deep/product active 范围。
+2. user_override 缺 baseline 却生成正式日报结论。
+3. `--all` 仍扫描历史报告目录并扩池。
+4. `daily_report_targets.json` enabled=true 多出 pool 外股票。
+5. 产品 API dashboard 与 stock_pool 不一致。
+6. 修改 `baseline_registry.json`、生产调度或正式报告产物。
+
+### 17.7 G5 复查重点
+
+G5 不只看测试是否通过，必须复查：
+
+1. 验收范围是否覆盖正向和负向场景。
+2. 验收股票范围是否等于 pool 定义范围。
+3. 验收命令是否真的消费新 adapter，而不是旧配置。
+4. 产品 API 输出是否与 pool 一致。
+5. 旧 `pigeon_config.json` 和历史报告目录是否仍可能反向扩池。
+6. 证据是否落盘，是否可复现。
+
+### 17.8 验收命令候选
+
 G3 实施后建议验收：
 
 ```bash
