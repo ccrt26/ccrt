@@ -1,0 +1,9 @@
+{
+  "scene": "临时分析（收盘复盘）",
+  "framework_version": "D07_v1.2",
+  "stock_code": "600114",
+  "stock_name": "东睦股份",
+  "query_time": "2026-06-17T15:10:00+08:00",
+  "intraday_state": "fomc_eve_rally",
+  "action_bias": "WATCH"
+}
